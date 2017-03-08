@@ -21,6 +21,7 @@ library
   -- Core
                      , Duckling.Api
                      , Duckling.Engine
+                     , Duckling.Engine.Regex
                      , Duckling.Lang
                      , Duckling.Resolve
                      , Duckling.Stash

@@ -1,0 +1,681 @@
+name:                duckling
+version:             0.1.0.0
+-- synopsis:
+-- description:
+homepage:            https://github.com/githubuser/duckling#readme
+license:             OtherLicense
+license-file:        LICENSE
+author:              Author name here
+maintainer:          example@example.com
+copyright:           2017 Author name here
+category:            Systems
+build-type:          Simple
+extra-source-files:  README.md
+cabal-version:       >=1.10
+
+library
+  exposed-modules:     Duckling.Core
+                     , Duckling.Debug
+                     , Duckling.Testing.Types
+  -- ------------------------------------------------------------------
+  -- Core
+                     , Duckling.Api
+                     , Duckling.Engine
+                     , Duckling.Lang
+                     , Duckling.Resolve
+                     , Duckling.Stash
+                     , Duckling.Types
+
+  -- ------------------------------------------------------------------
+  -- Rules
+                     , Duckling.Rules
+                     , Duckling.Rules.Common
+                     , Duckling.Rules.AR
+                     , Duckling.Rules.DA
+                     , Duckling.Rules.DE
+                     , Duckling.Rules.EN
+                     , Duckling.Rules.ES
+                     , Duckling.Rules.ET
+                     , Duckling.Rules.FR
+                     , Duckling.Rules.GA
+                     , Duckling.Rules.ID
+                     , Duckling.Rules.IT
+                     , Duckling.Rules.JA
+                     , Duckling.Rules.KO
+                     , Duckling.Rules.MY
+                     , Duckling.Rules.NB
+                     , Duckling.Rules.NL
+                     , Duckling.Rules.PL
+                     , Duckling.Rules.PT
+                     , Duckling.Rules.RO
+                     , Duckling.Rules.RU
+                     , Duckling.Rules.SV
+                     , Duckling.Rules.TR
+                     , Duckling.Rules.UK
+                     , Duckling.Rules.VI
+                     , Duckling.Rules.ZH
+
+  -- ------------------------------------------------------------------
+  -- Ranking
+                     , Duckling.Ranking.Types
+                     , Duckling.Ranking.Extraction
+                     , Duckling.Ranking.Rank
+                     , Duckling.Ranking.Classifiers
+                     , Duckling.Ranking.Classifiers.DA
+                     , Duckling.Ranking.Classifiers.DE
+                     , Duckling.Ranking.Classifiers.EN
+                     , Duckling.Ranking.Classifiers.ES
+                     , Duckling.Ranking.Classifiers.FR
+                     , Duckling.Ranking.Classifiers.GA
+                     , Duckling.Ranking.Classifiers.IT
+                     , Duckling.Ranking.Classifiers.KO
+                     , Duckling.Ranking.Classifiers.NB
+                     , Duckling.Ranking.Classifiers.PL
+                     , Duckling.Ranking.Classifiers.PT
+                     , Duckling.Ranking.Classifiers.RO
+                     , Duckling.Ranking.Classifiers.SV
+                     , Duckling.Ranking.Classifiers.ZH
+                     , Duckling.Ranking.Classifiers.AR
+                     , Duckling.Ranking.Classifiers.ET
+                     , Duckling.Ranking.Classifiers.ID
+                     , Duckling.Ranking.Classifiers.JA
+                     , Duckling.Ranking.Classifiers.MY
+                     , Duckling.Ranking.Classifiers.NL
+                     , Duckling.Ranking.Classifiers.RU
+                     , Duckling.Ranking.Classifiers.TR
+                     , Duckling.Ranking.Classifiers.UK
+                     , Duckling.Ranking.Classifiers.VI
+
+  -- ------------------------------------------------------------------
+  -- Dimensions
+                     , Duckling.Dimensions
+                     , Duckling.Dimensions.Common
+                     , Duckling.Dimensions.Types
+                     , Duckling.Dimensions.AR
+                     , Duckling.Dimensions.DA
+                     , Duckling.Dimensions.DE
+                     , Duckling.Dimensions.EN
+                     , Duckling.Dimensions.ES
+                     , Duckling.Dimensions.ET
+                     , Duckling.Dimensions.FR
+                     , Duckling.Dimensions.GA
+                     , Duckling.Dimensions.ID
+                     , Duckling.Dimensions.IT
+                     , Duckling.Dimensions.JA
+                     , Duckling.Dimensions.KO
+                     , Duckling.Dimensions.MY
+                     , Duckling.Dimensions.NB
+                     , Duckling.Dimensions.NL
+                     , Duckling.Dimensions.PL
+                     , Duckling.Dimensions.PT
+                     , Duckling.Dimensions.RO
+                     , Duckling.Dimensions.RU
+                     , Duckling.Dimensions.SV
+                     , Duckling.Dimensions.TR
+                     , Duckling.Dimensions.UK
+                     , Duckling.Dimensions.VI
+                     , Duckling.Dimensions.ZH
+
+                     -- Distance
+                     , Duckling.Distance.EN.Corpus
+                     , Duckling.Distance.EN.Rules
+                     , Duckling.Distance.ES.Corpus
+                     , Duckling.Distance.ES.Rules
+                     , Duckling.Distance.FR.Corpus
+                     , Duckling.Distance.FR.Rules
+                     , Duckling.Distance.GA.Corpus
+                     , Duckling.Distance.GA.Rules
+                     , Duckling.Distance.KO.Corpus
+                     , Duckling.Distance.KO.Rules
+                     , Duckling.Distance.PT.Corpus
+                     , Duckling.Distance.PT.Rules
+                     , Duckling.Distance.NL.Corpus
+                     , Duckling.Distance.NL.Rules
+                     , Duckling.Distance.RO.Corpus
+                     , Duckling.Distance.RO.Rules
+                     , Duckling.Distance.Helpers
+                     , Duckling.Distance.Rules
+                     , Duckling.Distance.Types
+
+                     -- Duration
+                     , Duckling.Duration.DA.Rules
+                     , Duckling.Duration.DE.Rules
+                     , Duckling.Duration.EN.Corpus
+                     , Duckling.Duration.EN.Rules
+                     , Duckling.Duration.FR.Corpus
+                     , Duckling.Duration.FR.Rules
+                     , Duckling.Duration.GA.Corpus
+                     , Duckling.Duration.GA.Rules
+                     , Duckling.Duration.IT.Rules
+                     , Duckling.Duration.JA.Corpus
+                     , Duckling.Duration.KO.Corpus
+                     , Duckling.Duration.KO.Rules
+                     , Duckling.Duration.NB.Corpus
+                     , Duckling.Duration.NB.Rules
+                     , Duckling.Duration.PL.Corpus
+                     , Duckling.Duration.PL.Rules
+                     , Duckling.Duration.PT.Corpus
+                     , Duckling.Duration.SV.Corpus
+                     , Duckling.Duration.SV.Rules
+                     , Duckling.Duration.ZH.Corpus
+                     , Duckling.Duration.RO.Corpus
+                     , Duckling.Duration.RO.Rules
+                     , Duckling.Duration.Helpers
+                     , Duckling.Duration.Rules
+                     , Duckling.Duration.Types
+
+                     -- Email
+                     , Duckling.Email.EN.Corpus
+                     , Duckling.Email.EN.Rules
+                     , Duckling.Email.FR.Corpus
+                     , Duckling.Email.FR.Rules
+                     , Duckling.Email.IT.Corpus
+                     , Duckling.Email.IT.Rules
+                     , Duckling.Email.Corpus
+                     , Duckling.Email.Rules
+                     , Duckling.Email.Types
+
+                     -- Finance
+                     , Duckling.Finance.EN.Corpus
+                     , Duckling.Finance.EN.Rules
+                     , Duckling.Finance.ES.Corpus
+                     , Duckling.Finance.ES.Rules
+                     , Duckling.Finance.FR.Corpus
+                     , Duckling.Finance.FR.Rules
+                     , Duckling.Finance.GA.Corpus
+                     , Duckling.Finance.GA.Rules
+                     , Duckling.Finance.ID.Corpus
+                     , Duckling.Finance.ID.Rules
+                     , Duckling.Finance.KO.Corpus
+                     , Duckling.Finance.KO.Rules
+                     , Duckling.Finance.NB.Corpus
+                     , Duckling.Finance.NB.Rules
+                     , Duckling.Finance.PT.Corpus
+                     , Duckling.Finance.PT.Rules
+                     , Duckling.Finance.RO.Corpus
+                     , Duckling.Finance.RO.Rules
+                     , Duckling.Finance.SV.Corpus
+                     , Duckling.Finance.SV.Rules
+                     , Duckling.Finance.VI.Corpus
+                     , Duckling.Finance.VI.Rules
+                     , Duckling.Finance.Helpers
+                     , Duckling.Finance.Rules
+                     , Duckling.Finance.Types
+
+                     -- Number
+                     , Duckling.Number.AR.Corpus
+                     , Duckling.Number.AR.Rules
+                     , Duckling.Number.DA.Corpus
+                     , Duckling.Number.DA.Rules
+                     , Duckling.Number.DE.Corpus
+                     , Duckling.Number.DE.Rules
+                     , Duckling.Number.EN.Corpus
+                     , Duckling.Number.EN.Rules
+                     , Duckling.Number.ES.Corpus
+                     , Duckling.Number.ES.Rules
+                     , Duckling.Number.ET.Corpus
+                     , Duckling.Number.ET.Rules
+                     , Duckling.Number.FR.Corpus
+                     , Duckling.Number.FR.Rules
+                     , Duckling.Number.GA.Corpus
+                     , Duckling.Number.GA.Rules
+                     , Duckling.Number.ID.Corpus
+                     , Duckling.Number.ID.Rules
+                     , Duckling.Number.IT.Corpus
+                     , Duckling.Number.IT.Rules
+                     , Duckling.Number.JA.Corpus
+                     , Duckling.Number.JA.Rules
+                     , Duckling.Number.KO.Corpus
+                     , Duckling.Number.KO.Rules
+                     , Duckling.Number.MY.Corpus
+                     , Duckling.Number.MY.Rules
+                     , Duckling.Number.NB.Corpus
+                     , Duckling.Number.NB.Rules
+                     , Duckling.Number.PL.Corpus
+                     , Duckling.Number.PL.Rules
+                     , Duckling.Number.PT.Corpus
+                     , Duckling.Number.PT.Rules
+                     , Duckling.Number.RU.Corpus
+                     , Duckling.Number.RU.Rules
+                     , Duckling.Number.SV.Corpus
+                     , Duckling.Number.SV.Rules
+                     , Duckling.Number.TR.Corpus
+                     , Duckling.Number.TR.Rules
+                     , Duckling.Number.UK.Corpus
+                     , Duckling.Number.UK.Rules
+                     , Duckling.Number.VI.Corpus
+                     , Duckling.Number.VI.Rules
+                     , Duckling.Number.ZH.Corpus
+                     , Duckling.Number.ZH.Rules
+                     , Duckling.Number.NL.Corpus
+                     , Duckling.Number.NL.Rules
+                     , Duckling.Number.RO.Corpus
+                     , Duckling.Number.RO.Rules
+                     , Duckling.Number.Helpers
+                     , Duckling.Number.Types
+
+                     -- Ordinal
+                     , Duckling.Ordinal.AR.Corpus
+                     , Duckling.Ordinal.AR.Rules
+                     , Duckling.Ordinal.DA.Corpus
+                     , Duckling.Ordinal.DA.Rules
+                     , Duckling.Ordinal.DE.Corpus
+                     , Duckling.Ordinal.DE.Rules
+                     , Duckling.Ordinal.EN.Corpus
+                     , Duckling.Ordinal.EN.Rules
+                     , Duckling.Ordinal.ES.Rules
+                     , Duckling.Ordinal.ET.Corpus
+                     , Duckling.Ordinal.ET.Rules
+                     , Duckling.Ordinal.FR.Corpus
+                     , Duckling.Ordinal.FR.Rules
+                     , Duckling.Ordinal.GA.Corpus
+                     , Duckling.Ordinal.GA.Rules
+                     , Duckling.Ordinal.ID.Corpus
+                     , Duckling.Ordinal.ID.Rules
+                     , Duckling.Ordinal.IT.Corpus
+                     , Duckling.Ordinal.IT.Rules
+                     , Duckling.Ordinal.JA.Corpus
+                     , Duckling.Ordinal.JA.Rules
+                     , Duckling.Ordinal.KO.Corpus
+                     , Duckling.Ordinal.KO.Rules
+                     , Duckling.Ordinal.NB.Corpus
+                     , Duckling.Ordinal.NB.Rules
+                     , Duckling.Ordinal.NL.Corpus
+                     , Duckling.Ordinal.NL.Rules
+                     , Duckling.Ordinal.PL.Corpus
+                     , Duckling.Ordinal.PL.Rules
+                     , Duckling.Ordinal.PT.Corpus
+                     , Duckling.Ordinal.PT.Rules
+                     , Duckling.Ordinal.RO.Corpus
+                     , Duckling.Ordinal.RO.Rules
+                     , Duckling.Ordinal.RU.Corpus
+                     , Duckling.Ordinal.RU.Rules
+                     , Duckling.Ordinal.SV.Corpus
+                     , Duckling.Ordinal.SV.Rules
+                     , Duckling.Ordinal.TR.Corpus
+                     , Duckling.Ordinal.TR.Rules
+                     , Duckling.Ordinal.UK.Corpus
+                     , Duckling.Ordinal.UK.Rules
+                     , Duckling.Ordinal.ZH.Corpus
+                     , Duckling.Ordinal.ZH.Rules
+                     , Duckling.Ordinal.Helpers
+                     , Duckling.Ordinal.Types
+
+                     -- PhoneNumber
+                     , Duckling.PhoneNumber.Corpus
+                     , Duckling.PhoneNumber.Rules
+                     , Duckling.PhoneNumber.Types
+
+                     -- Quantity
+                     , Duckling.Quantity.EN.Corpus
+                     , Duckling.Quantity.EN.Rules
+                     , Duckling.Quantity.FR.Corpus
+                     , Duckling.Quantity.FR.Rules
+                     , Duckling.Quantity.KO.Corpus
+                     , Duckling.Quantity.KO.Rules
+                     , Duckling.Quantity.PT.Corpus
+                     , Duckling.Quantity.PT.Rules
+                     , Duckling.Quantity.RO.Corpus
+                     , Duckling.Quantity.RO.Rules
+                     , Duckling.Quantity.Helpers
+                     , Duckling.Quantity.Types
+
+                     -- Regex
+                     , Duckling.Regex.Types
+
+                     -- Temperature
+                     , Duckling.Temperature.EN.Corpus
+                     , Duckling.Temperature.EN.Rules
+                     , Duckling.Temperature.ES.Corpus
+                     , Duckling.Temperature.ES.Rules
+                     , Duckling.Temperature.FR.Corpus
+                     , Duckling.Temperature.FR.Rules
+                     , Duckling.Temperature.GA.Corpus
+                     , Duckling.Temperature.GA.Rules
+                     , Duckling.Temperature.JA.Corpus
+                     , Duckling.Temperature.JA.Rules
+                     , Duckling.Temperature.KO.Corpus
+                     , Duckling.Temperature.KO.Rules
+                     , Duckling.Temperature.PT.Corpus
+                     , Duckling.Temperature.PT.Rules
+                     , Duckling.Temperature.RO.Corpus
+                     , Duckling.Temperature.RO.Rules
+                     , Duckling.Temperature.ZH.Corpus
+                     , Duckling.Temperature.ZH.Rules
+                     , Duckling.Temperature.Helpers
+                     , Duckling.Temperature.Rules
+                     , Duckling.Temperature.Types
+
+                     -- Time
+                     , Duckling.Time.DA.Corpus
+                     , Duckling.Time.DA.Rules
+                     , Duckling.Time.DE.Corpus
+                     , Duckling.Time.DE.Rules
+                     , Duckling.Time.EN.Corpus
+                     , Duckling.Time.EN.Rules
+                     , Duckling.Time.ES.Corpus
+                     , Duckling.Time.ES.Rules
+                     , Duckling.Time.FR.Corpus
+                     , Duckling.Time.FR.Rules
+                     , Duckling.Time.GA.Corpus
+                     , Duckling.Time.GA.Rules
+                     , Duckling.Time.IT.Corpus
+                     , Duckling.Time.IT.Rules
+                     , Duckling.Time.KO.Corpus
+                     , Duckling.Time.KO.Rules
+                     , Duckling.Time.NB.Corpus
+                     , Duckling.Time.NB.Rules
+                     , Duckling.Time.PL.Corpus
+                     , Duckling.Time.PL.Rules
+                     , Duckling.Time.PT.Corpus
+                     , Duckling.Time.PT.Rules
+                     , Duckling.Time.RO.Corpus
+                     , Duckling.Time.RO.Rules
+                     , Duckling.Time.SV.Corpus
+                     , Duckling.Time.SV.Rules
+                     , Duckling.Time.ZH.Corpus
+                     , Duckling.Time.ZH.Rules
+                     , Duckling.Time.Corpus
+                     , Duckling.Time.Helpers
+                     , Duckling.Time.Types
+                     -- REMOVE ME
+                     , Duckling.Time.TimeZone.Parse
+
+                     -- TimeGrain
+                     , Duckling.TimeGrain.DA.Rules
+                     , Duckling.TimeGrain.DE.Rules
+                     , Duckling.TimeGrain.EN.Rules
+                     , Duckling.TimeGrain.ES.Rules
+                     , Duckling.TimeGrain.FR.Rules
+                     , Duckling.TimeGrain.GA.Rules
+                     , Duckling.TimeGrain.IT.Rules
+                     , Duckling.TimeGrain.JA.Rules
+                     , Duckling.TimeGrain.KO.Rules
+                     , Duckling.TimeGrain.NB.Rules
+                     , Duckling.TimeGrain.PL.Rules
+                     , Duckling.TimeGrain.PT.Rules
+                     , Duckling.TimeGrain.RO.Rules
+                     , Duckling.TimeGrain.SV.Rules
+                     , Duckling.TimeGrain.ZH.Rules
+                     , Duckling.TimeGrain.Types
+
+                     -- Url
+                     , Duckling.Url.Corpus
+                     , Duckling.Url.Helpers
+                     , Duckling.Url.Rules
+                     , Duckling.Url.Types
+
+                     -- Volume
+                     , Duckling.Volume.EN.Corpus
+                     , Duckling.Volume.EN.Rules
+                     , Duckling.Volume.ES.Corpus
+                     , Duckling.Volume.ES.Rules
+                     , Duckling.Volume.FR.Corpus
+                     , Duckling.Volume.FR.Rules
+                     , Duckling.Volume.GA.Corpus
+                     , Duckling.Volume.GA.Rules
+                     , Duckling.Volume.KO.Corpus
+                     , Duckling.Volume.KO.Rules
+                     , Duckling.Volume.PT.Corpus
+                     , Duckling.Volume.PT.Rules
+                     , Duckling.Volume.NL.Corpus
+                     , Duckling.Volume.NL.Rules
+                     , Duckling.Volume.RO.Corpus
+                     , Duckling.Volume.RO.Rules
+                     , Duckling.Volume.Helpers
+                     , Duckling.Volume.Rules
+                     , Duckling.Volume.Types
+  build-depends:       base                  >= 4.8.2 && < 5.0
+                     , attoparsec            >= 0.13.1.0 && < 0.14
+                     , aeson                 >= 0.11.3.0 && < 0.12
+                     , bytestring            >= 0.10.6.0 && < 0.11
+                     , containers            >= 0.5.6.2 && < 0.6
+                     , deepseq               >= 1.4.1.1 && < 1.5
+                     , hashable              >= 1.2.4.0 && < 1.3
+                     , regex-base            >= 0.93.2 && < 0.94
+                     , regex-pcre            >= 0.94.4 && < 0.95
+                     , text                  >= 1.2.2.1 && < 1.3
+                     , text-show             >= 2.1.2 && < 3.5
+                     , time                  >= 1.5.0.1 && < 1.7
+                     , timezone-series       >= 0.1.5.1 && < 0.2
+                     , unordered-containers  >= 0.2.7.2 && < 0.3
+  default-language:    Haskell2010
+  default-extensions:  OverloadedStrings
+                     , RebindableSyntax
+
+test-suite duckling-test
+  type:                exitcode-stdio-1.0
+  main-is:             TestMain.hs
+  build-depends:       duckling
+                     , base                  >= 4.8.2 && < 5.0
+                     , attoparsec            >= 0.13.1.0 && < 0.14
+                     , aeson                 >= 0.11.3.0 && < 0.12
+                     , bytestring            >= 0.10.6.0 && < 0.11
+                     , containers            >= 0.5.6.2 && < 0.6
+                     , deepseq               >= 1.4.1.1 && < 1.5
+                     , hashable              >= 1.2.4.0 && < 1.3
+                     , regex-base            >= 0.93.2 && < 0.94
+                     , regex-pcre            >= 0.94.4 && < 0.95
+                     , text                  >= 1.2.2.1 && < 1.3
+                     , text-show             >= 2.1.2 && < 3.5
+                     , time                  >= 1.5.0.1 && < 1.7
+                     , timezone-series       >= 0.1.5.1 && < 0.2
+                     , unordered-containers  >= 0.2.7.2 && < 0.3
+                     , tasty                 >= 0.11.1 && < 0.12
+                     , tasty-hunit           >= 0.9.2 && < 1.0
+  other-modules:       Duckling.Tests
+                     , Duckling.Testing.Asserts
+
+                     , Duckling.Api.Tests
+                     , Duckling.Engine.Tests
+
+  -- ------------------------------------------------------------------
+  -- Dimensions
+                     , Duckling.Dimensions.Tests
+
+                     -- Distance
+                     , Duckling.Distance.EN.Tests
+                     , Duckling.Distance.ES.Tests
+                     , Duckling.Distance.FR.Tests
+                     , Duckling.Distance.GA.Tests
+                     , Duckling.Distance.KO.Tests
+                     , Duckling.Distance.NL.Tests
+                     , Duckling.Distance.PT.Tests
+                     , Duckling.Distance.RO.Tests
+                     , Duckling.Distance.Tests
+
+                     -- Duration
+                     , Duckling.Duration.EN.Tests
+                     , Duckling.Duration.FR.Tests
+                     , Duckling.Duration.GA.Tests
+                     , Duckling.Duration.JA.Tests
+                     , Duckling.Duration.KO.Tests
+                     , Duckling.Duration.NB.Tests
+                     , Duckling.Duration.PL.Tests
+                     , Duckling.Duration.PT.Tests
+                     , Duckling.Duration.RO.Tests
+                     , Duckling.Duration.SV.Tests
+                     , Duckling.Duration.ZH.Tests
+                     , Duckling.Duration.Tests
+
+                     -- Email
+                     , Duckling.Email.EN.Tests
+                     , Duckling.Email.FR.Tests
+                     , Duckling.Email.IT.Tests
+                     , Duckling.Email.Tests
+
+                     -- Finance
+                     , Duckling.Finance.EN.Tests
+                     , Duckling.Finance.ES.Tests
+                     , Duckling.Finance.FR.Tests
+                     , Duckling.Finance.GA.Tests
+                     , Duckling.Finance.ID.Tests
+                     , Duckling.Finance.KO.Tests
+                     , Duckling.Finance.NB.Tests
+                     , Duckling.Finance.PT.Tests
+                     , Duckling.Finance.RO.Tests
+                     , Duckling.Finance.SV.Tests
+                     , Duckling.Finance.VI.Tests
+                     , Duckling.Finance.Tests
+
+                     -- Number
+                     , Duckling.Number.AR.Tests
+                     , Duckling.Number.DA.Tests
+                     , Duckling.Number.DE.Tests
+                     , Duckling.Number.EN.Tests
+                     , Duckling.Number.ES.Tests
+                     , Duckling.Number.ET.Tests
+                     , Duckling.Number.FR.Tests
+                     , Duckling.Number.GA.Tests
+                     , Duckling.Number.ID.Tests
+                     , Duckling.Number.IT.Tests
+                     , Duckling.Number.JA.Tests
+                     , Duckling.Number.KO.Tests
+                     , Duckling.Number.MY.Tests
+                     , Duckling.Number.NB.Tests
+                     , Duckling.Number.NL.Tests
+                     , Duckling.Number.PL.Tests
+                     , Duckling.Number.PT.Tests
+                     , Duckling.Number.RO.Tests
+                     , Duckling.Number.RU.Tests
+                     , Duckling.Number.SV.Tests
+                     , Duckling.Number.TR.Tests
+                     , Duckling.Number.UK.Tests
+                     , Duckling.Number.VI.Tests
+                     , Duckling.Number.ZH.Tests
+                     , Duckling.Number.Tests
+
+                     -- Ordinal
+                     , Duckling.Ordinal.AR.Tests
+                     , Duckling.Ordinal.DE.Tests
+                     , Duckling.Ordinal.EN.Tests
+                     , Duckling.Ordinal.ET.Tests
+                     , Duckling.Ordinal.FR.Tests
+                     , Duckling.Ordinal.GA.Tests
+                     , Duckling.Ordinal.ID.Tests
+                     , Duckling.Ordinal.IT.Tests
+                     , Duckling.Ordinal.JA.Tests
+                     , Duckling.Ordinal.KO.Tests
+                     , Duckling.Ordinal.NB.Tests
+                     , Duckling.Ordinal.NL.Tests
+                     , Duckling.Ordinal.PL.Tests
+                     , Duckling.Ordinal.PT.Tests
+                     , Duckling.Ordinal.RO.Tests
+                     , Duckling.Ordinal.RU.Tests
+                     , Duckling.Ordinal.SV.Tests
+                     , Duckling.Ordinal.TR.Tests
+                     , Duckling.Ordinal.UK.Tests
+                     , Duckling.Ordinal.ZH.Tests
+                     , Duckling.Ordinal.Tests
+
+                     -- PhoneNumber
+                     , Duckling.PhoneNumber.Tests
+
+                     -- Quantity
+                     , Duckling.Quantity.EN.Tests
+                     , Duckling.Quantity.FR.Tests
+                     , Duckling.Quantity.KO.Tests
+                     , Duckling.Quantity.PT.Tests
+                     , Duckling.Quantity.RO.Tests
+                     , Duckling.Quantity.Tests
+
+                     -- Temperature
+                     , Duckling.Temperature.EN.Tests
+                     , Duckling.Temperature.ES.Tests
+                     , Duckling.Temperature.FR.Tests
+                     , Duckling.Temperature.GA.Tests
+                     , Duckling.Temperature.JA.Tests
+                     , Duckling.Temperature.KO.Tests
+                     , Duckling.Temperature.PT.Tests
+                     , Duckling.Temperature.ZH.Tests
+                     , Duckling.Temperature.RO.Tests
+                     , Duckling.Temperature.Tests
+
+                     -- Time
+                     , Duckling.Time.DA.Tests
+                     , Duckling.Time.DE.Tests
+                     , Duckling.Time.EN.Tests
+                     , Duckling.Time.ES.Tests
+                     , Duckling.Time.FR.Tests
+                     , Duckling.Time.GA.Tests
+                     , Duckling.Time.IT.Tests
+                     , Duckling.Time.KO.Tests
+                     , Duckling.Time.NB.Tests
+                     , Duckling.Time.PL.Tests
+                     , Duckling.Time.PT.Tests
+                     , Duckling.Time.RO.Tests
+                     , Duckling.Time.SV.Tests
+                     , Duckling.Time.ZH.Tests
+                     , Duckling.Time.Tests
+
+                     -- Url
+                     , Duckling.Url.Tests
+
+                     -- Volume
+                     , Duckling.Volume.EN.Tests
+                     , Duckling.Volume.ES.Tests
+                     , Duckling.Volume.FR.Tests
+                     , Duckling.Volume.GA.Tests
+                     , Duckling.Volume.KO.Tests
+                     , Duckling.Volume.PT.Tests
+                     , Duckling.Volume.NL.Tests
+                     , Duckling.Volume.RO.Tests
+                     , Duckling.Volume.Tests
+
+  ghc-options:         -threaded -rtsopts -with-rtsopts=-N
+  default-language:    Haskell2010
+  default-extensions:  OverloadedStrings
+
+executable duckling-regen-exe
+  main-is:             RegenMain.hs
+  ghc-options:         -threaded -rtsopts -with-rtsopts=-N
+  other-modules:       Duckling.Ranking.Train
+                     , Duckling.Ranking.Generate
+  build-depends:       duckling
+                     , base                  >= 4.8.2 && < 5.0
+                     , attoparsec            >= 0.13.1.0 && < 0.14
+                     , aeson                 >= 0.11.3.0 && < 0.12
+                     , bytestring            >= 0.10.6.0 && < 0.11
+                     , containers            >= 0.5.6.2 && < 0.6
+                     , deepseq               >= 1.4.1.1 && < 1.5
+                     , hashable              >= 1.2.4.0 && < 1.3
+                     , haskell-src-exts      >= 1.17.1 && < 1.18
+                     , regex-base            >= 0.93.2 && < 0.94
+                     , regex-pcre            >= 0.94.4 && < 0.95
+                     , text                  >= 1.2.2.1 && < 1.3
+                     , text-show             >= 2.1.2 && < 3.5
+                     , time                  >= 1.5.0.1 && < 1.7
+                     , timezone-series       >= 0.1.5.1 && < 0.2
+                     , unordered-containers  >= 0.2.7.2 && < 0.3
+  default-language:    Haskell2010
+  default-extensions:  OverloadedStrings
+
+executable duckling-example-exe
+  main-is:             ExampleMain.hs
+  ghc-options:         -threaded -rtsopts -with-rtsopts=-N
+  other-modules:       Duckling.Data.TimeZone
+  build-depends:       duckling
+                     , base                  >= 4.8.2 && < 5.0
+                     , attoparsec            >= 0.13.1.0 && < 0.14
+                     , aeson                 >= 0.11.3.0 && < 0.12
+                     , bytestring            >= 0.10.6.0 && < 0.11
+                     , containers            >= 0.5.6.2 && < 0.6
+                     , deepseq               >= 1.4.1.1 && < 1.5
+                     , directory             >= 1.2.2.0 && < 1.3
+                     , extra                 >= 1.4.10 && < 1.5
+                     , filepath              >= 1.4.0.0 && < 1.5
+                     , hashable              >= 1.2.4.0 && < 1.3
+                     , regex-base            >= 0.93.2 && < 0.94
+                     , regex-pcre            >= 0.94.4 && < 0.95
+                     , text                  >= 1.2.2.1 && < 1.3
+                     , text-show             >= 2.1.2 && < 3.5
+                     , time                  >= 1.5.0.1 && < 1.7
+                     , timezone-olson        >= 0.1.7 && < 0.2
+                     , timezone-series       >= 0.1.5.1 && < 0.2
+                     , unordered-containers  >= 0.2.7.2 && < 0.3
+  default-language:    Haskell2010
+  default-extensions:  OverloadedStrings
+
+source-repository head
+  type:     git
+  location: https://github.com/githubuser/duckling

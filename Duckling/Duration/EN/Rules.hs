@@ -126,7 +126,6 @@ ruleDurationA = Rule
       _ -> Nothing
   }
 
--- TODO(jodent) precision t13807342
 ruleDurationPrecision :: Rule
 ruleDurationPrecision = Rule
   { name = "about|exactly <duration>"

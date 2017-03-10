@@ -89,7 +89,6 @@ isRangeValid s (Range start end) =
     isDifferent :: Char -> Char -> Bool
     isDifferent a b = charClass a /= charClass b
 
--- TODO(jodent) use Attoparsec t12879001
 lookupRegex :: PCRE.Regex -> Int -> Text -> [Node]
 lookupRegex regex position s = nodes
   where
@@ -152,7 +151,6 @@ matchFirst sentence stash (rule@(Rule {pattern = p:ps}), position, route) =
 
 -- | Finds new matches resulting from newly added tokens.
 -- Produces new tokens from full matches.
--- TODO(jodent) partially order matches and find longest whitespace sequence
 parseString1 :: [Rule] -> Text -> Stash -> Stash -> [Match] -> (Stash, [Match])
 parseString1 rules sentence stash new matches =
   -- Produce full matches as new tokens

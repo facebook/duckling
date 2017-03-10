@@ -45,7 +45,6 @@ ruleIntersect = Rule
       _ -> Nothing
   }
 
--- TODO(jodent) solve this in intersect (t14842790)
 ruleIntersect2 :: Rule
 ruleIntersect2 = Rule
   { name = "intersect2"
@@ -302,7 +301,6 @@ ruleYear = Rule
       _ -> Nothing
   }
 
--- FIXME (jodent) "8 tonight" intersection is not empty (2008-1-1) t14087284
 ruleYearPastLatent :: Rule
 ruleYearPastLatent = Rule
  { name = "past year (latent)"
@@ -873,7 +871,6 @@ ruleSeasons = Rule
 
   }
 
--- TODO(jodent) precision t13807342
 ruleTODPrecision :: Rule
 ruleTODPrecision = Rule
   { name = "<time-of-day> sharp|exactly"
@@ -1088,7 +1085,6 @@ ruleIntervalAfterTOD = Rule
       _ -> Nothing
   }
 
--- TODO(jodent) merge with previous rule
 ruleIntervalSinceTOD :: Rule
 ruleIntervalSinceTOD = Rule
   { name = "since <time-of-day>"
@@ -1203,7 +1199,6 @@ ruleMoreUSHolidays = map go moreUSHolidays
       , prod = \_ -> Just . Token Time $ nthDOWOfMonth n dow m
       }
 
--- TODO(jodent) nthDOWOfMonth (-1) 1 5
 -- Last Monday of May
 ruleMemorialDay :: Rule
 ruleMemorialDay = Rule

@@ -46,7 +46,6 @@ import Duckling.Volume.Types (VolumeData)
 -- -----------------------------------------------------------------
 -- Wrapper to house the existential
 
--- TODO: get rid of this t14593551
 data Some t = forall a . Some (t a)
 
 -- -----------------------------------------------------------------

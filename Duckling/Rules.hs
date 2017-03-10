@@ -56,7 +56,6 @@ rulesFor lang targets
 
 -- | Returns all the rules for `lang`.
 -- We can't really use `allDimensions` as-is, since `TimeGrain` is not present.
--- TODO(jodent) t15599019
 allRules :: Lang -> [Rule]
 allRules lang = concatMap (rulesFor' lang) . HashSet.toList .
   explicitDimensions . HashSet.fromList $ allDimensions lang

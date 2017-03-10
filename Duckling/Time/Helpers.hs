@@ -130,7 +130,6 @@ takeN n notImmediate f = mkSeriesPredicate series
             _ -> Nothing
           _ -> Nothing
 
--- TODO(jodent) use `timeSeqMap`
 -- | -1 is the first element in the past
 -- | 0 is the first element in the future
 takeNth :: Int -> Bool -> TTime.Predicate -> TTime.Predicate
@@ -186,7 +185,6 @@ takeLastOf cyclicPred basePred = timeSeqMap False f basePred
 timeCompose :: TTime.Predicate -> TTime.Predicate -> TTime.Predicate
 timeCompose pred1 pred2 = mkIntersectPredicate pred1 pred2
 
--- TODO(jodent) looks like dontReverse is redundant (check with :values)
 -- | Applies `f` to each interval yielded by `g`.
 -- | Intervals including "now" are in the future.
 timeSeqMap
@@ -344,7 +342,6 @@ isDOMValue = liftM2 (||) isDOMOrdinal isDOMInteger
 -- Production
 
 -- Pass the interval second
--- FIXME(jodent) check on explicit end and allow any order
 intersect :: (TimeData, TimeData) -> TimeData
 intersect (TimeData pred1 _ g1 _ _ d1, TimeData pred2 _ g2 _ _ d2)
   | g1 < g2 = TTime.timedata'

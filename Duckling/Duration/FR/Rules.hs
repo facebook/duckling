@@ -81,7 +81,6 @@ ruleTroisQuartsDHeure = Rule
   , prod = \_ -> Just . Token Duration $ duration TG.Minute 45
   }
 
--- TODO(jodent) precision t13807342
 ruleDurationEnviron :: Rule
 ruleDurationEnviron = Rule
   { name = "environ <duration>"

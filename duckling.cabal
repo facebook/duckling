@@ -1,17 +1,22 @@
 name:                duckling
 version:             0.1.0.0
--- synopsis:
--- description:
-homepage:            https://github.com/githubuser/duckling#readme
-license:             OtherLicense
+synopsis:            A Haskell library for parsing text into structured data.
+description:
+  Duckling is a library for parsing text into structured data.
+homepage:            https://github.com/facebookincubator/duckling#readme
+bug-reports:         https://github.com/facebookincubator/duckling/issues
+license:             BSD
 license-file:        LICENSE
-author:              Author name here
+author:              Facebook, Inc.
 maintainer:          example@example.com
-copyright:           2017 Author name here
+copyright:           Copyright (c) 2014-present, Facebook, Inc.
 category:            Systems
 build-type:          Simple
-extra-source-files:  README.md
+stability:           alpha
 cabal-version:       >=1.10
+
+extra-source-files:    README.md
+                     , PATENTS
 
 library
   exposed-modules:     Duckling.Core
@@ -679,4 +684,4 @@ executable duckling-example-exe
 
 source-repository head
   type:     git
-  location: https://github.com/githubuser/duckling
+  location: https://github.com/facebookincubator/duckling

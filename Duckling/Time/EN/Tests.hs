@@ -35,6 +35,7 @@ tests = testGroup "EN Tests"
   , makeNegativeCorpusTest [Some Time] negativeCorpus
   , exactSecondTests
   , valuesTest
+  , intersectTests
   ]
 
 exactSecondTests :: TestTree
@@ -68,3 +69,11 @@ valuesTest = testCase "Values Test" $
     parseValuesSize x = length <$> parseValues x
     parseValues :: Value -> Maybe [Object]
     parseValues = parseMaybe $ withObject "value object" (.: "values")
+
+intersectTests :: TestTree
+intersectTests = testCase "Intersect Test" $
+  mapM_ (analyzedNTest testContext . withTargets [Some Time]) xs
+  where
+    xs = [ ("tomorrow July", 2)
+         , ("Mar tonight", 2)
+         ]

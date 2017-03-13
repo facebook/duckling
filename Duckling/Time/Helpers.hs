@@ -113,10 +113,11 @@ takeN n notImmediate f = mkSeriesPredicate series
         else ([nth], [])
       Nothing -> ([], [])
     where
-      (past, future) = runPredicate f t context
+      baseTime = TTime.refTime context
+      (past, future) = runPredicate f baseTime context
       fut = case future of
         (ahead:rest)
-          | notImmediate && isJust (TTime.timeIntersect ahead t) -> rest
+          | notImmediate && isJust (TTime.timeIntersect ahead baseTime) -> rest
         _ -> future
       slot = if n >= 0
         then case fut of
@@ -142,10 +143,11 @@ takeNth n notImmediate f = mkSeriesPredicate series
         then ([], [nth])
         else ([nth], [])
     where
-      (past, future) = runPredicate f t context
+      baseTime = TTime.refTime context
+      (past, future) = runPredicate f baseTime context
       rest = if n >= 0
         then case future of
-          (ahead:_) | notImmediate && isJust (TTime.timeIntersect ahead t)
+          (ahead:_) | notImmediate && isJust (TTime.timeIntersect ahead baseTime)
             -> drop (n + 1) future
           _ -> drop n future
         else drop (- (n + 1)) past

@@ -11,6 +11,7 @@
 module Duckling.Testing.Asserts
   ( analyzedTargetTest
   , analyzedFirstTest
+  , analyzedNTest
   , analyzedNothingTest
   , makeCorpusTest
   , makeNegativeCorpusTest
@@ -74,7 +75,11 @@ makeNegativeCorpusTest targets (context, xs) = testCase "Negative Corpus Tests" 
 
 analyzedNothingTest :: Context -> (Text, [Some Dimension]) -> IO ()
 analyzedNothingTest context (input, targets) =
-  assertBool msg . null $ tokens
+  analyzedNTest context (input, targets, 0)
+
+analyzedNTest :: Context -> (Text, [Some Dimension], Int) -> IO ()
+analyzedNTest context (input, targets, n) =
+  assertBool msg . (== n) $ length tokens
   where
     msg = "analyze " ++ show (input, targets)
           ++ "tokens= " ++ show tokens

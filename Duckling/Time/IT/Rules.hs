@@ -281,7 +281,7 @@ ruleCycleTheOrdinalTime :: Rule
 ruleCycleTheOrdinalTime = Rule
   { name = "the <ordinal> <cycle> <time>"
   , pattern =
-    [ regex "the <ordinal> quarter"
+    [ regex "il|[nd]el(l')?|l'"
     , dimension Ordinal
     , dimension TimeGrain
     , dimension Time
@@ -1700,9 +1700,9 @@ ruleTraIlDatetimeEIlDatetimeInterval = Rule
   { name = "tra il <datetime> e il <datetime> (interval)"
   , pattern =
     [ regex "tra( il| l')?"
-    , Predicate isNotLatent
+    , Predicate isATimeOfDay
     , regex "e( il| l')?"
-    , Predicate isNotLatent
+    , Predicate isATimeOfDay
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td1:_:Token Time td2:_) ->
@@ -2314,7 +2314,7 @@ ruleProssimiUnitofduration = Rule
   , prod = \tokens -> case tokens of
       (_:Token TimeGrain grain:_) ->
         let from = cycleNth grain 1
-            to = cycleNth grain 2
+            to = cycleNth grain 3
         in Just . Token Time $ interval True (from, to)
       _ -> Nothing
   }

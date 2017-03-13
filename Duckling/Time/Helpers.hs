@@ -48,12 +48,14 @@ import Duckling.Time.Types
   , mkSecondPredicate
   , mkMinutePredicate
   , mkHourPredicate
+  , mkAMPMPredicate
   , mkMonthPredicate
   , mkDayOfTheWeekPredicate
   , mkDayOfTheMonthPredicate
   , mkYearPredicate
   , mkIntersectPredicate
   , runPredicate
+  , AMPM(..)
   )
 import qualified Duckling.Time.Types as TTime
 import qualified Duckling.TimeGrain.Types as TG
@@ -497,9 +499,11 @@ timeOfDay h is12H = form TTime.TimeOfDay {TTime.hours = h, TTime.is12H = is12H}
 timeOfDayAMPM :: TimeData -> Bool -> TimeData
 timeOfDayAMPM tod isAM = timeOfDay Nothing False $ intersect (tod, ampm)
   where
-    h0 = hour False 0
-    h12 = hour False 12
-    ampm = interval False $ if isAM then (h0, h12) else (h12, h0)
+    ampm = TTime.timedata'
+           { TTime.timePred = ampmPred
+           , TTime.timeGrain = TG.Hour
+           }
+    ampmPred = if isAM then mkAMPMPredicate AM else mkAMPMPredicate PM
 
 withDirection :: TTime.IntervalDirection -> TimeData -> TimeData
 withDirection dir td = td {TTime.direction = Just dir}

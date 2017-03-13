@@ -128,7 +128,7 @@ instance Resolve TimeData where
 
 timedata' :: TimeData
 timedata' = TimeData
-  { timePred = mkSeriesPredicate $ \_ _ -> ([], [])
+  { timePred = EmptyPredicate
   , latent = False
   , timeGrain = TG.Second
   , notImmediate = False
@@ -195,28 +195,51 @@ instance ToJSON TimeValue where
 -- | Return a tuple of (past, future) elements
 type SeriesPredicate = TimeObject -> TimeContext -> ([TimeObject], [TimeObject])
 
+data AMPM = AM | PM
+  deriving Eq
+
 data Predicate
   = SeriesPredicate SeriesPredicate
-  | SecondPredicate Int
-  | MinutePredicate Int
-  | HourPredicate Bool Int
-  | DayOfTheWeekPredicate Int
-  | DayOfTheMonthPredicate Int
-  | MonthPredicate Int
-  | YearPredicate Int
+  | EmptyPredicate
+  | TimeDatePredicate -- invariant: at least one of them is Just
+    { tdSecond :: Maybe Int
+    , tdMinute :: Maybe Int
+    , tdHour :: Maybe (Bool, Int)
+    , tdAMPM :: Maybe AMPM
+    , tdDayOfTheWeek :: Maybe Int
+    , tdDayOfTheMonth :: Maybe Int
+    , tdMonth :: Maybe Int
+    , tdYear :: Maybe Int
+    }
   | IntersectPredicate Predicate Predicate
 
+{-# ANN runPredicate ("HLint: ignore Use foldr1OrError" :: String) #-}
 runPredicate :: Predicate -> SeriesPredicate
+runPredicate EmptyPredicate = \_ _ -> ([], [])
 runPredicate (SeriesPredicate p) = p
-runPredicate (SecondPredicate s) = runSecondPredicate s
-runPredicate (MinutePredicate m) = runMinutePredicate m
-runPredicate (HourPredicate is12H n) = runHourPredicate is12H n
-runPredicate (DayOfTheWeekPredicate d) = runDayOfTheWeekPredicate d
-runPredicate (DayOfTheMonthPredicate d) = runDayOfTheMonthPredicate d
-runPredicate (MonthPredicate m) = runMonthPredicate m
-runPredicate (YearPredicate y) = runYearPredicate y
+runPredicate TimeDatePredicate{..} =
+  foldr1 runCompose toCompose
+  where
+  -- runComposePredicate performs best when the first predicate is of
+  -- smaller grain, that's why we order by grain here
+  toCompose = catMaybes
+    [ runSecondPredicate <$> tdSecond
+    , runMinutePredicate <$> tdMinute
+    , uncurry runHourPredicate <$> tdHour
+    , runAMPMPredicate <$> tdAMPM
+    , runDayOfTheWeekPredicate <$> tdDayOfTheWeek
+    , runDayOfTheMonthPredicate <$> tdDayOfTheMonth
+    , runMonthPredicate <$> tdMonth
+    , runYearPredicate <$> tdYear
+    ]
 runPredicate (IntersectPredicate pred1 pred2) =
   runIntersectPredicate pred1 pred2
+
+-- Don't use outside this module, use a smart constructor
+emptyTimeDatePredicate :: Predicate
+emptyTimeDatePredicate =
+  TimeDatePredicate Nothing Nothing Nothing Nothing Nothing Nothing Nothing
+    Nothing
 
 -- Predicate smart constructors
 
@@ -224,27 +247,51 @@ mkSeriesPredicate :: SeriesPredicate -> Predicate
 mkSeriesPredicate = SeriesPredicate
 
 mkSecondPredicate :: Int -> Predicate
-mkSecondPredicate = SecondPredicate
+mkSecondPredicate n = emptyTimeDatePredicate { tdSecond = Just n }
 
 mkMinutePredicate :: Int -> Predicate
-mkMinutePredicate = MinutePredicate
+mkMinutePredicate n = emptyTimeDatePredicate { tdMinute = Just n }
 
 mkHourPredicate :: Bool -> Int -> Predicate
-mkHourPredicate = HourPredicate
+mkHourPredicate is12H h = emptyTimeDatePredicate { tdHour = Just (is12H, h) }
+
+mkAMPMPredicate :: AMPM -> Predicate
+mkAMPMPredicate ampm = emptyTimeDatePredicate { tdAMPM = Just ampm }
 
 mkDayOfTheWeekPredicate :: Int -> Predicate
-mkDayOfTheWeekPredicate = DayOfTheWeekPredicate
+mkDayOfTheWeekPredicate n = emptyTimeDatePredicate { tdDayOfTheWeek = Just n }
 
 mkDayOfTheMonthPredicate :: Int -> Predicate
-mkDayOfTheMonthPredicate = DayOfTheMonthPredicate
+mkDayOfTheMonthPredicate n = emptyTimeDatePredicate { tdDayOfTheMonth = Just n }
 
 mkMonthPredicate :: Int -> Predicate
-mkMonthPredicate = MonthPredicate
+mkMonthPredicate n = emptyTimeDatePredicate { tdMonth = Just n }
 
 mkYearPredicate :: Int -> Predicate
-mkYearPredicate = YearPredicate
+mkYearPredicate n = emptyTimeDatePredicate { tdYear = Just n }
 
 mkIntersectPredicate :: Predicate -> Predicate -> Predicate
+mkIntersectPredicate EmptyPredicate _ = EmptyPredicate
+mkIntersectPredicate _ EmptyPredicate = EmptyPredicate
+mkIntersectPredicate
+  (TimeDatePredicate a1 b1 c1 d1 e1 f1 g1 h1)
+  (TimeDatePredicate a2 b2 c2 d2 e2 f2 g2 h2)
+  = fromMaybe EmptyPredicate
+      (TimeDatePredicate <$>
+        unify a1 a2 <*>
+        unify b1 b2 <*>
+        unify c1 c2 <*>
+        unify d1 d2 <*>
+        unify e1 e2 <*>
+        unify f1 f2 <*>
+        unify g1 g2 <*>
+        unify h1 h2)
+  where
+  unify Nothing a = Just a
+  unify a Nothing = Just a
+  unify ma@(Just a) (Just b)
+    | a == b = Just ma
+    | otherwise = Nothing
 mkIntersectPredicate pred1 pred2 = IntersectPredicate pred1 pred2
 
 -- Predicate runners
@@ -284,6 +331,34 @@ runHourPredicate is12H n = series
       step = if is12H && n <= 12 then 12 else 24
       rounded = timeRound t TG.Hour
       anchor = timePlus rounded TG.Hour . toInteger $ mod (n - h) step
+
+runAMPMPredicate :: AMPM -> SeriesPredicate
+runAMPMPredicate ampm = series
+  where
+  series t _ = (past, future)
+    where
+    past = maybeShrinkFirst $
+      iterate (\t -> timePlusEnd t TG.Hour . toInteger $ - step) anchor
+    future = maybeShrinkFirst $
+      iterate (\t -> timePlusEnd t TG.Hour $ toInteger step) anchor
+    -- to produce time in the future/past we need to adjust
+    -- the start/end of the first interval
+    maybeShrinkFirst (a:as) =
+      case timeIntersect (t { grain = TG.Day }) a of
+        Nothing -> as
+        Just ii -> ii:as
+    maybeShrinkFirst a = a
+    step :: Int
+    step = 24
+    n = case ampm of
+          AM -> 0
+          PM -> 12
+    rounded = timeRound t TG.Day
+    anchorStart = timePlus rounded TG.Hour n
+    anchorEnd = timePlus anchorStart TG.Hour 12
+    -- an interval of length 12h starting either at 12am or 12pm,
+    -- the same day as input time
+    anchor = timeInterval False anchorStart anchorEnd
 
 runDayOfTheWeekPredicate :: Int -> SeriesPredicate
 runDayOfTheWeekPredicate n = series
@@ -350,16 +425,21 @@ safeMax :: Int
 safeMax = 10
 
 runIntersectPredicate :: Predicate -> Predicate -> SeriesPredicate
-runIntersectPredicate pred1 pred2 = series
+runIntersectPredicate pred1 pred2 =
+  runCompose (runPredicate pred1) (runPredicate pred2)
+
+-- Performs best when pred1 is smaller grain than pred2
+runCompose :: SeriesPredicate -> SeriesPredicate -> SeriesPredicate
+runCompose pred1 pred2 = series
   where
   series nowTime context = (backward, forward)
     where
-    (past, future) = runPredicate pred2 nowTime context
+    (past, future) = pred2 nowTime context
     computeSerie tokens =
       [t | time1 <- take safeMax tokens
          , t <- mapMaybe (timeIntersect time1) .
                 takeWhile (startsBefore time1) .
-                snd . runPredicate pred1 time1 $ fixedRange time1
+                snd . pred1 time1 $ fixedRange time1
       ]
 
     startsBefore t1 this = timeStartsBeforeTheEndOf this t1
@@ -473,6 +553,15 @@ timePlus (TimeObject start grain _) theGrain n = TimeObject
   { start = TG.add start theGrain n
   , grain = min grain theGrain
   , end = Nothing
+  }
+
+-- | Shifts the whole interval by n units of theGrain
+-- Returned interval has the same length as the input one
+timePlusEnd :: TimeObject -> TG.Grain -> Integer -> TimeObject
+timePlusEnd (TimeObject start grain end) theGrain n = TimeObject
+  { start = TG.add start theGrain n
+  , grain = min grain theGrain
+  , end = TG.add <$> end <*> return theGrain <*> return n
   }
 
 timeEnd :: TimeObject -> Time.UTCTime

@@ -339,7 +339,7 @@ allExamples = concat
              , "o trzeciej rano"
              , "o trzeciej z rana"
              ]
-  , examples (datetime (2013, 2, 12, 3, 18, 0) Minute)
+  , examples (datetime (2013, 2, 13, 3, 18, 0) Minute)
              [ "3:18 rano"
              ]
   , examples (datetime (2013, 2, 12, 15, 0, 0) Hour)

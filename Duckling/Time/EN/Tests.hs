@@ -76,4 +76,5 @@ intersectTests = testCase "Intersect Test" $
   where
     xs = [ ("tomorrow July", 2)
          , ("Mar tonight", 2)
+         , ("Feb tomorrow", 1) -- we are in February
          ]

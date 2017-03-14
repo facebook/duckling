@@ -27,13 +27,16 @@ rulePhoneNumber :: Rule
 rulePhoneNumber = Rule
   { name = "phone number"
   , pattern =
+    -- We somewhat arbitrarly use 20 here to limit the length of matches,
+    -- otherwise due to backtracking the regexp will take very long time
+    -- or run out of stack for some inputs.
     [ regex $
-        "(\\(?\\+(\\d{1,2})\\)?[\\s-\\.]*)?" ++ -- area code
-        "((?=[-\\d()\\s\\.]{6,16}(\\s*e?xt?\\.?\\s*(\\d+))?([^\\d]+|$))([\\d(]+([-)\\s\\.]*\\d+)*)+)" ++ -- nums
-        "(\\s*e?xt?\\.?\\s*(\\d+))?" -- extension
+        "(?:\\(?\\+(\\d{1,2})\\)?[\\s-\\.]*)?" ++ -- area code
+        "((?=[-\\d()\\s\\.]{6,16}(?:\\s*e?xt?\\.?\\s*(?:\\d{1,20}))?(?:[^\\d]+|$))(?:[\\d(]{1,20}(?:[-)\\s\\.]*\\d{1,20}){0,20}){1,20})" ++ -- nums
+        "(?:\\s*e?xt?\\.?\\s*(\\d{1,20}))?" -- extension
     ]
   , prod = \xs -> case xs of
-      (Token RegexMatch (GroupMatch (_:code:nums:_:_:_:_:_:_:ext:_)):_) ->
+      (Token RegexMatch (GroupMatch (code:nums:ext:_)):_) ->
         let parseNum x = toInteger <$> parseInt x
             mcode = parseNum code
             mext = parseNum ext

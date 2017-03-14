@@ -94,7 +94,7 @@ regenClassifiers lang = do
     m = Module () (Just header) pragmas imports decls
 
     -- Declares the top level options pragma
-    pragmas = [ (LanguagePragma () [Ident () "OverloadedStrings"]) ]
+    pragmas = [ LanguagePragma () [Ident () "OverloadedStrings"] ]
 
     -- Declares the header for the module
     -- "module Duckling.Ranking.Classifiers (classifiers) where"

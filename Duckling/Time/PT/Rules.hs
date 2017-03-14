@@ -917,19 +917,6 @@ ruleIntersect = Rule
       _ -> Nothing
   }
 
-ruleIntersect2 :: Rule
-ruleIntersect2 = Rule
-  { name = "intersect2"
-  , pattern =
-    [ Predicate isNotLatent
-    , Predicate isNotLatent
-    ]
-  , prod = \tokens -> case tokens of
-      (Token Time td1:Token Time td2:_) ->
-        Just . Token Time $ intersect (td2, td1)
-      _ -> Nothing
-  }
-
 ruleTimeofdayPartofday :: Rule
 ruleTimeofdayPartofday = Rule
   { name = "<time-of-day> <part-of-day>"
@@ -1598,7 +1585,6 @@ rules =
   , ruleQuarterParaAsHourofdayAsRelativeMinutes
   , ruleThreeQuarterParaAsHourofdayAsRelativeMinutes
   , ruleIntersect
-  , ruleIntersect2
   , ruleIntersectByDaOrDe
   , ruleLastTime
   , ruleMidnight

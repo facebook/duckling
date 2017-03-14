@@ -45,18 +45,6 @@ ruleIntersect = Rule
       _ -> Nothing
   }
 
-ruleIntersect2 :: Rule
-ruleIntersect2 = Rule
-  { name = "intersect2"
-  , pattern =
-    [ Predicate isNotLatent
-    , Predicate isNotLatent
-    ]
-  , prod = \tokens -> case tokens of
-      (Token Time td1:Token Time td2:_) -> Just . Token Time $ intersect (td2, td1)
-      _ -> Nothing
-  }
-
 ruleIntersectOf :: Rule
 ruleIntersectOf = Rule
   { name = "intersect by \",\", \"of\", \"from\", \"'s\""
@@ -1506,7 +1494,6 @@ ruleTimezone = Rule
 rules :: [Rule]
 rules =
   [ ruleIntersect
-  , ruleIntersect2
   , ruleIntersectOf
   , ruleAbsorbOnTime
   , ruleAbsorbOnADOW

@@ -62,9 +62,9 @@ ruleIntegerUnitofdurationInteger = Rule
     , isNumberWith TNumber.value (`elem` [10, 20 .. 50])
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData {TNumber.value = v1}):
+      (Token Numeral (NumberData {TNumber.value = v1}):
        Token TimeGrain grain:
-       Token DNumber (NumberData {TNumber.value = v2}):
+       Token Numeral (NumberData {TNumber.value = v2}):
        _) -> Just . Token Duration . duration grain . floor $ v1 + v2
       _ -> Nothing
   }

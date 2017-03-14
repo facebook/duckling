@@ -109,7 +109,7 @@ ruleHalf = Rule
     [ regex "\xbc18"
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber NumberData {TNumber.value = v}:_) ->
+      (Token Numeral NumberData {TNumber.value = v}:_) ->
         Just . Token Distance $ distance v
       _ -> Nothing
   }

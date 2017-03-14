@@ -96,11 +96,11 @@ ruleAmountUnit :: Rule
 ruleAmountUnit = Rule
   { name = "<amount> <unit>"
   , pattern =
-    [ dimension DNumber
+    [ dimension Numeral
     , financeWith TFinance.value isNothing
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData {TNumber.value = v}):
+      (Token Numeral (NumberData {TNumber.value = v}):
        Token Finance (FinanceData {TFinance.currency = c}):
        _) -> Just . Token Finance . withValue v $ currencyOnly c
       _ -> Nothing
@@ -111,11 +111,11 @@ ruleUnitAmount = Rule
   { name = "<unit> <amount>"
   , pattern =
     [ financeWith TFinance.value isNothing
-    , dimension DNumber
+    , dimension Numeral
     ]
   , prod = \tokens -> case tokens of
       (Token Finance (FinanceData {TFinance.currency = c}):
-       Token DNumber (NumberData {TNumber.value = v}):
+       Token Numeral (NumberData {TNumber.value = v}):
        _) -> Just . Token Finance . withValue v $ currencyOnly c
       _ -> Nothing
   }

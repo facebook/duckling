@@ -29,7 +29,7 @@ import Duckling.Types
 rules :: Some Dimension -> [Rule]
 rules (Some Distance) = Distance.rules
 rules (Some Duration) = Duration.rules
-rules (Some DNumber) = Number.rules
+rules (Some Numeral) = Number.rules
 rules (Some Email) = []
 rules (Some Finance) = Finance.rules
 rules (Some Ordinal) = Ordinal.rules

@@ -884,7 +884,7 @@ ruleNamedmonthDayofmonth = Rule
   { name = "<named-month> <day-of-month>"
   , pattern =
     [ Predicate isAMonth
-    , dimension DNumber
+    , dimension Numeral
     , regex "\x53f7|\x865f|\x65e5"
     ]
   , prod = \tokens -> case tokens of

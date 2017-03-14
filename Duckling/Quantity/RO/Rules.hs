@@ -27,11 +27,11 @@ ruleNumberUnits :: Rule
 ruleNumberUnits = Rule
   { name = "<number> <units>"
   , pattern =
-    [ dimension DNumber
+    [ dimension Numeral
     , regex "livr(a|e|\x0103)"
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber NumberData {TNumber.value = v}:_) ->
+      (Token Numeral NumberData {TNumber.value = v}:_) ->
         Just . Token Quantity $ quantity TQuantity.Pound v
       _ -> Nothing
   }

@@ -2066,7 +2066,7 @@ ruleIntegerDelPartOfDay = Rule
     , regex "d(i|el(la)?) (pomeriggio|(sta)?(sera|notte))"
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData {TNumber.value = v}):_) ->
+      (Token Numeral (NumberData {TNumber.value = v}):_) ->
         Just . Token Time $ hour False (12 + floor v)
       _ -> Nothing
   }

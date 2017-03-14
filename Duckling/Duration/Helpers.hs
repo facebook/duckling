@@ -34,13 +34,13 @@ isGrain value (Token TimeGrain grain) = grain == value
 isGrain _ _ = False
 
 isNatural :: Predicate
-isNatural (Token DNumber NumberData {TNumber.value = x}) =
+isNatural (Token Numeral NumberData {TNumber.value = x}) =
   TNumber.isNatural x
 isNatural _ = False
 
 isNumberWith :: (NumberData -> t) -> (t -> Bool) -> PatternItem
 isNumberWith f pred = Predicate $ \x -> case x of
-  (Token DNumber x) -> pred $ f x
+  (Token Numeral x) -> pred $ f x
   _ -> False
 
 -- -----------------------------------------------------------------

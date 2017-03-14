@@ -364,7 +364,7 @@ ruleTrimestruNumberYear = Rule
   { name = "trimestru <number> <year>"
   , pattern =
     [ Predicate $ isGrain TG.Quarter
-    , dimension DNumber
+    , dimension Numeral
     , dimension Time
     ]
   , prod = \tokens -> case tokens of

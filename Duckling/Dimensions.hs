@@ -54,23 +54,23 @@ explicitDimensions targets = HashSet.union targets deps
   where
     deps = HashSet.unions . map dependents $ HashSet.toList targets
 
--- | Ordinal depends on DNumber for JA, KO, and ZH.
+-- | Ordinal depends on Numeral for JA, KO, and ZH.
 dependents :: Some Dimension -> HashSet (Some Dimension)
-dependents (Some Distance) = HashSet.singleton (Some DNumber)
-dependents (Some Duration) = HashSet.fromList [Some DNumber, Some TimeGrain]
-dependents (Some DNumber) = HashSet.empty
+dependents (Some Distance) = HashSet.singleton (Some Numeral)
+dependents (Some Duration) = HashSet.fromList [Some Numeral, Some TimeGrain]
+dependents (Some Numeral) = HashSet.empty
 dependents (Some Email) = HashSet.empty
-dependents (Some Finance) = HashSet.singleton (Some DNumber)
-dependents (Some Ordinal) = HashSet.singleton (Some DNumber)
+dependents (Some Finance) = HashSet.singleton (Some Numeral)
+dependents (Some Ordinal) = HashSet.singleton (Some Numeral)
 dependents (Some PhoneNumber) = HashSet.empty
-dependents (Some Quantity) = HashSet.singleton (Some DNumber)
+dependents (Some Quantity) = HashSet.singleton (Some Numeral)
 dependents (Some RegexMatch) = HashSet.empty
-dependents (Some Temperature) = HashSet.singleton (Some DNumber)
+dependents (Some Temperature) = HashSet.singleton (Some Numeral)
 dependents (Some Time) =
-  HashSet.fromList [Some DNumber, Some Duration, Some Ordinal, Some TimeGrain]
+  HashSet.fromList [Some Numeral, Some Duration, Some Ordinal, Some TimeGrain]
 dependents (Some TimeGrain) = HashSet.empty
 dependents (Some Url) = HashSet.empty
-dependents (Some Volume) = HashSet.singleton (Some DNumber)
+dependents (Some Volume) = HashSet.singleton (Some Numeral)
 
 langDimensions :: Lang -> [Some Dimension]
 langDimensions AR = ARDimensions.allDimensions

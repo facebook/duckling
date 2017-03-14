@@ -28,11 +28,11 @@ ruleNumbersPrefixWithNegativeOrMinus = Rule
   { name = "numbers prefix with -, negative or minus"
   , pattern =
     [ regex "-|m(\x00ed|i)neas(\\sa)?\\s?"
-    , dimension DNumber
+    , dimension Numeral
     ]
   , prod = \tokens -> case tokens of
       (_:
-       Token DNumber (NumberData {TNumber.value = v}):
+       Token Numeral (NumberData {TNumber.value = v}):
        _) -> double $ v * (-1)
       _ -> Nothing
   }
@@ -112,11 +112,11 @@ ruleNumbersSuffixesKMG :: Rule
 ruleNumbersSuffixesKMG = Rule
   { name = "numbers suffixes (K, M, G)"
   , pattern =
-    [ dimension DNumber
+    [ dimension Numeral
     , regex "([kmg])(?=[\\W\\$\x20ac]|$)"
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData {TNumber.value = v}):
+      (Token Numeral (NumberData {TNumber.value = v}):
        Token RegexMatch (GroupMatch (match:_)):
        _) -> case Text.toLower match of
          "k" -> double $ v * 1e3

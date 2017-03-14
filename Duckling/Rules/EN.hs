@@ -30,7 +30,7 @@ import qualified Duckling.Volume.EN.Rules as Volume
 rules :: Some Dimension -> [Rule]
 rules (Some Distance) = Distance.rules
 rules (Some Duration) = Duration.rules
-rules (Some DNumber) = Number.rules
+rules (Some Numeral) = Number.rules
 rules (Some Email) = Email.rules
 rules (Some Finance) = Finance.rules
 rules (Some Ordinal) = Ordinal.rules

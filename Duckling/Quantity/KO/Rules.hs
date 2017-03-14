@@ -55,11 +55,11 @@ ruleNumberUnits :: Rule
 ruleNumberUnits = Rule
   { name = "<number> <units>"
   , pattern =
-    [ dimension DNumber
+    [ dimension Numeral
     , regex "(\xac1c|\xd310|\xadf8(\xb7a8|\xb78c)|\xadfc|\xd30c\xc6b4(\xb4dc|\xc988)|\xc8111\xc2dc|\xadf8\xb987|\xcef5)"
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber NumberData {TNumber.value = v}:
+      (Token Numeral NumberData {TNumber.value = v}:
        Token RegexMatch (GroupMatch (match:_)):
        _) -> case match of
          "\xac1c"             -> Just . Token Quantity $ quantity TQuantity.Unnamed v

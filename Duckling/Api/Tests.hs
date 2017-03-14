@@ -38,7 +38,7 @@ tests = testGroup "API Tests"
 
 parseTest :: TestTree
 parseTest = testCase "Parse Test" $
-  case parse sentence testContext [Some DNumber] of
+  case parse sentence testContext [Some Numeral] of
     [] -> assertFailure "empty result"
     (Entity dim body value start end:_) -> do
       assertEqual "dim" "number" dim
@@ -60,23 +60,23 @@ rankFilterTest :: TestTree
 rankFilterTest = testCase "Rank Filter Tests" $ do
   mapM_ check
     [ ( "in 2 minutes"
-      , [Some DNumber, Some Duration, Some Time]
+      , [Some Numeral, Some Duration, Some Time]
       , [Some Time]
       )
     , ( "in 2 minutes, about 42 degrees"
-      , [Some DNumber, Some Temperature, Some Time]
+      , [Some Numeral, Some Temperature, Some Time]
       , [Some Time, Some Temperature]
       )
     , ( "today works... and tomorrow at 9pm too"
-      , [Some DNumber, Some Time]
+      , [Some Numeral, Some Time]
       , [Some Time, Some Time]
       )
     , ( "between 9:30 and 11:00 on thursday or Saturday and Thanksgiving Day"
-      , [Some DNumber, Some Time]
+      , [Some Numeral, Some Time]
       , [Some Time, Some Time, Some Time]
       )
     , ("the day after tomorrow 5pm", [Some Time], [Some Time])
-    , ("the day after tomorrow 5pm", [Some Time, Some DNumber], [Some Time])
+    , ("the day after tomorrow 5pm", [Some Time, Some Numeral], [Some Time])
     , ("the day after tomorrow 5pm", [], [Some Time])
     ]
   where
@@ -91,8 +91,8 @@ rankOrderTest :: TestTree
 rankOrderTest = testCase "Rank Order Tests" $ do
   mapM_ check
     [ ("tomorrow at 5PM or 8PM", [Some Time])
-    , ("321 12 3456 ... 7", [Some DNumber])
-    , ("42 today 23 tomorrow", [Some DNumber, Some Time])
+    , ("321 12 3456 ... 7", [Some Numeral])
+    , ("42 today 23 tomorrow", [Some Numeral, Some Time])
     ]
   where
     check (s, targets) =
@@ -110,7 +110,7 @@ rangeTest = testCase "Range Tests" $ do
              , ( "  now"                  , [Some Time]       , Range  2  5 )
              , ( "   Monday  "            , [Some Time]       , Range  3  9 )
              , ( "  next   week "         , [Some Time]       , Range  2 13 )
-             , ( "   42\n\n"              , [Some DNumber]    , Range  3  5 )
+             , ( "   42\n\n"              , [Some Numeral]    , Range  3  5 )
              ]
     f :: Range -> TestPredicate
     f expected _ (Resolved {range = actual}) = expected == actual
@@ -119,13 +119,13 @@ supportedDimensionsTest :: TestTree
 supportedDimensionsTest = testCase "Supported Dimensions Test" $ do
   mapM_ check
     [ ( AR
-      , [ Some Email, Some Finance, Some PhoneNumber, Some Url, Some DNumber
+      , [ Some Email, Some Finance, Some PhoneNumber, Some Url, Some Numeral
         , Some Ordinal
         ]
       )
     , ( PL
       , [ Some Email, Some Finance, Some PhoneNumber, Some Url, Some Duration
-        , Some DNumber, Some Ordinal, Some Time
+        , Some Numeral, Some Ordinal, Some Time
         ]
       )
     ]

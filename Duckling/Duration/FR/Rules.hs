@@ -31,7 +31,7 @@ ruleNumberQuotes = Rule
     , regex "(['\"])"
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData {TNumber.value = v}):
+      (Token Numeral (NumberData {TNumber.value = v}):
        Token RegexMatch (GroupMatch (x:_)):
        _) -> case x of
          "'"  -> Just . Token Duration . duration TG.Minute $ floor v

@@ -42,9 +42,9 @@ ruleInteger23 = Rule
     , numberBetween 1 100
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData {TNumber.value = v1}):
+      (Token Numeral (NumberData {TNumber.value = v1}):
        _:
-       Token DNumber (NumberData {TNumber.value = v2}):
+       Token Numeral (NumberData {TNumber.value = v2}):
        _) -> double $ v1 + v2
       _ -> Nothing
   }
@@ -100,9 +100,9 @@ ruleInteger22 = Rule
     , oneOf [20, 30 .. 90]
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData {TNumber.value = v1}):
+      (Token Numeral (NumberData {TNumber.value = v1}):
        _:
-       Token DNumber (NumberData {TNumber.value = v2}):
+       Token Numeral (NumberData {TNumber.value = v2}):
        _) -> double $ v1 + v2
       _ -> Nothing
   }
@@ -115,7 +115,7 @@ ruleInteger21 = Rule
     , numberWith TNumber.value (== 10)
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData {TNumber.value = v}):_) -> double $ v + 10
+      (Token Numeral (NumberData {TNumber.value = v}):_) -> double $ v + 10
       _ -> Nothing
   }
 
@@ -135,7 +135,7 @@ ruleMultiply :: Rule
 ruleMultiply = Rule
   { name = "compose by multiplication"
   , pattern =
-    [ dimension DNumber
+    [ dimension Numeral
     , numberWith TNumber.multipliable id
     ]
   , prod = \tokens -> case tokens of
@@ -220,10 +220,10 @@ ruleNumbersPrefixWithMinus = Rule
   { name = "numbers prefix with -, minus"
   , pattern =
     [ regex "-"
-    , dimension DNumber
+    , dimension Numeral
     ]
   , prod = \tokens -> case tokens of
-      (_:Token DNumber (NumberData {TNumber.value = v}):_) -> double (v * (- 1))
+      (_:Token Numeral (NumberData {TNumber.value = v}):_) -> double (v * (- 1))
       _ -> Nothing
   }
 
@@ -315,14 +315,14 @@ ruleNumberDotNumber :: Rule
 ruleNumberDotNumber = Rule
   { name = "number dot number"
   , pattern =
-    [ dimension DNumber
+    [ dimension Numeral
     , regex "\x0641\x0627\x0635\x0644\x0629"
     , numberWith TNumber.grain isNothing
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData {TNumber.value = v1}):
+      (Token Numeral (NumberData {TNumber.value = v1}):
        _:
-       Token DNumber (NumberData {TNumber.value = v2}):
+       Token Numeral (NumberData {TNumber.value = v2}):
        _) -> double $ v1 + decimalsToDouble v2
       _ -> Nothing
   }

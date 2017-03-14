@@ -26,10 +26,10 @@ ruleOrdinalDigits = Rule
   { name = "ordinal (digits)"
   , pattern =
     [ regex "\x7b2c"
-    , dimension DNumber
+    , dimension Numeral
     ]
   , prod = \tokens -> case tokens of
-      (_:Token DNumber (NumberData {TNumber.value = x}):_) ->
+      (_:Token Numeral (NumberData {TNumber.value = x}):_) ->
         Just . ordinal $ floor x
       _ -> Nothing
   }

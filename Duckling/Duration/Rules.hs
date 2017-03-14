@@ -30,7 +30,7 @@ ruleIntegerUnitofduration = Rule
     , dimension TimeGrain
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData {TNumber.value = v}):
+      (Token Numeral (NumberData {TNumber.value = v}):
        Token TimeGrain grain:
        _) -> Just . Token Duration . duration grain $ floor v
       _ -> Nothing

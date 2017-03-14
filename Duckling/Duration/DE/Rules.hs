@@ -53,7 +53,7 @@ ruleIntegerMoreUnitofduration = Rule
     , dimension TimeGrain
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData {TNumber.value = v}):
+      (Token Numeral (NumberData {TNumber.value = v}):
        _:
        Token TimeGrain grain:
        _) -> Just . Token Duration . duration grain $ floor v
@@ -86,7 +86,7 @@ ruleIntegerAndAnHalfHours = Rule
     , regex "ein ?halb stunden?"
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData {TNumber.value = v}):_) ->
+      (Token Numeral (NumberData {TNumber.value = v}):_) ->
         Just . Token Duration . duration TG.Minute $ 30 + 60 * floor v
       _ -> Nothing
   }

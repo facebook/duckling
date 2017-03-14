@@ -53,9 +53,9 @@ ruleIntersectWithAnd = Rule
     , numberWith TNumber.multipliable not
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData {TNumber.value = val1, TNumber.grain = Just g}):
+      (Token Numeral (NumberData {TNumber.value = val1, TNumber.grain = Just g}):
        _:
-       Token DNumber (NumberData {TNumber.value = val2}):
+       Token Numeral (NumberData {TNumber.value = val2}):
        _) | (10 ** fromIntegral g) > val2 -> double $ val1 + val2
       _ -> Nothing
   }
@@ -78,10 +78,10 @@ ruleNumbersPrefixWithM = Rule
   { name = "numbers prefix with -, âm"
   , pattern =
     [ regex "-|\x00e2m\\s?"
-    , dimension DNumber
+    , dimension Numeral
     ]
   , prod = \tokens -> case tokens of
-      (_:Token DNumber nd:_) -> double (TNumber.value nd * (-1))
+      (_:Token Numeral nd:_) -> double (TNumber.value nd * (-1))
       _ -> Nothing
   }
 
@@ -93,7 +93,7 @@ ruleNumbers2 = Rule
     , regex "l\x0103m"
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData {TNumber.value = v}):_) -> double $ v + 5
+      (Token Numeral (NumberData {TNumber.value = v}):_) -> double $ v + 5
       _ -> Nothing
   }
 
@@ -128,8 +128,8 @@ ruleInteger3 = Rule
     , numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData {TNumber.value = v1}):
-       Token DNumber (NumberData {TNumber.value = v2}):
+      (Token Numeral (NumberData {TNumber.value = v1}):
+       Token Numeral (NumberData {TNumber.value = v2}):
        _) -> double $ v1 + v2
       _ -> Nothing
   }
@@ -138,12 +138,12 @@ ruleNumberDot :: Rule
 ruleNumberDot = Rule
   { name = "number dot 1 9"
   , pattern =
-    [ dimension DNumber
+    [ dimension Numeral
     , regex "ch\x1ea5m|ph\x1ea9y"
     , numberWith TNumber.grain isNothing
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber nd1:_:Token DNumber nd2:_) ->
+      (Token Numeral nd1:_:Token Numeral nd2:_) ->
         double $ TNumber.value nd1 + decimalsToDouble (TNumber.value nd2)
       _ -> Nothing
   }
@@ -156,8 +156,8 @@ ruleIntersect = Rule
     , numberWith TNumber.multipliable not
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData {TNumber.value = val1, TNumber.grain = Just g}):
-       Token DNumber (NumberData {TNumber.value = val2}):
+      (Token Numeral (NumberData {TNumber.value = val1, TNumber.grain = Just g}):
+       Token Numeral (NumberData {TNumber.value = val2}):
        _) | (10 ** fromIntegral g) > val2 -> double $ val1 + val2
       _ -> Nothing
   }
@@ -166,7 +166,7 @@ ruleMultiply :: Rule
 ruleMultiply = Rule
   { name = "compose by multiplication"
   , pattern =
-    [ dimension DNumber
+    [ dimension Numeral
     , numberWith TNumber.multipliable id
     ]
   , prod = \tokens -> case tokens of
@@ -178,11 +178,11 @@ ruleNumbersSuffixesKMG :: Rule
 ruleNumbersSuffixesKMG = Rule
   { name = "numbers suffixes (K, M, G)"
   , pattern =
-    [ dimension DNumber
+    [ dimension Numeral
     , regex "([kmg])(?=[\\W\\$\x20ac]|$)"
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData {TNumber.value = v}):
+      (Token Numeral (NumberData {TNumber.value = v}):
        Token RegexMatch (GroupMatch (match:_)):
        _) -> case Text.toLower match of
          "k" -> double $ v * 1e3
@@ -200,7 +200,7 @@ ruleNumberNghn = Rule
     , numberWith TNumber.value (== 1000)
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData {TNumber.value = v1}):Token DNumber (NumberData {TNumber.value = v2, TNumber.grain = Just g}):_) ->
+      (Token Numeral (NumberData {TNumber.value = v1}):Token Numeral (NumberData {TNumber.value = v2, TNumber.grain = Just g}):_) ->
         double (v1 * v2) >>= withGrain g
       _ -> Nothing
   }
@@ -285,7 +285,7 @@ ruleNumbers = Rule
     , regex "m\x1ed1t"
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData {TNumber.value = v}):_) -> double $ v + 1
+      (Token Numeral (NumberData {TNumber.value = v}):_) -> double $ v + 1
       _ -> Nothing
   }
 

@@ -28,11 +28,11 @@ ruleNumberUnits :: Rule
 ruleNumberUnits = Rule
   { name = "<number> <units>"
   , pattern =
-    [ dimension DNumber
+    [ dimension Numeral
     , regex "(libra|copo)s?"
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber NumberData {TNumber.value = v}:
+      (Token Numeral NumberData {TNumber.value = v}:
        Token RegexMatch (GroupMatch (match:_)):
        _) -> case Text.toLower match of
          "copo"   -> Just . Token Quantity $ quantity TQuantity.Cup v

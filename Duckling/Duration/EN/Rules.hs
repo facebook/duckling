@@ -62,7 +62,7 @@ ruleNumberQuotes = Rule
     , regex "(['\"])"
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData {TNumber.value = v}):
+      (Token Numeral (NumberData {TNumber.value = v}):
        Token RegexMatch (GroupMatch (x:_)):
        _) -> case x of
          "'"  -> Just . Token Duration . duration TG.Minute $ floor v
@@ -80,7 +80,7 @@ ruleDurationNumberMore = Rule
     , dimension TimeGrain
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber nd:_:Token TimeGrain grain:_) ->
+      (Token Numeral nd:_:Token TimeGrain grain:_) ->
         Just . Token Duration . duration grain . floor $ TNumber.value nd
       _ -> Nothing
   }
@@ -109,7 +109,7 @@ ruleDurationAndHalfHour = Rule
     , regex "and (an? )?half hours?"
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData {TNumber.value = v}):_) ->
+      (Token Numeral (NumberData {TNumber.value = v}):_) ->
         Just . Token Duration . duration TG.Minute $ 30 + 60 * floor v
       _ -> Nothing
   }

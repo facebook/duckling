@@ -72,37 +72,37 @@ decimalsToDouble x =
 numberWith :: (NumberData -> t) -> (t -> Bool) -> PatternItem
 numberWith f pred = Predicate $ \x ->
   case x of
-    (Token DNumber x@NumberData{}) -> pred (f x)
+    (Token Numeral x@NumberData{}) -> pred (f x)
     _ -> False
 
 numberBetween :: Double -> Double -> PatternItem
 numberBetween low up = Predicate $ \x ->
   case x of
-    (Token DNumber NumberData {TNumber.value = v, TNumber.multipliable = False}) ->
+    (Token Numeral NumberData {TNumber.value = v, TNumber.multipliable = False}) ->
       low <= v && v < up
     _ -> False
 
 oneOf :: [Double] -> PatternItem
 oneOf vs = Predicate $ \x ->
   case x of
-    (Token DNumber NumberData {TNumber.value = v}) -> elem v vs
+    (Token Numeral NumberData {TNumber.value = v}) -> elem v vs
     _ -> False
 
 -- -----------------------------------------------------------------
 -- Production
 
 withMultipliable :: Token -> Maybe Token
-withMultipliable (Token DNumber x@NumberData{}) =
-  Just . Token DNumber $ x {TNumber.multipliable = True}
+withMultipliable (Token Numeral x@NumberData{}) =
+  Just . Token Numeral $ x {TNumber.multipliable = True}
 withMultipliable _ = Nothing
 
 withGrain :: Int -> Token -> Maybe Token
-withGrain g (Token DNumber x@NumberData{}) =
-  Just . Token DNumber $ x {TNumber.grain = Just g}
+withGrain g (Token Numeral x@NumberData{}) =
+  Just . Token Numeral $ x {TNumber.grain = Just g}
 withGrain _ _ = Nothing
 
 double :: Double -> Maybe Token
-double x = Just . Token DNumber $ NumberData
+double x = Just . Token Numeral $ NumberData
   { TNumber.value = x
   , TNumber.grain = Nothing
   , TNumber.multipliable = False
@@ -113,8 +113,8 @@ integer = double . fromIntegral
 
 multiply :: Token -> Token -> Maybe Token
 multiply
-  (Token DNumber (NumberData {TNumber.value = v1}))
-  (Token DNumber (NumberData {TNumber.value = v2, TNumber.grain = g})) = case g of
+  (Token Numeral (NumberData {TNumber.value = v1}))
+  (Token Numeral (NumberData {TNumber.value = v2, TNumber.grain = g})) = case g of
   Nothing -> double $ v1 * v2
   Just grain | v2 > v1 -> double (v1 * v2) >>= withGrain grain
              | otherwise -> Nothing

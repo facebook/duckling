@@ -61,10 +61,10 @@ ruleNumbersPrefixWithNegativeOrMinus = Rule
   { name = "numbers prefix with -, negative or minus"
   , pattern =
     [ regex "-|\x8d1f\\s?|\x8ca0\\s?"
-    , dimension DNumber
+    , dimension Numeral
     ]
   , prod = \tokens -> case tokens of
-      (_:Token DNumber nd:_) -> double (TNumber.value nd * (-1))
+      (_:Token Numeral nd:_) -> double (TNumber.value nd * (-1))
       _ -> Nothing
   }
 
@@ -108,7 +108,7 @@ ruleNumber :: Rule
 ruleNumber = Rule
   { name = "<number>个"
   , pattern =
-    [ dimension DNumber
+    [ dimension Numeral
     , regex "\x4e2a"
     ]
   , prod = \tokens -> case tokens of
@@ -124,7 +124,7 @@ ruleInteger3 = Rule
     , regex "\x5341"
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData {TNumber.value = v}):_) -> double $ v * 10
+      (Token Numeral (NumberData {TNumber.value = v}):_) -> double $ v * 10
       _ -> Nothing
   }
 
@@ -132,11 +132,11 @@ ruleNumbersSuffixesKMG :: Rule
 ruleNumbersSuffixesKMG = Rule
   { name = "numbers suffixes (K, M, G)"
   , pattern =
-    [ dimension DNumber
+    [ dimension Numeral
     , regex "([kmg])"
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData {TNumber.value = v}):
+      (Token Numeral (NumberData {TNumber.value = v}):
        Token RegexMatch (GroupMatch (match:_)):
        _) -> case Text.toLower match of
          "k" -> double $ v * 1e3
@@ -154,8 +154,8 @@ ruleInteger4 = Rule
     , numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData {TNumber.value = v1}):
-       Token DNumber (NumberData {TNumber.value = v2}):
+      (Token Numeral (NumberData {TNumber.value = v1}):
+       Token Numeral (NumberData {TNumber.value = v2}):
        _) -> double $ v1 + v2
       _ -> Nothing
   }
@@ -168,7 +168,7 @@ ruleInteger2 = Rule
     , numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
-      (_:Token DNumber (NumberData {TNumber.value = v}):_) -> double $ 10 + v
+      (_:Token Numeral (NumberData {TNumber.value = v}):_) -> double $ 10 + v
       _ -> Nothing
   }
 

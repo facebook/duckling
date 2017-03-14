@@ -26,10 +26,10 @@ ruleNumberAsTemp :: Rule
 ruleNumberAsTemp = Rule
   { name = "number as temp"
   , pattern =
-    [ dimension DNumber
+    [ dimension Numeral
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber nd:_) ->
+      (Token Numeral nd:_) ->
         Just . Token Temperature $ TemperatureData
           { TTemperature.unit = Nothing
           , TTemperature.value = floor $ TNumber.value nd

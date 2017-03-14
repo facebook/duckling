@@ -98,11 +98,11 @@ ruleIntersect = Rule
   { name = "intersect"
   , pattern =
     [ financeWith TFinance.value isJust
-    , dimension DNumber
+    , dimension Numeral
     ]
   , prod = \tokens -> case tokens of
       (Token Finance fd:
-       Token DNumber (NumberData {TNumber.value = c}):
+       Token Numeral (NumberData {TNumber.value = c}):
        _) -> Just . Token Finance $ withCents c fd
       _ -> Nothing
   }
@@ -122,10 +122,10 @@ ruleIntersectAgusNumber = Rule
   , pattern =
     [ financeWith TFinance.value isJust
     , regex "agus|is"
-    , dimension DNumber
+    , dimension Numeral
     ]
   , prod = \tokens -> case tokens of
-      (Token Finance fd:_:Token DNumber (NumberData {TNumber.value = c}):_) ->
+      (Token Finance fd:_:Token Numeral (NumberData {TNumber.value = c}):_) ->
         Just . Token Finance $ withCents c fd
       _ -> Nothing
   }

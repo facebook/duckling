@@ -36,9 +36,9 @@ ruleIntersectWithAnd = Rule
     , numberWith TNumber.multipliable not
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData {TNumber.value = val1, TNumber.grain = Just g}):
+      (Token Numeral (NumberData {TNumber.value = val1, TNumber.grain = Just g}):
        _:
-       Token DNumber (NumberData {TNumber.value = val2}):
+       Token Numeral (NumberData {TNumber.value = val2}):
        _) | (10 ** fromIntegral g) > val2 -> double $ val1 + val2
       _ -> Nothing
   }
@@ -48,10 +48,10 @@ ruleNumbersPrefixWithNegativeOrMinus = Rule
   { name = "numbers prefix with -, negative or minus"
   , pattern =
     [ regex "-|minus\\s?|negativ\\s?"
-    , dimension DNumber
+    , dimension Numeral
     ]
   , prod = \tokens -> case tokens of
-      (_:Token DNumber nd:_) -> double (TNumber.value nd * (-1))
+      (_:Token Numeral nd:_) -> double (TNumber.value nd * (-1))
       _ -> Nothing
   }
 
@@ -96,7 +96,7 @@ ruleMultiply :: Rule
 ruleMultiply = Rule
   { name = "compose by multiplication"
   , pattern =
-    [ dimension DNumber
+    [ dimension Numeral
     , numberWith TNumber.multipliable id
     ]
   , prod = \tokens -> case tokens of
@@ -124,8 +124,8 @@ ruleInteger3 = Rule
     , numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData {TNumber.value = v1}):
-       Token DNumber (NumberData {TNumber.value = v2}):
+      (Token Numeral (NumberData {TNumber.value = v1}):
+       Token Numeral (NumberData {TNumber.value = v2}):
        _) -> double $ v1 + v2
       _ -> Nothing
   }
@@ -147,8 +147,8 @@ ruleIntersect = Rule
     , numberWith TNumber.multipliable not
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData {TNumber.value = val1, TNumber.grain = Just g}):
-       Token DNumber (NumberData {TNumber.value = val2}):
+      (Token Numeral (NumberData {TNumber.value = val1, TNumber.grain = Just g}):
+       Token Numeral (NumberData {TNumber.value = val2}):
        _) | (10 ** fromIntegral g) > val2 -> double $ val1 + val2
       _ -> Nothing
   }
@@ -157,11 +157,11 @@ ruleNumbersSuffixesKMG :: Rule
 ruleNumbersSuffixesKMG = Rule
   { name = "numbers suffixes (K, M, G)"
   , pattern =
-    [ dimension DNumber
+    [ dimension Numeral
     , regex "([kmg])(?=[\\W\\$\x20ac]|$)"
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData {TNumber.value = v}):
+      (Token Numeral (NumberData {TNumber.value = v}):
        Token RegexMatch (GroupMatch (match:_)):
        _) -> case Text.toLower match of
          "k" -> double $ v * 1e3
@@ -278,12 +278,12 @@ ruleNumberDotNumber :: Rule
 ruleNumberDotNumber = Rule
   { name = "number dot number"
   , pattern =
-    [ dimension DNumber
+    [ dimension Numeral
     , regex "komma"
     , numberWith TNumber.grain isNothing
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber nd1:_:Token DNumber nd2:_) ->
+      (Token Numeral nd1:_:Token Numeral nd2:_) ->
         double $ TNumber.value nd1 + decimalsToDouble (TNumber.value nd2)
       _ -> Nothing
   }

@@ -72,7 +72,7 @@ ruleIntegerAndAnHalfHours = Rule
     , regex "\xc2dc\xac04\xbc18"
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData {TNumber.value = v}):_) ->
+      (Token Numeral (NumberData {TNumber.value = v}):_) ->
         Just . Token Duration . duration TG.Minute $ 30 + 60 * floor v
       _ -> Nothing
   }

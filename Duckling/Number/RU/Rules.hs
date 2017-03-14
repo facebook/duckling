@@ -115,10 +115,10 @@ ruleNumbersPrefixWithMinus = Rule
   { name = "numbers prefix with -, minus"
   , pattern =
     [ regex "-|\x043c\x0438\x043d\x0443\x0441\\s?"
-    , dimension DNumber
+    , dimension Numeral
     ]
   , prod = \tokens -> case tokens of
-      (_:Token DNumber nd:_) -> double (TNumber.value nd * (-1))
+      (_:Token Numeral nd:_) -> double (TNumber.value nd * (-1))
       _ -> Nothing
   }
 
@@ -126,11 +126,11 @@ ruleNumbersSuffixesKMG :: Rule
 ruleNumbersSuffixesKMG = Rule
   { name = "numbers suffixes (K, M, G)"
   , pattern =
-    [ dimension DNumber
+    [ dimension Numeral
     , regex "((\x043a|\x043c|\x0433)|(\x041a|\x041c|\x0413))(?=[\\W\\$\x20ac]|$)"
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData {TNumber.value = v}):
+      (Token Numeral (NumberData {TNumber.value = v}):
        Token RegexMatch (GroupMatch (match:_)):
        _) -> case Text.toLower match of
          "\x043a" -> double $ v * 1e3
@@ -151,8 +151,8 @@ ruleInteger7 = Rule
     , numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData {TNumber.value = v1}):
-       Token DNumber (NumberData {TNumber.value = v2}):
+      (Token Numeral (NumberData {TNumber.value = v1}):
+       Token Numeral (NumberData {TNumber.value = v2}):
        _) -> double $ v1 + v2
       _ -> Nothing
   }
@@ -165,8 +165,8 @@ ruleInteger8 = Rule
     , numberBetween 1 100
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData {TNumber.value = v1}):
-       Token DNumber (NumberData {TNumber.value = v2}):
+      (Token Numeral (NumberData {TNumber.value = v1}):
+       Token Numeral (NumberData {TNumber.value = v2}):
        _) -> double $ v1 + v2
       _ -> Nothing
   }
@@ -222,12 +222,12 @@ ruleNumberDotNumber :: Rule
 ruleNumberDotNumber = Rule
   { name = "number dot number"
   , pattern =
-    [ dimension DNumber
+    [ dimension Numeral
     , regex "\x0442\x043e\x0447\x043a\x0430"
     , numberWith TNumber.grain isNothing
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber nd1:_:Token DNumber nd2:_) ->
+      (Token Numeral nd1:_:Token Numeral nd2:_) ->
         double $ TNumber.value nd1 + decimalsToDouble (TNumber.value nd2)
       _ -> Nothing
   }

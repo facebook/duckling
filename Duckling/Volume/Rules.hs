@@ -26,10 +26,10 @@ ruleNumberAsVolume :: Rule
 ruleNumberAsVolume = Rule
   { name = "number as volume"
   , pattern =
-    [ dimension DNumber
+    [ dimension Numeral
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber NumberData {TNumber.value = v}:_) ->
+      (Token Numeral NumberData {TNumber.value = v}:_) ->
         Just . Token Volume $ volume v
       _ -> Nothing
   }

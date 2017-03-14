@@ -535,8 +535,8 @@ ruleTODAMPM = Rule
       _ -> Nothing
   }
 
-ruleHODNumber :: Rule
-ruleHODNumber = Rule
+ruleHONumeral :: Rule
+ruleHONumeral = Rule
   { name = "<hour-of-day> <integer>"
   , pattern =
     [ Predicate $ liftM2 (&&) isNotLatent isAnHourOfDay
@@ -1454,7 +1454,7 @@ ruleInNumber = Rule
     , Predicate $ isIntegerBetween 0 60
     ]
   , prod = \tokens -> case tokens of
-      (_:Token DNumber (NumberData {TNumber.value = v}):_) ->
+      (_:Token Numeral (NumberData {TNumber.value = v}):_) ->
         Just . Token Time . inDuration . duration TG.Minute $ floor v
       _ -> Nothing
   }
@@ -1530,7 +1530,7 @@ rules =
   , ruleHHMMSS
   , ruleMilitaryAMPM
   , ruleTODAMPM
-  , ruleHODNumber
+  , ruleHONumeral
   , ruleHODHalf
   , ruleHODQuarter
   , ruleNumberToHOD

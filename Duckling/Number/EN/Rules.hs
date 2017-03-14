@@ -145,8 +145,8 @@ ruleCompositeTens = Rule
   { name = "integer 21..99"
   , pattern = [oneOf [20,30..90], numberBetween 1 10]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData { TNumber.value = tens }) :
-       Token DNumber (NumberData { TNumber.value = units }) :
+      (Token Numeral (NumberData { TNumber.value = tens }) :
+       Token Numeral (NumberData { TNumber.value = units }) :
        _) -> double (tens + units)
       _ -> Nothing
   }
@@ -156,8 +156,8 @@ ruleSkipHundreds = Rule
   { name = "one twenty two"
   , pattern = [numberBetween 1 10, numberBetween 10 100]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData { TNumber.value = hundreds }) :
-       Token DNumber (NumberData { TNumber.value = rest }) :
+      (Token Numeral (NumberData { TNumber.value = hundreds }) :
+       Token Numeral (NumberData { TNumber.value = rest }) :
        _) -> double (hundreds*100 + rest)
       _ -> Nothing
   }
@@ -166,12 +166,12 @@ ruleDotSpelledOut :: Rule
 ruleDotSpelledOut = Rule
   { name = "one point 2"
   , pattern =
-    [ dimension DNumber
+    [ dimension Numeral
     , regex "point|dot"
     , numberWith TNumber.grain isNothing
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber nd1:_:Token DNumber nd2:_) ->
+      (Token Numeral nd1:_:Token Numeral nd2:_) ->
         double $ TNumber.value nd1 + decimalsToDouble (TNumber.value nd2)
       _ -> Nothing
   }
@@ -184,7 +184,7 @@ ruleLeadingDotSpelledOut = Rule
     , numberWith TNumber.grain isNothing
     ]
   , prod = \tokens -> case tokens of
-      (_:Token DNumber nd:_) -> double . decimalsToDouble $ TNumber.value nd
+      (_:Token Numeral nd:_) -> double . decimalsToDouble $ TNumber.value nd
       _ -> Nothing
   }
 
@@ -211,12 +211,12 @@ ruleSuffixes :: Rule
 ruleSuffixes = Rule
   { name = "suffixes (K,M,G))"
   , pattern =
-    [ dimension DNumber
+    [ dimension Numeral
     , regex "(k|m|g)(?=[\\W$\x20ac\x00a2\x00a3]|$)"
     ]
   , prod = \tokens ->
       case tokens of
-        (Token DNumber nd : Token RegexMatch (GroupMatch (match : _)):_) -> do
+        (Token Numeral nd : Token RegexMatch (GroupMatch (match : _)):_) -> do
           x <- case Text.toLower match of
             "k" -> Just 1e3
             "m" -> Just 1e6
@@ -231,10 +231,10 @@ ruleNegative = Rule
   { name = "negative numbers"
   , pattern =
     [ regex "-|minus\\s?|negative\\s?"
-    , dimension DNumber
+    , dimension Numeral
     ]
   , prod = \tokens -> case tokens of
-      (_:Token DNumber nd:_) -> double (TNumber.value nd * (-1))
+      (_:Token Numeral nd:_) -> double (TNumber.value nd * (-1))
       _ -> Nothing
   }
 
@@ -247,8 +247,8 @@ ruleSum = Rule
     ]
   , prod = \tokens ->
       case tokens of
-        (Token DNumber (NumberData {TNumber.value = val1, TNumber.grain = Just g}):
-         Token DNumber (NumberData {TNumber.value = val2}):
+        (Token Numeral (NumberData {TNumber.value = val1, TNumber.grain = Just g}):
+         Token Numeral (NumberData {TNumber.value = val2}):
          _) | (10 ** fromIntegral g) > val2 -> double $ val1 + val2
         _ -> Nothing
   }
@@ -263,9 +263,9 @@ ruleSumAnd = Rule
     ]
   , prod = \tokens ->
       case tokens of
-        (Token DNumber (NumberData {TNumber.value = val1, TNumber.grain = Just g}):
+        (Token Numeral (NumberData {TNumber.value = val1, TNumber.grain = Just g}):
          _:
-         Token DNumber (NumberData {TNumber.value = val2}):
+         Token Numeral (NumberData {TNumber.value = val2}):
          _) | (10 ** fromIntegral g) > val2 -> double $ val1 + val2
         _ -> Nothing
   }
@@ -274,7 +274,7 @@ ruleMultiply :: Rule
 ruleMultiply = Rule
   { name = "compose by multiplication"
   , pattern =
-    [ dimension DNumber
+    [ dimension Numeral
     , numberWith TNumber.multipliable id
     ]
   , prod = \tokens -> case tokens of

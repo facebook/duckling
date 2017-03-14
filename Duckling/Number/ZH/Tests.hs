@@ -19,5 +19,5 @@ import Duckling.Testing.Asserts
 
 tests :: TestTree
 tests = testGroup "ZH Tests"
-  [ makeCorpusTest [Some DNumber] corpus
+  [ makeCorpusTest [Some Numeral] corpus
   ]

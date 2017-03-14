@@ -16,7 +16,7 @@ allDimensions :: [Some Dimension]
 allDimensions =
   [ Some Distance
   , Some Duration
-  , Some DNumber
+  , Some Numeral
   , Some Ordinal
   , Some Temperature
   , Some Time

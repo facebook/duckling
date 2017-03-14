@@ -27,11 +27,11 @@ ruleNumberQuantity :: Rule
 ruleNumberQuantity = Rule
   { name = "<number> <quantity>"
   , pattern =
-    [ dimension DNumber
+    [ dimension Numeral
     , regex "(pound|cup)s?"
     ]
   , prod = \tokens -> case tokens of
-    (Token DNumber nd:
+    (Token Numeral nd:
      Token RegexMatch (GroupMatch (match:_)):
      _) -> case Text.toLower match of
       "cup"    -> Just . Token Quantity . quantity TQuantity.Cup $ TNumber.value nd

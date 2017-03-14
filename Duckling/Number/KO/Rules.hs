@@ -90,14 +90,14 @@ ruleFraction2 :: Rule
 ruleFraction2 = Rule
   { name = "fraction"
   , pattern =
-    [ dimension DNumber
+    [ dimension Numeral
     , regex "/"
-    , dimension DNumber
+    , dimension Numeral
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData {TNumber.value = v1}):
+      (Token Numeral (NumberData {TNumber.value = v1}):
        _:
-       Token DNumber (NumberData {TNumber.value = v2}):
+       Token Numeral (NumberData {TNumber.value = v2}):
        _) -> double $ v1 / v2
       _ -> Nothing
   }
@@ -107,10 +107,10 @@ ruleNumbersPrefixWithOr = Rule
   { name = "numbers prefix with -, 마이너스, or 마이나스"
   , pattern =
     [ regex "-|\xb9c8\xc774\xb108\xc2a4\\s?|\xb9c8\xc774\xb098\xc2a4\\s?"
-    , dimension DNumber
+    , dimension Numeral
     ]
   , prod = \tokens -> case tokens of
-      (_:Token DNumber nd:_) -> double (TNumber.value nd * (-1))
+      (_:Token Numeral nd:_) -> double (TNumber.value nd * (-1))
       _ -> Nothing
   }
 
@@ -202,8 +202,8 @@ ruleSum = Rule
     ]
   , prod = \tokens ->
       case tokens of
-        (Token DNumber (NumberData {TNumber.value = val1, TNumber.grain = Just g}):
-         Token DNumber (NumberData {TNumber.value = val2}):
+        (Token Numeral (NumberData {TNumber.value = val1, TNumber.grain = Just g}):
+         Token Numeral (NumberData {TNumber.value = val2}):
          _) | (10 ** fromIntegral g) > val2 -> double $ val1 + val2
         _ -> Nothing
   }
@@ -212,7 +212,7 @@ ruleMultiply :: Rule
 ruleMultiply = Rule
   { name = "compose by multiplication"
   , pattern =
-    [ dimension DNumber
+    [ dimension Numeral
     , numberWith TNumber.multipliable id
     ]
   , prod = \tokens -> case tokens of
@@ -245,14 +245,14 @@ ruleFraction :: Rule
 ruleFraction = Rule
   { name = "fraction"
   , pattern =
-    [ dimension DNumber
+    [ dimension Numeral
     , regex "\xbd84(\xc758|\xc5d0)"
-    , dimension DNumber
+    , dimension Numeral
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData {TNumber.value = v1}):
+      (Token Numeral (NumberData {TNumber.value = v1}):
        _:
-       Token DNumber (NumberData {TNumber.value = v2}):
+       Token Numeral (NumberData {TNumber.value = v2}):
        _) -> double $ v2 / v1
       _ -> Nothing
   }
@@ -261,11 +261,11 @@ ruleNumberDotNumber :: Rule
 ruleNumberDotNumber = Rule
   { name = "number dot number - 삼점사"
   , pattern =
-    [ dimension DNumber
+    [ dimension Numeral
     , regex "(\xc810|\xca5c)((\xc601|\xc77c|\xc774|\xc0bc|\xc0ac|\xc624|\xc721|\xce60|\xd314|\xad6c)+)"
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData {TNumber.value = v1}):
+      (Token Numeral (NumberData {TNumber.value = v1}):
        Token RegexMatch (GroupMatch (_:match:_)):
        _) -> do
         let getDigit '\xc601' = Just "0"
@@ -292,8 +292,8 @@ ruleIntegerType3 = Rule
     , oneOf [1 .. 9]
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData {TNumber.value = v1}):
-       Token DNumber (NumberData {TNumber.value = v2}):
+      (Token Numeral (NumberData {TNumber.value = v1}):
+       Token Numeral (NumberData {TNumber.value = v2}):
        _) -> double $ v1 + v2
       _ -> Nothing
   }

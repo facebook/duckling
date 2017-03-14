@@ -25,11 +25,11 @@ ruleOrdinals :: Rule
 ruleOrdinals = Rule
   { name = "ordinals (첫번째)"
   , pattern =
-    [ dimension DNumber
+    [ dimension Numeral
     , regex "\xbc88\xc9f8|\xc9f8(\xbc88)?"
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData {TNumber.value = v}):_) ->
+      (Token Numeral (NumberData {TNumber.value = v}):_) ->
         Just . ordinal $ floor v
       _ -> Nothing
   }

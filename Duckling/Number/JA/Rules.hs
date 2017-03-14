@@ -37,10 +37,10 @@ ruleNumbersPrefixWithNegativeOrMinus = Rule
   { name = "numbers prefix with -, negative or minus"
   , pattern =
     [ regex "-|\x30de\x30a4\x30ca\x30b9\\s?|\x8ca0\\s?"
-    , dimension DNumber
+    , dimension Numeral
     ]
   , prod = \tokens -> case tokens of
-      (_:Token DNumber nd:_) -> double (TNumber.value nd * (-1))
+      (_:Token Numeral nd:_) -> double (TNumber.value nd * (-1))
       _ -> Nothing
   }
 
@@ -89,7 +89,7 @@ ruleInteger10 = Rule
     , numberBetween 1 1000
     ]
   , prod = \tokens -> case tokens of
-      (_:Token DNumber (NumberData {TNumber.value = v}):_) -> double $ v + 1000
+      (_:Token Numeral (NumberData {TNumber.value = v}):_) -> double $ v + 1000
       _ -> Nothing
   }
 
@@ -113,7 +113,7 @@ ruleInteger15 = Rule
     , regex "\x4e07"
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData {TNumber.value = v}):_) -> double $ v * 10000
+      (Token Numeral (NumberData {TNumber.value = v}):_) -> double $ v * 10000
       _ -> Nothing
   }
 
@@ -132,7 +132,7 @@ ruleNumber :: Rule
 ruleNumber = Rule
   { name = "<number>个"
   , pattern =
-    [ dimension DNumber
+    [ dimension Numeral
     , regex "\x4e2a"
     ]
   , prod = \tokens -> case tokens of
@@ -148,7 +148,7 @@ ruleInteger3 = Rule
     , regex "\x5341"
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData {TNumber.value = v}):_) -> double $ v * 10
+      (Token Numeral (NumberData {TNumber.value = v}):_) -> double $ v * 10
       _ -> Nothing
   }
 
@@ -169,7 +169,7 @@ ruleInteger6 = Rule
     , numberBetween 1 100
     ]
   , prod = \tokens -> case tokens of
-      (_:Token DNumber (NumberData {TNumber.value = v}):_) -> double $ v + 100
+      (_:Token Numeral (NumberData {TNumber.value = v}):_) -> double $ v + 100
       _ -> Nothing
   }
 
@@ -181,8 +181,8 @@ ruleInteger12 = Rule
     , numberBetween 1 1000
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData {TNumber.value = v1}):
-       Token DNumber (NumberData {TNumber.value = v2}):
+      (Token Numeral (NumberData {TNumber.value = v1}):
+       Token Numeral (NumberData {TNumber.value = v2}):
        _) -> double $ v1 + v2
       _ -> Nothing
   }
@@ -191,11 +191,11 @@ ruleNumbersSuffixesKMG :: Rule
 ruleNumbersSuffixesKMG = Rule
   { name = "numbers suffixes (K, M, G, 千, 万)"
   , pattern =
-    [ dimension DNumber
+    [ dimension Numeral
     , regex "(k|m|g|\x5343|\x4e07)"
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData {TNumber.value = v}):
+      (Token Numeral (NumberData {TNumber.value = v}):
        Token RegexMatch (GroupMatch (match:_)):
        _) -> case Text.toLower match of
           "k"      -> double $ v * 1e3
@@ -215,7 +215,7 @@ ruleInteger7 = Rule
     , regex "\x767e"
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData {TNumber.value = v}):_) -> double $ v * 100
+      (Token Numeral (NumberData {TNumber.value = v}):_) -> double $ v * 100
       _ -> Nothing
   }
 
@@ -227,7 +227,7 @@ ruleInteger14 = Rule
     , numberBetween 1 10000
     ]
   , prod = \tokens -> case tokens of
-      (_:Token DNumber (NumberData {TNumber.value = v}):_) -> double $ v + 10000
+      (_:Token Numeral (NumberData {TNumber.value = v}):_) -> double $ v + 10000
       _ -> Nothing
   }
 
@@ -239,8 +239,8 @@ ruleInteger8 = Rule
     , numberBetween 1 100
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData {TNumber.value = v1}):
-       Token DNumber (NumberData {TNumber.value = v2}):
+      (Token Numeral (NumberData {TNumber.value = v1}):
+       Token Numeral (NumberData {TNumber.value = v2}):
        _) -> double $ v1 + v2
       _ -> Nothing
   }
@@ -253,8 +253,8 @@ ruleInteger16 = Rule
     , numberBetween 1 10000
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData {TNumber.value = v1}):
-       Token DNumber (NumberData {TNumber.value = v2}):
+      (Token Numeral (NumberData {TNumber.value = v1}):
+       Token Numeral (NumberData {TNumber.value = v2}):
        _) -> double $ v1 + v2
       _ -> Nothing
   }
@@ -300,8 +300,8 @@ ruleInteger4 = Rule
     , numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData {TNumber.value = v1}):
-       Token DNumber (NumberData {TNumber.value = v2}):
+      (Token Numeral (NumberData {TNumber.value = v1}):
+       Token Numeral (NumberData {TNumber.value = v2}):
        _) -> double $ v1 + v2
       _ -> Nothing
   }
@@ -314,7 +314,7 @@ ruleInteger2 = Rule
     , numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
-      (_:Token DNumber (NumberData {TNumber.value = v}):_) -> double $ v + 10
+      (_:Token Numeral (NumberData {TNumber.value = v}):_) -> double $ v + 10
       _ -> Nothing
   }
 
@@ -326,7 +326,7 @@ ruleInteger11 = Rule
     , regex "\x5343"
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData {TNumber.value = v}):_) -> double $ v * 1000
+      (Token Numeral (NumberData {TNumber.value = v}):_) -> double $ v * 1000
       _ -> Nothing
   }
 

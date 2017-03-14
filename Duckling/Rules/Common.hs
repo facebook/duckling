@@ -27,7 +27,7 @@ import qualified Duckling.Volume.Rules as Volume
 rules :: Some Dimension -> [Rule]
 rules (Some Distance) = Distance.rules
 rules (Some Duration) = Duration.rules
-rules (Some DNumber) = []
+rules (Some Numeral) = []
 rules (Some Email) = Email.rules
 rules (Some Finance) = Finance.rules
 rules (Some Ordinal) = []

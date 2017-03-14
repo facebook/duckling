@@ -60,7 +60,7 @@ data Dimension a where
   Duration :: Dimension DurationData
   Email :: Dimension EmailData
   Finance :: Dimension FinanceData
-  DNumber :: Dimension NumberData
+  Numeral :: Dimension NumberData
   Ordinal :: Dimension OrdinalData
   PhoneNumber :: Dimension PhoneNumberData
   Quantity :: Dimension QuantityData
@@ -78,7 +78,7 @@ instance Show (Dimension a) where
   show Duration = "duration"
   show Email = "email"
   show Finance = "amount-of-money"
-  show DNumber = "number"
+  show Numeral = "number"
   show Ordinal = "ordinal"
   show PhoneNumber = "phone-number"
   show Quantity = "quantity"
@@ -108,7 +108,7 @@ instance Hashable (Dimension a) where
   hashWithSalt s Duration    = hashWithSalt s (2::Int)
   hashWithSalt s Email       = hashWithSalt s (3::Int)
   hashWithSalt s Finance     = hashWithSalt s (4::Int)
-  hashWithSalt s DNumber     = hashWithSalt s (5::Int)
+  hashWithSalt s Numeral     = hashWithSalt s (5::Int)
   hashWithSalt s Ordinal     = hashWithSalt s (6::Int)
   hashWithSalt s PhoneNumber = hashWithSalt s (7::Int)
   hashWithSalt s Quantity    = hashWithSalt s (8::Int)
@@ -124,7 +124,7 @@ instance Read (Some Dimension) where
   readsPrec _ "distance" = [(Some Distance, "")]
   readsPrec _ "duration" = [(Some Duration, "")]
   readsPrec _ "email" = [(Some Email, "")]
-  readsPrec _ "number" = [(Some DNumber, "")]
+  readsPrec _ "number" = [(Some Numeral, "")]
   readsPrec _ "ordinal" = [(Some Ordinal, "")]
   readsPrec _ "phone-number" = [(Some PhoneNumber, "")]
   readsPrec _ "quantity" = [(Some Quantity, "")]
@@ -147,8 +147,8 @@ dimEq Email Email = Just Refl
 dimEq Email _ = Nothing
 dimEq Finance Finance = Just Refl
 dimEq Finance _ = Nothing
-dimEq DNumber DNumber = Just Refl
-dimEq DNumber _ = Nothing
+dimEq Numeral Numeral = Just Refl
+dimEq Numeral _ = Nothing
 dimEq Ordinal Ordinal = Just Refl
 dimEq Ordinal _ = Nothing
 dimEq PhoneNumber PhoneNumber = Just Refl

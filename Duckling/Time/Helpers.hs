@@ -66,7 +66,7 @@ safeMaxInterval :: Int
 safeMaxInterval = 12
 
 getIntValue :: Token -> Maybe Int
-getIntValue (Token DNumber nd) = TNumber.getIntValue $ TNumber.value nd
+getIntValue (Token Numeral nd) = TNumber.getIntValue $ TNumber.value nd
 getIntValue (Token Ordinal OrdinalData {TOrdinal.value = x}) = Just x
 getIntValue _ = Nothing
 
@@ -324,7 +324,7 @@ isNotLatent (Token Time td) = not $ TTime.latent td
 isNotLatent _ = False
 
 isIntegerBetween :: Int -> Int -> Predicate
-isIntegerBetween low high (Token DNumber nd) =
+isIntegerBetween low high (Token Numeral nd) =
   TNumber.isIntegerBetween (TNumber.value nd) low high
 isIntegerBetween _ _ _ = False
 

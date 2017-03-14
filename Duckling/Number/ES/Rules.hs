@@ -30,10 +30,10 @@ ruleNumbersPrefixWithNegativeOrMinus = Rule
   { name = "numbers prefix with -, negative or minus"
   , pattern =
     [ regex "-|menos"
-    , dimension DNumber
+    , dimension Numeral
     ]
   , prod = \tokens -> case tokens of
-      (_:Token DNumber (NumberData {TNumber.value = v}):_) -> double $ v * (- 1)
+      (_:Token Numeral (NumberData {TNumber.value = v}):_) -> double $ v * (- 1)
       _ -> Nothing
   }
 
@@ -183,7 +183,7 @@ ruleNumber3 = Rule
     , numberBetween 6 10
     ]
   , prod = \tokens -> case tokens of
-      (_:_:Token DNumber (NumberData {TNumber.value = v}):_) -> double $ 10 + v
+      (_:_:Token Numeral (NumberData {TNumber.value = v}):_) -> double $ 10 + v
       _ -> Nothing
   }
 
@@ -191,11 +191,11 @@ ruleNumbersSuffixesKMG :: Rule
 ruleNumbersSuffixesKMG = Rule
   { name = "numbers suffixes (K, M, G)"
   , pattern =
-    [ dimension DNumber
+    [ dimension Numeral
     , regex "([kmg])(?=[\\W\\$\x20ac]|$)"
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData {TNumber.value = v}):
+      (Token Numeral (NumberData {TNumber.value = v}):
        Token RegexMatch (GroupMatch (match:_)):
        _) -> case Text.toLower match of
           "k" -> double $ v * 1e3
@@ -243,7 +243,7 @@ ruleNumber4 = Rule
     , numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData {TNumber.value = v1}):_:Token DNumber (NumberData {TNumber.value = v2}):_) ->
+      (Token Numeral (NumberData {TNumber.value = v1}):_:Token Numeral (NumberData {TNumber.value = v2}):_) ->
         double $ v1 + v2
       _ -> Nothing
   }
@@ -257,9 +257,9 @@ ruleNumbers = Rule
     , numberBetween 0 100
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData {TNumber.value = v1}):
+      (Token Numeral (NumberData {TNumber.value = v1}):
        _:
-       Token DNumber (NumberData {TNumber.value = v2}):
+       Token Numeral (NumberData {TNumber.value = v2}):
        _) -> double $ 100 * v1 + v2
       _ -> Nothing
   }
@@ -268,14 +268,14 @@ ruleNumberDotNumber :: Rule
 ruleNumberDotNumber = Rule
   { name = "number dot number"
   , pattern =
-    [ dimension DNumber
+    [ dimension Numeral
     , regex "punto"
     , numberWith TNumber.grain isNothing
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData {TNumber.value = v1}):
+      (Token Numeral (NumberData {TNumber.value = v1}):
        _:
-       Token DNumber (NumberData {TNumber.value = v2}):
+       Token Numeral (NumberData {TNumber.value = v2}):
        _) -> double $ v1 + decimalsToDouble v2
       _ -> Nothing
   }

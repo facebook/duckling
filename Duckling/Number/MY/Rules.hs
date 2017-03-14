@@ -31,9 +31,9 @@ ruleInteger5 = Rule
     , numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData {TNumber.value = v1}):
+      (Token Numeral (NumberData {TNumber.value = v1}):
        _:
-       Token DNumber (NumberData {TNumber.value = v2}):
+       Token Numeral (NumberData {TNumber.value = v2}):
        _) -> double $ v1 + v2 * 10
       _ -> Nothing
   }
@@ -68,7 +68,7 @@ ruleInteger3 = Rule
     , numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
-      (_:Token DNumber (NumberData {TNumber.value = v}):_) -> double $ v + 10
+      (_:Token Numeral (NumberData {TNumber.value = v}):_) -> double $ v + 10
       _ -> Nothing
   }
 
@@ -95,7 +95,7 @@ ruleInteger6 = Rule
     , regex "\x101b\x102c"
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData {TNumber.value = v}):_) -> double $ v * 100
+      (Token Numeral (NumberData {TNumber.value = v}):_) -> double $ v * 100
       _ -> Nothing
   }
 
@@ -107,7 +107,7 @@ ruleInteger7 = Rule
     , regex "\x1011\x1031\x102c\x1004\x103a"
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData {TNumber.value = v}):_) -> double $ v * 1000
+      (Token Numeral (NumberData {TNumber.value = v}):_) -> double $ v * 1000
       _ -> Nothing
   }
 
@@ -119,7 +119,7 @@ ruleInteger8 = Rule
     , regex "\x101e\x1031\x102c\x1004\x103a\x1038"
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData {TNumber.value = v}):_) -> double $ v * 10000
+      (Token Numeral (NumberData {TNumber.value = v}):_) -> double $ v * 10000
       _ -> Nothing
   }
 
@@ -140,7 +140,7 @@ ruleInteger4 = Rule
     , regex "\x1006\x101a\x103a"
     ]
   , prod = \tokens -> case tokens of
-      (Token DNumber (NumberData {TNumber.value = v}):_) -> double $ v * 10
+      (Token Numeral (NumberData {TNumber.value = v}):_) -> double $ v * 10
       _ -> Nothing
   }
 

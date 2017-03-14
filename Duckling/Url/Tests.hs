@@ -34,6 +34,6 @@ surroundTests :: TestTree
 surroundTests = testCase "Surround Tests" $
   mapM_ (analyzedFirstTest testContext . withTargets [Some Url]) xs
   where
-    xs = examples (UrlValue "www.fuck-comment-spammers-they-just-wont-quit.com/episode-7")
-                  [ "phishing link: www.fuck-comment-spammers-they-just-wont-quit.com/episode-7  If you want my job"
+    xs = examples (UrlData "www.lets-try-this-one.co.uk/episode-7" "lets-try-this-one.co.uk")
+                  [ "phishing link: www.lets-try-this-one.co.uk/episode-7  If you want my job"
                   ]

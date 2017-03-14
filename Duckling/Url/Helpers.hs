@@ -14,14 +14,11 @@ module Duckling.Url.Helpers
 
 import Data.String
 import Data.Text (Text)
+import qualified Data.Text as Text
 import Prelude
 
 import qualified Duckling.Url.Types as TUrl
 import Duckling.Url.Types (UrlData(..))
-
-parse :: Text -> Maybe Text
-parse "" = Nothing
-parse x = Just x
 
 -- -----------------------------------------------------------------
 -- Patterns
@@ -29,10 +26,6 @@ parse x = Just x
 -- -----------------------------------------------------------------
 -- Production
 
-url :: Text -> Text -> Text -> Text -> UrlData
-url protocol domain path query = UrlData
-  { TUrl.protocol = parse protocol
-  , TUrl.domain = domain
-  , TUrl.path = parse path
-  , TUrl.query = parse query
-  }
+url :: Text -> Text -> UrlData
+url value domain = UrlData
+  {TUrl.value = value, TUrl.domain = Text.toLower domain}

@@ -34,34 +34,40 @@ negativeCorpus = (testContext, examples)
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (UrlValue "http://www.bla.com")
+  [ examples (UrlData "http://www.bla.com" "bla.com")
              [ "http://www.bla.com"
              ]
-  , examples (UrlValue "www.bla.com:8080/path")
+  , examples (UrlData "www.bla.com:8080/path" "bla.com")
              [ "www.bla.com:8080/path"
              ]
-  , examples (UrlValue "https://myserver?foo=bar")
+  , examples (UrlData "https://myserver?foo=bar" "myserver")
              [ "https://myserver?foo=bar"
              ]
-  , examples (UrlValue "cnn.com/info")
+  , examples (UrlData "cnn.com/info" "cnn.com")
              [ "cnn.com/info"
              ]
-  , examples (UrlValue "bla.com/path/path?ext=%23&foo=bla")
+  , examples (UrlData "bla.com/path/path?ext=%23&foo=bla" "bla.com")
              [ "bla.com/path/path?ext=%23&foo=bla"
              ]
-  , examples (UrlValue "localhost")
+  , examples (UrlData "localhost" "localhost")
              [ "localhost"
              ]
-  , examples (UrlValue "localhost:8000")
+  , examples (UrlData "localhost:8000" "localhost")
              [ "localhost:8000"
              ]
-  , examples (UrlValue "http://kimchi")
+  , examples (UrlData "http://kimchi" "kimchi")
              [ "http://kimchi"
              ]
-  , examples (UrlValue "https://500px.com:443/about")
+  , examples (UrlData "https://500px.com:443/about" "500px.com")
              [ "https://500px.com:443/about"
              ]
-  , examples (UrlValue "www2.foo-bar.net?foo=bar")
+  , examples (UrlData "www2.foo-bar.net?foo=bar" "foo-bar.net")
              [ "www2.foo-bar.net?foo=bar"
+             ]
+  , examples (UrlData "https://api.wit.ai/message?q=hi" "api.wit.ai")
+             [ "https://api.wit.ai/message?q=hi"
+             ]
+  , examples (UrlData "aMaZon.co.uk/?page=home" "amazon.co.uk")
+             [ "aMaZon.co.uk/?page=home"
              ]
   ]

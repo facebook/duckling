@@ -8,6 +8,7 @@
 
 {-# LANGUAGE NamedFieldPuns #-}
 {-# LANGUAGE NoRebindableSyntax #-}
+{-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Debug
   ( allParses

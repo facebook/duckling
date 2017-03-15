@@ -45,7 +45,7 @@ import Duckling.Types
 makeReftime :: HashMap Text TimeZoneSeries -> Text -> UTCTime -> DucklingTime
 makeReftime series tz utcTime = DucklingTime $ ZoneSeriesTime ducklingTime tzs
   where
-    tzs = fromMaybe (TimeZoneSeries utc []) $ HashMap.lookup tz series
+    tzs = HashMap.lookupDefault (TimeZoneSeries utc []) tz series
     ducklingTime = toUTC $ utcToLocalTime' tzs utcTime
 
 -- | Builds a `DucklingTime` for timezone `tz` at current time.

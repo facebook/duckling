@@ -27,17 +27,17 @@ import Duckling.Types
 import qualified Duckling.Volume.KO.Rules as Volume
 
 rules :: Some Dimension -> [Rule]
-rules (Some Distance) = Distance.rules
-rules (Some Duration) = Duration.rules
-rules (Some Numeral) = Number.rules
-rules (Some Email) = []
-rules (Some Finance) = Finance.rules
-rules (Some Ordinal) = Ordinal.rules
-rules (Some PhoneNumber) = []
-rules (Some Quantity) = Quantity.rules
-rules (Some RegexMatch) = []
-rules (Some Temperature) = Temperature.rules
-rules (Some Time) = Time.rules
-rules (Some TimeGrain) = TimeGrain.rules
-rules (Some Url) = []
-rules (Some Volume) = Volume.rules
+rules (This Distance) = Distance.rules
+rules (This Duration) = Duration.rules
+rules (This Numeral) = Number.rules
+rules (This Email) = []
+rules (This Finance) = Finance.rules
+rules (This Ordinal) = Ordinal.rules
+rules (This PhoneNumber) = []
+rules (This Quantity) = Quantity.rules
+rules (This RegexMatch) = []
+rules (This Temperature) = Temperature.rules
+rules (This Time) = Time.rules
+rules (This TimeGrain) = TimeGrain.rules
+rules (This Url) = []
+rules (This Volume) = Volume.rules

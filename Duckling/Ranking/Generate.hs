@@ -58,7 +58,7 @@ regenClassifiers lang = do
   where
     filepath = "Duckling/Ranking/Classifiers/" ++ show lang ++ ".hs"
 
-    rules = rulesFor lang . HashSet.singleton $ Some Time
+    rules = rulesFor lang . HashSet.singleton $ This Time
 
     -- | The trained classifier to write out
     classifiers = makeClassifiers rules trainSet

@@ -23,17 +23,17 @@ import qualified Duckling.TimeGrain.NB.Rules as TimeGrain
 import Duckling.Types
 
 rules :: Some Dimension -> [Rule]
-rules (Some Distance) = []
-rules (Some Duration) = Duration.rules
-rules (Some Numeral) = Number.rules
-rules (Some Email) = []
-rules (Some Finance) = Finance.rules
-rules (Some Ordinal) = Ordinal.rules
-rules (Some PhoneNumber) = []
-rules (Some Quantity) = []
-rules (Some RegexMatch) = []
-rules (Some Temperature) = []
-rules (Some Time) = Time.rules
-rules (Some TimeGrain) = TimeGrain.rules
-rules (Some Url) = []
-rules (Some Volume) = []
+rules (This Distance) = []
+rules (This Duration) = Duration.rules
+rules (This Numeral) = Number.rules
+rules (This Email) = []
+rules (This Finance) = Finance.rules
+rules (This Ordinal) = Ordinal.rules
+rules (This PhoneNumber) = []
+rules (This Quantity) = []
+rules (This RegexMatch) = []
+rules (This Temperature) = []
+rules (This Time) = Time.rules
+rules (This TimeGrain) = TimeGrain.rules
+rules (This Url) = []
+rules (This Volume) = []

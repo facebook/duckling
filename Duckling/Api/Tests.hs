@@ -38,7 +38,7 @@ tests = testGroup "API Tests"
 
 parseTest :: TestTree
 parseTest = testCase "Parse Test" $
-  case parse sentence testContext [Some Numeral] of
+  case parse sentence testContext [This Numeral] of
     [] -> assertFailure "empty result"
     (Entity dim body value start end:_) -> do
       assertEqual "dim" "number" dim
@@ -60,39 +60,39 @@ rankFilterTest :: TestTree
 rankFilterTest = testCase "Rank Filter Tests" $ do
   mapM_ check
     [ ( "in 2 minutes"
-      , [Some Numeral, Some Duration, Some Time]
-      , [Some Time]
+      , [This Numeral, This Duration, This Time]
+      , [This Time]
       )
     , ( "in 2 minutes, about 42 degrees"
-      , [Some Numeral, Some Temperature, Some Time]
-      , [Some Time, Some Temperature]
+      , [This Numeral, This Temperature, This Time]
+      , [This Time, This Temperature]
       )
     , ( "today works... and tomorrow at 9pm too"
-      , [Some Numeral, Some Time]
-      , [Some Time, Some Time]
+      , [This Numeral, This Time]
+      , [This Time, This Time]
       )
     , ( "between 9:30 and 11:00 on thursday or Saturday and Thanksgiving Day"
-      , [Some Numeral, Some Time]
-      , [Some Time, Some Time, Some Time]
+      , [This Numeral, This Time]
+      , [This Time, This Time, This Time]
       )
-    , ("the day after tomorrow 5pm", [Some Time], [Some Time])
-    , ("the day after tomorrow 5pm", [Some Time, Some Numeral], [Some Time])
-    , ("the day after tomorrow 5pm", [], [Some Time])
+    , ("the day after tomorrow 5pm", [This Time], [This Time])
+    , ("the day after tomorrow 5pm", [This Time, This Numeral], [This Time])
+    , ("the day after tomorrow 5pm", [], [This Time])
     ]
   where
     check :: (Text, [Some Dimension], [Some Dimension]) -> IO ()
     check (sentence, targets, expected) =
       let go = analyze sentence testContext $ HashSet.fromList targets
           actual = flip map go $
-                     \(Resolved{node=Node{token=Token d _}}) -> Some d
+                     \(Resolved{node=Node{token=Token d _}}) -> This d
       in assertEqual ("wrong winners for " ++ show sentence) expected actual
 
 rankOrderTest :: TestTree
 rankOrderTest = testCase "Rank Order Tests" $ do
   mapM_ check
-    [ ("tomorrow at 5PM or 8PM", [Some Time])
-    , ("321 12 3456 ... 7", [Some Numeral])
-    , ("42 today 23 tomorrow", [Some Numeral, Some Time])
+    [ ("tomorrow at 5PM or 8PM", [This Time])
+    , ("321 12 3456 ... 7", [This Numeral])
+    , ("42 today 23 tomorrow", [This Numeral, This Time])
     ]
   where
     check (s, targets) =
@@ -104,13 +104,13 @@ rangeTest = testCase "Range Tests" $ do
   mapM_ (analyzedFirstTest testContext) xs
   where
     xs = map (\(input, targets, range) -> (input, targets, f range))
-             [ ( "order status 3233763377", [Some PhoneNumber], Range 13 23 )
-             , ( "  3233763377  "         , [Some PhoneNumber], Range  2 12 )
-             , ( " -3233763377"           , [Some PhoneNumber], Range  2 12 )
-             , ( "  now"                  , [Some Time]       , Range  2  5 )
-             , ( "   Monday  "            , [Some Time]       , Range  3  9 )
-             , ( "  next   week "         , [Some Time]       , Range  2 13 )
-             , ( "   42\n\n"              , [Some Numeral]    , Range  3  5 )
+             [ ( "order status 3233763377", [This PhoneNumber], Range 13 23 )
+             , ( "  3233763377  "         , [This PhoneNumber], Range  2 12 )
+             , ( " -3233763377"           , [This PhoneNumber], Range  2 12 )
+             , ( "  now"                  , [This Time]       , Range  2  5 )
+             , ( "   Monday  "            , [This Time]       , Range  3  9 )
+             , ( "  next   week "         , [This Time]       , Range  2 13 )
+             , ( "   42\n\n"              , [This Numeral]    , Range  3  5 )
              ]
     f :: Range -> TestPredicate
     f expected _ (Resolved {range = actual}) = expected == actual
@@ -119,13 +119,13 @@ supportedDimensionsTest :: TestTree
 supportedDimensionsTest = testCase "Supported Dimensions Test" $ do
   mapM_ check
     [ ( AR
-      , [ Some Email, Some Finance, Some PhoneNumber, Some Url, Some Numeral
-        , Some Ordinal
+      , [ This Email, This Finance, This PhoneNumber, This Url, This Numeral
+        , This Ordinal
         ]
       )
     , ( PL
-      , [ Some Email, Some Finance, Some PhoneNumber, Some Url, Some Duration
-        , Some Numeral, Some Ordinal, Some Time
+      , [ This Email, This Finance, This PhoneNumber, This Url, This Duration
+        , This Numeral, This Ordinal, This Time
         ]
       )
     ]

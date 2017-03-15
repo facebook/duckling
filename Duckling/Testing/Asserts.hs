@@ -42,7 +42,7 @@ analyzedTargetTest context (input, target) =
     msg = "analyze " ++ show (input, [target])
           ++ "dimensions = " ++ show dimensions
     dimensions = flip map (analyze input context $ HashSet.singleton target) $
-      \(Resolved{node=Node{token=Token dimension _}}) -> Some dimension
+      \(Resolved{node=Node{token=Token dimension _}}) -> This dimension
 
 analyzedFirstTest :: Context -> (Text, [Some Dimension], TestPredicate) -> IO ()
 analyzedFirstTest context (input, targets, predicate) =

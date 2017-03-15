@@ -31,8 +31,8 @@ import Duckling.TimeGrain.Types (Grain(..))
 
 tests :: TestTree
 tests = testGroup "EN Tests"
-  [ makeCorpusTest [Some Time] corpus
-  , makeNegativeCorpusTest [Some Time] negativeCorpus
+  [ makeCorpusTest [This Time] corpus
+  , makeNegativeCorpusTest [This Time] negativeCorpus
   , exactSecondTests
   , valuesTest
   , intersectTests
@@ -40,7 +40,7 @@ tests = testGroup "EN Tests"
 
 exactSecondTests :: TestTree
 exactSecondTests = testCase "Exact Second Tests" $
-  mapM_ (analyzedFirstTest context . withTargets [Some Time]) xs
+  mapM_ (analyzedFirstTest context . withTargets [This Time]) xs
   where
     context = testContext {referenceTime = refTime (2016, 12, 6, 13, 21, 42) 1}
     xs = concat
@@ -58,7 +58,7 @@ exactSecondTests = testCase "Exact Second Tests" $
 
 valuesTest :: TestTree
 valuesTest = testCase "Values Test" $
-  mapM_ (analyzedFirstTest testContext . withTargets [Some Time]) xs
+  mapM_ (analyzedFirstTest testContext . withTargets [This Time]) xs
   where
     xs = examplesCustom (parserCheck 1 parseValuesSize)
                         [ "now"
@@ -72,7 +72,7 @@ valuesTest = testCase "Values Test" $
 
 intersectTests :: TestTree
 intersectTests = testCase "Intersect Test" $
-  mapM_ (analyzedNTest testContext . withTargets [Some Time]) xs
+  mapM_ (analyzedNTest testContext . withTargets [This Time]) xs
   where
     xs = [ ("tomorrow July", 2)
          , ("Mar tonight", 2)

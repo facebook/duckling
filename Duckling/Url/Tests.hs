@@ -25,14 +25,14 @@ import Duckling.Url.Types
 
 tests :: TestTree
 tests = testGroup "Url Tests"
-  [ makeCorpusTest [Some Url] corpus
-  , makeNegativeCorpusTest [Some Url] negativeCorpus
+  [ makeCorpusTest [This Url] corpus
+  , makeNegativeCorpusTest [This Url] negativeCorpus
   , surroundTests
   ]
 
 surroundTests :: TestTree
 surroundTests = testCase "Surround Tests" $
-  mapM_ (analyzedFirstTest testContext . withTargets [Some Url]) xs
+  mapM_ (analyzedFirstTest testContext . withTargets [This Url]) xs
   where
     xs = examples (UrlData "www.lets-try-this-one.co.uk/episode-7" "lets-try-this-one.co.uk")
                   [ "phishing link: www.lets-try-this-one.co.uk/episode-7  If you want my job"

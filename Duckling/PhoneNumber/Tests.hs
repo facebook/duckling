@@ -25,14 +25,14 @@ import Duckling.Testing.Types
 
 tests :: TestTree
 tests = testGroup "PhoneNumber Tests"
-  [ makeCorpusTest [Some PhoneNumber] corpus
-  , makeNegativeCorpusTest [Some PhoneNumber] negativeCorpus
+  [ makeCorpusTest [This PhoneNumber] corpus
+  , makeNegativeCorpusTest [This PhoneNumber] negativeCorpus
   , surroundTests
   ]
 
 surroundTests :: TestTree
 surroundTests = testCase "Surround Tests" $
-  mapM_ (analyzedFirstTest testContext . withTargets [Some PhoneNumber]) xs
+  mapM_ (analyzedFirstTest testContext . withTargets [This PhoneNumber]) xs
   where
     xs = examples (PhoneNumberValue "06354640807")
                   [ "hey 06354640807"

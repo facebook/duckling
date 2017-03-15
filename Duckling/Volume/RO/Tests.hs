@@ -19,5 +19,5 @@ import Duckling.Volume.RO.Corpus
 
 tests :: TestTree
 tests = testGroup "RO Tests"
-  [ makeCorpusTest [Some Volume] corpus
+  [ makeCorpusTest [This Volume] corpus
   ]

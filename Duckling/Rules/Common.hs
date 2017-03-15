@@ -25,17 +25,17 @@ import qualified Duckling.Url.Rules as Url
 import qualified Duckling.Volume.Rules as Volume
 
 rules :: Some Dimension -> [Rule]
-rules (Some Distance) = Distance.rules
-rules (Some Duration) = Duration.rules
-rules (Some Numeral) = []
-rules (Some Email) = Email.rules
-rules (Some Finance) = Finance.rules
-rules (Some Ordinal) = []
-rules (Some PhoneNumber) = PhoneNumber.rules
-rules (Some Quantity) = []
-rules (Some RegexMatch) = []
-rules (Some Temperature) = Temperature.rules
-rules (Some Time) = []
-rules (Some TimeGrain) = []
-rules (Some Url) = Url.rules
-rules (Some Volume) = Volume.rules
+rules (This Distance) = Distance.rules
+rules (This Duration) = Duration.rules
+rules (This Numeral) = []
+rules (This Email) = Email.rules
+rules (This Finance) = Finance.rules
+rules (This Ordinal) = []
+rules (This PhoneNumber) = PhoneNumber.rules
+rules (This Quantity) = []
+rules (This RegexMatch) = []
+rules (This Temperature) = Temperature.rules
+rules (This Time) = []
+rules (This TimeGrain) = []
+rules (This Url) = Url.rules
+rules (This Volume) = Volume.rules

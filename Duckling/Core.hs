@@ -13,6 +13,7 @@
 module Duckling.Core
   ( Context(..)
   , Dimension(..)
+  , fromName
   , Entity(..)
   , Lang(..)
   , Some(..)

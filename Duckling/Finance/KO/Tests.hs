@@ -19,5 +19,5 @@ import Duckling.Finance.KO.Corpus
 
 tests :: TestTree
 tests = testGroup "KO Tests"
-  [ makeCorpusTest [Some Finance] corpus
+  [ makeCorpusTest [This Finance] corpus
   ]

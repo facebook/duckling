@@ -65,4 +65,4 @@ rank classifiers targets tokens =
   where
     makeCandidate :: ResolvedToken -> Candidate
     makeCandidate token@Resolved {node = n@Node {token = Token d _}} =
-      Candidate token (score classifiers n) $ HashSet.member (Some d) targets
+      Candidate token (score classifiers n) $ HashSet.member (This d) targets

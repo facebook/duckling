@@ -19,5 +19,5 @@ import Duckling.Time.PL.Corpus
 
 tests :: TestTree
 tests = testGroup "PL Tests"
-  [ makeCorpusTest [Some Time] corpus
+  [ makeCorpusTest [This Time] corpus
   ]

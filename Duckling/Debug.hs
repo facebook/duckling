@@ -60,7 +60,7 @@ parses l sentence targets = flip filter tokens $
   \(Resolved {node = Node{token = (Token d _)}}) ->
     case targets of
       [] -> True
-      _ -> elem (Some d) targets
+      _ -> elem (This d) targets
   where
     tokens = parseAndResolve rules sentence testContext {lang = l}
     rules = rulesFor l $ HashSet.fromList targets

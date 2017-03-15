@@ -19,5 +19,5 @@ import Duckling.Finance.ID.Corpus
 
 tests :: TestTree
 tests = testGroup "ID Tests"
-  [ makeCorpusTest [Some Finance] corpus
+  [ makeCorpusTest [This Finance] corpus
   ]

@@ -25,13 +25,13 @@ import Duckling.Testing.Types
 
 tests :: TestTree
 tests = testGroup "EN Tests"
-  [ makeCorpusTest [Some Numeral] corpus
+  [ makeCorpusTest [This Numeral] corpus
   , surroundTests
   ]
 
 surroundTests :: TestTree
 surroundTests = testCase "Surround Tests" $
-  mapM_ (analyzedFirstTest testContext . withTargets [Some Numeral]) xs
+  mapM_ (analyzedFirstTest testContext . withTargets [This Numeral]) xs
   where
     xs = concat
       [ examples (NumberValue 3)

@@ -14,12 +14,12 @@ import Duckling.Dimensions.Types
 
 allDimensions :: [Some Dimension]
 allDimensions =
-  [ Some Distance
-  , Some Duration
-  , Some Numeral
-  , Some Ordinal
-  , Some Quantity
-  , Some Temperature
-  , Some Time
-  , Some Volume
+  [ This Distance
+  , This Duration
+  , This Numeral
+  , This Ordinal
+  , This Quantity
+  , This Temperature
+  , This Time
+  , This Volume
   ]

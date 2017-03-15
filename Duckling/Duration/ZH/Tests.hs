@@ -24,7 +24,7 @@ import Duckling.Testing.Asserts
 tests :: TestTree
 tests = testGroup "ZH Tests"
   [ testCase "Corpus Tests" $
-      mapM_ (analyzedFirstTest context {lang = ZH} . withTargets [Some Duration])
+      mapM_ (analyzedFirstTest context {lang = ZH} . withTargets [This Duration])
         xs
   ]
   where

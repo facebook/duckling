@@ -56,21 +56,21 @@ explicitDimensions targets = HashSet.union targets deps
 
 -- | Ordinal depends on Numeral for JA, KO, and ZH.
 dependents :: Some Dimension -> HashSet (Some Dimension)
-dependents (Some Distance) = HashSet.singleton (Some Numeral)
-dependents (Some Duration) = HashSet.fromList [Some Numeral, Some TimeGrain]
-dependents (Some Numeral) = HashSet.empty
-dependents (Some Email) = HashSet.empty
-dependents (Some Finance) = HashSet.singleton (Some Numeral)
-dependents (Some Ordinal) = HashSet.singleton (Some Numeral)
-dependents (Some PhoneNumber) = HashSet.empty
-dependents (Some Quantity) = HashSet.singleton (Some Numeral)
-dependents (Some RegexMatch) = HashSet.empty
-dependents (Some Temperature) = HashSet.singleton (Some Numeral)
-dependents (Some Time) =
-  HashSet.fromList [Some Numeral, Some Duration, Some Ordinal, Some TimeGrain]
-dependents (Some TimeGrain) = HashSet.empty
-dependents (Some Url) = HashSet.empty
-dependents (Some Volume) = HashSet.singleton (Some Numeral)
+dependents (This Distance) = HashSet.singleton (This Numeral)
+dependents (This Duration) = HashSet.fromList [This Numeral, This TimeGrain]
+dependents (This Numeral) = HashSet.empty
+dependents (This Email) = HashSet.empty
+dependents (This Finance) = HashSet.singleton (This Numeral)
+dependents (This Ordinal) = HashSet.singleton (This Numeral)
+dependents (This PhoneNumber) = HashSet.empty
+dependents (This Quantity) = HashSet.singleton (This Numeral)
+dependents (This RegexMatch) = HashSet.empty
+dependents (This Temperature) = HashSet.singleton (This Numeral)
+dependents (This Time) =
+  HashSet.fromList [This Numeral, This Duration, This Ordinal, This TimeGrain]
+dependents (This TimeGrain) = HashSet.empty
+dependents (This Url) = HashSet.empty
+dependents (This Volume) = HashSet.singleton (This Numeral)
 
 langDimensions :: Lang -> [Some Dimension]
 langDimensions AR = ARDimensions.allDimensions

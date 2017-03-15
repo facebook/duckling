@@ -14,8 +14,8 @@ import Duckling.Dimensions.Types
 
 allDimensions :: [Some Dimension]
 allDimensions =
-  [ Some Duration
-  , Some Numeral
-  , Some Ordinal
-  , Some Time
+  [ This Duration
+  , This Numeral
+  , This Ordinal
+  , This Time
   ]

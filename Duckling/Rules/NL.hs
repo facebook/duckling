@@ -21,17 +21,17 @@ import qualified Duckling.Volume.NL.Rules as Volume
 import Duckling.Types
 
 rules :: Some Dimension -> [Rule]
-rules (Some Distance) = Distance.rules
-rules (Some Duration) = []
-rules (Some Numeral) = Number.rules
-rules (Some Email) = []
-rules (Some Finance) = []
-rules (Some Ordinal) = Ordinal.rules
-rules (Some PhoneNumber) = []
-rules (Some Quantity) = []
-rules (Some RegexMatch) = []
-rules (Some Temperature) = []
-rules (Some Time) = []
-rules (Some TimeGrain) = []
-rules (Some Url) = []
-rules (Some Volume) = Volume.rules
+rules (This Distance) = Distance.rules
+rules (This Duration) = []
+rules (This Numeral) = Number.rules
+rules (This Email) = []
+rules (This Finance) = []
+rules (This Ordinal) = Ordinal.rules
+rules (This PhoneNumber) = []
+rules (This Quantity) = []
+rules (This RegexMatch) = []
+rules (This Temperature) = []
+rules (This Time) = []
+rules (This TimeGrain) = []
+rules (This Url) = []
+rules (This Volume) = Volume.rules

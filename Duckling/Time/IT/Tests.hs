@@ -19,6 +19,6 @@ import Duckling.Time.IT.Corpus
 
 tests :: TestTree
 tests = testGroup "IT Tests"
-  [ makeCorpusTest [Some Time] corpus
-  , makeNegativeCorpusTest [Some Time] negativeCorpus
+  [ makeCorpusTest [This Time] corpus
+  , makeNegativeCorpusTest [This Time] negativeCorpus
   ]

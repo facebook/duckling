@@ -20,5 +20,5 @@ import Duckling.Testing.Asserts
 
 tests :: TestTree
 tests = testGroup "SV Tests"
-  [ makeCorpusTest [Some Duration] corpus
+  [ makeCorpusTest [This Duration] corpus
   ]

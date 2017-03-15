@@ -20,6 +20,7 @@ module Duckling.Types where
 import Control.DeepSeq
 import Data.Aeson
 import qualified Data.ByteString.Lazy as LB
+import Data.GADT.Compare
 import Data.Hashable
 import Data.Maybe
 import Data.Text (Text)
@@ -41,7 +42,7 @@ data Token = forall a . (Resolve a, Eq a, Hashable a, Show a, NFData a) =>
 
 deriving instance Show Token
 instance Eq Token where
-  Token d1 v1 == Token d2 v2 = case dimEq d1 d2 of
+  Token d1 v1 == Token d2 v2 = case geq d1 d2 of
     Just Refl -> v1 == v2
     Nothing   -> False
 
@@ -52,7 +53,7 @@ instance NFData Token where
   rnf (Token _ v) = rnf v
 
 isDimension :: Dimension a -> Token -> Bool
-isDimension dim (Token dim' _) = isJust $ dimEq dim dim'
+isDimension dim (Token dim' _) = isJust $ geq dim dim'
 
 data Node = Node
   { nodeRange :: Range

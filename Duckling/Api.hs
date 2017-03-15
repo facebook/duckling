@@ -49,7 +49,7 @@ analyze :: Text -> Context -> HashSet (Some Dimension) -> [ResolvedToken]
 analyze input context@Context{..} targets =
   rank (classifiers lang) targets
   . filter (\(Resolved{node = Node{token = (Token d _)}}) ->
-      HashSet.null targets || HashSet.member (Some d) targets
+      HashSet.null targets || HashSet.member (This d) targets
     )
   $ parseAndResolve (rulesFor lang targets) input context
 

@@ -19,4 +19,4 @@ main = do
   tzs <- loadTimeZoneSeries "/usr/share/zoneinfo/"
   refTime <- currentReftime tzs "America/Los_Angeles"
   let context = Context {referenceTime = refTime, lang = EN}
-  print $ parse "tomorrow at 6ish pm" context [Some Time]
+  print $ parse "tomorrow at 6ish pm" context [This Time]

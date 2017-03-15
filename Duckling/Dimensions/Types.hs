@@ -12,16 +12,22 @@
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE NoRebindableSyntax #-}
 {-# LANGUAGE TypeOperators #-}
-{-# LANGUAGE StandaloneDeriving #-}
+
 
 module Duckling.Dimensions.Types
   ( Some(..)
   , Dimension(..)
-  , dimEq
+
+  , fromName
   ) where
 
+import Data.GADT.Compare
+import Data.GADT.Show
 import Data.Hashable
+import qualified Data.HashMap.Strict as HashMap
 import Data.Maybe
+import Data.Some
+import Data.Text (Text)
 -- Intentionally limit use of Typeable to avoid casting or typeOf usage
 import Data.Typeable ((:~:)(..))
 import TextShow (TextShow(..))
@@ -42,11 +48,6 @@ import Duckling.Time.Types (TimeData)
 import Duckling.TimeGrain.Types (Grain)
 import Duckling.Url.Types (UrlData)
 import Duckling.Volume.Types (VolumeData)
-
--- -----------------------------------------------------------------
--- Wrapper to house the existential
-
-data Some t = forall a . Some (t a)
 
 -- -----------------------------------------------------------------
 -- Dimension
@@ -71,7 +72,6 @@ data Dimension a where
   Volume :: Dimension VolumeData
 
 -- Show
-deriving instance Show (Some Dimension)
 instance Show (Dimension a) where
   show RegexMatch = "regex"
   show Distance = "distance"
@@ -87,21 +87,17 @@ instance Show (Dimension a) where
   show TimeGrain = "time-grain"
   show Url = "url"
   show Volume = "volume"
+instance GShow Dimension where gshowsPrec = showsPrec
 
 -- TextShow
 instance TextShow (Dimension a) where
   showb d = TS.fromString $ show d
 instance TextShow (Some Dimension) where
-  showb (Some d) = showb d
-
--- Eq
-deriving instance Eq (Dimension a)
-instance Eq (Some Dimension) where
-  (==) (Some a) (Some b) = isJust $ dimEq a b
+  showb (This d) = showb d
 
 -- Hashable
 instance Hashable (Some Dimension) where
-  hashWithSalt s (Some a) = hashWithSalt s a
+  hashWithSalt s (This a) = hashWithSalt s a
 instance Hashable (Dimension a) where
   hashWithSalt s RegexMatch  = hashWithSalt s (0::Int)
   hashWithSalt s Distance    = hashWithSalt s (1::Int)
@@ -118,50 +114,51 @@ instance Hashable (Dimension a) where
   hashWithSalt s Url         = hashWithSalt s (12::Int)
   hashWithSalt s Volume      = hashWithSalt s (13::Int)
 
-instance Read (Some Dimension) where
-  -- Regex is intentionally ignored
-  readsPrec _ "amount-of-money" = [(Some Finance, "")]
-  readsPrec _ "distance" = [(Some Distance, "")]
-  readsPrec _ "duration" = [(Some Duration, "")]
-  readsPrec _ "email" = [(Some Email, "")]
-  readsPrec _ "number" = [(Some Numeral, "")]
-  readsPrec _ "ordinal" = [(Some Ordinal, "")]
-  readsPrec _ "phone-number" = [(Some PhoneNumber, "")]
-  readsPrec _ "quantity" = [(Some Quantity, "")]
-  readsPrec _ "temperature" = [(Some Temperature, "")]
-  readsPrec _ "time" = [(Some Time, "")]
-  readsPrec _ "url" = [(Some Url, "")]
-  readsPrec _ "volume" = [(Some Volume, "")]
-  readsPrec _ _ = []
 
--- | Proof that 2 dimensions are the same Type
--- 2 matches per dimension for pattern exhaustiveness sake
-dimEq :: Dimension a -> Dimension b -> Maybe (a :~: b)
-dimEq RegexMatch RegexMatch = Just Refl
-dimEq RegexMatch _ = Nothing
-dimEq Distance Distance = Just Refl
-dimEq Distance _ = Nothing
-dimEq Duration Duration = Just Refl
-dimEq Duration _ = Nothing
-dimEq Email Email = Just Refl
-dimEq Email _ = Nothing
-dimEq Finance Finance = Just Refl
-dimEq Finance _ = Nothing
-dimEq Numeral Numeral = Just Refl
-dimEq Numeral _ = Nothing
-dimEq Ordinal Ordinal = Just Refl
-dimEq Ordinal _ = Nothing
-dimEq PhoneNumber PhoneNumber = Just Refl
-dimEq PhoneNumber _ = Nothing
-dimEq Quantity Quantity = Just Refl
-dimEq Quantity _ = Nothing
-dimEq Temperature Temperature = Just Refl
-dimEq Temperature _ = Nothing
-dimEq Time Time = Just Refl
-dimEq Time _ = Nothing
-dimEq TimeGrain TimeGrain = Just Refl
-dimEq TimeGrain _ = Nothing
-dimEq Url Url = Just Refl
-dimEq Url _ = Nothing
-dimEq Volume Volume = Just Refl
-dimEq Volume _ = Nothing
+fromName :: Text -> Maybe (Some Dimension)
+fromName name = HashMap.lookup name m
+  where
+    m = HashMap.fromList
+      [ ("amount-of-money", This Finance)
+      , ("distance", This Distance)
+      , ("duration", This Duration)
+      , ("email", This Email)
+      , ("number", This Numeral)
+      , ("ordinal", This Ordinal)
+      , ("phone-number", This PhoneNumber)
+      , ("quantity", This Quantity)
+      , ("temperature", This Temperature)
+      , ("time", This Time)
+      , ("url", This Url)
+      , ("volume", This Volume)
+      ]
+
+instance GEq Dimension where
+  geq RegexMatch RegexMatch = Just Refl
+  geq RegexMatch _ = Nothing
+  geq Distance Distance = Just Refl
+  geq Distance _ = Nothing
+  geq Duration Duration = Just Refl
+  geq Duration _ = Nothing
+  geq Email Email = Just Refl
+  geq Email _ = Nothing
+  geq Finance Finance = Just Refl
+  geq Finance _ = Nothing
+  geq Numeral Numeral = Just Refl
+  geq Numeral _ = Nothing
+  geq Ordinal Ordinal = Just Refl
+  geq Ordinal _ = Nothing
+  geq PhoneNumber PhoneNumber = Just Refl
+  geq PhoneNumber _ = Nothing
+  geq Quantity Quantity = Just Refl
+  geq Quantity _ = Nothing
+  geq Temperature Temperature = Just Refl
+  geq Temperature _ = Nothing
+  geq Time Time = Just Refl
+  geq Time _ = Nothing
+  geq TimeGrain TimeGrain = Just Refl
+  geq TimeGrain _ = Nothing
+  geq Url Url = Just Refl
+  geq Url _ = Nothing
+  geq Volume Volume = Just Refl
+  geq Volume _ = Nothing

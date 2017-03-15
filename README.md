@@ -74,7 +74,7 @@ shouldn't) parse. The reference time for the corpus is Tuesday Feb 12, 2013 at
 `Duckling.Debug` provides a few debugging tools:
 ```
 > :l Duckling.Debug
-> debug EN "in two minutes" [Some Time]
+> debug EN "in two minutes" [This Time]
 in|within|after <duration> (in two minutes)
 -- regex (in)
 -- <integer> <unit-of-duration> (two minutes)

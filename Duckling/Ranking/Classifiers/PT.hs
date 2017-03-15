@@ -96,10 +96,10 @@ classifiers
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("integer (numeric)",
         Classifier{okData =
-                     ClassData{prior = -0.6505875661411494, unseen = -4.127134385045092,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 60},
+                     ClassData{prior = -0.6427163269330534, unseen = -4.143134726391533,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 61},
                    koData =
-                     ClassData{prior = -0.7375989431307791, unseen = -4.04305126783455,
+                     ClassData{prior = -0.7462570058738938, unseen = -4.04305126783455,
                                likelihoods = HashMap.fromList [("", 0.0)], n = 55}}),
        ("the day before yesterday",
         Classifier{okData =
@@ -499,6 +499,18 @@ classifiers
                                     ("number (0..15)", -0.5108256237659907),
                                     ("number (20..90)", -2.0149030205422647)],
                                n = 12}}),
+       ("n[ao] <date>",
+        Classifier{okData =
+                     ClassData{prior = 0.0, unseen = -2.0794415416798357,
+                               likelihoods =
+                                 HashMap.fromList
+                                   [("dia <day-of-month> (non ordinal)", -1.252762968495368),
+                                    ("day", -0.8472978603872037),
+                                    ("named-day", -1.252762968495368)],
+                               n = 2},
+                   koData =
+                     ClassData{prior = -infinity, unseen = -1.3862943611198906,
+                               likelihoods = HashMap.fromList [], n = 0}}),
        ("yesterday",
         Classifier{okData =
                      ClassData{prior = -0.40546510810816444,
@@ -570,9 +582,9 @@ classifiers
                                n = 15}}),
        ("dia <day-of-month> (non ordinal)",
         Classifier{okData =
-                     ClassData{prior = 0.0, unseen = -1.6094379124341003,
+                     ClassData{prior = 0.0, unseen = -1.791759469228055,
                                likelihoods = HashMap.fromList [("integer (numeric)", 0.0)],
-                               n = 3},
+                               n = 4},
                    koData =
                      ClassData{prior = -infinity, unseen = -0.6931471805599453,
                                likelihoods = HashMap.fromList [], n = 0}}),
@@ -924,8 +936,8 @@ classifiers
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("named-day",
         Classifier{okData =
-                     ClassData{prior = 0.0, unseen = -4.174387269895637,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 63},
+                     ClassData{prior = 0.0, unseen = -4.189654742026425,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 64},
                    koData =
                      ClassData{prior = -infinity, unseen = -0.6931471805599453,
                                likelihoods = HashMap.fromList [], n = 0}}),

@@ -9,7 +9,9 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Time.PT.Corpus
-  ( corpus ) where
+  ( corpus
+  , negativeCorpus
+  ) where
 
 import Prelude
 import Data.String
@@ -23,6 +25,13 @@ import Duckling.Testing.Types hiding (examples)
 
 corpus :: Corpus
 corpus = (testContext {lang = PT}, allExamples)
+
+negativeCorpus :: NegativeCorpus
+negativeCorpus = (testContext {lang = PT}, examples)
+  where
+    examples =
+      [ "no 987"
+      ]
 
 allExamples :: [Example]
 allExamples = concat
@@ -155,6 +164,8 @@ allExamples = concat
              [ "este dia 17"
              , "17 de fevereiro"
              , "17/2"
+             , "no domingo"
+             , "no dia 17"
              ]
   , examples (datetime (2013, 2, 20, 0, 0, 0) Day)
              [ "esse dia 20"

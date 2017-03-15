@@ -88,10 +88,10 @@ ruleNaoDate = Rule
   { name = "n[ao] <date>"
   , pattern =
     [ regex "n[ao]"
-    , dimension Time
+    , Predicate $ isGrainOfTime TG.Day
     ]
   , prod = \tokens -> case tokens of
-      (_:x:_) -> Just x
+      (_:Token Time td:_) -> Just . Token Time $ notLatent td
       _ -> Nothing
   }
 
@@ -1215,18 +1215,6 @@ ruleThisTime = Rule
       _ -> Nothing
   }
 
-ruleNaoNamedday :: Rule
-ruleNaoNamedday = Rule
-  { name = "n[ao] named-day"
-  , pattern =
-    [ regex "n[ao]"
-    , Predicate isADayOfWeek
-    ]
-  , prod = \tokens -> case tokens of
-      (_:x:_) -> Just x
-      _ -> Nothing
-  }
-
 ruleProclamaoDaRepblica :: Rule
 ruleProclamaoDaRepblica = Rule
   { name = "Proclamação da República"
@@ -1615,7 +1603,6 @@ rules =
   , ruleNamedmonthnameddayNext
   , ruleNamedmonthnameddayPast
   , ruleNaoDate
-  , ruleNaoNamedday
   , ruleNatal
   , ruleNextTime
   , ruleCycleQueVem

@@ -16,15 +16,15 @@ import qualified Data.Text as Text
 import Prelude
 import Data.String
 
-import qualified Duckling.Number.Types as TNumber
+import qualified Duckling.Numeral.Types as TNumeral
 import Duckling.Quantity.Helpers
 import qualified Duckling.Quantity.Types as TQuantity
 import Duckling.Regex.Types
 import Duckling.Dimensions.Types
 import Duckling.Types
 
-ruleNumberQuantity :: Rule
-ruleNumberQuantity = Rule
+ruleNumeralQuantity :: Rule
+ruleNumeralQuantity = Rule
   { name = "<number> <quantity>"
   , pattern =
     [ dimension Numeral
@@ -34,10 +34,10 @@ ruleNumberQuantity = Rule
     (Token Numeral nd:
      Token RegexMatch (GroupMatch (match:_)):
      _) -> case Text.toLower match of
-      "cup"    -> Just . Token Quantity . quantity TQuantity.Cup $ TNumber.value nd
-      "cups"   -> Just . Token Quantity . quantity TQuantity.Cup $ TNumber.value nd
-      "pound"  -> Just . Token Quantity . quantity TQuantity.Pound $ TNumber.value nd
-      "pounds" -> Just . Token Quantity . quantity TQuantity.Pound $ TNumber.value nd
+      "cup"    -> Just . Token Quantity . quantity TQuantity.Cup $ TNumeral.value nd
+      "cups"   -> Just . Token Quantity . quantity TQuantity.Cup $ TNumeral.value nd
+      "pound"  -> Just . Token Quantity . quantity TQuantity.Pound $ TNumeral.value nd
+      "pounds" -> Just . Token Quantity . quantity TQuantity.Pound $ TNumeral.value nd
       _ -> Nothing
     _ -> Nothing
   }
@@ -71,7 +71,7 @@ ruleQuantityOfProduct = Rule
 
 rules :: [Rule]
 rules =
-  [ ruleNumberQuantity
+  [ ruleNumeralQuantity
   , ruleAQuantity
   , ruleQuantityOfProduct
   ]

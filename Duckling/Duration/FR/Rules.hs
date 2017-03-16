@@ -17,21 +17,21 @@ import Data.String
 
 import Duckling.Dimensions.Types
 import Duckling.Duration.Helpers
-import Duckling.Number.Types (NumberData(..))
-import qualified Duckling.Number.Types as TNumber
+import Duckling.Numeral.Types (NumeralData(..))
+import qualified Duckling.Numeral.Types as TNumeral
 import Duckling.Regex.Types
 import qualified Duckling.TimeGrain.Types as TG
 import Duckling.Types
 
-ruleNumberQuotes :: Rule
-ruleNumberQuotes = Rule
+ruleNumeralQuotes :: Rule
+ruleNumeralQuotes = Rule
   { name = "<integer> + '\""
   , pattern =
     [ Predicate isNatural
     , regex "(['\"])"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumberData {TNumber.value = v}):
+      (Token Numeral (NumeralData {TNumeral.value = v}):
        Token RegexMatch (GroupMatch (x:_)):
        _) -> case x of
          "'"  -> Just . Token Duration . duration TG.Minute $ floor v
@@ -100,5 +100,5 @@ rules =
   , ruleUneDemiHeure
   , ruleTroisQuartsDHeure
   , ruleDurationEnviron
-  , ruleNumberQuotes
+  , ruleNumeralQuotes
   ]

@@ -38,7 +38,7 @@ import qualified Data.Time.LocalTime.TimeZone.Series as Series
 import Duckling.Dimensions.Types
 import Duckling.Duration.Types (DurationData (DurationData))
 import qualified Duckling.Duration.Types as TDuration
-import qualified Duckling.Number.Types as TNumber
+import qualified Duckling.Numeral.Types as TNumeral
 import Duckling.Ordinal.Types (OrdinalData (OrdinalData))
 import qualified Duckling.Ordinal.Types as TOrdinal
 import Duckling.Time.TimeZone.Parse (parseTimezone)
@@ -66,7 +66,7 @@ safeMaxInterval :: Int
 safeMaxInterval = 12
 
 getIntValue :: Token -> Maybe Int
-getIntValue (Token Numeral nd) = TNumber.getIntValue $ TNumber.value nd
+getIntValue (Token Numeral nd) = TNumeral.getIntValue $ TNumeral.value nd
 getIntValue (Token Ordinal OrdinalData {TOrdinal.value = x}) = Just x
 getIntValue _ = Nothing
 
@@ -325,7 +325,7 @@ isNotLatent _ = False
 
 isIntegerBetween :: Int -> Int -> Predicate
 isIntegerBetween low high (Token Numeral nd) =
-  TNumber.isIntegerBetween (TNumber.value nd) low high
+  TNumeral.isIntegerBetween (TNumeral.value nd) low high
 isIntegerBetween _ _ _ = False
 
 isOrdinalBetween :: Int -> Int -> Predicate

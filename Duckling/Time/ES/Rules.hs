@@ -18,7 +18,7 @@ import qualified Data.Text as Text
 import Prelude
 
 import Duckling.Dimensions.Types
-import Duckling.Number.Helpers (parseInt)
+import Duckling.Numeral.Helpers (parseInt)
 import Duckling.Ordinal.Types (OrdinalData (..))
 import qualified Duckling.Ordinal.Types as TOrdinal
 import Duckling.Regex.Types

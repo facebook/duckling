@@ -18,8 +18,8 @@ import Data.String
 
 import Duckling.Dimensions.Types
 import Duckling.Duration.Helpers
-import Duckling.Number.Types (NumberData(..))
-import qualified Duckling.Number.Types as TNumber
+import Duckling.Numeral.Types (NumeralData(..))
+import qualified Duckling.Numeral.Types as TNumeral
 import Duckling.Types
 
 ruleIntegerUnitofduration :: Rule
@@ -30,7 +30,7 @@ ruleIntegerUnitofduration = Rule
     , dimension TimeGrain
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumberData {TNumber.value = v}):
+      (Token Numeral (NumeralData {TNumeral.value = v}):
        Token TimeGrain grain:
        _) -> Just . Token Duration . duration grain $ floor v
       _ -> Nothing

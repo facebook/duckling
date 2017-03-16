@@ -17,13 +17,13 @@ import Data.String
 import Prelude
 
 import Duckling.Dimensions.Types
-import qualified Duckling.Number.Types as TNumber
+import qualified Duckling.Numeral.Types as TNumeral
 import Duckling.Temperature.Types (TemperatureData (..))
 import qualified Duckling.Temperature.Types as TTemperature
 import Duckling.Types
 
-ruleNumberAsTemp :: Rule
-ruleNumberAsTemp = Rule
+ruleNumeralAsTemp :: Rule
+ruleNumeralAsTemp = Rule
   { name = "number as temp"
   , pattern =
     [ dimension Numeral
@@ -32,12 +32,12 @@ ruleNumberAsTemp = Rule
       (Token Numeral nd:_) ->
         Just . Token Temperature $ TemperatureData
           { TTemperature.unit = Nothing
-          , TTemperature.value = floor $ TNumber.value nd
+          , TTemperature.value = floor $ TNumeral.value nd
           }
       _ -> Nothing
   }
 
 rules :: [Rule]
 rules =
-  [ ruleNumberAsTemp
+  [ ruleNumeralAsTemp
   ]

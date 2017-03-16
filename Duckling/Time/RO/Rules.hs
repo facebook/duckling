@@ -17,7 +17,7 @@ import Control.Monad (liftM2)
 import Prelude
 
 import Duckling.Dimensions.Types
-import Duckling.Number.Helpers (parseInt)
+import Duckling.Numeral.Helpers (parseInt)
 import Duckling.Regex.Types
 import Duckling.Time.Helpers
 import Duckling.Time.Types (TimeData (..))
@@ -359,8 +359,8 @@ ruleCraciun = Rule
   , prod = \_ -> Just . Token Time $ monthDay 12 25
   }
 
-ruleTrimestruNumberYear :: Rule
-ruleTrimestruNumberYear = Rule
+ruleTrimestruNumeralYear :: Rule
+ruleTrimestruNumeralYear = Rule
   { name = "trimestru <number> <year>"
   , pattern =
     [ Predicate $ isGrain TG.Quarter
@@ -516,8 +516,8 @@ ruleIntersectBy = Rule
       _ -> Nothing
   }
 
-ruleDayofmonthNumber :: Rule
-ruleDayofmonthNumber = Rule
+ruleDayofmonthNumeral :: Rule
+ruleDayofmonthNumeral = Rule
   { name = "<day-of-month> (number)"
   , pattern =
     [ Predicate isDOMInteger
@@ -666,8 +666,8 @@ ruleByTheEndOfTime = Rule
       _ -> Nothing
   }
 
-ruleNameddayPeDayofmonthNumber :: Rule
-ruleNameddayPeDayofmonthNumber = Rule
+ruleNameddayPeDayofmonthNumeral :: Rule
+ruleNameddayPeDayofmonthNumeral = Rule
   { name = "<named-day> pe <day-of-month> (number)"
   , pattern =
     [ Predicate isADayOfWeek
@@ -888,8 +888,8 @@ ruleCycleUrmatoare = Rule
       _ -> Nothing
   }
 
-ruleTheDayofmonthNumber :: Rule
-ruleTheDayofmonthNumber = Rule
+ruleTheDayofmonthNumeral :: Rule
+ruleTheDayofmonthNumeral = Rule
   { name = "the <day-of-month> (number)"
   , pattern =
     [ regex "pe"
@@ -930,8 +930,8 @@ ruleCycleTrecut = Rule
       _ -> Nothing
   }
 
-ruleDayofmonthNumberOfNamedmonth :: Rule
-ruleDayofmonthNumberOfNamedmonth = Rule
+ruleDayofmonthNumeralOfNamedmonth :: Rule
+ruleDayofmonthNumeralOfNamedmonth = Rule
   { name = "<day-of-month> (number) of <named-month>"
   , pattern =
     [ Predicate isDOMInteger
@@ -1348,8 +1348,8 @@ ruleMothersDay = Rule
   , prod = \_ -> Just . Token Time $ nthDOWOfMonth 1 7 5
   }
 
-ruleNameddayDayofmonthNumber :: Rule
-ruleNameddayDayofmonthNumber = Rule
+ruleNameddayDayofmonthNumeral :: Rule
+ruleNameddayDayofmonthNumeral = Rule
   { name = "<named-day> <day-of-month> (number)"
   , pattern =
     [ Predicate isADayOfWeek
@@ -1403,8 +1403,8 @@ rules =
   , ruleCycleUrmatoare
   , ruleDayofmonthNonOrdinalNamedmonth
   , ruleDayofmonthNonOrdinalOfNamedmonth
-  , ruleDayofmonthNumber
-  , ruleDayofmonthNumberOfNamedmonth
+  , ruleDayofmonthNumeral
+  , ruleDayofmonthNumeralOfNamedmonth
   , ruleDayofmonthnumberNamedmonth
   , ruleDayofmonthnumberNamedmonthYear
   , ruleDdmm
@@ -1447,8 +1447,8 @@ rules =
   , ruleNamedday5
   , ruleNamedday6
   , ruleNamedday7
-  , ruleNameddayDayofmonthNumber
-  , ruleNameddayPeDayofmonthNumber
+  , ruleNameddayDayofmonthNumeral
+  , ruleNameddayPeDayofmonthNumeral
   , ruleNamedmonth
   , ruleNamedmonth10
   , ruleNamedmonth11
@@ -1479,7 +1479,7 @@ rules =
   , ruleSeason3
   , ruleSezonAnotimp
   , ruleSinceTimeofday
-  , ruleTheDayofmonthNumber
+  , ruleTheDayofmonthNumeral
   , ruleThisnextDayofweek
   , ruleTimeAceastaacestaasta
   , ruleTimePartofday
@@ -1488,7 +1488,7 @@ rules =
   , ruleTimeUrmatoarer
   , ruleTimeofdayFix
   , ruleTimeofdayLatent
-  , ruleTrimestruNumberYear
+  , ruleTrimestruNumeralYear
   , ruleUltimaCycle
   , ruleUltimeleNCycle
   , ruleUntilTimeofday

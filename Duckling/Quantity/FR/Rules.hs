@@ -19,20 +19,20 @@ import Data.String
 import Duckling.Dimensions.Types
 import Duckling.Quantity.Helpers
 import qualified Duckling.Quantity.Types as TQuantity
-import Duckling.Number.Types (NumberData (..))
-import qualified Duckling.Number.Types as TNumber
+import Duckling.Numeral.Types (NumeralData (..))
+import qualified Duckling.Numeral.Types as TNumeral
 import Duckling.Regex.Types
 import Duckling.Types
 
-ruleNumberUnits :: Rule
-ruleNumberUnits = Rule
+ruleNumeralUnits :: Rule
+ruleNumeralUnits = Rule
   { name = "<number> <units>"
   , pattern =
     [ dimension Numeral
     , regex "(tasses?|cuill?(e|\x00e8)res? (a|\x00e0) soupe?)"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumberData {TNumber.value = v}:
+      (Token Numeral NumeralData {TNumeral.value = v}:
        Token RegexMatch (GroupMatch (match:_)):
        _) -> case Text.toLower match of
          "tasse"  -> Just . Token Quantity $ quantity TQuantity.Cup v
@@ -57,6 +57,6 @@ ruleQuantityOfProduct = Rule
 
 rules :: [Rule]
 rules =
-  [ ruleNumberUnits
+  [ ruleNumeralUnits
   , ruleQuantityOfProduct
   ]

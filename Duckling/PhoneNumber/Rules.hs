@@ -17,7 +17,7 @@ import Prelude
 import Data.String
 
 import Duckling.Dimensions.Types
-import Duckling.Number.Helpers (parseInt)
+import Duckling.Numeral.Helpers (parseInt)
 import Duckling.PhoneNumber.Types (PhoneNumberData(..))
 import qualified Duckling.PhoneNumber.Types as TPhoneNumber
 import Duckling.Regex.Types

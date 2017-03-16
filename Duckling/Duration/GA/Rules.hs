@@ -17,8 +17,8 @@ import Data.String
 
 import Duckling.Dimensions.Types
 import Duckling.Duration.Helpers
-import Duckling.Number.Types (NumberData(..))
-import qualified Duckling.Number.Types as TNumber
+import Duckling.Numeral.Types (NumeralData(..))
+import qualified Duckling.Numeral.Types as TNumeral
 import qualified Duckling.TimeGrain.Types as TG
 import Duckling.Types
 
@@ -44,9 +44,9 @@ ruleAonDurationAmhain :: Rule
 ruleAonDurationAmhain = Rule
   { name = "aon X amhain"
   , pattern =
-    [ isNumberWith TNumber.value (== 1)
+    [ isNumeralWith TNumeral.value (== 1)
     , dimension TimeGrain
-    , isNumberWith TNumber.value (== 1)
+    , isNumeralWith TNumeral.value (== 1)
     ]
   , prod = \tokens -> case tokens of
       (_:Token TimeGrain grain:_) -> Just . Token Duration $ duration grain 1
@@ -57,14 +57,14 @@ ruleIntegerUnitofdurationInteger :: Rule
 ruleIntegerUnitofdurationInteger = Rule
   { name = "<unit-integer> <unit-of-duration> <tens-integer>"
   , pattern =
-    [ isNumberWith TNumber.value (< 10)
+    [ isNumeralWith TNumeral.value (< 10)
     , dimension TimeGrain
-    , isNumberWith TNumber.value (`elem` [10, 20 .. 50])
+    , isNumeralWith TNumeral.value (`elem` [10, 20 .. 50])
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumberData {TNumber.value = v1}):
+      (Token Numeral (NumeralData {TNumeral.value = v1}):
        Token TimeGrain grain:
-       Token Numeral (NumberData {TNumber.value = v2}):
+       Token Numeral (NumeralData {TNumeral.value = v2}):
        _) -> Just . Token Duration . duration grain . floor $ v1 + v2
       _ -> Nothing
   }

@@ -21,7 +21,7 @@ import Prelude
 import Data.String
 
 import Duckling.Dimensions.Types
-import Duckling.Number.Helpers (parseInt)
+import Duckling.Numeral.Helpers (parseInt)
 import Duckling.Ordinal.Helpers
 import Duckling.Regex.Types
 import Duckling.Types

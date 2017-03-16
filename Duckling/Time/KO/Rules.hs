@@ -18,7 +18,7 @@ import qualified Data.Text as Text
 import Prelude
 
 import Duckling.Dimensions.Types
-import Duckling.Number.Helpers (parseInt)
+import Duckling.Numeral.Helpers (parseInt)
 import Duckling.Ordinal.Types (OrdinalData (..))
 import qualified Duckling.Ordinal.Types as TOrdinal
 import Duckling.Regex.Types
@@ -563,8 +563,8 @@ ruleSeason = Rule
       in Just . Token Time $ interval False (from, to)
   }
 
-ruleDayWithKoreanNumber :: Rule
-ruleDayWithKoreanNumber = Rule
+ruleDayWithKoreanNumeral :: Rule
+ruleDayWithKoreanNumeral = Rule
   { name = "day with korean number - 십일..삼십일일"
   , pattern =
     [ regex "((\xc774|\xc0bc)?\xc2ed(\xc77c|\xc774|\xc0bc|\xc0ac|\xc624|\xc721|\xce60|\xd314|\xad6c)?)\xc77c"
@@ -590,8 +590,8 @@ ruleDayWithKoreanNumber = Rule
       _ -> Nothing
   }
 
-ruleDayWithKoreanNumber2 :: Rule
-ruleDayWithKoreanNumber2 = Rule
+ruleDayWithKoreanNumeral2 :: Rule
+ruleDayWithKoreanNumeral2 = Rule
   { name = "day with korean number - 일일..구일"
   , pattern =
     [ regex "(\xc77c|\xc774|\xc0bc|\xc0ac|\xc624|\xc721|\xce60|\xd314|\xad6c)\xc77c"
@@ -1271,8 +1271,8 @@ rules =
   , ruleDate
   , ruleDatetimeDatetimeInterval
   , ruleDay
-  , ruleDayWithKoreanNumber
-  , ruleDayWithKoreanNumber2
+  , ruleDayWithKoreanNumeral
+  , ruleDayWithKoreanNumeral2
   , ruleDayofweek
   , ruleDurationAgo
   , ruleDurationFromNow

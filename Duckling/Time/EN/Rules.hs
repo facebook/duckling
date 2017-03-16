@@ -21,9 +21,9 @@ import Prelude
 
 import Duckling.Dimensions.Types
 import Duckling.Duration.Helpers (duration)
-import Duckling.Number.Helpers (parseInt)
-import Duckling.Number.Types (NumberData (..))
-import qualified Duckling.Number.Types as TNumber
+import Duckling.Numeral.Helpers (parseInt)
+import Duckling.Numeral.Types (NumeralData (..))
+import qualified Duckling.Numeral.Types as TNumeral
 import Duckling.Ordinal.Types (OrdinalData (..))
 import qualified Duckling.Ordinal.Types as TOrdinal
 import Duckling.Regex.Types
@@ -325,8 +325,8 @@ ruleDOMLatent = Rule
       _ -> Nothing
   }
 
-ruleTheDOMNumber :: Rule
-ruleTheDOMNumber = Rule
+ruleTheDOMNumeral :: Rule
+ruleTheDOMNumeral = Rule
   { name = "the <day-of-month> (number)"
   , pattern =
     [ regex "the"
@@ -365,8 +365,8 @@ ruleNamedDOMOrdinal = Rule
       _ -> Nothing
   }
 
-ruleMonthDOMNumber :: Rule
-ruleMonthDOMNumber = Rule
+ruleMonthDOMNumeral :: Rule
+ruleMonthDOMNumeral = Rule
   { name = "<named-month> <day-of-month> (non ordinal)"
   , pattern =
     [ Predicate isAMonth
@@ -577,8 +577,8 @@ ruleHODQuarter = Rule
       _ -> Nothing
   }
 
-ruleNumberToHOD :: Rule
-ruleNumberToHOD = Rule
+ruleNumeralToHOD :: Rule
+ruleNumeralToHOD = Rule
   { name = "<integer> to|till|before <hour-of-day>"
   , pattern =
     [ Predicate $ isIntegerBetween 1 59
@@ -617,8 +617,8 @@ ruleQuarterToHOD = Rule
       _ -> Nothing
   }
 
-ruleNumberAfterHOD :: Rule
-ruleNumberAfterHOD = Rule
+ruleNumeralAfterHOD :: Rule
+ruleNumeralAfterHOD = Rule
   { name = "integer after|past <hour-of-day>"
   , pattern =
     [ Predicate $ isIntegerBetween 1 59
@@ -1446,15 +1446,15 @@ ruleDurationHenceAgo = Rule
       _ -> Nothing
   }
 
-ruleInNumber :: Rule
-ruleInNumber = Rule
+ruleInNumeral :: Rule
+ruleInNumeral = Rule
   { name = "in <number> (implicit minutes)"
   , pattern =
     [ regex "in"
     , Predicate $ isIntegerBetween 0 60
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Numeral (NumberData {TNumber.value = v}):_) ->
+      (_:Token Numeral (NumeralData {TNumeral.value = v}):_) ->
         Just . Token Time . inDuration . duration TG.Minute $ floor v
       _ -> Nothing
   }
@@ -1513,11 +1513,11 @@ rules =
   , ruleYear
   , ruleYearPastLatent
   , ruleYearFutureLatent
-  , ruleTheDOMNumber
+  , ruleTheDOMNumeral
   , ruleTheDOMOrdinal
   , ruleDOMLatent
   , ruleNamedDOMOrdinal
-  , ruleMonthDOMNumber
+  , ruleMonthDOMNumeral
   , ruleDOMMonth
   , ruleDOMOfMonth
   , ruleDOMOrdinalMonthYear
@@ -1533,10 +1533,10 @@ rules =
   , ruleHONumeral
   , ruleHODHalf
   , ruleHODQuarter
-  , ruleNumberToHOD
+  , ruleNumeralToHOD
   , ruleHalfToHOD
   , ruleQuarterToHOD
-  , ruleNumberAfterHOD
+  , ruleNumeralAfterHOD
   , ruleHalfAfterHOD
   , ruleQuarterAfterHOD
   , ruleHalfHOD
@@ -1587,7 +1587,7 @@ rules =
   , ruleDurationInWithinAfter
   , ruleDurationHenceAgo
   , ruleDurationAfterBeforeTime
-  , ruleInNumber
+  , ruleInNumeral
   , ruleTimezone
   ]
   ++ ruleInstants

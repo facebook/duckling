@@ -19,9 +19,9 @@ import Data.String
 
 import Duckling.Dimensions.Types
 import Duckling.Duration.Helpers
-import Duckling.Number.Helpers (parseInt)
-import Duckling.Number.Types (NumberData (..))
-import qualified Duckling.Number.Types as TNumber
+import Duckling.Numeral.Helpers (parseInt)
+import Duckling.Numeral.Types (NumeralData (..))
+import qualified Duckling.Numeral.Types as TNumeral
 import Duckling.Regex.Types
 import qualified Duckling.TimeGrain.Types as TG
 import Duckling.Types
@@ -45,8 +45,8 @@ ruleADay = Rule
   , prod = \_ -> Just . Token Duration $ duration TG.Day 1
   }
 
-ruleNumbernumberHours :: Rule
-ruleNumbernumberHours = Rule
+ruleNumeralnumberHours :: Rule
+ruleNumeralnumberHours = Rule
   { name = "number.number hours"
   , pattern =
     [ regex "(\\d+)\\.(\\d+)"
@@ -72,7 +72,7 @@ ruleIntegerAndAnHalfHours = Rule
     , regex "\xc2dc\xac04\xbc18"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumberData {TNumber.value = v}):_) ->
+      (Token Numeral (NumeralData {TNumeral.value = v}):_) ->
         Just . Token Duration . duration TG.Minute $ 30 + 60 * floor v
       _ -> Nothing
   }
@@ -108,5 +108,5 @@ rules =
   , ruleExactlyDuration
   , ruleHalfAnHour
   , ruleIntegerAndAnHalfHours
-  , ruleNumbernumberHours
+  , ruleNumeralnumberHours
   ]

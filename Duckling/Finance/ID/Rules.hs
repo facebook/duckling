@@ -20,8 +20,8 @@ import Duckling.Dimensions.Types
 import Duckling.Finance.Helpers
 import Duckling.Finance.Types (Currency(..))
 import qualified Duckling.Finance.Types as TFinance
-import Duckling.Number.Types (NumberData (..))
-import qualified Duckling.Number.Types as TNumber
+import Duckling.Numeral.Types (NumeralData (..))
+import qualified Duckling.Numeral.Types as TNumeral
 import Duckling.Types
 
 ruleDollar :: Rule
@@ -60,7 +60,7 @@ ruleIntersect = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Finance fd:
-       Token Numeral (NumberData {TNumber.value = c}):
+       Token Numeral (NumeralData {TNumeral.value = c}):
        _) -> Just . Token Finance $ withCents c fd
       _ -> Nothing
   }

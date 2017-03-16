@@ -19,9 +19,9 @@ import Data.String
 
 import Duckling.Dimensions.Types
 import Duckling.Duration.Helpers
-import Duckling.Number.Helpers (parseInt)
-import Duckling.Number.Types (NumberData(..))
-import qualified Duckling.Number.Types as TNumber
+import Duckling.Numeral.Helpers (parseInt)
+import Duckling.Numeral.Types (NumeralData(..))
+import qualified Duckling.Numeral.Types as TNumeral
 import Duckling.Regex.Types
 import qualified Duckling.TimeGrain.Types as TG
 import Duckling.Types
@@ -54,15 +54,15 @@ ruleDurationFortnight = Rule
   , prod = \_ -> Just . Token Duration $ duration TG.Day 14
   }
 
-ruleNumberQuotes :: Rule
-ruleNumberQuotes = Rule
+ruleNumeralQuotes :: Rule
+ruleNumeralQuotes = Rule
   { name = "<integer> + '\""
   , pattern =
     [ Predicate isNatural
     , regex "(['\"])"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumberData {TNumber.value = v}):
+      (Token Numeral (NumeralData {TNumeral.value = v}):
        Token RegexMatch (GroupMatch (x:_)):
        _) -> case x of
          "'"  -> Just . Token Duration . duration TG.Minute $ floor v
@@ -71,8 +71,8 @@ ruleNumberQuotes = Rule
       _ -> Nothing
   }
 
-ruleDurationNumberMore :: Rule
-ruleDurationNumberMore = Rule
+ruleDurationNumeralMore :: Rule
+ruleDurationNumeralMore = Rule
   { name = "<integer> more <unit-of-duration>"
   , pattern =
     [ Predicate isNatural
@@ -81,12 +81,12 @@ ruleDurationNumberMore = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral nd:_:Token TimeGrain grain:_) ->
-        Just . Token Duration . duration grain . floor $ TNumber.value nd
+        Just . Token Duration . duration grain . floor $ TNumeral.value nd
       _ -> Nothing
   }
 
-ruleDurationDotNumberHours :: Rule
-ruleDurationDotNumberHours = Rule
+ruleDurationDotNumeralHours :: Rule
+ruleDurationDotNumeralHours = Rule
   { name = "number.number hours"
   , pattern = [regex "(\\d+)\\.(\\d+) *hours?"]
   , prod = \tokens -> case tokens of
@@ -109,7 +109,7 @@ ruleDurationAndHalfHour = Rule
     , regex "and (an? )?half hours?"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumberData {TNumber.value = v}):_) ->
+      (Token Numeral (NumeralData {TNumeral.value = v}):_) ->
         Just . Token Duration . duration TG.Minute $ 30 + 60 * floor v
       _ -> Nothing
   }
@@ -144,10 +144,10 @@ rules =
   , ruleDurationHalfAnHour
   , ruleDurationThreeQuartersOfAnHour
   , ruleDurationFortnight
-  , ruleDurationNumberMore
-  , ruleDurationDotNumberHours
+  , ruleDurationNumeralMore
+  , ruleDurationDotNumeralHours
   , ruleDurationAndHalfHour
   , ruleDurationA
   , ruleDurationPrecision
-  , ruleNumberQuotes
+  , ruleNumeralQuotes
   ]

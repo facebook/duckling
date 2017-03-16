@@ -13,7 +13,7 @@ module Duckling.Duration.Helpers
   ( duration
   , isGrain
   , isNatural
-  , isNumberWith
+  , isNumeralWith
   ) where
 
 import Prelude
@@ -21,8 +21,8 @@ import Prelude
 import Duckling.Dimensions.Types
 import Duckling.Duration.Types (DurationData (DurationData))
 import qualified Duckling.Duration.Types as TDuration
-import Duckling.Number.Types (NumberData (NumberData))
-import qualified Duckling.Number.Types as TNumber
+import Duckling.Numeral.Types (NumeralData (NumeralData))
+import qualified Duckling.Numeral.Types as TNumeral
 import qualified Duckling.TimeGrain.Types as TG
 import Duckling.Types
 
@@ -34,12 +34,12 @@ isGrain value (Token TimeGrain grain) = grain == value
 isGrain _ _ = False
 
 isNatural :: Predicate
-isNatural (Token Numeral NumberData {TNumber.value = x}) =
-  TNumber.isNatural x
+isNatural (Token Numeral NumeralData {TNumeral.value = x}) =
+  TNumeral.isNatural x
 isNatural _ = False
 
-isNumberWith :: (NumberData -> t) -> (t -> Bool) -> PatternItem
-isNumberWith f pred = Predicate $ \x -> case x of
+isNumeralWith :: (NumeralData -> t) -> (t -> Bool) -> PatternItem
+isNumeralWith f pred = Predicate $ \x -> case x of
   (Token Numeral x) -> pred $ f x
   _ -> False
 

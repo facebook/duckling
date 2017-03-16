@@ -25,8 +25,8 @@ import Duckling.Dimensions.Types
 import Duckling.Finance.Helpers
 import Duckling.Finance.Types (Currency(..), FinanceData (..))
 import qualified Duckling.Finance.Types as TFinance
-import Duckling.Number.Types (NumberData (..))
-import qualified Duckling.Number.Types     as TNumber
+import Duckling.Numeral.Types (NumeralData (..))
+import qualified Duckling.Numeral.Types     as TNumeral
 import Duckling.Regex.Types
 import Duckling.Types
 
@@ -100,7 +100,7 @@ ruleAmountUnit = Rule
     , financeWith TFinance.value isNothing
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumberData {TNumber.value = v}):
+      (Token Numeral (NumeralData {TNumeral.value = v}):
        Token Finance (FinanceData {TFinance.currency = c}):
        _) -> Just . Token Finance . withValue v $ currencyOnly c
       _ -> Nothing
@@ -115,7 +115,7 @@ ruleUnitAmount = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Finance (FinanceData {TFinance.currency = c}):
-       Token Numeral (NumberData {TNumber.value = v}):
+       Token Numeral (NumeralData {TNumeral.value = v}):
        _) -> Just . Token Finance . withValue v $ currencyOnly c
       _ -> Nothing
   }

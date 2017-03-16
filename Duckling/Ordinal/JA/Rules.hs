@@ -16,8 +16,8 @@ import Prelude
 import Data.String
 
 import Duckling.Dimensions.Types
-import Duckling.Number.Types (NumberData (..))
-import qualified Duckling.Number.Types as TNumber
+import Duckling.Numeral.Types (NumeralData (..))
+import qualified Duckling.Numeral.Types as TNumeral
 import Duckling.Ordinal.Helpers
 import Duckling.Types
 
@@ -29,7 +29,7 @@ ruleOrdinalDigits = Rule
     , dimension Numeral
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Numeral (NumberData {TNumber.value = v}):_) ->
+      (_:Token Numeral (NumeralData {TNumeral.value = v}):_) ->
         Just . ordinal $ floor v
       _ -> Nothing
   }

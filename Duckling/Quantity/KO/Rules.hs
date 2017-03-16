@@ -16,8 +16,8 @@ import Prelude
 import Data.String
 
 import Duckling.Dimensions.Types
-import Duckling.Number.Types (NumberData (..))
-import qualified Duckling.Number.Types as TNumber
+import Duckling.Numeral.Types (NumeralData (..))
+import qualified Duckling.Numeral.Types as TNumeral
 import Duckling.Quantity.Helpers
 import qualified Duckling.Quantity.Types as TQuantity
 import Duckling.Regex.Types
@@ -51,15 +51,15 @@ ruleQuantityOfProduct2 = Rule
       _ -> Nothing
   }
 
-ruleNumberUnits :: Rule
-ruleNumberUnits = Rule
+ruleNumeralUnits :: Rule
+ruleNumeralUnits = Rule
   { name = "<number> <units>"
   , pattern =
     [ dimension Numeral
     , regex "(\xac1c|\xd310|\xadf8(\xb7a8|\xb78c)|\xadfc|\xd30c\xc6b4(\xb4dc|\xc988)|\xc8111\xc2dc|\xadf8\xb987|\xcef5)"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumberData {TNumber.value = v}:
+      (Token Numeral NumeralData {TNumeral.value = v}:
        Token RegexMatch (GroupMatch (match:_)):
        _) -> case match of
          "\xac1c"             -> Just . Token Quantity $ quantity TQuantity.Unnamed v
@@ -78,7 +78,7 @@ ruleNumberUnits = Rule
 
 rules :: [Rule]
 rules =
-  [ ruleNumberUnits
+  [ ruleNumeralUnits
   , ruleQuantityOfProduct
   , ruleQuantityOfProduct2
   ]

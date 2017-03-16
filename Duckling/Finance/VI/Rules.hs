@@ -20,8 +20,8 @@ import Duckling.Dimensions.Types
 import Duckling.Finance.Helpers
 import Duckling.Finance.Types (Currency(..), FinanceData (..))
 import qualified Duckling.Finance.Types as TFinance
-import Duckling.Number.Types (NumberData (..))
-import qualified Duckling.Number.Types as TNumber
+import Duckling.Numeral.Types (NumeralData (..))
+import qualified Duckling.Numeral.Types as TNumeral
 import Duckling.Types
 
 ruleNg :: Rule
@@ -78,13 +78,13 @@ ruleIntersect = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Finance fd:
-       Token Numeral (NumberData {TNumber.value = c}):
+       Token Numeral (NumeralData {TNumeral.value = c}):
        _) -> Just . Token Finance $ withCents c fd
       _ -> Nothing
   }
 
-ruleIntersectAndNumber :: Rule
-ruleIntersectAndNumber = Rule
+ruleIntersectAndNumeral :: Rule
+ruleIntersectAndNumeral = Rule
   { name = "intersect and number"
   , pattern =
     [ financeWith TFinance.value isJust
@@ -94,7 +94,7 @@ ruleIntersectAndNumber = Rule
   , prod = \tokens -> case tokens of
       (Token Finance fd:
        _:
-       Token Numeral (NumberData {TNumber.value = c}):
+       Token Numeral (NumeralData {TNumeral.value = c}):
        _) -> Just . Token Finance $ withCents c fd
       _ -> Nothing
   }
@@ -144,7 +144,7 @@ rules =
   , ruleDirham
   , ruleDollar
   , ruleIntersect
-  , ruleIntersectAndNumber
+  , ruleIntersectAndNumeral
   , ruleIntersectVXXuxen
   , ruleIntersectXXuxen
   , ruleNg

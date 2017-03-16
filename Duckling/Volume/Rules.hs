@@ -17,24 +17,24 @@ import Data.String
 import Prelude
 
 import Duckling.Dimensions.Types
-import Duckling.Number.Types (NumberData(..))
-import qualified Duckling.Number.Types as TNumber
+import Duckling.Numeral.Types (NumeralData(..))
+import qualified Duckling.Numeral.Types as TNumeral
 import Duckling.Types
 import Duckling.Volume.Helpers
 
-ruleNumberAsVolume :: Rule
-ruleNumberAsVolume = Rule
+ruleNumeralAsVolume :: Rule
+ruleNumeralAsVolume = Rule
   { name = "number as volume"
   , pattern =
     [ dimension Numeral
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumberData {TNumber.value = v}:_) ->
+      (Token Numeral NumeralData {TNumeral.value = v}:_) ->
         Just . Token Volume $ volume v
       _ -> Nothing
   }
 
 rules :: [Rule]
 rules =
-  [ ruleNumberAsVolume
+  [ ruleNumeralAsVolume
   ]

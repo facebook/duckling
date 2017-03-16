@@ -17,8 +17,8 @@ import Data.String
 
 import Duckling.Dimensions.Types
 import Duckling.Ordinal.Helpers
-import Duckling.Number.Types (NumberData (..))
-import qualified Duckling.Number.Types as TNumber
+import Duckling.Numeral.Types (NumeralData (..))
+import qualified Duckling.Numeral.Types as TNumeral
 import Duckling.Types
 
 ruleOrdinals :: Rule
@@ -29,7 +29,7 @@ ruleOrdinals = Rule
     , regex "\xbc88\xc9f8|\xc9f8(\xbc88)?"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumberData {TNumber.value = v}):_) ->
+      (Token Numeral (NumeralData {TNumeral.value = v}):_) ->
         Just . ordinal $ floor v
       _ -> Nothing
   }

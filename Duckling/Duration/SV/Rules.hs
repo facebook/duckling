@@ -19,9 +19,9 @@ import Data.String
 
 import Duckling.Dimensions.Types
 import Duckling.Duration.Helpers
-import Duckling.Number.Helpers (parseInt)
-import Duckling.Number.Types (NumberData(..))
-import qualified Duckling.Number.Types as TNumber
+import Duckling.Numeral.Helpers (parseInt)
+import Duckling.Numeral.Types (NumeralData(..))
+import qualified Duckling.Numeral.Types as TNumeral
 import Duckling.Regex.Types
 import qualified Duckling.TimeGrain.Types as TG
 import Duckling.Types
@@ -44,14 +44,14 @@ ruleIntegerMoreUnitofduration = Rule
     , regex "fler|mer"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumberData {TNumber.value = v}):
+      (Token Numeral (NumeralData {TNumeral.value = v}):
        Token TimeGrain grain:
        _) -> Just . Token Duration . duration grain $ floor v
       _ -> Nothing
   }
 
-ruleNumbernumberHours :: Rule
-ruleNumbernumberHours = Rule
+ruleNumeralnumberHours :: Rule
+ruleNumeralnumberHours = Rule
   { name = "number.number hours"
   , pattern =
     [ regex "(\\d+)\\,(\\d+)"
@@ -77,7 +77,7 @@ ruleIntegerAndAnHalfHours = Rule
     , regex "och (en )?halv timme?"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumberData {TNumber.value = v}):_) ->
+      (Token Numeral (NumeralData {TNumeral.value = v}):_) ->
         Just . Token Duration . duration TG.Minute $ 30 + 60 * floor v
       _ -> Nothing
   }
@@ -127,5 +127,5 @@ rules =
   , ruleHalfAnHour
   , ruleIntegerAndAnHalfHours
   , ruleIntegerMoreUnitofduration
-  , ruleNumbernumberHours
+  , ruleNumeralnumberHours
   ]

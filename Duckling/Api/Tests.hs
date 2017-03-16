@@ -23,7 +23,7 @@ import Test.Tasty.HUnit
 import Duckling.Api
 import Duckling.Dimensions.Types
 import Duckling.Lang
-import qualified Duckling.Number.Types as TNumber
+import qualified Duckling.Numeral.Types as TNumeral
 import Duckling.Testing.Asserts
 import Duckling.Testing.Types
 import Duckling.Types
@@ -48,7 +48,7 @@ parseTest = testCase "Parse Test" $
       assertEqual "end" 6 end
   where
     sentence = "hey 42 there"
-    val = toJText TNumber.NumberValue {TNumber.vValue = 42.0}
+    val = toJText TNumeral.NumeralValue {TNumeral.vValue = 42.0}
 
 rankTest :: TestTree
 rankTest = testGroup "Rank Tests"

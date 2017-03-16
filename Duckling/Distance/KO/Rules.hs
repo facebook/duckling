@@ -18,8 +18,8 @@ import Prelude
 import Duckling.Dimensions.Types
 import Duckling.Distance.Helpers
 import qualified Duckling.Distance.Types as TDistance
-import Duckling.Number.Types (NumberData (..))
-import qualified Duckling.Number.Types as TNumber
+import Duckling.Numeral.Types (NumeralData (..))
+import qualified Duckling.Numeral.Types as TNumeral
 import Duckling.Types
 
 ruleLatentDistYard :: Rule
@@ -109,7 +109,7 @@ ruleHalf = Rule
     [ regex "\xbc18"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumberData {TNumber.value = v}:_) ->
+      (Token Numeral NumeralData {TNumeral.value = v}:_) ->
         Just . Token Distance $ distance v
       _ -> Nothing
   }

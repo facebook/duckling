@@ -16,7 +16,7 @@ module Duckling.Rules.SV
 import Duckling.Dimensions.Types
 import qualified Duckling.Duration.SV.Rules as Duration
 import qualified Duckling.Finance.SV.Rules as Finance
-import qualified Duckling.Number.SV.Rules as Number
+import qualified Duckling.Numeral.SV.Rules as Numeral
 import qualified Duckling.Ordinal.SV.Rules as Ordinal
 import qualified Duckling.Time.SV.Rules as Time
 import qualified Duckling.TimeGrain.SV.Rules as TimeGrain
@@ -25,7 +25,7 @@ import Duckling.Types
 rules :: Some Dimension -> [Rule]
 rules (This Distance) = []
 rules (This Duration) = Duration.rules
-rules (This Numeral) = Number.rules
+rules (This Numeral) = Numeral.rules
 rules (This Email) = []
 rules (This Finance) = Finance.rules
 rules (This Ordinal) = Ordinal.rules

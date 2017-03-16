@@ -17,7 +17,7 @@ import Duckling.Dimensions.Types
 import qualified Duckling.Distance.KO.Rules as Distance
 import qualified Duckling.Duration.KO.Rules as Duration
 import qualified Duckling.Finance.KO.Rules as Finance
-import qualified Duckling.Number.KO.Rules as Number
+import qualified Duckling.Numeral.KO.Rules as Numeral
 import qualified Duckling.Ordinal.KO.Rules as Ordinal
 import qualified Duckling.Quantity.KO.Rules as Quantity
 import qualified Duckling.Temperature.KO.Rules as Temperature
@@ -29,7 +29,7 @@ import qualified Duckling.Volume.KO.Rules as Volume
 rules :: Some Dimension -> [Rule]
 rules (This Distance) = Distance.rules
 rules (This Duration) = Duration.rules
-rules (This Numeral) = Number.rules
+rules (This Numeral) = Numeral.rules
 rules (This Email) = []
 rules (This Finance) = Finance.rules
 rules (This Ordinal) = Ordinal.rules

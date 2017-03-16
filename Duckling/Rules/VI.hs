@@ -15,13 +15,13 @@ module Duckling.Rules.VI
 
 import Duckling.Dimensions.Types
 import qualified Duckling.Finance.VI.Rules as Finance
-import qualified Duckling.Number.VI.Rules as Number
+import qualified Duckling.Numeral.VI.Rules as Numeral
 import Duckling.Types
 
 rules :: Some Dimension -> [Rule]
 rules (This Distance) = []
 rules (This Duration) = []
-rules (This Numeral) = Number.rules
+rules (This Numeral) = Numeral.rules
 rules (This Email) = []
 rules (This Finance) = Finance.rules
 rules (This Ordinal) = []

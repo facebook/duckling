@@ -18,9 +18,9 @@ import qualified Data.Text as Text
 import Prelude
 
 import Duckling.Dimensions.Types
-import Duckling.Number.Helpers (parseInt)
-import Duckling.Number.Types (NumberData(..))
-import qualified Duckling.Number.Types as TNumber
+import Duckling.Numeral.Helpers (parseInt)
+import Duckling.Numeral.Types (NumeralData(..))
+import qualified Duckling.Numeral.Types as TNumeral
 import Duckling.Ordinal.Types (OrdinalData(..))
 import qualified Duckling.Ordinal.Types as TOrdinal
 import Duckling.Regex.Types
@@ -2066,7 +2066,7 @@ ruleIntegerDelPartOfDay = Rule
     , regex "d(i|el(la)?) (pomeriggio|(sta)?(sera|notte))"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumberData {TNumber.value = v}):_) ->
+      (Token Numeral (NumeralData {TNumeral.value = v}):_) ->
         Just . Token Time $ hour False (12 + floor v)
       _ -> Nothing
   }

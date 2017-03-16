@@ -17,7 +17,7 @@ import Control.Monad (liftM2)
 import Prelude
 
 import Duckling.Dimensions.Types
-import Duckling.Number.Helpers (parseInt)
+import Duckling.Numeral.Helpers (parseInt)
 import Duckling.Regex.Types
 import Duckling.Time.Helpers
 import Duckling.Time.Types (TimeData (..))
@@ -544,8 +544,8 @@ ruleHourofdayEtTroisQuart = Rule
       _ -> Nothing
   }
 
-ruleHourofdayEtpassDeNumber :: Rule
-ruleHourofdayEtpassDeNumber = Rule
+ruleHourofdayEtpassDeNumeral :: Rule
+ruleHourofdayEtpassDeNumeral = Rule
   { name = "<hour-of-day> et|passé de <number>"
   , pattern =
     [ Predicate isAnHourOfDay
@@ -562,8 +562,8 @@ ruleHourofdayEtpassDeNumber = Rule
       _ -> Nothing
   }
 
-ruleHourofdayEtpassDeNumberMinutes :: Rule
-ruleHourofdayEtpassDeNumberMinutes = Rule
+ruleHourofdayEtpassDeNumeralMinutes :: Rule
+ruleHourofdayEtpassDeNumeralMinutes = Rule
   { name = "<hour-of-day> et|passé de <number> minutes"
   , pattern =
     [ Predicate isAnHourOfDay
@@ -2158,8 +2158,8 @@ rules =
   , ruleHourofdayMoinsIntegerAsRelativeMinutes
   , ruleHourofdayIntegerMinutes
   , ruleHourofdayInteger
-  , ruleHourofdayEtpassDeNumber
-  , ruleHourofdayEtpassDeNumberMinutes
+  , ruleHourofdayEtpassDeNumeral
+  , ruleHourofdayEtpassDeNumeralMinutes
   , ruleHourofdayEtTroisQuart
   , ruleHourofdayEtQuart
   , ruleHourofdayEtDemi

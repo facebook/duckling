@@ -21,7 +21,7 @@ import Prelude
 import Data.String
 
 import Duckling.Dimensions.Types
-import Duckling.Number.Helpers (parseInt)
+import Duckling.Numeral.Helpers (parseInt)
 import Duckling.Ordinal.Helpers
 import Duckling.Regex.Types
 import Duckling.Types
@@ -43,7 +43,7 @@ rulePrimulDouaPatraNoua = Rule
       _ -> Nothing
  }
 
--- We can't have a generic rule of the form "al?" + Number + "(le)?a"
+-- We can't have a generic rule of the form "al?" + Numeral + "(le)?a"
 -- It wouldn't match "al optlea"
 
 ruleOrdinalDigits :: Rule

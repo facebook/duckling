@@ -38,7 +38,7 @@ import Duckling.Distance.Types (DistanceData)
 import Duckling.Duration.Types (DurationData)
 import Duckling.Email.Types (EmailData)
 import Duckling.Finance.Types (FinanceData)
-import Duckling.Number.Types (NumberData)
+import Duckling.Numeral.Types (NumeralData)
 import Duckling.Ordinal.Types (OrdinalData)
 import Duckling.PhoneNumber.Types (PhoneNumberData)
 import Duckling.Quantity.Types (QuantityData)
@@ -61,7 +61,7 @@ data Dimension a where
   Duration :: Dimension DurationData
   Email :: Dimension EmailData
   Finance :: Dimension FinanceData
-  Numeral :: Dimension NumberData
+  Numeral :: Dimension NumeralData
   Ordinal :: Dimension OrdinalData
   PhoneNumber :: Dimension PhoneNumberData
   Quantity :: Dimension QuantityData

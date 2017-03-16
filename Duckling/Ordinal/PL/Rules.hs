@@ -16,7 +16,7 @@ import Prelude
 import Data.String
 
 import Duckling.Dimensions.Types
-import Duckling.Number.Helpers (parseInt)
+import Duckling.Numeral.Helpers (parseInt)
 import Duckling.Ordinal.Helpers
 import Duckling.Ordinal.Types (OrdinalData (..))
 import qualified Duckling.Ordinal.Types as TOrdinal

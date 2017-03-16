@@ -16,22 +16,22 @@ import Prelude
 import Data.String
 
 import Duckling.Dimensions.Types
-import Duckling.Number.Types (NumberData (..))
-import qualified Duckling.Number.Types as TNumber
+import Duckling.Numeral.Types (NumeralData (..))
+import qualified Duckling.Numeral.Types as TNumeral
 import Duckling.Quantity.Helpers
 import qualified Duckling.Quantity.Types as TQuantity
 import Duckling.Regex.Types
 import Duckling.Types
 
-ruleNumberUnits :: Rule
-ruleNumberUnits = Rule
+ruleNumeralUnits :: Rule
+ruleNumeralUnits = Rule
   { name = "<number> <units>"
   , pattern =
     [ dimension Numeral
     , regex "livr(a|e|\x0103)"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumberData {TNumber.value = v}:_) ->
+      (Token Numeral NumeralData {TNumeral.value = v}:_) ->
         Just . Token Quantity $ quantity TQuantity.Pound v
       _ -> Nothing
   }
@@ -52,6 +52,6 @@ ruleQuantityOfProduct = Rule
 
 rules :: [Rule]
 rules =
-  [ ruleNumberUnits
+  [ ruleNumeralUnits
   , ruleQuantityOfProduct
   ]

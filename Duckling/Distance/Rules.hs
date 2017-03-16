@@ -19,23 +19,23 @@ import Prelude
 
 import Duckling.Dimensions.Types
 import Duckling.Distance.Helpers
-import Duckling.Number.Types (NumberData (..))
-import qualified Duckling.Number.Types as TNumber
+import Duckling.Numeral.Types (NumeralData (..))
+import qualified Duckling.Numeral.Types as TNumeral
 import Duckling.Types
 
-ruleNumberAsDistance :: Rule
-ruleNumberAsDistance = Rule
+ruleNumeralAsDistance :: Rule
+ruleNumeralAsDistance = Rule
   { name = "number as distance"
   , pattern =
     [ dimension Numeral
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumberData {TNumber.value = v}:_) ->
+      (Token Numeral NumeralData {TNumeral.value = v}:_) ->
         Just . Token Distance $ distance v
       _ -> Nothing
   }
 
 rules :: [Rule]
 rules =
-  [ ruleNumberAsDistance
+  [ ruleNumeralAsDistance
   ]

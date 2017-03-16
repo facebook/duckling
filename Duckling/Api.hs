@@ -56,7 +56,7 @@ analyze input context@Context{..} targets =
 -- | Converts the resolved token to the API format
 formatToken :: Text -> ResolvedToken -> Entity
 formatToken sentence (Resolved (Range start end) (Node{token=Token dimension _}) jsonValue) =
-  Entity (showt dimension) body val start end
+  Entity (toName dimension) body val start end
   where
     body = Text.drop start $ Text.take end sentence
     val = toJText jsonValue

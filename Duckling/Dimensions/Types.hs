@@ -19,6 +19,7 @@ module Duckling.Dimensions.Types
   , Dimension(..)
 
   , fromName
+  , toName
   ) where
 
 import Data.GADT.Compare
@@ -73,20 +74,20 @@ data Dimension a where
 
 -- Show
 instance Show (Dimension a) where
-  show RegexMatch = "regex"
-  show Distance = "distance"
-  show Duration = "duration"
-  show Email = "email"
-  show AmountOfMoney = "amount-of-money"
-  show Numeral = "number"
-  show Ordinal = "ordinal"
-  show PhoneNumber = "phone-number"
-  show Quantity = "quantity"
-  show Temperature = "temperature"
-  show Time = "time"
-  show TimeGrain = "time-grain"
-  show Url = "url"
-  show Volume = "volume"
+  show RegexMatch = "RegexMatch"
+  show Distance = "Distance"
+  show Duration = "Duration"
+  show Email = "Email"
+  show AmountOfMoney = "AmountOfMoney"
+  show Numeral = "Numeral"
+  show Ordinal = "Ordinal"
+  show PhoneNumber = "PhoneNumber"
+  show Quantity = "Quantity"
+  show Temperature = "Temperature"
+  show Time = "Time"
+  show TimeGrain = "TimeGrain"
+  show Url = "Url"
+  show Volume = "Volume"
 instance GShow Dimension where gshowsPrec = showsPrec
 
 -- TextShow
@@ -114,6 +115,22 @@ instance Hashable (Dimension a) where
   hashWithSalt s Url         = hashWithSalt s (12::Int)
   hashWithSalt s Volume      = hashWithSalt s (13::Int)
 
+
+toName :: Dimension a -> Text
+toName RegexMatch = "regex"
+toName Distance = "distance"
+toName Duration = "duration"
+toName Email = "email"
+toName AmountOfMoney = "amount-of-money"
+toName Numeral = "number"
+toName Ordinal = "ordinal"
+toName PhoneNumber = "phone-number"
+toName Quantity = "quantity"
+toName Temperature = "temperature"
+toName Time = "time"
+toName TimeGrain = "time-grain"
+toName Url = "url"
+toName Volume = "volume"
 
 fromName :: Text -> Maybe (Some Dimension)
 fromName name = HashMap.lookup name m

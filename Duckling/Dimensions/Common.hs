@@ -15,7 +15,7 @@ import Duckling.Dimensions.Types
 allDimensions :: [Some Dimension]
 allDimensions =
   [ This Email
-  , This Finance
+  , This AmountOfMoney
   , This PhoneNumber
   , This Url
   ]

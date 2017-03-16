@@ -34,10 +34,10 @@ import TextShow (TextShow(..))
 import qualified TextShow as TS
 import Prelude
 
+import Duckling.AmountOfMoney.Types (AmountOfMoneyData)
 import Duckling.Distance.Types (DistanceData)
 import Duckling.Duration.Types (DurationData)
 import Duckling.Email.Types (EmailData)
-import Duckling.Finance.Types (FinanceData)
 import Duckling.Numeral.Types (NumeralData)
 import Duckling.Ordinal.Types (OrdinalData)
 import Duckling.PhoneNumber.Types (PhoneNumberData)
@@ -57,10 +57,10 @@ import Duckling.Volume.Types (VolumeData)
 -- for its parsed data
 data Dimension a where
   RegexMatch :: Dimension GroupMatch
+  AmountOfMoney :: Dimension AmountOfMoneyData
   Distance :: Dimension DistanceData
   Duration :: Dimension DurationData
   Email :: Dimension EmailData
-  Finance :: Dimension FinanceData
   Numeral :: Dimension NumeralData
   Ordinal :: Dimension OrdinalData
   PhoneNumber :: Dimension PhoneNumberData
@@ -77,7 +77,7 @@ instance Show (Dimension a) where
   show Distance = "distance"
   show Duration = "duration"
   show Email = "email"
-  show Finance = "amount-of-money"
+  show AmountOfMoney = "amount-of-money"
   show Numeral = "number"
   show Ordinal = "ordinal"
   show PhoneNumber = "phone-number"
@@ -103,7 +103,7 @@ instance Hashable (Dimension a) where
   hashWithSalt s Distance    = hashWithSalt s (1::Int)
   hashWithSalt s Duration    = hashWithSalt s (2::Int)
   hashWithSalt s Email       = hashWithSalt s (3::Int)
-  hashWithSalt s Finance     = hashWithSalt s (4::Int)
+  hashWithSalt s AmountOfMoney     = hashWithSalt s (4::Int)
   hashWithSalt s Numeral     = hashWithSalt s (5::Int)
   hashWithSalt s Ordinal     = hashWithSalt s (6::Int)
   hashWithSalt s PhoneNumber = hashWithSalt s (7::Int)
@@ -119,7 +119,7 @@ fromName :: Text -> Maybe (Some Dimension)
 fromName name = HashMap.lookup name m
   where
     m = HashMap.fromList
-      [ ("amount-of-money", This Finance)
+      [ ("amount-of-money", This AmountOfMoney)
       , ("distance", This Distance)
       , ("duration", This Duration)
       , ("email", This Email)
@@ -142,8 +142,8 @@ instance GEq Dimension where
   geq Duration _ = Nothing
   geq Email Email = Just Refl
   geq Email _ = Nothing
-  geq Finance Finance = Just Refl
-  geq Finance _ = Nothing
+  geq AmountOfMoney AmountOfMoney = Just Refl
+  geq AmountOfMoney _ = Nothing
   geq Numeral Numeral = Just Refl
   geq Numeral _ = Nothing
   geq Ordinal Ordinal = Just Refl

@@ -14,10 +14,10 @@ import Data.String
 import Prelude
 import Test.Tasty
 
+import qualified Duckling.AmountOfMoney.Tests as AmountOfMoney
 import qualified Duckling.Distance.Tests as Distance
 import qualified Duckling.Duration.Tests as Duration
 import qualified Duckling.Email.Tests as Email
-import qualified Duckling.Finance.Tests as Finance
 import qualified Duckling.Numeral.Tests as Numeral
 import qualified Duckling.Ordinal.Tests as Ordinal
 import qualified Duckling.PhoneNumber.Tests as PhoneNumber
@@ -29,10 +29,10 @@ import qualified Duckling.Url.Tests as Url
 
 tests :: TestTree
 tests = testGroup "Dimensions Tests"
-  [ Distance.tests
+  [ AmountOfMoney.tests
+  , Distance.tests
   , Duration.tests
   , Email.tests
-  , Finance.tests
   , Numeral.tests
   , Ordinal.tests
   , PhoneNumber.tests

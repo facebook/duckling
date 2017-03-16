@@ -14,8 +14,8 @@ module Duckling.Rules.PT
   ) where
 
 import Duckling.Dimensions.Types
+import qualified Duckling.AmountOfMoney.PT.Rules as AmountOfMoney
 import qualified Duckling.Distance.PT.Rules as Distance
-import qualified Duckling.Finance.PT.Rules as Finance
 import qualified Duckling.Numeral.PT.Rules as Numeral
 import qualified Duckling.Ordinal.PT.Rules as Ordinal
 import qualified Duckling.Quantity.PT.Rules as Quantity
@@ -30,7 +30,7 @@ rules (This Distance) = Distance.rules
 rules (This Duration) = []
 rules (This Numeral) = Numeral.rules
 rules (This Email) = []
-rules (This Finance) = Finance.rules
+rules (This AmountOfMoney) = AmountOfMoney.rules
 rules (This Ordinal) = Ordinal.rules
 rules (This PhoneNumber) = []
 rules (This Quantity) = Quantity.rules

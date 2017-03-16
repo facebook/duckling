@@ -13,8 +13,8 @@ module Duckling.Rules.ID
   ( rules
   ) where
 
+import qualified Duckling.AmountOfMoney.ID.Rules as AmountOfMoney
 import Duckling.Dimensions.Types
-import qualified Duckling.Finance.ID.Rules as Finance
 import qualified Duckling.Numeral.ID.Rules as Numeral
 import qualified Duckling.Ordinal.ID.Rules as Ordinal
 import Duckling.Types
@@ -24,7 +24,7 @@ rules (This Distance) = []
 rules (This Duration) = []
 rules (This Numeral) = Numeral.rules
 rules (This Email) = []
-rules (This Finance) = Finance.rules
+rules (This AmountOfMoney) = AmountOfMoney.rules
 rules (This Ordinal) = Ordinal.rules
 rules (This PhoneNumber) = []
 rules (This Quantity) = []

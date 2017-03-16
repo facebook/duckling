@@ -122,6 +122,33 @@ library
                      , Duckling.Dimensions.VI
                      , Duckling.Dimensions.ZH
 
+                     -- AmountOfMoney
+                     , Duckling.AmountOfMoney.EN.Corpus
+                     , Duckling.AmountOfMoney.EN.Rules
+                     , Duckling.AmountOfMoney.ES.Corpus
+                     , Duckling.AmountOfMoney.ES.Rules
+                     , Duckling.AmountOfMoney.FR.Corpus
+                     , Duckling.AmountOfMoney.FR.Rules
+                     , Duckling.AmountOfMoney.GA.Corpus
+                     , Duckling.AmountOfMoney.GA.Rules
+                     , Duckling.AmountOfMoney.ID.Corpus
+                     , Duckling.AmountOfMoney.ID.Rules
+                     , Duckling.AmountOfMoney.KO.Corpus
+                     , Duckling.AmountOfMoney.KO.Rules
+                     , Duckling.AmountOfMoney.NB.Corpus
+                     , Duckling.AmountOfMoney.NB.Rules
+                     , Duckling.AmountOfMoney.PT.Corpus
+                     , Duckling.AmountOfMoney.PT.Rules
+                     , Duckling.AmountOfMoney.RO.Corpus
+                     , Duckling.AmountOfMoney.RO.Rules
+                     , Duckling.AmountOfMoney.SV.Corpus
+                     , Duckling.AmountOfMoney.SV.Rules
+                     , Duckling.AmountOfMoney.VI.Corpus
+                     , Duckling.AmountOfMoney.VI.Rules
+                     , Duckling.AmountOfMoney.Helpers
+                     , Duckling.AmountOfMoney.Rules
+                     , Duckling.AmountOfMoney.Types
+
                      -- Distance
                      , Duckling.Distance.EN.Corpus
                      , Duckling.Distance.EN.Rules
@@ -180,33 +207,6 @@ library
                      , Duckling.Email.Corpus
                      , Duckling.Email.Rules
                      , Duckling.Email.Types
-
-                     -- Finance
-                     , Duckling.Finance.EN.Corpus
-                     , Duckling.Finance.EN.Rules
-                     , Duckling.Finance.ES.Corpus
-                     , Duckling.Finance.ES.Rules
-                     , Duckling.Finance.FR.Corpus
-                     , Duckling.Finance.FR.Rules
-                     , Duckling.Finance.GA.Corpus
-                     , Duckling.Finance.GA.Rules
-                     , Duckling.Finance.ID.Corpus
-                     , Duckling.Finance.ID.Rules
-                     , Duckling.Finance.KO.Corpus
-                     , Duckling.Finance.KO.Rules
-                     , Duckling.Finance.NB.Corpus
-                     , Duckling.Finance.NB.Rules
-                     , Duckling.Finance.PT.Corpus
-                     , Duckling.Finance.PT.Rules
-                     , Duckling.Finance.RO.Corpus
-                     , Duckling.Finance.RO.Rules
-                     , Duckling.Finance.SV.Corpus
-                     , Duckling.Finance.SV.Rules
-                     , Duckling.Finance.VI.Corpus
-                     , Duckling.Finance.VI.Rules
-                     , Duckling.Finance.Helpers
-                     , Duckling.Finance.Rules
-                     , Duckling.Finance.Types
 
                      -- Numeral
                      , Duckling.Numeral.AR.Corpus
@@ -481,6 +481,20 @@ test-suite duckling-test
   -- Dimensions
                      , Duckling.Dimensions.Tests
 
+                     -- AmountOfMoney
+                     , Duckling.AmountOfMoney.EN.Tests
+                     , Duckling.AmountOfMoney.ES.Tests
+                     , Duckling.AmountOfMoney.FR.Tests
+                     , Duckling.AmountOfMoney.GA.Tests
+                     , Duckling.AmountOfMoney.ID.Tests
+                     , Duckling.AmountOfMoney.KO.Tests
+                     , Duckling.AmountOfMoney.NB.Tests
+                     , Duckling.AmountOfMoney.PT.Tests
+                     , Duckling.AmountOfMoney.RO.Tests
+                     , Duckling.AmountOfMoney.SV.Tests
+                     , Duckling.AmountOfMoney.VI.Tests
+                     , Duckling.AmountOfMoney.Tests
+
                      -- Distance
                      , Duckling.Distance.EN.Tests
                      , Duckling.Distance.ES.Tests
@@ -511,20 +525,6 @@ test-suite duckling-test
                      , Duckling.Email.FR.Tests
                      , Duckling.Email.IT.Tests
                      , Duckling.Email.Tests
-
-                     -- Finance
-                     , Duckling.Finance.EN.Tests
-                     , Duckling.Finance.ES.Tests
-                     , Duckling.Finance.FR.Tests
-                     , Duckling.Finance.GA.Tests
-                     , Duckling.Finance.ID.Tests
-                     , Duckling.Finance.KO.Tests
-                     , Duckling.Finance.NB.Tests
-                     , Duckling.Finance.PT.Tests
-                     , Duckling.Finance.RO.Tests
-                     , Duckling.Finance.SV.Tests
-                     , Duckling.Finance.VI.Tests
-                     , Duckling.Finance.Tests
 
                      -- Numeral
                      , Duckling.Numeral.AR.Tests

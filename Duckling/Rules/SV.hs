@@ -14,10 +14,10 @@ module Duckling.Rules.SV
   ) where
 
 import Duckling.Dimensions.Types
+import qualified Duckling.AmountOfMoney.SV.Rules as AmountOfMoney
 import qualified Duckling.Duration.SV.Rules as Duration
-import qualified Duckling.Finance.SV.Rules as Finance
-import qualified Duckling.Numeral.SV.Rules as Numeral
 import qualified Duckling.Ordinal.SV.Rules as Ordinal
+import qualified Duckling.Numeral.SV.Rules as Numeral
 import qualified Duckling.Time.SV.Rules as Time
 import qualified Duckling.TimeGrain.SV.Rules as TimeGrain
 import Duckling.Types
@@ -27,7 +27,7 @@ rules (This Distance) = []
 rules (This Duration) = Duration.rules
 rules (This Numeral) = Numeral.rules
 rules (This Email) = []
-rules (This Finance) = Finance.rules
+rules (This AmountOfMoney) = AmountOfMoney.rules
 rules (This Ordinal) = Ordinal.rules
 rules (This PhoneNumber) = []
 rules (This Quantity) = []

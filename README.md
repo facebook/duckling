@@ -37,7 +37,7 @@ Duckling supports many languages, but most don't support all dimensions yet
 | `Distance` | "6 miles" | `{"value":6,"type":"value","unit":"mile"}`
 | `Duration` | "3 mins" | `{"value":3,"minute":3,"unit":"minute","normalized":{"value":180,"unit":"second"}}`
 | `Email` | "duckling@wit.ai" | `{"value":"duckling@wit.ai"}`
-| `Finance` | "42€" | `{"value":42,"type":"value","unit":"EUR"}`
+| `AmountOfMoney` | "42€" | `{"value":42,"type":"value","unit":"EUR"}`
 | `Numeral` | "eighty eight" | `{"value":88,"type":"value"}`
 | `Ordinal` | "33rd" | `{"value":33,"type":"value"}`
 | `PhoneNumber` | "+1 (650) 123-4567" | `{"value":"(+1) 6501234567"}`

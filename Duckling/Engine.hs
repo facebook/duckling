@@ -59,21 +59,6 @@ produce (Rule name _ production, _, etuor@(Node {nodeRange = Range _ e}:_)) = do
       }
     [] -> Nothing
 
--- True iff a is followed by whitespaces and b.
-isAdjacent :: Int -> Int -> Document -> Bool
-isAdjacent a b Document { rawInput = s } =
-  b >= a && (Text.all isAdjacentSeparator . substr s a $ b - a)
-  where
-    isAdjacentSeparator :: Char -> Bool
-    isAdjacentSeparator c = elem c [' ', '\t', '-']
-
-    substr :: Text  -- ^ String
-           -> Int   -- ^ Offset
-           -> Int   -- ^ Length
-           -> Text  -- ^ Substring
-    substr txt start (-1)  = Text.drop start txt
-    substr txt start count = Text.take count $ Text.drop start txt
-
 -- As regexes are matched without whitespace delimitator, we need to check
 -- the reasonability of the match to actually be a word.
 isRangeValid :: Document -> Range -> Bool

@@ -446,6 +446,7 @@ library
                      , time                  >= 1.5.0.1 && < 1.7
                      , timezone-series       >= 0.1.5.1 && < 0.2
                      , unordered-containers  >= 0.2.7.2 && < 0.3
+                     , vector                >= 0.11.0.0 && < 0.12
   default-language:    Haskell2010
   default-extensions:  OverloadedStrings
                      , RebindableSyntax
@@ -469,6 +470,7 @@ test-suite duckling-test
                      , time                  >= 1.5.0.1 && < 1.7
                      , timezone-series       >= 0.1.5.1 && < 0.2
                      , unordered-containers  >= 0.2.7.2 && < 0.3
+                     , vector                >= 0.11.0.0 && < 0.12
                      , tasty                 >= 0.11.1 && < 0.12
                      , tasty-hunit           >= 0.9.2 && < 1.0
   other-modules:       Duckling.Tests
@@ -656,6 +658,7 @@ executable duckling-regen-exe
                      , time                  >= 1.5.0.1 && < 1.7
                      , timezone-series       >= 0.1.5.1 && < 0.2
                      , unordered-containers  >= 0.2.7.2 && < 0.3
+                     , vector                >= 0.11.0.0 && < 0.12
   default-language:    Haskell2010
   default-extensions:  OverloadedStrings
 
@@ -683,6 +686,7 @@ executable duckling-example-exe
                      , timezone-olson        >= 0.1.7 && < 0.2
                      , timezone-series       >= 0.1.5.1 && < 0.2
                      , unordered-containers  >= 0.2.7.2 && < 0.3
+                     , vector                >= 0.11.0.0 && < 0.12
   default-language:    Haskell2010
   default-extensions:  OverloadedStrings
 

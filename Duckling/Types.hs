@@ -13,6 +13,7 @@
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE NoRebindableSyntax #-}
 {-# LANGUAGE RankNTypes #-}
+{-# LANGUAGE RecordWildCards #-}
 {-# LANGUAGE StandaloneDeriving #-}
 
 module Duckling.Types where
@@ -25,7 +26,10 @@ import Data.Hashable
 import Data.Maybe
 import Data.String
 import Data.Text (Text)
+import Data.Vector.Primitive (Vector)
 import qualified Data.Text.Encoding as Text
+import qualified Data.Text as Text
+import qualified Data.Vector.Primitive as Vector
 import Data.Typeable ((:~:)(Refl), Typeable)
 import GHC.Generics
 import Prelude
@@ -35,14 +39,38 @@ import qualified Text.Regex.PCRE as PCRE
 import Duckling.Dimensions.Types
 import Duckling.Resolve
 
-newtype Document = Document { rawInput :: Text }
-  deriving (Show)
+data Document = Document
+  { rawInput :: !Text
+  , indexable :: !(Vector Char) -- for O(1) indexing pos -> Char
+  , firstNonAdjacent :: !(Vector Int)
+    -- for a given index 'i' it keeps a first index 'j' greater or equal 'i'
+    -- such that isAdjacentSeparator (indexable ! j) == False
+    -- eg. " a document " :: Document
+    --     firstNonAdjacent = [1,1,3,3,4,5,6,7,8,9,10,12]
+    -- Note that in this case 12 is the length of the vector, hence not a
+    -- valid index inside the array, this is intentional.
+  } deriving (Show)
 
 instance IsString Document where
   fromString = mkDocument . fromString
 
 mkDocument :: Text -> Document
-mkDocument = Document
+mkDocument s = Document s v fna
+  where
+  v = Vector.fromList $ Text.unpack s
+  fna = Vector.fromList $ snd $ Vector.ifoldr' gen (Vector.length v, []) v
+  -- go from the end keeping track of the first nonAdjacent (best)
+  gen ix elem (best, acc)
+    | isAdjacentSeparator elem = (best, best:acc)
+    | otherwise = (ix, ix:acc)
+
+-- True iff a is followed by whitespaces and b.
+isAdjacent :: Int -> Int -> Document -> Bool
+isAdjacent a b Document{..} =
+  b >= a && (firstNonAdjacent Vector.! a >= b)
+
+isAdjacentSeparator :: Char -> Bool
+isAdjacentSeparator c = elem c [' ', '\t', '-']
 
 -- -----------------------------------------------------------------
 -- Token

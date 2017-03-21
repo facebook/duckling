@@ -82,9 +82,9 @@ lookupRegex regex position Document { rawInput = s } = nodes
   where
     ss = Text.drop position s
     (nodes, _, _) = L.foldl' f ([], ss, position) $ match regex ss
-    f res [] = res
-    f res ("":_) = res
-    f (nodes, s, offset) (text:group) = (nodes ++ [node], s', newOffset)
+    f (nodes, s, offset) [] = (reverse nodes, s, offset)
+    f (nodes, s, offset) ("":_) = (reverse nodes, s, offset)
+    f (nodes, s, offset) (text:group) = (node:nodes, s', newOffset)
       where
         (x,xs) = Text.breakOn text s
         m = offset + Text.length x

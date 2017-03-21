@@ -43,7 +43,7 @@ import Duckling.Stash (Stash)
 parseAndResolve :: [Rule] -> Text -> Context -> [ResolvedToken]
 parseAndResolve rules input context = mapMaybe (resolveNode context) .
   force $ Stash.toPosOrderedList $
-  parseString rules input Stash.empty Stash.empty []
+  parseString rules (mkDocument input) Stash.empty Stash.empty []
 
 produce :: Match -> Maybe Node
 produce (_, _, []) = Nothing
@@ -60,8 +60,9 @@ produce (Rule name _ production, _, etuor@(Node {nodeRange = Range _ e}:_)) = do
     [] -> Nothing
 
 -- True iff a is followed by whitespaces and b.
-isAdjacent :: Int -> Int -> Text -> Bool
-isAdjacent a b s = b >= a && (Text.all isAdjacentSeparator . substr s a $ b - a)
+isAdjacent :: Int -> Int -> Document -> Bool
+isAdjacent a b Document { rawInput = s } =
+  b >= a && (Text.all isAdjacentSeparator . substr s a $ b - a)
   where
     isAdjacentSeparator :: Char -> Bool
     isAdjacentSeparator c = elem c [' ', '\t', '-']
@@ -75,8 +76,8 @@ isAdjacent a b s = b >= a && (Text.all isAdjacentSeparator . substr s a $ b - a)
 
 -- As regexes are matched without whitespace delimitator, we need to check
 -- the reasonability of the match to actually be a word.
-isRangeValid :: Text -> Range -> Bool
-isRangeValid s (Range start end) =
+isRangeValid :: Document -> Range -> Bool
+isRangeValid Document { rawInput = s } (Range start end) =
   (start == 0 || isDifferent (Text.index s (start - 1)) (Text.index s start)) &&
   (end == Text.length s || isDifferent (Text.index s (end - 1)) (Text.index s end))
   where
@@ -89,8 +90,8 @@ isRangeValid s (Range start end) =
     isDifferent :: Char -> Char -> Bool
     isDifferent a b = charClass a /= charClass b
 
-lookupRegex :: PCRE.Regex -> Int -> Text -> [Node]
-lookupRegex regex position s = nodes
+lookupRegex :: PCRE.Regex -> Int -> Document -> [Node]
+lookupRegex regex position Document { rawInput = s } = nodes
   where
     ss = Text.drop position s
     (nodes, _, _) = L.foldl' f ([], ss, position) $ match regex ss
@@ -110,7 +111,7 @@ lookupRegex regex position s = nodes
           , rule = Nothing
           }
 
-lookupItem :: Text -> PatternItem -> Stash -> Int -> [Node]
+lookupItem :: Document -> PatternItem -> Stash -> Int -> [Node]
 lookupItem s (Regex re) _ position =
   filter (\node -> isRangeValid s (nodeRange node) &&
                    isPositionValid position s node) $
@@ -120,7 +121,7 @@ lookupItem s (Predicate p) stash position =
   takeWhile (isPositionValid position s) $
   Stash.toPosOrderedListFrom stash position
 
-isPositionValid :: Int -> Text -> Node -> Bool
+isPositionValid :: Int -> Document -> Node -> Bool
 isPositionValid position sentence (Node {nodeRange = Range start _}) =
   position == 0 || isAdjacent position start sentence
 
@@ -130,7 +131,7 @@ type Match = (Rule, Int, [Node])
 
 -- | Recursively augments `matches`.
 -- Discards partial matches stuck by a regex.
-matchAll :: Text -> Stash -> [Match] -> [Match]
+matchAll :: Document -> Stash -> [Match] -> [Match]
 matchAll sentence stash matches = concatMap mkNextMatches matches
   where
     mkNextMatches :: Match -> [Match]
@@ -142,7 +143,7 @@ matchAll sentence stash matches = concatMap mkNextMatches matches
         Predicate _ -> match:nextMatches
 
 -- | Returns all matches matching the first pattern item of `match`.
-matchFirst :: Text -> Stash -> Match -> [Match]
+matchFirst :: Document -> Stash -> Match -> [Match]
 matchFirst _ _ (Rule {pattern = []}, _, _) = []
 matchFirst sentence stash (rule@(Rule {pattern = p:ps}), position, route) =
   map (\node@Node {nodeRange = Range _ pos'} ->
@@ -151,7 +152,8 @@ matchFirst sentence stash (rule@(Rule {pattern = p:ps}), position, route) =
 
 -- | Finds new matches resulting from newly added tokens.
 -- Produces new tokens from full matches.
-parseString1 :: [Rule] -> Text -> Stash -> Stash -> [Match] -> (Stash, [Match])
+parseString1
+  :: [Rule] -> Document -> Stash -> Stash -> [Match] -> (Stash, [Match])
 parseString1 rules sentence stash new matches =
   -- Produce full matches as new tokens
   ( Stash.fromList $ mapMaybe produce full
@@ -177,7 +179,7 @@ parseString1 rules sentence stash new matches =
            ]
 
 -- | Produces all tokens recursively.
-parseString :: [Rule] -> Text -> Stash -> Stash -> [Match] -> Stash
+parseString :: [Rule] -> Document -> Stash -> Stash -> [Match] -> Stash
 parseString rules sentence stash new matches
   | Stash.null new' = stash
   | otherwise = parseString rules sentence stash' new' matches'

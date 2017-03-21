@@ -23,6 +23,7 @@ import qualified Data.ByteString.Lazy as LB
 import Data.GADT.Compare
 import Data.Hashable
 import Data.Maybe
+import Data.String
 import Data.Text (Text)
 import qualified Data.Text.Encoding as Text
 import Data.Typeable ((:~:)(Refl), Typeable)
@@ -33,6 +34,15 @@ import qualified Text.Regex.PCRE as PCRE
 
 import Duckling.Dimensions.Types
 import Duckling.Resolve
+
+newtype Document = Document { rawInput :: Text }
+  deriving (Show)
+
+instance IsString Document where
+  fromString = mkDocument . fromString
+
+mkDocument :: Text -> Document
+mkDocument = Document
 
 -- -----------------------------------------------------------------
 -- Token

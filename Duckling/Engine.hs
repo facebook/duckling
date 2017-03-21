@@ -25,6 +25,7 @@ import Data.Text (Text)
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
 import qualified Data.List as L
+import qualified Data.Vector.Primitive as Vector
 import Prelude
 import qualified Text.Regex.Base as R
 import qualified Text.Regex.PCRE as PCRE
@@ -62,9 +63,10 @@ produce (Rule name _ production, _, etuor@(Node {nodeRange = Range _ e}:_)) = do
 -- As regexes are matched without whitespace delimitator, we need to check
 -- the reasonability of the match to actually be a word.
 isRangeValid :: Document -> Range -> Bool
-isRangeValid Document { rawInput = s } (Range start end) =
-  (start == 0 || isDifferent (Text.index s (start - 1)) (Text.index s start)) &&
-  (end == Text.length s || isDifferent (Text.index s (end - 1)) (Text.index s end))
+isRangeValid Document { indexable = s } (Range start end) =
+  (start == 0 || isDifferent (s Vector.! (start - 1)) (s Vector.! start)) &&
+  (end == Vector.length s ||
+      isDifferent (s Vector.! (end - 1)) (s Vector.! end))
   where
     charClass :: Char -> Char
     charClass c

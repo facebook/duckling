@@ -12,7 +12,10 @@
 module Duckling.Numeral.UK.Rules
   ( rules ) where
 
+import Data.HashMap.Strict (HashMap)
+import qualified Data.HashMap.Strict as HashMap
 import Data.Maybe
+import Data.Text (Text)
 import qualified Data.Text as Text
 import Prelude
 import Data.String
@@ -24,6 +27,18 @@ import qualified Duckling.Numeral.Types as TNumeral
 import Duckling.Regex.Types
 import Duckling.Types
 
+twentyNinetyMap :: HashMap Text Integer
+twentyNinetyMap = HashMap.fromList
+  [ ( "\x0434\x0432\x0430\x0434\x0446\x044f\x0442\x044c"             , 20 )
+  , ( "\x0442\x0440\x0438\x0434\x0446\x044f\x0442\x044c"             , 30 )
+  , ( "\x0441\x043e\x0440\x043e\x043a"                               , 40 )
+  , ( "\x043f\x2018\x044f\x0442\x0434\x0435\x0441\x044f\x0442"       , 50 )
+  , ( "\x0448\x0456\x0441\x0442\x0434\x0435\x0441\x044f\x0442"       , 60 )
+  , ( "\x0441\x0456\x043c\x0434\x0435\x0441\x044f\x0442"             , 70 )
+  , ( "\x0434\x0435\x0432\x2018\x044f\x043d\x043e\x0441\x0442\x043e" , 90 )
+  , ( "\x0432\x0456\x0441\x0456\x043c\x0434\x0435\x0441\x044f\x0442" , 80 )
+  ]
+
 ruleInteger5 :: Rule
 ruleInteger5 = Rule
   { name = "integer (20..90)"
@@ -31,16 +46,8 @@ ruleInteger5 = Rule
     [ regex "(\x0434\x0432\x0430\x0434\x0446\x044f\x0442\x044c|\x0442\x0440\x0438\x0434\x0446\x044f\x0442\x044c|\x0441\x043e\x0440\x043e\x043a|\x043f\x2018\x044f\x0442\x0434\x0435\x0441\x044f\x0442|\x0448\x0456\x0441\x0442\x0434\x0435\x0441\x044f\x0442|\x0441\x0456\x043c\x0434\x0435\x0441\x044f\x0442|\x0432\x0456\x0441\x0456\x043c\x0434\x0435\x0441\x044f\x0442|\x0434\x0435\x0432\x2018\x044f\x043d\x043e\x0441\x0442\x043e)"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> case match of
-        "\x0434\x0432\x0430\x0434\x0446\x044f\x0442\x044c" -> integer 20
-        "\x0442\x0440\x0438\x0434\x0446\x044f\x0442\x044c" -> integer 30
-        "\x0441\x043e\x0440\x043e\x043a" -> integer 40
-        "\x043f\x2018\x044f\x0442\x0434\x0435\x0441\x044f\x0442" -> integer 50
-        "\x0448\x0456\x0441\x0442\x0434\x0435\x0441\x044f\x0442" -> integer 60
-        "\x0441\x0456\x043c\x0434\x0435\x0441\x044f\x0442" -> integer 70
-        "\x0432\x0456\x0441\x0456\x043c\x0434\x0435\x0441\x044f\x0442" -> integer 80
-        "\x0434\x0435\x0432\x2018\x044f\x043d\x043e\x0441\x0442\x043e" -> integer 90
-        _ -> Nothing
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        HashMap.lookup (Text.toLower match) twentyNinetyMap >>= integer
       _ -> Nothing
   }
 
@@ -89,6 +96,18 @@ ruleInteger3 = Rule
   , prod = \_ -> integer 2
   }
 
+hundredsMap :: HashMap Text Integer
+hundredsMap = HashMap.fromList
+  [ ( "\x0441\x0442\x043e"                                     , 100 )
+  , ( "\x0434\x0432\x0456\x0441\x0442\x0456"                   , 200 )
+  , ( "\x0442\x0440\x0438\x0441\x0442\x0430"                   , 300 )
+  , ( "\x0447\x043e\x0442\x0438\x0440\x0438\x0441\x0442\x0430" , 400 )
+  , ( "\x043f\x2018\x044f\x0442\x0441\x043e\x0442"             , 500 )
+  , ( "\x0448\x0456\x0441\x0442\x0441\x043e\x0442"             , 600 )
+  , ( "\x0441\x0456\x043c\x0441\x043e\x0442"                   , 700 )
+  , ( "\x0432\x0456\x0441\x0456\x043c\x0441\x043e\x0442"       , 800 )
+  , ( "\x0434\x0435\x0432\x2018\x044f\x0442\x0441\x043e\x0442" , 900 )
+  ]
 ruleInteger6 :: Rule
 ruleInteger6 = Rule
   { name = "integer (100..900)"
@@ -96,17 +115,8 @@ ruleInteger6 = Rule
     [ regex "(\x0441\x0442\x043e|\x0434\x0432\x0456\x0441\x0442\x0456|\x0442\x0440\x0438\x0441\x0442\x0430|\x0447\x043e\x0442\x0438\x0440\x0438\x0441\x0442\x0430|\x043f\x2018\x044f\x0442\x0441\x043e\x0442|\x0448\x0456\x0441\x0442\x0441\x043e\x0442|\x0441\x0456\x043c\x0441\x043e\x0442|\x0432\x0456\x0441\x0456\x043c\x0441\x043e\x0442|\x0434\x0435\x0432\x2018\x044f\x0442\x0441\x043e\x0442)"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> case match of
-        "\x0441\x0442\x043e" -> integer 100
-        "\x0434\x0432\x0456\x0441\x0442\x0456" -> integer 200
-        "\x0442\x0440\x0438\x0441\x0442\x0430" -> integer 300
-        "\x0447\x043e\x0442\x0438\x0440\x0438\x0441\x0442\x0430" -> integer 400
-        "\x043f\x2018\x044f\x0442\x0441\x043e\x0442" -> integer 500
-        "\x0448\x0456\x0441\x0442\x0441\x043e\x0442" -> integer 600
-        "\x0441\x0456\x043c\x0441\x043e\x0442" -> integer 700
-        "\x0432\x0456\x0441\x0456\x043c\x0441\x043e\x0442" -> integer 800
-        "\x0434\x0435\x0432\x2018\x044f\x0442\x0441\x043e\x0442" -> integer 900
-        _ -> Nothing
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        HashMap.lookup (Text.toLower match) hundredsMap >>= integer
       _ -> Nothing
   }
 
@@ -180,6 +190,26 @@ ruleInteger = Rule
   , prod = \_ -> integer 0
   }
 
+threeNineteenMap :: HashMap Text Integer
+threeNineteenMap = HashMap.fromList
+  [ ( "\x0442\x0440\x0438"                                           , 3 )
+  , ( "\x0447\x043e\x0442\x0438\x0440\x0438"                         , 4 )
+  , ( "\x043f\x2018\x044f\x0442\x044c"                               , 5 )
+  , ( "\x0448\x0456\x0441\x0442\x044c"                               , 6 )
+  , ( "\x0441\x0456\x043c"                                           , 7 )
+  , ( "\x0432\x0456\x0441\x0456\x043c"                               , 8 )
+  , ( "\x0434\x0435\x0432\x2018\x044f\x0442\x044c"                   , 9 )
+  , ( "\x0434\x0435\x0441\x044f\x0442\x044c"                         , 10 )
+  , ( "\x043e\x0434\x0438\x043d\x0430\x0434\x0446\x044f\x0442\x044c" , 11 )
+  , ( "\x0434\x0432\x0430\x043d\x0430\x0434\x0446\x044f\x0442\x044c" , 12 )
+  , ( "\x0442\x0440\x0438\x043d\x0430\x0434\x0446\x044f\x0442\x044c" , 13 )
+  , ( "\x0447\x043e\x0442\x0438\x0440\x043d\x0430\x0434\x0446\x044f\x0442\x044c" , 14 )
+  , ( "\x043f\x2018\x044f\x0442\x043d\x0430\x0434\x0446\x044f\x0442\x044c"       , 15 )
+  , ( "\x0448\x0456\x0441\x0442\x043d\x0430\x0434\x0446\x044f\x0442\x044c"       , 16 )
+  , ( "\x0441\x0456\x043c\x043d\x0430\x0434\x0446\x044f\x0442\x044c"             , 17 )
+  , ( "\x0432\x0456\x0441\x0456\x043c\x043d\x0430\x0434\x0446\x044f\x0442\x044c" , 18 )
+  , ( "\x0434\x0435\x0432\x2018\x044f\x0442\x043d\x0430\x0434\x0446\x044f\x0442\x044c" , 19 )
+  ]
 ruleInteger4 :: Rule
 ruleInteger4 = Rule
   { name = "integer (3..19)"
@@ -187,25 +217,8 @@ ruleInteger4 = Rule
     [ regex "(\x0442\x0440\x0438|\x0447\x043e\x0442\x0438\x0440\x043d\x0430\x0434\x0446\x044f\x0442\x044c|\x0447\x043e\x0442\x0438\x0440\x0438|\x043f\x2018\x044f\x0442\x043d\x0430\x0434\x0446\x044f\x0442\x044c|\x043f\x2018\x044f\x0442\x044c|\x0448\x0456\x0441\x0442\x043d\x0430\x0434\x0446\x044f\x0442\x044c|\x0448\x0456\x0441\x0442\x044c|\x0441\x0456\x043c\x043d\x0430\x0434\x0446\x044f\x0442\x044c|\x0441\x0456\x043c|\x0432\x0456\x0441\x0456\x043c\x043d\x0430\x0434\x0446\x044f\x0442\x044c|\x0432\x0456\x0441\x0456\x043c|\x0434\x0435\x0432\x2018\x044f\x0442\x043d\x0430\x0434\x0446\x044f\x0442\x044c|\x0434\x0435\x0432\x2018\x044f\x0442\x044c|\x0434\x0435\x0441\x044f\x0442\x044c|\x043e\x0434\x0438\x043d\x0430\x0434\x0446\x044f\x0442\x044c|\x0434\x0432\x0430\x043d\x0430\x0434\x0446\x044f\x0442\x044c|\x0442\x0440\x0438\x043d\x0430\x0434\x0446\x044f\x0442\x044c)"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> case match of
-        "\x0442\x0440\x0438" -> integer 3
-        "\x0447\x043e\x0442\x0438\x0440\x0438" -> integer 4
-        "\x043f\x2018\x044f\x0442\x044c" -> integer 5
-        "\x0448\x0456\x0441\x0442\x044c" -> integer 6
-        "\x0441\x0456\x043c" -> integer 7
-        "\x0432\x0456\x0441\x0456\x043c" -> integer 8
-        "\x0434\x0435\x0432\x2018\x044f\x0442\x044c" -> integer 9
-        "\x0434\x0435\x0441\x044f\x0442\x044c" -> integer 10
-        "\x043e\x0434\x0438\x043d\x0430\x0434\x0446\x044f\x0442\x044c" -> integer 11
-        "\x0434\x0432\x0430\x043d\x0430\x0434\x0446\x044f\x0442\x044c" -> integer 12
-        "\x0442\x0440\x0438\x043d\x0430\x0434\x0446\x044f\x0442\x044c" -> integer 13
-        "\x0447\x043e\x0442\x0438\x0440\x043d\x0430\x0434\x0446\x044f\x0442\x044c" -> integer 14
-        "\x043f\x2018\x044f\x0442\x043d\x0430\x0434\x0446\x044f\x0442\x044c" -> integer 15
-        "\x0448\x0456\x0441\x0442\x043d\x0430\x0434\x0446\x044f\x0442\x044c" -> integer 16
-        "\x0441\x0456\x043c\x043d\x0430\x0434\x0446\x044f\x0442\x044c" -> integer 17
-        "\x0432\x0456\x0441\x0456\x043c\x043d\x0430\x0434\x0446\x044f\x0442\x044c" -> integer 18
-        "\x0434\x0435\x0432\x2018\x044f\x0442\x043d\x0430\x0434\x0446\x044f\x0442\x044c" -> integer 19
-        _ -> Nothing
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        HashMap.lookup (Text.toLower match) threeNineteenMap >>= integer
       _ -> Nothing
   }
 

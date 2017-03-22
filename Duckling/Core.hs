@@ -17,6 +17,7 @@ module Duckling.Core
   , Entity(..)
   , Lang(..)
   , Some(..)
+  , toName
 
   -- Duckling API
   , parse

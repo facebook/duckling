@@ -16,16 +16,11 @@ A Haskell environment is required. We recommend using
 To compile and run the binary:
 ```
 $ stack build
-$ stack exec duckling-example-exec
+$ stack exec duckling-example-exe
 ```
 The first time you run it, it will download all required packages.
 
-To run a source file directly (after compiling once):
-```
-$ stack ExampleMain.hs
-```
-
-See `ExampleMain.hs` for an example on how to integrate Duckling in your
+See `exe/ExampleMain.hs` for an example on how to integrate Duckling in your
 project.
 
 ## Supported dimensions
@@ -50,7 +45,7 @@ Duckling supports many languages, but most don't support all dimensions yet
 ## Extending Duckling
 To regenerate the classifiers and run the test suite:
 ```
-$ stack RegenMain.hs && stack test
+$ stack exec duckling-regen-exe && stack test
 ```
 
 It's important to regenerate the classifiers after updating the code and before

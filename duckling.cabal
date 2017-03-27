@@ -454,6 +454,7 @@ library
 test-suite duckling-test
   type:                exitcode-stdio-1.0
   main-is:             TestMain.hs
+  hs-source-dirs:      tests
   build-depends:       duckling
                      , base                  >= 4.8.2 && < 5.0
                      , attoparsec            >= 0.13.1.0 && < 0.14
@@ -557,6 +558,7 @@ test-suite duckling-test
 
                      -- Ordinal
                      , Duckling.Ordinal.AR.Tests
+                     , Duckling.Ordinal.DA.Tests
                      , Duckling.Ordinal.DE.Tests
                      , Duckling.Ordinal.EN.Tests
                      , Duckling.Ordinal.ET.Tests
@@ -638,6 +640,7 @@ test-suite duckling-test
 
 executable duckling-regen-exe
   main-is:             RegenMain.hs
+  hs-source-dirs:      exe
   ghc-options:         -threaded -rtsopts -with-rtsopts=-N
   other-modules:       Duckling.Ranking.Train
                      , Duckling.Ranking.Generate
@@ -664,6 +667,7 @@ executable duckling-regen-exe
 
 executable duckling-example-exe
   main-is:             ExampleMain.hs
+  hs-source-dirs:      exe
   ghc-options:         -threaded -rtsopts -with-rtsopts=-N
   other-modules:       Duckling.Data.TimeZone
   build-depends:       duckling

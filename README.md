@@ -45,7 +45,7 @@ Duckling supports many languages, but most don't support all dimensions yet
 ## Extending Duckling
 To regenerate the classifiers and run the test suite:
 ```
-$ stack exec duckling-regen-exe && stack test
+$ stack build :duckling-regen-exe && stack exec duckling-regen-exe && stack test
 ```
 
 It's important to regenerate the classifiers after updating the code and before

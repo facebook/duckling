@@ -8,7 +8,7 @@ bug-reports:         https://github.com/facebookincubator/duckling/issues
 license:             BSD3
 license-file:        LICENSE
 author:              Facebook, Inc.
-maintainer:          duckling@wit.ai
+maintainer:          duckling-team@fb.com
 copyright:           Copyright (c) 2014-present, Facebook, Inc.
 category:            Systems
 build-type:          Simple

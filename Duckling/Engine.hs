@@ -14,12 +14,15 @@
 module Duckling.Engine
   ( parseAndResolve
   , lookupRegex
+  , runDuckling
   ) where
 
 import Control.DeepSeq
+import Control.Monad.Extra
 import Data.Aeson
 import Data.ByteString (ByteString)
 import qualified Data.Char as Char
+import Data.Functor.Identity
 import Data.Maybe
 import Data.Text (Text)
 import qualified Data.Text as Text
@@ -41,9 +44,14 @@ import Duckling.Stash (Stash)
 -- -----------------------------------------------------------------
 -- Engine
 
+type Duckling a = Identity a
+
+runDuckling :: Duckling a -> a
+runDuckling ma = runIdentity ma
+
 parseAndResolve :: [Rule] -> Text -> Context -> [ResolvedToken]
 parseAndResolve rules input context = mapMaybe (resolveNode context) .
-  force $ Stash.toPosOrderedList $
+  force $ Stash.toPosOrderedList $ runDuckling $
   parseString rules (mkDocument input) Stash.empty Stash.empty []
 
 produce :: Match -> Maybe Node
@@ -77,8 +85,9 @@ isRangeValid Document { indexable = s } (Range start end) =
     isDifferent :: Char -> Char -> Bool
     isDifferent a b = charClass a /= charClass b
 
-lookupRegex :: PCRE.Regex -> Int -> Document -> [Node]
-lookupRegex regex position Document { rawInput = s } = nodes
+lookupRegex :: PCRE.Regex -> Int -> Document -> Duckling [Node]
+lookupRegex regex position Document { rawInput = s } =
+  return nodes
   where
     ss = Text.drop position s
     (nodes, _, _) = L.foldl' f ([], ss, position) $ match regex ss
@@ -98,12 +107,13 @@ lookupRegex regex position Document { rawInput = s } = nodes
           , rule = Nothing
           }
 
-lookupItem :: Document -> PatternItem -> Stash -> Int -> [Node]
+lookupItem :: Document -> PatternItem -> Stash -> Int -> Duckling [Node]
 lookupItem s (Regex re) _ position =
   filter (\node -> isRangeValid s (nodeRange node) &&
-                   isPositionValid position s node) $
+                   isPositionValid position s node) <$>
   lookupRegex re position s
 lookupItem s (Predicate p) stash position =
+  return $
   filter (p . token) $
   takeWhile (isPositionValid position s) $
   Stash.toPosOrderedListFrom stash position
@@ -118,61 +128,62 @@ type Match = (Rule, Int, [Node])
 
 -- | Recursively augments `matches`.
 -- Discards partial matches stuck by a regex.
-matchAll :: Document -> Stash -> [Match] -> [Match]
-matchAll sentence stash matches = concatMap mkNextMatches matches
+matchAll :: Document -> Stash -> [Match] -> Duckling [Match]
+matchAll sentence stash matches = concatMapM mkNextMatches matches
   where
-    mkNextMatches :: Match -> [Match]
-    mkNextMatches match@(Rule {pattern = []}, _, _) = [ match ]
-    mkNextMatches match@(Rule {pattern = p:_}, _, _) =
-      let nextMatches = matchAll sentence stash $ matchFirst sentence stash match
-      in case p of
+    mkNextMatches :: Match -> Duckling [Match]
+    mkNextMatches match@(Rule {pattern = []}, _, _) = return [ match ]
+    mkNextMatches match@(Rule {pattern = p:_}, _, _) = do
+      nextMatches <- matchAll sentence stash =<< matchFirst sentence stash match
+      return $ case p of
         Regex _ -> nextMatches
         Predicate _ -> match:nextMatches
 
 -- | Returns all matches matching the first pattern item of `match`.
-matchFirst :: Document -> Stash -> Match -> [Match]
-matchFirst _ _ (Rule {pattern = []}, _, _) = []
+matchFirst :: Document -> Stash -> Match -> Duckling [Match]
+matchFirst _ _ (Rule {pattern = []}, _, _) = return []
 matchFirst sentence stash (rule@(Rule {pattern = p:ps}), position, route) =
   map (\node@Node {nodeRange = Range _ pos'} ->
-    (rule {pattern = ps}, pos', node:route)
-  ) $ lookupItem sentence p stash position
+    let newRoute = node:route
+    in newRoute `seq` (newRule, pos', newRoute)
+  ) <$> lookupItem sentence p stash position
+  where
+  newRule = rule { pattern = ps }
 
 -- | Finds new matches resulting from newly added tokens.
 -- Produces new tokens from full matches.
 parseString1
-  :: [Rule] -> Document -> Stash -> Stash -> [Match] -> (Stash, [Match])
-parseString1 rules sentence stash new matches =
+  :: [Rule] -> Document -> Stash -> Stash -> [Match]
+  -> Duckling (Stash, [Match])
+parseString1 rules sentence stash new matches = do
+  -- Recursively match patterns.
+  -- Find which `matches` can advance because of `new`.
+  newPartial <- concatMapM (matchFirst sentence new) matches
+
+  -- Find new matches resulting from newly added tokens (`new`)
+  -- For the first pass, pass through all rules.
+  -- For subsequent passes, only try rules starting with a predicate.
+  let match rule = matchFirst sentence new (rule, 0, [])
+  newMatches <- if Stash.null stash
+    then concatMapM match rules
+    else concatMapM match
+           [ rule | rule@(Rule {pattern = (Predicate _:_)}) <- rules ]
+
+  (full, partial) <- L.partition (\(Rule {pattern}, _, _) -> null pattern)
+    <$> matchAll sentence stash (newPartial ++ newMatches)
+
   -- Produce full matches as new tokens
-  ( Stash.fromList $ mapMaybe produce full
-  , matches ++ partial
-  )
-  where
-    -- Recursively match patterns.
-    (full, partial) = L.partition (\(Rule {pattern}, _, _) -> null pattern)
-      . matchAll sentence stash
-      $ newPartial ++ newMatches
-
-    -- Find which `matches` can advance because of `new`.
-    newPartial = concatMap (matchFirst sentence new) matches
-
-    -- Find new matches resulting from newly added tokens (`new`)
-    -- For the first pass, pass through all rules.
-    -- For subsequent passes, only try rules starting with a predicate.
-    newMatches = if Stash.null stash
-      then [ x | rule <- rules, x <- matchFirst sentence new (rule, 0, []) ]
-      else [ x
-           | rule@(Rule {pattern = (Predicate _:_)}) <- rules
-           , x <- matchFirst sentence new (rule, 0, [])
-           ]
+  return ( Stash.fromList $ mapMaybe produce full
+         , matches ++ partial
+         )
 
 -- | Produces all tokens recursively.
-parseString :: [Rule] -> Document -> Stash -> Stash -> [Match] -> Stash
-parseString rules sentence stash new matches
-  | Stash.null new' = stash
-  | otherwise = parseString rules sentence stash' new' matches'
-  where
-    stash' = Stash.union stash new'
-    (new', matches') = parseString1 rules sentence stash new matches
+parseString :: [Rule] -> Document -> Stash -> Stash -> [Match] -> Duckling Stash
+parseString rules sentence stash new matches = do
+  (new', matches') <- parseString1 rules sentence stash new matches
+  if Stash.null new'
+    then return stash
+    else parseString rules sentence (Stash.union stash new') new' matches'
 
 resolveNode :: Context -> Node -> Maybe ResolvedToken
 resolveNode context n@Node{token = (Token _ dd), nodeRange = nodeRange} = do

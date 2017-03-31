@@ -28,5 +28,6 @@ tests = testGroup "Engine Tests"
 emptyRegexTest :: TestTree
 emptyRegexTest = testCase "Empty Regex Test" $
   case regex "()" of
-    Regex regex -> assertEqual "empty result" [] $ lookupRegex regex 0 "hey"
+    Regex regex -> assertEqual "empty result" [] $
+      runDuckling $ lookupRegex regex 0 "hey"
     _ -> assertFailure "expected a regex"

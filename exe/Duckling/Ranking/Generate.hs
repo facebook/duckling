@@ -18,7 +18,7 @@ import qualified Data.HashMap.Strict as HashMap
 import qualified Data.HashSet as HashSet
 import qualified Data.Text as Text
 import Prelude
-import Language.Haskell.Exts.Annotated as F
+import Language.Haskell.Exts as F
 
 import Duckling.Dimensions.Types
 import Duckling.Lang

@@ -12,6 +12,9 @@
 module Duckling.Ordinal.FR.Rules
   ( rules ) where
 
+import Data.HashMap.Strict ( HashMap)
+import qualified Data.HashMap.Strict as HashMap
+import Data.Text (Text)
 import qualified Data.Text as Text
 import Prelude
 import Data.String
@@ -22,6 +25,45 @@ import Duckling.Ordinal.Helpers
 import Duckling.Regex.Types
 import Duckling.Types
 
+ruleOrdinalsPremierseiziemeMap :: HashMap Text Int
+ruleOrdinalsPremierseiziemeMap = HashMap.fromList
+  [ ( "premi\x00e8re"   , 1 )
+  , ( "premiere"        , 1 )
+  , ( "premier"         , 1 )
+  , ( "deuxi\x00e8me"   , 2 )
+  , ( "deuxieme"        , 2 )
+  , ( "second"          , 2 )
+  , ( "seconde"         , 2 )
+  , ( "troisi\x00e8me"  , 3 )
+  , ( "troisieme"       , 3 )
+  , ( "quatrieme"       , 4 )
+  , ( "quatri\x00e8me"  , 4 )
+  , ( "cinquieme"       , 5 )
+  , ( "cinqui\x00e8me"  , 5 )
+  , ( "sixi\x00e8me"    , 6 )
+  , ( "sixieme"         , 6 )
+  , ( "septieme"        , 7 )
+  , ( "septi\x00e8me"   , 7 )
+  , ( "huiti\x00e8me"   , 8 )
+  , ( "huitieme"        , 8 )
+  , ( "neuvieme"        , 9 )
+  , ( "neuvi\x00e8me"   , 9 )
+  , ( "dixi\x00e8me"    , 10 )
+  , ( "dixieme"         , 10 )
+  , ( "onzi\x00e8me"    , 11 )
+  , ( "onzieme"         , 11 )
+  , ( "douzieme"        , 12 )
+  , ( "douzi\x00e8me"   , 12 )
+  , ( "treizieme"       , 13 )
+  , ( "treizi\x00e8me"  , 13 )
+  , ( "quatorzi\x00e8me", 14 )
+  , ( "quatorzieme"     , 14 )
+  , ( "quinzi\x00e8me"  , 15 )
+  , ( "quinzieme"       , 15 )
+  , ( "seizieme"        , 16 )
+  , ( "seizi\x00e8me"   , 16 )
+  ]
+
 ruleOrdinalsPremierseizieme :: Rule
 ruleOrdinalsPremierseizieme = Rule
   { name = "ordinals (premier..seizieme)"
@@ -29,43 +71,8 @@ ruleOrdinalsPremierseizieme = Rule
     [ regex "(premi(ere?|\x00e8re)|(deux|trois|quatr|cinqu|six|sept|huit|neuv|dix|onz|douz|treiz|quatorz|quinz|seiz)i(e|\x00e8)me|seconde?)"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
-        "premi\x00e8re"    -> Just $ ordinal 1
-        "premiere"         -> Just $ ordinal 1
-        "premier"          -> Just $ ordinal 1
-        "deuxi\x00e8me"    -> Just $ ordinal 2
-        "deuxieme"         -> Just $ ordinal 2
-        "second"           -> Just $ ordinal 2
-        "seconde"          -> Just $ ordinal 2
-        "troisi\x00e8me"   -> Just $ ordinal 3
-        "troisieme"        -> Just $ ordinal 3
-        "quatrieme"        -> Just $ ordinal 4
-        "quatri\x00e8me"   -> Just $ ordinal 4
-        "cinquieme"        -> Just $ ordinal 5
-        "cinqui\x00e8me"   -> Just $ ordinal 5
-        "sixi\x00e8me"     -> Just $ ordinal 6
-        "sixieme"          -> Just $ ordinal 6
-        "septieme"         -> Just $ ordinal 7
-        "septi\x00e8me"    -> Just $ ordinal 7
-        "huiti\x00e8me"    -> Just $ ordinal 8
-        "huitieme"         -> Just $ ordinal 8
-        "neuvieme"         -> Just $ ordinal 9
-        "neuvi\x00e8me"    -> Just $ ordinal 9
-        "dixi\x00e8me"     -> Just $ ordinal 10
-        "dixieme"          -> Just $ ordinal 10
-        "onzi\x00e8me"     -> Just $ ordinal 11
-        "onzieme"          -> Just $ ordinal 11
-        "douzieme"         -> Just $ ordinal 12
-        "douzi\x00e8me"    -> Just $ ordinal 12
-        "treizieme"        -> Just $ ordinal 13
-        "treizi\x00e8me"   -> Just $ ordinal 13
-        "quatorzi\x00e8me" -> Just $ ordinal 14
-        "quatorzieme"      -> Just $ ordinal 14
-        "quinzi\x00e8me"   -> Just $ ordinal 15
-        "quinzieme"        -> Just $ ordinal 15
-        "seizieme"         -> Just $ ordinal 16
-        "seizi\x00e8me"    -> Just $ ordinal 16
-        _                  -> Nothing
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        ordinal <$> HashMap.lookup (Text.toLower match) ruleOrdinalsPremierseiziemeMap
       _ -> Nothing
   }
 

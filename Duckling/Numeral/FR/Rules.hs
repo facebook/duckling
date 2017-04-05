@@ -12,6 +12,9 @@
 module Duckling.Numeral.FR.Rules
   ( rules ) where
 
+import Data.HashMap.Strict (HashMap)
+import qualified Data.HashMap.Strict as HashMap
+import Data.Text (Text)
 import qualified Data.Text as Text
 import Prelude
 import Data.Maybe
@@ -103,6 +106,15 @@ ruleDecimalNumeral = Rule
       _ -> Nothing
   }
 
+ruleNumeral2Map :: HashMap Text Integer
+ruleNumeral2Map = HashMap.fromList
+  [ ( "vingt"    , 20 )
+  , ( "trente"   , 30 )
+  , ( "quarante" , 40 )
+  , ( "cinquante", 50 )
+  , ( "soixante" , 60 )
+  ]
+
 ruleNumeral2 :: Rule
 ruleNumeral2 = Rule
   { name = "number (20..60)"
@@ -110,12 +122,9 @@ ruleNumeral2 = Rule
     [ regex "(vingt|trente|quarante|cinquante|soixante)"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch ("vingt":_)):_)     -> integer 20
-      (Token RegexMatch (GroupMatch ("trente":_)):_)    -> integer 30
-      (Token RegexMatch (GroupMatch ("quarante":_)):_)  -> integer 40
-      (Token RegexMatch (GroupMatch ("cinquante":_)):_) -> integer 50
-      (Token RegexMatch (GroupMatch ("soixante":_)):_)  -> integer 60
-      _                                                 -> Nothing
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        HashMap.lookup (Text.toLower match) ruleNumeral2Map >>= integer
+      _ -> Nothing
   }
 
 ruleNumerals5 :: Rule
@@ -132,6 +141,29 @@ ruleNumerals5 = Rule
       _ -> Nothing
   }
 
+ruleNumeralMap :: HashMap Text Integer
+ruleNumeralMap = HashMap.fromList
+  [ ( "zero"     , 0 )
+  , ( "z\x00e9ro", 0 )
+  , ( "un"       , 1 )
+  , ( "une"      , 1 )
+  , ( "deux"     , 2 )
+  , ( "trois"    , 3 )
+  , ( "quatre"   , 4 )
+  , ( "cinq"     , 5 )
+  , ( "six"      , 6 )
+  , ( "sept"     , 7 )
+  , ( "huit"     , 8 )
+  , ( "neuf"     , 9 )
+  , ( "dix"      , 10 )
+  , ( "onze"     , 11 )
+  , ( "douze"    , 12 )
+  , ( "treize"   , 13 )
+  , ( "quatorze" , 14 )
+  , ( "quinze"   , 15 )
+  , ( "seize"    , 16 )
+  ]
+
 ruleNumeral :: Rule
 ruleNumeral = Rule
   { name = "number (0..16)"
@@ -139,26 +171,9 @@ ruleNumeral = Rule
     [ regex "(z(e|\x00e9)ro|une?|deux|trois|quatre|cinq|six|sept|huit|neuf|dix|onze|douze|treize|quatorze|quinze|seize)"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch ("zero":_)):_)      -> integer 0
-      (Token RegexMatch (GroupMatch ("z\x00e9ro":_)):_) -> integer 0
-      (Token RegexMatch (GroupMatch ("un":_)):_)        -> integer 1
-      (Token RegexMatch (GroupMatch ("une":_)):_)       -> integer 1
-      (Token RegexMatch (GroupMatch ("deux":_)):_)      -> integer 2
-      (Token RegexMatch (GroupMatch ("trois":_)):_)     -> integer 3
-      (Token RegexMatch (GroupMatch ("quatre":_)):_)    -> integer 4
-      (Token RegexMatch (GroupMatch ("cinq":_)):_)      -> integer 5
-      (Token RegexMatch (GroupMatch ("six":_)):_)       -> integer 6
-      (Token RegexMatch (GroupMatch ("sept":_)):_)      -> integer 7
-      (Token RegexMatch (GroupMatch ("huit":_)):_)      -> integer 8
-      (Token RegexMatch (GroupMatch ("neuf":_)):_)      -> integer 9
-      (Token RegexMatch (GroupMatch ("dix":_)):_)       -> integer 10
-      (Token RegexMatch (GroupMatch ("onze":_)):_)      -> integer 11
-      (Token RegexMatch (GroupMatch ("douze":_)):_)     -> integer 12
-      (Token RegexMatch (GroupMatch ("treize":_)):_)    -> integer 13
-      (Token RegexMatch (GroupMatch ("quatorze":_)):_)  -> integer 14
-      (Token RegexMatch (GroupMatch ("quinze":_)):_)    -> integer 15
-      (Token RegexMatch (GroupMatch ("seize":_)):_)     -> integer 16
-      _                                                 -> Nothing
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        HashMap.lookup (Text.toLower match) ruleNumeralMap >>= integer
+      _ -> Nothing
   }
 
 ruleNumeral3 :: Rule

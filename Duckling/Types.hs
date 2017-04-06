@@ -169,7 +169,7 @@ data Entity = Entity
   , value :: Text
   , start :: Int
   , end   :: Int
-  } deriving (Eq, Generic, Show)
+  } deriving (Eq, Generic, Show, NFData)
 
 instance ToJSON Entity where
   toEncoding = genericToEncoding defaultOptions

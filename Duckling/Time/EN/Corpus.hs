@@ -775,4 +775,9 @@ allExamples = concat
   , examples (datetime (2013, 2, 12, 23, 0, 0) Hour)
              [ "tonight at 11"
              ]
+  , examples (datetime (2013, 2, 12, 4, 23, 0) Minute)
+    -- yes, the result is in the past, we may need to revisit
+             [ "at 4:23"
+             , "4:23am"
+             ]
   ]

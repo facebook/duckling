@@ -205,7 +205,7 @@ data Predicate
     { tdSecond :: Maybe Int
     , tdMinute :: Maybe Int
     , tdHour :: Maybe (Bool, Int)
-    , tdAMPM :: Maybe AMPM
+    , tdAMPM :: Maybe AMPM -- only used if we have an hour
     , tdDayOfTheWeek :: Maybe Int
     , tdDayOfTheMonth :: Maybe Int
     , tdMonth :: Maybe Int
@@ -217,6 +217,10 @@ data Predicate
 runPredicate :: Predicate -> SeriesPredicate
 runPredicate EmptyPredicate = \_ _ -> ([], [])
 runPredicate (SeriesPredicate p) = p
+runPredicate TimeDatePredicate{..}
+  -- This should not happen by construction, but if it does then
+  -- empty time series should be ok
+  | isNothing tdHour && isJust tdAMPM = \_ _ -> ([], [])
 runPredicate TimeDatePredicate{..} =
   foldr1 runCompose toCompose
   where
@@ -225,8 +229,7 @@ runPredicate TimeDatePredicate{..} =
   toCompose = catMaybes
     [ runSecondPredicate <$> tdSecond
     , runMinutePredicate <$> tdMinute
-    , uncurry runHourPredicate <$> tdHour
-    , runAMPMPredicate <$> tdAMPM
+    , uncurry (runHourPredicate tdAMPM) <$> tdHour
     , runDayOfTheWeekPredicate <$> tdDayOfTheWeek
     , runDayOfTheMonthPredicate <$> tdDayOfTheMonth
     , runMonthPredicate <$> tdMonth
@@ -316,8 +319,8 @@ runMinutePredicate n = series
       rounded = timeRound t TG.Minute
       anchor = timePlus rounded TG.Minute . toInteger $ mod (n - m) 60
 
-runHourPredicate :: Bool -> Int -> SeriesPredicate
-runHourPredicate is12H n = series
+runHourPredicate :: Maybe AMPM -> Bool -> Int -> SeriesPredicate
+runHourPredicate ampm is12H n = series
   where
   series t _ =
     ( drop 1 $
@@ -328,9 +331,13 @@ runHourPredicate is12H n = series
       Time.UTCTime _ diffTime = start t
       Time.TimeOfDay h _ _ = Time.timeToTimeOfDay diffTime
       step :: Int
-      step = if is12H && n <= 12 then 12 else 24
+      step = if is12H && n <= 12 && isNothing ampm then 12 else 24
+      n' = case ampm of
+            Just AM -> n `mod` 12
+            Just PM -> (n `mod` 12) + 12
+            Nothing -> n
       rounded = timeRound t TG.Hour
-      anchor = timePlus rounded TG.Hour . toInteger $ mod (n - h) step
+      anchor = timePlus rounded TG.Hour . toInteger $ mod (n' - h) step
 
 runAMPMPredicate :: AMPM -> SeriesPredicate
 runAMPMPredicate ampm = series

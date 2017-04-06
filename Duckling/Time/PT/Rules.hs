@@ -701,7 +701,7 @@ ruleDimTimeDaManha :: Rule
 ruleDimTimeDaManha = Rule
   { name = "<dim time> da manha"
   , pattern =
-    [ dimension Time
+    [ Predicate $ isGrainFinerThan TG.Year
     , regex "(da|na|pela) manh(\x00e3|a)"
     ]
   , prod = \tokens -> case tokens of

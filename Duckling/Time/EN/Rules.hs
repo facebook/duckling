@@ -724,7 +724,7 @@ rulePartOfDays = Rule
   , pattern = [regex "(morning|after ?noo?n|evening|night|(at )?lunch)"]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
-        let td = interval False $ case Text.toLower match of
+        let td = interval TTime.Open $ case Text.toLower match of
               "morning"  -> (hour False 4, hour False 12)
               "evening"  -> (hour False 18, hour False 0)
               "night"    -> (hour False 18, hour False 0)
@@ -742,7 +742,7 @@ ruleEarlyMorning = Rule
     [ regex "early ((in|hours of) the )?morning"
     ]
   , prod = \_ -> Just . Token Time . partOfDay . mkLatent $
-      interval False (hour False 4, hour False 9)
+      interval TTime.Open (hour False 4, hour False 9)
   }
 
 rulePODIn :: Rule
@@ -776,7 +776,7 @@ ruleTonight = Rule
   , pattern = [regex "toni(ght|gth|te)"]
   , prod = \_ ->
       let today = cycleNth TG.Day 0
-          evening = interval False (hour False 18, hour False 0) in
+          evening = interval TTime.Open (hour False 18, hour False 0) in
         Just . Token Time . partOfDay . notLatent $ intersect (today, evening)
   }
 
@@ -794,7 +794,7 @@ ruleAfterPartofday = Rule
           "school" -> Just (hour False 15, hour False 21)
           _        -> Nothing
         Just . Token Time . partOfDay . notLatent $
-          intersect (cycleNth TG.Day 0, interval False pair)
+          intersect (cycleNth TG.Day 0, interval TTime.Open pair)
       _ -> Nothing
   }
 
@@ -831,7 +831,7 @@ ruleWeekend = Rule
   , prod = \_ ->
       let fri = intersect (dayOfWeek 5, hour False 18)
           mon = intersect (dayOfWeek 1, hour False 0)
-        in Just . Token Time $ interval False (fri, mon)
+        in Just . Token Time $ interval TTime.Open (fri, mon)
   }
 
 ruleSeasons :: Rule
@@ -854,7 +854,7 @@ ruleSeasons = Rule
           "winter" -> Just $ monthDay 3 20
           "spring" -> Just $ monthDay 6 21
           _ -> Nothing
-        Just . Token Time $ interval False (start, end)
+        Just . Token Time $ interval TTime.Open (start, end)
       _ -> Nothing
 
   }
@@ -902,7 +902,7 @@ ruleIntervalMonthDDDD = Rule
         dd2 <- parseInt d2
         let dom1 = intersect (dayOfMonth dd1, td)
             dom2 = intersect (dayOfMonth dd2, td)
-         in Just . Token Time $ interval True (dom1, dom2)
+         in Just . Token Time $ interval TTime.Closed (dom1, dom2)
       _ -> Nothing
   }
 
@@ -917,7 +917,7 @@ ruleIntervalDash = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td1:_:Token Time td2:_) ->
-        Just . Token Time $ interval True (td1, td2)
+        Just . Token Time $ interval TTime.Closed (td1, td2)
       _ -> Nothing
   }
 
@@ -932,7 +932,7 @@ ruleIntervalFrom = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td1:_:Token Time td2:_) ->
-        Just . Token Time $ interval True (td1, td2)
+        Just . Token Time $ interval TTime.Closed (td1, td2)
       _ -> Nothing
   }
 
@@ -947,7 +947,7 @@ ruleIntervalBetween = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td1:_:Token Time td2:_) ->
-        Just . Token Time $ interval True (td1, td2)
+        Just . Token Time $ interval TTime.Closed (td1, td2)
       _ -> Nothing
   }
 
@@ -962,7 +962,7 @@ ruleIntervalTODDash = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td1:_:Token Time td2:_) ->
-        Just . Token Time $ interval True (td1, td2)
+        Just . Token Time $ interval TTime.Closed (td1, td2)
       _ -> Nothing
   }
 
@@ -977,7 +977,7 @@ ruleIntervalTODFrom = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td1:_:Token Time td2:_) ->
-        Just . Token Time $ interval True (td1, td2)
+        Just . Token Time $ interval TTime.Closed (td1, td2)
       _ -> Nothing
   }
 
@@ -1004,7 +1004,7 @@ ruleIntervalTODAMPM = Rule
              Just m -> hourMinute True h m
              Nothing -> hour True h
        Just . Token Time $
-         interval True (timeOfDayAMPM td1 ampm, timeOfDayAMPM td2 ampm)
+         interval TTime.Closed (timeOfDayAMPM td1 ampm, timeOfDayAMPM td2 ampm)
      _ -> Nothing
  }
 
@@ -1019,7 +1019,7 @@ ruleIntervalTODBetween = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td1:_:Token Time td2:_) ->
-        Just . Token Time $ interval True (td1, td2)
+        Just . Token Time $ interval TTime.Closed (td1, td2)
       _ -> Nothing
   }
 
@@ -1032,7 +1032,7 @@ ruleIntervalBy = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td:_) ->
-        Just . Token Time $ interval False (cycleNth TG.Second 0, td)
+        Just . Token Time $ interval TTime.Open (cycleNth TG.Second 0, td)
       _ -> Nothing
   }
 
@@ -1045,7 +1045,7 @@ ruleIntervalByTheEndOf = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td:_) ->
-        Just . Token Time $ interval True (cycleNth TG.Second 0, td)
+        Just . Token Time $ interval TTime.Closed (cycleNth TG.Second 0, td)
       _ -> Nothing
   }
 
@@ -1423,7 +1423,7 @@ ruleDurationInWithinAfter = Rule
        Token Duration dd:
        _) -> case Text.toLower match of
          "within" -> Just . Token Time $
-           interval False (cycleNth TG.Second 0, inDuration dd)
+           interval TTime.Open (cycleNth TG.Second 0, inDuration dd)
          "after" -> Just . Token Time . withDirection TTime.After $ inDuration dd
          "in" -> Just . Token Time $ inDuration dd
          _ -> Nothing

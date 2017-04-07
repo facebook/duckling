@@ -509,7 +509,8 @@ ruleAfternoon = Rule
   , prod = \_ ->
       let from = hour False 12
           to = hour False 19
-      in Just . Token Time . mkLatent . partOfDay $ interval False (from, to)
+      in Just . Token Time . mkLatent . partOfDay $
+           interval TTime.Open (from, to)
   }
 
 ruleNamedmonth4 :: Rule
@@ -712,7 +713,7 @@ ruleWeekend = Rule
   , prod = \_ ->
       let from = intersect (dayOfWeek 5, hour False 18)
           to = intersect (dayOfWeek 1, hour False 0)
-      in Just . Token Time $ interval False (from, to)
+      in Just . Token Time $ interval TTime.Open (from, to)
   }
 
 ruleLastYear :: Rule
@@ -789,7 +790,8 @@ ruleMorning = Rule
   , prod = \_ ->
       let from = hour False 4
           to = hour False 12
-      in Just . Token Time . mkLatent . partOfDay $ interval False (from, to)
+      in Just . Token Time . mkLatent . partOfDay $
+           interval TTime.Open (from, to)
   }
 
 ruleNextYear :: Rule
@@ -853,7 +855,7 @@ ruleLastNight = Rule
     ]
   , prod = \_ ->
       let td1 = cycleNth TG.Day $ - 1
-          td2 = interval False (hour False 18, hour False 0)
+          td2 = interval TTime.Open (hour False 18, hour False 0)
       in Just . Token Time . partOfDay $ intersect (td1, td2)
   }
 
@@ -958,7 +960,7 @@ ruleTonight = Rule
     ]
   , prod = \_ ->
       let td1 = cycleNth TG.Day 0
-          td2 = interval False (hour False 18, hour False 0)
+          td2 = interval TTime.Open (hour False 18, hour False 0)
       in Just . Token Time . partOfDay $ intersect (td1, td2)
   }
 
@@ -970,7 +972,7 @@ ruleTomorrowNight = Rule
     ]
   , prod = \_ ->
       let td1 = cycleNth TG.Day 1
-          td2 = interval False (hour False 18, hour False 0)
+          td2 = interval TTime.Open (hour False 18, hour False 0)
       in Just . Token Time . partOfDay $ intersect (td1, td2)
   }
 
@@ -1040,7 +1042,8 @@ ruleEveningnight = Rule
   , prod = \_ ->
       let from = hour False 18
           to = hour False 0
-      in Just . Token Time . partOfDay . mkLatent $ interval False (from, to)
+      in Just . Token Time . partOfDay . mkLatent $
+           interval TTime.Open (from, to)
   }
 
 ruleNamedday3 :: Rule

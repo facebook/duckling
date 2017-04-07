@@ -365,7 +365,7 @@ runAMPMPredicate ampm = series
     anchorEnd = timePlus anchorStart TG.Hour 12
     -- an interval of length 12h starting either at 12am or 12pm,
     -- the same day as input time
-    anchor = timeInterval False anchorStart anchorEnd
+    anchor = timeInterval Open anchorStart anchorEnd
 
 runDayOfTheWeekPredicate :: Int -> SeriesPredicate
 runDayOfTheWeekPredicate n = series
@@ -578,11 +578,17 @@ timeStartingAtTheEndOf :: TimeObject -> TimeObject
 timeStartingAtTheEndOf t = TimeObject
   {start = timeEnd t, end = Nothing, grain = grain t}
 
-timeInterval :: Bool -> TimeObject -> TimeObject -> TimeObject
-timeInterval isOuter t1 t2 = TimeObject
+-- | Closed if the interval between A and B should include B
+-- Open if the interval should end right before B
+data TimeIntervalType = Open | Closed
+
+timeInterval :: TimeIntervalType -> TimeObject -> TimeObject -> TimeObject
+timeInterval intervalType t1 t2 = TimeObject
   { start = start t1
   , grain = min (grain t1) (grain t2)
-  , end = Just $ if isOuter then timeEnd t2 else start t2
+  , end = Just $ case intervalType of
+                   Open -> start t2
+                   Closed -> timeEnd t2
   }
 
 timeStartsBeforeTheEndOf :: TimeObject -> TimeObject -> Bool

@@ -122,7 +122,7 @@ ruleDatetimeDatetimeInterval = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td1:_:Token Time td2:_) ->
-        Just . Token Time $ interval False (td1, td2)
+        Just . Token Time $ interval TTime.Open (td1, td2)
       _ -> Nothing
   }
 
@@ -144,7 +144,8 @@ ruleEvening = Rule
   , prod = \_ ->
       let from = hour False 18
           to = hour False 0
-      in Just . Token Time . mkLatent . partOfDay $ interval False (from, to)
+      in Just . Token Time . mkLatent . partOfDay $
+           interval TTime.Open (from, to)
   }
 
 ruleDayOfMonthSt :: Rule
@@ -204,7 +205,7 @@ ruleEntreDatetimeEtDatetimeInterval = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td1:_:Token Time td2:_) ->
-        Just . Token Time $ interval False (td1, td2)
+        Just . Token Time $ interval TTime.Open (td1, td2)
       _ -> Nothing
   }
 
@@ -312,7 +313,7 @@ ruleSeason4 = Rule
   , prod = \_ ->
       let from = monthDay 3 20
           to = monthDay 6 21
-      in Just . Token Time $ interval False (from, to)
+      in Just . Token Time $ interval TTime.Open (from, to)
   }
 
 ruleYearLatent2 :: Rule
@@ -661,7 +662,8 @@ ruleAfternoon = Rule
   , prod = \_ ->
       let from = hour False 12
           to = hour False 19
-      in Just . Token Time . mkLatent . partOfDay $ interval False (from, to)
+      in Just . Token Time . mkLatent . partOfDay $
+           interval TTime.Open (from, to)
   }
 
 ruleNamedmonth4 :: Rule
@@ -721,7 +723,7 @@ ruleDdddMonthinterval = Rule
         d2 <- parseInt m2
         let from = intersect (dayOfMonth d1, td)
             to = intersect (dayOfMonth d2, td)
-        Just . Token Time $ interval True (from, to)
+        Just . Token Time $ interval TTime.Closed (from, to)
       _ -> Nothing
   }
 
@@ -769,7 +771,7 @@ ruleSeason3 = Rule
   , prod = \_ ->
       let from = monthDay 12 21
           to = monthDay 3 20
-      in Just . Token Time $ interval False (from, to)
+      in Just . Token Time $ interval TTime.Open (from, to)
   }
 
 ruleSeason :: Rule
@@ -781,7 +783,7 @@ ruleSeason = Rule
   , prod = \_ ->
       let from = monthDay 6 21
           to = monthDay 9 23
-      in Just . Token Time $ interval False (from, to)
+      in Just . Token Time $ interval TTime.Open (from, to)
   }
 
 ruleRightNow :: Rule
@@ -802,7 +804,7 @@ ruleDimTimeDeLaTarde = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_) ->
-        let tarde = interval False (hour False 12, hour False 21)
+        let tarde = interval TTime.Open (hour False 12, hour False 21)
         in Just . Token Time $ intersect (td, mkLatent $ partOfDay tarde)
       _ -> Nothing
   }
@@ -884,7 +886,7 @@ ruleDimTimeDeLaManana = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_) ->
-        let manana = interval False (hour False 0, hour False 12)
+        let manana = interval TTime.Open (hour False 0, hour False 12)
         in Just . Token Time $ intersect (td, mkLatent $ partOfDay manana)
       _ -> Nothing
   }
@@ -900,7 +902,7 @@ ruleDeDatetimeDatetimeInterval = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td1:_:Token Time td2:_) ->
-        Just . Token Time $ interval False (td1, td2)
+        Just . Token Time $ interval TTime.Open (td1, td2)
       _ -> Nothing
   }
 
@@ -942,7 +944,8 @@ ruleDentroDeDuration = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Duration dd:_) ->
-        Just . Token Time $ interval False (cycleNth TG.Second 0, inDuration dd)
+        Just . Token Time $
+          interval TTime.Open (cycleNth TG.Second 0, inDuration dd)
       _ -> Nothing
   }
 
@@ -964,7 +967,7 @@ ruleWeekend = Rule
   , prod = \_ ->
       let from = intersect (dayOfWeek 5, hour False 18)
           to = intersect (dayOfWeek 1, hour False 0)
-      in Just . Token Time $ interval False (from, to)
+      in Just . Token Time $ interval TTime.Open (from, to)
   }
 
 ruleOrdinalQuarterYear :: Rule
@@ -1057,7 +1060,8 @@ ruleMorning = Rule
   , prod = \_ ->
       let from = hour False 4
           to = hour False 12
-      in Just . Token Time . mkLatent . partOfDay $ interval False (from, to)
+      in Just . Token Time . mkLatent . partOfDay $
+           interval TTime.Open (from, to)
   }
 
 ruleALasHourmintimeofday :: Rule
@@ -1131,7 +1135,7 @@ ruleSeason2 = Rule
   , prod = \_ ->
       let from = monthDay 9 23
           to = monthDay 12 21
-      in Just . Token Time $ interval False (from, to)
+      in Just . Token Time $ interval TTime.Open (from, to)
   }
 
 ruleDayofweekDayofmonth :: Rule
@@ -1195,7 +1199,7 @@ ruleEntreDdEtDdMonthinterval = Rule
         v2 <- parseInt m2
         let from = intersect (dayOfMonth v1, td)
             to = intersect (dayOfMonth v2, td)
-        Just . Token Time $ interval True (from, to)
+        Just . Token Time $ interval TTime.Closed (from, to)
       _ -> Nothing
   }
 
@@ -1394,7 +1398,8 @@ ruleDelMedioda = Rule
   , prod = \_ ->
       let from = hour False 12
           to = hour False 17
-      in Just . Token Time . mkLatent . partOfDay $ interval False (from, to)
+      in Just . Token Time . mkLatent . partOfDay $
+           interval TTime.Open (from, to)
   }
 
 ruleNamedday3 :: Rule

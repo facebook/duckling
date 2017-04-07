@@ -124,12 +124,12 @@ takeN n notImmediate f = mkSeriesPredicate series
       slot = if n >= 0
         then case fut of
           (start:_) -> case drop n fut of
-            (end:_) -> Just $ TTime.timeInterval False start end
+            (end:_) -> Just $ TTime.timeInterval TTime.Open start end
             _ -> Nothing
           _ -> Nothing
         else case past of
           (end:_) -> case drop ((- n) - 1) past of
-            (start:_) -> Just $ TTime.timeInterval True start end
+            (start:_) -> Just $ TTime.timeInterval TTime.Closed start end
             _ -> Nothing
           _ -> Nothing
 
@@ -237,13 +237,15 @@ timeSeqMap dontReverse f g = mkSeriesPredicate series
     -- future from the future's series tacked on
     future = sortedFuture ++ oldFuture
 
-timeIntervals :: Bool -> TTime.Predicate -> TTime.Predicate -> TTime.Predicate
-timeIntervals isOuter pred1 pred2 = timeSeqMap True f pred1
+timeIntervals
+  :: TTime.TimeIntervalType -> TTime.Predicate
+  -> TTime.Predicate -> TTime.Predicate
+timeIntervals intervalType pred1 pred2 = timeSeqMap True f pred1
   where
     -- Pick the first interval *after* the given time segment
     f thisSegment ctx = case runPredicate pred2 thisSegment ctx of
       (_, firstFuture:_) -> Just $
-        TTime.timeInterval isOuter thisSegment firstFuture
+        TTime.timeInterval intervalType thisSegment firstFuture
       _ -> Nothing
 
 shiftDuration :: TTime.Predicate -> DurationData -> TTime.Predicate
@@ -452,12 +454,16 @@ predNthAfter n TimeData {TTime.timePred = p, TTime.timeGrain = g} base =
     , TTime.timeGrain = g
     }
 
-interval :: Bool -> (TimeData, TimeData) -> TimeData
-interval isOuter (TimeData p1 _ g1 _ _ _, TimeData p2 _ g2 _ _ _) =
+interval :: TTime.TimeIntervalType -> (TimeData, TimeData) -> TimeData
+interval intervalType (TimeData p1 _ g1 _ _ _, TimeData p2 _ g2 _ _ _) =
   TTime.timedata'
-    {TTime.timePred = timeIntervals outer p1 p2, TTime.timeGrain = min g1 g2}
+    { TTime.timePred = timeIntervals intervalType' p1 p2
+    , TTime.timeGrain = min g1 g2
+    }
     where
-      outer = isOuter || (g1 == g2 && g1 == TG.Day)
+      intervalType'
+        | g1 == g2 && g1 == TG.Day = TTime.Closed
+        | otherwise = intervalType
 
 durationAgo :: DurationData -> TimeData
 durationAgo dd = inDuration $ timeNegPeriod dd
@@ -509,7 +515,7 @@ withDirection :: TTime.IntervalDirection -> TimeData -> TimeData
 withDirection dir td = td {TTime.direction = Just dir}
 
 longWEBefore :: TimeData -> TimeData
-longWEBefore monday = interval False (start, end)
+longWEBefore monday = interval TTime.Open (start, end)
   where
     start = intersect (fri, hour False 18)
     end = intersect (tue, hour False 0)

@@ -50,7 +50,7 @@ ruleDupamiaza = Rule
     [ regex "dupamiaz(a|\x0103)|dup(a|\x0103) amiaz(a|\x0103)"
     ]
   , prod = \_ -> Just . Token Time . mkLatent . partOfDay $
-      interval False (hour False 12, hour False 19)
+      interval TTime.Open (hour False 12, hour False 19)
   }
 
 ruleNamedmonth12 :: Rule
@@ -192,7 +192,7 @@ ruleMonthDdddInterval = Rule
         d2 <- parseInt m2
         let dom1 = intersect (dayOfMonth d1, td)
             dom2 = intersect (dayOfMonth d2, td)
-        Just . Token Time $ interval True (dom1, dom2)
+        Just . Token Time $ interval TTime.Closed (dom1, dom2)
       _ -> Nothing
   }
 
@@ -304,7 +304,7 @@ ruleBetweenTimeofdayAndTimeofdayInterval = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td1:_:Token Time td2:_) ->
-        Just . Token Time $ interval True (td1, td2)
+        Just . Token Time $ interval TTime.Closed (td1, td2)
       _ -> Nothing
   }
 
@@ -498,7 +498,7 @@ ruleDiseara = Rule
     ]
   , prod = \_ ->
       let td1 = cycleNth TG.Day 0
-          td2 = interval False (hour False 18, hour False 0)
+          td2 = interval TTime.Open (hour False 18, hour False 0)
       in Just . Token Time . partOfDay $ intersect (td1, td2)
   }
 
@@ -583,7 +583,7 @@ ruleFromTimeofdayTimeofdayInterval = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td1:_:Token Time td2:_) ->
-        Just . Token Time $ interval True (td1, td2)
+        Just . Token Time $ interval TTime.Closed (td1, td2)
       _ -> Nothing
   }
 
@@ -603,7 +603,7 @@ ruleSeason3 = Rule
     [ regex "primavar(a|\x0103)"
     ]
   , prod = \_ -> Just . Token Time $
-      interval False (monthDay 3 20, monthDay 6 21)
+      interval TTime.Open (monthDay 3 20, monthDay 6 21)
   }
 
 ruleUrmatoareleNCycle :: Rule
@@ -628,7 +628,7 @@ ruleSeason = Rule
     [ regex "toamn(a|\x0103)"
     ]
   , prod = \_ -> Just . Token Time $
-      interval False (monthDay 9 23, monthDay 12 21)
+      interval TTime.Open (monthDay 9 23, monthDay 12 21)
   }
 
 ruleDupaDuration :: Rule
@@ -662,7 +662,7 @@ ruleByTheEndOfTime = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td:_) ->
-        Just . Token Time $ interval True (cycleNth TG.Second 0, td)
+        Just . Token Time $ interval TTime.Closed (cycleNth TG.Second 0, td)
       _ -> Nothing
   }
 
@@ -761,7 +761,7 @@ ruleIntreDatetimeSiDatetimeInterval = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td1:_:Token Time td2:_) ->
-        Just . Token Time $ interval True (td1, td2)
+        Just . Token Time $ interval TTime.Closed (td1, td2)
       _ -> Nothing
   }
 
@@ -812,7 +812,7 @@ ruleWeekend = Rule
   , prod = \_ ->
       let fri = intersect (dayOfWeek 5, hour False 18)
           mon = intersect (dayOfWeek 1, hour False 0)
-        in Just . Token Time $ interval False (fri, mon)
+        in Just . Token Time $ interval TTime.Open (fri, mon)
   }
 
 rulePeDayofmonthNonOrdinal :: Rule
@@ -1001,7 +1001,7 @@ ruleSezonAnotimp = Rule
     [ regex "var(a|\x0103)"
     ]
   , prod = \_ ->
-      Just . Token Time $ interval False (monthDay 6 21, monthDay 9 23)
+      Just . Token Time $ interval TTime.Open (monthDay 6 21, monthDay 9 23)
   }
 
 ruleSearaNoapte :: Rule
@@ -1011,7 +1011,7 @@ ruleSearaNoapte = Rule
     [ regex "sear(a|\x0103)|noapte"
     ]
   , prod = \_ -> Just . Token Time . mkLatent . partOfDay $
-      interval False (hour False 18, hour False 0)
+      interval TTime.Open (hour False 18, hour False 0)
   }
 
 ruleYearLatent :: Rule
@@ -1034,7 +1034,7 @@ ruleSeason2 = Rule
     [ regex "iarn(a|\x0103)"
     ]
   , prod = \_ ->
-      Just . Token Time $ interval False (monthDay 12 21, monthDay 3 20)
+      Just . Token Time $ interval TTime.Open (monthDay 12 21, monthDay 3 20)
   }
 
 ruleUltimeleNCycle :: Rule
@@ -1071,7 +1071,7 @@ ruleDimineata = Rule
     [ regex "diminea(t|\x021b)(a|\x0103)"
     ]
   , prod = \_ -> Just . Token Time . mkLatent . partOfDay $
-      interval False (hour False 4, hour False 12)
+      interval TTime.Open (hour False 4, hour False 12)
   }
 
 ruleTimeUrmatoarer :: Rule
@@ -1278,7 +1278,7 @@ ruleByTime = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td:_) -> Just . Token Time $
-        interval False (cycleNth TG.Second 0, td)
+        interval TTime.Open (cycleNth TG.Second 0, td)
       _ -> Nothing
   }
 

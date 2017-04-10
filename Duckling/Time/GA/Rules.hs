@@ -29,7 +29,7 @@ ruleArInn = Rule
   , pattern =
     [ regex "ar(\x00fa|u) inn(\x00e9|e)"
     ]
-  , prod = \_ -> Just . Token Time . cycleNth TG.Day $ - 2
+  , prod = \_ -> tt . cycleNth TG.Day $ - 2
   }
 
 ruleNamedday :: Rule
@@ -38,7 +38,7 @@ ruleNamedday = Rule
   , pattern =
     [ regex "luai?n|lu\\.?"
     ]
-  , prod = \_ -> Just . Token Time $ dayOfWeek 1
+  , prod = \_ -> tt $ dayOfWeek 1
   }
 
 ruleNollaigNaMban :: Rule
@@ -47,7 +47,7 @@ ruleNollaigNaMban = Rule
   , pattern =
     [ regex "(l(\x00e1|a) |an )?nollaig (bheag|na mban)"
     ]
-  , prod = \_ -> Just . Token Time $ monthDay 1 6
+  , prod = \_ -> tt $ monthDay 1 6
   }
 
 ruleNamedmonth12 :: Rule
@@ -56,7 +56,7 @@ ruleNamedmonth12 = Rule
   , pattern =
     [ regex "(mh?(\x00ed|i) )?(na )?nollai?g|nol\\.?"
     ]
-  , prod = \_ -> Just . Token Time $ month 12
+  , prod = \_ -> tt $ month 12
   }
 
 ruleNamedday2 :: Rule
@@ -65,7 +65,7 @@ ruleNamedday2 = Rule
   , pattern =
     [ regex "mh?(\x00e1|a)irt|m(\x00e1|a)?\\.?"
     ]
-  , prod = \_ -> Just . Token Time $ dayOfWeek 2
+  , prod = \_ -> tt $ dayOfWeek 2
   }
 
 ruleNamedday6 :: Rule
@@ -74,7 +74,7 @@ ruleNamedday6 = Rule
   , pattern =
     [ regex "sathai?rn|sa\\.?"
     ]
-  , prod = \_ -> Just . Token Time $ dayOfWeek 6
+  , prod = \_ -> tt $ dayOfWeek 6
   }
 
 ruleNamedmonth7 :: Rule
@@ -83,7 +83,7 @@ ruleNamedmonth7 = Rule
   , pattern =
     [ regex "(mh?(\x00ed|i) )?i(\x00fa|u)il|i(\x00fa|u)i\\.?"
     ]
-  , prod = \_ -> Just . Token Time $ month 7
+  , prod = \_ -> tt $ month 7
   }
 
 ruleInniu :: Rule
@@ -92,7 +92,7 @@ ruleInniu = Rule
   , pattern =
     [ regex "inniu"
     ]
-  , prod = \_ -> Just . Token Time $ cycleNth TG.Day 0
+  , prod = \_ -> tt $ cycleNth TG.Day 0
   }
 
 ruleAnOrdinalCycleINdiaidhTime :: Rule
@@ -107,7 +107,7 @@ ruleAnOrdinalCycleINdiaidhTime = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Ordinal od:Token TimeGrain grain:_:Token Time td:_) ->
-        Just . Token Time $ cycleNthAfter True grain (TOrdinal.value od - 1) td
+        tt $ cycleNthAfter True grain (TOrdinal.value od - 1) td
       _ -> Nothing
   }
 
@@ -117,7 +117,7 @@ ruleInn = Rule
   , pattern =
     [ regex "inn(\x00e9|e)"
     ]
-  , prod = \_ -> Just . Token Time . cycleNth TG.Day $ - 1
+  , prod = \_ -> tt . cycleNth TG.Day $ - 1
   }
 
 ruleLFhileBrde :: Rule
@@ -126,7 +126,7 @@ ruleLFhileBrde = Rule
   , pattern =
     [ regex "(l(\x00e1|a) )?(fh(e|\x00e9)ile|'?le) bh?r(\x00ed|i)de"
     ]
-  , prod = \_ -> Just . Token Time $ monthDay 2 1
+  , prod = \_ -> tt $ monthDay 2 1
   }
 
 ruleLFhileVailintn :: Rule
@@ -135,7 +135,7 @@ ruleLFhileVailintn = Rule
   , pattern =
     [ regex "(l(\x00e1|a) )?(fh(e|\x00e9)ile|'?le) vailint(\x00ed|i)n"
     ]
-  , prod = \_ -> Just . Token Time $ monthDay 2 14
+  , prod = \_ -> tt $ monthDay 2 14
   }
 
 ruleTimeSeo :: Rule
@@ -147,7 +147,7 @@ ruleTimeSeo = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_) ->
-        Just . Token Time $ predNth 0 False td
+        tt $ predNth 0 False td
       _ -> Nothing
   }
 
@@ -160,7 +160,7 @@ ruleTimeSeoChaite = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_) ->
-        Just . Token Time $ predNth (-1) False td
+        tt $ predNth (-1) False td
       _ -> Nothing
   }
 
@@ -173,7 +173,7 @@ ruleTimeSeoChugainn = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_) ->
-        Just . Token Time $ predNth 0 True td
+        tt $ predNth 0 True td
       _ -> Nothing
   }
 
@@ -183,7 +183,7 @@ ruleNamedday4 = Rule
   , pattern =
     [ regex "d(\x00e9|e)ardaoin|d(\x00e9|e)?\\.?"
     ]
-  , prod = \_ -> Just . Token Time $ dayOfWeek 4
+  , prod = \_ -> tt $ dayOfWeek 4
   }
 
 ruleAmrach :: Rule
@@ -192,7 +192,7 @@ ruleAmrach = Rule
   , pattern =
     [ regex "am(\x00e1|a)rach"
     ]
-  , prod = \_ -> Just . Token Time $ cycleNth TG.Day 1
+  , prod = \_ -> tt $ cycleNth TG.Day 1
   }
 
 ruleYearLatent2 :: Rule
@@ -204,7 +204,7 @@ ruleYearLatent2 = Rule
   , prod = \tokens -> case tokens of
       (token:_) -> do
         n <- getIntValue token
-        Just . Token Time . mkLatent $ year n
+        tt . mkLatent $ year n
       _ -> Nothing
   }
 
@@ -214,7 +214,7 @@ ruleNamedmonth = Rule
   , pattern =
     [ regex "(mh?(\x00ed|i) )?(an )?t?ean(\x00e1|a)ir|ean\\.?"
     ]
-  , prod = \_ -> Just . Token Time $ month 1
+  , prod = \_ -> tt $ month 1
   }
 
 ruleNamedmonth3 :: Rule
@@ -223,7 +223,7 @@ ruleNamedmonth3 = Rule
   , pattern =
     [ regex "(mh?(\x00ed|i) )?(an )?mh?(\x00e1|a)rta|m(\x00e1|a)r\\.?"
     ]
-  , prod = \_ -> Just . Token Time $ month 3
+  , prod = \_ -> tt $ month 3
   }
 
 ruleOrdinalRithe :: Rule
@@ -236,7 +236,7 @@ ruleOrdinalRithe = Rule
   , prod = \tokens -> case tokens of
       (token:_) -> do
         n <- getIntValue token
-        Just . Token Time . cycleNthAfter True TG.Quarter (n - 1) $
+        tt . cycleNthAfter True TG.Quarter (n - 1) $
           cycleNth TG.Year 0
       _ -> Nothing
   }
@@ -252,7 +252,7 @@ ruleAnnaCycleRoimhTime = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token TimeGrain grain:_:Token Time td:_) ->
-        Just . Token Time $ cycleNthAfter False grain (-1) td
+        tt $ cycleNthAfter False grain (-1) td
       _ -> Nothing
   }
 
@@ -265,7 +265,7 @@ ruleCycleShin = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token TimeGrain grain:_) ->
-        Just . Token Time . cycleNth grain $ 1
+        tt . cycleNth grain $ 1
       _ -> Nothing
   }
 
@@ -279,7 +279,7 @@ ruleDdmm = Rule
       (Token RegexMatch (GroupMatch (m1:m2:_)):_) -> do
         m <- parseInt m2
         d <- parseInt m1
-        Just . Token Time $ monthDay m d
+        tt $ monthDay m d
       _ -> Nothing
   }
 
@@ -289,7 +289,7 @@ ruleNamedmonth4 = Rule
   , pattern =
     [ regex "(mh?(\x00ed|i) )?(an )?t?aibre(\x00e1|a)i?n|abr\\.?"
     ]
-  , prod = \_ -> Just . Token Time $ month 4
+  , prod = \_ -> tt $ month 4
   }
 
 ruleIGceannCycle :: Rule
@@ -302,7 +302,7 @@ ruleIGceannCycle = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Ordinal od:Token TimeGrain grain:_) ->
-        Just . Token Time $ cycleN True grain (TOrdinal.value od)
+        tt $ cycleN True grain (TOrdinal.value od)
       _ -> Nothing
   }
 
@@ -317,7 +317,7 @@ ruleAnCycleDeTime = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token TimeGrain grain:_:Token Time td:_) ->
-        Just . Token Time $ cycleNthAfter True grain 0 td
+        tt $ cycleNthAfter True grain 0 td
       _ -> Nothing
   }
 
@@ -327,7 +327,7 @@ ruleNamedday5 = Rule
   , pattern =
     [ regex "h?aoine|ao\\.?"
     ]
-  , prod = \_ -> Just . Token Time $ dayOfWeek 5
+  , prod = \_ -> tt $ dayOfWeek 5
   }
 
 ruleDayofmonthordinalNamedmonth :: Rule
@@ -352,7 +352,7 @@ ruleIntersectBy = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td1:_:Token Time td2:_) ->
-        Just . Token Time $ intersect (td1, td2)
+        tt $ intersect (td1, td2)
       _ -> Nothing
   }
 
@@ -366,7 +366,7 @@ ruleOrdinalRitheYear = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Ordinal od:_:Token Time td:_) ->
-        Just . Token Time $ cycleNthAfter False TG.Quarter (TOrdinal.value od - 1) td
+        tt $ cycleNthAfter False TG.Quarter (TOrdinal.value od - 1) td
       _ -> Nothing
   }
 
@@ -381,7 +381,7 @@ ruleCycleInniu = Rule
   , prod = \tokens -> case tokens of
       (token:Token TimeGrain grain:_) -> do
         v <- getIntValue token
-        Just . Token Time $ cycleN True grain v
+        tt $ cycleN True grain v
       _ -> Nothing
   }
 
@@ -391,7 +391,7 @@ ruleNamedmonth2 = Rule
   , pattern =
     [ regex "(mh?(\x00ed|i) )?(na )?feabhra|fea\\.?"
     ]
-  , prod = \_ -> Just . Token Time $ month 2
+  , prod = \_ -> tt $ month 2
   }
 
 ruleOrdinalCycleINdiaidhTime :: Rule
@@ -405,7 +405,7 @@ ruleOrdinalCycleINdiaidhTime = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Ordinal od:Token TimeGrain grain:_:Token Time td:_) ->
-        Just . Token Time $ cycleNthAfter True grain (TOrdinal.value od - 1) td
+        tt $ cycleNthAfter True grain (TOrdinal.value od - 1) td
       _ -> Nothing
   }
 
@@ -419,7 +419,7 @@ ruleAnDayofmonthOrdinal = Rule
   , prod = \tokens -> case tokens of
       (_:token:_) -> do
         n <- getIntValue token
-        Just . Token Time $ dayOfMonth n
+        tt $ dayOfMonth n
       _ -> Nothing
   }
 
@@ -432,7 +432,7 @@ ruleIntersect = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td1:Token Time td2:_) ->
-        Just . Token Time $ intersect (td1, td2)
+        tt $ intersect (td1, td2)
       _ -> Nothing
   }
 
@@ -442,7 +442,7 @@ ruleNamedmonth6 = Rule
   , pattern =
     [ regex "(mh?(\x00ed|i) )?(an )?mh?eith(ea|i)mh|mei\\.?"
     ]
-  , prod = \_ -> Just . Token Time $ month 6
+  , prod = \_ -> tt $ month 6
   }
 
 ruleNamedmonth8 :: Rule
@@ -451,7 +451,7 @@ ruleNamedmonth8 = Rule
   , pattern =
     [ regex "(mh?(\x00ed|i) )?(na )?l(\x00fa|u)nasa|l(\x00fa|u)n\\.?"
     ]
-  , prod = \_ -> Just . Token Time $ month 8
+  , prod = \_ -> tt $ month 8
   }
 
 ruleAnOrdinalCycleDeTime :: Rule
@@ -466,7 +466,7 @@ ruleAnOrdinalCycleDeTime = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Ordinal od:Token TimeGrain grain:_:Token Time td:_) ->
-        Just . Token Time $ cycleNthAfter True grain (TOrdinal.value od - 1) td
+        tt $ cycleNthAfter True grain (TOrdinal.value od - 1) td
       _ -> Nothing
   }
 
@@ -476,7 +476,7 @@ ruleLNaNaithreacha = Rule
   , pattern =
     [ regex "l(\x00e1|a) na naithreacha"
     ]
-  , prod = \_ -> Just . Token Time $ nthDOWOfMonth 2 7 6
+  , prod = \_ -> tt $ nthDOWOfMonth 2 7 6
   }
 
 ruleArAmrach :: Rule
@@ -485,7 +485,7 @@ ruleArAmrach = Rule
   , pattern =
     [ regex "ar(\x00fa|u) am(\x00e1|a)rach"
     ]
-  , prod = \_ -> Just . Token Time $ cycleNth TG.Day 2
+  , prod = \_ -> tt $ cycleNth TG.Day 2
   }
 
 ruleOrdinalCycleDeTime :: Rule
@@ -499,7 +499,7 @@ ruleOrdinalCycleDeTime = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Ordinal od:Token TimeGrain grain:_:Token Time td:_) ->
-        Just . Token Time $ cycleNthAfter True grain (TOrdinal.value od - 1) td
+        tt $ cycleNthAfter True grain (TOrdinal.value od - 1) td
       _ -> Nothing
   }
 
@@ -514,7 +514,7 @@ ruleYyyymmdd = Rule
         y <- parseInt m1
         m <- parseInt m2
         d <- parseInt m3
-        Just . Token Time $ yearMonthDay y m d
+        tt $ yearMonthDay y m d
       _ -> Nothing
   }
 
@@ -536,7 +536,7 @@ ruleAnNollaig = Rule
   , pattern =
     [ regex "(l(\x00e1|a) |an )?(nollai?g)"
     ]
-  , prod = \_ -> Just . Token Time $ monthDay 12 25
+  , prod = \_ -> tt $ monthDay 12 25
   }
 
 ruleOnANamedday :: Rule
@@ -560,7 +560,7 @@ ruleYearLatent = Rule
   , prod = \tokens -> case tokens of
       (token:_) -> do
         n <- getIntValue token
-        Just . Token Time . mkLatent $ year n
+        tt . mkLatent $ year n
       _ -> Nothing
   }
 
@@ -570,7 +570,7 @@ ruleAnois = Rule
   , pattern =
     [ regex "anois|(ag an (t-?)?am seo)"
     ]
-  , prod = \_ -> Just . Token Time $ cycleNth TG.Second 0
+  , prod = \_ -> tt $ cycleNth TG.Second 0
   }
 
 ruleLFhilePdraig :: Rule
@@ -579,7 +579,7 @@ ruleLFhilePdraig = Rule
   , pattern =
     [ regex "(l(\x00e1|a) )?(fh(e|\x00e9)ile|'?le) ph?(\x00e1|a)draig"
     ]
-  , prod = \_ -> Just . Token Time $ monthDay 3 17
+  , prod = \_ -> tt $ monthDay 3 17
   }
 
 ruleAnCycleINdiaidhTime :: Rule
@@ -593,7 +593,7 @@ ruleAnCycleINdiaidhTime = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token TimeGrain grain:_:Token Time td:_) ->
-        Just . Token Time $ cycleNthAfter False grain 1 td
+        tt $ cycleNthAfter False grain 1 td
       _ -> Nothing
   }
 
@@ -606,7 +606,7 @@ ruleDayofmonthOrdinal = Rule
   , prod = \tokens -> case tokens of
       (token:_) -> do
         n <- getIntValue token
-        Just . Token Time . mkLatent $ dayOfMonth n
+        tt . mkLatent $ dayOfMonth n
       _ -> Nothing
   }
 
@@ -620,7 +620,7 @@ ruleAnCycleSeo = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token TimeGrain grain:_) ->
-        Just . Token Time $ cycleNth grain 0
+        tt $ cycleNth grain 0
       _ -> Nothing
   }
 
@@ -630,7 +630,7 @@ ruleNamedmonth5 = Rule
   , pattern =
     [ regex "(mh?(\x00ed|i) )?(na )?bh?ealtaine|bea\\.?"
     ]
-  , prod = \_ -> Just . Token Time $ month 5
+  , prod = \_ -> tt $ month 5
   }
 
 ruleNamedday7 :: Rule
@@ -639,7 +639,7 @@ ruleNamedday7 = Rule
   , pattern =
     [ regex "domhnai?[cg]h|do\\.?"
     ]
-  , prod = \_ -> Just . Token Time $ dayOfWeek 7
+  , prod = \_ -> tt $ dayOfWeek 7
   }
 
 ruleAnDayofmonthNonOrdinal :: Rule
@@ -652,7 +652,7 @@ ruleAnDayofmonthNonOrdinal = Rule
   , prod = \tokens -> case tokens of
       (_:token:_) -> do
         v <- getIntValue token
-        Just . Token Time . mkLatent $ dayOfMonth v
+        tt . mkLatent $ dayOfMonth v
       _ -> Nothing
   }
 
@@ -677,7 +677,7 @@ ruleYear = Rule
   , prod = \tokens -> case tokens of
       (token:_) -> do
         v <- getIntValue token
-        Just . Token Time $ year v
+        tt $ year v
       _ -> Nothing
   }
 
@@ -687,7 +687,7 @@ ruleNamedmonth10 = Rule
   , pattern =
     [ regex "(mh?(\x00ed|i) )?dh?eireadh f(\x00f3|o)mhair|def?\\.?"
     ]
-  , prod = \_ -> Just . Token Time $ month 10
+  , prod = \_ -> tt $ month 10
   }
 
 ruleCycleRoimhTime :: Rule
@@ -700,7 +700,7 @@ ruleCycleRoimhTime = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token TimeGrain grain:_:Token Time td:_) ->
-        Just . Token Time $ cycleNthAfter False grain (-1) td
+        tt $ cycleNthAfter False grain (-1) td
       _ -> Nothing
   }
 
@@ -727,7 +727,7 @@ ruleDdmmyyyy = Rule
         y <- parseInt m3
         m <- parseInt m2
         d <- parseInt m1
-        Just . Token Time $ yearMonthDay y m d
+        tt $ yearMonthDay y m d
       _ -> Nothing
   }
 
@@ -737,7 +737,7 @@ ruleNamedmonth11 = Rule
   , pattern =
     [ regex "(mh?(\x00ed|i) )?(na )?samh(ain|na)|sam\\.?"
     ]
-  , prod = \_ -> Just . Token Time $ month 11
+  , prod = \_ -> tt $ month 11
   }
 
 ruleAnNamedday :: Rule
@@ -758,7 +758,7 @@ ruleNamedday3 = Rule
   , pattern =
     [ regex "ch?(\x00e9|e)adaoin|c(\x00e9|e)\\.?"
     ]
-  , prod = \_ -> Just . Token Time $ dayOfWeek 3
+  , prod = \_ -> tt $ dayOfWeek 3
   }
 
 ruleCycleINdiaidhTime :: Rule
@@ -771,7 +771,7 @@ ruleCycleINdiaidhTime = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token TimeGrain grain:_:Token Time td:_) ->
-        Just . Token Time $ cycleNthAfter False grain 1 td
+        tt $ cycleNthAfter False grain 1 td
       _ -> Nothing
   }
 
@@ -781,7 +781,7 @@ ruleNamedmonth9 = Rule
   , pattern =
     [ regex "(mh?(\x00ed|i) )?mh?e(\x00e1|a)n f(\x00f3|o)mhair|mef?\\.?"
     ]
-  , prod = \_ -> Just . Token Time $ month 9
+  , prod = \_ -> tt $ month 9
   }
 
 ruleDayofmonthordinalNamedmonthYear :: Rule
@@ -796,7 +796,7 @@ ruleDayofmonthordinalNamedmonthYear = Rule
       (token:Token Time td:Token RegexMatch (GroupMatch (match:_)):_) -> do
         intVal <- parseInt match
         dom <- intersectDOM td token
-        Just . Token Time $ intersect (dom, year intVal)
+        tt $ intersect (dom, year intVal)
       _ -> Nothing
   }
 

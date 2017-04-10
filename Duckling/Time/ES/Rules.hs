@@ -34,7 +34,7 @@ ruleNamedday = Rule
   , pattern =
     [ regex "lunes|lun?\\.?"
     ]
-  , prod = \_ -> Just . Token Time $ dayOfWeek 1
+  , prod = \_ -> tt $ dayOfWeek 1
   }
 
 ruleTheDayAfterTomorrow :: Rule
@@ -43,7 +43,7 @@ ruleTheDayAfterTomorrow = Rule
   , pattern =
     [ regex "pasado\\s?ma(n|\x00f1)ana"
     ]
-  , prod = \_ -> Just . Token Time $ cycleNth TG.Day 2
+  , prod = \_ -> tt $ cycleNth TG.Day 2
   }
 
 ruleHaceDuration :: Rule
@@ -55,7 +55,7 @@ ruleHaceDuration = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Duration dd:_) ->
-        Just . Token Time $ durationAgo dd
+        tt $ durationAgo dd
       _ -> Nothing
   }
 
@@ -65,7 +65,7 @@ ruleNamedmonth12 = Rule
   , pattern =
     [ regex "diciembre|dic\\.?"
     ]
-  , prod = \_ -> Just . Token Time $ month 12
+  , prod = \_ -> tt $ month 12
   }
 
 ruleCeTime :: Rule
@@ -77,7 +77,7 @@ ruleCeTime = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td:_) ->
-        Just . Token Time $ predNth 0 False td
+        tt $ predNth 0 False td
       _ -> Nothing
   }
 
@@ -87,7 +87,7 @@ ruleNamedday2 = Rule
   , pattern =
     [ regex "martes|mar?\\.?"
     ]
-  , prod = \_ -> Just . Token Time $ dayOfWeek 2
+  , prod = \_ -> tt $ dayOfWeek 2
   }
 
 ruleThisDayofweek :: Rule
@@ -99,7 +99,7 @@ ruleThisDayofweek = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td:_) ->
-        Just . Token Time $ predNth 0 True td
+        tt $ predNth 0 True td
       _ -> Nothing
   }
 
@@ -109,7 +109,7 @@ ruleNamedday6 = Rule
   , pattern =
     [ regex "s(\x00e1|a)bado|s(\x00e1|a)b\\.?"
     ]
-  , prod = \_ -> Just . Token Time $ dayOfWeek 6
+  , prod = \_ -> tt $ dayOfWeek 6
   }
 
 ruleDatetimeDatetimeInterval :: Rule
@@ -122,7 +122,7 @@ ruleDatetimeDatetimeInterval = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td1:_:Token Time td2:_) ->
-        Just . Token Time $ interval TTime.Open (td1, td2)
+        tt $ interval TTime.Open (td1, td2)
       _ -> Nothing
   }
 
@@ -132,7 +132,7 @@ ruleNamedmonth7 = Rule
   , pattern =
     [ regex "julio|jul\\.?"
     ]
-  , prod = \_ -> Just . Token Time $ month 7
+  , prod = \_ -> tt $ month 7
   }
 
 ruleEvening :: Rule
@@ -144,7 +144,7 @@ ruleEvening = Rule
   , prod = \_ ->
       let from = hour False 18
           to = hour False 0
-      in Just . Token Time . mkLatent . partOfDay $
+      in tt . mkLatent . partOfDay $
            interval TTime.Open (from, to)
   }
 
@@ -154,7 +154,7 @@ ruleDayOfMonthSt = Rule
   , pattern =
     [ regex "primero|uno|prem\\.?|1o"
     ]
-  , prod = \_ -> Just . Token Time $ dayOfMonth 1
+  , prod = \_ -> tt $ dayOfMonth 1
   }
 
 ruleEnDuration :: Rule
@@ -166,7 +166,7 @@ ruleEnDuration = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Duration dd:_) ->
-        Just . Token Time $ inDuration dd
+        tt $ inDuration dd
       _ -> Nothing
   }
 
@@ -176,7 +176,7 @@ ruleNow = Rule
   , pattern =
     [ regex "(hoy)|(en este momento)"
     ]
-  , prod = \_ -> Just . Token Time $ cycleNth TG.Day 0
+  , prod = \_ -> tt $ cycleNth TG.Day 0
   }
 
 ruleUltimoDayofweekDeTime :: Rule
@@ -190,7 +190,7 @@ ruleUltimoDayofweekDeTime = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td1:_:Token Time td2:_) ->
-        Just . Token Time $ predLastOf td1 td2
+        tt $ predLastOf td1 td2
       _ -> Nothing
   }
 
@@ -205,7 +205,7 @@ ruleEntreDatetimeEtDatetimeInterval = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td1:_:Token Time td2:_) ->
-        Just . Token Time $ interval TTime.Open (td1, td2)
+        tt $ interval TTime.Open (td1, td2)
       _ -> Nothing
   }
 
@@ -219,7 +219,7 @@ ruleHhhmmTimeofday = Rule
       (Token RegexMatch (GroupMatch (m1:m2:_)):_) -> do
         h <- parseInt m1
         m <- parseInt m2
-        Just . Token Time $ hourMinute True h m
+        tt $ hourMinute True h m
       _ -> Nothing
   }
 
@@ -229,7 +229,7 @@ ruleNamedday4 = Rule
   , pattern =
     [ regex "jueves|jue|jue\\."
     ]
-  , prod = \_ -> Just . Token Time $ dayOfWeek 4
+  , prod = \_ -> tt $ dayOfWeek 4
   }
 
 ruleElDayofmonthDeNamedmonth :: Rule
@@ -257,7 +257,7 @@ ruleNPasadosCycle = Rule
   , prod = \tokens -> case tokens of
       (token:_:Token TimeGrain grain:_) -> do
         v <- getIntValue token
-        Just . Token Time $ cycleN True grain (- v)
+        tt $ cycleN True grain (- v)
       _ -> Nothing
   }
 
@@ -271,7 +271,7 @@ ruleElProximoCycle = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:_:Token TimeGrain grain:_) ->
-        Just . Token Time $ cycleNth grain 1
+        tt $ cycleNth grain 1
       _ -> Nothing
   }
 
@@ -286,7 +286,7 @@ rulePasadosNCycle = Rule
   , prod = \tokens -> case tokens of
       (_:token:Token TimeGrain grain:_) -> do
         v <- getIntValue token
-        Just . Token Time $ cycleN True grain (- v)
+        tt $ cycleN True grain (- v)
       _ -> Nothing
   }
 
@@ -300,7 +300,7 @@ ruleElDayofmonthNonOrdinal = Rule
   , prod = \tokens -> case tokens of
       (_:token:_) -> do
         v <- getIntValue token
-        Just . Token Time $ dayOfMonth v
+        tt $ dayOfMonth v
       _ -> Nothing
   }
 
@@ -313,7 +313,7 @@ ruleSeason4 = Rule
   , prod = \_ ->
       let from = monthDay 3 20
           to = monthDay 6 21
-      in Just . Token Time $ interval TTime.Open (from, to)
+      in tt $ interval TTime.Open (from, to)
   }
 
 ruleYearLatent2 :: Rule
@@ -325,7 +325,7 @@ ruleYearLatent2 = Rule
   , prod = \tokens -> case tokens of
       (token:_) -> do
         v <- getIntValue token
-        Just . Token Time . mkLatent $ year v
+        tt . mkLatent $ year v
       _ -> Nothing
   }
 
@@ -335,7 +335,7 @@ ruleNoon = Rule
   , pattern =
     [ regex "mediod(\x00ed|i)a"
     ]
-  , prod = \_ -> Just . Token Time $ hour False 12
+  , prod = \_ -> tt $ hour False 12
   }
 
 ruleProximasNCycle :: Rule
@@ -349,7 +349,7 @@ ruleProximasNCycle = Rule
   , prod = \tokens -> case tokens of
       (_:token:Token TimeGrain grain:_) -> do
         v <- getIntValue token
-        Just . Token Time $ cycleN True grain v
+        tt $ cycleN True grain v
       _ -> Nothing
   }
 
@@ -359,7 +359,7 @@ ruleNochevieja = Rule
   , pattern =
     [ regex "nochevieja"
     ]
-  , prod = \_ -> Just . Token Time $ monthDay 12 31
+  , prod = \_ -> tt $ monthDay 12 31
   }
 
 ruleTheDayBeforeYesterday :: Rule
@@ -368,7 +368,7 @@ ruleTheDayBeforeYesterday = Rule
   , pattern =
     [ regex "anteayer|antes de (ayer|anoche)|antier"
     ]
-  , prod = \_ -> Just . Token Time . cycleNth TG.Day $ - 2
+  , prod = \_ -> tt . cycleNth TG.Day $ - 2
   }
 
 ruleHourofdayMinusIntegerAsRelativeMinutes :: Rule
@@ -458,7 +458,7 @@ ruleHourofdayIntegerAsRelativeMinutes = Rule
        token:
        _) -> do
         n <- getIntValue token
-        Just . Token Time $ hourMinute is12H hours n
+        tt $ hourMinute is12H hours n
       _ -> Nothing
   }
 
@@ -475,7 +475,7 @@ ruleHourofdayIntegerAsRelativeMinutes2 = Rule
        token:
        _) -> do
         n <- getIntValue token
-        Just . Token Time $ hourMinute is12H hours n
+        tt $ hourMinute is12H hours n
       _ -> Nothing
   }
 
@@ -488,7 +488,7 @@ ruleHourofdayQuarter = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time TimeData {TTime.form = Just (TTime.TimeOfDay (Just hours) is12H)}:_) ->
-        Just . Token Time $ hourMinute is12H hours 15
+        tt $ hourMinute is12H hours 15
       _ -> Nothing
   }
 
@@ -501,7 +501,7 @@ ruleHourofdayHalf = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time TimeData {TTime.form = Just (TTime.TimeOfDay (Just hours) is12H)}:_) ->
-        Just . Token Time $ hourMinute is12H hours 30
+        tt $ hourMinute is12H hours 30
       _ -> Nothing
   }
 
@@ -514,7 +514,7 @@ ruleHourofdayThreeQuarter = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time TimeData {TTime.form = Just (TTime.TimeOfDay (Just hours) is12H)}:_) ->
-        Just . Token Time $ hourMinute is12H hours 45
+        tt $ hourMinute is12H hours 45
       _ -> Nothing
   }
 
@@ -532,7 +532,7 @@ ruleHourofdayAndRelativeMinutes = Rule
        token:
        _) -> do
         n <- getIntValue token
-        Just . Token Time $ hourMinute is12H hours n
+        tt $ hourMinute is12H hours n
       _ -> Nothing
   }
 
@@ -551,7 +551,7 @@ ruleHourofdayAndRelativeMinutes2 = Rule
        token:
        _) -> do
         n <- getIntValue token
-        Just . Token Time $ hourMinute is12H hours n
+        tt $ hourMinute is12H hours n
       _ -> Nothing
   }
 
@@ -564,7 +564,7 @@ ruleHourofdayAndQuarter = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time TimeData {TTime.form = Just (TTime.TimeOfDay (Just hours) is12H)}:_) ->
-        Just . Token Time $ hourMinute is12H hours 15
+        tt $ hourMinute is12H hours 15
       _ -> Nothing
   }
 
@@ -577,7 +577,7 @@ ruleHourofdayAndHalf = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time TimeData {TTime.form = Just (TTime.TimeOfDay (Just hours) is12H)}:_) ->
-        Just . Token Time $ hourMinute is12H hours 30
+        tt $ hourMinute is12H hours 30
       _ -> Nothing
   }
 
@@ -590,7 +590,7 @@ ruleHourofdayAndThreeQuarter = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time TimeData {TTime.form = Just (TTime.TimeOfDay (Just hours) is12H)}:_) ->
-        Just . Token Time $ hourMinute is12H hours 45
+        tt $ hourMinute is12H hours 45
       _ -> Nothing
   }
 
@@ -600,7 +600,7 @@ ruleNamedmonth = Rule
   , pattern =
     [ regex "enero|ene\\.?"
     ]
-  , prod = \_ -> Just . Token Time $ month 1
+  , prod = \_ -> tt $ month 1
   }
 
 ruleInThePartofday :: Rule
@@ -612,7 +612,7 @@ ruleInThePartofday = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td:_) ->
-        Just . Token Time $ notLatent td
+        tt $ notLatent td
       _ -> Nothing
   }
 
@@ -626,7 +626,7 @@ ruleDelYear = Rule
   , prod = \tokens -> case tokens of
       (_:token:_) -> do
         v <- getIntValue token
-        Just . Token Time $ year v
+        tt $ year v
       _ -> Nothing
   }
 
@@ -636,7 +636,7 @@ ruleNamedmonth3 = Rule
   , pattern =
     [ regex "marzo|mar\\.?"
     ]
-  , prod = \_ -> Just . Token Time $ month 3
+  , prod = \_ -> tt $ month 3
   }
 
 ruleDdmm :: Rule
@@ -649,7 +649,7 @@ ruleDdmm = Rule
       (Token RegexMatch (GroupMatch (m1:m2:_)):_) -> do
         d <- parseInt m1
         m <- parseInt m2
-        Just . Token Time $ monthDay m d
+        tt $ monthDay m d
       _ -> Nothing
   }
 
@@ -662,7 +662,7 @@ ruleAfternoon = Rule
   , prod = \_ ->
       let from = hour False 12
           to = hour False 19
-      in Just . Token Time . mkLatent . partOfDay $
+      in tt . mkLatent . partOfDay $
            interval TTime.Open (from, to)
   }
 
@@ -672,7 +672,7 @@ ruleNamedmonth4 = Rule
   , pattern =
     [ regex "abril|abr\\.?"
     ]
-  , prod = \_ -> Just . Token Time $ month 4
+  , prod = \_ -> tt $ month 4
   }
 
 ruleMidnight :: Rule
@@ -681,7 +681,7 @@ ruleMidnight = Rule
   , pattern =
     [ regex "medianoche"
     ]
-  , prod = \_ -> Just . Token Time $ hour False 0
+  , prod = \_ -> tt $ hour False 0
   }
 
 ruleAnoNuevo :: Rule
@@ -690,7 +690,7 @@ ruleAnoNuevo = Rule
   , pattern =
     [ regex "a(n|\x00f1)o nuevo"
     ]
-  , prod = \_ -> Just . Token Time $ monthDay 1 1
+  , prod = \_ -> tt $ monthDay 1 1
   }
 
 ruleNamedday5 :: Rule
@@ -699,7 +699,7 @@ ruleNamedday5 = Rule
   , pattern =
     [ regex "viernes|vie|vie\\."
     ]
-  , prod = \_ -> Just . Token Time $ dayOfWeek 5
+  , prod = \_ -> tt $ dayOfWeek 5
   }
 
 ruleDdddMonthinterval :: Rule
@@ -723,7 +723,7 @@ ruleDdddMonthinterval = Rule
         d2 <- parseInt m2
         let from = intersect (dayOfMonth d1, td)
             to = intersect (dayOfMonth d2, td)
-        Just . Token Time $ interval TTime.Closed (from, to)
+        tt $ interval TTime.Closed (from, to)
       _ -> Nothing
   }
 
@@ -736,7 +736,7 @@ ruleTimeofdayLatent = Rule
   , prod = \tokens -> case tokens of
       (token:_) -> do
         v <- getIntValue token
-        Just . Token Time . mkLatent $ hour True v
+        tt . mkLatent $ hour True v
       _ -> Nothing
   }
 
@@ -746,7 +746,7 @@ ruleNamedmonth2 = Rule
   , pattern =
     [ regex "febrero|feb\\.?"
     ]
-  , prod = \_ -> Just . Token Time $ month 2
+  , prod = \_ -> tt $ month 2
   }
 
 ruleNamedmonthnameddayPast :: Rule
@@ -758,7 +758,7 @@ ruleNamedmonthnameddayPast = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_) ->
-        Just . Token Time $ predNth (-1) False td
+        tt $ predNth (-1) False td
       _ -> Nothing
   }
 
@@ -771,7 +771,7 @@ ruleSeason3 = Rule
   , prod = \_ ->
       let from = monthDay 12 21
           to = monthDay 3 20
-      in Just . Token Time $ interval TTime.Open (from, to)
+      in tt $ interval TTime.Open (from, to)
   }
 
 ruleSeason :: Rule
@@ -783,7 +783,7 @@ ruleSeason = Rule
   , prod = \_ ->
       let from = monthDay 6 21
           to = monthDay 9 23
-      in Just . Token Time $ interval TTime.Open (from, to)
+      in tt $ interval TTime.Open (from, to)
   }
 
 ruleRightNow :: Rule
@@ -792,7 +792,7 @@ ruleRightNow = Rule
   , pattern =
     [ regex "ahor(it)?a|ya|en\\s?seguida|cuanto antes"
     ]
-  , prod = \_ -> Just . Token Time $ cycleNth TG.Second 0
+  , prod = \_ -> tt $ cycleNth TG.Second 0
   }
 
 ruleDimTimeDeLaTarde :: Rule
@@ -805,7 +805,7 @@ ruleDimTimeDeLaTarde = Rule
   , prod = \tokens -> case tokens of
       (Token Time td:_) ->
         let tarde = interval TTime.Open (hour False 12, hour False 21)
-        in Just . Token Time $ intersect (td, mkLatent $ partOfDay tarde)
+        in tt $ intersect (td, mkLatent $ partOfDay tarde)
       _ -> Nothing
   }
 
@@ -819,7 +819,7 @@ ruleIntegerInThePartofday = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td1:_:Token Time td2:_) ->
-        Just . Token Time $ intersect (td1, td2)
+        tt $ intersect (td1, td2)
       _ -> Nothing
   }
 
@@ -834,7 +834,7 @@ ruleNCycleProximoqueViene = Rule
   , prod = \tokens -> case tokens of
       (token:Token TimeGrain grain:_) -> do
         v <- getIntValue token
-        Just . Token Time $ cycleN True grain v
+        tt $ cycleN True grain v
       _ -> Nothing
   }
 
@@ -847,7 +847,7 @@ ruleNamedmonthnameddayNext = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_) ->
-        Just . Token Time $ predNth 1 False td
+        tt $ predNth 1 False td
       _ -> Nothing
   }
 
@@ -860,7 +860,7 @@ ruleIntersect = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td1:Token Time td2:_) ->
-        Just . Token Time $ intersect (td1, td2)
+        tt $ intersect (td1, td2)
       _ -> Nothing
   }
 
@@ -873,7 +873,7 @@ ruleTimeofdayPartofday = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td1:Token Time td2:_) ->
-        Just . Token Time $ intersect (td1, td2)
+        tt $ intersect (td1, td2)
       _ -> Nothing
   }
 
@@ -887,7 +887,7 @@ ruleDimTimeDeLaManana = Rule
   , prod = \tokens -> case tokens of
       (Token Time td:_) ->
         let manana = interval TTime.Open (hour False 0, hour False 12)
-        in Just . Token Time $ intersect (td, mkLatent $ partOfDay manana)
+        in tt $ intersect (td, mkLatent $ partOfDay manana)
       _ -> Nothing
   }
 
@@ -902,7 +902,7 @@ ruleDeDatetimeDatetimeInterval = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td1:_:Token Time td2:_) ->
-        Just . Token Time $ interval TTime.Open (td1, td2)
+        tt $ interval TTime.Open (td1, td2)
       _ -> Nothing
   }
 
@@ -922,7 +922,7 @@ ruleNthTimeDeTime2 = Rule
        Token Time td1:
        _:
        Token Time td2:
-       _) -> Just . Token Time . predNth (v - 1) False $ intersect (td2, td1)
+       _) -> tt . predNth (v - 1) False $ intersect (td2, td1)
       _ -> Nothing
   }
 
@@ -932,7 +932,7 @@ ruleNamedmonth6 = Rule
   , pattern =
     [ regex "junio|jun\\.?"
     ]
-  , prod = \_ -> Just . Token Time $ month 6
+  , prod = \_ -> tt $ month 6
   }
 
 ruleDentroDeDuration :: Rule
@@ -944,7 +944,7 @@ ruleDentroDeDuration = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Duration dd:_) ->
-        Just . Token Time $
+        tt $
           interval TTime.Open (cycleNth TG.Second 0, inDuration dd)
       _ -> Nothing
   }
@@ -955,7 +955,7 @@ ruleNamedmonth8 = Rule
   , pattern =
     [ regex "agosto|ago\\.?"
     ]
-  , prod = \_ -> Just . Token Time $ month 8
+  , prod = \_ -> tt $ month 8
   }
 
 ruleWeekend :: Rule
@@ -967,7 +967,7 @@ ruleWeekend = Rule
   , prod = \_ ->
       let from = intersect (dayOfWeek 5, hour False 18)
           to = intersect (dayOfWeek 1, hour False 0)
-      in Just . Token Time $ interval TTime.Open (from, to)
+      in tt $ interval TTime.Open (from, to)
   }
 
 ruleOrdinalQuarterYear :: Rule
@@ -981,7 +981,7 @@ ruleOrdinalQuarterYear = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Ordinal (OrdinalData {TOrdinal.value = v}):_:Token Time td:_) ->
-        Just . Token Time $ cycleNthAfter False TG.Quarter (v - 1) td
+        tt $ cycleNthAfter False TG.Quarter (v - 1) td
       _ -> Nothing
   }
 
@@ -996,7 +996,7 @@ ruleYyyymmdd = Rule
         y <- parseInt m1
         m <- parseInt m2
         d <- parseInt m3
-        Just . Token Time $ yearMonthDay y m d
+        tt $ yearMonthDay y m d
       _ -> Nothing
   }
 
@@ -1009,7 +1009,7 @@ ruleTimeofdayHoras = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_) ->
-        Just . Token Time $ notLatent td
+        tt $ notLatent td
       _ -> Nothing
   }
 
@@ -1019,7 +1019,7 @@ ruleNavidad = Rule
   , pattern =
     [ regex "(la )?navidad"
     ]
-  , prod = \_ -> Just . Token Time $ monthDay 12 25
+  , prod = \_ -> tt $ monthDay 12 25
   }
 
 ruleElCycleAntesTime :: Rule
@@ -1033,7 +1033,7 @@ ruleElCycleAntesTime = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token TimeGrain grain:_:Token Time td:_) ->
-        Just . Token Time $ cycleNthAfter False grain (-1) td
+        tt $ cycleNthAfter False grain (-1) td
       _ -> Nothing
   }
 
@@ -1047,7 +1047,7 @@ ruleTwoTimeTokensSeparatedBy = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td1:_:Token Time td2:_) ->
-        Just . Token Time $ intersect (td1, td2)
+        tt $ intersect (td1, td2)
       _ -> Nothing
   }
 
@@ -1060,7 +1060,7 @@ ruleMorning = Rule
   , prod = \_ ->
       let from = hour False 4
           to = hour False 12
-      in Just . Token Time . mkLatent . partOfDay $
+      in tt . mkLatent . partOfDay $
            interval TTime.Open (from, to)
   }
 
@@ -1085,7 +1085,7 @@ ruleThisPartofday = Rule
     , Predicate isAPartOfDay
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td:_) -> Just . Token Time . partOfDay $
+      (_:Token Time td:_) -> tt . partOfDay $
         intersect (cycleNth TG.Day 0, td)
       _ -> Nothing
   }
@@ -1100,7 +1100,7 @@ ruleLaCyclePasado = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token TimeGrain grain:_) ->
-        Just . Token Time . cycleNth grain $ - 1
+        tt . cycleNth grain $ - 1
       _ -> Nothing
   }
 
@@ -1113,7 +1113,7 @@ ruleYearLatent = Rule
   , prod = \tokens -> case tokens of
       (token:_) -> do
         n <- getIntValue token
-        Just . Token Time . mkLatent $ year n
+        tt . mkLatent $ year n
       _ -> Nothing
   }
 
@@ -1123,7 +1123,7 @@ ruleYesterday = Rule
   , pattern =
     [ regex "ayer"
     ]
-  , prod = \_ -> Just . Token Time . cycleNth TG.Day $ - 1
+  , prod = \_ -> tt . cycleNth TG.Day $ - 1
   }
 
 ruleSeason2 :: Rule
@@ -1135,7 +1135,7 @@ ruleSeason2 = Rule
   , prod = \_ ->
       let from = monthDay 9 23
           to = monthDay 12 21
-      in Just . Token Time $ interval TTime.Open (from, to)
+      in tt $ interval TTime.Open (from, to)
   }
 
 ruleDayofweekDayofmonth :: Rule
@@ -1159,7 +1159,7 @@ ruleTimeofdayAmpm = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:Token RegexMatch (GroupMatch (ap:_)):_) ->
-        Just . Token Time . timeOfDayAMPM td $ Text.toLower ap == "a"
+        tt . timeOfDayAMPM td $ Text.toLower ap == "a"
       _ -> Nothing
   }
 
@@ -1199,7 +1199,7 @@ ruleEntreDdEtDdMonthinterval = Rule
         v2 <- parseInt m2
         let from = intersect (dayOfMonth v1, td)
             to = intersect (dayOfMonth v2, td)
-        Just . Token Time $ interval TTime.Closed (from, to)
+        tt $ interval TTime.Closed (from, to)
       _ -> Nothing
   }
 
@@ -1221,7 +1221,7 @@ ruleNamedmonth5 = Rule
   , pattern =
     [ regex "mayo?\\.?"
     ]
-  , prod = \_ -> Just . Token Time $ month 5
+  , prod = \_ -> tt $ month 5
   }
 
 ruleNamedday7 :: Rule
@@ -1230,7 +1230,7 @@ ruleNamedday7 = Rule
   , pattern =
     [ regex "domingo|dom\\.?"
     ]
-  , prod = \_ -> Just . Token Time $ dayOfWeek 7
+  , prod = \_ -> tt $ dayOfWeek 7
   }
 
 ruleElTime :: Rule
@@ -1254,7 +1254,7 @@ ruleYear = Rule
   , prod = \tokens -> case tokens of
       (token:_) -> do
         v <- getIntValue token
-        Just . Token Time $ year v
+        tt $ year v
       _ -> Nothing
   }
 
@@ -1264,7 +1264,7 @@ ruleNamedmonth10 = Rule
   , pattern =
     [ regex "octubre|oct\\.?"
     ]
-  , prod = \_ -> Just . Token Time $ month 10
+  , prod = \_ -> tt $ month 10
   }
 
 ruleEsteenUnCycle :: Rule
@@ -1276,7 +1276,7 @@ ruleEsteenUnCycle = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token TimeGrain grain:_) ->
-        Just . Token Time $ cycleNth grain 0
+        tt $ cycleNth grain 0
       _ -> Nothing
   }
 
@@ -1291,7 +1291,7 @@ ruleNProximasCycle = Rule
   , prod = \tokens -> case tokens of
       (token:_:Token TimeGrain grain:_) -> do
         v <- getIntValue token
-        Just . Token Time $ cycleN True grain v
+        tt $ cycleN True grain v
       _ -> Nothing
   }
 
@@ -1305,7 +1305,7 @@ ruleLaPasadoCycle = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:_:Token TimeGrain grain:_) ->
-        Just . Token Time . cycleNth grain $ - 1
+        tt . cycleNth grain $ - 1
       _ -> Nothing
   }
 
@@ -1318,7 +1318,7 @@ ruleALasTimeofday = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td:_) ->
-        Just . Token Time $ notLatent td
+        tt $ notLatent td
       _ -> Nothing
   }
 
@@ -1333,7 +1333,7 @@ ruleDdmmyyyy = Rule
         d <- parseInt m1
         m <- parseInt m2
         y <- parseInt m3
-        Just . Token Time $ yearMonthDay y m d
+        tt $ yearMonthDay y m d
       _ -> Nothing
   }
 
@@ -1343,7 +1343,7 @@ ruleNamedmonth11 = Rule
   , pattern =
     [ regex "noviembre|nov\\.?"
     ]
-  , prod = \_ -> Just . Token Time $ month 11
+  , prod = \_ -> tt $ month 11
   }
 
 ruleOrdinalQuarter :: Rule
@@ -1355,7 +1355,7 @@ ruleOrdinalQuarter = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Ordinal (OrdinalData {TOrdinal.value = v}):_) ->
-        Just . Token Time . cycleNthAfter False TG.Quarter (v - 1)
+        tt . cycleNthAfter False TG.Quarter (v - 1)
           $ cycleNth TG.Year 0
       _ -> Nothing
   }
@@ -1370,7 +1370,7 @@ ruleElCycleProximoqueViene = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token TimeGrain grain:_) ->
-        Just . Token Time $ cycleNth grain 1
+        tt $ cycleNth grain 1
       _ -> Nothing
   }
 
@@ -1385,7 +1385,7 @@ ruleElCycleProximoqueVieneTime = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token TimeGrain grain:_:Token Time td:_) ->
-        Just . Token Time $ cycleNthAfter False grain 1 td
+        tt $ cycleNthAfter False grain 1 td
       _ -> Nothing
   }
 
@@ -1398,7 +1398,7 @@ ruleDelMedioda = Rule
   , prod = \_ ->
       let from = hour False 12
           to = hour False 17
-      in Just . Token Time . mkLatent . partOfDay $
+      in tt . mkLatent . partOfDay $
            interval TTime.Open (from, to)
   }
 
@@ -1408,7 +1408,7 @@ ruleNamedday3 = Rule
   , pattern =
     [ regex "mi(e|\x00e9)\\.?(rcoles)?|mx|mier?\\."
     ]
-  , prod = \_ -> Just . Token Time $ dayOfWeek 3
+  , prod = \_ -> tt $ dayOfWeek 3
   }
 
 ruleIntersectByDe :: Rule
@@ -1421,7 +1421,7 @@ ruleIntersectByDe = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td1:_:Token Time td2:_) ->
-        Just . Token Time $ intersect (td1, td2)
+        tt $ intersect (td1, td2)
       _ -> Nothing
   }
 
@@ -1431,7 +1431,7 @@ ruleTomorrow = Rule
   , pattern =
     [ regex "ma(n|\x00f1)ana"
     ]
-  , prod = \_ -> Just . Token Time $ cycleNth TG.Day 1
+  , prod = \_ -> tt $ cycleNth TG.Day 1
   }
 
 ruleNthTimeDeTime :: Rule
@@ -1448,7 +1448,7 @@ ruleNthTimeDeTime = Rule
        Token Time td1:
        _:
        Token Time td2:
-       _) -> Just . Token Time . predNth (v - 1) False $ intersect (td2, td1)
+       _) -> tt . predNth (v - 1) False $ intersect (td2, td1)
       _ -> Nothing
   }
 
@@ -1458,7 +1458,7 @@ ruleNamedmonth9 = Rule
   , pattern =
     [ regex "septiembre|sept?\\.?"
     ]
-  , prod = \_ -> Just . Token Time $ month 9
+  , prod = \_ -> tt $ month 9
   }
 
 ruleTimezone :: Rule

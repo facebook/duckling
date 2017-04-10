@@ -23,6 +23,7 @@ module Duckling.Time.Helpers
   , inTimezone, longWEBefore, minute, minutesAfter, minutesBefore, mkLatent
   , month, monthDay, notLatent, nthDOWOfMonth, partOfDay, predLastOf, predNth
   , predNthAfter, second, timeOfDayAMPM, withDirection, year, yearMonthDay
+  , tt
     -- Other
   , getIntValue
   ) where
@@ -551,3 +552,7 @@ minutesAfter :: Int -> TimeData -> Maybe TimeData
 minutesAfter n TimeData {TTime.form = Just (TTime.TimeOfDay (Just h) is12H)} =
   Just $ hourMinute is12H h n
 minutesAfter _ _ = Nothing
+
+-- | Convenience helper to return a time token from a rule
+tt :: TimeData -> Maybe Token
+tt = Just . Token Time

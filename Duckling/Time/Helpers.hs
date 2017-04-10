@@ -55,16 +55,13 @@ import Duckling.Time.Types
   , mkDayOfTheMonthPredicate
   , mkYearPredicate
   , mkIntersectPredicate
+  , mkTimeIntervalsPredicate
   , runPredicate
   , AMPM(..)
   )
 import qualified Duckling.Time.Types as TTime
 import qualified Duckling.TimeGrain.Types as TG
 import Duckling.Types
-
--- Limits how deep into lists of segments to look
-safeMaxInterval :: Int
-safeMaxInterval = 12
 
 getIntValue :: Token -> Maybe Int
 getIntValue (Token Numeral nd) = TNumeral.getIntValue $ TNumeral.value nd
@@ -162,7 +159,8 @@ takeNthAfter
   -> TTime.Predicate
   -> TTime.Predicate
   -> TTime.Predicate
-takeNthAfter n notImmediate cyclicPred basePred = timeSeqMap False f basePred
+takeNthAfter n notImmediate cyclicPred basePred =
+  mkSeriesPredicate $! TTime.timeSeqMap False f basePred
   where
     f t ctx =
       let (past, future) = runPredicate cyclicPred t ctx
@@ -178,7 +176,8 @@ takeNthAfter n notImmediate cyclicPred basePred = timeSeqMap False f basePred
 
 -- | Takes the last occurrence of `cyclicPred` within `basePred`.
 takeLastOf :: TTime.Predicate -> TTime.Predicate -> TTime.Predicate
-takeLastOf cyclicPred basePred = timeSeqMap False f basePred
+takeLastOf cyclicPred basePred =
+  mkSeriesPredicate $! TTime.timeSeqMap False f basePred
   where
     f :: TTime.TimeObject -> TTime.TimeContext -> Maybe TTime.TimeObject
     f t ctx =
@@ -190,67 +189,9 @@ takeLastOf cyclicPred basePred = timeSeqMap False f basePred
 timeCompose :: TTime.Predicate -> TTime.Predicate -> TTime.Predicate
 timeCompose pred1 pred2 = mkIntersectPredicate pred1 pred2
 
--- | Applies `f` to each interval yielded by `g`.
--- | Intervals including "now" are in the future.
-timeSeqMap
-  :: Bool
-     -- Given an interval and range, compute a single new interval
-  -> (TTime.TimeObject -> TTime.TimeContext -> Maybe TTime.TimeObject)
-     -- First-layer series generator
-  -> TTime.Predicate
-     -- Series generator for values that come from `f`
-  -> TTime.Predicate
-timeSeqMap dontReverse f g = mkSeriesPredicate series
-  where
-  series nowTime context = (past, future)
-    where
-    -- computes a single interval from `f` based on each interval in the series
-    applyF series = mapMaybe (\x -> f x context) $ take safeMaxInterval series
-
-    (firstPast, firstFuture) = runPredicate g nowTime context
-    (past1, future1) = (applyF firstPast, applyF firstFuture)
-
-    -- Separate what's before and after now from the past's series
-    (newFuture, stillPast) =
-      span (TTime.timeStartsBeforeTheEndOf nowTime) past1
-    -- A series that ends at the earliest time
-    oldPast = takeWhile
-      (TTime.timeStartsBeforeTheEndOf $ TTime.minTime context)
-      stillPast
-
-    -- Separate what's before and after now from the future's series
-    (newPast, stillFuture) =
-      break (TTime.timeStartsBeforeTheEndOf nowTime) future1
-    -- A series that ends at the furthest future time
-    oldFuture = takeWhile
-      (\x -> TTime.timeStartsBeforeTheEndOf x $ TTime.maxTime context)
-      stillFuture
-
-    -- Reverse the list if needed?
-    applyRev series = if dontReverse then series else reverse series
-    (sortedPast, sortedFuture) = (applyRev newPast, applyRev newFuture)
-
-    -- Past is the past from the future's series with the
-    -- past from the past's series tacked on
-    past = sortedPast ++ oldPast
-
-    -- Future is the future from the past's series with the
-    -- future from the future's series tacked on
-    future = sortedFuture ++ oldFuture
-
-timeIntervals
-  :: TTime.TimeIntervalType -> TTime.Predicate
-  -> TTime.Predicate -> TTime.Predicate
-timeIntervals intervalType pred1 pred2 = timeSeqMap True f pred1
-  where
-    -- Pick the first interval *after* the given time segment
-    f thisSegment ctx = case runPredicate pred2 thisSegment ctx of
-      (_, firstFuture:_) -> Just $
-        TTime.timeInterval intervalType thisSegment firstFuture
-      _ -> Nothing
-
 shiftDuration :: TTime.Predicate -> DurationData -> TTime.Predicate
-shiftDuration pred1 (DurationData n g) = timeSeqMap False f pred1
+shiftDuration pred1 (DurationData n g) =
+  mkSeriesPredicate $! TTime.timeSeqMap False f pred1
   where
     grain = case g of
       TG.Second -> TG.Second
@@ -260,7 +201,8 @@ shiftDuration pred1 (DurationData n g) = timeSeqMap False f pred1
     f x _ = Just $ TTime.timePlus (TTime.timeRound x grain) g $ toInteger n
 
 shiftTimezone :: Series.TimeZoneSeries -> TTime.Predicate -> TTime.Predicate
-shiftTimezone providedSeries pred1 = timeSeqMap False f pred1
+shiftTimezone providedSeries pred1 =
+  mkSeriesPredicate $! TTime.timeSeqMap False f pred1
   where
     f x@(TTime.TimeObject s _ _) ctx =
       let Time.TimeZone ctxOffset _ _ =
@@ -458,7 +400,7 @@ predNthAfter n TimeData {TTime.timePred = p, TTime.timeGrain = g} base =
 interval :: TTime.TimeIntervalType -> (TimeData, TimeData) -> TimeData
 interval intervalType (TimeData p1 _ g1 _ _ _, TimeData p2 _ g2 _ _ _) =
   TTime.timedata'
-    { TTime.timePred = timeIntervals intervalType' p1 p2
+    { TTime.timePred = mkTimeIntervalsPredicate intervalType' p1 p2
     , TTime.timeGrain = min g1 g2
     }
     where

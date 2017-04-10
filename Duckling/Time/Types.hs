@@ -19,6 +19,7 @@ module Duckling.Time.Types where
 import Control.Arrow ((***))
 import Control.DeepSeq
 import Control.Monad (join)
+import Control.Applicative ((<|>))
 import Data.Aeson
 import Data.Hashable
 import qualified Data.HashMap.Strict as H
@@ -212,6 +213,7 @@ data Predicate
     , tdYear :: Maybe Int
     }
   | IntersectPredicate Predicate Predicate
+  | TimeIntervalsPredicate TimeIntervalType Predicate Predicate
 
 {-# ANN runPredicate ("HLint: ignore Use foldr1OrError" :: String) #-}
 runPredicate :: Predicate -> SeriesPredicate
@@ -237,6 +239,8 @@ runPredicate TimeDatePredicate{..} =
     ]
 runPredicate (IntersectPredicate pred1 pred2) =
   runIntersectPredicate pred1 pred2
+runPredicate (TimeIntervalsPredicate ty pred1 pred2) =
+  runTimeIntervalsPredicate ty pred1 pred2
 
 -- Don't use outside this module, use a smart constructor
 emptyTimeDatePredicate :: Predicate
@@ -296,6 +300,16 @@ mkIntersectPredicate
     | a == b = Just ma
     | otherwise = Nothing
 mkIntersectPredicate pred1 pred2 = IntersectPredicate pred1 pred2
+
+mkTimeIntervalsPredicate
+  :: TimeIntervalType -> Predicate -> Predicate -> Predicate
+mkTimeIntervalsPredicate _ EmptyPredicate _ = EmptyPredicate
+mkTimeIntervalsPredicate _ _ EmptyPredicate = EmptyPredicate
+-- `from (from a to b) to c` and `from c to (from a to b)` don't
+-- really have a good interpretation, so abort early
+mkTimeIntervalsPredicate _ TimeIntervalsPredicate{} _ = EmptyPredicate
+mkTimeIntervalsPredicate _ _ TimeIntervalsPredicate{} = EmptyPredicate
+mkTimeIntervalsPredicate t a b = TimeIntervalsPredicate t a b
 
 -- Predicate runners
 
@@ -456,6 +470,70 @@ runCompose pred1 pred2 = series
       timeStartsBeforeTheEndOf (minTime context) t) past
     forward = computeSerie $ takeWhile (\t ->
       timeStartsBeforeTheEndOf t (maxTime context)) future
+
+runTimeIntervalsPredicate
+  :: TimeIntervalType -> Predicate
+  -> Predicate -> SeriesPredicate
+runTimeIntervalsPredicate intervalType pred1 pred2 = timeSeqMap True f pred1
+  where
+    -- Pick the first interval *after* the given time segment
+    f thisSegment ctx = case runPredicate pred2 thisSegment ctx of
+      (_, firstFuture:_) -> Just $
+        timeInterval intervalType thisSegment firstFuture
+      _ -> Nothing
+
+-- Limits how deep into lists of segments to look
+safeMaxInterval :: Int
+safeMaxInterval = 12
+
+-- | Applies `f` to each interval yielded by `g`.
+-- | Intervals including "now" are in the future.
+timeSeqMap
+  :: Bool
+     -- Given an interval and range, compute a single new interval
+  -> (TimeObject -> TimeContext -> Maybe TimeObject)
+     -- First-layer series generator
+  -> Predicate
+     -- Series generator for values that come from `f`
+  -> SeriesPredicate
+timeSeqMap dontReverse f g = series
+  where
+  series nowTime context = (past, future)
+    where
+    -- computes a single interval from `f` based on each interval in the series
+    applyF series = mapMaybe (\x -> f x context) $ take safeMaxInterval series
+
+    (firstPast, firstFuture) = runPredicate g nowTime context
+    (past1, future1) = (applyF firstPast, applyF firstFuture)
+
+    -- Separate what's before and after now from the past's series
+    (newFuture, stillPast) =
+      span (timeStartsBeforeTheEndOf nowTime) past1
+    -- A series that ends at the earliest time
+    oldPast = takeWhile
+      (timeStartsBeforeTheEndOf $ minTime context)
+      stillPast
+
+    -- Separate what's before and after now from the future's series
+    (newPast, stillFuture) =
+      break (timeStartsBeforeTheEndOf nowTime) future1
+    -- A series that ends at the furthest future time
+    oldFuture = takeWhile
+      (\x -> timeStartsBeforeTheEndOf x $ maxTime context)
+      stillFuture
+
+    -- Reverse the list if needed?
+    applyRev series = if dontReverse then series else reverse series
+    (sortedPast, sortedFuture) = (applyRev newPast, applyRev newFuture)
+
+    -- Past is the past from the future's series with the
+    -- past from the past's series tacked on
+    past = sortedPast ++ oldPast
+
+    -- Future is the future from the past's series with the
+    -- future from the future's series tacked on
+    future = sortedFuture ++ oldFuture
+
 
 timeSequence
   :: TG.Grain

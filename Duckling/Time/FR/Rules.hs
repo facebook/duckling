@@ -1086,7 +1086,7 @@ ruleIntersect = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td1:Token Time td2:_) ->
-        tt $ intersect (td1, td2)
+        Token Time <$> intersectMB td1 td2
       _ -> Nothing
   }
 
@@ -1342,7 +1342,7 @@ ruleIntersectByDeOr = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td1:_:Token Time td2:_) ->
-        tt $ intersect (td1, td2)
+        Token Time <$> intersectMB td1 td2
       _ -> Nothing
   }
 
@@ -1598,7 +1598,7 @@ ruleIntersectByMaisparExempleplutt = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td1:_:Token Time td2:_) ->
-        tt $ intersect (td1, td2)
+        Token Time <$> intersectMB td1 td2
       _ -> Nothing
   }
 

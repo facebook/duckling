@@ -23,7 +23,7 @@ module Duckling.Time.Helpers
   , inTimezone, longWEBefore, minute, minutesAfter, minutesBefore, mkLatent
   , month, monthDay, notLatent, nthDOWOfMonth, partOfDay, predLastOf, predNth
   , predNthAfter, second, timeOfDayAMPM, withDirection, year, yearMonthDay
-  , tt
+  , intersectMB, tt
     -- Other
   , getIntValue
   ) where
@@ -307,6 +307,13 @@ intersect (TimeData pred1 _ g1 _ _ d1, TimeData pred2 _ g2 _ _ d2)
     dir = case catMaybes [d1, d2] of
       [] -> Nothing
       (x:_) -> Just x
+
+intersectMB :: TimeData -> TimeData -> Maybe TimeData
+intersectMB td1 td2 =
+  case intersect (td1, td2) of
+    TTime.TimeData { TTime.timePred = pred }
+      | TTime.isEmptyPredicate pred -> Nothing
+    res -> Just res
 
 hour :: Bool -> Int -> TimeData
 hour is12H n = timeOfDay (Just n) is12H $ TTime.timedata'

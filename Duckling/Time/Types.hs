@@ -311,6 +311,10 @@ mkTimeIntervalsPredicate _ TimeIntervalsPredicate{} _ = EmptyPredicate
 mkTimeIntervalsPredicate _ _ TimeIntervalsPredicate{} = EmptyPredicate
 mkTimeIntervalsPredicate t a b = TimeIntervalsPredicate t a b
 
+isEmptyPredicate :: Predicate -> Bool
+isEmptyPredicate EmptyPredicate = True
+isEmptyPredicate _ = False
+
 -- Predicate runners
 
 runSecondPredicate :: Int -> SeriesPredicate

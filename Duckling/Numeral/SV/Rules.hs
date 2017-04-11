@@ -12,7 +12,10 @@
 module Duckling.Numeral.SV.Rules
   ( rules ) where
 
+import Data.HashMap.Strict (HashMap)
+import qualified Data.HashMap.Strict as HashMap
 import Data.Maybe
+import Data.Text (Text)
 import qualified Data.Text as Text
 import Prelude
 import Data.String
@@ -207,6 +210,33 @@ ruleDozen = Rule
   , prod = \_ -> integer 12 >>= withGrain 1 >>= withMultipliable
   }
 
+zeroToNineteenMap :: HashMap Text Integer
+zeroToNineteenMap = HashMap.fromList
+  [ ( "inget"    , 0 )
+  , ( "ingen"    , 0 )
+  , ( "noll"     , 0 )
+  , ( "en"       , 1 )
+  , ( "ett"      , 1 )
+  , ( "tv\x00e5" , 2 )
+  , ( "tre"      , 3 )
+  , ( "fyra"     , 4 )
+  , ( "fem"      , 5 )
+  , ( "sex"      , 6 )
+  , ( "sju"      , 7 )
+  , ( "\x00e5tta", 8 )
+  , ( "nio"      , 9 )
+  , ( "tio"      , 10 )
+  , ( "elva"     , 11 )
+  , ( "tolv"     , 12 )
+  , ( "tretton"  , 13 )
+  , ( "fjorton"  , 14 )
+  , ( "femton"   , 15 )
+  , ( "sexton"   , 16 )
+  , ( "sjutton"  , 17 )
+  , ( "arton"    , 18 )
+  , ( "nitton"   , 19 )
+  ]
+
 ruleInteger :: Rule
 ruleInteger = Rule
   { name = "integer (0..19)"
@@ -214,33 +244,22 @@ ruleInteger = Rule
     [ regex "(inget|ingen|noll|en|ett|tv\x00e5|tretton|tre|fyra|femton|fem|sexton|sex|sjutton|sju|\x00e5tta|nio|tio|elva|tolv|fjorton|arton|nitton)"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
-        "inget" -> integer 0
-        "ingen" -> integer 0
-        "noll" -> integer 0
-        "en" -> integer 1
-        "ett" -> integer 1
-        "tv\x00e5" -> integer 2
-        "tre" -> integer 3
-        "fyra" -> integer 4
-        "fem" -> integer 5
-        "sex" -> integer 6
-        "sju" -> integer 7
-        "\x00e5tta" -> integer 8
-        "nio" -> integer 9
-        "tio" -> integer 10
-        "elva" -> integer 11
-        "tolv" -> integer 12
-        "tretton" -> integer 13
-        "fjorton" -> integer 14
-        "femton" -> integer 15
-        "sexton" -> integer 16
-        "sjutton" -> integer 17
-        "arton" -> integer 18
-        "nitton" -> integer 19
-        _ -> Nothing
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        HashMap.lookup (Text.toLower match) zeroToNineteenMap >>= integer
       _ -> Nothing
   }
+
+dozenMap :: HashMap Text Integer
+dozenMap = HashMap.fromList
+  [ ( "tjugo"      , 20)
+  , ( "trettio"    , 30)
+  , ( "fyrtio"     , 40)
+  , ( "femtio"     , 50)
+  , ( "sextio"     , 60)
+  , ( "sjuttio"    , 70)
+  , ( "\x00e5ttio" , 80)
+  , ( "nittio"     , 90)
+  ]
 
 ruleInteger2 :: Rule
 ruleInteger2 = Rule
@@ -249,16 +268,8 @@ ruleInteger2 = Rule
     [ regex "(tjugo|trettio|fyrtio|femtio|sextio|sjuttio|\x00e5ttio|nittio)"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
-        "tjugo" -> integer 20
-        "trettio" -> integer 30
-        "fyrtio" -> integer 40
-        "femtio" -> integer 50
-        "sextio" -> integer 60
-        "sjuttio" -> integer 70
-        "\x00e5ttio" -> integer 80
-        "nittio" -> integer 90
-        _ -> Nothing
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        HashMap.lookup (Text.toLower match) dozenMap >>= integer
       _ -> Nothing
   }
 

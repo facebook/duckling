@@ -19,10 +19,13 @@ import Test.Tasty.HUnit
 
 import Duckling.Engine
 import Duckling.Types
+import Duckling.Dimensions.Types
+import Duckling.Regex.Types
 
 tests :: TestTree
 tests = testGroup "Engine Tests"
   [ emptyRegexTest
+  , unicodeAndRegexTest
   ]
 
 emptyRegexTest :: TestTree
@@ -31,3 +34,20 @@ emptyRegexTest = testCase "Empty Regex Test" $
     Regex regex -> assertEqual "empty result" [] $
       runDuckling $ lookupRegex regex 0 "hey"
     _ -> assertFailure "expected a regex"
+
+unicodeAndRegexTest :: TestTree
+unicodeAndRegexTest = testCase "Unicode and Regex Test" $
+  case regex "\\$([0-9]*)" of
+    Regex regex -> do --
+      assertEqual "" expected $
+        runDuckling $ lookupRegex regex 0 "\128526 $35"
+    _ -> assertFailure "expected a regex"
+  where
+  expected =
+    [ Node
+      { nodeRange = Range 2 5
+      , token = Token RegexMatch (GroupMatch ["35"])
+      , children = []
+      , rule = Nothing
+      }
+    ]

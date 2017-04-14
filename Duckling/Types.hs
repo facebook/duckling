@@ -97,26 +97,25 @@ mkDocument rawInput = Document{..}
   utf8Encoded = Text.encodeUtf8 rawInput
   rawInputLength = Text.length rawInput
   unpacked = Text.unpack rawInput
-  indexable = Array.listArray (0, rawInputLength) unpacked
-  firstNonAdjacent = Array.listArray (0, rawInputLength) $ snd $
+  indexable = Array.listArray (0, rawInputLength - 1) unpacked
+  firstNonAdjacent = Array.listArray (0, rawInputLength - 1) $ snd $
    foldr gen (rawInputLength, []) $ zip [0..] unpacked
   -- go from the end keeping track of the first nonAdjacent (best)
   gen (ix, elem) (best, !acc)
     | isAdjacentSeparator elem = (best, best:acc)
     | otherwise = (ix, ix:acc)
   tDropToBSDropList = scanl' (\acc a -> acc + utf8CharWidth a) 0 unpacked
-  tDropToBSDrop = Array.listArray (0, rawInputLength + 1) tDropToBSDropList
-  tDropToUtf16Drop = Array.listArray (0, rawInputLength + 1) $
+  tDropToBSDrop = Array.listArray (0, rawInputLength) tDropToBSDropList
+  tDropToUtf16Drop = Array.listArray (0, rawInputLength) $
     scanl' (\acc a -> acc + utf16CharWidth a) 0 unpacked
-  bsDropToTDrop = Array.listArray (0, BS.length utf8Encoded + 1) $
+  bsDropToTDrop = Array.listArray (0, BS.length utf8Encoded) $
     reverse $ snd $ foldl' fun (-1, []) $ zip [0..] tDropToBSDropList
   fun (lastPos, !acc) (ix, elem) = (elem, replicate (elem - lastPos) ix ++ acc)
-  -- copied from Data.Text.Encoding
   utf8CharWidth c
     | w <= 0x7F = 1
     | w <= 0x7FF = 2
-    | 0xD800 <= w && w <= 0xDBFF = 4
-    | otherwise = 3
+    | w <= 0xFFFF = 3
+    | otherwise = 4
     where
     w = UText.ord c
   utf16CharWidth c
@@ -135,9 +134,7 @@ isAdjacentSeparator :: Char -> Bool
 isAdjacentSeparator c = elem c [' ', '\t', '-']
 
 arraySize :: IArray UArray a => UArray Int a -> Int
-arraySize arr = r - l
-  where
-  (l, r) = Array.bounds arr
+arraySize = Array.rangeSize . Array.bounds
 
 -- -----------------------------------------------------------------
 -- Token

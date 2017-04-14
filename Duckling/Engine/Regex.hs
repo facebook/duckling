@@ -7,18 +7,7 @@
 
 
 module Duckling.Engine.Regex
-  ( match
+  ( matchAll
   ) where
 
-import Data.ByteString (ByteString)
-import Data.Text (Text)
-import qualified Data.Text.Encoding as Text
-import Prelude
-import qualified Text.Regex.Base as R
-import qualified Text.Regex.PCRE as PCRE
-
-match :: PCRE.Regex -> Text -> [[Text]]
-match regex s = map (map Text.decodeUtf8) bss
-  where
-    bss :: [[ByteString]]
-    bss = R.match regex $ Text.encodeUtf8 s
+import Text.Regex.Base (matchAll)

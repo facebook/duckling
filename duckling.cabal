@@ -432,6 +432,7 @@ library
                      , Duckling.Volume.Rules
                      , Duckling.Volume.Types
   build-depends:       base                  >= 4.8.2 && < 5.0
+                     , array                 >= 0.5.1.1 && < 0.6
                      , attoparsec            >= 0.13.1.0 && < 0.14
                      , aeson                 >= 0.11.3.0 && < 1.1
                      , bytestring            >= 0.10.6.0 && < 0.11

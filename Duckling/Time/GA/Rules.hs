@@ -796,7 +796,7 @@ ruleDayofmonthordinalNamedmonthYear = Rule
       (token:Token Time td:Token RegexMatch (GroupMatch (match:_)):_) -> do
         intVal <- parseInt match
         dom <- intersectDOM td token
-        tt $ intersect (dom, year intVal)
+        Token Time <$> intersectMB dom (year intVal)
       _ -> Nothing
   }
 

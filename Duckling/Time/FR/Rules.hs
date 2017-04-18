@@ -104,8 +104,8 @@ ruleCePartofday = Rule
     , Predicate isAPartOfDay
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td:_) -> tt . partOfDay . notLatent $
-        intersect (cycleNth TG.Day 0, td)
+      (_:Token Time td:_) -> Token Time . partOfDay . notLatent <$>
+        intersectMB (cycleNth TG.Day 0) td
       _ -> Nothing
   }
 
@@ -198,8 +198,8 @@ ruleDatetimeddMonthinterval = Rule
   , prod = \tokens -> case tokens of
       (Token Time td1:_:Token RegexMatch (GroupMatch (match:_)):Token Time td2:_) -> do
         n <- parseInt match
-        let from = intersect (td2, td1)
-            to = intersect (dayOfMonth n, td2)
+        from <- intersectMB td2 td1
+        to <- intersectMB (dayOfMonth n) td2
         tt $ interval TTime.Closed (from, to)
       _ -> Nothing
   }
@@ -290,8 +290,8 @@ ruleDatetimedayofweekDdMonthinterval = Rule
   , prod = \tokens -> case tokens of
       (Token Time td1:_:_:Token RegexMatch (GroupMatch (match:_)):Token Time td2:_) -> do
         n <- parseInt match
-        let from = intersect (td2, td1)
-            to = intersect (dayOfMonth n, td2)
+        from <- intersectMB td2 td1
+        to <- intersectMB (dayOfMonth n) td2
         tt $ interval TTime.Closed (from, to)
       _ -> Nothing
   }
@@ -477,7 +477,7 @@ ruleDimTimeDuMatin = Rule
       (Token Time td:_) ->
         let morning = partOfDay . mkLatent $
                         interval TTime.Open (hour False 0, hour False 12)
-        in tt $ intersect (td, morning)
+        in Token Time <$> intersectMB td morning
       _ -> Nothing
   }
 
@@ -492,9 +492,9 @@ ruleOrdinalWeekendDeTime = Rule
   , prod = \tokens -> case tokens of
       (token:_:Token Time td:_) -> do
         n <- getIntValue token
-        let from = intersect (dayOfWeek 5, hour False 18)
-            to = intersect (dayOfWeek 1, hour False 0)
-            td2 = intersect (td, interval TTime.Open (from, to))
+        from <- intersectMB (dayOfWeek 5) (hour False 18)
+        to <- intersectMB (dayOfWeek 1) (hour False 0)
+        td2 <- intersectMB td (interval TTime.Open (from, to))
         tt $ predNth (n - 1) False td2
       _ -> Nothing
   }
@@ -837,8 +837,8 @@ ruleDdddMonthinterval = Rule
       (Token RegexMatch (GroupMatch (m1:_)):_:Token RegexMatch (GroupMatch (m2:_)):Token Time td:_) -> do
         d1 <- parseInt m1
         d2 <- parseInt m2
-        let from = intersect (td, dayOfMonth d1)
-            to = intersect (td, dayOfMonth d2)
+        from <- intersectMB td (dayOfMonth d1)
+        to <- intersectMB td (dayOfMonth d2)
         tt $ interval TTime.Closed (from, to)
       _ -> Nothing
   }
@@ -871,8 +871,8 @@ ruleDuDddayofweekDdMonthinterval = Rule
       (_:Token RegexMatch (GroupMatch (m1:_)):_:_:Token RegexMatch (GroupMatch (m2:_)):Token Time td:_) -> do
         d1 <- parseInt m1
         d2 <- parseInt m2
-        let from = intersect (dayOfMonth d1, td)
-            to = intersect (dayOfMonth d2, td)
+        from <- intersectMB (dayOfMonth d1) td
+        to <- intersectMB (dayOfMonth d2) td
         tt $ interval TTime.Closed (from, to)
       _ -> Nothing
   }
@@ -885,10 +885,10 @@ ruleDbutNamedmonthinterval = Rule
     , Predicate isAMonth
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td:_) ->
-        let from = intersect (dayOfMonth 1, td)
-            to = intersect (dayOfMonth 5, td)
-        in tt $ interval TTime.Closed (from, to)
+      (_:Token Time td:_) -> do
+        from <- intersectMB (dayOfMonth 1) td
+        to <- intersectMB (dayOfMonth 5) td
+        tt $ interval TTime.Closed (from, to)
       _ -> Nothing
   }
 
@@ -1048,7 +1048,7 @@ ruleDimTimeDuSoir = Rule
       (Token Time td:_) ->
         let td2 = mkLatent . partOfDay $
                     interval TTime.Open (hour False 16, hour False 0)
-        in tt $ intersect (td, td2)
+        in Token Time <$> intersectMB td td2
       _ -> Nothing
   }
 
@@ -1074,7 +1074,7 @@ ruleAprsLeDjeuner = Rule
   , prod = \_ ->
       let td1 = cycleNth TG.Day 0
           td2 = interval TTime.Open (hour False 13, hour False 17)
-      in tt . partOfDay $ intersect (td1, td2)
+      in Token Time . partOfDay <$> intersectMB td1 td2
   }
 
 ruleIntersect :: Rule
@@ -1107,10 +1107,10 @@ rulePremireQuinzaineDeNamedmonthinterval = Rule
     , Predicate isAMonth
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td:_) ->
-        let from = intersect (dayOfMonth 1, td)
-            to = intersect (dayOfMonth 14, td)
-        in tt $ interval TTime.Closed (from, to)
+      (_:Token Time td:_) -> do
+        from <- intersectMB (dayOfMonth 1) td
+        to <- intersectMB (dayOfMonth 14) td
+        tt $ interval TTime.Closed (from, to)
       _ -> Nothing
   }
 
@@ -1169,7 +1169,7 @@ ruleAprsLeTravail = Rule
   , prod = \_ ->
       let td1 = cycleNth TG.Day 0
           td2 = interval TTime.Open (hour False 17, hour False 21)
-      in tt . partOfDay $ intersect (td1, td2)
+      in Token Time . partOfDay <$> intersectMB td1 td2
   }
 
 ruleNamedmonth8 :: Rule
@@ -1193,7 +1193,7 @@ ruleLeDayofmonthDatetime = Rule
   , prod = \tokens -> case tokens of
       (_:token:_:Token Time td:_) -> do
         n <- getIntValue token
-        tt $ intersect (dayOfMonth n, td)
+        Token Time <$> intersectMB (dayOfMonth n) td
       _ -> Nothing
   }
 
@@ -1203,10 +1203,10 @@ ruleWeekend = Rule
   , pattern =
     [ regex "week(\\s|-)?end"
     ]
-  , prod = \_ ->
-      let from = intersect (dayOfWeek 5, hour False 18)
-          to = intersect (dayOfWeek 1, hour False 0)
-      in tt $ interval TTime.Open (from, to)
+  , prod = \_ -> do
+      from <- intersectMB (dayOfWeek 5) (hour False 18)
+      to <- intersectMB (dayOfWeek 1) (hour False 0)
+      tt $ interval TTime.Open (from, to)
   }
 
 ruleCedansLeCycle :: Rule
@@ -1260,7 +1260,7 @@ ruleAvantLeDjeuner = Rule
   , prod = \_ ->
       let td1 = cycleNth TG.Day 0
           td2 = interval TTime.Open (hour False 10, hour False 12)
-      in tt . partOfDay $ intersect (td1, td2)
+      in Token Time . partOfDay <$> intersectMB td1 td2
   }
 
 ruleDernierWeekendDeTime :: Rule
@@ -1271,10 +1271,10 @@ ruleDernierWeekendDeTime = Rule
     , Predicate isAMonth
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td:_) ->
-        let from = intersect (dayOfWeek 5, hour False 18)
-            to = intersect (dayOfWeek 1, hour False 0)
-        in tt $ predLastOf (interval TTime.Open (from, to)) td
+      (_:Token Time td:_) -> do
+        from <- intersectMB (dayOfWeek 5) (hour False 18)
+        to <- intersectMB (dayOfWeek 1) (hour False 0)
+        tt $ predLastOf (interval TTime.Open (from, to)) td
       _ -> Nothing
   }
 
@@ -1301,7 +1301,7 @@ ruleDimTimePartofday = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td1:Token Time td2:_) ->
-        tt $ intersect (td1, td2)
+        Token Time <$> intersectMB td1 td2
       _ -> Nothing
   }
 
@@ -1354,10 +1354,10 @@ ruleDeuximeQuinzaineDeNamedmonthinterval = Rule
     , Predicate isAMonth
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td:_) ->
-        let from = intersect (dayOfMonth 15, td)
-            to = cycleLastOf TG.Day td
-        in tt $ interval TTime.Closed (from, to)
+      (_:Token Time td:_) -> do
+        from <- intersectMB (dayOfMonth 15) td
+        let to = cycleLastOf TG.Day td
+        tt $ interval TTime.Closed (from, to)
       _ -> Nothing
   }
 
@@ -1371,7 +1371,7 @@ rulePartofdayDuDimTime = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td1:_:Token Time td2:_) ->
-        tt $ intersect (td1, td2)
+        Token Time <$> intersectMB td1 td2
       _ -> Nothing
   }
 
@@ -1465,8 +1465,8 @@ ruleDuDatetimedayofweekDdMonthinterval = Rule
   , prod = \tokens -> case tokens of
       (_:Token Time td1:_:_:Token RegexMatch (GroupMatch (m:_)):Token Time td2:_) -> do
         n <- parseInt m
-        let from = intersect (td2, td1)
-            to = intersect (dayOfMonth n, td2)
+        from <- intersectMB td2 td1
+        to <- intersectMB (dayOfMonth n) td2
         tt $ interval TTime.Closed (from, to)
       _ -> Nothing
   }
@@ -1542,10 +1542,10 @@ ruleFinNamedmonthinterval = Rule
     , Predicate isAMonth
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td:_) ->
-        let from = intersect (dayOfMonth 25, td)
-            to = cycleLastOf TG.Day td
-        in tt $ interval TTime.Closed (from, to)
+      (_:Token Time td:_) -> do
+        from <- intersectMB (dayOfMonth 25) td
+        let to = cycleLastOf TG.Day td
+        tt $ interval TTime.Closed (from, to)
       _ -> Nothing
   }
 
@@ -1631,8 +1631,8 @@ ruleEntreDdEtDdMonthinterval = Rule
       (_:Token RegexMatch (GroupMatch (m1:_)):_:Token RegexMatch (GroupMatch (m2:_)):Token Time td:_) -> do
         n1 <- parseInt m1
         n2 <- parseInt m2
-        let from = intersect (dayOfMonth n1, td)
-            to = intersect (dayOfMonth n2, td)
+        from <- intersectMB (dayOfMonth n1) td
+        to <- intersectMB (dayOfMonth n2) td
         tt $ interval TTime.Closed (from, to)
       _ -> Nothing
   }
@@ -1864,10 +1864,10 @@ ruleSoirDeNol = Rule
   , pattern =
     [ regex "soir(\x00e9e)? de no(e|\x00eb)l"
     ]
-  , prod = \_ ->
-      let from = intersect (monthDay 12 24, hour False 18)
-          to = intersect (monthDay 12 25, hour False 0)
-      in tt $ interval TTime.Open (from, to)
+  , prod = \_ -> do
+      from <- intersectMB (monthDay 12 24) (hour False 18)
+      to <- intersectMB (monthDay 12 25) (hour False 0)
+      tt $ interval TTime.Open (from, to)
   }
 
 ruleDayofweekDayofmonthTimeofday :: Rule
@@ -1881,7 +1881,7 @@ ruleDayofweekDayofmonthTimeofday = Rule
   , prod = \tokens -> case tokens of
       (Token Time td1:token:Token Time td2:_) -> do
         dom <- intersectDOM td1 token
-        tt $ intersect (dom, td2)
+        Token Time <$> intersectMB dom td2
       _ -> Nothing
   }
 
@@ -1955,10 +1955,10 @@ ruleNamedmonth13 = Rule
     , Predicate isAMonth
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td:_) ->
-        let from = intersect (dayOfMonth 10, td)
-            to = intersect (dayOfMonth 19, td)
-        in tt $ interval TTime.Open (from, to)
+      (_:Token Time td:_) -> do
+        from <- intersectMB (dayOfMonth 10) td
+        to <- intersectMB (dayOfMonth 19) td
+        tt $ interval TTime.Open (from, to)
       _ -> Nothing
   }
 
@@ -1976,8 +1976,8 @@ ruleDayofweekErdayofweekDdMonthinterval = Rule
   , prod = \tokens -> case tokens of
       (_:_:_:_:Token RegexMatch (GroupMatch (m:_)):Token Time td:_) -> do
         n <- parseInt m
-        let from = intersect (dayOfMonth 1, td)
-            to = intersect (dayOfMonth n, td)
+        from <- intersectMB (dayOfMonth 1) td
+        to <- intersectMB (dayOfMonth n) td
         tt $ interval TTime.Closed (from, to)
       _ -> Nothing
   }

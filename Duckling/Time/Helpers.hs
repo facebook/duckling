@@ -19,7 +19,7 @@ module Duckling.Time.Helpers
     -- Production
   , cycleLastOf, cycleN, cycleNth, cycleNthAfter, dayOfMonth, dayOfWeek
   , daysOfWeekOfMonth, durationAfter, durationAgo, durationBefore, form, hour
-  , hourMinute, hourMinuteSecond, inDuration, intersect, intersectDOM, interval
+  , hourMinute, hourMinuteSecond, inDuration, intersectDOM, interval
   , inTimezone, longWEBefore, minute, minutesAfter, minutesBefore, mkLatent
   , month, monthDay, notLatent, nthDOWOfMonth, partOfDay, predLastOf, predNth
   , predNthAfter, second, timeOfDayAMPM, withDirection, year, yearMonthDay
@@ -486,7 +486,7 @@ nthDOWOfMonth n dow m = intersect (dowsM, week)
 intersectDOM :: TimeData -> Token -> Maybe TimeData
 intersectDOM td token = do
   n <- getIntValue token
-  Just $ intersect (dayOfMonth n, td)
+  intersectMB (dayOfMonth n) td
 
 minutesBefore :: Int -> TimeData -> Maybe TimeData
 minutesBefore n TimeData {TTime.form = Just (TTime.TimeOfDay (Just 0) is12H)} =

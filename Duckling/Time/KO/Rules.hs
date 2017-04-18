@@ -485,7 +485,7 @@ ruleIntersectBy = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td1:_:Token Time td2:_) ->
-        Token Time <$> intersectMB td1 td2
+        Token Time <$> intersect td1 td2
       _ -> Nothing
   }
 
@@ -666,7 +666,7 @@ ruleTimeNthTime = Rule
       (Token Time td1:
        Token Ordinal (OrdinalData {TOrdinal.value = v}):
        Token Time td2:
-       _) -> Token Time . predNth (v - 1) False <$> intersectMB td1 td2
+       _) -> Token Time . predNth (v - 1) False <$> intersect td1 td2
       _ -> Nothing
   }
 
@@ -703,7 +703,7 @@ ruleIntersect = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td1:Token Time td2:_) ->
-        Token Time <$> intersectMB td1 td2
+        Token Time <$> intersect td1 td2
       _ -> Nothing
   }
 
@@ -741,7 +741,7 @@ ruleTimePartofday = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td1:Token Time td2:_) ->
-        Token Time <$> intersectMB td1 td2
+        Token Time <$> intersect td1 td2
       _ -> Nothing
   }
 
@@ -752,8 +752,8 @@ ruleWeekend = Rule
     [ regex "\xc8fc\xb9d0"
     ]
   , prod = \_ -> do
-      from <- intersectMB (dayOfWeek 5) (hour False 18)
-      to <- intersectMB (dayOfWeek 1) (hour False 0)
+      from <- intersect (dayOfWeek 5) (hour False 18)
+      to <- intersect (dayOfWeek 1) (hour False 0)
       tt $ interval TTime.Open (from, to)
   }
 
@@ -997,7 +997,7 @@ ruleAfterPartofday = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_) ->
-        Token Time . partOfDay <$> intersectMB (cycleNth TG.Day 0) td
+        Token Time . partOfDay <$> intersect (cycleNth TG.Day 0) td
       _ -> Nothing
   }
 

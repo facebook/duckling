@@ -19,11 +19,11 @@ module Duckling.Time.Helpers
     -- Production
   , cycleLastOf, cycleN, cycleNth, cycleNthAfter, dayOfMonth, dayOfWeek
   , daysOfWeekOfMonth, durationAfter, durationAgo, durationBefore, form, hour
-  , hourMinute, hourMinuteSecond, inDuration, intersectDOM, interval
+  , hourMinute, hourMinuteSecond, inDuration, intersect, intersectDOM, interval
   , inTimezone, longWEBefore, minute, minutesAfter, minutesBefore, mkLatent
   , month, monthDay, notLatent, nthDOWOfMonth, partOfDay, predLastOf, predNth
   , predNthAfter, second, timeOfDayAMPM, withDirection, year, yearMonthDay
-  , intersectMB, tt
+  , tt
     -- Other
   , getIntValue
   ) where
@@ -291,8 +291,15 @@ isDOMValue = liftM2 (||) isDOMOrdinal isDOMInteger
 -- Production
 
 -- Pass the interval second
-intersect :: (TimeData, TimeData) -> TimeData
-intersect (TimeData pred1 _ g1 _ _ d1, TimeData pred2 _ g2 _ _ d2)
+intersect :: TimeData -> TimeData -> Maybe TimeData
+intersect td1 td2 =
+  case intersect' (td1, td2) of
+    TTime.TimeData { TTime.timePred = pred }
+      | TTime.isEmptyPredicate pred -> Nothing
+    res -> Just res
+
+intersect' :: (TimeData, TimeData) -> TimeData
+intersect' (TimeData pred1 _ g1 _ _ d1, TimeData pred2 _ g2 _ _ d2)
   | g1 < g2 = TTime.timedata'
     { TTime.timePred = timeCompose pred1 pred2
     , TTime.timeGrain = g1
@@ -308,12 +315,6 @@ intersect (TimeData pred1 _ g1 _ _ d1, TimeData pred2 _ g2 _ _ d2)
       [] -> Nothing
       (x:_) -> Just x
 
-intersectMB :: TimeData -> TimeData -> Maybe TimeData
-intersectMB td1 td2 =
-  case intersect (td1, td2) of
-    TTime.TimeData { TTime.timePred = pred }
-      | TTime.isEmptyPredicate pred -> Nothing
-    res -> Just res
 
 hour :: Bool -> Int -> TimeData
 hour is12H n = timeOfDay (Just n) is12H $ TTime.timedata'
@@ -346,18 +347,18 @@ year :: Int -> TimeData
 year n = TTime.timedata' {TTime.timePred = timeYear n, TTime.timeGrain = TG.Year}
 
 yearMonthDay :: Int -> Int -> Int -> TimeData
-yearMonthDay y m d = intersect (intersect (year y, month m), dayOfMonth d)
+yearMonthDay y m d = intersect' (intersect' (year y, month m), dayOfMonth d)
 
 monthDay :: Int -> Int -> TimeData
-monthDay m d = intersect (month m, dayOfMonth d)
+monthDay m d = intersect' (month m, dayOfMonth d)
 
 hourMinute :: Bool -> Int -> Int -> TimeData
 hourMinute is12H h m = timeOfDay (Just h) is12H $
-  intersect (hour is12H h, minute m)
+  intersect' (hour is12H h, minute m)
 
 hourMinuteSecond :: Bool -> Int -> Int -> Int -> TimeData
 hourMinuteSecond is12H h m s = timeOfDay (Just h) is12H $
-  intersect (intersect (hour is12H h, minute m), second s)
+  intersect' (intersect' (hour is12H h, minute m), second s)
 
 cycleN :: Bool -> TG.Grain -> Int -> TimeData
 cycleN notImmediate grain n = TTime.timedata'
@@ -453,7 +454,7 @@ timeOfDay :: Maybe Int -> Bool -> TimeData -> TimeData
 timeOfDay h is12H = form TTime.TimeOfDay {TTime.hours = h, TTime.is12H = is12H}
 
 timeOfDayAMPM :: TimeData -> Bool -> TimeData
-timeOfDayAMPM tod isAM = timeOfDay Nothing False $ intersect (tod, ampm)
+timeOfDayAMPM tod isAM = timeOfDay Nothing False $ intersect' (tod, ampm)
   where
     ampm = TTime.timedata'
            { TTime.timePred = ampmPred
@@ -467,18 +468,18 @@ withDirection dir td = td {TTime.direction = Just dir}
 longWEBefore :: TimeData -> TimeData
 longWEBefore monday = interval TTime.Open (start, end)
   where
-    start = intersect (fri, hour False 18)
-    end = intersect (tue, hour False 0)
+    start = intersect' (fri, hour False 18)
+    end = intersect' (tue, hour False 0)
     fri = cycleNthAfter False TG.Day (- 3) monday
     tue = cycleNthAfter False TG.Day 1 monday
 
 daysOfWeekOfMonth :: Int -> Int -> TimeData
-daysOfWeekOfMonth dow m = intersect (dayOfWeek dow, month m)
+daysOfWeekOfMonth dow m = intersect' (dayOfWeek dow, month m)
 
 -- Zero-indexed weeks, Monday is 1
 -- Use `predLastOf` for last day of week of month
 nthDOWOfMonth :: Int -> Int -> Int -> TimeData
-nthDOWOfMonth n dow m = intersect (dowsM, week)
+nthDOWOfMonth n dow m = intersect' (dowsM, week)
   where
     dowsM = daysOfWeekOfMonth dow m
     week = cycleNthAfter False TG.Week n $ monthDay m 1
@@ -486,7 +487,7 @@ nthDOWOfMonth n dow m = intersect (dowsM, week)
 intersectDOM :: TimeData -> Token -> Maybe TimeData
 intersectDOM td token = do
   n <- getIntValue token
-  intersectMB (dayOfMonth n) td
+  intersect (dayOfMonth n) td
 
 minutesBefore :: Int -> TimeData -> Maybe TimeData
 minutesBefore n TimeData {TTime.form = Just (TTime.TimeOfDay (Just 0) is12H)} =

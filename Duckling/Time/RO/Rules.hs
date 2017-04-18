@@ -190,8 +190,8 @@ ruleMonthDdddInterval = Rule
        _) -> do
         d1 <- parseInt m1
         d2 <- parseInt m2
-        dom1 <- intersectMB (dayOfMonth d1) td
-        dom2 <- intersectMB (dayOfMonth d2) td
+        dom1 <- intersect (dayOfMonth d1) td
+        dom2 <- intersect (dayOfMonth d2) td
         tt $ interval TTime.Closed (dom1, dom2)
       _ -> Nothing
   }
@@ -499,7 +499,7 @@ ruleDiseara = Rule
   , prod = \_ ->
       let td1 = cycleNth TG.Day 0
           td2 = interval TTime.Open (hour False 18, hour False 0)
-      in Token Time . partOfDay <$> intersectMB td1 td2
+      in Token Time . partOfDay <$> intersect td1 td2
   }
 
 ruleIntersectBy :: Rule
@@ -512,7 +512,7 @@ ruleIntersectBy = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td1:_:Token Time td2:_) ->
-        Token Time <$> intersectMB td1 td2
+        Token Time <$> intersect td1 td2
       _ -> Nothing
   }
 
@@ -700,7 +700,7 @@ ruleIntersect = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td1:Token Time td2:_) ->
-        Token Time <$> intersectMB td1 td2
+        Token Time <$> intersect td1 td2
       _ -> Nothing
   }
 
@@ -777,7 +777,7 @@ ruleNthTimeOfTime = Rule
   , prod = \tokens -> case tokens of
       (token:Token Time td1:_:Token Time td2:_) -> do
         v <- getIntValue token
-        Token Time . predNth (v - 1) False <$> intersectMB td2 td1
+        Token Time . predNth (v - 1) False <$> intersect td2 td1
       _ -> Nothing
   }
 
@@ -799,7 +799,7 @@ ruleTimePartofday = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td1:Token Time td2:_) ->
-        Token Time <$> intersectMB td1 td2
+        Token Time <$> intersect td1 td2
       _ -> Nothing
   }
 
@@ -810,8 +810,8 @@ ruleWeekend = Rule
     [ regex "(week(\\s|\\-)?end|wkend)"
     ]
   , prod = \_ -> do
-      fri <- intersectMB (dayOfWeek 5) (hour False 18)
-      mon <- intersectMB (dayOfWeek 1) (hour False 0)
+      fri <- intersect (dayOfWeek 5) (hour False 18)
+      mon <- intersect (dayOfWeek 1) (hour False 0)
       tt $ interval TTime.Open (fri, mon)
   }
 
@@ -860,7 +860,7 @@ rulePartofdayAsta = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_) ->
-        Token Time . partOfDay <$> intersectMB (cycleNth TG.Day 0) td
+        Token Time . partOfDay <$> intersect (cycleNth TG.Day 0) td
       _ -> Nothing
   }
 
@@ -1223,7 +1223,7 @@ ruleDayofmonthnumberNamedmonthYear = Rule
        _) -> do
         v <- parseInt match
         dom <- intersectDOM td token
-        Token Time <$> intersectMB dom (year v)
+        Token Time <$> intersect dom (year v)
       _ -> Nothing
   }
 

@@ -157,7 +157,7 @@ ruleNthTimeOfTime2 = Rule
        Token Time td1:
        _:
        Token Time td2:
-       _) -> Token Time . predNth (v - 1) False <$> intersectMB td2 td1
+       _) -> Token Time . predNth (v - 1) False <$> intersect td2 td1
       _ -> Nothing
   }
 
@@ -371,8 +371,8 @@ ruleMonthDdddInterval = Rule
        _) -> do
         v1 <- parseInt m1
         v2 <- parseInt m2
-        from <- intersectMB td (dayOfMonth v1)
-        to <- intersectMB td (dayOfMonth v2)
+        from <- intersect td (dayOfMonth v1)
+        to <- intersect td (dayOfMonth v2)
         tt $ interval TTime.Closed (from, to)
       _ -> Nothing
   }
@@ -461,7 +461,7 @@ ruleTheIdesOfNamedmonth = Rule
   , prod = \tokens -> case tokens of
       (_:Token Time td@TimeData {TTime.form = Just (TTime.Month m)}:_) ->
         Token Time <$>
-          intersectMB td (dayOfMonth $ if elem m [3, 5, 7, 10] then 15 else 13)
+          intersect td (dayOfMonth $ if elem m [3, 5, 7, 10] then 15 else 13)
       _ -> Nothing
   }
 
@@ -783,7 +783,7 @@ ruleIntersectBy = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td1:_:Token Time td2:_) ->
-        Token Time <$> intersectMB td1 td2
+        Token Time <$> intersect td1 td2
       _ -> Nothing
   }
 
@@ -977,7 +977,7 @@ ruleAfterWork = Rule
   , prod = \_ ->
       let td1 = cycleNth TG.Day 0
           td2 = interval TTime.Open (hour False 17, hour False 21)
-      in Token Time . partOfDay <$> intersectMB td1 td2
+      in Token Time . partOfDay <$> intersect td1 td2
   }
 
 ruleLastNCycle :: Rule
@@ -1050,7 +1050,7 @@ ruleIntersect = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td1:Token Time td2:_) ->
-        Token Time <$> intersectMB td1 td2
+        Token Time <$> intersect td1 td2
       _ -> Nothing
   }
 
@@ -1113,7 +1113,7 @@ ruleNthTimeOfTime = Rule
        Token Time td1:
        _:
        Token Time td2:
-       _) -> Token Time . predNth (v - 1) False <$> intersectMB td2 td1
+       _) -> Token Time . predNth (v - 1) False <$> intersect td2 td1
       _ -> Nothing
   }
 
@@ -1135,7 +1135,7 @@ ruleTimePartofday = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td1:Token Time td2:_) ->
-        Token Time <$> intersectMB td1 td2
+        Token Time <$> intersect td1 td2
       _ -> Nothing
   }
 
@@ -1146,8 +1146,8 @@ ruleWeekend = Rule
     [ regex "(week(\\s|-)?end)(en)?"
     ]
   , prod = \_ -> do
-      from <- intersectMB (dayOfWeek 5) (hour False 18)
-      to <- intersectMB (dayOfWeek 1) (hour False 0)
+      from <- intersect (dayOfWeek 5) (hour False 18)
+      to <- intersect (dayOfWeek 1) (hour False 0)
       tt $ interval TTime.Open (from, to)
   }
 
@@ -1260,7 +1260,7 @@ ruleIntersectByOfFromS = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td1:_:Token Time td2:_) ->
-        Token Time <$> intersectMB td1 td2
+        Token Time <$> intersect td1 td2
       _ -> Nothing
   }
 
@@ -1314,7 +1314,7 @@ ruleThisPartofday = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td:_) ->
-        Token Time . partOfDay <$> intersectMB (cycleNth TG.Day 0) td
+        Token Time . partOfDay <$> intersect (cycleNth TG.Day 0) td
       _ -> Nothing
   }
 
@@ -1379,7 +1379,7 @@ ruleAfterLunch = Rule
   , prod = \_ ->
       let td1 = cycleNth TG.Day 0
           td2 = interval TTime.Open (hour False 13, hour False 17)
-      in Token Time . partOfDay <$> intersectMB td1 td2
+      in Token Time . partOfDay <$> intersect td1 td2
   }
 
 ruleOnANamedday :: Rule
@@ -1546,7 +1546,7 @@ ruleTonight = Rule
   , prod = \_ ->
       let td1 = cycleNth TG.Day 0
           td2 = interval TTime.Open (hour False 18, hour False 0)
-      in Token Time . partOfDay <$> intersectMB td1 td2
+      in Token Time . partOfDay <$> intersect td1 td2
   }
 
 ruleYear :: Rule
@@ -1755,7 +1755,7 @@ rulePartofdayOfTime = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td1:_:Token Time td2:_) ->
-        Token Time <$> intersectMB td1 td2
+        Token Time <$> intersect td1 td2
       _ -> Nothing
   }
 
@@ -1823,7 +1823,7 @@ ruleDayofmonthordinalNamedmonthYear = Rule
        _) -> do
          n <- parseInt match
          td2 <- intersectDOM td token
-         Token Time <$> intersectMB td2 (year n)
+         Token Time <$> intersect td2 (year n)
       _ -> Nothing
   }
 

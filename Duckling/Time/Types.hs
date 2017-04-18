@@ -663,6 +663,7 @@ timeStartingAtTheEndOf t = TimeObject
 -- | Closed if the interval between A and B should include B
 -- Open if the interval should end right before B
 data TimeIntervalType = Open | Closed
+  deriving (Eq, Show)
 
 timeInterval :: TimeIntervalType -> TimeObject -> TimeObject -> TimeObject
 timeInterval intervalType t1 t2 = TimeObject

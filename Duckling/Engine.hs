@@ -57,7 +57,7 @@ runDuckling ma = runIdentity ma
 parseAndResolve :: [Rule] -> Text -> Context -> [ResolvedToken]
 parseAndResolve rules input context = mapMaybe (resolveNode context) .
   force $ Stash.toPosOrderedList $ runDuckling $
-  parseString rules (mkDocument input) Stash.empty Stash.empty []
+  parseString rules (mkDocument input)
 
 produce :: Match -> Maybe Node
 produce (_, _, []) = Nothing
@@ -194,29 +194,40 @@ parseString1 rules sentence stash new matches = do
   newPartial <- concatMapM (matchFirst sentence new) matches
 
   -- Find new matches resulting from newly added tokens (`new`)
-  -- For the first pass, pass through all rules.
-  -- For subsequent passes, only try rules starting with a predicate.
   let match rule = matchFirst sentence new (rule, 0, [])
-  newMatches <- if Stash.null stash
-    then concatMapM match rules
-    else concatMapM match
-           [ rule | rule@(Rule {pattern = (Predicate _:_)}) <- rules ]
+  newMatches <- concatMapM match rules
 
   (full, partial) <- L.partition (\(Rule {pattern}, _, _) -> null pattern)
     <$> matchAll sentence stash (newPartial ++ newMatches)
 
   -- Produce full matches as new tokens
   return ( Stash.fromList $ mapMaybe produce full
-         , matches ++ partial
+         , partial ++ matches
          )
 
 -- | Produces all tokens recursively.
-parseString :: [Rule] -> Document -> Stash -> Stash -> [Match] -> Duckling Stash
-parseString rules sentence stash new matches = do
+saturateParseString
+  :: [Rule] -> Document -> Stash -> Stash -> [Match] -> Duckling Stash
+saturateParseString rules sentence stash new matches = do
   (new', matches') <- parseString1 rules sentence stash new matches
+  let stash' = Stash.union stash new'
   if Stash.null new'
     then return stash
-    else parseString rules sentence (Stash.union stash new') new' matches'
+    else saturateParseString rules sentence stash' new' matches'
+
+parseString :: [Rule] -> Document -> Duckling Stash
+parseString rules sentence = do
+  (new, partialMatches) <-
+    -- One the first pass we try all the rules
+    parseString1 rules sentence Stash.empty Stash.empty []
+  if Stash.null new
+    then return Stash.empty
+    else
+    -- For subsequent passes, we only try rules starting with a predicate.
+    saturateParseString headPredicateRules sentence new new partialMatches
+  where
+  headPredicateRules =
+    [ rule | rule@(Rule {pattern = (Predicate _:_)}) <- rules ]
 
 resolveNode :: Context -> Node -> Maybe ResolvedToken
 resolveNode context n@Node{token = (Token _ dd), nodeRange = nodeRange} = do

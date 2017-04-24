@@ -401,6 +401,7 @@ library
                      , Duckling.TimeGrain.ES.Rules
                      , Duckling.TimeGrain.FR.Rules
                      , Duckling.TimeGrain.GA.Rules
+                     , Duckling.TimeGrain.HE.Rules
                      , Duckling.TimeGrain.IT.Rules
                      , Duckling.TimeGrain.JA.Rules
                      , Duckling.TimeGrain.KO.Rules

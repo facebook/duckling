@@ -17,6 +17,7 @@ import Duckling.Dimensions.Types
 import Duckling.Types
 import qualified Duckling.Numeral.HE.Rules as Numeral
 import qualified Duckling.Ordinal.HE.Rules as Ordinal
+import qualified Duckling.TimeGrain.HE.Rules as TimeGrain
 
 rules :: Some Dimension -> [Rule]
 rules (This Distance) = []
@@ -30,6 +31,6 @@ rules (This Quantity) = []
 rules (This RegexMatch) = []
 rules (This Temperature) = []
 rules (This Time) = []
-rules (This TimeGrain) = []
+rules (This TimeGrain) = TimeGrain.rules
 rules (This Url) = []
 rules (This Volume) = []

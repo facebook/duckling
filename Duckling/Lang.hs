@@ -30,6 +30,7 @@ data Lang
   | ET
   | FR
   | GA
+  | HE
   | ID
   | IT
   | JA

@@ -19,6 +19,7 @@ import qualified Duckling.Ranking.Classifiers.ES as ESClassifiers
 import qualified Duckling.Ranking.Classifiers.ET as ETClassifiers
 import qualified Duckling.Ranking.Classifiers.FR as FRClassifiers
 import qualified Duckling.Ranking.Classifiers.GA as GAClassifiers
+import qualified Duckling.Ranking.Classifiers.HE as HEClassifiers
 import qualified Duckling.Ranking.Classifiers.ID as IDClassifiers
 import qualified Duckling.Ranking.Classifiers.IT as ITClassifiers
 import qualified Duckling.Ranking.Classifiers.JA as JAClassifiers
@@ -46,6 +47,7 @@ classifiers ES = ESClassifiers.classifiers
 classifiers ET = ETClassifiers.classifiers
 classifiers FR = FRClassifiers.classifiers
 classifiers GA = GAClassifiers.classifiers
+classifiers HE = HEClassifiers.classifiers
 classifiers ID = IDClassifiers.classifiers
 classifiers IT = ITClassifiers.classifiers
 classifiers JA = JAClassifiers.classifiers

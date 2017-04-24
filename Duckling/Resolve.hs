@@ -19,7 +19,6 @@ module Duckling.Resolve
   ) where
 
 import Data.Aeson
-import Data.String
 import qualified Data.Time as Time
 import qualified Data.Time.LocalTime.TimeZone.Series as Series
 import Prelude

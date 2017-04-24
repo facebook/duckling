@@ -31,11 +31,9 @@ import Data.Maybe
 import Data.String
 import Data.Text (Text)
 import Data.List (scanl', foldl', foldr)
-import Data.Vector.Unboxed (Vector)
 import qualified Data.Text.Encoding as Text
 import qualified Data.Text as Text
 import qualified Data.Text.Internal.Unsafe.Char as UText
-import qualified Data.Vector.Unboxed as Vector
 import Data.Typeable ((:~:)(Refl), Typeable)
 import GHC.Generics
 import Prelude

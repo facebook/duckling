@@ -33,7 +33,6 @@ import Data.Maybe
 import Prelude
 import Data.Text (Text)
 import qualified Data.Time as Time
-import qualified Data.Time.Calendar.WeekDate as Time
 import qualified Data.Time.LocalTime.TimeZone.Series as Series
 
 import Duckling.Dimensions.Types

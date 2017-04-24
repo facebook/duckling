@@ -281,6 +281,8 @@ library
                      , Duckling.Ordinal.FR.Rules
                      , Duckling.Ordinal.GA.Corpus
                      , Duckling.Ordinal.GA.Rules
+                     , Duckling.Ordinal.HE.Corpus
+                     , Duckling.Ordinal.HE.Rules
                      , Duckling.Ordinal.ID.Corpus
                      , Duckling.Ordinal.ID.Rules
                      , Duckling.Ordinal.IT.Corpus
@@ -572,6 +574,7 @@ test-suite duckling-test
                      , Duckling.Ordinal.ET.Tests
                      , Duckling.Ordinal.FR.Tests
                      , Duckling.Ordinal.GA.Tests
+                     , Duckling.Ordinal.HE.Tests
                      , Duckling.Ordinal.ID.Tests
                      , Duckling.Ordinal.IT.Tests
                      , Duckling.Ordinal.JA.Tests

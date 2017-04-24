@@ -182,6 +182,7 @@ library
                      , Duckling.Duration.FR.Rules
                      , Duckling.Duration.GA.Corpus
                      , Duckling.Duration.GA.Rules
+                     , Duckling.Duration.HE.Rules
                      , Duckling.Duration.IT.Rules
                      , Duckling.Duration.JA.Corpus
                      , Duckling.Duration.KO.Corpus

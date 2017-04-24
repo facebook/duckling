@@ -23,6 +23,7 @@ import qualified Data.HashSet as HashSet
 import Data.Text (Text)
 import qualified Data.Text as Text
 import Prelude
+import TextShow
 
 import Duckling.Dimensions.Types
 import Duckling.Dimensions

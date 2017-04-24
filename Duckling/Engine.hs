@@ -29,9 +29,13 @@ import qualified Data.Char as Char
 import Data.Functor.Identity
 import Data.Maybe
 import Data.Text (Text)
+import qualified Data.Text as Text
+import qualified Data.Text.Encoding as Text
 import qualified Data.Text.Unsafe as UText
 import qualified Data.List as L
+import qualified Data.Vector.Unboxed as Vector
 import Prelude
+import qualified Text.Regex.Base as R
 import qualified Text.Regex.PCRE as PCRE
 
 import Duckling.Dimensions.Types

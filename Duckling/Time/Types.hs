@@ -19,6 +19,7 @@ module Duckling.Time.Types where
 import Control.Arrow ((***))
 import Control.DeepSeq
 import Control.Monad (join)
+import Control.Applicative ((<|>))
 import Data.Aeson
 import Data.Hashable
 import qualified Data.HashMap.Strict as H

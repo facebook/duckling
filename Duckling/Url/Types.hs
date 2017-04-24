@@ -19,6 +19,7 @@ import Control.DeepSeq
 import Data.Aeson
 import Data.Hashable
 import Data.Maybe
+import Data.Monoid
 import Data.Text (Text)
 import GHC.Generics
 import Prelude

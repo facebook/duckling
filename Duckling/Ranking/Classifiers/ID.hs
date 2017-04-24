@@ -13,8 +13,10 @@
 -----------------------------------------------------------------
 {-# LANGUAGE OverloadedStrings #-}
 module Duckling.Ranking.Classifiers.ID (classifiers) where
+import Prelude
 import Duckling.Ranking.Types
 import qualified Data.HashMap.Strict as HashMap
+import Data.String
 
 classifiers :: Classifiers
 classifiers = HashMap.fromList []

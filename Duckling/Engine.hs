@@ -35,8 +35,8 @@ import Duckling.Resolve
 import Duckling.Types
 import qualified Duckling.Types.Document as Document
 import Duckling.Types.Document (Document)
-import qualified Duckling.Stash as Stash
-import Duckling.Stash (Stash)
+import qualified Duckling.Types.Stash as Stash
+import Duckling.Types.Stash (Stash)
 
 -- -----------------------------------------------------------------
 -- Engine

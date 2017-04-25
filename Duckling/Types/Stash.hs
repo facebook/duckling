@@ -9,7 +9,7 @@
 {-# LANGUAGE RecordWildCards #-}
 {-# LANGUAGE NoRebindableSyntax #-}
 
-module Duckling.Stash where
+module Duckling.Types.Stash where
 
 import qualified Data.IntMap.Strict as IntMap
 import Data.IntMap.Strict (IntMap)

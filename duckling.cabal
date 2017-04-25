@@ -29,9 +29,9 @@ library
                      , Duckling.Engine.Regex
                      , Duckling.Lang
                      , Duckling.Resolve
-                     , Duckling.Stash
                      , Duckling.Types
                      , Duckling.Types.Document
+                     , Duckling.Types.Stash
 
   -- ------------------------------------------------------------------
   -- Rules

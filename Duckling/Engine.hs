@@ -10,7 +10,6 @@
 {-# LANGUAGE NamedFieldPuns #-}
 {-# LANGUAGE NoRebindableSyntax #-}
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE BangPatterns #-}
 
 module Duckling.Engine
   ( parseAndResolve
@@ -22,20 +21,11 @@ import Control.DeepSeq
 import Control.Monad.Extra
 import Data.Aeson
 import qualified Data.Array as Array
-import qualified Data.Array.Unboxed as UArray
-import Data.ByteString (ByteString)
-import qualified Data.ByteString as BS
-import qualified Data.Char as Char
 import Data.Functor.Identity
 import Data.Maybe
 import Data.Text (Text)
-import qualified Data.Text as Text
-import qualified Data.Text.Encoding as Text
-import qualified Data.Text.Unsafe as UText
 import qualified Data.List as L
-import qualified Data.Vector.Unboxed as Vector
 import Prelude
-import qualified Text.Regex.Base as R
 import qualified Text.Regex.PCRE as PCRE
 
 import Duckling.Dimensions.Types
@@ -43,6 +33,8 @@ import qualified Duckling.Engine.Regex as Regex
 import Duckling.Regex.Types
 import Duckling.Resolve
 import Duckling.Types
+import qualified Duckling.Types.Document as Document
+import Duckling.Types.Document (Document)
 import qualified Duckling.Stash as Stash
 import Duckling.Stash (Stash)
 
@@ -57,7 +49,7 @@ runDuckling ma = runIdentity ma
 parseAndResolve :: [Rule] -> Text -> Context -> [ResolvedToken]
 parseAndResolve rules input context = mapMaybe (resolveNode context) .
   force $ Stash.toPosOrderedList $ runDuckling $
-  parseString rules (mkDocument input)
+  parseString rules (Document.fromText input)
 
 produce :: Match -> Maybe Node
 produce (_, _, []) = Nothing
@@ -73,39 +65,15 @@ produce (Rule name _ production, _, etuor@(Node {nodeRange = Range _ e}:_)) = do
       }
     [] -> Nothing
 
--- As regexes are matched without whitespace delimitator, we need to check
--- the reasonability of the match to actually be a word.
-isRangeValid :: Document -> Range -> Bool
-isRangeValid Document { indexable = s } (Range start end) =
-  (start == 0 || isDifferent (s UArray.! (start - 1)) (s UArray.! start)) &&
-  (end == arraySize s ||
-      isDifferent (s UArray.! (end - 1)) (s UArray.! end))
-  where
-    charClass :: Char -> Char
-    charClass c
-      | Char.isLower c = 'l'
-      | Char.isUpper c = 'u'
-      | Char.isDigit c = 'd'
-      | otherwise = c
-    isDifferent :: Char -> Char -> Bool
-    isDifferent a b = charClass a /= charClass b
-
 lookupRegex :: PCRE.Regex -> Int -> Document -> Duckling [Node]
-lookupRegex _regex position Document{ indexable = indexable }
-  | position >= arraySize indexable = return []
-lookupRegex regex position
-  Document { rawInput = rawInput
-           , utf8Encoded = utf8Encoded
-           , tDropToBSDrop = tDropToBSDrop
-           , bsDropToTDrop = bsDropToTDrop
-           , tDropToUtf16Drop = tDropToUtf16Drop
-           } = return nodes
+lookupRegex _regex position doc
+  | position >= Document.length doc = return []
+lookupRegex regex position doc = return nodes
   where
     -- See Note [Regular expressions and Text] to understand what's going
     -- on here
-    utf8Position = tDropToBSDrop UArray.! position
-    substring :: ByteString
-    substring = BS.drop utf8Position utf8Encoded
+    (substring, rangeToText, translateRange) =
+      Document.byteStringFromPos doc position
     nodes = L.foldl' f [] $ map Array.elems $ Regex.matchAll regex substring
     f :: [Node] -> [(Int, Int)] -> [Node]
     f nodes [] = nodes
@@ -119,31 +87,12 @@ lookupRegex regex position
         , children = []
         , rule = Nothing
         }
-    -- get a subrange of Text reusing the underlying buffer using
-    -- utf16 start and end positions
-    rangeToText :: (Int, Int) -> Text
-    rangeToText (-1, _) = ""
-    -- this is what regexec from Text.Regex.PCRE.ByteString does
-    rangeToText r = UText.takeWord16 (end16Pos - start16Pos) $
-      UText.dropWord16 start16Pos rawInput
-      where
-      start16Pos = tDropToUtf16Drop UArray.! startPos
-      end16Pos = tDropToUtf16Drop UArray.! endPos
-      (startPos, endPos) = uncurry translateRange r
-    -- from utf8 offset and length to Text character start and end position
-    translateRange :: Int -> Int -> (Int, Int)
-    translateRange !bsStart !bsLen = startPos `seq` endPos `seq` res
-      where
-      res = (startPos, endPos)
-      realBsStart = utf8Position + bsStart
-      realBsEnd = realBsStart + bsLen
-      startPos = bsDropToTDrop UArray.! realBsStart
-      endPos = bsDropToTDrop UArray.! realBsEnd
 
 lookupItem :: Document -> PatternItem -> Stash -> Int -> Duckling [Node]
 lookupItem s (Regex re) _ position =
-  filter (\node -> isRangeValid s (nodeRange node) &&
-                   isPositionValid position s node) <$>
+  filter (\node@Node { nodeRange = Range start end } ->
+            Document.isRangeValid s start end &&
+              isPositionValid position s node) <$>
   lookupRegex re position s
 lookupItem s (Predicate p) stash position =
   return $
@@ -153,7 +102,7 @@ lookupItem s (Predicate p) stash position =
 
 isPositionValid :: Int -> Document -> Node -> Bool
 isPositionValid position sentence (Node {nodeRange = Range start _}) =
-  position == 0 || isAdjacent position start sentence
+  position == 0 || Document.isAdjacent sentence position start
 
 -- | A match is full if its rule pattern is empty.
 -- (rule, endPosition, reversedRoute)

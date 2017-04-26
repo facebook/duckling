@@ -37,6 +37,7 @@ data Currency
   | EGP
   | EUR
   | GBP
+  | HRK
   | IDR
   | INR
   | JPY
@@ -65,6 +66,7 @@ instance ToJSON Currency where
   toJSON EGP     = "EGP"
   toJSON EUR     = "EUR"
   toJSON GBP     = "GBP"
+  toJSON HRK     = "HRK"
   toJSON IDR     = "IDR"
   toJSON INR     = "INR"
   toJSON JPY     = "JPY"

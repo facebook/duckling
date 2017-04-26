@@ -30,6 +30,7 @@ import qualified Duckling.Time.EN.Tests as EN
 import qualified Duckling.Time.ES.Tests as ES
 import qualified Duckling.Time.FR.Tests as FR
 import qualified Duckling.Time.GA.Tests as GA
+import qualified Duckling.Time.HR.Tests as HR
 import qualified Duckling.Time.IT.Tests as IT
 import qualified Duckling.Time.KO.Tests as KO
 import qualified Duckling.Time.NB.Tests as NB
@@ -47,6 +48,7 @@ tests = testGroup "Time Tests"
   , ES.tests
   , FR.tests
   , GA.tests
+  , HR.tests
   , IT.tests
   , KO.tests
   , NB.tests

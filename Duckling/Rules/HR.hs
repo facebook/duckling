@@ -19,6 +19,7 @@ import qualified Duckling.AmountOfMoney.HR.Rules as AmountOfMoney
 import qualified Duckling.Duration.HR.Rules as Duration
 import qualified Duckling.Numeral.HR.Rules as Numeral
 import qualified Duckling.Ordinal.HR.Rules as Ordinal
+import qualified Duckling.Time.HR.Rules as Time
 import qualified Duckling.TimeGrain.HR.Rules as TimeGrain
 
 rules :: Some Dimension -> [Rule]
@@ -32,7 +33,7 @@ rules (This PhoneNumber) = []
 rules (This Quantity) = []
 rules (This RegexMatch) = []
 rules (This Temperature) = []
-rules (This Time) = []
+rules (This Time) = Time.rules
 rules (This TimeGrain) = TimeGrain.rules
 rules (This Url) = []
 rules (This Volume) = []

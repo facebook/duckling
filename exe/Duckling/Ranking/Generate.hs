@@ -32,6 +32,7 @@ import qualified Duckling.Time.EN.Corpus as ENTime
 import qualified Duckling.Time.ES.Corpus as ESTime
 import qualified Duckling.Time.FR.Corpus as FRTime
 import qualified Duckling.Time.GA.Corpus as GATime
+import qualified Duckling.Time.HR.Corpus as HRTime
 import qualified Duckling.Time.IT.Corpus as ITTime
 import qualified Duckling.Time.KO.Corpus as KOTime
 import qualified Duckling.Time.NB.Corpus as NBTime
@@ -74,7 +75,7 @@ regenClassifiers lang = do
       FR -> FRTime.corpus
       GA -> GATime.corpus
       HE -> (testContext, [])
-      HR -> (testContext, [])
+      HR -> HRTime.corpus
       ID -> (testContext, [])
       IT -> ITTime.corpus
       JA -> (testContext, [])

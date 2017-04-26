@@ -189,6 +189,7 @@ library
                      , Duckling.Duration.GA.Corpus
                      , Duckling.Duration.GA.Rules
                      , Duckling.Duration.HE.Rules
+                     , Duckling.Duration.HR.Rules
                      , Duckling.Duration.IT.Rules
                      , Duckling.Duration.JA.Corpus
                      , Duckling.Duration.KO.Corpus

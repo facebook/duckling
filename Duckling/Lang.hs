@@ -31,6 +31,7 @@ data Lang
   | FR
   | GA
   | HE
+  | HR
   | ID
   | IT
   | JA

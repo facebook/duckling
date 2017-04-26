@@ -74,6 +74,7 @@ regenClassifiers lang = do
       FR -> FRTime.corpus
       GA -> GATime.corpus
       HE -> (testContext, [])
+      HR -> (testContext, [])
       ID -> (testContext, [])
       IT -> ITTime.corpus
       JA -> (testContext, [])

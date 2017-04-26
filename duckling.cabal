@@ -413,6 +413,7 @@ library
                      , Duckling.TimeGrain.FR.Rules
                      , Duckling.TimeGrain.GA.Rules
                      , Duckling.TimeGrain.HE.Rules
+                     , Duckling.TimeGrain.HR.Rules
                      , Duckling.TimeGrain.IT.Rules
                      , Duckling.TimeGrain.JA.Rules
                      , Duckling.TimeGrain.KO.Rules

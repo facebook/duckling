@@ -110,20 +110,6 @@ ruleNumbernumberHours = Rule
       _ -> Nothing
   }
 
-ruleIntegerUnitofduration :: Rule
-ruleIntegerUnitofduration = Rule
-  { name = "<integer> <unit-of-duration>"
-  , pattern =
-    [ Predicate isNatural
-    , dimension TimeGrain
-    ]
-  , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = v}):
-       Token TimeGrain grain:
-       _) -> Just . Token Duration . duration grain $ floor v
-      _ -> Nothing
-  }
-
 ruleThreequartersOfAnHour :: Rule
 ruleThreequartersOfAnHour = Rule
   { name = "three-quarters of an hour"
@@ -149,7 +135,6 @@ rules =
   , ruleHalfAnHour
   , ruleIntegerAndAnHalfHours
   , ruleIntegerMoreUnitofduration
-  , ruleIntegerUnitofduration
   , ruleNumbernumberHours
   , ruleQuarterOfAnHour
   , ruleThreequartersOfAnHour

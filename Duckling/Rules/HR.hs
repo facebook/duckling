@@ -22,6 +22,7 @@ import qualified Duckling.Numeral.HR.Rules as Numeral
 import qualified Duckling.Ordinal.HR.Rules as Ordinal
 import qualified Duckling.Time.HR.Rules as Time
 import qualified Duckling.TimeGrain.HR.Rules as TimeGrain
+import qualified Duckling.Volume.HR.Rules as Volume
 
 rules :: Some Dimension -> [Rule]
 rules (This Distance) = Distance.rules
@@ -37,4 +38,4 @@ rules (This Temperature) = []
 rules (This Time) = Time.rules
 rules (This TimeGrain) = TimeGrain.rules
 rules (This Url) = []
-rules (This Volume) = []
+rules (This Volume) = Volume.rules

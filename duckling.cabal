@@ -450,6 +450,8 @@ library
                      , Duckling.Volume.FR.Rules
                      , Duckling.Volume.GA.Corpus
                      , Duckling.Volume.GA.Rules
+                     , Duckling.Volume.HR.Corpus
+                     , Duckling.Volume.HR.Rules
                      , Duckling.Volume.KO.Corpus
                      , Duckling.Volume.KO.Rules
                      , Duckling.Volume.PT.Corpus
@@ -669,6 +671,7 @@ test-suite duckling-test
                      , Duckling.Volume.ES.Tests
                      , Duckling.Volume.FR.Tests
                      , Duckling.Volume.GA.Tests
+                     , Duckling.Volume.HR.Tests
                      , Duckling.Volume.KO.Tests
                      , Duckling.Volume.PT.Tests
                      , Duckling.Volume.NL.Tests

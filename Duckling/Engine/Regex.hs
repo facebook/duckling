@@ -8,6 +8,7 @@
 
 module Duckling.Engine.Regex
   ( matchAll
+  , matchOnce
   ) where
 
-import Text.Regex.Base (matchAll)
+import Text.Regex.Base (matchAll, matchOnce)

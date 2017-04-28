@@ -32,7 +32,7 @@ emptyRegexTest :: TestTree
 emptyRegexTest = testCase "Empty Regex Test" $
   case regex "()" of
     Regex regex -> assertEqual "empty result" [] $
-      runDuckling $ lookupRegex regex 0 "hey"
+      runDuckling $ lookupRegexAnywhere "hey" regex
     _ -> assertFailure "expected a regex"
 
 unicodeAndRegexTest :: TestTree
@@ -40,7 +40,7 @@ unicodeAndRegexTest = testCase "Unicode and Regex Test" $
   case regex "\\$([0-9]*)" of
     Regex regex -> do --
       assertEqual "" expected $
-        runDuckling $ lookupRegex regex 0 "\128526 $35"
+        runDuckling $ lookupRegexAnywhere "\128526 $35" regex
     _ -> assertFailure "expected a regex"
   where
   expected =

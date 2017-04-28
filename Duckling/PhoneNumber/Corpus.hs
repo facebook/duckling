@@ -67,4 +67,10 @@ allExamples = concat
   , examples (PhoneNumberValue "61992852776")
              [ "61 - 9 9285-2776"
              ]
+  , examples (PhoneNumberValue "19997424919")
+             [ "(19) 997424919"
+             ]
+  , examples (PhoneNumberValue "(+55) 19992842606")
+             [ "+55 19992842606"
+             ]
   ]

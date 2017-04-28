@@ -18,6 +18,7 @@ import qualified Duckling.AmountOfMoney.PT.Rules as AmountOfMoney
 import qualified Duckling.Distance.PT.Rules as Distance
 import qualified Duckling.Numeral.PT.Rules as Numeral
 import qualified Duckling.Ordinal.PT.Rules as Ordinal
+import qualified Duckling.PhoneNumber.PT.Rules as PhoneNumber
 import qualified Duckling.Quantity.PT.Rules as Quantity
 import qualified Duckling.Temperature.PT.Rules as Temperature
 import qualified Duckling.Time.PT.Rules as Time
@@ -32,7 +33,7 @@ rules (This Numeral) = Numeral.rules
 rules (This Email) = []
 rules (This AmountOfMoney) = AmountOfMoney.rules
 rules (This Ordinal) = Ordinal.rules
-rules (This PhoneNumber) = []
+rules (This PhoneNumber) = PhoneNumber.rules
 rules (This Quantity) = Quantity.rules
 rules (This RegexMatch) = []
 rules (This Temperature) = Temperature.rules

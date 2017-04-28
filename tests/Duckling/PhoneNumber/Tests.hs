@@ -22,12 +22,14 @@ import Duckling.PhoneNumber.Corpus
 import Duckling.PhoneNumber.Types
 import Duckling.Testing.Asserts
 import Duckling.Testing.Types
+import qualified Duckling.PhoneNumber.PT.Tests as PT
 
 tests :: TestTree
 tests = testGroup "PhoneNumber Tests"
   [ makeCorpusTest [This PhoneNumber] corpus
   , makeNegativeCorpusTest [This PhoneNumber] negativeCorpus
   , surroundTests
+  , PT.tests
   ]
 
 surroundTests :: TestTree

@@ -167,6 +167,8 @@ library
                      , Duckling.Distance.FR.Rules
                      , Duckling.Distance.GA.Corpus
                      , Duckling.Distance.GA.Rules
+                     , Duckling.Distance.HR.Corpus
+                     , Duckling.Distance.HR.Rules
                      , Duckling.Distance.KO.Corpus
                      , Duckling.Distance.KO.Rules
                      , Duckling.Distance.PT.Corpus
@@ -534,6 +536,7 @@ test-suite duckling-test
                      , Duckling.Distance.ES.Tests
                      , Duckling.Distance.FR.Tests
                      , Duckling.Distance.GA.Tests
+                     , Duckling.Distance.HR.Tests
                      , Duckling.Distance.KO.Tests
                      , Duckling.Distance.NL.Tests
                      , Duckling.Distance.PT.Tests

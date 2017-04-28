@@ -47,6 +47,7 @@ allExamples = concat
              , "20 Euro"
              , "20 Euros"
              , "EUR 20"
+             , "dua puluh Euro"
              ]
   , examples (AmountOfMoneyValue EUR 29.99)
              [ "EUR29,99"

@@ -34,6 +34,7 @@ import qualified Duckling.Ordinal.RU.Tests as RU
 import qualified Duckling.Ordinal.SV.Tests as SV
 import qualified Duckling.Ordinal.TR.Tests as TR
 import qualified Duckling.Ordinal.UK.Tests as UK
+import qualified Duckling.Ordinal.VI.Tests as VI
 import qualified Duckling.Ordinal.ZH.Tests as ZH
 
 tests :: TestTree
@@ -60,5 +61,6 @@ tests = testGroup "Ordinal Tests"
   , SV.tests
   , TR.tests
   , UK.tests
+  , VI.tests
   , ZH.tests
   ]

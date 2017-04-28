@@ -16,6 +16,7 @@ module Duckling.Rules.VI
 import qualified Duckling.AmountOfMoney.VI.Rules as AmountOfMoney
 import Duckling.Dimensions.Types
 import qualified Duckling.Numeral.VI.Rules as Numeral
+import qualified Duckling.Ordinal.VI.Rules as Ordinal
 import Duckling.Types
 
 rules :: Some Dimension -> [Rule]
@@ -24,7 +25,7 @@ rules (This Duration) = []
 rules (This Numeral) = Numeral.rules
 rules (This Email) = []
 rules (This AmountOfMoney) = AmountOfMoney.rules
-rules (This Ordinal) = []
+rules (This Ordinal) = Ordinal.rules
 rules (This PhoneNumber) = []
 rules (This Quantity) = []
 rules (This RegexMatch) = []

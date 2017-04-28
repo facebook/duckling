@@ -16,6 +16,7 @@ import qualified Duckling.Temperature.EN.Tests as EN
 import qualified Duckling.Temperature.ES.Tests as ES
 import qualified Duckling.Temperature.FR.Tests as FR
 import qualified Duckling.Temperature.GA.Tests as GA
+import qualified Duckling.Temperature.HR.Tests as HR
 import qualified Duckling.Temperature.JA.Tests as JA
 import qualified Duckling.Temperature.KO.Tests as KO
 import qualified Duckling.Temperature.PT.Tests as PT
@@ -28,6 +29,7 @@ tests = testGroup "Temperature Tests"
   , ES.tests
   , FR.tests
   , GA.tests
+  , HR.tests
   , JA.tests
   , KO.tests
   , PT.tests

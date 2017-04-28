@@ -18,6 +18,7 @@ import qualified Duckling.Duration.IT.Rules as Duration
 import qualified Duckling.Email.IT.Rules as Email
 import qualified Duckling.Numeral.IT.Rules as Numeral
 import qualified Duckling.Ordinal.IT.Rules as Ordinal
+import qualified Duckling.Temperature.IT.Rules as Temperature
 import qualified Duckling.Time.IT.Rules as Time
 import qualified Duckling.TimeGrain.IT.Rules as TimeGrain
 import Duckling.Types
@@ -32,7 +33,7 @@ rules (This Ordinal) = Ordinal.rules
 rules (This PhoneNumber) = []
 rules (This Quantity) = []
 rules (This RegexMatch) = []
-rules (This Temperature) = []
+rules (This Temperature) = Temperature.rules
 rules (This Time) = Time.rules
 rules (This TimeGrain) = TimeGrain.rules
 rules (This Url) = []

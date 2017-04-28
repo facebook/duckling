@@ -147,12 +147,14 @@ allExamples = concat
              ]
   , examples (datetime (2013, 2, 4, 0, 0, 0) Week)
              [ "forrige uke"
+             , "sist uke"
              ]
   , examples (datetime (2013, 2, 18, 0, 0, 0) Week)
              [ "neste uke"
              ]
   , examples (datetime (2013, 1, 0, 0, 0, 0) Month)
              [ "forrige måned"
+             , "sist måned"
              ]
   , examples (datetime (2013, 3, 0, 0, 0, 0) Month)
              [ "neste måned"
@@ -173,6 +175,7 @@ allExamples = concat
              ]
   , examples (datetime (2012, 0, 0, 0, 0, 0) Year)
              [ "forrige år"
+             , "sist år"
              ]
   , examples (datetime (2012, 0, 0, 0, 0, 0) Year)
              [ "i fjor"
@@ -186,10 +189,12 @@ allExamples = concat
              ]
   , examples (datetime (2013, 2, 10, 0, 0, 0) Day)
              [ "forrige søndag"
+             , "sist søndag"
              , "søndag i forrige uke"
              ]
   , examples (datetime (2013, 2, 5, 0, 0, 0) Day)
              [ "forrige tirsdag"
+             , "sist tirsdag"
              ]
   , examples (datetime (2013, 2, 19, 0, 0, 0) Day)
              [ "neste tirsdag"
@@ -431,6 +436,7 @@ allExamples = concat
              ]
   , examples (datetimeInterval ((2013, 2, 8, 18, 0, 0), (2013, 2, 11, 0, 0, 0)) Hour)
              [ "forrige helg"
+             , "sist helg"
              ]
   , examples (datetimeInterval ((2013, 2, 13, 18, 0, 0), (2013, 2, 14, 0, 0, 0)) Hour)
              [ "i morgen kveld"
@@ -449,6 +455,10 @@ allExamples = concat
              ]
   , examples (datetimeInterval ((2013, 2, 18, 4, 0, 0), (2013, 2, 18, 12, 0, 0)) Hour)
              [ "mandag morgen"
+             ]
+  , examples (datetimeInterval ((2013, 12, 24, 0, 0, 0), (2013, 12, 31, 0, 0, 0)) Day)
+             [ "i romjulen"
+             , "i romjula"
              ]
   , examples (datetimeInterval ((2013, 2, 12, 4, 29, 58), (2013, 2, 12, 4, 30, 0)) Second)
              [ "siste 2 sekunder"

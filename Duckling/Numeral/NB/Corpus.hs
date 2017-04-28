@@ -66,6 +66,16 @@ allExamples = concat
              , "tyve"
              , "Tjue"
              ]
+  , examples (NumeralValue 30)
+             [ "30"
+             , "tretti"
+             , "tredve"
+             ]
+  , examples (NumeralValue 70)
+             [ "70"
+             , "søtti"
+             , "sytti"
+             ]
   , examples (NumeralValue 1.1)
              [ "1,1"
              , "1,10"
@@ -106,6 +116,9 @@ allExamples = concat
   , examples (NumeralValue 5000)
              [ "5 tusen"
              , "fem tusen"
+             ]
+  , examples (NumeralValue 100)
+             [ "hundre"
              ]
   , examples (NumeralValue 5020)
              [ "fem tusen og tjue"

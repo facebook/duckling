@@ -254,7 +254,7 @@ ruleLastTime :: Rule
 ruleLastTime = Rule
   { name = "last <time>"
   , pattern =
-    [ regex "(siste|forrige|seneste)"
+    [ regex "(siste?|forrige|seneste)"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -643,7 +643,7 @@ ruleLastCycle :: Rule
 ruleLastCycle = Rule
   { name = "last <cycle>"
   , pattern =
-    [ regex "siste|seneste|forrige"
+    [ regex "siste?|seneste|forrige"
     , dimension TimeGrain
     ]
   , prod = \tokens -> case tokens of
@@ -953,7 +953,7 @@ ruleLastNCycle :: Rule
 ruleLastNCycle = Rule
   { name = "last n <cycle>"
   , pattern =
-    [ regex "siste|seneste|forrige"
+    [ regex "siste?|seneste|forrige"
     , Predicate $ isIntegerBetween 1 9999
     , dimension TimeGrain
     ]
@@ -962,6 +962,15 @@ ruleLastNCycle = Rule
         v <- getIntValue token
         tt $ cycleN True grain (- v)
       _ -> Nothing
+  }
+
+ruleChristmasDays :: Rule
+ruleChristmasDays = Rule
+  { name = "christmas days"
+  , pattern =
+    [ regex "romjul(a|en)"
+    ]
+  , prod = \_ -> tt $ interval TTime.Open (monthDay 12 24, monthDay 12 30)
   }
 
 ruleTimeofdaySharp :: Rule
@@ -1823,6 +1832,7 @@ rules =
   , ruleByTheEndOfTime
   , ruleChristmas
   , ruleChristmasEve
+  , ruleChristmasDays
   , ruleConstitutionDay
   , ruleCycleAfterTime
   , ruleCycleBeforeTime

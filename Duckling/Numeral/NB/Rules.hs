@@ -175,11 +175,11 @@ rulePowersOfTen :: Rule
 rulePowersOfTen = Rule
   { name = "powers of tens"
   , pattern =
-    [ regex "(hundrede?|tusen?|million(er)?)"
+    [ regex "(hundre(de)?|tusen?|million(er)?)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
-        "hundred"   -> double 1e2 >>= withGrain 2 >>= withMultipliable
+        "hundre"    -> double 1e2 >>= withGrain 2 >>= withMultipliable
         "hundrede"  -> double 1e2 >>= withGrain 2 >>= withMultipliable
         "tuse"      -> double 1e3 >>= withGrain 3 >>= withMultipliable
         "tusen"     -> double 1e3 >>= withGrain 3 >>= withMultipliable
@@ -254,10 +254,12 @@ dozensMap = HashMap.fromList
   [ ( "tyve" , 20 )
   , ( "tjue" , 20 )
   , ( "tredve" , 30 )
+  , ( "tretti" , 30 )
   , ( "f\x00f8rti" , 40 )
   , ( "femti" , 50 )
   , ( "seksti" , 60 )
   , ( "sytti" , 70 )
+  , ( "s\x00f8tti" , 70 )
   , ( "\x00e5tti" , 80 )
   , ( "nitti" , 90 )
   ]
@@ -266,7 +268,7 @@ ruleInteger2 :: Rule
 ruleInteger2 = Rule
   { name = "integer (20..90)"
   , pattern =
-    [ regex "(tyve|tjue|tredve|f\x00f8rti|femti|seksti|sytti|\x00e5tti|nitti)"
+    [ regex "(tyve|tjue|tredve|tretti|f\x00f8rti|femti|seksti|sytti|s\x00f8tti|\x00e5tti|nitti)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->

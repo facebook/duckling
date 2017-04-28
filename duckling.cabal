@@ -340,6 +340,8 @@ library
                      , Duckling.Quantity.EN.Rules
                      , Duckling.Quantity.FR.Corpus
                      , Duckling.Quantity.FR.Rules
+                     , Duckling.Quantity.HR.Corpus
+                     , Duckling.Quantity.HR.Rules
                      , Duckling.Quantity.KO.Corpus
                      , Duckling.Quantity.KO.Rules
                      , Duckling.Quantity.PT.Corpus
@@ -627,6 +629,7 @@ test-suite duckling-test
                      -- Quantity
                      , Duckling.Quantity.EN.Tests
                      , Duckling.Quantity.FR.Tests
+                     , Duckling.Quantity.HR.Tests
                      , Duckling.Quantity.KO.Tests
                      , Duckling.Quantity.PT.Tests
                      , Duckling.Quantity.RO.Tests

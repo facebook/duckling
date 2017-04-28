@@ -402,6 +402,8 @@ library
                      , Duckling.Time.RO.Rules
                      , Duckling.Time.SV.Corpus
                      , Duckling.Time.SV.Rules
+                     , Duckling.Time.VI.Corpus
+                     , Duckling.Time.VI.Rules
                      , Duckling.Time.ZH.Corpus
                      , Duckling.Time.ZH.Rules
                      , Duckling.Time.Corpus
@@ -652,6 +654,7 @@ test-suite duckling-test
                      , Duckling.Time.PT.Tests
                      , Duckling.Time.RO.Tests
                      , Duckling.Time.SV.Tests
+                     , Duckling.Time.VI.Tests
                      , Duckling.Time.ZH.Tests
                      , Duckling.Time.Tests
 

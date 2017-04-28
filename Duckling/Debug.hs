@@ -13,6 +13,7 @@
 module Duckling.Debug
   ( allParses
   , debug
+  , debugContext
   , fullParses
   , ptree
   ) where

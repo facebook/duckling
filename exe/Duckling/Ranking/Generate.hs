@@ -40,6 +40,7 @@ import qualified Duckling.Time.PL.Corpus as PLTime
 import qualified Duckling.Time.PT.Corpus as PTTime
 import qualified Duckling.Time.RO.Corpus as ROTime
 import qualified Duckling.Time.SV.Corpus as SVTime
+import qualified Duckling.Time.VI.Corpus as VITime
 import qualified Duckling.Time.ZH.Corpus as ZHTime
 
 -- -----------------------------------------------------------------
@@ -90,7 +91,7 @@ regenClassifiers lang = do
       SV -> SVTime.corpus
       TR -> (testContext, [])
       UK -> (testContext, [])
-      VI -> (testContext, [])
+      VI -> VITime.corpus
       ZH -> ZHTime.corpus
 
     -- Data structure for the module

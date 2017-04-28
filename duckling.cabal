@@ -427,6 +427,7 @@ library
                      , Duckling.TimeGrain.PT.Rules
                      , Duckling.TimeGrain.RO.Rules
                      , Duckling.TimeGrain.SV.Rules
+                     , Duckling.TimeGrain.VI.Rules
                      , Duckling.TimeGrain.ZH.Rules
                      , Duckling.TimeGrain.Types
 

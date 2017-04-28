@@ -13,11 +13,12 @@ module Duckling.Rules.VI
   ( rules
   ) where
 
-import qualified Duckling.AmountOfMoney.VI.Rules as AmountOfMoney
 import Duckling.Dimensions.Types
+import Duckling.Types
+import qualified Duckling.AmountOfMoney.VI.Rules as AmountOfMoney
 import qualified Duckling.Numeral.VI.Rules as Numeral
 import qualified Duckling.Ordinal.VI.Rules as Ordinal
-import Duckling.Types
+import qualified Duckling.TimeGrain.VI.Rules as TimeGrain
 
 rules :: Some Dimension -> [Rule]
 rules (This Distance) = []
@@ -31,6 +32,6 @@ rules (This Quantity) = []
 rules (This RegexMatch) = []
 rules (This Temperature) = []
 rules (This Time) = []
-rules (This TimeGrain) = []
+rules (This TimeGrain) = TimeGrain.rules
 rules (This Url) = []
 rules (This Volume) = []

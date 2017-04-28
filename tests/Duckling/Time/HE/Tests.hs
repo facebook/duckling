@@ -5,17 +5,18 @@
 -- LICENSE file in the root directory of this source tree. An additional grant
 -- of patent rights can be found in the PATENTS file in the same directory.
 
+module Duckling.Time.HE.Tests
+  ( tests ) where
 
-module Duckling.Dimensions.HE
-  ( allDimensions
-  ) where
+import Data.String
+import Prelude
+import Test.Tasty
 
 import Duckling.Dimensions.Types
+import Duckling.Time.HE.Corpus
+import Duckling.Testing.Asserts
 
-allDimensions :: [Some Dimension]
-allDimensions =
-  [ This Duration
-  , This Numeral
-  , This Ordinal
-  , This Time
+tests :: TestTree
+tests = testGroup "HE Tests"
+  [ makeCorpusTest [This Time] corpus
   ]

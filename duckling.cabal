@@ -398,6 +398,8 @@ library
                      , Duckling.Time.GA.Rules
                      , Duckling.Time.HR.Corpus
                      , Duckling.Time.HR.Rules
+                     , Duckling.Time.HE.Corpus
+                     , Duckling.Time.HE.Rules
                      , Duckling.Time.IT.Corpus
                      , Duckling.Time.IT.Rules
                      , Duckling.Time.KO.Corpus
@@ -664,6 +666,7 @@ test-suite duckling-test
                      , Duckling.Time.FR.Tests
                      , Duckling.Time.GA.Tests
                      , Duckling.Time.HR.Tests
+                     , Duckling.Time.HE.Tests
                      , Duckling.Time.IT.Tests
                      , Duckling.Time.KO.Tests
                      , Duckling.Time.NB.Tests

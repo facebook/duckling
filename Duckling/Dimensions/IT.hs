@@ -19,4 +19,5 @@ allDimensions =
   , This Ordinal
   , This Temperature
   , This Time
+  , This Volume
   ]

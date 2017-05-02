@@ -22,7 +22,7 @@ The first time you run it, it will download all required packages.
 
 This runs a basic HTTP server. Example request:
 ```
-$ curl -XPOST http://0.0.0.0:8080/parse --data 'text=tomorrow at eight'
+$ curl -XPOST http://0.0.0.0:8000/parse --data 'text=tomorrow at eight'
 ```
 
 See `exe/ExampleMain.hs` for an example on how to integrate Duckling in your

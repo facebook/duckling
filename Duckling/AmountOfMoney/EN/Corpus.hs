@@ -76,7 +76,7 @@ allExamples = concat
              , "$20 43"
              , "20 dollar 43c"
              , "20 dollars 43 cents"
-  j          , "twenty dollar 43 cents"
+             , "twenty dollar 43 cents"
              , "20 dollar 43"
              , "twenty dollar and 43"
              ]

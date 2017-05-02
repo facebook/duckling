@@ -21,6 +21,7 @@ import qualified Duckling.Ordinal.IT.Rules as Ordinal
 import qualified Duckling.Temperature.IT.Rules as Temperature
 import qualified Duckling.Time.IT.Rules as Time
 import qualified Duckling.TimeGrain.IT.Rules as TimeGrain
+import qualified Duckling.Volume.IT.Rules as Volume
 import Duckling.Types
 
 rules :: Some Dimension -> [Rule]
@@ -37,4 +38,4 @@ rules (This Temperature) = Temperature.rules
 rules (This Time) = Time.rules
 rules (This TimeGrain) = TimeGrain.rules
 rules (This Url) = []
-rules (This Volume) = []
+rules (This Volume) = Volume.rules

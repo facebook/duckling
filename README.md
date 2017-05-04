@@ -12,6 +12,12 @@ Duckling is a Haskell library that parses text into structured data.
 A Haskell environment is required. We recommend using
 [stack](https://haskell-lang.org/get-started).
 
+On macOS you'll need to install PCRE development headers.
+The easiest way to do that is with [Homebrew](https://brew.sh/):
+```
+brew install pcre
+```
+
 ## Quickstart
 To compile and run the binary:
 ```

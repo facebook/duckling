@@ -1,6 +1,6 @@
 ![Duckling Logo](https://github.com/facebookincubator/duckling/raw/master/logo.png)
 
-# Duckling
+# Duckling [![Build Status](https://travis-ci.org/facebookincubator/duckling.svg?branch=master)](https://travis-ci.org/facebookincubator/duckling)
 Duckling is a Haskell library that parses text into structured data.
 
 ```

@@ -5,8 +5,8 @@ description:
   Duckling is a library for parsing text into structured data.
 homepage:            https://github.com/facebookincubator/duckling#readme
 bug-reports:         https://github.com/facebookincubator/duckling/issues
-license:             BSD3
-license-file:        LICENSE
+license:             OtherLicense
+license-file:        LICENSE,PATENTS
 author:              Facebook, Inc.
 maintainer:          duckling-team@fb.com
 copyright:           Copyright (c) 2014-present, Facebook, Inc.

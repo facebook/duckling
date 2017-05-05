@@ -6,7 +6,7 @@ description:
 homepage:            https://github.com/facebookincubator/duckling#readme
 bug-reports:         https://github.com/facebookincubator/duckling/issues
 license:             OtherLicense
-license-file:        LICENSE,PATENTS
+license-files:       LICENSE,PATENTS
 author:              Facebook, Inc.
 maintainer:          duckling-team@fb.com
 copyright:           Copyright (c) 2014-present, Facebook, Inc.

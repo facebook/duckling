@@ -197,10 +197,15 @@ instance ToJSON TimeValue where
 type SeriesPredicate = TimeObject -> TimeContext -> ([TimeObject], [TimeObject])
 
 data AMPM = AM | PM
-  deriving Eq
+  deriving (Eq, Show)
+
+newtype NoShow a = NoShow a
+
+instance Show (NoShow a) where
+  show _ = "??"
 
 data Predicate
-  = SeriesPredicate SeriesPredicate
+  = SeriesPredicate (NoShow SeriesPredicate)
   | EmptyPredicate
   | TimeDatePredicate -- invariant: at least one of them is Just
     { tdSecond :: Maybe Int
@@ -214,11 +219,12 @@ data Predicate
     }
   | IntersectPredicate Predicate Predicate
   | TimeIntervalsPredicate TimeIntervalType Predicate Predicate
+  deriving Show
 
 {-# ANN runPredicate ("HLint: ignore Use foldr1OrError" :: String) #-}
 runPredicate :: Predicate -> SeriesPredicate
 runPredicate EmptyPredicate = \_ _ -> ([], [])
-runPredicate (SeriesPredicate p) = p
+runPredicate (SeriesPredicate (NoShow p)) = p
 runPredicate TimeDatePredicate{..}
   -- This should not happen by construction, but if it does then
   -- empty time series should be ok
@@ -251,7 +257,7 @@ emptyTimeDatePredicate =
 -- Predicate smart constructors
 
 mkSeriesPredicate :: SeriesPredicate -> Predicate
-mkSeriesPredicate = SeriesPredicate
+mkSeriesPredicate = SeriesPredicate . NoShow
 
 mkSecondPredicate :: Int -> Predicate
 mkSecondPredicate n = emptyTimeDatePredicate { tdSecond = Just n }

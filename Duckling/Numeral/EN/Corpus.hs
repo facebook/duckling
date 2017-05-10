@@ -103,6 +103,12 @@ allExamples = concat
              , "100k"
              , "one hundred thousand"
              ]
+  , examples (NumeralValue 0.2)
+             [ "1/5"
+             , "2/10"
+             , "3/15"
+             , "20/100"
+             ]
   , examples (NumeralValue 3e6)
              [ "3M"
              , "3000K"

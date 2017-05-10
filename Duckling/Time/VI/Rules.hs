@@ -243,7 +243,8 @@ ruleSeason4 = Rule
   , pattern =
     [ regex "m(\x00f9)a? xu(\x00e2)n"
     ]
-  , prod = \_ -> tt $ interval TTime.Open (monthDay 3 20, monthDay 6 21)
+  , prod = \_ ->
+      Token Time <$> interval TTime.Open (monthDay 3 20) (monthDay 6 21)
   }
 
 ruleNoon :: Rule
@@ -328,8 +329,8 @@ ruleLunch = Rule
   , pattern =
     [ regex "(bu(\x1ed5)i )?tr(\x01b0)a"
     ]
-  , prod = \_ -> tt . partOfDay . mkLatent $
-      interval TTime.Open (hour False 12, hour False 14)
+  , prod = \_ -> Token Time . partOfDay . mkLatent <$>
+      interval TTime.Open (hour False 12) (hour False 14)
   }
 
 ruleLastCycle :: Rule
@@ -364,8 +365,8 @@ ruleAfternoon = Rule
   , pattern =
     [ regex "(bu(\x1ed5)i )?chi(\x1ec1)u"
     ]
-  , prod = \_ -> tt . partOfDay . mkLatent $
-      interval TTime.Open (hour False 12, hour False 19)
+  , prod = \_ -> Token Time . partOfDay . mkLatent <$>
+      interval TTime.Open (hour False 12) (hour False 19)
   }
 
 ruleNamedmonth4 :: Rule
@@ -544,7 +545,8 @@ ruleSeason3 = Rule
   , pattern =
     [ regex "m(\x00f9)a? (\x0111)(\x00f4)ng"
     ]
-  , prod = \_ -> tt $ interval TTime.Open (monthDay 12 21, monthDay 3 20)
+  , prod = \_ ->
+      Token Time <$> interval TTime.Open (monthDay 12 21) (monthDay 3 20)
   }
 
 ruleSeason :: Rule
@@ -553,7 +555,8 @@ ruleSeason = Rule
   , pattern =
     [ regex "m(\x00f9)a? (h(\x00e8)|h(\x1ea1))"
     ]
-  , prod = \_ -> tt $ interval TTime.Open (monthDay 6 21, monthDay 9 23)
+  , prod = \_ ->
+      Token Time <$> interval TTime.Open (monthDay 6 21) (monthDay 9 23)
   }
 
 ruleDayofmonthNamedmonth2 :: Rule
@@ -588,9 +591,10 @@ ruleAfterWork = Rule
   , pattern =
     [ regex "(sau gi(\x1edd) l(\x00e0)m|sau gi(\x1edd) tan t(\x1ea7)m|l(\x00fa)c tan t(\x1ea7)m)"
     ]
-  , prod = \_ -> Token Time . partOfDay . notLatent <$>
-      intersect (cycleNth TG.Day 0)
-      (interval TTime.Open (hour False 17, hour False 21))
+  , prod = \_ -> do
+      td <- interval TTime.Open (hour False 17) (hour False 21)
+      Token Time . partOfDay . notLatent <$>
+        intersect (cycleNth TG.Day 0) td
   }
 
 ruleLastNCycle :: Rule
@@ -689,7 +693,7 @@ ruleWeekend = Rule
   , prod = \_ -> do
       fri <- intersect (dayOfWeek 5) (hour False 18)
       mon <- intersect (dayOfWeek 1) (hour False 0)
-      tt $ interval TTime.Open (fri, mon)
+      Token Time <$> interval TTime.Open fri mon
   }
 
 ruleTimeofdaySngchiuti :: Rule
@@ -787,8 +791,8 @@ ruleMorning = Rule
   , pattern =
     [ regex "(bu(\x1ed5)i )?s(\x00e1)ng"
     ]
-  , prod = \_ -> tt . partOfDay . mkLatent $
-      interval TTime.Open (hour False 4, hour False 12)
+  , prod = \_ -> Token Time . partOfDay . mkLatent <$>
+      interval TTime.Open (hour False 4) (hour False 12)
   }
 
 ruleThisCycle :: Rule
@@ -810,8 +814,8 @@ ruleNoon2 = Rule
   , pattern =
     [ regex "(bu(\x1ed5)i )?(t(\x1ed1)i|(\x0111)(\x00ea)m)"
     ]
-  , prod = \_ -> tt . partOfDay . mkLatent $
-      interval TTime.Open (hour False 18, hour False 0)
+  , prod = \_ -> Token Time . partOfDay . mkLatent <$>
+      interval TTime.Open (hour False 18) (hour False 0)
   }
 
 ruleAfterLunch :: Rule
@@ -820,9 +824,10 @@ ruleAfterLunch = Rule
   , pattern =
     [ regex "(sau|qua) (bu(\x1ed5)i |b(\x1eef)a )?tr(\x01b0)a"
     ]
-  , prod = \_ -> Token Time . partOfDay . notLatent <$>
-      intersect (cycleNth TG.Day 0)
-      (interval TTime.Open (hour False 13, hour False 17))
+  , prod = \_ -> do
+      td <- interval TTime.Open (hour False 13) (hour False 17)
+      Token Time . partOfDay . notLatent <$>
+        intersect (cycleNth TG.Day 0) td
   }
 
 ruleSeason2 :: Rule
@@ -832,7 +837,7 @@ ruleSeason2 = Rule
     [ regex "m(\x00f9)a? thu"
     ]
   , prod = \_ ->
-      tt $ interval TTime.Open (monthDay 9 23, monthDay 12 21)
+      Token Time <$> interval TTime.Open (monthDay 9 23) (monthDay 12 21)
   }
 
 ruleTimeNy :: Rule
@@ -936,10 +941,10 @@ ruleTonight = Rule
   , pattern =
     [ regex "(t(\x1ed1)i|(\x0111)(\x00ea)m)( h(\x00f4)m)? nay"
     ]
-  , prod = \_ ->
+  , prod = \_ -> do
       let today = cycleNth TG.Day 0
-          evening = interval TTime.Open (hour False 18, hour False 0) in
-        Token Time . partOfDay . notLatent <$> intersect today evening
+      evening <- interval TTime.Open (hour False 18) (hour False 0)
+      Token Time . partOfDay . notLatent <$> intersect today evening
   }
 
 ruleTimezone :: Rule

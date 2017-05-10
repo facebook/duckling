@@ -318,11 +318,21 @@ mkTimeIntervalsPredicate
   :: TimeIntervalType -> Predicate -> Predicate -> Predicate
 mkTimeIntervalsPredicate _ a@EmptyPredicate{} _ = a
 mkTimeIntervalsPredicate _ _ a@EmptyPredicate{} = a
--- `from (from a to b) to c` and `from c to (from a to b)` don't
+-- `from (... from a to b ...) to c` and `from c to (... from a to b ...)` don't
 -- really have a good interpretation, so abort early
-mkTimeIntervalsPredicate _ TimeIntervalsPredicate{} _ = mkEmptyPredicate
-mkTimeIntervalsPredicate _ _ TimeIntervalsPredicate{} = mkEmptyPredicate
+mkTimeIntervalsPredicate _ a b
+  | containsTimeIntervalsPredicate a ||
+    containsTimeIntervalsPredicate b = mkEmptyPredicate
+  -- this is potentially quadratic, but the sizes involved should be small
 mkTimeIntervalsPredicate t a b = TimeIntervalsPredicate t a b
+
+containsTimeIntervalsPredicate :: Predicate -> Bool
+containsTimeIntervalsPredicate TimeIntervalsPredicate{} = True
+containsTimeIntervalsPredicate (IntersectPredicate a b) =
+  containsTimeIntervalsPredicate a || containsTimeIntervalsPredicate b
+containsTimeIntervalsPredicate _ = False
+  -- SeriesPredicate might contain one, but we'll underapproximate for
+  -- now
 
 isEmptyPredicate :: Predicate -> Bool
 isEmptyPredicate EmptyPredicate{} = True

@@ -58,11 +58,11 @@ ruleDistanceFeetAndInch = Rule
 distances :: [(Text, String, TDistance.Unit)]
 distances = [ ("<latent dist> km", "k(ilo)?m?(eter)?s?", TDistance.Kilometre)
             , ("<latent dist> feet", "('|f(oo|ee)?ts?)", TDistance.Foot)
-            , ("<latent dist> inch", "(''|inch(es)?)", TDistance.Inch)
+            , ("<latent dist> inch", "(\"|''|in(ch(es)?)?)", TDistance.Inch)
             , ("<latent dist> yard", "y(ar)?ds?", TDistance.Yard)
             , ("<dist> meters", "meters?", TDistance.Metre)
             , ("<dist> centimeters", "cm|centimeters?", TDistance.Centimetre)
-            , ("<dist> miles", "miles?", TDistance.Mile)
+            , ("<dist> miles", "mi(le(s)?)?", TDistance.Mile)
             , ("<dist> m (ambiguous miles or meters)", "m", TDistance.M)
             ]
 

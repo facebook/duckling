@@ -32,6 +32,7 @@ allExamples = concat
   , examples (DistanceValue Mile 8)
              [ "8 miles"
              , "eight mile"
+             , "8 mi"
              ]
   , examples (DistanceValue M 9)
              [ "9m"
@@ -39,5 +40,11 @@ allExamples = concat
   , examples (DistanceValue Centimetre 2)
              [ "2cm"
              , "2 centimeters"
+             ]
+  , examples (DistanceValue Inch 5)
+             [ "5 in"
+             , "5''"
+             , "five inches"
+             , "5\""
              ]
   ]

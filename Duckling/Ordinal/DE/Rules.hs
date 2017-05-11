@@ -77,7 +77,7 @@ ruleOrdinalDigits :: Rule
 ruleOrdinalDigits = Rule
   { name = "ordinal (digits)"
   , pattern =
-    [ regex "0*(\\d+)(\\.| ?(te(n|r|s)?)|(ste(n|r|s)?))"
+    [ regex "(?<!\\d|\\.)0*(\\d+)(\\.(?!\\d)| ?(te(n|r|s)?)|(ste(n|r|s)?))"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> do

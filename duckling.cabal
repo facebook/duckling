@@ -496,7 +496,6 @@ library
                      , unordered-containers  >= 0.2.7.2 && < 0.3
   default-language:    Haskell2010
   default-extensions:  OverloadedStrings
-                     , RebindableSyntax
 
 test-suite duckling-test
   type:                exitcode-stdio-1.0

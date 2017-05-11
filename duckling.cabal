@@ -40,6 +40,7 @@ library
                      , Duckling.Rules
                      , Duckling.Rules.Common
                      , Duckling.Rules.AR
+                     , Duckling.Rules.CS
                      , Duckling.Rules.DA
                      , Duckling.Rules.DE
                      , Duckling.Rules.EN
@@ -72,32 +73,33 @@ library
                      , Duckling.Ranking.Extraction
                      , Duckling.Ranking.Rank
                      , Duckling.Ranking.Classifiers
+                     , Duckling.Ranking.Classifiers.AR
+                     , Duckling.Ranking.Classifiers.CS
                      , Duckling.Ranking.Classifiers.DA
                      , Duckling.Ranking.Classifiers.DE
                      , Duckling.Ranking.Classifiers.EN
                      , Duckling.Ranking.Classifiers.ES
+                     , Duckling.Ranking.Classifiers.ET
                      , Duckling.Ranking.Classifiers.FR
                      , Duckling.Ranking.Classifiers.GA
                      , Duckling.Ranking.Classifiers.HE
                      , Duckling.Ranking.Classifiers.HR
+                     , Duckling.Ranking.Classifiers.ID
                      , Duckling.Ranking.Classifiers.IT
+                     , Duckling.Ranking.Classifiers.JA
                      , Duckling.Ranking.Classifiers.KO
+                     , Duckling.Ranking.Classifiers.MY
                      , Duckling.Ranking.Classifiers.NB
+                     , Duckling.Ranking.Classifiers.NL
                      , Duckling.Ranking.Classifiers.PL
                      , Duckling.Ranking.Classifiers.PT
                      , Duckling.Ranking.Classifiers.RO
-                     , Duckling.Ranking.Classifiers.SV
-                     , Duckling.Ranking.Classifiers.ZH
-                     , Duckling.Ranking.Classifiers.AR
-                     , Duckling.Ranking.Classifiers.ET
-                     , Duckling.Ranking.Classifiers.ID
-                     , Duckling.Ranking.Classifiers.JA
-                     , Duckling.Ranking.Classifiers.MY
-                     , Duckling.Ranking.Classifiers.NL
                      , Duckling.Ranking.Classifiers.RU
+                     , Duckling.Ranking.Classifiers.SV
                      , Duckling.Ranking.Classifiers.TR
                      , Duckling.Ranking.Classifiers.UK
                      , Duckling.Ranking.Classifiers.VI
+                     , Duckling.Ranking.Classifiers.ZH
 
   -- ------------------------------------------------------------------
   -- Dimensions
@@ -105,6 +107,7 @@ library
                      , Duckling.Dimensions.Common
                      , Duckling.Dimensions.Types
                      , Duckling.Dimensions.AR
+                     , Duckling.Dimensions.CS
                      , Duckling.Dimensions.DA
                      , Duckling.Dimensions.DE
                      , Duckling.Dimensions.EN
@@ -226,6 +229,8 @@ library
                      -- Numeral
                      , Duckling.Numeral.AR.Corpus
                      , Duckling.Numeral.AR.Rules
+                     , Duckling.Numeral.CS.Corpus
+                     , Duckling.Numeral.CS.Rules
                      , Duckling.Numeral.DA.Corpus
                      , Duckling.Numeral.DA.Rules
                      , Duckling.Numeral.DE.Corpus
@@ -568,6 +573,7 @@ test-suite duckling-test
 
                      -- Numeral
                      , Duckling.Numeral.AR.Tests
+                     , Duckling.Numeral.CS.Tests
                      , Duckling.Numeral.DA.Tests
                      , Duckling.Numeral.DE.Tests
                      , Duckling.Numeral.EN.Tests

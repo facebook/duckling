@@ -14,6 +14,7 @@ module Duckling.Numeral.Helpers
   , double
   , integer
   , multiply
+  , divide
   , numberBetween
   , numberWith
   , oneOf
@@ -119,6 +120,13 @@ multiply
   Just grain | v2 > v1 -> double (v1 * v2) >>= withGrain grain
              | otherwise -> Nothing
 multiply _ _ = Nothing
+
+divide :: Token -> Token -> Maybe Token
+divide
+  (Token Numeral (NumeralData {value = v1}))
+  (Token Numeral (NumeralData {value = v2})) =
+    double $ v1 / v2
+divide _ _ = Nothing
 
 parseDecimal :: Bool -> Text -> Maybe Token
 parseDecimal isDot match

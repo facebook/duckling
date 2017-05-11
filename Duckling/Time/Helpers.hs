@@ -405,8 +405,8 @@ predNthAfter n TimeData {TTime.timePred = p, TTime.timeGrain = g} base =
     , TTime.timeGrain = g
     }
 
-interval :: TTime.TimeIntervalType -> (TimeData, TimeData) -> TimeData
-interval intervalType (TimeData p1 _ g1 _ _ _, TimeData p2 _ g2 _ _ _) =
+interval' :: TTime.TimeIntervalType -> (TimeData, TimeData) -> TimeData
+interval' intervalType (TimeData p1 _ g1 _ _ _, TimeData p2 _ g2 _ _ _) =
   TTime.timedata'
     { TTime.timePred = mkTimeIntervalsPredicate intervalType' p1 p2
     , TTime.timeGrain = min g1 g2
@@ -415,6 +415,13 @@ interval intervalType (TimeData p1 _ g1 _ _ _, TimeData p2 _ g2 _ _ _) =
       intervalType'
         | g1 == g2 && g1 == TG.Day = TTime.Closed
         | otherwise = intervalType
+
+interval :: TTime.TimeIntervalType -> TimeData -> TimeData -> Maybe TimeData
+interval intervalType td1 td2 =
+  case interval' intervalType (td1, td2) of
+    TTime.TimeData { TTime.timePred = pred }
+      | TTime.isEmptyPredicate pred -> Nothing
+    res -> Just res
 
 durationAgo :: DurationData -> TimeData
 durationAgo dd = inDuration $ timeNegPeriod dd
@@ -466,7 +473,7 @@ withDirection :: TTime.IntervalDirection -> TimeData -> TimeData
 withDirection dir td = td {TTime.direction = Just dir}
 
 longWEBefore :: TimeData -> TimeData
-longWEBefore monday = interval TTime.Open (start, end)
+longWEBefore monday = interval' TTime.Open (start, end)
   where
     start = intersect' (fri, hour False 18)
     end = intersect' (tue, hour False 0)

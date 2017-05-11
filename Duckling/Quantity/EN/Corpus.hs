@@ -31,4 +31,9 @@ allExamples = concat
   , examples (QuantityData Cup 3 (Just "sugar"))
              [ "3 Cups of sugar"
              ]
+  , examples (QuantityData Cup 0.75 Nothing)
+             [ "3/4 cup"
+             , "0.75 cup"
+             , ".75 cups"
+             ]
   ]

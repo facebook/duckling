@@ -164,6 +164,8 @@ library
                      , Duckling.AmountOfMoney.Types
 
                      -- Distance
+                     , Duckling.Distance.CS.Corpus
+                     , Duckling.Distance.CS.Rules
                      , Duckling.Distance.EN.Corpus
                      , Duckling.Distance.EN.Rules
                      , Duckling.Distance.ES.Corpus
@@ -540,6 +542,7 @@ test-suite duckling-test
                      , Duckling.AmountOfMoney.Tests
 
                      -- Distance
+                     , Duckling.Distance.CS.Tests
                      , Duckling.Distance.EN.Tests
                      , Duckling.Distance.ES.Tests
                      , Duckling.Distance.FR.Tests

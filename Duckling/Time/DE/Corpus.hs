@@ -270,6 +270,7 @@ allExamples = concat
              , "um ungefähr 15 uhr"
              , "gegen 15 uhr"
              , "ca. 15h"
+             , "um ca 15h"
              ]
   , examples (datetime (2013, 4, 1, 18, 0, 0) Hour)
              [ "01.04. gegen 18Uhr"]

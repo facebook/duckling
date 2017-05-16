@@ -1017,7 +1017,7 @@ ruleAboutTimeofday :: Rule
 ruleAboutTimeofday = Rule
   { name = "about <time-of-day>"
   , pattern =
-    [ regex "(um )?zirka|ca\\.|ungef(\x00e4)hr|etwa|gegen"
+    [ regex "(um )?zirka|ca\\.?|ungef(\x00e4)hr|etwa|gegen"
     , Predicate isATimeOfDay
     ]
   , prod = \tokens -> case tokens of

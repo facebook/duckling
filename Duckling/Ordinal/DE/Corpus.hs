@@ -27,9 +27,8 @@ negativeCorpus :: NegativeCorpus
 negativeCorpus = (testContext {lang = DE}, examples)
   where
     examples =
-      [ "0.1"
-      , "0.000001"
-      , "1.0"
+      [ "1.1"
+      , "1.1."
       ]
 
 allExamples :: [Example]

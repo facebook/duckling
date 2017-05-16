@@ -723,7 +723,7 @@ ruleIntersectBy = Rule
   { name = "intersect by ','"
   , pattern =
     [ Predicate isNotLatent
-    , regex ","
+    , regex ",( den|r)?"
     , Predicate isNotLatent
     ]
   , prod = \tokens -> case tokens of
@@ -1017,7 +1017,7 @@ ruleAboutTimeofday :: Rule
 ruleAboutTimeofday = Rule
   { name = "about <time-of-day>"
   , pattern =
-    [ regex "(um )?zirka|ungef(\x00e4)hr|etwa"
+    [ regex "(um )?zirka|ca\\.|ungef(\x00e4)hr|etwa|gegen"
     , Predicate isATimeOfDay
     ]
   , prod = \tokens -> case tokens of
@@ -1029,11 +1029,24 @@ ruleUntilTimeofday :: Rule
 ruleUntilTimeofday = Rule
   { name = "until <time-of-day>"
   , pattern =
-    [ regex "vor|bis( zu[rm]?)?"
+    [ regex "vor|bis( zu[rm]?)?|spätestens?"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td:_) ->
+        tt $ withDirection TTime.Before td
+      _ -> Nothing
+  }
+
+ruleUntilTimeofdayPostfix :: Rule
+ruleUntilTimeofdayPostfix = Rule
+  { name = "<time-of-day> until"
+  , pattern =
+    [ dimension Time
+    , regex "spätestens"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Time td:_:_) ->
         tt $ withDirection TTime.Before td
       _ -> Nothing
   }
@@ -1408,11 +1421,24 @@ ruleAfterTimeofday :: Rule
 ruleAfterTimeofday = Rule
   { name = "after <time-of-day>"
   , pattern =
-    [ regex "nach"
+    [ regex "nach|ab|frühe?stens"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td:_) ->
+        tt $ withDirection TTime.After td
+      _ -> Nothing
+  }
+
+ruleAfterTimeofdayPostfix :: Rule
+ruleAfterTimeofdayPostfix = Rule
+  { name = "<time-of-day> after "
+  , pattern =
+    [ dimension Time
+    , regex "frühe?stens"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Time td:_:_) ->
         tt $ withDirection TTime.After td
       _ -> Nothing
   }
@@ -1688,6 +1714,20 @@ ruleTimeofdayTimeofdayInterval = Rule
       _ -> Nothing
   }
 
+ruleTimeofdayTimeofdayInterval2 :: Rule
+ruleTimeofdayTimeofdayInterval2 = Rule
+  { name = "<time-of-day> - <time-of-day> (interval)"
+  , pattern =
+    [ Predicate isATimeOfDay
+    , regex "\\-|bis"
+    , Predicate $ liftM2 (&&) isATimeOfDay isNotLatent
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Time td1:_:Token Time td2:_) ->
+        Token Time <$> interval TTime.Closed td1 td2
+      _ -> Nothing
+  }
+
 ruleNamedmonth11 :: Rule
 ruleNamedmonth11 = Rule
   { name = "named-month"
@@ -1880,6 +1920,7 @@ rules =
   , ruleAfterLunch
   , ruleAfterNextTime
   , ruleAfterTimeofday
+  ,  ruleAfterTimeofdayPostfix
   , ruleAfterTomorrow
   , ruleAfterWork
   , ruleAfternoon
@@ -2002,10 +2043,12 @@ rules =
   , ruleTimeofdayOclock
   , ruleTimeofdaySharp
   , ruleTimeofdayTimeofdayInterval
+  , ruleTimeofdayTimeofdayInterval2
   , ruleToday
   , ruleTomorrow
   , ruleTonight
   , ruleUntilTimeofday
+  , ruleUntilTimeofdayPostfix
   , ruleValentinesDay
   , ruleWeekend
   , ruleWithinDuration

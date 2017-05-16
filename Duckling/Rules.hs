@@ -23,6 +23,7 @@ import Duckling.Dimensions.Types
 import Duckling.Lang
 import qualified Duckling.Rules.AR as ARRules
 import qualified Duckling.Rules.Common as CommonRules
+import qualified Duckling.Rules.CS as CSRules
 import qualified Duckling.Rules.DA as DARules
 import qualified Duckling.Rules.DE as DERules
 import qualified Duckling.Rules.EN as ENRules
@@ -68,6 +69,7 @@ rulesFor' lang dim = CommonRules.rules dim ++ langRules lang dim
 
 langRules :: Lang -> Some Dimension -> [Rule]
 langRules AR = ARRules.rules
+langRules CS = CSRules.rules
 langRules DA = DARules.rules
 langRules DE = DERules.rules
 langRules EN = ENRules.rules

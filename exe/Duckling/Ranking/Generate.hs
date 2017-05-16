@@ -69,6 +69,7 @@ regenClassifiers lang = do
     -- | The training set (corpus)
     trainSet = case lang of
       AR -> (testContext, [])
+      CS -> (testContext, [])
       DA -> DATime.corpus
       DE -> DETime.corpus
       EN -> ENTime.corpus

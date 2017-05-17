@@ -1029,7 +1029,7 @@ ruleUntilTimeofday :: Rule
 ruleUntilTimeofday = Rule
   { name = "until <time-of-day>"
   , pattern =
-    [ regex "vor|bis( zu[rm]?)?|spätestens?"
+    [ regex "vor|bis( zu[rm]?)?|sp(\x00e4)testens?"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -1043,7 +1043,7 @@ ruleUntilTimeofdayPostfix = Rule
   { name = "<time-of-day> until"
   , pattern =
     [ dimension Time
-    , regex "spätestens"
+    , regex "sp(\x00e4)testens"
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_:_) ->
@@ -1421,7 +1421,7 @@ ruleAfterTimeofday :: Rule
 ruleAfterTimeofday = Rule
   { name = "after <time-of-day>"
   , pattern =
-    [ regex "nach|ab|frühe?stens"
+    [ regex "nach|ab|fr(\x00fc)he?stens"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -1435,7 +1435,7 @@ ruleAfterTimeofdayPostfix = Rule
   { name = "<time-of-day> after "
   , pattern =
     [ dimension Time
-    , regex "frühe?stens"
+    , regex "fr(\x00fc)he?stens"
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_:_) ->

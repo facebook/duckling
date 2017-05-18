@@ -630,7 +630,16 @@ allExamples = concat
   , examples (datetime (2013, 12, 10, 0, 0, 0) Day)
              [ "10.12."
              ]
-  , examples (datetimeInterval ((2013, 2, 12, 18, 30, 0), (2013, 2, 12, 19, 1, 0)) Minute)
+  , examples (datetimeInterval ((2013, 2, 12, 18, 30, 0), (2013, 2, 12, 19, 1, 0)) Minute)
              [ "18:30h - 19:00h"
+             , "18:30h/19:00h"
+             ]
+  , examples (datetimeInterval ((2013, 10, 14, 0, 0, 0), (2013, 10, 16, 0, 0, 0)) Day)
+             [ "14. - 15.10."
+             , "14./15.10."
+             ]
+  , examples (datetimeInterval ((2018, 10, 14, 0, 0, 0), (2018, 10, 16, 0, 0, 0)) Day)
+             [ "14. - 15.10.18"
+             , "14./15.10.2018"
              ]
   ]

@@ -189,6 +189,41 @@ ruleDatetimeDatetimeInterval = Rule
       _ -> Nothing
   }
 
+ruleDateDateInterval :: Rule
+ruleDateDateInterval = Rule
+  { name = "dd. - dd.mm. (interval)"
+  , pattern =
+    [ regex "([012]?[1-9]|10|20|30|31)\\."
+    , regex "\\-|/|bis"
+    , regex "([012]?[1-9]|10|20|30|31)\\.(0?[1-9]|10|11|12)\\."
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (d1:_)):_:Token RegexMatch (GroupMatch (d2:m2:_)):_) -> do
+          d1 <- parseInt d1
+          d2 <- parseInt d2
+          m <- parseInt m2
+          Token Time <$> interval TTime.Closed (monthDay m d1) (monthDay m d2)
+      _ -> Nothing
+  }
+
+ruleDateDateInterval2 :: Rule
+ruleDateDateInterval2 = Rule
+  { name = "dd. - dd.mm. (interval)"
+  , pattern =
+    [ regex "([012]?[1-9]|10|20|30|31)\\."
+    , regex "\\-|/|bis"
+    ,   regex "([012]?[1-9]|10|20|30|31)\\.(0?[1-9]|10|11|12)\\.(\\d{2,4})"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (d1:_)):_:Token RegexMatch (GroupMatch (d2:m2:y:_)):_) -> do
+          d1 <- parseInt d1
+          d2 <- parseInt d2
+          m <- parseInt m2
+          y <- parseInt y
+          Token Time <$> interval TTime.Closed (yearMonthDay y m d1) (yearMonthDay y m d2)
+      _ -> Nothing
+  }
+
 ruleNamedmonth7 :: Rule
 ruleNamedmonth7 = Rule
   { name = "named-month"
@@ -1715,7 +1750,7 @@ ruleTimeofdayTimeofdayInterval2 = Rule
   { name = "<time-of-day> - <time-of-day> (interval)"
   , pattern =
     [ Predicate isATimeOfDay
-    , regex "\\-|bis"
+    , regex "\\-|/|bis"
     , Predicate $ liftM2 (&&) isATimeOfDay isNotLatent
     ]
   , prod = \tokens -> case tokens of
@@ -1929,6 +1964,8 @@ rules =
   , ruleChristmas
   , ruleChristmasEve
   , ruleDatetimeDatetimeInterval
+  , ruleDateDateInterval
+  , ruleDateDateInterval2
   , ruleDayofmonthNonOrdinalNamedmonth
   , ruleDayofmonthNonOrdinalOfNamedmonth
   , ruleDayofmonthOrdinal

@@ -191,36 +191,37 @@ ruleDatetimeDatetimeInterval = Rule
 
 ruleDateDateInterval :: Rule
 ruleDateDateInterval = Rule
-  { name = "dd. - dd.mm. (interval)"
+  { name = "dd.(mm.)? - dd.mm.(yy[yy]?)? (interval)"
   , pattern =
-    [ regex "([012]?[1-9]|10|20|30|31)\\."
+    [ regex "([012]?[1-9]|10|20|30|31)\\.((0?[1-9]|10|11|12)\\.)?"
     , regex "\\-|/|bis"
-    , regex "([012]?[1-9]|10|20|30|31)\\.(0?[1-9]|10|11|12)\\."
+    , regex "([012]?[1-9]|10|20|30|31)\\.(0?[1-9]|10|11|12)\\.(\\d{2,4})?"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (d1:_)):_:Token RegexMatch (GroupMatch (d2:m2:_)):_) -> do
+      (Token RegexMatch (GroupMatch (d1:"":_)):_:Token RegexMatch (GroupMatch (d2:m2:"":_)):_) -> do
           d1 <- parseInt d1
           d2 <- parseInt d2
-          m <- parseInt m2
-          Token Time <$> interval TTime.Closed (monthDay m d1) (monthDay m d2)
-      _ -> Nothing
-  }
-
-ruleDateDateInterval2 :: Rule
-ruleDateDateInterval2 = Rule
-  { name = "dd. - dd.mm. (interval)"
-  , pattern =
-    [ regex "([012]?[1-9]|10|20|30|31)\\."
-    , regex "\\-|/|bis"
-    ,   regex "([012]?[1-9]|10|20|30|31)\\.(0?[1-9]|10|11|12)\\.(\\d{2,4})"
-    ]
-  , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (d1:_)):_:Token RegexMatch (GroupMatch (d2:m2:y:_)):_) -> do
+          m2 <- parseInt m2
+          Token Time <$> interval TTime.Closed (monthDay m2 d1) (monthDay m2 d2)
+      (Token RegexMatch (GroupMatch (d1:"":_)):_:Token RegexMatch (GroupMatch (d2:m2:y:_)):_) -> do
           d1 <- parseInt d1
           d2 <- parseInt d2
-          m <- parseInt m2
+          m2 <- parseInt m2
           y <- parseInt y
-          Token Time <$> interval TTime.Closed (yearMonthDay y m d1) (yearMonthDay y m d2)
+          Token Time <$> interval TTime.Closed (yearMonthDay y m2 d1) (yearMonthDay y m2 d2)
+      (Token RegexMatch (GroupMatch (d1:m1:_)):_:Token RegexMatch (GroupMatch (d2:m2:"":_)):_) -> do
+          d1 <- parseInt d1
+          d2 <- parseInt d2
+          m1 <- parseInt m1
+          m2 <- parseInt m2
+          Token Time <$> interval TTime.Closed (monthDay m1 d1) (monthDay m2 d2)
+      (Token RegexMatch (GroupMatch (d1:m1:_)):_:Token RegexMatch (GroupMatch (d2:m2:y:_)):_) -> do
+          d1 <- parseInt d1
+          d2 <- parseInt d2
+          m1 <- parseInt m1
+          m2 <- parseInt m2
+          y <- parseInt y
+          Token Time <$> interval TTime.Closed (yearMonthDay y m1 d1) (yearMonthDay y m2 d2)
       _ -> Nothing
   }
 
@@ -1965,7 +1966,6 @@ rules =
   , ruleChristmasEve
   , ruleDatetimeDatetimeInterval
   , ruleDateDateInterval
-  , ruleDateDateInterval2
   , ruleDayofmonthNonOrdinalNamedmonth
   , ruleDayofmonthNonOrdinalOfNamedmonth
   , ruleDayofmonthOrdinal

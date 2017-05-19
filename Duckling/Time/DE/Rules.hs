@@ -180,7 +180,7 @@ ruleDatetimeDatetimeInterval = Rule
   { name = "<datetime> - <datetime> (interval)"
   , pattern =
     [ Predicate isNotLatent
-    , regex "\\-|bis"
+    , regex "\\-|bis( zum)?|auf( den)?"
     , Predicate isNotLatent
     ]
   , prod = \tokens -> case tokens of
@@ -194,7 +194,7 @@ ruleDateDateInterval = Rule
   { name = "dd.(mm.)? - dd.mm.(yy[yy]?)? (interval)"
   , pattern =
     [ regex "(?:vo[nm]\\s+)?([012]?[1-9]|10|20|30|31)\\.((0?[1-9]|10|11|12)\\.)?"
-    , regex "\\-|/|bis"
+    , regex "\\-|/|bis( zum)?|auf( den)?"
     , regex "([012]?[1-9]|10|20|30|31)\\.(0?[1-9]|10|11|12)\\.(\\d{2,4})?"
     ]
   , prod = \tokens -> case tokens of
@@ -304,7 +304,7 @@ ruleFromDatetimeDatetimeInterval = Rule
   , pattern =
     [ regex "vo[nm]"
     , dimension Time
-    , regex "\\-|bis"
+    , regex "\\-|bis( zum)?|auf( den)?"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -364,7 +364,7 @@ ruleMonthDdddInterval = Rule
   { name = "<month> dd-dd (interval)"
   , pattern =
     [ regex "([012]?\\d|30|31)(ter|\\.)?"
-    , regex "\\-|bis"
+    , regex "\\-|bis( zum)?|auf( den)?"
     , regex "([012]?\\d|30|31)(ter|\\.)?"
     , Predicate isAMonth
     ]

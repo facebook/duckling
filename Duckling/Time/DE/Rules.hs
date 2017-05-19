@@ -193,7 +193,7 @@ ruleDateDateInterval :: Rule
 ruleDateDateInterval = Rule
   { name = "dd.(mm.)? - dd.mm.(yy[yy]?)? (interval)"
   , pattern =
-    [ regex "([012]?[1-9]|10|20|30|31)\\.((0?[1-9]|10|11|12)\\.)?"
+    [ regex "(?:vo[nm]\\s+)?([012]?[1-9]|10|20|30|31)\\.((0?[1-9]|10|11|12)\\.)?"
     , regex "\\-|/|bis"
     , regex "([012]?[1-9]|10|20|30|31)\\.(0?[1-9]|10|11|12)\\.(\\d{2,4})?"
     ]

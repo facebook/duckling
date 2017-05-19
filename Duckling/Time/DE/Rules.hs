@@ -1465,10 +1465,10 @@ ruleAfterTimeofday = Rule
 
 ruleAfterTimeofdayPostfix :: Rule
 ruleAfterTimeofdayPostfix = Rule
-  { name = "<time-of-day> after "
+  { name = "<time-of-day> after"
   , pattern =
     [ dimension Time
-    , regex "frühe?stens"
+    , regex "fr(\x00fc)he?stens"
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_:_) -> tt $ withDirection TTime.After td

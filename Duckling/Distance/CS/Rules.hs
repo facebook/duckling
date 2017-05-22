@@ -1,4 +1,4 @@
--- Copyright (c) 2016-present, Facebook, Inc.
+﻿-- Copyright (c) 2016-present, Facebook, Inc.
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
@@ -17,15 +17,15 @@ import Prelude
 
 import Duckling.Dimensions.Types
 import Duckling.Distance.Helpers
-import Duckling.Types
 import qualified Duckling.Distance.Types as TDistance
+import Duckling.Types
 
 ruleLatentDistKm :: Rule
 ruleLatentDistKm = Rule
   { name = "<latent dist> km"
   , pattern =
     [ dimension Distance
-    , regex "k(ilo)?m?(etr)?y?"
+    , regex "km|kilometr(y|\x016f)?"
     ]
   , prod = \tokens -> case tokens of
       (Token Distance dd:_) ->
@@ -38,7 +38,7 @@ ruleDistMeters = Rule
   { name = "<dist> meters"
   , pattern =
     [ dimension Distance
-    , regex "m(etry?)?"
+    , regex "m|metry|metr\x016f"
     ]
   , prod = \tokens -> case tokens of
       (Token Distance dd:_) ->
@@ -51,7 +51,7 @@ ruleDistCentimeters = Rule
   { name = "<dist> centimeters"
   , pattern =
     [ dimension Distance
-    , regex "cm|centimetry?"
+    , regex "cm|centimetr(y|\x016f)?"
     ]
   , prod = \tokens -> case tokens of
       (Token Distance dd:_) ->
@@ -64,7 +64,7 @@ ruleDistMiles = Rule
   { name = "<dist> miles"
   , pattern =
     [ dimension Distance
-    , regex "mil"
+    , regex "m(il|ili|(\x00ed)l(\x00ed))"
     ]
   , prod = \tokens -> case tokens of
       (Token Distance dd:_) ->

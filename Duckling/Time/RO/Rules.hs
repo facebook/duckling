@@ -49,8 +49,8 @@ ruleDupamiaza = Rule
   , pattern =
     [ regex "dupamiaz(a|\x0103)|dup(a|\x0103) amiaz(a|\x0103)"
     ]
-  , prod = \_ -> tt . mkLatent . partOfDay $
-      interval TTime.Open (hour False 12, hour False 19)
+  , prod = \_ -> Token Time . mkLatent . partOfDay <$>
+      interval TTime.Open (hour False 12) (hour False 19)
   }
 
 ruleNamedmonth12 :: Rule
@@ -192,7 +192,7 @@ ruleMonthDdddInterval = Rule
         d2 <- parseInt m2
         dom1 <- intersect (dayOfMonth d1) td
         dom2 <- intersect (dayOfMonth d2) td
-        tt $ interval TTime.Closed (dom1, dom2)
+        Token Time <$> interval TTime.Closed dom1 dom2
       _ -> Nothing
   }
 
@@ -304,7 +304,7 @@ ruleBetweenTimeofdayAndTimeofdayInterval = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td1:_:Token Time td2:_) ->
-        tt $ interval TTime.Closed (td1, td2)
+        Token Time <$> interval TTime.Closed td1 td2
       _ -> Nothing
   }
 
@@ -496,10 +496,10 @@ ruleDiseara = Rule
   , pattern =
     [ regex "disear(a|\x0103)|((i|\x00ee)n aceas(a|\x0103) )?sear(a|\x0103)"
     ]
-  , prod = \_ ->
+  , prod = \_ -> do
       let td1 = cycleNth TG.Day 0
-          td2 = interval TTime.Open (hour False 18, hour False 0)
-      in Token Time . partOfDay <$> intersect td1 td2
+      td2 <- interval TTime.Open (hour False 18) (hour False 0)
+      Token Time . partOfDay <$> intersect td1 td2
   }
 
 ruleIntersectBy :: Rule
@@ -583,7 +583,7 @@ ruleFromTimeofdayTimeofdayInterval = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td1:_:Token Time td2:_) ->
-        tt $ interval TTime.Closed (td1, td2)
+        Token Time <$> interval TTime.Closed td1 td2
       _ -> Nothing
   }
 
@@ -602,8 +602,8 @@ ruleSeason3 = Rule
   , pattern =
     [ regex "primavar(a|\x0103)"
     ]
-  , prod = \_ -> tt $
-      interval TTime.Open (monthDay 3 20, monthDay 6 21)
+  , prod = \_ -> Token Time <$>
+      interval TTime.Open (monthDay 3 20) (monthDay 6 21)
   }
 
 ruleUrmatoareleNCycle :: Rule
@@ -627,8 +627,8 @@ ruleSeason = Rule
   , pattern =
     [ regex "toamn(a|\x0103)"
     ]
-  , prod = \_ -> tt $
-      interval TTime.Open (monthDay 9 23, monthDay 12 21)
+  , prod = \_ -> Token Time <$>
+      interval TTime.Open (monthDay 9 23) (monthDay 12 21)
   }
 
 ruleDupaDuration :: Rule
@@ -662,7 +662,7 @@ ruleByTheEndOfTime = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td:_) ->
-        tt $ interval TTime.Closed (cycleNth TG.Second 0, td)
+        Token Time <$> interval TTime.Closed (cycleNth TG.Second 0) td
       _ -> Nothing
   }
 
@@ -761,7 +761,7 @@ ruleIntreDatetimeSiDatetimeInterval = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td1:_:Token Time td2:_) ->
-        tt $ interval TTime.Closed (td1, td2)
+        Token Time <$> interval TTime.Closed td1 td2
       _ -> Nothing
   }
 
@@ -812,7 +812,7 @@ ruleWeekend = Rule
   , prod = \_ -> do
       fri <- intersect (dayOfWeek 5) (hour False 18)
       mon <- intersect (dayOfWeek 1) (hour False 0)
-      tt $ interval TTime.Open (fri, mon)
+      Token Time <$> interval TTime.Open fri mon
   }
 
 rulePeDayofmonthNonOrdinal :: Rule
@@ -1001,7 +1001,7 @@ ruleSezonAnotimp = Rule
     [ regex "var(a|\x0103)"
     ]
   , prod = \_ ->
-      tt $ interval TTime.Open (monthDay 6 21, monthDay 9 23)
+      Token Time <$> interval TTime.Open (monthDay 6 21) (monthDay 9 23)
   }
 
 ruleSearaNoapte :: Rule
@@ -1010,8 +1010,8 @@ ruleSearaNoapte = Rule
   , pattern =
     [ regex "sear(a|\x0103)|noapte"
     ]
-  , prod = \_ -> tt . mkLatent . partOfDay $
-      interval TTime.Open (hour False 18, hour False 0)
+  , prod = \_ -> Token Time . mkLatent . partOfDay <$>
+      interval TTime.Open (hour False 18) (hour False 0)
   }
 
 ruleYearLatent :: Rule
@@ -1034,7 +1034,7 @@ ruleSeason2 = Rule
     [ regex "iarn(a|\x0103)"
     ]
   , prod = \_ ->
-      tt $ interval TTime.Open (monthDay 12 21, monthDay 3 20)
+      Token Time <$> interval TTime.Open (monthDay 12 21) (monthDay 3 20)
   }
 
 ruleUltimeleNCycle :: Rule
@@ -1070,8 +1070,8 @@ ruleDimineata = Rule
   , pattern =
     [ regex "diminea(t|\x021b)(a|\x0103)"
     ]
-  , prod = \_ -> tt . mkLatent . partOfDay $
-      interval TTime.Open (hour False 4, hour False 12)
+  , prod = \_ -> Token Time . mkLatent . partOfDay <$>
+      interval TTime.Open (hour False 4) (hour False 12)
   }
 
 ruleTimeUrmatoarer :: Rule
@@ -1277,8 +1277,8 @@ ruleByTime = Rule
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td:_) -> tt $
-        interval TTime.Open (cycleNth TG.Second 0, td)
+      (_:Token Time td:_) -> Token Time <$>
+        interval TTime.Open (cycleNth TG.Second 0) td
       _ -> Nothing
   }
 

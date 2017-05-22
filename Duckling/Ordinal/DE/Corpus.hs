@@ -9,7 +9,9 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Ordinal.DE.Corpus
-  ( corpus ) where
+  ( corpus
+  , negativeCorpus
+  ) where
 
 import Prelude
 import Data.String
@@ -22,10 +24,19 @@ import Duckling.Testing.Types
 corpus :: Corpus
 corpus = (testContext {lang = DE}, allExamples)
 
+negativeCorpus :: NegativeCorpus
+negativeCorpus = (testContext {lang = DE}, examples)
+  where
+    examples =
+      [ "1.1"
+      , "1.1."
+      ]
+
 allExamples :: [Example]
 allExamples =
   examples (OrdinalData 4)
            [ "vierter"
            , "4ter"
            , "Vierter"
+           , "4."
            ]

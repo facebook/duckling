@@ -509,8 +509,8 @@ ruleAfternoon = Rule
   , prod = \_ ->
       let from = hour False 12
           to = hour False 19
-      in tt . mkLatent . partOfDay $
-           interval TTime.Open (from, to)
+      in Token Time . mkLatent . partOfDay <$>
+           interval TTime.Open from to
   }
 
 ruleNamedmonth4 :: Rule
@@ -713,7 +713,7 @@ ruleWeekend = Rule
   , prod = \_ -> do
       from <- intersect (dayOfWeek 5) (hour False 18)
       to <- intersect (dayOfWeek 1) (hour False 0)
-      tt $ interval TTime.Open (from, to)
+      Token Time <$> interval TTime.Open from to
   }
 
 ruleLastYear :: Rule
@@ -790,8 +790,8 @@ ruleMorning = Rule
   , prod = \_ ->
       let from = hour False 4
           to = hour False 12
-      in tt . mkLatent . partOfDay $
-           interval TTime.Open (from, to)
+      in Token Time . mkLatent . partOfDay <$>
+           interval TTime.Open from to
   }
 
 ruleNextYear :: Rule
@@ -853,10 +853,10 @@ ruleLastNight = Rule
   , pattern =
     [ regex "\x6628\x665a|\x6628\x5929\x665a\x4e0a"
     ]
-  , prod = \_ ->
+  , prod = \_ -> do
       let td1 = cycleNth TG.Day $ - 1
-          td2 = interval TTime.Open (hour False 18, hour False 0)
-      in Token Time . partOfDay <$> intersect td1 td2
+      td2 <- interval TTime.Open (hour False 18) (hour False 0)
+      Token Time . partOfDay <$> intersect td1 td2
   }
 
 ruleTimeofdayAmpm :: Rule
@@ -958,10 +958,10 @@ ruleTonight = Rule
   , pattern =
     [ regex "\x4eca\x665a|\x4eca\x5929\x665a\x4e0a"
     ]
-  , prod = \_ ->
+  , prod = \_ -> do
       let td1 = cycleNth TG.Day 0
-          td2 = interval TTime.Open (hour False 18, hour False 0)
-      in Token Time . partOfDay <$> intersect td1 td2
+      td2 <- interval TTime.Open (hour False 18) (hour False 0)
+      Token Time . partOfDay <$> intersect td1 td2
   }
 
 ruleTomorrowNight :: Rule
@@ -970,10 +970,10 @@ ruleTomorrowNight = Rule
   , pattern =
     [ regex "\x660e\x665a|\x660e\x5929\x665a\x4e0a"
     ]
-  , prod = \_ ->
+  , prod = \_ -> do
       let td1 = cycleNth TG.Day 1
-          td2 = interval TTime.Open (hour False 18, hour False 0)
-      in Token Time . partOfDay <$> intersect td1 td2
+      td2 <- interval TTime.Open (hour False 18) (hour False 0)
+      Token Time . partOfDay <$> intersect td1 td2
   }
 
 ruleNamedmonth10 :: Rule
@@ -1042,8 +1042,8 @@ ruleEveningnight = Rule
   , prod = \_ ->
       let from = hour False 18
           to = hour False 0
-      in tt . partOfDay . mkLatent $
-           interval TTime.Open (from, to)
+      in Token Time . partOfDay . mkLatent <$>
+           interval TTime.Open from to
   }
 
 ruleNamedday3 :: Rule

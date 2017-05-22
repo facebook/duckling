@@ -8,43 +8,39 @@
 
 {-# LANGUAGE OverloadedStrings #-}
 
-module Duckling.Distance.EN.Corpus
+module Duckling.Distance.CS.Corpus
   ( corpus ) where
 
-import Prelude
 import Data.String
+import Prelude
 
 import Duckling.Distance.Types
+import Duckling.Lang
+import Duckling.Resolve
 import Duckling.Testing.Types
 
 corpus :: Corpus
-corpus = (testContext, allExamples)
+corpus = (testContext {lang = CS}, allExamples)
 
 allExamples :: [Example]
 allExamples = concat
   [ examples (DistanceValue Kilometre 3)
-             [ "3 kilometers"
+             [ "3 kilometry"
              , "3 km"
              , "3km"
              , "3k"
-             , "3.0 km"
              ]
   , examples (DistanceValue Mile 8)
-             [ "8 miles"
-             , "eight mile"
-             , "8 mi"
+             [ "8 mil"
+             , "osm mil"
              ]
-  , examples (DistanceValue M 9)
+  , examples (DistanceValue Metre 9)
              [ "9m"
+             , "9 metr"
+             , "9 metry"
              ]
   , examples (DistanceValue Centimetre 2)
              [ "2cm"
-             , "2 centimeters"
-             ]
-  , examples (DistanceValue Inch 5)
-             [ "5 in"
-             , "5''"
-             , "five inches"
-             , "5\""
+             , "2 centimetry"
              ]
   ]

@@ -303,7 +303,7 @@ ruleDatetimeDatetimeInterval = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td1:_:Token Time td2:_) ->
-        tt $ interval TTime.Closed (td1, td2)
+        Token Time <$> interval TTime.Closed td1 td2
       _ -> Nothing
   }
 
@@ -401,7 +401,7 @@ ruleFromDatetimeDatetimeInterval = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td1:_:Token Time td2:_) ->
-        tt $ interval TTime.Closed (td1, td2)
+        Token Time <$> interval TTime.Closed td1 td2
       _ -> Nothing
   }
 
@@ -500,7 +500,7 @@ ruleBetweenTimeofdayAndTimeofdayInterval = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td1:_:Token Time td2:_) ->
-        tt $ interval TTime.Closed (td1, td2)
+        Token Time <$> interval TTime.Closed td1 td2
       _ -> Nothing
   }
 
@@ -566,8 +566,8 @@ ruleLunch = Rule
   , pattern =
     [ regex "(\x05d1)?\x05e6\x05d4\x05e8\x05d9\x05d9\x05dd"
     ]
-  , prod = \_ -> tt . partOfDay . mkLatent $
-      interval TTime.Open (hour False 12, hour False 14)
+  , prod = \_ -> Token Time . partOfDay . mkLatent <$>
+      interval TTime.Open (hour False 12) (hour False 14)
   }
 
 ruleLastCycle :: Rule
@@ -589,8 +589,8 @@ ruleAfternoon = Rule
   , pattern =
     [ regex "\x05d0\x05d7\x05d4(\x05f4)?\x05e6|\x05d0\x05d7\x05e8 \x05d4\x05e6\x05d4\x05e8\x05d9\x05d9\x05dd"
     ]
-  , prod = \_ -> tt . partOfDay . mkLatent $
-      interval TTime.Open (hour False 12, hour False 19)
+  , prod = \_ -> Token Time . partOfDay . mkLatent <$>
+      interval TTime.Open (hour False 12) (hour False 19)
   }
 
 ruleNamedmonth4 :: Rule
@@ -730,9 +730,9 @@ ruleThisEvening = Rule
   , pattern =
     [ regex "\x05d4\x05e2\x05e8\x05d1"
     ]
-  , prod = \_ ->
-      let td = interval TTime.Open (hour False 18, hour False 0)
-      in Token Time . partOfDay <$> intersect (cycleNth TG.Day 0) td
+  , prod = \_ -> do
+      td <- interval TTime.Open (hour False 18) (hour False 0)
+      Token Time . partOfDay <$> intersect (cycleNth TG.Day 0) td
   }
 
 ruleBetweenDatetimeAndDatetimeInterval :: Rule
@@ -746,7 +746,7 @@ ruleBetweenDatetimeAndDatetimeInterval = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td1:_:Token Time td2:_) ->
-        tt $ interval TTime.Closed (td1, td2)
+        Token Time <$> interval TTime.Closed td1 td2
       _ -> Nothing
   }
 
@@ -899,7 +899,7 @@ ruleWeekend = Rule
   , prod = \_ -> do
       fri <- intersect (dayOfWeek 5) (hour False 18)
       mon <- intersect (dayOfWeek 1) (hour False 0)
-      tt $ interval TTime.Open (fri, mon)
+      Token Time <$> interval TTime.Open fri mon
   }
 
 ruleNameddayDayofmonthOrdinal :: Rule
@@ -1004,8 +1004,8 @@ ruleMorning = Rule
   , pattern =
     [ regex "(\x05d1)?\x05d1\x05d5\x05e7\x05e8"
     ]
-  , prod = \_ -> tt . partOfDay . mkLatent $
-      interval TTime.Open (hour False 4, hour False 12)
+  , prod = \_ -> Token Time . partOfDay . mkLatent <$>
+      interval TTime.Open (hour False 4) (hour False 12)
   }
 
 ruleThisCycle :: Rule
@@ -1291,8 +1291,8 @@ ruleEveningnight = Rule
   , pattern =
     [ regex "(\x05d1)?\x05e2\x05e8\x05d1"
     ]
-  , prod = \_ -> tt . partOfDay . mkLatent $
-      interval TTime.Open (hour False 18, hour False 0)
+  , prod = \_ -> Token Time . partOfDay . mkLatent <$>
+      interval TTime.Open (hour False 18) (hour False 0)
   }
 
 ruleOrdinalQuarter :: Rule

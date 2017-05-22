@@ -268,6 +268,12 @@ allExamples = concat
              [ "zirka 15 uhr"
              , "zirka 3 uhr am nachmittag"
              , "um ungefähr 15 uhr"
+             , "gegen 15 uhr"
+             , "ca. 15h"
+             , "um ca 15h"
+             ]
+  , examples (datetime (2013, 4, 1, 18, 0, 0) Hour)
+             [ "01.04. gegen 18Uhr"
              ]
   , examples (datetime (2013, 2, 13, 17, 0, 0) Hour)
              [ "pünktlich um 17 uhr morgen"
@@ -318,6 +324,12 @@ allExamples = concat
              ]
   , examples (datetime (2014, 7, 18, 19, 0, 0) Hour)
              [ "Fr, 18. Juli 2014 7 uhr abends"
+             ]
+  , examples (datetime (2014, 7, 18, 0, 0, 0) Day)
+             [ "Fr, 18. Juli 2014"
+             , "Freitag, 18.07.14"
+             , "Freitag, den 18.07.2014"
+             , "Freitag, der 18. Juli 14"
              ]
   , examples (datetime (2013, 2, 12, 4, 30, 1) Second)
              [ "in einer sekunde"
@@ -581,12 +593,18 @@ allExamples = concat
   , examples (datetimeOpenInterval After (2013, 2, 12, 14, 0, 0) Hour)
              [ "nach 14 Uhr"
              , "nach 14h"
+             , "ab 14Uhr"
              , "nach 2 Uhr"
+             , "frühestens 14 Uhr"
+             , "14 Uhr frühstens"
              ]
   , examples (datetimeOpenInterval Before (2013, 2, 12, 11, 0, 0) Hour)
              [ "bis 11 uhr"
+             , "vor 11 uhr"
              , "bis 11h vormittags"
              , "bis 11 am vormittag"
+             , "spätestens 11 uhr"
+             , "11Uhr spätestens"
              ]
   , examples (datetimeInterval ((2013, 2, 12, 12, 0, 0), (2013, 2, 12, 19, 0, 0)) Hour)
              [ "am nachmittag"

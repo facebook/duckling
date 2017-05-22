@@ -129,7 +129,7 @@ instance Resolve TimeData where
 
 timedata' :: TimeData
 timedata' = TimeData
-  { timePred = EmptyPredicate
+  { timePred = mkEmptyPredicate
   , latent = False
   , timeGrain = TG.Second
   , notImmediate = False
@@ -197,10 +197,15 @@ instance ToJSON TimeValue where
 type SeriesPredicate = TimeObject -> TimeContext -> ([TimeObject], [TimeObject])
 
 data AMPM = AM | PM
-  deriving Eq
+  deriving (Eq, Show)
+
+newtype NoShow a = NoShow a
+
+instance Show (NoShow a) where
+  show _ = "??"
 
 data Predicate
-  = SeriesPredicate SeriesPredicate
+  = SeriesPredicate (NoShow SeriesPredicate)
   | EmptyPredicate
   | TimeDatePredicate -- invariant: at least one of them is Just
     { tdSecond :: Maybe Int
@@ -214,11 +219,12 @@ data Predicate
     }
   | IntersectPredicate Predicate Predicate
   | TimeIntervalsPredicate TimeIntervalType Predicate Predicate
+  deriving Show
 
 {-# ANN runPredicate ("HLint: ignore Use foldr1OrError" :: String) #-}
 runPredicate :: Predicate -> SeriesPredicate
-runPredicate EmptyPredicate = \_ _ -> ([], [])
-runPredicate (SeriesPredicate p) = p
+runPredicate EmptyPredicate{} = \_ _ -> ([], [])
+runPredicate (SeriesPredicate (NoShow p)) = p
 runPredicate TimeDatePredicate{..}
   -- This should not happen by construction, but if it does then
   -- empty time series should be ok
@@ -250,8 +256,15 @@ emptyTimeDatePredicate =
 
 -- Predicate smart constructors
 
+-- For debugging find it useful to make it:
+-- mkEmptyPredicate :: HasCallStack => Predicate
+-- mkEmptyPredicate = EmptyPredicate callStack
+-- This way I can track where EmptyPredicates get created
+mkEmptyPredicate :: Predicate
+mkEmptyPredicate = EmptyPredicate
+
 mkSeriesPredicate :: SeriesPredicate -> Predicate
-mkSeriesPredicate = SeriesPredicate
+mkSeriesPredicate = SeriesPredicate . NoShow
 
 mkSecondPredicate :: Int -> Predicate
 mkSecondPredicate n = emptyTimeDatePredicate { tdSecond = Just n }
@@ -278,12 +291,12 @@ mkYearPredicate :: Int -> Predicate
 mkYearPredicate n = emptyTimeDatePredicate { tdYear = Just n }
 
 mkIntersectPredicate :: Predicate -> Predicate -> Predicate
-mkIntersectPredicate EmptyPredicate _ = EmptyPredicate
-mkIntersectPredicate _ EmptyPredicate = EmptyPredicate
+mkIntersectPredicate a@EmptyPredicate{} _ = a
+mkIntersectPredicate _ a@EmptyPredicate{} = a
 mkIntersectPredicate
   (TimeDatePredicate a1 b1 c1 d1 e1 f1 g1 h1)
   (TimeDatePredicate a2 b2 c2 d2 e2 f2 g2 h2)
-  = fromMaybe EmptyPredicate
+  = fromMaybe mkEmptyPredicate
       (TimeDatePredicate <$>
         unify a1 a2 <*>
         unify b1 b2 <*>
@@ -303,16 +316,26 @@ mkIntersectPredicate pred1 pred2 = IntersectPredicate pred1 pred2
 
 mkTimeIntervalsPredicate
   :: TimeIntervalType -> Predicate -> Predicate -> Predicate
-mkTimeIntervalsPredicate _ EmptyPredicate _ = EmptyPredicate
-mkTimeIntervalsPredicate _ _ EmptyPredicate = EmptyPredicate
--- `from (from a to b) to c` and `from c to (from a to b)` don't
+mkTimeIntervalsPredicate _ a@EmptyPredicate{} _ = a
+mkTimeIntervalsPredicate _ _ a@EmptyPredicate{} = a
+-- `from (... from a to b ...) to c` and `from c to (... from a to b ...)` don't
 -- really have a good interpretation, so abort early
-mkTimeIntervalsPredicate _ TimeIntervalsPredicate{} _ = EmptyPredicate
-mkTimeIntervalsPredicate _ _ TimeIntervalsPredicate{} = EmptyPredicate
+mkTimeIntervalsPredicate _ a b
+  | containsTimeIntervalsPredicate a ||
+    containsTimeIntervalsPredicate b = mkEmptyPredicate
+  -- this is potentially quadratic, but the sizes involved should be small
 mkTimeIntervalsPredicate t a b = TimeIntervalsPredicate t a b
 
+containsTimeIntervalsPredicate :: Predicate -> Bool
+containsTimeIntervalsPredicate TimeIntervalsPredicate{} = True
+containsTimeIntervalsPredicate (IntersectPredicate a b) =
+  containsTimeIntervalsPredicate a || containsTimeIntervalsPredicate b
+containsTimeIntervalsPredicate _ = False
+  -- SeriesPredicate might contain one, but we'll underapproximate for
+  -- now
+
 isEmptyPredicate :: Predicate -> Bool
-isEmptyPredicate EmptyPredicate = True
+isEmptyPredicate EmptyPredicate{} = True
 isEmptyPredicate _ = False
 
 -- Predicate runners

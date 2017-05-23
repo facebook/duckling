@@ -29,11 +29,11 @@ allExamples = concat
              , "一 秒鐘"
              , "一 秒"
              ]
-  , example (DurationData 1 Minute)
+  , examples (DurationData 1 Minute)
              [ "1 分鐘"
              , "一 分鐘"
              ]
-  , example (DurationData 1 Hour)
+  , examples (DurationData 1 Hour)
              [ "1 小時"
              , "一 小時"
              , "一 個鐘"

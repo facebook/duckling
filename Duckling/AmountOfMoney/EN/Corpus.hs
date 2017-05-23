@@ -83,7 +83,7 @@ allExamples = concat
   , examples (AmountOfMoneyValue GBP 3.01)
              [ "GBP3.01"
              , "GBP 3.01"
-             , "3 GBP 1 cent"
+             , "3 GBP 1 pence"
              ]
   , examples (AmountOfMoneyValue Unnamed 42)
              [ "42 bucks"

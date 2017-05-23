@@ -14,12 +14,13 @@ module Duckling.Rules.TR
   ) where
 
 import Duckling.Dimensions.Types
+import Duckling.Types
+import qualified Duckling.Distance.TR.Rules as Distance
 import qualified Duckling.Numeral.TR.Rules as Numeral
 import qualified Duckling.Ordinal.TR.Rules as Ordinal
-import Duckling.Types
 
 rules :: Some Dimension -> [Rule]
-rules (This Distance) = []
+rules (This Distance) = Distance.rules
 rules (This Duration) = []
 rules (This Numeral) = Numeral.rules
 rules (This Email) = []

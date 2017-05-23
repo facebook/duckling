@@ -1,4 +1,4 @@
--- Copyright (c) 2016-present, Facebook, Inc.
+﻿-- Copyright (c) 2016-present, Facebook, Inc.
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
@@ -28,16 +28,13 @@ allExamples = concat
              [ "3 kilometry"
              , "3 km"
              , "3km"
-             , "3k"
              ]
   , examples (DistanceValue Mile 8)
              [ "8 mil"
              , "osm mil"
              ]
   , examples (DistanceValue Metre 9)
-             [ "9m"
-             , "9 metr"
-             , "9 metry"
+             [ "9 metrů"
              ]
   , examples (DistanceValue Centimetre 2)
              [ "2cm"

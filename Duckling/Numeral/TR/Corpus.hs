@@ -68,18 +68,20 @@ allExamples = concat
              , "on sekiz"
              ]
   , examples (NumeralValue 1.1)
-             [ "1.1"
-             , "1.10"
-             , "01.10"
+             [ "1,1"
+             , "1,10"
+             , "01,10"
              , "bir virgül bir"
              , "bir nokta bir"
              ]
   , examples (NumeralValue 0.77)
-             [ "0.77"
-             , ".77"
+             [ "0,77"
+             , ",77"
+             , "sıfır virgül yetmişyedi"
+             , "sıfır virgül yetmiş yedi"
              ]
   , examples (NumeralValue 100000)
-             [ "100,000"
+             [ "100.000"
              , "100000"
              , "100K"
              , "100k"
@@ -89,24 +91,24 @@ allExamples = concat
              [ "3M"
              , "3000K"
              , "3000000"
-             , "3,000,000"
+             , "3.000.000"
              ]
   , examples (NumeralValue 1200000)
-             [ "1,200,000"
+             [ "1.200.000"
              , "1200000"
-             , "1.2M"
+             , "1,2M"
              , "1200K"
-             , ".0012G"
+             , ",0012G"
              , "1200B"
              ]
   , examples (NumeralValue (-1200000))
-             [ "- 1,200,000"
+             [ "- 1.200.000"
              , "-1200000"
-             , "eksi 1,200,000"
+             , "eksi 1.200.000"
              , "negatif 1200000"
-             , "-1.2M"
+             , "-1,2M"
              , "-1200K"
-             , "-.0012G"
+             , "-,0012G"
              , "-1200B"
              ]
   , examples (NumeralValue 5000)
@@ -149,32 +151,34 @@ allExamples = concat
              [ "beş buçuk"
              , "beşbuçuk"
              , "5 buçuk"
-             , "5.5"
+             , "5,5"
              ]
   , examples (NumeralValue 3500000)
-             [ "3.5 milyon"
+             [ "3,5 milyon"
              , "3500000"
              , "üç buçuk milyon"
              , "üçbuçuk milyon"
-             , "3.5M"
+             , "3,5M"
              ]
   , examples (NumeralValue 0.5)
              [ "yarım"
-             , "0.5"
+             , "0,5"
              ]
   , examples (NumeralValue 2500)
-             [ "2.5 bin"
+             [ "2,5 bin"
              , "2500"
-             , "iki buçuk bin"
-             , "ikibuçuk bin"
+             , "iki bin beş yüz"
+             , "ikibin beşyüz"
              ]
   , examples (NumeralValue 2200000)
-             [ "2.2 milyon"
+             [ "2,2 milyon"
              , "iki nokta iki milyon"
+             , "iki virgül iki milyon"
              ]
   , examples (NumeralValue 72.5)
              [ "yetmişikibuçuk"
              , "yetmişiki buçuk"
-             , "72.5"
+             , "yetmiş iki buçuk"
+             , "72,5"
              ]
   ]

@@ -31,7 +31,7 @@ allExamples = concat
              , "3km"
              ]
   , examples (DistanceValue Kilometre 3.0)
-             [ "3.0 km"
+             [ "3,0 km"
              ]
   , examples (DistanceValue Mile 8)
              [ "8 Mil"

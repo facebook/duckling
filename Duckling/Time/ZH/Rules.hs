@@ -40,7 +40,7 @@ ruleTheDayAfterTomorrow :: Rule
 ruleTheDayAfterTomorrow = Rule
   { name = "the day after tomorrow"
   , pattern =
-    [ regex "\x540e\x5929|\x5f8c\x5929"
+    [ regex "\x540e\x5929|\x5f8c\x5929|\x5f8c\x65e5"
     ]
   , prod = \_ -> tt $ cycleNth TG.Day 2
   }
@@ -109,7 +109,7 @@ ruleRelativeMinutesAfterpastNoonmidnight = Rule
   { name = "relative minutes after|past noon|midnight"
   , pattern =
     [ Predicate isMidnightOrNoon
-    , regex "\x8fc7"
+    , regex "\x8fc7|\x904e"
     , Predicate $ isIntegerBetween 1 59
     ]
   , prod = \tokens -> case tokens of
@@ -260,7 +260,7 @@ ruleThisDayofweek :: Rule
 ruleThisDayofweek = Rule
   { name = "this <day-of-week>"
   , pattern =
-    [ regex "\x8fd9|\x9019"
+    [ regex "\x8fd9|\x9019|\x4eca(\x4e2a|\x500b)"
     , Predicate isADayOfWeek
     ]
   , prod = \tokens -> case tokens of
@@ -297,7 +297,7 @@ ruleLastTime :: Rule
 ruleLastTime = Rule
   { name = "last <time>"
   , pattern =
-    [ regex "\x53bb"
+    [ regex "\x53bb|\x4e0a(\x4e2a|\x500b)?"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -341,7 +341,7 @@ ruleNow :: Rule
 ruleNow = Rule
   { name = "now"
   , pattern =
-    [ regex "\x73b0\x5728|\x6b64\x65f6|\x6b64\x523b|\x5f53\x524d|\x73fe\x5728|\x6b64\x6642|\x7576\x524d"
+    [ regex "\x73b0\x5728|\x6b64\x65f6|\x6b64\x523b|\x5f53\x524d|\x73fe\x5728|\x6b64\x6642|\x7576\x524d|\x5b9c\x5bb6|\x800c\x5bb6|\x4f9d\x5bb6"
     ]
   , prod = \_ -> tt $ cycleNth TG.Second 0
   }
@@ -407,7 +407,7 @@ ruleToday :: Rule
 ruleToday = Rule
   { name = "today"
   , pattern =
-    [ regex "\x4eca\x5929"
+    [ regex "\x4eca\x5929|\x4eca\x65e5"
     ]
   , prod = \_ -> tt $ cycleNth TG.Day 0
   }
@@ -416,7 +416,7 @@ ruleThisnextDayofweek :: Rule
 ruleThisnextDayofweek = Rule
   { name = "this|next <day-of-week>"
   , pattern =
-    [ regex "\x4eca|\x660e|\x4e0b(\x4e2a|\x500b)?"
+    [ regex "\x4eca(\x4e2a|\x500b)?|\x660e|\x4e0b(\x4e2a|\x500b)?"
     , Predicate isADayOfWeek
     ]
   , prod = \tokens -> case tokens of
@@ -429,7 +429,7 @@ ruleTheDayBeforeYesterday :: Rule
 ruleTheDayBeforeYesterday = Rule
   { name = "the day before yesterday"
   , pattern =
-    [ regex "\x524d\x5929"
+    [ regex "\x524d\x5929|\x524d\x65e5"
     ]
   , prod = \_ -> tt . cycleNth TG.Day $ - 2
   }
@@ -479,7 +479,7 @@ ruleDurationFromNow = Rule
   { name = "<duration> from now"
   , pattern =
     [ dimension Duration
-    , regex "\x540e|\x5f8c"
+    , regex "\x540e|\x5f8c|\x4e4b\x5f8c"
     ]
   , prod = \tokens -> case tokens of
       (Token Duration dd:_) ->
@@ -504,7 +504,7 @@ ruleAfternoon :: Rule
 ruleAfternoon = Rule
   { name = "afternoon"
   , pattern =
-    [ regex "\x4e0b\x5348|\x4e2d\x5348"
+    [ regex "\x4e0b\x5348|\x4e2d\x5348|\x664f\x665d"
     ]
   , prod = \_ ->
       let from = hour False 12
@@ -526,7 +526,7 @@ ruleMidnight :: Rule
 ruleMidnight = Rule
   { name = "midnight"
   , pattern =
-    [ regex "\x5348\x591c|\x51cc\x6668"
+    [ regex "\x5348\x591c|\x51cc\x6668|\x534a\x591c"
     ]
   , prod = \_ -> tt $ hour False 0
   }
@@ -622,7 +622,7 @@ ruleDurationAgo = Rule
   { name = "<duration> ago"
   , pattern =
     [ dimension Duration
-    , regex "\x524d"
+    , regex "(\x4e4b)?\x524d"
     ]
   , prod = \tokens -> case tokens of
       (Token Duration dd:_) ->
@@ -720,7 +720,7 @@ ruleLastYear :: Rule
 ruleLastYear = Rule
   { name = "last year"
   , pattern =
-    [ regex "\x53bb\x5e74"
+    [ regex "\x53bb\x5e74|\x4e0a\x5e74"
     ]
   , prod = \_ -> tt . cycleNth TG.Year $ - 1
   }
@@ -785,7 +785,7 @@ ruleMorning :: Rule
 ruleMorning = Rule
   { name = "morning"
   , pattern =
-    [ regex "\x65e9\x4e0a|\x65e9\x6668"
+    [ regex "\x65e9\x4e0a|\x65e9\x6668|\x671d(\x982d)?\x65e9"
     ]
   , prod = \_ ->
       let from = hour False 4
@@ -798,7 +798,7 @@ ruleNextYear :: Rule
 ruleNextYear = Rule
   { name = "next year"
   , pattern =
-    [ regex "\x660e\x5e74"
+    [ regex "\x660e\x5e74|\x4e0b\x5e74"
     ]
   , prod = \_ -> tt $ cycleNth TG.Year 1
   }
@@ -807,7 +807,7 @@ ruleThisCycle :: Rule
 ruleThisCycle = Rule
   { name = "this <cycle>"
   , pattern =
-    [ regex "(\x8fd9|\x9019)(\x4e00)?"
+    [ regex "(\x8fd9|\x9019)(\x4e00)?|\x4eca\x500b"
     , dimension TimeGrain
     ]
   , prod = \tokens -> case tokens of
@@ -820,7 +820,7 @@ ruleThisTime :: Rule
 ruleThisTime = Rule
   { name = "this <time>"
   , pattern =
-    [ regex "\x4eca|\x8fd9|\x9019"
+    [ regex "\x4eca(\x4e2a|\x500b)?|\x8fd9(\x4e2a)?|\x9019(\x500b)?"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -833,7 +833,7 @@ ruleYesterday :: Rule
 ruleYesterday = Rule
   { name = "yesterday"
   , pattern =
-    [ regex "\x6628\x5929"
+    [ regex "\x6628\x5929|\x6628\x65e5|\x5c0b\x65e5"
     ]
   , prod = \_ -> tt . cycleNth TG.Day $ - 1
   }
@@ -851,7 +851,7 @@ ruleLastNight :: Rule
 ruleLastNight = Rule
   { name = "last night"
   , pattern =
-    [ regex "\x6628\x665a|\x6628\x5929\x665a\x4e0a"
+    [ regex "\x6628\x665a|\x6628\x5929\x665a\x4e0a|\x5c0b\x665a"
     ]
   , prod = \_ -> do
       let td1 = cycleNth TG.Day $ - 1
@@ -920,7 +920,7 @@ ruleNamedday7 :: Rule
 ruleNamedday7 = Rule
   { name = "named-day"
   , pattern =
-    [ regex "\x661f\x671f\x65e5|\x661f\x671f\x5929|\x793c\x62dc\x5929|\x5468\x65e5|\x79ae\x62dc\x5929|\x9031\x65e5"
+    [ regex "\x661f\x671f\x65e5|\x661f\x671f\x5929|\x793c\x62dc\x5929|\x5468\x65e5|\x79ae\x62dc\x5929|\x9031\x65e5|\x79ae\x62dc\x65e5"
     ]
   , prod = \_ -> tt $ dayOfWeek 7
   }
@@ -968,7 +968,7 @@ ruleTomorrowNight :: Rule
 ruleTomorrowNight = Rule
   { name = "tomorrow night"
   , pattern =
-    [ regex "\x660e\x665a|\x660e\x5929\x665a\x4e0a"
+    [ regex "\x660e\x665a|\x660e\x5929\x665a\x4e0a|\x807d\x665a"
     ]
   , prod = \_ -> do
       let td1 = cycleNth TG.Day 1
@@ -1074,7 +1074,7 @@ ruleTomorrow :: Rule
 ruleTomorrow = Rule
   { name = "tomorrow"
   , pattern =
-    [ regex "\x660e\x5929"
+    [ regex "\x660e\x5929|\x660e\x65e5|\x807d\x65e5"
     ]
   , prod = \_ -> tt $ cycleNth TG.Day 1
   }

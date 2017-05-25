@@ -46,6 +46,5 @@ allExamples = concat
   , examples (DurationData 10 Month)
              [ "10 月"
              , "十 月"
-             , "十 個月"
              ]
   ]

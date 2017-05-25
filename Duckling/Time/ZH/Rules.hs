@@ -659,6 +659,21 @@ ruleLastNCycle = Rule
       _ -> Nothing
   }
 
+ruleNCycleLast :: Rule
+ruleNCycleLast = Rule
+  { name = "n <cycle> last"
+  , pattern =
+    [ Predicate $ isIntegerBetween 1 9999
+    , dimension TimeGrain
+    , regex "\x4e0a|(\x4e4b)?\x524d"
+    ]
+  , prod = \tokens -> case tokens of
+      (token:Token TimeGrain grain:_) -> do
+        v <- getIntValue token
+        tt $ cycleN True grain (- v)
+      _ -> Nothing
+}
+
 ruleIntersect :: Rule
 ruleIntersect = Rule
   { name = "intersect"
@@ -776,6 +791,21 @@ ruleNextNCycle = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:token:Token TimeGrain grain:_) -> do
+        v <- getIntValue token
+        tt $ cycleN True grain v
+      _ -> Nothing
+  }
+  
+ruleNCycleNext :: Rule
+ruleNCycleNext = Rule
+  { name = "next n <cycle>"
+  , pattern =
+    [ Predicate $ isIntegerBetween 1 9999
+    , dimension TimeGrain
+    , regex "\x4e0b|(\x4e4b)?\x540e|(\x4e4b)?\x5f8c"
+    ]
+  , prod = \tokens -> case tokens of
+      (token:Token TimeGrain grain:_) -> do
         v <- getIntValue token
         tt $ cycleN True grain v
       _ -> Nothing
@@ -1136,6 +1166,7 @@ rules =
   , ruleLaborDay
   , ruleLastCycle
   , ruleLastNCycle
+  , ruleNCycleLast
   , ruleLastNight
   , ruleLastTime
   , ruleLastTuesdayLastJuly
@@ -1169,6 +1200,7 @@ rules =
   , ruleNewYearsDay
   , ruleNextCycle
   , ruleNextNCycle
+  , ruleNCycleNext
   , ruleNextTime
   , ruleNextYear
   , ruleNoon

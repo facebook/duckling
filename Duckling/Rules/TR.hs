@@ -18,6 +18,7 @@ import Duckling.Types
 import qualified Duckling.Distance.TR.Rules as Distance
 import qualified Duckling.Numeral.TR.Rules as Numeral
 import qualified Duckling.Ordinal.TR.Rules as Ordinal
+import qualified Duckling.Temperature.TR.Rules as Temperature
 
 rules :: Some Dimension -> [Rule]
 rules (This Distance) = Distance.rules
@@ -29,7 +30,7 @@ rules (This Ordinal) = Ordinal.rules
 rules (This PhoneNumber) = []
 rules (This Quantity) = []
 rules (This RegexMatch) = []
-rules (This Temperature) = []
+rules (This Temperature) = Temperature.rules
 rules (This Time) = []
 rules (This TimeGrain) = []
 rules (This Url) = []

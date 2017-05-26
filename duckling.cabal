@@ -388,6 +388,8 @@ library
                      , Duckling.Temperature.PT.Rules
                      , Duckling.Temperature.RO.Corpus
                      , Duckling.Temperature.RO.Rules
+                     , Duckling.Temperature.TR.Corpus
+                     , Duckling.Temperature.TR.Rules
                      , Duckling.Temperature.ZH.Corpus
                      , Duckling.Temperature.ZH.Rules
                      , Duckling.Temperature.Helpers
@@ -657,8 +659,9 @@ test-suite duckling-test
                      , Duckling.Temperature.JA.Tests
                      , Duckling.Temperature.KO.Tests
                      , Duckling.Temperature.PT.Tests
-                     , Duckling.Temperature.ZH.Tests
                      , Duckling.Temperature.RO.Tests
+                     , Duckling.Temperature.TR.Tests
+                     , Duckling.Temperature.ZH.Tests
                      , Duckling.Temperature.Tests
 
                      -- Time

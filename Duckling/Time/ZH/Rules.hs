@@ -665,7 +665,7 @@ ruleNCycleLast = Rule
   , pattern =
     [ Predicate $ isIntegerBetween 1 9999
     , dimension TimeGrain
-    , regex "\x4e0a|(\x4e4b)?\x524d"
+    , regex "(\x4e4b)?\x524d"
     ]
   , prod = \tokens -> case tokens of
       (token:Token TimeGrain grain:_) -> do
@@ -1114,7 +1114,7 @@ ruleTimeofdayOclock = Rule
   { name = "<time-of-day> o'clock"
   , pattern =
     [ Predicate isATimeOfDay
-    , regex "\x9ede|\x70b9"
+    , regex "\x9ede|\x70b9|\x6642"
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_) ->

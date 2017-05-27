@@ -36,7 +36,6 @@ allExamples = concat
   , examples (DurationData 1 Hour)
              [ "1 小時"
              , "一 小時"
-             , "一 個鐘"
              ]
   , examples (DurationData 5 Day)
              [ "5 天"

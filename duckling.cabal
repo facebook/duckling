@@ -488,6 +488,8 @@ library
                      , Duckling.Volume.NL.Rules
                      , Duckling.Volume.RO.Corpus
                      , Duckling.Volume.RO.Rules
+                     , Duckling.Volume.TR.Corpus
+                     , Duckling.Volume.TR.Rules
                      , Duckling.Volume.Helpers
                      , Duckling.Volume.Rules
                      , Duckling.Volume.Types
@@ -702,6 +704,7 @@ test-suite duckling-test
                      , Duckling.Volume.PT.Tests
                      , Duckling.Volume.NL.Tests
                      , Duckling.Volume.RO.Tests
+                     , Duckling.Volume.TR.Tests
                      , Duckling.Volume.Tests
 
   ghc-options:         -threaded -rtsopts -with-rtsopts=-N

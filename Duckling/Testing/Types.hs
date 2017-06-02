@@ -26,11 +26,11 @@ module Duckling.Testing.Types
 
 import Data.Aeson
 import Data.Fixed (Pico)
-import qualified Data.Time as Time
 import Data.Text (Text)
 import Prelude
+import qualified Data.Time as Time
 
-import Duckling.Lang
+import Duckling.Core
 import Duckling.Resolve
 import Duckling.Types
 

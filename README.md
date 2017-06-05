@@ -15,7 +15,7 @@ A Haskell environment is required. We recommend using
 On macOS you'll need to install PCRE development headers.
 The easiest way to do that is with [Homebrew](https://brew.sh/):
 ```
-brew install pcre
+HOMEBREW_BUILD_FROM_SOURCE=1 brew install pcre
 ```
 If that doesn't help, try running `brew doctor` and fix
 the issues it finds.

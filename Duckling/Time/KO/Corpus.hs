@@ -173,8 +173,8 @@ allExamples = concat
              [ "이번주 수요일"
              ]
   , examples (datetime (2013, 2, 14, 0, 0, 0) Day)
-             [ "내일모래"
-             , "모래"
+             [ "내일모레"
+             , "모레"
              ]
   , examples (datetime (2013, 2, 13, 17, 0, 0) Hour)
              [ "내일 저녁다섯시"

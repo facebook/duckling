@@ -51,9 +51,9 @@ ruleLiberationDay = Rule
 
 ruleTheDayAfterTomorrow :: Rule
 ruleTheDayAfterTomorrow = Rule
-  { name = "the day after tomorrow - 내일모래"
+  { name = "the day after tomorrow - 내일모레"
   , pattern =
-    [ regex "(\xb0b4\xc77c)?\xbaa8\xb798"
+    [ regex "(\xb0b4\xc77c)?\xbaa8\xb808"
     ]
   , prod = \_ ->
       tt . cycleNthAfter False TG.Day 1 $ cycleNth TG.Day 1

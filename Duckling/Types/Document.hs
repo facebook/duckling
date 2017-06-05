@@ -180,7 +180,7 @@ byteStringFromPos
   -- get a subrange of Text reusing the underlying buffer using
   -- utf16 start and end positions
   rangeToText :: (Int, Int) -> Text
-  rangeToText (-1, _) = ""
+  rangeToText (-1, _) = Text.pack ""
   -- this is what regexec from Text.Regex.PCRE.ByteString does
   rangeToText r = UText.takeWord16 (end16Pos - start16Pos) $
     UText.dropWord16 start16Pos rawInput

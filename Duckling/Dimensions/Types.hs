@@ -34,6 +34,7 @@ import Data.Typeable ((:~:)(..))
 import TextShow (TextShow(..))
 import qualified TextShow as TS
 import Prelude
+import qualified Data.Text as T
 
 import Duckling.AmountOfMoney.Types (AmountOfMoneyData)
 import Duckling.Distance.Types (DistanceData)
@@ -117,37 +118,37 @@ instance Hashable (Dimension a) where
 
 
 toName :: Dimension a -> Text
-toName RegexMatch = "regex"
-toName Distance = "distance"
-toName Duration = "duration"
-toName Email = "email"
-toName AmountOfMoney = "amount-of-money"
-toName Numeral = "number"
-toName Ordinal = "ordinal"
-toName PhoneNumber = "phone-number"
-toName Quantity = "quantity"
-toName Temperature = "temperature"
-toName Time = "time"
-toName TimeGrain = "time-grain"
-toName Url = "url"
-toName Volume = "volume"
+toName RegexMatch = T.pack "regex"
+toName Distance = T.pack "distance"
+toName Duration = T.pack "duration"
+toName Email = T.pack "email"
+toName AmountOfMoney = T.pack "amount-of-money"
+toName Numeral = T.pack "number"
+toName Ordinal = T.pack "ordinal"
+toName PhoneNumber = T.pack "phone-number"
+toName Quantity = T.pack "quantity"
+toName Temperature = T.pack "temperature"
+toName Time = T.pack "time"
+toName TimeGrain = T.pack "time-grain"
+toName Url = T.pack "url"
+toName Volume = T.pack "volume"
 
 fromName :: Text -> Maybe (Some Dimension)
 fromName name = HashMap.lookup name m
   where
     m = HashMap.fromList
-      [ ("amount-of-money", This AmountOfMoney)
-      , ("distance", This Distance)
-      , ("duration", This Duration)
-      , ("email", This Email)
-      , ("number", This Numeral)
-      , ("ordinal", This Ordinal)
-      , ("phone-number", This PhoneNumber)
-      , ("quantity", This Quantity)
-      , ("temperature", This Temperature)
-      , ("time", This Time)
-      , ("url", This Url)
-      , ("volume", This Volume)
+      [ (T.pack "amount-of-money", This AmountOfMoney)
+      , (T.pack "distance", This Distance)
+      , (T.pack "duration", This Duration)
+      , (T.pack "email", This Email)
+      , (T.pack "number", This Numeral)
+      , (T.pack "ordinal", This Ordinal)
+      , (T.pack "phone-number", This PhoneNumber)
+      , (T.pack "quantity", This Quantity)
+      , (T.pack "temperature", This Temperature)
+      , (T.pack "time", This Time)
+      , (T.pack "url", This Url)
+      , (T.pack "volume", This Volume)
       ]
 
 instance GEq Dimension where

@@ -20,6 +20,7 @@ module Duckling.Numeral.Helpers
   , oneOf
   , parseDouble
   , parseInt
+  , parseInteger
   , withGrain
   , withMultipliable
   , parseDecimal,
@@ -45,7 +46,10 @@ comma :: Text
 comma = Text.singleton ','
 
 parseInt :: Text -> Maybe Int
-parseInt =
+parseInt = (fromIntegral <$>) . parseInteger
+
+parseInteger :: Text -> Maybe Integer
+parseInteger =
   either (const Nothing) Just . Atto.parseOnly (Atto.signed Atto.decimal)
 
 -- | Add leading 0 when leading . for double parsing to succeed

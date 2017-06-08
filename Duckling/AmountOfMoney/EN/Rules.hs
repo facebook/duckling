@@ -85,11 +85,20 @@ ruleDirham = Rule
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly AED
   }
 
+ruleRinggit :: Rule
+ruleRinggit = Rule
+  { name = "ringgit"
+  , pattern =
+    [ regex "(malaysian?)? ?ringgits? ?(malaysian?)?|rm|myr"
+    ]
+  , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly MYR
+  }
+
 ruleCent :: Rule
 ruleCent = Rule
   { name = "cent"
   , pattern =
-    [ regex "cents?|penn(y|ies)|pence"
+    [ regex "cents?|penn(y|ies)|pence|sens?"
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly Cent
   }
@@ -188,5 +197,6 @@ rules =
   , ruleOtherPounds
   , rulePounds
   , rulePrecision
+  , ruleRinggit
   , ruleRiyals
   ]

@@ -133,7 +133,7 @@ allExamples = concat
   , examples (AmountOfMoneyValue MYR 20.43)
              [ "20 ringgit and 43c"
              , "20 ringgit and 43 sen"
-             , "twenty ringgit 43 sents"
+             , "twenty ringgit 43 sens"
              , "20 ringgit 43"
              , "twenty ringgit and 43"
              ]

@@ -36,4 +36,8 @@ allExamples = concat
              , "0.75 cup"
              , ".75 cups"
              ]
+  , examples (QuantityData Gram 500 (Just "strawberries"))
+             [ "500 grams of strawberries"
+             , "500g of strawberries"
+             ]
   ]

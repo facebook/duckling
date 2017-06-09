@@ -721,7 +721,9 @@ ruleNoonMidnightEOD = Rule
 rulePartOfDays :: Rule
 rulePartOfDays = Rule
   { name = "part of days"
-  , pattern = [regex "(morning|after ?noo?n|evening|night|(at )?lunch)"]
+  , pattern =
+    [ regex "(morning|after ?noo?n(ish)?|evening|night|(at )?lunch)"
+    ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> do
         let (start, end) = case Text.toLower match of

@@ -756,6 +756,10 @@ allExamples = concat
              , "at 5pm tomorrow"
              , "tomorrow at 5pm"
              ]
+  , examples (datetimeInterval ((2013, 2, 13, 12, 0, 0), (2013, 2, 13, 19, 0, 0)) Hour)
+             [ "tomorrow afternoon"
+             , "tomorrow afternoonish"
+             ]
   , examples (datetimeInterval ((2013, 2, 13, 13, 0, 0), (2013, 2, 13, 15, 0, 0)) Hour)
              [ "1pm-2pm tomorrow"
              ]

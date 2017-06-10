@@ -44,6 +44,7 @@ data Currency
   | KRW
   | KWD
   | LBP
+  | MYR
   | NOK
   | PTS
   | QAR
@@ -73,6 +74,7 @@ instance ToJSON Currency where
   toJSON KRW     = "KRW"
   toJSON KWD     = "KWD"
   toJSON LBP     = "LBP"
+  toJSON MYR     = "MYR"
   toJSON NOK     = "NOK"
   toJSON PTS     = "PTS"
   toJSON QAR     = "QAR"

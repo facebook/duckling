@@ -110,4 +110,31 @@ allExamples = concat
              [ "42 SAR"
              , "42 Saudiriyal"
              ]
+  , examples (AmountOfMoneyValue MYR 42)
+             [ "42 MYR"
+             , "42 RM"
+             , "RM 42"
+             , "MYR 42"
+             , "42MYR"
+             , "42RM"
+             , "RM42"
+             , "MYR42"
+             , "ringgit 42"
+             , "42 ringgit"
+             , "42 malaysia ringgit"
+             , "malaysia ringgit 42"
+             , "42 malaysian ringgit"
+             , "malaysian ringgit 42"
+             , "42 malaysia ringgits"
+             , "malaysia ringgits 42"
+             , "42 malaysian ringgits"
+             , "malaysian ringgits 42"
+             ]
+  , examples (AmountOfMoneyValue MYR 20.43)
+             [ "20 ringgit and 43c"
+             , "20 ringgit and 43 sen"
+             , "twenty ringgit 43 sens"
+             , "20 ringgit 43"
+             , "twenty ringgit and 43"
+             ]
   ]

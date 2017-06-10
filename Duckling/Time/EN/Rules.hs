@@ -1134,6 +1134,36 @@ ruleMonths = zipWith go months [1..12]
       , prod = \_ -> tt $ month i
       }
 
+partOfMonths :: [(Text, String, Int, Int)]
+partOfMonths =
+  [ ("early <named-month>", "early-?( of)?", 1, 10)
+  , ("mid <named-month>", "mid-?( of)?", 11, 20)
+  , ("late <named-month>", "late-?( of)?", 21, -1)
+  ]
+
+
+rulePartOfMonths :: [Rule]
+rulePartOfMonths = map go partOfMonths
+  where
+    go :: (Text, String, Int, Int) -> Rule
+    go (name, regexPattern, sd, ed) = Rule
+      { name = name
+      , pattern =
+        [ regex regexPattern
+        , Predicate isAMonth
+        ]
+      , prod = \tokens -> case tokens of
+          (_:Token Time td:_) -> do
+            start <- intersect td (dayOfMonth sd)
+            end <- case ed of
+                    - 1 -> Just $ cycleLastOf TG.Day td 
+                    _ -> intersect td (dayOfMonth ed)
+            Token Time <$> interval TTime.Open start end
+          _ -> Nothing
+      }
+
+
+
 usHolidays :: [(Text, String, Int, Int)]
 usHolidays =
   [ ( "Christmas"       , "(xmas|christmas)( day)?"         , 12, 25 )
@@ -1599,3 +1629,4 @@ rules =
   ++ ruleMonths
   ++ ruleUSHolidays
   ++ ruleMoreUSHolidays
+  ++ rulePartOfMonths

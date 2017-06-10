@@ -129,7 +129,7 @@ instance Show Rule where
 data Entity = Entity
   { dim   :: Text
   , body  :: Text
-  , value :: Text
+  , value :: Value
   , start :: Int
   , end   :: Int
   } deriving (Eq, Generic, Show, NFData)

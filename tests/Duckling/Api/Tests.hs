@@ -43,7 +43,7 @@ parseTest = testCase "Parse Test" $
     (Entity dim body value start end:_) -> do
       assertEqual "dim" "number" dim
       assertEqual "body" "42" body
-      assertEqual "value" val value
+      assertEqual "value" val (toJText value)
       assertEqual "start" 4 start
       assertEqual "end" 6 end
   where

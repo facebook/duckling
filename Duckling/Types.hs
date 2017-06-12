@@ -129,7 +129,7 @@ instance Show Rule where
 data Entity = Entity
   { dim   :: Text
   , body  :: Text
-  , value :: Text
+  , value :: Value
   , start :: Int
   , end   :: Int
   } deriving (Eq, Generic, Show, NFData)
@@ -138,7 +138,7 @@ instance ToJSON Entity where
   toEncoding = genericToEncoding defaultOptions
 
 toJText :: ToJSON x => x -> Text
-toJText j = Text.decodeUtf8 $ LB.toStrict $ encode j
+toJText = Text.decodeUtf8 . LB.toStrict . encode
 
 -- -----------------------------------------------------------------
 -- Predicates helpers

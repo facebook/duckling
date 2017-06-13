@@ -24,49 +24,49 @@ corpus = (testContext {lang = PT}, allExamples)
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (AmountOfMoneyValue Dollar 10)
+  [ examples (simple Dollar 10)
              [ "$10"
              , "10$"
              , "dez dolares"
              ]
-  , examples (AmountOfMoneyValue Dollar 10000)
+  , examples (simple Dollar 10000)
              [ "$10.000"
              , "10K$"
              , "$10k"
              ]
-  , examples (AmountOfMoneyValue USD 1.23)
+  , examples (simple USD 1.23)
              [ "USD1,23"
              ]
-  , examples (AmountOfMoneyValue EUR 20)
+  , examples (simple EUR 20)
              [ "20€"
              , "20 euros"
              , "20 Euro"
              , "20 Euros"
              , "EUR 20"
              ]
-  , examples (AmountOfMoneyValue EUR 29.99)
+  , examples (simple EUR 29.99)
              [ "EUR29,99"
              ]
-  , examples (AmountOfMoneyValue Pound 9)
+  , examples (simple Pound 9)
              [ "£9"
              , "nove libras"
              ]
-  , examples (AmountOfMoneyValue GBP 3.01)
+  , examples (simple GBP 3.01)
              [ "GBP3,01"
              , "GBP 3,01"
              ]
-  , examples (AmountOfMoneyValue PTS 15)
+  , examples (simple PTS 15)
              [ "15 Pt"
              , "15pta"
              , "15Ptas"
              ]
-  , examples (AmountOfMoneyValue BRL 15)
+  , examples (simple BRL 15)
              [ "15 reais"
              , "15reais"
              , "15 Reais"
              , "BRL 15"
              ]
-  , examples (AmountOfMoneyValue BRL 2.0)
+  , examples (simple BRL 2.0)
              [ "R$2,00"
              , "R$ 2,00"
              , "2,00 reais"

@@ -24,53 +24,53 @@ corpus = (testContext {lang = KO}, allExamples)
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (AmountOfMoneyValue Dollar 10)
+  [ examples (simple Dollar 10)
              [ "십달러"
              , "십불"
              ]
-  , examples (AmountOfMoneyValue Cent 10)
+  , examples (simple Cent 10)
              [ "십센트"
              ]
-  , examples (AmountOfMoneyValue Dollar 10000)
+  , examples (simple Dollar 10000)
              [ "만달러"
              , "만불"
              ]
-  , examples (AmountOfMoneyValue Dollar 1.23)
+  , examples (simple Dollar 1.23)
              [ "일점이삼달러"
              , "일쩜이삼달러"
              , "일점이삼불"
              , "일쩜이삼불"
              ]
-  , examples (AmountOfMoneyValue Dollar 2.23)
+  , examples (simple Dollar 2.23)
              [ "이달러이십삼센트"
              , "이불이십삼센트"
              ]
-  , examples (AmountOfMoneyValue EUR 20)
+  , examples (simple EUR 20)
              [ "이십유로"
              , "EUR 20"
              ]
-  , examples (AmountOfMoneyValue EUR 29.99)
+  , examples (simple EUR 29.99)
              [ "이십구점구구유로"
              , "EUR29.99"
              ]
-  , examples (AmountOfMoneyValue Pound 9)
+  , examples (simple Pound 9)
              [ "구파운드"
              ]
-  , examples (AmountOfMoneyValue KRW 27350000)
+  , examples (simple KRW 27350000)
              [ "이천칠백삼십오만원"
              , "27,350,000원"
              , "27350000원"
              ]
-  , examples (AmountOfMoneyValue KRW 27000)
+  , examples (simple KRW 27000)
              [ "이만칠천원"
              , "27,000원"
              , "27000원"
              ]
-  , examples (AmountOfMoneyValue KRW 100)
+  , examples (simple KRW 100)
              [ "백원"
              , "100원"
              ]
-  , examples (AmountOfMoneyValue KRW 10)
+  , examples (simple KRW 10)
              [ "십원"
              , "10원"
              , "10₩"

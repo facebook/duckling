@@ -1134,35 +1134,26 @@ ruleMonths = zipWith go months [1..12]
       , prod = \_ -> tt $ month i
       }
 
-partOfMonths :: [(Text, String, Int, Int)]
-partOfMonths =
-  [ ("early <named-month>", "early-?( of)?", 1, 10)
-  , ("mid <named-month>", "mid-?( of)?", 11, 20)
-  , ("late <named-month>", "late-?( of)?", 21, -1)
-  ]
-
-
-rulePartOfMonths :: [Rule]
-rulePartOfMonths = map go partOfMonths
-  where
-    go :: (Text, String, Int, Int) -> Rule
-    go (name, regexPattern, sd, ed) = Rule
-      { name = name
-      , pattern =
-        [ regex regexPattern
-        , Predicate isAMonth
-        ]
-      , prod = \tokens -> case tokens of
-          (_:Token Time td:_) -> do
-            start <- intersect td (dayOfMonth sd)
-            end <- case ed of
-                    - 1 -> Just $ cycleLastOf TG.Day td 
-                    _ -> intersect td (dayOfMonth ed)
-            Token Time <$> interval TTime.Open start end
-          _ -> Nothing
-      }
-
-
+rulePartOfMonth :: Rule
+rulePartOfMonth = Rule
+  { name = "part of <named-month>"
+  , pattern = 
+    [ regex "(early|mid|late)-?( of)?"
+    , Predicate isAMonth
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (match:_)):Token Time td:_) -> do
+        let (sd, ed) = case Text.toLower match of
+                "early" -> (1, 10)
+                "mid"   -> (11, 20)
+                "late"  -> (21, -1) 
+        
+        start <- (intersect td (dayOfMonth sd))
+        end   <- if ed /= -1 then (intersect td (dayOfMonth ed)) else Just $ cycleLastOf TG.Day td
+        
+        Token Time <$> interval TTime.Open start end
+      _ -> Nothing
+  }
 
 usHolidays :: [(Text, String, Int, Int)]
 usHolidays =
@@ -1623,10 +1614,10 @@ rules =
   , ruleDurationAfterBeforeTime
   , ruleInNumeral
   , ruleTimezone
+  , rulePartOfMonth
   ]
   ++ ruleInstants
   ++ ruleDaysOfWeek
   ++ ruleMonths
   ++ ruleUSHolidays
   ++ ruleMoreUSHolidays
-  ++ rulePartOfMonths

@@ -184,6 +184,8 @@ library
                      , Duckling.Distance.NL.Rules
                      , Duckling.Distance.RO.Corpus
                      , Duckling.Distance.RO.Rules
+                     , Duckling.Distance.TR.Corpus
+                     , Duckling.Distance.TR.Rules
                      , Duckling.Distance.Helpers
                      , Duckling.Distance.Rules
                      , Duckling.Distance.Types
@@ -213,6 +215,8 @@ library
                      , Duckling.Duration.ZH.Corpus
                      , Duckling.Duration.RO.Corpus
                      , Duckling.Duration.RO.Rules
+                     , Duckling.Duration.TR.Corpus
+                     , Duckling.Duration.TR.Rules
                      , Duckling.Duration.Helpers
                      , Duckling.Duration.Rules
                      , Duckling.Duration.Types
@@ -386,6 +390,8 @@ library
                      , Duckling.Temperature.PT.Rules
                      , Duckling.Temperature.RO.Corpus
                      , Duckling.Temperature.RO.Rules
+                     , Duckling.Temperature.TR.Corpus
+                     , Duckling.Temperature.TR.Rules
                      , Duckling.Temperature.ZH.Corpus
                      , Duckling.Temperature.ZH.Rules
                      , Duckling.Temperature.Helpers
@@ -450,6 +456,7 @@ library
                      , Duckling.TimeGrain.PT.Rules
                      , Duckling.TimeGrain.RO.Rules
                      , Duckling.TimeGrain.SV.Rules
+                     , Duckling.TimeGrain.TR.Rules
                      , Duckling.TimeGrain.VI.Rules
                      , Duckling.TimeGrain.ZH.Rules
                      , Duckling.TimeGrain.Types
@@ -481,6 +488,8 @@ library
                      , Duckling.Volume.NL.Rules
                      , Duckling.Volume.RO.Corpus
                      , Duckling.Volume.RO.Rules
+                     , Duckling.Volume.TR.Corpus
+                     , Duckling.Volume.TR.Rules
                      , Duckling.Volume.Helpers
                      , Duckling.Volume.Rules
                      , Duckling.Volume.Types
@@ -552,6 +561,7 @@ test-suite duckling-test
                      , Duckling.Distance.NL.Tests
                      , Duckling.Distance.PT.Tests
                      , Duckling.Distance.RO.Tests
+                     , Duckling.Distance.TR.Tests
                      , Duckling.Distance.Tests
 
                      -- Duration
@@ -565,6 +575,7 @@ test-suite duckling-test
                      , Duckling.Duration.PT.Tests
                      , Duckling.Duration.RO.Tests
                      , Duckling.Duration.SV.Tests
+                     , Duckling.Duration.TR.Tests
                      , Duckling.Duration.ZH.Tests
                      , Duckling.Duration.Tests
 
@@ -654,8 +665,9 @@ test-suite duckling-test
                      , Duckling.Temperature.JA.Tests
                      , Duckling.Temperature.KO.Tests
                      , Duckling.Temperature.PT.Tests
-                     , Duckling.Temperature.ZH.Tests
                      , Duckling.Temperature.RO.Tests
+                     , Duckling.Temperature.TR.Tests
+                     , Duckling.Temperature.ZH.Tests
                      , Duckling.Temperature.Tests
 
                      -- Time
@@ -692,6 +704,7 @@ test-suite duckling-test
                      , Duckling.Volume.PT.Tests
                      , Duckling.Volume.NL.Tests
                      , Duckling.Volume.RO.Tests
+                     , Duckling.Volume.TR.Tests
                      , Duckling.Volume.Tests
 
   ghc-options:         -threaded -rtsopts -with-rtsopts=-N

@@ -116,6 +116,7 @@ allExamples = concat
              , "2/15"
              , "on 2/15"
              , "February 15"
+             , "2 / 15"
              ]
   , examples (datetime (2013, 8, 8, 0, 0, 0) Day)
              ["Aug 8"]
@@ -754,6 +755,10 @@ allExamples = concat
              , "at 5 tomorrow afternoon"
              , "at 5pm tomorrow"
              , "tomorrow at 5pm"
+             ]
+  , examples (datetimeInterval ((2013, 2, 13, 12, 0, 0), (2013, 2, 13, 19, 0, 0)) Hour)
+             [ "tomorrow afternoon"
+             , "tomorrow afternoonish"
              ]
   , examples (datetimeInterval ((2013, 2, 13, 13, 0, 0), (2013, 2, 13, 15, 0, 0)) Hour)
              [ "1pm-2pm tomorrow"

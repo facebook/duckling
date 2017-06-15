@@ -110,11 +110,14 @@ ruleDecimalWithThousandsSeparator :: Rule
 ruleDecimalWithThousandsSeparator = Rule
   { name = "decimal with thousands separator"
   , pattern =
-    [ regex "(\\d+(,\\d\\d\\d)+\\.\\d+)"
+    [ regex "(\\d+(\\.\\d\\d\\d)+,\\d+)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
-        parseDouble (Text.replace (Text.singleton ',') Text.empty match) >>= double
+        let dot = Text.singleton '.'
+            comma = Text.singleton ','
+            fmt = Text.replace comma dot $ Text.replace dot Text.empty match
+        in parseDouble fmt >>= double
       _ -> Nothing
   }
 
@@ -138,11 +141,11 @@ ruleDecimalNumeral :: Rule
 ruleDecimalNumeral = Rule
   { name = "decimal number"
   , pattern =
-    [ regex "(\\d*\\.\\d+)"
+    [ regex "(\\d*,\\d+)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
-        parseDecimal True match
+        parseDecimal False match
       _ -> Nothing
   }
 
@@ -689,13 +692,13 @@ ruleNumeralDotNumeral = Rule
 
 ruleIntegerWithThousandsSeparator :: Rule
 ruleIntegerWithThousandsSeparator = Rule
-  { name = "integer with thousands separator ,"
+  { name = "integer with thousands separator ."
   , pattern =
-    [ regex "(\\d{1,3}(,\\d\\d\\d){1,5})"
+    [ regex "(\\d{1,3}(\\.\\d\\d\\d){1,5})"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
-        parseDouble (Text.replace (Text.singleton ',') Text.empty match) >>= double
+        parseDouble (Text.replace (Text.singleton '.') Text.empty match) >>= double
       _ -> Nothing
   }
 

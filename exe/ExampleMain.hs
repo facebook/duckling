@@ -8,23 +8,25 @@
 
 {-# LANGUAGE OverloadedStrings #-}
 
-import Prelude
 import Control.Applicative
 import Control.Arrow ((***))
+import Control.Monad (unless)
 import Control.Monad.IO.Class
 import Data.Aeson
 import Data.ByteString (ByteString)
-import qualified Data.ByteString.Lazy as LBS
 import Data.HashMap.Strict (HashMap)
-import qualified Data.HashMap.Strict as HashMap
 import Data.Maybe
 import Data.Text (Text)
-import qualified Data.Text as Text
-import qualified Data.Text.Encoding as Text
 import Data.Time.LocalTime.TimeZone.Series
 import Data.String
+import Prelude
+import System.Directory
 import TextShow
 import Text.Read (readMaybe)
+import qualified Data.ByteString.Lazy as LBS
+import qualified Data.HashMap.Strict as HashMap
+import qualified Data.Text as Text
+import qualified Data.Text.Encoding as Text
 
 import Snap.Core
 import Snap.Http.Server
@@ -32,8 +34,20 @@ import Snap.Http.Server
 import Duckling.Core
 import Duckling.Data.TimeZone
 
+createIfMissing :: FilePath -> IO ()
+createIfMissing f = do
+  exists <- doesFileExist f
+  unless exists $ writeFile f ""
+
+setupLogs :: IO ()
+setupLogs = do
+  createDirectoryIfMissing False "log"
+  createIfMissing "log/error.log"
+  createIfMissing "log/access.log"
+
 main :: IO ()
 main = do
+  setupLogs
   tzs <- loadTimeZoneSeries "/usr/share/zoneinfo/"
   quickHttpServe $
     ifTop (writeBS "quack!") <|>

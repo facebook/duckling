@@ -12,8 +12,11 @@
 module Duckling.Numeral.ID.Rules
   ( rules ) where
 
+import qualified Data.HashMap.Strict as HashMap
+import Data.HashMap.Strict (HashMap)
 import Data.Maybe
 import qualified Data.Text as Text
+import Data.Text (Text)
 import Prelude
 import Data.String
 
@@ -23,6 +26,22 @@ import Duckling.Numeral.Types (NumeralData (..))
 import qualified Duckling.Numeral.Types as TNumeral
 import Duckling.Regex.Types
 import Duckling.Types
+
+ruleIntegerMap :: HashMap Text Integer
+ruleIntegerMap = HashMap.fromList
+  [ ( "kosong"  , 0 )
+  , ( "nol"     , 0 )
+  , ( "satu"    , 1 )
+  , ( "dua"     , 2 )
+  , ( "tiga"    , 3 )
+  , ( "empat"   , 4 )
+  , ( "lima"    , 5 )
+  , ( "enam"    , 6 )
+  , ( "tujuh"   , 7 )
+  , ( "delapan" , 8 )
+  , ( "sembilan", 9 )
+  , ( "sebelas" , 11 )
+  ]
 
 ruleTeen :: Rule
 ruleTeen = Rule
@@ -209,20 +228,8 @@ ruleInteger = Rule
     [ regex "(kosong|nol|satu|dua|tiga|empat|lima|enam|tujuh|delapan|sembilan|sebelas)"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
-        "kosong" -> integer 0
-        "nol" -> integer 0
-        "satu" -> integer 1
-        "dua" -> integer 2
-        "tiga" -> integer 3
-        "empat" -> integer 4
-        "lima" -> integer 5
-        "enam" -> integer 6
-        "tujuh" -> integer 7
-        "delapan" -> integer 8
-        "sembilan" -> integer 9
-        "sebelas" -> integer 11
-        _ -> Nothing
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        HashMap.lookup (Text.toLower match) ruleIntegerMap >>= integer
       _ -> Nothing
   }
 

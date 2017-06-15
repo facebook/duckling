@@ -21,7 +21,7 @@ import qualified Data.Text as Text
 import Duckling.Dimensions.Types
 import Duckling.Duration.Helpers
 import Duckling.Duration.Types (DurationData (..))
-import Duckling.Numeral.Helpers (parseInt)
+import Duckling.Numeral.Helpers (parseInteger)
 import Duckling.Numeral.Types (NumeralData(..))
 import Duckling.Regex.Types
 import Duckling.Types
@@ -64,14 +64,11 @@ ruleNumbernumberHours = Rule
     , regex "\x05e9\x05e2\x05d4|\x05e9\x05e2\x05d5\x05ea"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (h:d:_)):_) -> do
-        hh <- parseInt h
-        dec <- parseInt d
-        let divisor = floor $ (fromIntegral (10 :: Integer) :: Float) **
-                        fromIntegral (Text.length d - 1)
-            numerator = fromIntegral $ 6 * dec
-        Just . Token Duration . duration TG.Minute $
-          60 * hh + quot numerator divisor
+      (Token RegexMatch (GroupMatch (h:m:_)):_) -> do
+        hh <- parseInteger h
+        mnum <- parseInteger m
+        let mden = 10 ^ Text.length m
+        Just . Token Duration $ minutesFromHourMixedFraction hh mnum mden
       _ -> Nothing
   }
 

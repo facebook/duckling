@@ -24,45 +24,45 @@ corpus = (testContext {lang = NB}, allExamples)
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (AmountOfMoneyValue Dollar 10)
+  [ examples (simple Dollar 10)
              [ "$10"
              , "10$"
              , "ti dollar"
              ]
-  , examples (AmountOfMoneyValue Cent 10)
+  , examples (simple Cent 10)
              [ "ti øre"
              ]
-  , examples (AmountOfMoneyValue Dollar 10000)
+  , examples (simple Dollar 10000)
              [ "$10.000"
              , "10K$"
              , "$10k"
              ]
-  , examples (AmountOfMoneyValue USD 1.23)
+  , examples (simple USD 1.23)
              [ "USD1,23"
              ]
-  , examples (AmountOfMoneyValue NOK 10)
+  , examples (simple NOK 10)
              [ "10kroner"
              , "10kr"
              , "ti kroner"
              , "10 NOK"
              ]
-  , examples (AmountOfMoneyValue NOK 2.23)
+  , examples (simple NOK 2.23)
              [ "2 kroner og 23 øre"
              , "to kroner 23 øre"
              , "to kroner og 23 øre"
              , "to kr 23"
              ]
-  , examples (AmountOfMoneyValue EUR 20)
+  , examples (simple EUR 20)
              [ "20€"
              , "20 euro"
              , "20 Euro"
              , "20 Euros"
              , "EUR 20"
              ]
-  , examples (AmountOfMoneyValue EUR 29.99)
+  , examples (simple EUR 29.99)
              [ "EUR29,99"
              ]
-  , examples (AmountOfMoneyValue INR 20)
+  , examples (simple INR 20)
              [ "Rs. 20"
              , "Rs 20"
              , "20 Rupees"
@@ -70,16 +70,16 @@ allExamples = concat
              , "Rs20"
              , "INR20"
              ]
-  , examples (AmountOfMoneyValue INR 20.43)
+  , examples (simple INR 20.43)
              [ "20 Rupees 43"
              , "tjue rupees 43"
              , "tjue rupees 43¢"
              ]
-  , examples (AmountOfMoneyValue Pound 9)
+  , examples (simple Pound 9)
              [ "£9"
              , "ni pund"
              ]
-  , examples (AmountOfMoneyValue GBP 3.01)
+  , examples (simple GBP 3.01)
              [ "GBP3,01"
              , "GBP 3,01"
              ]

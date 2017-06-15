@@ -28,19 +28,33 @@ allExamples = concat
              [ "3 kilometry"
              , "3 km"
              , "3km"
-             , "3k"
              ]
   , examples (DistanceValue Mile 8)
              [ "8 mil"
              , "osm mil"
              ]
+  , examples (DistanceValue Metre 1)
+             [ "1m"
+             , "1 metr"
+             ]
+  , examples (DistanceValue Metre 2)
+             [ "2m"
+             , "2 metry"
+             ]
   , examples (DistanceValue Metre 9)
              [ "9m"
-             , "9 metr"
-             , "9 metry"
+             , "9 metrů"
+             ]
+  , examples (DistanceValue Centimetre 1)
+             [ "1cm"
+             , "1 centimetr"
              ]
   , examples (DistanceValue Centimetre 2)
              [ "2cm"
              , "2 centimetry"
+             ]
+  , examples (DistanceValue Centimetre 9)
+             [ "9cm"
+             , "9 centimetrů"
              ]
   ]

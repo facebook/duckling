@@ -699,7 +699,7 @@ ruleYYYYMMDD = Rule
 ruleMMDD :: Rule
 ruleMMDD = Rule
   { name = "mm/dd"
-  , pattern = [regex "(0?[1-9]|1[0-2])/(3[01]|[12]\\d|0?[1-9])"]
+  , pattern = [regex "(0?[1-9]|1[0-2])\\s?/\\s?(3[01]|[12]\\d|0?[1-9])"]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (mm:dd:_)):_) -> do
         m <- parseInt mm
@@ -721,7 +721,9 @@ ruleNoonMidnightEOD = Rule
 rulePartOfDays :: Rule
 rulePartOfDays = Rule
   { name = "part of days"
-  , pattern = [regex "(morning|after ?noo?n|evening|night|(at )?lunch)"]
+  , pattern =
+    [ regex "(morning|after ?noo?n(ish)?|evening|night|(at )?lunch)"
+    ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> do
         let (start, end) = case Text.toLower match of

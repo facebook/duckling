@@ -14,6 +14,7 @@ module Duckling.Duration.Helpers
   , isGrain
   , isNatural
   , isNumeralWith
+  , minutesFromHourMixedFraction
   ) where
 
 import Prelude
@@ -48,3 +49,7 @@ isNumeralWith f pred = Predicate $ \x -> case x of
 
 duration :: TG.Grain -> Int -> DurationData
 duration grain n = DurationData {TDuration.grain = grain, TDuration.value = n}
+
+minutesFromHourMixedFraction :: Integer -> Integer -> Integer -> DurationData
+minutesFromHourMixedFraction h n d =
+  duration TG.Minute $ fromIntegral $ 60 * h + quot (n * 60) d

@@ -25,16 +25,17 @@ module Duckling.Core
 
   -- Reference time builders
   , currentReftime
+  , fromZonedTime
   , makeReftime
   ) where
 
 import Data.HashMap.Strict (HashMap)
-import qualified Data.HashMap.Strict as HashMap
 import Data.Maybe
 import Data.Text (Text)
 import Data.Time
 import Data.Time.LocalTime.TimeZone.Series
 import Prelude
+import qualified Data.HashMap.Strict as HashMap
 
 import Duckling.Api
 import Duckling.Dimensions.Types
@@ -56,3 +57,8 @@ currentReftime :: HashMap Text TimeZoneSeries -> Text -> IO DucklingTime
 currentReftime series tz = do
   utcNow <- getCurrentTime
   return $ makeReftime series tz utcNow
+
+-- | Builds a `DucklingTime` from a `ZonedTime`.
+fromZonedTime :: ZonedTime -> DucklingTime
+fromZonedTime (ZonedTime localTime timeZone) = DucklingTime $
+  ZoneSeriesTime (toUTC localTime) (TimeZoneSeries timeZone [])

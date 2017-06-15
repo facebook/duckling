@@ -25,7 +25,7 @@ ruleLatentDistKm = Rule
   { name = "<latent dist> km"
   , pattern =
     [ dimension Distance
-    , regex "k(ilo)?m?(etr)?y?"
+    , regex "km|kilometr(y|\x016f)?"
     ]
   , prod = \tokens -> case tokens of
       (Token Distance dd:_) ->
@@ -38,7 +38,7 @@ ruleDistMeters = Rule
   { name = "<dist> meters"
   , pattern =
     [ dimension Distance
-    , regex "m(etry?)?"
+    , regex "metr(y|\x016f)?|m"
     ]
   , prod = \tokens -> case tokens of
       (Token Distance dd:_) ->
@@ -51,7 +51,7 @@ ruleDistCentimeters = Rule
   { name = "<dist> centimeters"
   , pattern =
     [ dimension Distance
-    , regex "cm|centimetry?"
+    , regex "cm|centimetr(y|\x016f)?"
     ]
   , prod = \tokens -> case tokens of
       (Token Distance dd:_) ->

@@ -24,6 +24,7 @@ import qualified Duckling.Duration.PL.Tests as PL
 import qualified Duckling.Duration.PT.Tests as PT
 import qualified Duckling.Duration.RO.Tests as RO
 import qualified Duckling.Duration.SV.Tests as SV
+import qualified Duckling.Duration.TR.Tests as TR
 import qualified Duckling.Duration.ZH.Tests as ZH
 
 tests :: TestTree
@@ -38,5 +39,6 @@ tests = testGroup "Duration Tests"
   , PT.tests
   , RO.tests
   , SV.tests
+  , TR.tests
   , ZH.tests
   ]

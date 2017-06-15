@@ -14,15 +14,13 @@ module Duckling.Resolve
   , DucklingTime(..)
   , Resolve(..)
   , fromUTC
-  , fromZonedTime
   , toUTC
   ) where
 
 import Data.Aeson
-import Data.String
+import Prelude
 import qualified Data.Time as Time
 import qualified Data.Time.LocalTime.TimeZone.Series as Series
-import Prelude
 
 import Duckling.Lang
 
@@ -41,10 +39,6 @@ data Context = Context
 class ToJSON (ResolvedValue a) => Resolve a where
   type ResolvedValue a
   resolve :: Context -> a -> Maybe (ResolvedValue a)
-
-fromZonedTime :: Time.ZonedTime -> DucklingTime
-fromZonedTime (Time.ZonedTime localTime timeZone) = DucklingTime $
-  Series.ZoneSeriesTime (toUTC localTime) (Series.TimeZoneSeries timeZone [])
 
 -- | Given a UTCTime and an TimeZone, build a ZonedTime (no conversion)
 fromUTC :: Time.UTCTime -> Time.TimeZone -> Time.ZonedTime

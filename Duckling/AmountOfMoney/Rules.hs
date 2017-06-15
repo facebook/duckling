@@ -14,21 +14,21 @@ module Duckling.AmountOfMoney.Rules
   ) where
 
 import Data.HashMap.Strict (HashMap)
-import qualified Data.HashMap.Strict as HashMap
 import Data.Maybe
 import Data.String
 import Data.Text (Text)
-import qualified Data.Text as Text
 import Prelude
+import qualified Data.HashMap.Strict as HashMap
+import qualified Data.Text as Text
 
 import Duckling.AmountOfMoney.Helpers
 import Duckling.AmountOfMoney.Types (Currency(..), AmountOfMoneyData (..))
-import qualified Duckling.AmountOfMoney.Types as TAmountOfMoney
 import Duckling.Dimensions.Types
 import Duckling.Numeral.Types (NumeralData (..))
-import qualified Duckling.Numeral.Types     as TNumeral
 import Duckling.Regex.Types
 import Duckling.Types
+import qualified Duckling.AmountOfMoney.Types as TAmountOfMoney
+import qualified Duckling.Numeral.Types as TNumeral
 
 currencies :: HashMap Text Currency
 currencies = HashMap.fromList
@@ -64,6 +64,8 @@ currencies = HashMap.fromList
   , ("krw", KRW)
   , ("kwd", KWD)
   , ("lbp", LBP)
+  , ("myr", MYR)
+  , ("rm", MYR)
   , ("nok", NOK)
   , ("\x00a3", Pound)
   , ("pt", PTS)
@@ -84,7 +86,7 @@ ruleCurrencies :: Rule
 ruleCurrencies = Rule
   { name = "currencies"
   , pattern =
-    [ regex "(aed|aud|brl|\x00a2|c|\\$|dollars?|egp|(e|\x20ac)uro?s?|\x20ac|gbp|hrk|idr|inr|\x00a5|jpy|krw|kwd|lbp|nok|\x00a3|pta?s?|qar|rs\\.?|ron|rupees?|sar|sek|sgb|us(d|\\$)|vnd|yen)"
+    [ regex "(aed|aud|brl|\x00a2|c|\\$|dollars?|egp|(e|\x20ac)uro?s?|\x20ac|gbp|hrk|idr|inr|\x00a5|jpy|krw|kwd|lbp|myr|rm|nok|\x00a3|pta?s?|qar|rs\\.?|ron|rupees?|sar|sek|sgb|us(d|\\$)|vnd|yen)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> do

@@ -1389,6 +1389,16 @@ classifiers
                    koData =
                      ClassData{prior = -infinity, unseen = -0.6931471805599453,
                                likelihoods = HashMap.fromList [], n = 0}}),
+       ("part of <named-month>",
+        Classifier{okData =
+                     ClassData{prior = 0.0, unseen = -2.1972245773362196,
+                               likelihoods =
+                                 HashMap.fromList
+                                   [("March", -0.6931471805599453), ("month", -0.6931471805599453)],
+                               n = 3},
+                   koData =
+                     ClassData{prior = -infinity, unseen = -1.0986122886681098,
+                               likelihoods = HashMap.fromList [], n = 0}}),
        ("a <unit-of-duration>",
         Classifier{okData =
                      ClassData{prior = -0.6286086594223742,
@@ -1621,8 +1631,8 @@ classifiers
                                n = 18}}),
        ("March",
         Classifier{okData =
-                     ClassData{prior = 0.0, unseen = -2.772588722239781,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 14},
+                     ClassData{prior = 0.0, unseen = -2.9444389791664407,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 17},
                    koData =
                      ClassData{prior = -infinity, unseen = -0.6931471805599453,
                                likelihoods = HashMap.fromList [], n = 0}}),

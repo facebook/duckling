@@ -12,6 +12,7 @@
 module Duckling.Numeral.VI.Rules
   ( rules ) where
 
+import qualified Data.HashMap.Strict as HashMap
 import Data.Maybe
 import qualified Data.Text as Text
 import Prelude
@@ -24,6 +25,18 @@ import qualified Duckling.Numeral.Types as TNumeral
 import Duckling.Regex.Types
 import Duckling.Types
 
+powersOfTenMap :: HashMap.HashMap Text.Text (Double, Int)
+powersOfTenMap = HashMap.fromList
+  [ ( "tr\x0103",   (1e2, 2) )
+  , ( "tr\x0103m",  (1e2, 2) )
+  , ( "ngh\x00ec",  (1e3, 3) )
+  , ( "ngh\x00ecn", (1e3, 3) )
+  , ( "tri\x1ec7",  (1e6, 6) )
+  , ( "tri\x1ec7u", (1e6, 6) )
+  , ( "t",          (1e9, 9) )
+  , ( "t\x1ef7",    (1e9, 9) )
+  ]
+
 rulePowersOfTen :: Rule
 rulePowersOfTen = Rule
   { name = "powers of tens"
@@ -31,16 +44,10 @@ rulePowersOfTen = Rule
     [ regex "(tr\x0103m?|ngh\x00ecn?|tri\x1ec7u?|t\x1ef7?)"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
-        "tr\x0103"   -> double 1e2 >>= withGrain 2 >>= withMultipliable
-        "tr\x0103m"  -> double 1e2 >>= withGrain 2 >>= withMultipliable
-        "ngh\x00ec"  -> double 1e3 >>= withGrain 3 >>= withMultipliable
-        "ngh\x00ecn" -> double 1e3 >>= withGrain 3 >>= withMultipliable
-        "tri\x1ec7"  -> double 1e6 >>= withGrain 6 >>= withMultipliable
-        "tri\x1ec7u" -> double 1e6 >>= withGrain 6 >>= withMultipliable
-        "t"          -> double 1e9 >>= withGrain 9 >>= withMultipliable
-        "t\x1ef7"    -> double 1e9 >>= withGrain 9 >>= withMultipliable
-        _            -> Nothing
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        do
+          (value, grain) <- HashMap.lookup (Text.toLower match) powersOfTenMap
+          double value >>= withGrain grain >>= withMultipliable
       _ -> Nothing
   }
 
@@ -206,6 +213,50 @@ ruleNumeralNghn = Rule
       _ -> Nothing
   }
 
+integerMap :: HashMap.HashMap Text.Text Integer
+integerMap = HashMap.fromList
+  [ ("kh\x00f4ng",               0)
+  , ("m\x1ed9t",                 1)
+  , ("linh m\x1ed9t",            1)
+  , ("l\x1ebb m\x1ed9t",         1)
+  , ("hai",                      2)
+  , ("l\x1ebb hai",              2)
+  , ("linh hai",                 2)
+  , ("ba",                       3)
+  , ("l\x1ebb",                  3)
+  , ("linh ba",                  3)
+  , ("l\x1ebb b\x1ed1n",         4)
+  , ("linh b\x1ed1n",            4)
+  , ("b\x1ed1n",                 4)
+  , ("n\x0103m",                 5)
+  , ("l\x1ebb n\x0103m",         5)
+  , ("linh n\x0103m",            5)
+  , ("linh s\x00e1u",            6)
+  , ("s\x00e1u",                 6)
+  , ("l\x1ebb s\x00e1u",         6)
+  , ("linh b\x1ea3y",            7)
+  , ("l\x1ebb b\x1ea3y",         7)
+  , ("b\x1ea3y",                 7)
+  , ("l\x1ebb t\x00e1m",         8)
+  , ("linh t\x00e1m",            8)
+  , ("t\x00e1m",                 8)
+  , ("l\x1ebb ch\x00edn",        9)
+  , ("ch\x00edn",                9)
+  , ("linh ch\x00edn",           9)
+  , ("linh m\x01b0\x1eddi",      10)
+  , ("m\x01b0\x1eddi",           10)
+  , ("l\x1ebb m\x01b0\x1eddi",   10)
+  , ("m\x01b0\x1eddi m\x1ed9t",  11)
+  , ("m\x01b0\x1eddi hai",       12)
+  , ("m\x01b0\x1eddi ba",        13)
+  , ("m\x01b0\x1eddi b\x1ed1n",  14)
+  , ("m\x01b0\x1eddi l\x0103m",  15)
+  , ("m\x01b0\x1eddi s\x00e1u",  16)
+  , ("m\x01b0\x1eddi b\x1ea3y",  17)
+  , ("m\x01b0\x1eddi t\x00e1m",  18)
+  , ("m\x01b0\x1eddi ch\x00edn", 19)
+  ]
+
 ruleInteger :: Rule
 ruleInteger = Rule
   { name = "integer (0..19)"
@@ -213,50 +264,22 @@ ruleInteger = Rule
     [ regex "(kh\x00f4ng|m\x1ed9t|linh m\x1ed9t|l\x1ebb m\x1ed9t|hai|linh hai|l\x1ebb hai|ba|linh ba|l\x1ebb ba|b\x1ed1n|linh b\x1ed1n|l\x1ebb b\x1ed1n|n\x0103m|linh n\x0103m|l\x1ebb n\x0103m|s\x00e1u|l\x1ebb s\x00e1u|linh s\x00e1u|b\x1ea3y|l\x1ebb b\x1ea3y|linh b\x1ea3y|t\x00e1m|linh t\x00e1m|l\x1ebb t\x00e1m|ch\x00edn|linh ch\x00edn|l\x1ebb ch\x00edn|m\x01b0\x1eddi m\x1ed9t|m\x01b0\x1eddi hai|m\x01b0\x1eddi ba|m\x01b0\x1eddi b\x1ed1n|m\x01b0\x1eddi l\x0103m|m\x01b0\x1eddi s\x00e1u|m\x01b0\x1eddi b\x1ea3y|m\x01b0\x1eddi t\x00e1m|m\x01b0\x1eddi ch\x00edn|m\x01b0\x1eddi|linh m\x01b0\x1eddi)"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> case match of
-        "kh\x00f4ng" -> integer 0
-        "m\x1ed9t" -> integer 1
-        "linh m\x1ed9t" -> integer 1
-        "l\x1ebb m\x1ed9t" -> integer 1
-        "hai" -> integer 2
-        "l\x1ebb hai" -> integer 2
-        "linh hai" -> integer 2
-        "ba" -> integer 3
-        "l\x1ebb" -> integer 3
-        "linh ba" -> integer 3
-        "l\x1ebb b\x1ed1n" -> integer 4
-        "linh b\x1ed1n" -> integer 4
-        "b\x1ed1n" -> integer 4
-        "n\x0103m" -> integer 5
-        "l\x1ebb n\x0103m" -> integer 5
-        "linh n\x0103m" -> integer 5
-        "linh s\x00e1u" -> integer 6
-        "s\x00e1u" -> integer 6
-        "l\x1ebb s\x00e1u" -> integer 6
-        "linh b\x1ea3y" -> integer 7
-        "l\x1ebb b\x1ea3y" -> integer 7
-        "b\x1ea3y" -> integer 7
-        "l\x1ebb t\x00e1m" -> integer 8
-        "linh t\x00e1m" -> integer 8
-        "t\x00e1m" -> integer 8
-        "l\x1ebb ch\x00edn" -> integer 9
-        "ch\x00edn" -> integer 9
-        "linh ch\x00edn" -> integer 9
-        "linh m\x01b0\x1eddi" -> integer 10
-        "m\x01b0\x1eddi" -> integer 10
-        "l\x1ebb m\x01b0\x1eddi" -> integer 10
-        "m\x01b0\x1eddi m\x1ed9t" -> integer 11
-        "m\x01b0\x1eddi hai" -> integer 12
-        "m\x01b0\x1eddi ba" -> integer 13
-        "m\x01b0\x1eddi b\x1ed1n" -> integer 14
-        "m\x01b0\x1eddi l\x0103m" -> integer 15
-        "m\x01b0\x1eddi s\x00e1u" -> integer 16
-        "m\x01b0\x1eddi b\x1ea3y" -> integer 17
-        "m\x01b0\x1eddi t\x00e1m" -> integer 18
-        "m\x01b0\x1eddi ch\x00edn" -> integer 19
-        _ -> Nothing
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        HashMap.lookup (Text.toLower match) integerMap >>= integer
       _ -> Nothing
   }
+
+tensMap :: HashMap.HashMap Text.Text Integer
+tensMap = HashMap.fromList
+  [ ("hai m\x01b0\x01a1i",       20)
+  , ("ba m\x01b0\x01a1i",        30)
+  , ("b\x1ed1n m\x01b0\x01a1i",  40)
+  , ("n\x0103m m\x01b0\x01a1i",  50)
+  , ("s\x00e1u m\x01b0\x01a1i",  60)
+  , ("b\x1ea3y m\x01b0\x01a1i",  70)
+  , ("t\x00e1m m\x01b0\x01a1i",  80)
+  , ("ch\x00edn m\x01b0\x01a1i", 90)
+  ]
 
 ruleInteger2 :: Rule
 ruleInteger2 = Rule
@@ -265,16 +288,8 @@ ruleInteger2 = Rule
     [ regex "(hai m\x01b0\x01a1i|ba m\x01b0\x01a1i|b\x1ed1n m\x01b0\x01a1i|n\x0103m m\x01b0\x01a1i|s\x00e1u m\x01b0\x01a1i|b\x1ea3y m\x01b0\x01a1i|t\x00e1m m\x01b0\x01a1i|ch\x00edn m\x01b0\x01a1i)"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> case match of
-        "hai m\x01b0\x01a1i" -> integer 20
-        "ba m\x01b0\x01a1i" -> integer 30
-        "b\x1ed1n m\x01b0\x01a1i" -> integer 40
-        "n\x0103m m\x01b0\x01a1i" -> integer 50
-        "s\x00e1u m\x01b0\x01a1i" -> integer 60
-        "b\x1ea3y m\x01b0\x01a1i" -> integer 70
-        "t\x00e1m m\x01b0\x01a1i" -> integer 80
-        "ch\x00edn m\x01b0\x01a1i" -> integer 90
-        _ -> Nothing
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        HashMap.lookup (Text.toLower match) tensMap >>= integer
       _ -> Nothing
   }
 

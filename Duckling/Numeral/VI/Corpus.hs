@@ -56,6 +56,10 @@ allExamples = concat
              [ "18"
              , "mười tám"
              ]
+  , examples (NumeralValue 100)
+            [ "100"
+            , "tră"
+            ]
   , examples (NumeralValue 1.1)
              [ "1.1"
              , "1.10"

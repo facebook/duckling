@@ -1544,7 +1544,7 @@ ruleFinNamedmonthinterval = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td:_) -> do
-        from <- intersect (dayOfMonth 25) td
+        from <- intersect (dayOfMonth 21) td
         let to = cycleLastOf TG.Day td
         Token Time <$> interval TTime.Closed from to
       _ -> Nothing
@@ -1996,12 +1996,21 @@ ruleFinDuMois :: Rule
 ruleFinDuMois = Rule
   { name = "fin du mois"
   , pattern =
-    [ regex "(((a|\x00e0) )?la )?fin (du|de) mois"
+    [ regex "(en |((\x00e0|a) la ))?fin (du|de) (ce )?mois"
     ]
-  , prod = \_ -> do
-      let from = cycleNthAfter False TG.Day (- 10) $ cycleNth TG.Month 1
-          to = cycleNth TG.Month 1
-      Token Time . mkLatent . partOfDay <$> interval TTime.Open from to
+  , prod = \_ -> Token Time <$>
+      interval TTime.Open (dayOfMonth 21) (dayOfMonth 0)
+  }
+
+ruleDbutDuMois :: Rule
+ruleDbutDuMois = Rule
+  { name = "début du mois"
+  , pattern =
+    [ regex "(en |au )?d(\x00e9|e)but (du|de) (ce )?mois"
+    ]
+  , prod = \_ -> Token Time <$>
+      interval TTime.Open (dayOfMonth 1) (dayOfMonth 10)
+  }
   }
 
 ruleTimezone :: Rule
@@ -2177,4 +2186,5 @@ rules =
   , ruleHourofdayEtDemi
   , ruleFinDuMois
   , ruleTimezone
+  , ruleDbutDuMois
   ]

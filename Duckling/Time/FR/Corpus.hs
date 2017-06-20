@@ -803,6 +803,14 @@ allExamples = concat
   , examples (datetimeInterval ((2013, 12, 10, 0, 0, 0), (2013, 12, 20, 0, 0, 0)) Day)
              [ "mi-décembre"
              ]
+  , examples (datetimeInterval ((2013, 2, 21, 0, 0, 0), (2013, 3, 1, 0, 0, 0)) Day)
+             [ "en fin de mois"
+             , "à la fin du mois"
+             ]
+  , examples (datetimeInterval ((2013, 3, 1, 0, 0, 0), (2013, 3, 11, 0, 0, 0)) Day)
+             [ "au début du mois"
+             , "en début de mois"
+             ]
   , examples (datetime (2013, 3, 0, 0, 0, 0) Month)
              [ "mars"
              , "en mars"

@@ -526,7 +526,7 @@ allExamples = concat
   , examples (datetimeInterval ((2013, 2, 12, 17, 0, 0), (2013, 2, 12, 21, 0, 0)) Hour)
              [ "après le travail"
              ]
-  , examples (datetimeInterval ((2013, 2, 12, 4, 0, 0), (2013, 2, 12, 12, 0, 0)) Hour)
+  , examples (datetimeInterval ((2013, 2, 12, 7, 0, 0), (2013, 2, 12, 12, 0, 0)) Hour)
              [ "dès le matin"
              , "dès la matinée"
              ]
@@ -596,12 +596,15 @@ allExamples = concat
              ]
   , examples (datetimeInterval ((2013, 2, 11, 0, 0, 0), (2013, 2, 13, 0, 0, 0)) Day)
              [ "en début de semaine"
+             , "au début de la semaine"
              ]
   , examples (datetimeInterval ((2013, 2, 13, 0, 0, 0), (2013, 2, 15, 0, 0, 0)) Day)
              [ "en milieu de semaine"
+             , "au milieu de la semaine"
              ]
   , examples (datetimeInterval ((2013, 2, 14, 0, 0, 0), (2013, 2, 18, 0, 0, 0)) Day)
              [ "en fin de semaine"
+             , "à la fin de la semaine"
              ]
   , examples (datetimeInterval ((2013, 2, 11, 0, 0, 0), (2013, 2, 16, 0, 0, 0)) Day)
              [ "en semaine"
@@ -787,7 +790,7 @@ allExamples = concat
   , examples (datetime (2013, 2, 12, 13, 0, 0) Minute)
              [ "à seize heures CET"
              ]
-  , examples (datetimeInterval ((2013, 3, 25, 0, 0, 0), (2013, 4, 1, 0, 0, 0)) Day)
+  , examples (datetimeInterval ((2013, 3, 21, 0, 0, 0), (2013, 4, 1, 0, 0, 0)) Day)
              [ "fin mars"
              , "fin du mois de mars"
              ]

@@ -809,9 +809,9 @@ ruleDbutDeMatine :: Rule
 ruleDbutDeMatine = Rule
   { name = "début de matinée"
   , pattern =
-    [ regex "le matin (tr(e|\x00e8)s )?t(\x00f4|o)t|(tr(e|\x00e8)s )?t(\x00f4|o)t le matin|d(\x00e9|e)but de matin(\x00e9|e)e"
+    [ regex "le matin (tr(e|\x00e8)s )?t(\x00f4|o)t|(tr(e|\x00e8)s )?t(\x00f4|o)t le matin|(en |au )?d(\x00e9|e)but de (la )?matin(\x00e9|e)e"
     ]
-  , prod = \_ -> Token Time . mkLatent . partOfDay <$>
+  , prod = \_ -> Token Time . partOfDay <$>
       interval TTime.Open (hour False 7) (hour False 9)
   }
 
@@ -1746,9 +1746,9 @@ ruleMilieuDeMatine :: Rule
 ruleMilieuDeMatine = Rule
   { name = "milieu de matinée"
   , pattern =
-    [ regex "milieu de matin(\x00e9|e)e"
+    [ regex "(en |au )?milieu de (la )?matin(\x00e9|e)e"
     ]
-  , prod = \_ -> Token Time . mkLatent . partOfDay <$>
+  , prod = \_ -> Token Time . partOfDay <$>
       interval TTime.Open (hour False 9) (hour False 11)
   }
 
@@ -1756,9 +1756,9 @@ ruleFinDeMatine :: Rule
 ruleFinDeMatine = Rule
   { name = "fin de matinée"
   , pattern =
-    [ regex "fin de matin(\x00e9|e)e"
+    [ regex "(en |(\x00e0|a) la )?fin de (la )?matin(\x00e9|e)e"
     ]
-  , prod = \_ -> Token Time . mkLatent . partOfDay <$>
+  , prod = \_ -> Token Time . partOfDay <$>
       interval TTime.Open (hour False 10) (hour False 12)
   }
 

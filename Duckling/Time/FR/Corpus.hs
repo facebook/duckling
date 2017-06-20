@@ -489,14 +489,27 @@ allExamples = concat
              , "l'après-midi"
              ]
   , examples (datetimeInterval ((2013, 2, 12, 7, 0, 0), (2013, 2, 12, 9, 0, 0)) Hour)
-             [ "en début de matinée"
+             [ "aujourd'hui en début de matinée"
+             , "en début de matinée"
+             , "le 12 février en début de matinée"
              , "aujourd'hui très tôt le matin"
              , "aujourd'hui tôt le matin"
              , "aujourd'hui le matin tôt"
              , "aujourd'hui le matin très tôt"
+             , "le matin très tôt"
+             , "le matin tôt"
+             , "tôt le matin"
+             , "très tôt le matin"
+             ]
+  , examples (datetimeInterval ((2013, 2, 12, 9, 0, 0), (2013, 2, 12, 11, 0, 0)) Hour)
+             [ "aujourd'hui en milieu de matinée"
+             , "le 12 février en milieu de matinée"
+             , "en milieu de matinée"
              ]
   , examples (datetimeInterval ((2013, 2, 12, 10, 0, 0), (2013, 2, 12, 12, 0, 0)) Hour)
-             [ "en fin de matinée"
+             [ "aujourd'hui en fin de matinée"
+             , "en fin de matinée"
+             , "le 12 février en fin de matinée"
              ]
   , examples (datetimeInterval ((2013, 2, 12, 13, 0, 0), (2013, 2, 12, 17, 0, 0)) Hour)
              [ "après déjeuner"

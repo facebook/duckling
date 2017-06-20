@@ -565,12 +565,19 @@ allExamples = concat
              ]
   , examples (datetimeInterval ((2013, 2, 12, 18, 0, 0), (2013, 2, 13, 0, 0, 0)) Hour)
              [ "ce soir"
+             , "le soir"
              ]
   , examples (datetimeInterval ((2013, 2, 12, 18, 0, 0), (2013, 2, 12, 21, 0, 0)) Hour)
-             [ "en début de soirée"
+             [ "aujourd'hui en début de soirée"
+             , "en début de soirée"
+             , "le 12 février en début de soirée"
+             , "au début de la soirée"
              ]
   , examples (datetimeInterval ((2013, 2, 12, 21, 0, 0), (2013, 2, 13, 0, 0, 0)) Hour)
-             [ "en fin de soirée"
+             [ "aujourd'hui en fin de soirée"
+             , "en fin de soirée"
+             , "le 12 février en fin de soirée"
+             , "à la fin de la soirée"
              ]
   , examples (datetimeInterval ((2013, 2, 13, 18, 0, 0), (2013, 2, 14, 0, 0, 0)) Hour)
              [ "demain soir"

@@ -789,9 +789,9 @@ ruleDbutDeSoire :: Rule
 ruleDbutDeSoire = Rule
   { name = "début de soirée"
   , pattern =
-    [ regex "d(\x00e9|e)but de soir(\x00e9|e)e?"
+    [ regex "(en |au )?d(\x00e9|e)but de (la )?soir(\x00e9|e)e"
     ]
-  , prod = \_ -> Token Time . mkLatent . partOfDay <$>
+  , prod = \_ -> Token Time . partOfDay <$>
       interval TTime.Open (hour False 18) (hour False 21)
   }
 
@@ -799,9 +799,9 @@ ruleFinDeSoire :: Rule
 ruleFinDeSoire = Rule
   { name = "fin de soirée"
   , pattern =
-    [ regex "fin de soir(\x00e9|e)e?"
+    [ regex "(en |(\x00e0|a) la )?fin de (la )?soir(\x00e9|e)e"
     ]
-  , prod = \_ -> Token Time . mkLatent . partOfDay <$>
+  , prod = \_ -> Token Time . partOfDay <$>
       interval TTime.Open (hour False 21) (hour False 0)
   }
 

@@ -568,7 +568,7 @@ allExamples = concat
   , examples (datetimeInterval ((2013, 9, 27, 18, 0, 0), (2013, 9, 30, 0, 0, 0)) Hour)
              [ "le dernier week-end de septembre"
              ]
-  , examples (datetimeInterval ((2013, 2, 18, 4, 0, 0), (2013, 2, 18, 12, 0, 0)) Hour)
+  , examples (datetimeInterval ((2013, 2, 18, 7, 0, 0), (2013, 2, 18, 12, 0, 0)) Hour)
              [ "lundi matin"
              ]
   , examples (datetimeInterval ((2013, 2, 18, 13, 0, 0), (2013, 2, 18, 19, 0, 0)) Hour)
@@ -579,7 +579,7 @@ allExamples = concat
              [ "lundi fin d'après-midi"
              , "lundi en fin d'après-midi"
              ]
-  , examples (datetimeInterval ((2013, 2, 15, 4, 0, 0), (2013, 2, 15, 12, 0, 0)) Hour)
+  , examples (datetimeInterval ((2013, 2, 15, 7, 0, 0), (2013, 2, 15, 12, 0, 0)) Hour)
              [ "le 15 février dans la matinée"
              , "matinée du 15 février"
              , "le 15 février le matin"

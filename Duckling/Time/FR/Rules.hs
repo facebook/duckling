@@ -1496,7 +1496,7 @@ ruleMatin = Rule
     [ regex "mat(in(\x00e9|e)?e?)?"
     ]
   , prod = \_ -> Token Time . mkLatent . partOfDay <$>
-      interval TTime.Open (hour False 4) (hour False 12)
+      interval TTime.Open (hour False 7) (hour False 12)
   }
 
 ruleYearLatent :: Rule

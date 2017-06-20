@@ -807,6 +807,14 @@ allExamples = concat
              [ "en fin de mois"
              , "à la fin du mois"
              ]
+  , examples (datetimeInterval ((2013, 11, 1, 0, 0, 0), (2014, 1, 1, 0, 0, 0)) Month)
+             [ "en fin d'année"
+             , "à la fin de l'année"
+             ]
+  , examples (datetimeInterval ((2013, 1, 1, 0, 0, 0), (2013, 3, 1, 0, 0, 0)) Month)
+             [ "en début d'année"
+             , "au début de l'année"
+             ]
   , examples (datetimeInterval ((2013, 3, 1, 0, 0, 0), (2013, 3, 11, 0, 0, 0)) Day)
              [ "au début du mois"
              , "en début de mois"

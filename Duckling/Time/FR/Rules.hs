@@ -2011,6 +2011,27 @@ ruleDbutDuMois = Rule
   , prod = \_ -> Token Time <$>
       interval TTime.Open (dayOfMonth 1) (dayOfMonth 10)
   }
+
+ruleFinDAnnee :: Rule
+ruleFinDAnnee = Rule
+  { name = "fin d'année"
+  , pattern =
+    [ regex "(en |(\x00e0|a) la )?fin (d'|de l'|de cette )ann(\x00e9|e)e"
+    ]
+  , prod = \_ -> Token Time <$>
+      interval TTime.Open (month 11) (month 1)
+  }
+
+ruleDbutDAnnee :: Rule
+ruleDbutDAnnee = Rule
+  { name = "début d'année"
+  , pattern =
+    [ regex "(en |au )?d(\x00e9|e)but (d'|de l'|de cette )ann(\x00e9|e)e"
+    ]
+  , prod = \_ -> Token Time <$>
+      interval TTime.Open (month 1) (month 3)
+  }
+
   }
 
 ruleTimezone :: Rule
@@ -2187,4 +2208,6 @@ rules =
   , ruleFinDuMois
   , ruleTimezone
   , ruleDbutDuMois
+  , ruleFinDAnnee
+  , ruleDbutDAnnee
   ]

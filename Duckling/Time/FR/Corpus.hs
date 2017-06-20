@@ -519,6 +519,9 @@ allExamples = concat
              ]
   , examples (datetimeInterval ((2013, 2, 12, 12, 0, 0), (2013, 2, 12, 14, 0, 0)) Hour)
              [ "aujourd'hui pendant le déjeuner"
+             , "à l'heure du déjeuner"
+             , "au moment de déjeuner"
+             , "pendant le déjeuner"
              ]
   , examples (datetimeInterval ((2013, 2, 12, 17, 0, 0), (2013, 2, 12, 21, 0, 0)) Hour)
              [ "après le travail"

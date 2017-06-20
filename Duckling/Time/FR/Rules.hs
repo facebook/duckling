@@ -1705,9 +1705,9 @@ ruleAuDjeuner :: Rule
 ruleAuDjeuner = Rule
   { name = "au déjeuner"
   , pattern =
-    [ regex "((\x00e0|a) l(')?heure du|pendant( le)?|au)? d(e|\x00e9|\x00e8)jeuner"
+    [ regex "((\x00e0|a) l'heure du|au moment de|pendant( le)?|au)? d(e|\x00e9|\x00e8)jeuner"
     ]
-  , prod = \_ -> Token Time . mkLatent . partOfDay <$>
+  , prod = \_ -> Token Time . partOfDay <$>
       interval TTime.Open (hour False 12) (hour False 14)
   }
 

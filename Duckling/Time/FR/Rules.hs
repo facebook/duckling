@@ -68,9 +68,9 @@ ruleDbutDeJourne :: Rule
 ruleDbutDeJourne = Rule
   { name = "début de journée"
   , pattern =
-    [ regex "d(\x00e9|e)but de journ(\x00e9|e)e"
+    [ regex "(en |au )?d(\x00e9|e)but de (la )?journ(\x00e9|e)e"
     ]
-  , prod = \_ -> Token Time . partOfDay . mkLatent <$>
+  , prod = \_ -> Token Time . partOfDay <$>
         interval TTime.Open (hour False 6) (hour False 10)
   }
 
@@ -905,9 +905,9 @@ ruleMilieuDeJourne :: Rule
 ruleMilieuDeJourne = Rule
   { name = "milieu de journée"
   , pattern =
-    [ regex "milieu de journ(\x00e9|e)e"
+    [ regex "(en |au )?milieu de (la )?journ(\x00e9|e)e"
     ]
-  , prod = \_ -> Token Time . mkLatent . partOfDay <$>
+  , prod = \_ -> Token Time . partOfDay <$>
       interval TTime.Open (hour False 11) (hour False 16)
   }
 
@@ -915,9 +915,9 @@ ruleFinDeJourne :: Rule
 ruleFinDeJourne = Rule
   { name = "fin de journée"
   , pattern =
-    [ regex "fin de journ(\x00e9|e)e"
+    [ regex "(en |(\x00e0|a) la )?fin de (la )?journ(\x00e9|e)e"
     ]
-  , prod = \_ -> Token Time . mkLatent . partOfDay <$>
+  , prod = \_ -> Token Time . partOfDay <$>
       interval TTime.Open (hour False 17) (hour False 21)
   }
 

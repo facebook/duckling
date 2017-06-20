@@ -1841,10 +1841,10 @@ ruleDbutDaprsmidi :: Rule
 ruleDbutDaprsmidi = Rule
   { name = "début d'après-midi"
   , pattern =
-    [ regex "d(\x00e9|e)but d'apr(e|\x00e9|\x00e8)s?[ \\-]?midi"
+    [ regex "(au |en )?d(\x00e9|e)but (d'|de l')apr(e|\x00e9|\x00e8)s( |\\-)midi"
     ]
-  , prod = \_ -> Token Time . mkLatent . partOfDay <$>
-      interval TTime.Open (hour False 12) (hour False 14)
+  , prod = \_ -> Token Time . partOfDay <$>
+      interval TTime.Open (hour False 13) (hour False 15)
   }
 
 ruleLeTime :: Rule
@@ -1888,11 +1888,11 @@ ruleDayofweekDayofmonthTimeofday = Rule
 
 ruleMilieuDaprsmidi :: Rule
 ruleMilieuDaprsmidi = Rule
-  { name = "fin d'après-midi"
+  { name = "milieu d'après-midi"
   , pattern =
-    [ regex "milieu d'apr(e|\x00e9|\x00e8)s?[ \\-]?midi"
+    [ regex "(au |en )?milieu (d'|de l')apr(e|\x00e9|\x00e8)s( |\\-)midi"
     ]
-  , prod = \_ -> Token Time . mkLatent . partOfDay <$>
+  , prod = \_ -> Token Time . partOfDay <$>
       interval TTime.Open (hour False 15) (hour False 17)
   }
 
@@ -1900,9 +1900,9 @@ ruleFinDaprsmidi :: Rule
 ruleFinDaprsmidi = Rule
   { name = "fin d'après-midi"
   , pattern =
-    [ regex "fin d'apr(e|\x00e9|\x00e8)s?[ \\-]?midi"
+    [ regex "((\x00e0|a) la |en )?fin (d'|de l')apr(e|\x00e9|\x00e8)s( |\\-)midi"
     ]
-  , prod = \_ -> Token Time . mkLatent . partOfDay <$>
+  , prod = \_ -> Token Time . partOfDay <$>
       interval TTime.Open (hour False 17) (hour False 19)
   }
 

@@ -960,10 +960,10 @@ ruleAprsmidi :: Rule
 ruleAprsmidi = Rule
   { name = "après-midi"
   , pattern =
-    [ regex "apr(e|\x00e9|\x00e8)s?[ \\-]?midi"
+    [ regex "apr(e|\x00e9|\x00e8)s( |\\-)midi"
     ]
   , prod = \_ -> Token Time . mkLatent . partOfDay <$>
-      interval TTime.Open (hour False 12) (hour False 19)
+      interval TTime.Open (hour False 13) (hour False 19)
   }
 
 ruleNoel :: Rule

@@ -484,7 +484,7 @@ allExamples = concat
   , examples (datetime (2013, 5, 1, 0, 0, 0) Day)
              [ "fête du travail"
              ]
-  , examples (datetimeInterval ((2013, 2, 12, 12, 0, 0), (2013, 2, 12, 19, 0, 0)) Hour)
+  , examples (datetimeInterval ((2013, 2, 12, 13, 0, 0), (2013, 2, 12, 19, 0, 0)) Hour)
              [ "cet après-midi"
              , "l'après-midi"
              ]
@@ -571,7 +571,7 @@ allExamples = concat
   , examples (datetimeInterval ((2013, 2, 18, 4, 0, 0), (2013, 2, 18, 12, 0, 0)) Hour)
              [ "lundi matin"
              ]
-  , examples (datetimeInterval ((2013, 2, 18, 12, 0, 0), (2013, 2, 18, 19, 0, 0)) Hour)
+  , examples (datetimeInterval ((2013, 2, 18, 13, 0, 0), (2013, 2, 18, 19, 0, 0)) Hour)
              [ "lundi après-midi"
              , "lundi dans l'après-midi"
              ]

@@ -729,10 +729,12 @@ allExamples = concat
   , examples (datetimeOpenInterval After (2013, 2, 14, 9, 30, 0) Minute)
              [ "à partir de 9h30 jeudi"
              , "jeudi après 9h30"
+             , "jeudi plus tard que 9h30"
              , "jeudi matin à partir de 9 heures 30"
              ]
   , examples (datetimeOpenInterval After (2013, 11, 1, 16, 0, 0) Hour)
              [ "après 16h le 1er novembre"
+             , "plus tard que 16h le 1er novembre"
              ]
   , examples (datetimeOpenInterval After (2013, 11, 1, 0, 0, 0) Day)
              [ "après le 1er novembre"
@@ -830,5 +832,17 @@ allExamples = concat
              ]
   , examples (datetime (2013, 8, 15, 8, 0, 0) Hour)
              [ "jeudi 15 à 8h"
+             ]
+  , examples (datetimeOpenInterval After (2013, 2, 12, 4, 40, 0) Minute)
+             [ "plus tard"
+             , "un peu plus tard"
+             ]
+  , examples (datetimeInterval ((2013, 2, 12, 13, 0, 0), (2013, 2, 12, 19, 0, 0)) Hour)
+             [ "plus tard dans l'après-midi"
+             , "un peu plus tard dans l'après-midi"
+             ]
+  , examples (datetimeInterval ((2013, 2, 12, 18, 0, 0), (2013, 2, 13, 00, 0, 0)) Hour)
+             [ "plus tard dans la soirée"
+             , "un peu plus tard dans la soirée"
              ]
   ]

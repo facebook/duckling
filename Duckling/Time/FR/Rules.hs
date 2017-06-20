@@ -1056,7 +1056,7 @@ ruleAprsTimeofday :: Rule
 ruleAprsTimeofday = Rule
   { name = "après <time-of-day>"
   , pattern =
-    [ regex "(apr(e|\x00e8)s|(a|\x00e0) partir de)"
+    [ regex "(apr(e|\x00e8)s|(a|\x00e0) partir de|(un peu )?plus tard que)"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -2032,6 +2032,42 @@ ruleDbutDAnnee = Rule
       interval TTime.Open (month 1) (month 3)
   }
 
+rulePlusTard :: Rule
+rulePlusTard = Rule
+  { name = "plus tard"
+  , pattern =
+    [ regex "(un peu )?plus tard"
+    ]
+  -- , prod = \_ -> Token Time <$>
+  --     interval TTime.Open (cycleNth TG.Minute 10) (cycleNth TG.Hour 1)
+  , prod = \_ -> tt $ withDirection TTime.After $ cycleNth TG.Minute 10
+
+  }
+
+rulePlusTardPartofday :: Rule
+rulePlusTardPartofday = Rule
+  { name = "plus tard <part-of-day>"
+  , pattern =
+    [ regex "(un peu )?plus tard"
+    , Predicate isAPartOfDay
+    ]
+  , prod = \tokens -> case tokens of
+      (_:Token Time td:_) ->
+        tt $ notLatent td
+      _ -> Nothing
+  }
+
+rulePlusTardTime :: Rule
+rulePlusTardTime = Rule
+  { name = "plus tard <time>"
+  , pattern =
+    [ regex "(un peu )?plus tard"
+    , dimension Time
+    ]
+  , prod = \tokens -> case tokens of
+      (_:Token Time td:_) ->
+        tt $ notLatent td
+      _ -> Nothing
   }
 
 ruleTimezone :: Rule
@@ -2210,4 +2246,7 @@ rules =
   , ruleDbutDuMois
   , ruleFinDAnnee
   , ruleDbutDAnnee
+  , rulePlusTard
+  , rulePlusTardPartofday
+  , rulePlusTardTime
   ]

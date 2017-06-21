@@ -794,4 +794,8 @@ allExamples = concat
   , examples (datetimeInterval ((2013, 3, 21, 0, 0, 0), (2013, 4, 1, 0, 0, 0)) Day)
              [ "late March"
              ]
+  , examples (datetimeInterval ((2013, 10, 25, 0, 0, 0), (2013, 10, 28, 0, 0, 0)) Second)
+             ["last weekend of October"]
+  , examples (datetimeInterval ((2013, 3, 29, 0, 0, 0), (2013, 4, 1, 0, 0, 0)) Second)
+             ["last weekend of July"]
   ]

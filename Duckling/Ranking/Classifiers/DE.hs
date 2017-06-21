@@ -35,11 +35,11 @@ classifiers
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("integer (numeric)",
         Classifier{okData =
-                     ClassData{prior = -0.8663234045317083, unseen = -4.795790545596741,
+                     ClassData{prior = -0.873365687157121, unseen = -4.795790545596741,
                                likelihoods = HashMap.fromList [("", 0.0)], n = 119},
                    koData =
-                     ClassData{prior = -0.5455804698190392, unseen = -5.111987788356543,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 164}}),
+                     ClassData{prior = -0.5405013919121072, unseen = -5.123963979403259,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 166}}),
        ("exactly <time-of-day>",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -2.3025850929940455,
@@ -1228,10 +1228,11 @@ classifiers
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("hh:mm",
         Classifier{okData =
-                     ClassData{prior = -0.5679840376059393, unseen = -3.58351893845611,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 34},
+                     ClassData{prior = -0.5555258026838976,
+                               unseen = -3.6109179126442243,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 35},
                    koData =
-                     ClassData{prior = -0.8362480242006186, unseen = -3.332204510175204,
+                     ClassData{prior = -0.8527773261518292, unseen = -3.332204510175204,
                                likelihoods = HashMap.fromList [("", 0.0)], n = 26}}),
        ("quarter after|past <integer> (hour-of-day)",
         Classifier{okData =

@@ -1601,7 +1601,7 @@ ruleHhmm :: Rule
 ruleHhmm = Rule
   { name = "hh:mm"
   , pattern =
-    [ regex "((?:[01]?\\d)|(?:2[0-3]))[:.]([0-5]\\d)(?:uhr|h)?"
+    [ regex "((?:[01]?\\d)|(?:2[0-3]))[:.h]([0-5]\\d)(?:uhr|h)?"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (m1:m2:_)):_) -> do

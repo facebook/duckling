@@ -658,4 +658,7 @@ allExamples = concat
   , examples (datetime (2013, 2, 12, 10, 10, 0) Minute)
              [ "um 10.10"
              ]
+  , examples (datetime (2013, 2, 12, 17, 10, 0) Minute)
+             [ "17h10"
+             ]
   ]

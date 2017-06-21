@@ -9,10 +9,11 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Time.FR.Corpus
-  ( corpus ) where
+  ( corpus
+  ) where
 
-import Prelude
 import Data.String
+import Prelude
 
 import Duckling.Lang
 import Duckling.Resolve
@@ -489,14 +490,27 @@ allExamples = concat
              , "l'après-midi"
              ]
   , examples (datetimeInterval ((2013, 2, 12, 7, 0, 0), (2013, 2, 12, 9, 0, 0)) Hour)
-             [ "en début de matinée"
+             [ "aujourd'hui en début de matinée"
+             , "en début de matinée"
+             , "le 12 février en début de matinée"
              , "aujourd'hui très tôt le matin"
              , "aujourd'hui tôt le matin"
              , "aujourd'hui le matin tôt"
              , "aujourd'hui le matin très tôt"
+             , "le matin très tôt"
+             , "le matin tôt"
+             , "tôt le matin"
+             , "très tôt le matin"
+             ]
+  , examples (datetimeInterval ((2013, 2, 12, 9, 0, 0), (2013, 2, 12, 11, 0, 0)) Hour)
+             [ "aujourd'hui en milieu de matinée"
+             , "le 12 février en milieu de matinée"
+             , "en milieu de matinée"
              ]
   , examples (datetimeInterval ((2013, 2, 12, 10, 0, 0), (2013, 2, 12, 12, 0, 0)) Hour)
-             [ "en fin de matinée"
+             [ "aujourd'hui en fin de matinée"
+             , "en fin de matinée"
+             , "le 12 février en fin de matinée"
              ]
   , examples (datetimeInterval ((2013, 2, 12, 13, 0, 0), (2013, 2, 12, 17, 0, 0)) Hour)
              [ "après déjeuner"
@@ -506,6 +520,9 @@ allExamples = concat
              ]
   , examples (datetimeInterval ((2013, 2, 12, 12, 0, 0), (2013, 2, 12, 14, 0, 0)) Hour)
              [ "aujourd'hui pendant le déjeuner"
+             , "à l'heure du déjeuner"
+             , "au moment de déjeuner"
+             , "pendant le déjeuner"
              ]
   , examples (datetimeInterval ((2013, 2, 12, 17, 0, 0), (2013, 2, 12, 21, 0, 0)) Hour)
              [ "après le travail"
@@ -515,25 +532,57 @@ allExamples = concat
              , "dès la matinée"
              ]
   , examples (datetimeInterval ((2013, 2, 12, 12, 0, 0), (2013, 2, 12, 14, 0, 0)) Hour)
-             [ "en début d'après-midi"
+             [ "aujourd'hui en début d'après-midi"
+             , "en début d'après-midi"
+             , "le 12 février en début d'après-midi"
+             , "au début de l'après-midi"
+             ]
+  , examples (datetimeInterval ((2013, 2, 12, 14, 0, 0), (2013, 2, 12, 17, 0, 0)) Hour)
+             [ "aujourd'hui en milieu d'après-midi"
+             , "en milieu d'après-midi"
+             , "le 12 février en milieu d'après-midi"
+             , "au milieu de l'après-midi"
              ]
   , examples (datetimeInterval ((2013, 2, 12, 17, 0, 0), (2013, 2, 12, 19, 0, 0)) Hour)
-             [ "en fin d'après-midi"
+             [ "aujourd'hui en fin d'après-midi"
+             , "en fin d'après-midi"
+             , "le 12 février en fin d'après-midi"
+             , "à la fin de l'après-midi"
              ]
   , examples (datetimeInterval ((2013, 2, 12, 6, 0, 0), (2013, 2, 12, 10, 0, 0)) Hour)
-             [ "en début de journée"
+             [ "aujourd'hui en début de journée"
+             , "le 12 février en début de journée"
+             , "en début de journée"
+             , "au début de la journée"
+             ]
+  , examples (datetimeInterval ((2013, 2, 12, 11, 0, 0), (2013, 2, 12, 16, 0, 0)) Hour)
+             [ "aujourd'hui en milieu de journée"
+             , "en milieu de journée"
+             , "le 12 février en milieu de journée"
+             , "au milieu de la journée"
              ]
   , examples (datetimeInterval ((2013, 2, 12, 17, 0, 0), (2013, 2, 12, 21, 0, 0)) Hour)
-             [ "en fin de journée"
+             [ "aujourd'hui en fin de journée"
+             , "en fin de journée"
+             , "le 12 février en fin de journée"
+             , "à la fin de la journée"
              ]
   , examples (datetimeInterval ((2013, 2, 12, 18, 0, 0), (2013, 2, 13, 0, 0, 0)) Hour)
              [ "ce soir"
+             , "le soir"
+             , "dans la soirée"
              ]
   , examples (datetimeInterval ((2013, 2, 12, 18, 0, 0), (2013, 2, 12, 21, 0, 0)) Hour)
-             [ "en début de soirée"
+             [ "aujourd'hui en début de soirée"
+             , "en début de soirée"
+             , "le 12 février en début de soirée"
+             , "au début de la soirée"
              ]
   , examples (datetimeInterval ((2013, 2, 12, 21, 0, 0), (2013, 2, 13, 0, 0, 0)) Hour)
-             [ "en fin de soirée"
+             [ "aujourd'hui en fin de soirée"
+             , "en fin de soirée"
+             , "le 12 février en fin de soirée"
+             , "à la fin de la soirée"
              ]
   , examples (datetimeInterval ((2013, 2, 13, 18, 0, 0), (2013, 2, 14, 0, 0, 0)) Hour)
              [ "demain soir"
@@ -549,12 +598,15 @@ allExamples = concat
              ]
   , examples (datetimeInterval ((2013, 2, 11, 0, 0, 0), (2013, 2, 13, 0, 0, 0)) Day)
              [ "en début de semaine"
+             , "au début de la semaine"
              ]
   , examples (datetimeInterval ((2013, 2, 13, 0, 0, 0), (2013, 2, 15, 0, 0, 0)) Day)
              [ "en milieu de semaine"
+             , "au milieu de la semaine"
              ]
   , examples (datetimeInterval ((2013, 2, 14, 0, 0, 0), (2013, 2, 18, 0, 0, 0)) Day)
              [ "en fin de semaine"
+             , "à la fin de la semaine"
              ]
   , examples (datetimeInterval ((2013, 2, 11, 0, 0, 0), (2013, 2, 16, 0, 0, 0)) Day)
              [ "en semaine"
@@ -685,10 +737,12 @@ allExamples = concat
   , examples (datetimeOpenInterval After (2013, 2, 14, 9, 30, 0) Minute)
              [ "à partir de 9h30 jeudi"
              , "jeudi après 9h30"
+             , "jeudi plus tard que 9h30"
              , "jeudi matin à partir de 9 heures 30"
              ]
   , examples (datetimeOpenInterval After (2013, 11, 1, 16, 0, 0) Hour)
              [ "après 16h le 1er novembre"
+             , "plus tard que 16h le 1er novembre"
              ]
   , examples (datetimeOpenInterval After (2013, 11, 1, 0, 0, 0) Day)
              [ "après le 1er novembre"
@@ -738,7 +792,7 @@ allExamples = concat
   , examples (datetime (2013, 2, 12, 13, 0, 0) Minute)
              [ "à seize heures CET"
              ]
-  , examples (datetimeInterval ((2013, 3, 25, 0, 0, 0), (2013, 4, 1, 0, 0, 0)) Day)
+  , examples (datetimeInterval ((2013, 3, 21, 0, 0, 0), (2013, 4, 1, 0, 0, 0)) Day)
              [ "fin mars"
              , "fin du mois de mars"
              ]
@@ -759,6 +813,22 @@ allExamples = concat
   , examples (datetimeInterval ((2013, 12, 10, 0, 0, 0), (2013, 12, 20, 0, 0, 0)) Day)
              [ "mi-décembre"
              ]
+  , examples (datetimeInterval ((2013, 2, 21, 0, 0, 0), (2013, 3, 1, 0, 0, 0)) Day)
+             [ "en fin de mois"
+             , "à la fin du mois"
+             ]
+  , examples (datetimeInterval ((2013, 11, 1, 0, 0, 0), (2014, 1, 1, 0, 0, 0)) Month)
+             [ "en fin d'année"
+             , "à la fin de l'année"
+             ]
+  , examples (datetimeInterval ((2013, 1, 1, 0, 0, 0), (2013, 3, 1, 0, 0, 0)) Month)
+             [ "en début d'année"
+             , "au début de l'année"
+             ]
+  , examples (datetimeInterval ((2013, 3, 1, 0, 0, 0), (2013, 3, 11, 0, 0, 0)) Day)
+             [ "au début du mois"
+             , "en début de mois"
+             ]
   , examples (datetime (2013, 3, 0, 0, 0, 0) Month)
              [ "mars"
              , "en mars"
@@ -770,5 +840,17 @@ allExamples = concat
              ]
   , examples (datetime (2013, 8, 15, 8, 0, 0) Hour)
              [ "jeudi 15 à 8h"
+             ]
+  , examples (datetimeOpenInterval After (2013, 2, 12, 4, 40, 0) Minute)
+             [ "plus tard"
+             , "un peu plus tard"
+             ]
+  , examples (datetimeInterval ((2013, 2, 12, 12, 0, 0), (2013, 2, 12, 19, 0, 0)) Hour)
+             [ "plus tard dans l'après-midi"
+             , "un peu plus tard dans l'après-midi"
+             ]
+  , examples (datetimeInterval ((2013, 2, 12, 18, 0, 0), (2013, 2, 13, 00, 0, 0)) Hour)
+             [ "plus tard dans la soirée"
+             , "un peu plus tard dans la soirée"
              ]
   ]

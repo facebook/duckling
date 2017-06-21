@@ -193,9 +193,9 @@ ruleDateDateInterval :: Rule
 ruleDateDateInterval = Rule
   { name = "dd.(mm.)? - dd.mm.(yy[yy]?)? (interval)"
   , pattern =
-    [ regex "(?:vo[nm]\\s+)?([012]?[1-9]|10|20|30|31)\\.((0?[1-9]|10|11|12)\\.)?"
+    [ regex "(?:vo[nm]\\s+)?(10|20|30|31|[012]?[1-9])\\.?((?<=\\.)(?:10|11|12|0?[1-9])(?:\\.?))?"
     , regex "\\-|/|bis( zum)?|auf( den)?"
-    , regex "([012]?[1-9]|10|20|30|31)\\.(0?[1-9]|10|11|12)\\.(\\d{2,4})?"
+    , regex "(10|20|30|31|[012]?[1-9])\\.(10|11|12|0?[1-9])\\.?((?<=\\.)\\d{2,4})?"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (d1:"":_)):_:Token RegexMatch (GroupMatch (d2:m2:"":_)):_) -> do

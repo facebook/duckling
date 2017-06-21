@@ -650,4 +650,12 @@ allExamples = concat
              , "vom 14.10. auf den 15.10.2018"
              , "vom 14.10. bis zum 15.10.2018"
              ]
+  , examples (datetime (2013, 10, 10, 0, 0, 0) Day)
+             [ "am 10.10."
+             , "am 10.10"
+             , "10.10"
+             ]
+  , examples (datetime (2013, 2, 12, 10, 10, 0) Minute)
+             [ "um 10.10"
+             ]
   ]

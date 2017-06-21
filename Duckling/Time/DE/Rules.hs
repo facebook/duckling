@@ -790,7 +790,7 @@ ruleMmdd :: Rule
 ruleMmdd = Rule
   { name = "mm/dd"
   , pattern =
-    [ regex "([012]?[1-9]|10|20|30|31)\\.(0?[1-9]|10|11|12)\\."
+    [ regex "(?:am\\s+)?([012]?[1-9]|10|20|30|31)\\.(10|11|12|0?[1-9])\\.?"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (m1:m2:_)):_) -> do

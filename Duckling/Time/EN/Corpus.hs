@@ -34,6 +34,8 @@ negativeCorpus = (testContext, examples)
       , "25"
       , "this is the one"
       , "in 61"
+      , "this one"
+      , "this past one"
       ]
 
 allExamples :: [Example]

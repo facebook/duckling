@@ -142,7 +142,7 @@ ruleThisTime = Rule
   { name = "this <time>"
   , pattern =
     [ regex "this|current|coming"
-    , dimension Time
+    , Predicate isNotLatent
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td:_) -> tt $ predNth 0 False td
@@ -166,7 +166,7 @@ ruleLastTime = Rule
   { name = "last <time>"
   , pattern =
     [ regex "(this past|last|previous)"
-    , dimension Time
+    , Predicate isNotLatent
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td:_) -> tt $ predNth (- 1) False td

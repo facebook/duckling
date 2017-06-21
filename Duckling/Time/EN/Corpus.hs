@@ -785,4 +785,13 @@ allExamples = concat
              [ "at 4:23"
              , "4:23am"
              ]
+  , examples (datetimeInterval ((2013, 3, 1, 0, 0, 0), (2013, 3, 11, 0, 0, 0)) Day)
+             [ "early March"
+             ]
+  , examples (datetimeInterval ((2013, 3, 11, 0, 0, 0), (2013, 3, 21, 0, 0, 0)) Day)
+             [ "mid March"
+             ]
+  , examples (datetimeInterval ((2013, 3, 21, 0, 0, 0), (2013, 4, 1, 0, 0, 0)) Day)
+             [ "late March"
+             ]
   ]

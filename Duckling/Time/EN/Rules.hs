@@ -142,7 +142,7 @@ ruleThisTime = Rule
   { name = "this <time>"
   , pattern =
     [ regex "this|current|coming"
-    , dimension Time
+    , Predicate isNotLatent
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td:_) -> tt $ predNth 0 False td
@@ -166,7 +166,7 @@ ruleLastTime = Rule
   { name = "last <time>"
   , pattern =
     [ regex "(this past|last|previous)"
-    , dimension Time
+    , Predicate isNotLatent
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td:_) -> tt $ predNth (- 1) False td
@@ -699,7 +699,7 @@ ruleYYYYMMDD = Rule
 ruleMMDD :: Rule
 ruleMMDD = Rule
   { name = "mm/dd"
-  , pattern = [regex "(0?[1-9]|1[0-2])\\s?/\\s?(3[01]|[12]\\d|0?[1-9])"]
+  , pattern = [regex "(0?[1-9]|1[0-2])\\s?[/-]\\s?(3[01]|[12]\\d|0?[1-9])"]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (mm:dd:_)):_) -> do
         m <- parseInt mm

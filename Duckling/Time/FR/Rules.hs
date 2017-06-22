@@ -21,9 +21,9 @@ import Duckling.Numeral.Helpers (parseInt)
 import Duckling.Regex.Types
 import Duckling.Time.Helpers
 import Duckling.Time.Types (TimeData (..))
+import Duckling.Types
 import qualified Duckling.Time.Types as TTime
 import qualified Duckling.TimeGrain.Types as TG
-import Duckling.Types
 
 ruleAujourdhui :: Rule
 ruleAujourdhui = Rule
@@ -64,14 +64,144 @@ ruleHier = Rule
   , prod = \_ -> tt . cycleNth TG.Day $ - 1
   }
 
+ruleDbutDeSoire :: Rule
+ruleDbutDeSoire = Rule
+  { name = "début de soirée"
+  , pattern =
+    [ regex "(en |au )?d(\x00e9|e)but de (la )?soir(\x00e9|e)e"
+    ]
+  , prod = \_ -> Token Time . partOfDay <$>
+      interval TTime.Open (hour False 18) (hour False 21)
+  }
+
+ruleFinDeSoire :: Rule
+ruleFinDeSoire = Rule
+  { name = "fin de soirée"
+  , pattern =
+    [ regex "(en |(\x00e0|a) la )?fin de (la )?soir(\x00e9|e)e"
+    ]
+  , prod = \_ -> Token Time . partOfDay <$>
+      interval TTime.Open (hour False 21) (hour False 0)
+  }
+
+ruleDbutDeMatine :: Rule
+ruleDbutDeMatine = Rule
+  { name = "début de matinée"
+  , pattern =
+    [ regex "le matin (tr(e|\x00e8)s )?t(\x00f4|o)t|(tr(e|\x00e8)s )?t(\x00f4|o)t le matin|(en |au )?d(\x00e9|e)but de (la )?matin(\x00e9|e)e"
+    ]
+  , prod = \_ -> Token Time . partOfDay <$>
+      interval TTime.Open (hour False 7) (hour False 9)
+  }
+
+ruleMilieuDeMatine :: Rule
+ruleMilieuDeMatine = Rule
+  { name = "milieu de matinée"
+  , pattern =
+    [ regex "(en |au )?milieu de (la )?matin(\x00e9|e)e"
+    ]
+  , prod = \_ -> Token Time . partOfDay <$>
+      interval TTime.Open (hour False 9) (hour False 11)
+  }
+
+ruleFinDeMatine :: Rule
+ruleFinDeMatine = Rule
+  { name = "fin de matinée"
+  , pattern =
+    [ regex "(en |(\x00e0|a) la )?fin de (la )?matin(\x00e9|e)e"
+    ]
+  , prod = \_ -> Token Time . partOfDay <$>
+      interval TTime.Open (hour False 10) (hour False 12)
+  }
+
+ruleDbutDaprsmidi :: Rule
+ruleDbutDaprsmidi = Rule
+  { name = "début d'après-midi"
+  , pattern =
+    [ regex "(au |en )?d(\x00e9|e)but (d'|de l')apr(e|\x00e9|\x00e8)s( |\\-)midi"
+    ]
+  , prod = \_ -> Token Time . partOfDay <$>
+      interval TTime.Open (hour False 12) (hour False 14)
+  }
+
+ruleMilieuDaprsmidi :: Rule
+ruleMilieuDaprsmidi = Rule
+  { name = "milieu d'après-midi"
+  , pattern =
+    [ regex "(au |en )?milieu (d'|de l')apr(e|\x00e9|\x00e8)s( |\\-)midi"
+    ]
+  , prod = \_ -> Token Time . partOfDay <$>
+      interval TTime.Open (hour False 14) (hour False 17)
+  }
+
+ruleFinDaprsmidi :: Rule
+ruleFinDaprsmidi = Rule
+  { name = "fin d'après-midi"
+  , pattern =
+    [ regex "((\x00e0|a) la |en )?fin (d'|de l')apr(e|\x00e9|\x00e8)s( |\\-)midi"
+    ]
+  , prod = \_ -> Token Time . partOfDay <$>
+      interval TTime.Open (hour False 17) (hour False 19)
+  }
+
 ruleDbutDeJourne :: Rule
 ruleDbutDeJourne = Rule
   { name = "début de journée"
   , pattern =
-    [ regex "d(\x00e9|e)but de journ(\x00e9|e)e"
+    [ regex "(en |au )?d(\x00e9|e)but de (la )?journ(\x00e9|e)e"
     ]
-  , prod = \_ -> Token Time . partOfDay . mkLatent <$>
+  , prod = \_ -> Token Time . partOfDay <$>
         interval TTime.Open (hour False 6) (hour False 10)
+  }
+
+ruleMilieuDeJourne :: Rule
+ruleMilieuDeJourne = Rule
+  { name = "milieu de journée"
+  , pattern =
+    [ regex "(en |au )?milieu de (la )?journ(\x00e9|e)e"
+    ]
+  , prod = \_ -> Token Time . partOfDay <$>
+      interval TTime.Open (hour False 11) (hour False 16)
+  }
+
+ruleFinDeJourne :: Rule
+ruleFinDeJourne = Rule
+  { name = "fin de journée"
+  , pattern =
+    [ regex "(en |(\x00e0|a) la )?fin de (la )?journ(\x00e9|e)e"
+    ]
+  , prod = \_ -> Token Time . partOfDay <$>
+      interval TTime.Open (hour False 17) (hour False 21)
+  }
+
+ruleDbutDeSemaine :: Rule
+ruleDbutDeSemaine = Rule
+  { name = "début de semaine"
+  , pattern =
+    [ regex "(en |au )?d(\x00e9|e)but de (cette |la )?semaine"
+    ]
+  , prod = \_ -> Token Time <$>
+      interval TTime.Open (dayOfWeek 1) (dayOfWeek 2)
+  }
+
+ruleMilieuDeSemaine :: Rule
+ruleMilieuDeSemaine = Rule
+  { name = "milieu de semaine"
+  , pattern =
+    [ regex "(en |au )?milieu de (cette |la )?semaine"
+    ]
+  , prod = \_ -> Token Time <$>
+      interval TTime.Open (dayOfWeek 3) (dayOfWeek 4)
+  }
+
+ruleFinDeSemaine :: Rule
+ruleFinDeSemaine = Rule
+  { name = "fin de semaine"
+  , pattern =
+    [ regex "(en |(\x00e0|a) la )?fin de (cette |la )?semaine"
+    ]
+  , prod = \_ -> Token Time <$>
+      interval TTime.Open (dayOfWeek 4) (dayOfWeek 7)
   }
 
 ruleLeLendemainDuTime :: Rule
@@ -785,36 +915,6 @@ ruleSoir = Rule
       interval TTime.Open (hour False 18) (hour False 0)
   }
 
-ruleDbutDeSoire :: Rule
-ruleDbutDeSoire = Rule
-  { name = "début de soirée"
-  , pattern =
-    [ regex "d(\x00e9|e)but de soir(\x00e9|e)e?"
-    ]
-  , prod = \_ -> Token Time . mkLatent . partOfDay <$>
-      interval TTime.Open (hour False 18) (hour False 21)
-  }
-
-ruleFinDeSoire :: Rule
-ruleFinDeSoire = Rule
-  { name = "fin de soirée"
-  , pattern =
-    [ regex "fin de soir(\x00e9|e)e?"
-    ]
-  , prod = \_ -> Token Time . mkLatent . partOfDay <$>
-      interval TTime.Open (hour False 21) (hour False 0)
-  }
-
-ruleDbutDeMatine :: Rule
-ruleDbutDeMatine = Rule
-  { name = "début de matinée"
-  , pattern =
-    [ regex "le matin (tr(e|\x00e8)s )?t(\x00f4|o)t|(tr(e|\x00e8)s )?t(\x00f4|o)t le matin|d(\x00e9|e)but de matin(\x00e9|e)e"
-    ]
-  , prod = \_ -> Token Time . mkLatent . partOfDay <$>
-      interval TTime.Open (hour False 7) (hour False 9)
-  }
-
 ruleNamedday5 :: Rule
 ruleNamedday5 = Rule
   { name = "named-day"
@@ -901,26 +1001,6 @@ ruleNamedmonth2 = Rule
   , prod = \_ -> tt $ month 2
   }
 
-ruleMilieuDeJourne :: Rule
-ruleMilieuDeJourne = Rule
-  { name = "milieu de journée"
-  , pattern =
-    [ regex "milieu de journ(\x00e9|e)e"
-    ]
-  , prod = \_ -> Token Time . mkLatent . partOfDay <$>
-      interval TTime.Open (hour False 11) (hour False 16)
-  }
-
-ruleFinDeJourne :: Rule
-ruleFinDeJourne = Rule
-  { name = "fin de journée"
-  , pattern =
-    [ regex "fin de journ(\x00e9|e)e"
-    ]
-  , prod = \_ -> Token Time . mkLatent . partOfDay <$>
-      interval TTime.Open (hour False 17) (hour False 21)
-  }
-
 ruleLeCycleDeTime :: Rule
 ruleLeCycleDeTime = Rule
   { name = "le <cycle> de <time>"
@@ -960,7 +1040,7 @@ ruleAprsmidi :: Rule
 ruleAprsmidi = Rule
   { name = "après-midi"
   , pattern =
-    [ regex "apr(e|\x00e9|\x00e8)s?[ \\-]?midi"
+    [ regex "apr(e|\x00e9|\x00e8)s( |\\-)midi"
     ]
   , prod = \_ -> Token Time . mkLatent . partOfDay <$>
       interval TTime.Open (hour False 12) (hour False 19)
@@ -1056,7 +1136,7 @@ ruleAprsTimeofday :: Rule
 ruleAprsTimeofday = Rule
   { name = "après <time-of-day>"
   , pattern =
-    [ regex "(apr(e|\x00e8)s|(a|\x00e0) partir de)"
+    [ regex "(apr(e|\x00e8)s|(a|\x00e0) partir de|(un peu )?plus tard que)"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -1391,26 +1471,6 @@ ruleYyyymmdd = Rule
       _ -> Nothing
   }
 
-ruleMilieuDeSemaine :: Rule
-ruleMilieuDeSemaine = Rule
-  { name = "milieu de semaine"
-  , pattern =
-    [ regex "(en |au )?milieu de (cette |la )?semaine"
-    ]
-  , prod = \_ -> Token Time <$>
-      interval TTime.Open (dayOfWeek 3) (dayOfWeek 4)
-  }
-
-ruleDbutDeSemaine :: Rule
-ruleDbutDeSemaine = Rule
-  { name = "début de semaine"
-  , pattern =
-    [ regex "(en |au )?d(\x00e9|e)but de (cette |la )?semaine"
-    ]
-  , prod = \_ -> Token Time <$>
-      interval TTime.Open (dayOfWeek 1) (dayOfWeek 2)
-  }
-
 ruleTimeofdayHeures :: Rule
 ruleTimeofdayHeures = Rule
   { name = "<time-of-day> heures"
@@ -1544,7 +1604,7 @@ ruleFinNamedmonthinterval = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td:_) -> do
-        from <- intersect (dayOfMonth 25) td
+        from <- intersect (dayOfMonth 21) td
         let to = cycleLastOf TG.Day td
         Token Time <$> interval TTime.Closed from to
       _ -> Nothing
@@ -1665,16 +1725,6 @@ ruleNamedday7 = Rule
   , prod = \_ -> tt $ dayOfWeek 7
   }
 
-ruleFinDeSemaine :: Rule
-ruleFinDeSemaine = Rule
-  { name = "fin de semaine"
-  , pattern =
-    [ regex "(en |(\x00e0|a) la )?fin de (cette |la )?semaine"
-    ]
-  , prod = \_ -> Token Time <$>
-      interval TTime.Open (dayOfWeek 4) (dayOfWeek 7)
-  }
-
 ruleIlYADuration :: Rule
 ruleIlYADuration = Rule
   { name = "il y a <duration>"
@@ -1705,9 +1755,9 @@ ruleAuDjeuner :: Rule
 ruleAuDjeuner = Rule
   { name = "au déjeuner"
   , pattern =
-    [ regex "((\x00e0|a) l(')?heure du|pendant( le)?|au)? d(e|\x00e9|\x00e8)jeuner"
+    [ regex "((\x00e0|a) l'heure du|au moment de|pendant( le)?|au)? d(e|\x00e9|\x00e8)jeuner"
     ]
-  , prod = \_ -> Token Time . mkLatent . partOfDay <$>
+  , prod = \_ -> Token Time . partOfDay <$>
       interval TTime.Open (hour False 12) (hour False 14)
   }
 
@@ -1740,26 +1790,6 @@ ruleMaintenant = Rule
     [ regex "maintenant|(tout de suite)"
     ]
   , prod = \_ -> tt $ cycleNth TG.Second 0
-  }
-
-ruleMilieuDeMatine :: Rule
-ruleMilieuDeMatine = Rule
-  { name = "milieu de matinée"
-  , pattern =
-    [ regex "milieu de matin(\x00e9|e)e"
-    ]
-  , prod = \_ -> Token Time . mkLatent . partOfDay <$>
-      interval TTime.Open (hour False 9) (hour False 11)
-  }
-
-ruleFinDeMatine :: Rule
-ruleFinDeMatine = Rule
-  { name = "fin de matinée"
-  , pattern =
-    [ regex "fin de matin(\x00e9|e)e"
-    ]
-  , prod = \_ -> Token Time . mkLatent . partOfDay <$>
-      interval TTime.Open (hour False 10) (hour False 12)
   }
 
 ruleDdmmyyyy :: Rule
@@ -1837,16 +1867,6 @@ ruleNamedmonth11 = Rule
   , prod = \_ -> tt $ month 11
   }
 
-ruleDbutDaprsmidi :: Rule
-ruleDbutDaprsmidi = Rule
-  { name = "début d'après-midi"
-  , pattern =
-    [ regex "d(\x00e9|e)but d'apr(e|\x00e9|\x00e8)s?[ \\-]?midi"
-    ]
-  , prod = \_ -> Token Time . mkLatent . partOfDay <$>
-      interval TTime.Open (hour False 12) (hour False 14)
-  }
-
 ruleLeTime :: Rule
 ruleLeTime = Rule
   { name = "le <time>"
@@ -1884,26 +1904,6 @@ ruleDayofweekDayofmonthTimeofday = Rule
         dom <- intersectDOM td1 token
         Token Time <$> intersect dom td2
       _ -> Nothing
-  }
-
-ruleMilieuDaprsmidi :: Rule
-ruleMilieuDaprsmidi = Rule
-  { name = "fin d'après-midi"
-  , pattern =
-    [ regex "milieu d'apr(e|\x00e9|\x00e8)s?[ \\-]?midi"
-    ]
-  , prod = \_ -> Token Time . mkLatent . partOfDay <$>
-      interval TTime.Open (hour False 15) (hour False 17)
-  }
-
-ruleFinDaprsmidi :: Rule
-ruleFinDaprsmidi = Rule
-  { name = "fin d'après-midi"
-  , pattern =
-    [ regex "fin d'apr(e|\x00e9|\x00e8)s?[ \\-]?midi"
-    ]
-  , prod = \_ -> Token Time . mkLatent . partOfDay <$>
-      interval TTime.Open (hour False 17) (hour False 19)
   }
 
 ruleJourDeLan :: Rule
@@ -1996,12 +1996,62 @@ ruleFinDuMois :: Rule
 ruleFinDuMois = Rule
   { name = "fin du mois"
   , pattern =
-    [ regex "(((a|\x00e0) )?la )?fin (du|de) mois"
+    [ regex "(en |((\x00e0|a) la ))?fin (du|de) (ce )?mois"
     ]
-  , prod = \_ -> do
-      let from = cycleNthAfter False TG.Day (- 10) $ cycleNth TG.Month 1
-          to = cycleNth TG.Month 1
-      Token Time . mkLatent . partOfDay <$> interval TTime.Open from to
+  , prod = \_ -> Token Time <$>
+      interval TTime.Open (dayOfMonth 21) (dayOfMonth 0)
+  }
+
+ruleDbutDuMois :: Rule
+ruleDbutDuMois = Rule
+  { name = "début du mois"
+  , pattern =
+    [ regex "(en |au )?d(\x00e9|e)but (du|de) (ce )?mois"
+    ]
+  , prod = \_ -> Token Time <$>
+      interval TTime.Open (dayOfMonth 1) (dayOfMonth 10)
+  }
+
+ruleFinDAnnee :: Rule
+ruleFinDAnnee = Rule
+  { name = "fin d'année"
+  , pattern =
+    [ regex "(en |(\x00e0|a) la )?fin (d'|de l'|de cette )ann(\x00e9|e)e"
+    ]
+  , prod = \_ -> Token Time <$>
+      interval TTime.Open (month 11) (month 1)
+  }
+
+ruleDbutDAnnee :: Rule
+ruleDbutDAnnee = Rule
+  { name = "début d'année"
+  , pattern =
+    [ regex "(en |au )?d(\x00e9|e)but (d'|de l'|de cette )ann(\x00e9|e)e"
+    ]
+  , prod = \_ -> Token Time <$>
+      interval TTime.Open (month 1) (month 3)
+  }
+
+rulePlusTard :: Rule
+rulePlusTard = Rule
+  { name = "plus tard"
+  , pattern =
+    [ regex "(un peu )?plus tard"
+    ]
+  , prod = \_ -> tt $ withDirection TTime.After $ cycleNth TG.Minute 10
+
+  }
+
+rulePlusTardPartofday :: Rule
+rulePlusTardPartofday = Rule
+  { name = "plus tard <part-of-day>"
+  , pattern =
+    [ regex "(un peu )?plus tard"
+    , Predicate isAPartOfDay
+    ]
+  , prod = \tokens -> case tokens of
+      (_:Token Time td:_) -> tt $ notLatent td
+      _ -> Nothing
   }
 
 ruleTimezone :: Rule
@@ -2177,4 +2227,9 @@ rules =
   , ruleHourofdayEtDemi
   , ruleFinDuMois
   , ruleTimezone
+  , ruleDbutDuMois
+  , ruleFinDAnnee
+  , ruleDbutDAnnee
+  , rulePlusTard
+  , rulePlusTardPartofday
   ]

@@ -119,6 +119,8 @@ allExamples = concat
              , "on 2/15"
              , "February 15"
              , "2 / 15"
+             , "2-15"
+             , "2 - 15"
              ]
   , examples (datetime (2013, 8, 8, 0, 0, 0) Day)
              ["Aug 8"]

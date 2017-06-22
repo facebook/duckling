@@ -304,13 +304,6 @@ classifiers
                    koData =
                      ClassData{prior = -infinity, unseen = -0.6931471805599453,
                                likelihoods = HashMap.fromList [], n = 0}}),
-       ("dd.? - dd.mm.?(yy[yy]?)? (interval)",
-        Classifier{okData =
-                     ClassData{prior = 0.0, unseen = -2.890371757896165,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 16},
-                   koData =
-                     ClassData{prior = -infinity, unseen = -0.6931471805599453,
-                               likelihoods = HashMap.fromList [], n = 0}}),
        ("<time-of-day>  o'clock",
         Classifier{okData =
                      ClassData{prior = -4.580953603129422e-2,
@@ -1225,6 +1218,13 @@ classifiers
                                n = 6},
                    koData =
                      ClassData{prior = -infinity, unseen = -2.3978952727983707,
+                               likelihoods = HashMap.fromList [], n = 0}}),
+       ("dd.(mm.)? - dd.mm.(yy[yy]?)? (interval)",
+        Classifier{okData =
+                     ClassData{prior = 0.0, unseen = -2.890371757896165,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 16},
+                   koData =
+                     ClassData{prior = -infinity, unseen = -0.6931471805599453,
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("hh:mm",
         Classifier{okData =

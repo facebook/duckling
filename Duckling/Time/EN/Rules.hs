@@ -173,6 +173,22 @@ ruleLastTime = Rule
       _ -> Nothing
   }
 
+ruleLastWeekendOfMonth :: Rule
+ruleLastWeekendOfMonth = Rule
+  { name = "last weekend of <named-month>"
+  , pattern =
+    [ regex "last\\s(week(\\s|-)?end|wkend)\\s(of|in)"
+    , Predicate isAMonth
+    ]
+  , prod = \tokens -> case tokens of
+      (_:Token Time td2:_) -> do
+        fri <- intersect (dayOfWeek 5) (hour False 18)
+        mon <- intersect (dayOfWeek 1) (hour False 0)
+        td1 <- interval TTime.Open fri mon
+        tt $ predLastOf td1 td2
+      _ -> Nothing
+  }
+
 ruleTimeBeforeLastAfterNext :: Rule
 ruleTimeBeforeLastAfterNext = Rule
   { name = "<time> before last|after next"
@@ -1532,6 +1548,7 @@ rules =
   , ruleTimeBeforeLastAfterNext
   , ruleLastDOWOfTime
   , ruleLastCycleOfTime
+  , ruleLastWeekendOfMonth
   , ruleNthTimeOfTime
   , ruleTheNthTimeOfTime
   , ruleNthTimeAfterTime

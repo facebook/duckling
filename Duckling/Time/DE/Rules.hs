@@ -180,12 +180,60 @@ ruleDatetimeDatetimeInterval = Rule
   { name = "<datetime> - <datetime> (interval)"
   , pattern =
     [ Predicate isNotLatent
-    , regex "\\-|bis"
+    , regex "\\-|bis( zum)?|auf( den)?"
     , Predicate isNotLatent
     ]
   , prod = \tokens -> case tokens of
       (Token Time td1:_:Token Time td2:_) ->
         Token Time <$> interval TTime.Closed td1 td2
+      _ -> Nothing
+  }
+
+ruleDateDateInterval :: Rule
+ruleDateDateInterval = Rule
+  { name = "dd.(mm.)? - dd.mm.(yy[yy]?)? (interval)"
+  , pattern =
+    [ regex "(?:vo[nm]\\s+)?(10|20|30|31|[012]?[1-9])\\.?((?<=\\.)(?:10|11|12|0?[1-9])(?:\\.?))?"
+    , regex "\\-|/|bis( zum)?|auf( den)?"
+    , regex "(10|20|30|31|[012]?[1-9])\\.(10|11|12|0?[1-9])\\.?((?<=\\.)\\d{2,4})?"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (d1:"":_)):
+       _:
+       Token RegexMatch (GroupMatch (d2:m2:"":_)):
+       _) -> do
+          d1 <- parseInt d1
+          d2 <- parseInt d2
+          m2 <- parseInt m2
+          Token Time <$> interval TTime.Closed (monthDay m2 d1) (monthDay m2 d2)
+      (Token RegexMatch (GroupMatch (d1:"":_)):
+       _:
+       Token RegexMatch (GroupMatch (d2:m2:y:_)):
+       _) -> do
+          d1 <- parseInt d1
+          d2 <- parseInt d2
+          m2 <- parseInt m2
+          y <- parseInt y
+          Token Time <$> interval TTime.Closed (yearMonthDay y m2 d1) (yearMonthDay y m2 d2)
+      (Token RegexMatch (GroupMatch (d1:m1:_)):
+       _:
+       Token RegexMatch (GroupMatch (d2:m2:"":_)):
+       _) -> do
+          d1 <- parseInt d1
+          d2 <- parseInt d2
+          m1 <- parseInt m1
+          m2 <- parseInt m2
+          Token Time <$> interval TTime.Closed (monthDay m1 d1) (monthDay m2 d2)
+      (Token RegexMatch (GroupMatch (d1:m1:_)):
+       _:
+       Token RegexMatch (GroupMatch (d2:m2:y:_)):
+       _) -> do
+          d1 <- parseInt d1
+          d2 <- parseInt d2
+          m1 <- parseInt m1
+          m2 <- parseInt m2
+          y <- parseInt y
+          Token Time <$> interval TTime.Closed (yearMonthDay y m1 d1) (yearMonthDay y m2 d2)
       _ -> Nothing
   }
 
@@ -268,7 +316,7 @@ ruleFromDatetimeDatetimeInterval = Rule
   , pattern =
     [ regex "vo[nm]"
     , dimension Time
-    , regex "\\-|bis"
+    , regex "\\-|bis( zum)?|auf( den)?"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -328,7 +376,7 @@ ruleMonthDdddInterval = Rule
   { name = "<month> dd-dd (interval)"
   , pattern =
     [ regex "([012]?\\d|30|31)(ter|\\.)?"
-    , regex "\\-|bis"
+    , regex "\\-|bis( zum)?|auf( den)?"
     , regex "([012]?\\d|30|31)(ter|\\.)?"
     , Predicate isAMonth
     ]
@@ -754,7 +802,7 @@ ruleMmdd :: Rule
 ruleMmdd = Rule
   { name = "mm/dd"
   , pattern =
-    [ regex "([012]?[1-9]|10|20|30|31)\\.(0?[1-9]|10|11|12)\\."
+    [ regex "(?:am\\s+)?([012]?[1-9]|10|20|30|31)\\.(10|11|12|0?[1-9])\\.?"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (m1:m2:_)):_) -> do
@@ -1565,7 +1613,7 @@ ruleHhmm :: Rule
 ruleHhmm = Rule
   { name = "hh:mm"
   , pattern =
-    [ regex "((?:[01]?\\d)|(?:2[0-3]))[:.]([0-5]\\d)(?:uhr|h)?"
+    [ regex "((?:[01]?\\d)|(?:2[0-3]))[:.h]([0-5]\\d)(?:uhr|h)?"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (m1:m2:_)):_) -> do
@@ -1715,7 +1763,7 @@ ruleTimeofdayTimeofdayInterval2 = Rule
   { name = "<time-of-day> - <time-of-day> (interval)"
   , pattern =
     [ Predicate isATimeOfDay
-    , regex "\\-|bis"
+    , regex "\\-|/|bis"
     , Predicate $ liftM2 (&&) isATimeOfDay isNotLatent
     ]
   , prod = \tokens -> case tokens of
@@ -1929,6 +1977,7 @@ rules =
   , ruleChristmas
   , ruleChristmasEve
   , ruleDatetimeDatetimeInterval
+  , ruleDateDateInterval
   , ruleDayofmonthNonOrdinalNamedmonth
   , ruleDayofmonthNonOrdinalOfNamedmonth
   , ruleDayofmonthOrdinal

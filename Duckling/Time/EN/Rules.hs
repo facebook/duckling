@@ -16,22 +16,22 @@ module Duckling.Time.EN.Rules
 import Control.Monad (liftM2)
 import Data.Maybe
 import Data.Text (Text)
-import qualified Data.Text as Text
 import Prelude
+import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
 import Duckling.Duration.Helpers (duration)
 import Duckling.Numeral.Helpers (parseInt)
 import Duckling.Numeral.Types (NumeralData (..))
-import qualified Duckling.Numeral.Types as TNumeral
 import Duckling.Ordinal.Types (OrdinalData (..))
-import qualified Duckling.Ordinal.Types as TOrdinal
 import Duckling.Regex.Types
 import Duckling.Time.Helpers
 import Duckling.Time.Types (TimeData (..))
+import Duckling.Types
+import qualified Duckling.Numeral.Types as TNumeral
+import qualified Duckling.Ordinal.Types as TOrdinal
 import qualified Duckling.Time.Types as TTime
 import qualified Duckling.TimeGrain.Types as TG
-import Duckling.Types
 
 ruleIntersect :: Rule
 ruleIntersect = Rule
@@ -181,11 +181,7 @@ ruleLastWeekendOfMonth = Rule
     , Predicate isAMonth
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td2:_) -> do
-        fri <- intersect (dayOfWeek 5) (hour False 18)
-        mon <- intersect (dayOfWeek 1) (hour False 0)
-        td1 <- interval TTime.Open fri mon
-        tt $ predLastOf td1 td2
+      (_:Token Time td2:_) -> tt $ predLastOf weekend td2
       _ -> Nothing
   }
 
@@ -847,11 +843,10 @@ rulePODofTime = Rule
 ruleWeekend :: Rule
 ruleWeekend = Rule
   { name = "week-end"
-  , pattern = [regex "(week(\\s|-)?end|wkend)"]
-  , prod = \_ -> do
-      fri <- intersect (dayOfWeek 5) (hour False 18)
-      mon <- intersect (dayOfWeek 1) (hour False 0)
-      Token Time <$> interval TTime.Open fri mon
+  , pattern =
+    [ regex "(week(\\s|-)?end|wkend)"
+    ]
+  , prod = \_ -> tt weekend
   }
 
 ruleSeasons :: Rule

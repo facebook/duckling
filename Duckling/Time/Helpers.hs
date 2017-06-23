@@ -22,7 +22,8 @@ module Duckling.Time.Helpers
   , hourMinute, hourMinuteSecond, inDuration, intersect, intersectDOM, interval
   , inTimezone, longWEBefore, minute, minutesAfter, minutesBefore, mkLatent
   , month, monthDay, notLatent, nthDOWOfMonth, partOfDay, predLastOf, predNth
-  , predNthAfter, second, timeOfDayAMPM, withDirection, year, yearMonthDay
+  , predNthAfter, second, timeOfDayAMPM, weekend, withDirection, year
+  , yearMonthDay
   , tt
     -- Other
   , getIntValue
@@ -30,18 +31,15 @@ module Duckling.Time.Helpers
 
 import Control.Monad (liftM2)
 import Data.Maybe
-import Prelude
 import Data.Text (Text)
+import Prelude
 import qualified Data.Time as Time
 import qualified Data.Time.Calendar.WeekDate as Time
 import qualified Data.Time.LocalTime.TimeZone.Series as Series
 
 import Duckling.Dimensions.Types
 import Duckling.Duration.Types (DurationData (DurationData))
-import qualified Duckling.Duration.Types as TDuration
-import qualified Duckling.Numeral.Types as TNumeral
 import Duckling.Ordinal.Types (OrdinalData (OrdinalData))
-import qualified Duckling.Ordinal.Types as TOrdinal
 import Duckling.Time.TimeZone.Parse (parseTimezone)
 import Duckling.Time.Types
   ( TimeData(TimeData)
@@ -59,9 +57,12 @@ import Duckling.Time.Types
   , runPredicate
   , AMPM(..)
   )
+import Duckling.Types
+import qualified Duckling.Duration.Types as TDuration
+import qualified Duckling.Numeral.Types as TNumeral
+import qualified Duckling.Ordinal.Types as TOrdinal
 import qualified Duckling.Time.Types as TTime
 import qualified Duckling.TimeGrain.Types as TG
-import Duckling.Types
 
 getIntValue :: Token -> Maybe Int
 getIntValue (Token Numeral nd) = TNumeral.getIntValue $ TNumeral.value nd
@@ -479,6 +480,12 @@ longWEBefore monday = interval' TTime.Open (start, end)
     end = intersect' (tue, hour False 0)
     fri = cycleNthAfter False TG.Day (- 3) monday
     tue = cycleNthAfter False TG.Day 1 monday
+
+weekend :: TimeData
+weekend = interval' TTime.Open (fri, mon)
+  where
+    fri = intersect' (dayOfWeek 5, hour False 18)
+    mon = intersect' (dayOfWeek 1, hour False 0)
 
 daysOfWeekOfMonth :: Int -> Int -> TimeData
 daysOfWeekOfMonth dow m = intersect' (dayOfWeek dow, month m)

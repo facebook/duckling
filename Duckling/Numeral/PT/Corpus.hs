@@ -131,11 +131,24 @@ allExamples = concat
              [ "100"
              , "Cem"
              ]
+  , examples (NumeralValue 104)
+             [ "104"
+             , "cento e quatro"
+             ]
   , examples (NumeralValue 243)
              [ "243"
+             ,"duzentos e quarenta e tres"
              ]
   , examples (NumeralValue 300)
              [ "trezentos"
+             ]
+  , examples (NumeralValue 343)
+             [ "trezentos e quarenta e tres"
+             , "343"
+             ]
+  , examples (NumeralValue 891)
+             [ "oitocentos e noventa e um"
+             , "891"
              ]
   , examples (NumeralValue 3000000)
              [ "3M"

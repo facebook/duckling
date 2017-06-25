@@ -184,7 +184,8 @@ ruleNumeral6 :: Rule
 ruleNumeral6 = Rule
   { name = "number 100..1000 "
   , pattern =
-    [ regex "(ce(m|to)|duzentos|trezentos|quatrocentos|quinhentos|seiscentos|setecentos|oitocentos|novecentos|mil)"
+    [
+      regex "(cem|cento|duzentos|trezentos|quatrocentos|quinhentos|seiscentos|setecentos|oitocentos|novecentos|mil)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
@@ -244,17 +245,17 @@ ruleNumeralDozen = Rule
 
 ruleNumerals :: Rule
 ruleNumerals = Rule
-  { name = "numbers 200..999"
+  { name = "numbers (100..999)"
   , pattern =
-    [ numberBetween 2 10
-    , numberWith TNumeral.value (== 100)
+    [ numberBetween 100 1000
+    , regex "e"
     , numberBetween 0 100
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral (NumeralData {TNumeral.value = v1}):
        _:
        Token Numeral (NumeralData {TNumeral.value = v2}):
-       _) -> double $ v1 * 100 + v2
+       _) -> double $ v1 + v2
       _ -> Nothing
   }
 

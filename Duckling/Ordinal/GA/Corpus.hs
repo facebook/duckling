@@ -26,6 +26,11 @@ allExamples :: [Example]
 allExamples = concat
   [ examples (OrdinalData 6)
              [ "séu"
+             , "6a"
+             , "6d"
+             , "06u"
+             , "6 ú"
+             , "0006 adh"
              ]
   , examples (OrdinalData 1)
              [ "chead"

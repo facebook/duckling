@@ -34,7 +34,7 @@ import Prelude
 
 import Duckling.Dimensions.Types
 import Duckling.Numeral.Types
-import Duckling.Types hiding (value)
+import Duckling.Types hiding (Entity(value))
 
 zeroT :: Text
 zeroT = Text.singleton '0'

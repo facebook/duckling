@@ -910,11 +910,36 @@ ruleIntervalMonthDDDD = Rule
     , regex "(3[01]|[12]\\d|0?[1-9])"
     ]
   , prod = \tokens -> case tokens of
-      ( Token Time td
-       :Token RegexMatch (GroupMatch (d1:_))
-       :_
-       :Token RegexMatch (GroupMatch (d2:_))
-       :_) -> do
+      (Token Time td:
+       Token RegexMatch (GroupMatch (d1:_)):
+       _:
+       Token RegexMatch (GroupMatch (d2:_)):
+       _) -> do
+        dd1 <- parseInt d1
+        dd2 <- parseInt d2
+        dom1 <- intersect (dayOfMonth dd1) td
+        dom2 <- intersect (dayOfMonth dd2) td
+        Token Time <$> interval TTime.Closed dom1 dom2
+      _ -> Nothing
+  }
+
+ruleIntervalFromMonthDDDD :: Rule
+ruleIntervalFromMonthDDDD = Rule
+  { name = "from <month> dd-dd (interval)"
+  , pattern =
+    [ regex "from"
+    , Predicate isAMonth
+    , regex "(3[01]|[12]\\d|0?[1-9])"
+    , regex "\\-|to|th?ru|through|(un)?til(l)?"
+    , regex "(3[01]|[12]\\d|0?[1-9])"
+    ]
+  , prod = \tokens -> case tokens of
+      (_:
+       Token Time td:
+       Token RegexMatch (GroupMatch (d1:_)):
+       _:
+       Token RegexMatch (GroupMatch (d2:_)):
+       _) -> do
         dd1 <- parseInt d1
         dd2 <- parseInt d2
         dom1 <- intersect (dayOfMonth dd1) td
@@ -1596,6 +1621,7 @@ rules =
   , ruleSeasons
   , ruleTODPrecision
   , rulePrecisionTOD
+  , ruleIntervalFromMonthDDDD
   , ruleIntervalMonthDDDD
   , ruleIntervalDash
   , ruleIntervalFrom

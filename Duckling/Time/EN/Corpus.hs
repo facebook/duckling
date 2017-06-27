@@ -658,11 +658,14 @@ allExamples = concat
              , "July 13 thru 15"
              , "July 13 through 15"
              , "July 13 - July 15"
+             , "from July 13-15"
              ]
   , examples (datetimeInterval ((2013, 8, 8, 0, 0, 0), (2013, 8, 13, 0, 0, 0)) Day)
-             ["Aug 8 - Aug 12"]
+             [ "Aug 8 - Aug 12"
+             ]
   , examples (datetimeInterval ((2013, 2, 12, 9, 30, 0), (2013, 2, 12, 11, 1, 0)) Minute)
-             ["9:30 - 11:00"]
+             [ "9:30 - 11:00"
+             ]
   , examples (datetimeInterval ((2013, 2, 14, 9, 30, 0), (2013, 2, 14, 11, 1, 0)) Minute)
              [ "from 9:30 - 11:00 on Thursday"
              , "between 9:30 and 11:00 on thursday"

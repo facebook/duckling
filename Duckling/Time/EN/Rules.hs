@@ -447,7 +447,9 @@ ruleIdesOfMonth = Rule
 ruleTODLatent :: Rule
 ruleTODLatent = Rule
   { name = "time-of-day (latent)"
-  , pattern = [Predicate $ isIntegerBetween 0 23]
+  , pattern =
+    [ Predicate $ liftM2 (&&) isNumeralSafeToUse (isIntegerBetween 0 23)
+    ]
   , prod = \tokens -> case tokens of
       (token:_) -> do
         n <- getIntValue token

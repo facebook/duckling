@@ -15,7 +15,7 @@ module Duckling.Time.Helpers
     isADayOfWeek, isAMonth, isAnHourOfDay, isAPartOfDay, isATimeOfDay
   , isDOMInteger, isDOMOrdinal, isDOMValue, isGrain, isGrainFinerThan
   , isGrainOfTime, isIntegerBetween, isNotLatent, isOrdinalBetween
-  , isMidnightOrNoon
+  , isMidnightOrNoon, isNumeralSafeToUse
     -- Production
   , cycleLastOf, cycleN, cycleNth, cycleNthAfter, dayOfMonth, dayOfWeek
   , daysOfWeekOfMonth, durationAfter, durationAgo, durationBefore, form, hour
@@ -273,6 +273,10 @@ isIntegerBetween :: Int -> Int -> Predicate
 isIntegerBetween low high (Token Numeral nd) =
   TNumeral.isIntegerBetween (TNumeral.value nd) low high
 isIntegerBetween _ _ _ = False
+
+isNumeralSafeToUse :: Predicate
+isNumeralSafeToUse (Token Numeral nd) = TNumeral.okForAnyTime nd
+isNumeralSafeToUse _ = False
 
 isOrdinalBetween :: Int -> Int -> Predicate
 isOrdinalBetween low high (Token Ordinal od) =

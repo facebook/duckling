@@ -15,6 +15,7 @@ module Duckling.Numeral.Helpers
   , integer
   , multiply
   , divide
+  , notOkForAnyTime
   , numberBetween
   , numberWith
   , oneOf
@@ -23,14 +24,14 @@ module Duckling.Numeral.Helpers
   , parseInteger
   , withGrain
   , withMultipliable
-  , parseDecimal,
+  , parseDecimal
   ) where
 
-import qualified Data.Attoparsec.Text as Atto
 import Data.Maybe
 import Data.Text (Text)
-import qualified Data.Text as Text
 import Prelude
+import qualified Data.Attoparsec.Text as Atto
+import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
 import Duckling.Numeral.Types
@@ -106,11 +107,17 @@ withGrain g (Token Numeral x@NumeralData{}) =
   Just . Token Numeral $ x {grain = Just g}
 withGrain _ _ = Nothing
 
+notOkForAnyTime :: Token -> Maybe Token
+notOkForAnyTime (Token Numeral x) =
+  Just . Token Numeral $ x {okForAnyTime = False}
+notOkForAnyTime _ = Nothing
+
 double :: Double -> Maybe Token
 double x = Just . Token Numeral $ NumeralData
   { value = x
   , grain = Nothing
   , multipliable = False
+  , okForAnyTime = True
   }
 
 integer :: Integer -> Maybe Token

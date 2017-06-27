@@ -13,20 +13,21 @@
 module Duckling.Numeral.EN.Rules
   ( rules ) where
 
+import Control.Applicative ((<|>))
 import Data.HashMap.Strict (HashMap)
-import qualified Data.HashMap.Strict as HashMap
 import Data.Maybe
-import Data.Text (Text)
-import qualified Data.Text as Text
-import Prelude
 import Data.String
+import Data.Text (Text)
+import Prelude
+import qualified Data.HashMap.Strict as HashMap
+import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
 import Duckling.Numeral.Helpers
 import Duckling.Numeral.Types (NumeralData (..))
-import qualified Duckling.Numeral.Types as TNumeral
 import Duckling.Regex.Types
 import Duckling.Types
+import qualified Duckling.Numeral.Types as TNumeral
 
 ruleIntegers :: Rule
 ruleIntegers = Rule
@@ -46,7 +47,7 @@ ruleDozen = Rule
   , pattern =
     [ regex "(a )?dozens?( of)?"
     ]
-  , prod = \_ -> integer 12 >>= withMultipliable
+  , prod = \_ -> integer 12 >>= withMultipliable >>= notOkForAnyTime
   }
 
 zeroNineteenMap :: HashMap Text Integer
@@ -58,23 +59,8 @@ zeroNineteenMap = HashMap.fromList
   , ( "zero"  , 0 )
   , ( "zilch" , 0 )
   , ( "one"   , 1 )
-  , ( "single", 1 )
   , ( "two", 2 )
-  , ( "a couple", 2 )
-  , ( "a couple of", 2 )
-  , ( "couple", 2 )
-  , ( "couples", 2 )
-  , ( "couple of", 2 )
-  , ( "couples of", 2 )
-  , ( "a pair", 2 )
-  , ( "a pair of", 2 )
-  , ( "pair", 2 )
-  , ( "pairs", 2 )
-  , ( "pair of", 2 )
-  , ( "pairs of", 2 )
   , ( "three", 3 )
-  , ( "a few", 3 )
-  , ( "few", 3 )
   , ( "four", 4 )
   , ( "five", 5 )
   , ( "six", 6 )
@@ -93,14 +79,37 @@ zeroNineteenMap = HashMap.fromList
   , ( "nineteen", 19 )
   ]
 
+informalMap :: HashMap Text Integer
+informalMap = HashMap.fromList
+  [ ( "single", 1 )
+  , ( "a couple", 2 )
+  , ( "a couple of", 2 )
+  , ( "couple", 2 )
+  , ( "couples", 2 )
+  , ( "couple of", 2 )
+  , ( "couples of", 2 )
+  , ( "a pair", 2 )
+  , ( "a pair of", 2 )
+  , ( "pair", 2 )
+  , ( "pairs", 2 )
+  , ( "pair of", 2 )
+  , ( "pairs of", 2 )
+  , ( "a few", 3 )
+  , ( "few", 3 )
+  ]
+
 ruleToNineteen :: Rule
 ruleToNineteen = Rule
   { name = "integer (0..19)"
   -- e.g. fourteen must be before four, otherwise four will always shadow fourteen
-  , pattern = [regex "(none|zilch|naught|nought|nil|zero|one|single|two|(a )?(pair|couple)s?( of)?|three|(a )?few|fourteen|four|fifteen|five|sixteen|six|seventeen|seven|eighteen|eight|nineteen|nine|ten|eleven|twelve|thirteen)"]
+  , pattern =
+    [ regex "(none|zilch|naught|nought|nil|zero|one|single|two|(a )?(pair|couple)s?( of)?|three|(a )?few|fourteen|four|fifteen|five|sixteen|six|seventeen|seven|eighteen|eight|nineteen|nine|ten|eleven|twelve|thirteen)"
+    ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
-        HashMap.lookup (Text.toLower match) zeroNineteenMap >>= integer
+        let x = Text.toLower match in
+        (HashMap.lookup x zeroNineteenMap >>= integer) <|>
+        (HashMap.lookup x informalMap >>= integer >>= notOkForAnyTime)
       _ -> Nothing
   }
 
@@ -110,7 +119,7 @@ ruleTens = Rule
   , pattern = [regex "(twenty|thirty|fou?rty|fifty|sixty|seventy|eighty|ninety)"]
   , prod = \tokens ->
       case tokens of
-        (Token RegexMatch (GroupMatch (match : _)) : _) ->
+        (Token RegexMatch (GroupMatch (match:_)):_) ->
           case Text.toLower match of
             "twenty"  -> integer 20
             "thirty"  -> integer 30

@@ -56,6 +56,10 @@ allExamples = concat
              [ "today"
              , "at this time"
              ]
+  , examples (datetime (2013, 2, 1, 0, 0, 0) Day)
+             [ "2/2013"
+             , "2/13"
+             ]
   , examples (datetime (2013, 2, 11, 0, 0, 0) Day)
              ["yesterday"]
   , examples (datetime (2013, 2, 13, 0, 0, 0) Day)

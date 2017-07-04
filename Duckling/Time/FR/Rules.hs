@@ -911,7 +911,7 @@ ruleSoir = Rule
   , pattern =
     [ regex "soir(\x00e9|e)?e?"
     ]
-  , prod = \_ -> Token Time . mkLatent . partOfDay <$>
+  , prod = \_ -> Token Time . partOfDay <$>
       interval TTime.Open (hour False 18) (hour False 0)
   }
 

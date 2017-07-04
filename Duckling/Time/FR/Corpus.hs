@@ -573,6 +573,8 @@ allExamples = concat
              [ "ce soir"
              , "le soir"
              , "dans la soirée"
+             , "soir"
+             , "soirée"
              ]
   , examples (datetimeInterval ((2013, 2, 12, 18, 0, 0), (2013, 2, 12, 21, 0, 0)) Hour)
              [ "aujourd'hui en début de soirée"

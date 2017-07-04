@@ -1066,13 +1066,6 @@ classifiers
                      ClassData{prior = 0.0, unseen = -1.0986122886681098,
                                likelihoods = HashMap.fromList [("integer (numeric)", 0.0)],
                                n = 1}}),
-       ("now",
-        Classifier{okData =
-                     ClassData{prior = 0.0, unseen = -2.0794415416798357,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 6},
-                   koData =
-                     ClassData{prior = -infinity, unseen = -0.6931471805599453,
-                               likelihoods = HashMap.fromList [], n = 0}}),
        ("<day-of-month> (ordinal or number) of <named-month>",
         Classifier{okData =
                      ClassData{prior = -0.13353139262452263,
@@ -1744,15 +1737,16 @@ classifiers
                      ClassData{prior = 0.0, unseen = -3.0910424533583156,
                                likelihoods =
                                  HashMap.fromList
-                                   [("a <unit-of-duration>now", -2.3513752571634776),
-                                    ("a <unit-of-duration>Christmas", -2.3513752571634776),
+                                   [("a <unit-of-duration>Christmas", -2.3513752571634776),
                                     ("<integer> <unit-of-duration>today", -2.3513752571634776),
                                     ("secondsecond", -2.3513752571634776),
+                                    ("a <unit-of-duration>(now)|(present)", -2.3513752571634776),
+                                    ("<integer> <unit-of-duration>(now)|(present)",
+                                     -1.9459101490553135),
                                     ("daysecond", -2.3513752571634776),
                                     ("<integer> <unit-of-duration>Christmas", -2.3513752571634776),
                                     ("yearday", -1.6582280766035324),
-                                    ("minutesecond", -2.3513752571634776),
-                                    ("<integer> <unit-of-duration>now", -1.9459101490553135)],
+                                    ("minutesecond", -2.3513752571634776)],
                                n = 6},
                    koData =
                      ClassData{prior = -infinity, unseen = -2.3025850929940455,
@@ -2165,6 +2159,13 @@ classifiers
                      ClassData{prior = -3.2188758248682006,
                                unseen = -1.0986122886681098,
                                likelihoods = HashMap.fromList [("", 0.0)], n = 1}}),
+       ("(now)|(present)",
+        Classifier{okData =
+                     ClassData{prior = 0.0, unseen = -2.0794415416798357,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 6},
+                   koData =
+                     ClassData{prior = -infinity, unseen = -0.6931471805599453,
+                               likelihoods = HashMap.fromList [], n = 0}}),
        ("this <time>",
         Classifier{okData =
                      ClassData{prior = -0.10536051565782628,

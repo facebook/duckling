@@ -56,7 +56,7 @@ allExamples = concat
              [ "today"
              , "at this time"
              ]
-  , examples (datetime (2013, 2, 1, 0, 0, 0) Day)
+  , examples (datetime (2013, 2, 1, 0, 0, 0) Day)  
              [ "2/2013"
              , "2/13"
              ]
@@ -126,7 +126,7 @@ allExamples = concat
              , "february the 15th"
              , "february 15"
              , "15th february"
-             , "2/15"
+             , "2/15"  
              , "on 2/15"
              , "February 15"
              , "2 / 15"

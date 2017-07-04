@@ -1555,7 +1555,7 @@ ruleMatin = Rule
   , pattern =
     [ regex "mat(in(\x00e9|e)?e?)?"
     ]
-  , prod = \_ -> Token Time . mkLatent . partOfDay <$>
+  , prod = \_ -> Token Time . partOfDay <$>
       interval TTime.Open (hour False 4) (hour False 12)
   }
 

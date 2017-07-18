@@ -23,16 +23,18 @@ corpus = (testContext, allExamples)
 allExamples :: [Example]
 allExamples = concat
   [ examples (simple Dollar 1)
-             [ "$1"
-             , "one dollar"
-             , "a dollar"
+             [ "₺1"
+             , "1 TL"
+             , "1 Lira"
+             , "1 Türk lirası"
              ]
   , examples (simple Dollar 10)
-             [ "$10"
-             , "$ 10"
-             , "10$"
-             , "10 dollars"
-             , "ten dollars"
+             [ "₺10"
+             , "₺ 10"
+             , "10₺"
+             , "10 lira"
+             , "10 Türk lirası"
+             , "On lira"
              ]
   , examples (simple Cent 10)
              [ "10 cent"

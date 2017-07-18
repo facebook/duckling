@@ -9,7 +9,7 @@
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE OverloadedStrings #-}
 
-module Duckling.AmountOfMoney.EN.Rules
+module Duckling.AmountOfMoney.TR.Rules
   ( rules ) where
 
 import Data.Maybe

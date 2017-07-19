@@ -1,3 +1,4 @@
+
 -- Copyright (c) 2016-present, Facebook, Inc.
 -- All rights reserved.
 --
@@ -23,18 +24,16 @@ corpus = (testContext, allExamples)
 allExamples :: [Example]
 allExamples = concat
   [ examples (simple Dollar 1)
-             [ "₺1"
-             , "1 TL"
-             , "1 Lira"
-             , "1 Türk lirası"
+             [ "$1"
+             , "one dollar"
+             , "a dollar"
              ]
   , examples (simple Dollar 10)
-             [ "₺10"
-             , "₺ 10"
-             , "10₺"
-             , "10 lira"
-             , "10 Türk lirası"
-             , "On lira"
+             [ "$10"
+             , "$ 10"
+             , "10$"
+             , "10 dollars"
+             , "ten dollars"
              ]
   , examples (simple Cent 10)
              [ "10 cent"
@@ -116,6 +115,12 @@ allExamples = concat
   , examples (simple SAR 42)
              [ "42 SAR"
              , "42 Saudiriyal"
+             ]
+  , examples (simple TRY 1)
+             [ "₺1"
+             , "1 TL"
+             , "1 Lira"
+             , "1 Türk lirası"
              ]
   , examples (simple MYR 42)
              [ "42 MYR"

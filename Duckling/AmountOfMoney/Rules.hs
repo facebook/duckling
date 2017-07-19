@@ -89,7 +89,7 @@ ruleCurrencies :: Rule
 ruleCurrencies = Rule
   { name = "currencies"
   , pattern =
-    [ regex "(aed|aud|brl|\x00a2|c|\\$|dollars?|egp|(e|\x20ac)uro?s?|\x20ac|gbp|hrk|idr|inr|\x00a5|jpy|krw|kwd|lbp|myr|rm|nok|\x00a3|pta?s?|qar|rs\\.?|ron|rupees?|sar|sek|sgb|us(d|\\$)|vnd|yen)"
+    [ regex "(aed|aud|brl|\x00a2|c|\\$|dollars?|egp|(e|\x20ac)uro?s?|\x20ac|gbp|hrk|idr|inr|\x00a5|jpy|krw|kwd|lbp|myr|rm|nok|\x00a3|pta?s?|qar|rs\\.?|ron|rupees?|sar|sek|sgb|tl|us(d|\\$)|vnd|yen)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> do

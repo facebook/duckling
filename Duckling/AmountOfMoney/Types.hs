@@ -53,9 +53,9 @@ data Currency
   | SAR
   | SEK
   | SGD
+  | TRY
   | USD
   | VND
-  | TRY
   deriving (Eq, Generic, Hashable, Show, Ord, NFData)
 
 instance ToJSON Currency where
@@ -84,9 +84,9 @@ instance ToJSON Currency where
   toJSON SAR     = "SAR"
   toJSON SEK     = "SEK"
   toJSON SGD     = "SGD"
+  toJSON TRY     = "TRY"
   toJSON USD     = "USD"
   toJSON VND     = "VND"
-  toJSON TRY     = "TRY"
 
 data AmountOfMoneyData = AmountOfMoneyData
   { value    :: Maybe Double

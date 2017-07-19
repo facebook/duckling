@@ -56,6 +56,7 @@ data Currency
   | TRY
   | USD
   | VND
+  | TRY
   deriving (Eq, Generic, Hashable, Show, Ord, NFData)
 
 instance ToJSON Currency where
@@ -87,6 +88,7 @@ instance ToJSON Currency where
   toJSON TRY     = "TRY"
   toJSON USD     = "USD"
   toJSON VND     = "VND"
+  toJSON TRY     = "TRY"
 
 data AmountOfMoneyData = AmountOfMoneyData
   { value    :: Maybe Double

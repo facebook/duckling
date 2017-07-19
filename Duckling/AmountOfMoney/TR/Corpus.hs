@@ -117,11 +117,19 @@ allExamples = concat
              , "42 Saudiriyal"
              ]
   , examples (simple TRY 1)
-             [ "₺1"
-             , "1 TL"
-             , "1 Lira"
-             , "1 Türk lirası"
-             ]
+               [ "₺1"
+               , "1 tl"
+               , "1tl"
+               , "1 Lira"
+               , "1 Türk lirası"
+               ]
+  , examples (simple TRY 10)
+               [ "₺10"
+               , "10 tl"
+               , "10tl"
+               , "10 Lira"
+               , "10 Türk lirası"
+               ]
   , examples (simple MYR 42)
              [ "42 MYR"
              , "42 RM"

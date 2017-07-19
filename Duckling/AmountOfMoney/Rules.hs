@@ -78,6 +78,8 @@ currencies = HashMap.fromList
   , ("sek", SEK)
   , ("sgd", SGD)
   , ("tl", TRY)
+  , ("₺", TRY)
+  , ("lira", TRY)
   , ("usd", USD)
   , ("us$", USD)
   , ("vnd", VND)

@@ -14,6 +14,7 @@ module Duckling.Rules.TR
   ) where
 
 import Duckling.Dimensions.Types
+import qualified Duckling.AmountOfMoney.TR.Rules as AmountOfMoney
 import Duckling.Types
 import qualified Duckling.Distance.TR.Rules as Distance
 import qualified Duckling.Duration.TR.Rules as Duration
@@ -28,7 +29,7 @@ rules (This Distance) = Distance.rules
 rules (This Duration) = Duration.rules
 rules (This Numeral) = Numeral.rules
 rules (This Email) = []
-rules (This AmountOfMoney) = []
+rules (This AmountOfMoney) = AmountOfMoney.rules
 rules (This Ordinal) = Ordinal.rules
 rules (This PhoneNumber) = []
 rules (This Quantity) = []

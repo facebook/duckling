@@ -32,7 +32,7 @@ import qualified Duckling.Numeral.Types as TNumeral
 
 currencies :: HashMap Text Currency
 currencies = HashMap.fromList
-  [ ("aed", AED)
+  [ ("aed", TRY)
   , ("aud", AUD)
   , ("brl", BRL)
   , ("\x00a2", Cent)

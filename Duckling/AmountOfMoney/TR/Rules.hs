@@ -26,6 +26,15 @@ import qualified Duckling.Numeral.Types as TNumeral
 import Duckling.Regex.Types
 import Duckling.Types
 
+ruleLira :: Rule
+ruleLira = Rule
+  { name = "tl"
+  , pattern =
+    [ regex "tl?"
+    ]
+  , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly TRY
+  }
+
 rulePounds :: Rule
 rulePounds = Rule
   { name = "£"
@@ -320,4 +329,5 @@ rules =
   , rulePrecision
   , ruleRinggit
   , ruleRiyals
+  , ruleLira
   ]

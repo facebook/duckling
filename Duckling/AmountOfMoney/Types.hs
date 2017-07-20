@@ -84,7 +84,7 @@ instance ToJSON Currency where
   toJSON SAR     = "SAR"
   toJSON SEK     = "SEK"
   toJSON SGD     = "SGD"
-  toJSON TRY     = "₺"
+  toJSON TRY     = "TRY"
   toJSON USD     = "USD"
   toJSON VND     = "VND"
 

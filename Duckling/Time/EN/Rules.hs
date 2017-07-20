@@ -683,6 +683,20 @@ ruleHalfHOD = Rule
       _ -> Nothing
   }
 
+ruleMMYYYY :: Rule
+ruleMMYYYY = Rule
+  { name = "mm/yyyy"
+  , pattern =
+    [ regex "(0?[1-9]|1[0-2])[/-](\\d{4})"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (mm:yy:_)):_) -> do
+        y <- parseInt yy
+        m <- parseInt mm
+        tt $ yearMonthDay y m 1
+      _ -> Nothing
+  }
+
 ruleMMDDYYYY :: Rule
 ruleMMDDYYYY = Rule
   { name = "mm/dd/yyyy"
@@ -1608,6 +1622,7 @@ rules =
   , ruleMMDDYYYY
   , ruleYYYYMMDD
   , ruleMMDD
+  , ruleMMYYYY
   , ruleNoonMidnightEOD
   , rulePartOfDays
   , ruleEarlyMorning

@@ -119,6 +119,7 @@ allExamples = concat
   , examples (simple TRY 1)
                [ "₺1"
                , "1 tl"
+               , "1 TRY"
                , "1tl"
                , "1 Lira"
                , "1 Türk lirası"

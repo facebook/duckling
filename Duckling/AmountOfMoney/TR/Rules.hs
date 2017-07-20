@@ -28,9 +28,9 @@ import Duckling.Types
 
 ruleLira :: Rule
 ruleLira = Rule
-  { name = "tl"
+  { name = "\x20BA"
   , pattern =
-    [ regex "tl?"
+    [ regex "lira?|tl?"
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly TRY
   }
@@ -87,9 +87,9 @@ ruleDinars = Rule
 
 ruleDirham :: Rule
 ruleDirham = Rule
-  { name = "dirham"
+  { name = "dirhem"
   , pattern =
-    [ regex "dirhams?"
+    [ regex "dirh?"
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly AED
   }

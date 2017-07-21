@@ -61,7 +61,7 @@ data Currency
 instance ToJSON Currency where
   toJSON Cent    = "cent"
   toJSON Dollar  = "$"
-  toJSON Lira     = "\x20BA"
+  toJSON TRY     = "\x20BA"
   toJSON Pound   = "\x00a3"
   toJSON Unnamed = "unknown"
   toJSON AED     = "AED"

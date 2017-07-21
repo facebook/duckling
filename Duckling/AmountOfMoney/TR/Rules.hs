@@ -39,7 +39,7 @@ rulePounds :: Rule
 rulePounds = Rule
   { name = "£"
   , pattern =
-    [ regex "pounds?"
+    [ regex "pound?"
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly Pound
   }
@@ -48,7 +48,7 @@ ruleOtherPounds :: Rule
 ruleOtherPounds = Rule
   { name = "other pounds"
   , pattern =
-    [ regex "(egyptian|lebanese) ?pounds?"
+    [ regex "(egyptian|lebanese) ?pound?"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
@@ -62,7 +62,7 @@ ruleRiyals :: Rule
 ruleRiyals = Rule
   { name = "riyals"
   , pattern =
-    [ regex "(qatari|saudi) ?riyals?"
+    [ regex "(qatari|saudi) ?riyal?"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
@@ -76,7 +76,7 @@ ruleDinars :: Rule
 ruleDinars = Rule
   { name = "dinars"
   , pattern =
-    [ regex "(kuwaiti) ?dinars?"
+    [ regex "(kuwaiti) ?dinar?"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
@@ -87,9 +87,9 @@ ruleDinars = Rule
 
 ruleDirham :: Rule
 ruleDirham = Rule
-  { name = "dirhem"
+  { name = "Dirhem"
   , pattern =
-    [ regex "dirh?"
+    [ regex "dirhem?"
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly AED
   }
@@ -98,7 +98,7 @@ ruleRinggit :: Rule
 ruleRinggit = Rule
   { name = "ringgit"
   , pattern =
-    [ regex "(malaysian? )?ringgits?"
+    [ regex "(malezya? )?ringgit?"
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly MYR
   }
@@ -107,7 +107,7 @@ ruleCent :: Rule
 ruleCent = Rule
   { name = "cent"
   , pattern =
-    [ regex "cents?|penn(y|ies)|pence|sens?"
+    [ regex "sent?"
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly Cent
   }
@@ -116,7 +116,7 @@ ruleBucks :: Rule
 ruleBucks = Rule
   { name = "bucks"
   , pattern =
-    [ regex "bucks?"
+    [ regex "papel?"
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly Unnamed
   }

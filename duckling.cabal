@@ -157,6 +157,8 @@ library
                      , Duckling.AmountOfMoney.RO.Rules
                      , Duckling.AmountOfMoney.SV.Corpus
                      , Duckling.AmountOfMoney.SV.Rules
+                     , Duckling.AmountOfMoney.TR.Corpus
+                     , Duckling.AmountOfMoney.TR.Rules
                      , Duckling.AmountOfMoney.VI.Corpus
                      , Duckling.AmountOfMoney.VI.Rules
                      , Duckling.AmountOfMoney.Helpers

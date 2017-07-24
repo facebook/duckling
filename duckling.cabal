@@ -158,6 +158,8 @@ library
                      , Duckling.AmountOfMoney.RO.Rules
                      , Duckling.AmountOfMoney.SV.Corpus
                      , Duckling.AmountOfMoney.SV.Rules
+                     , Duckling.AmountOfMoney.TR.Corpus
+                     , Duckling.AmountOfMoney.TR.Rules
                      , Duckling.AmountOfMoney.VI.Corpus
                      , Duckling.AmountOfMoney.VI.Rules
                      , Duckling.AmountOfMoney.Helpers
@@ -430,6 +432,8 @@ library
                      , Duckling.Time.RO.Rules
                      , Duckling.Time.SV.Corpus
                      , Duckling.Time.SV.Rules
+                     , Duckling.Time.TR.Corpus
+                     , Duckling.Time.TR.Rules
                      , Duckling.Time.VI.Corpus
                      , Duckling.Time.VI.Rules
                      , Duckling.Time.ZH.Corpus
@@ -548,6 +552,7 @@ test-suite duckling-test
                      , Duckling.AmountOfMoney.PT.Tests
                      , Duckling.AmountOfMoney.RO.Tests
                      , Duckling.AmountOfMoney.SV.Tests
+                     , Duckling.AmountOfMoney.TR.Tests
                      , Duckling.AmountOfMoney.VI.Tests
                      , Duckling.AmountOfMoney.Tests
 
@@ -645,6 +650,7 @@ test-suite duckling-test
 
                      -- PhoneNumber
                      , Duckling.PhoneNumber.PT.Tests
+                     , Duckling.PhoneNumber.TR.Tests
                      , Duckling.PhoneNumber.Tests
 
                      -- Quantity
@@ -654,6 +660,7 @@ test-suite duckling-test
                      , Duckling.Quantity.KO.Tests
                      , Duckling.Quantity.PT.Tests
                      , Duckling.Quantity.RO.Tests
+                     , Duckling.Quantity.TR.Tests
                      , Duckling.Quantity.Tests
 
                      -- Temperature
@@ -687,6 +694,7 @@ test-suite duckling-test
                      , Duckling.Time.PT.Tests
                      , Duckling.Time.RO.Tests
                      , Duckling.Time.SV.Tests
+                     , Duckling.Time.TR.Tests
                      , Duckling.Time.VI.Tests
                      , Duckling.Time.ZH.Tests
                      , Duckling.Time.Tests

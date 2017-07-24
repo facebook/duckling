@@ -21,10 +21,9 @@ matrix:
     - env: CABALVER=1.24 GHCVER=8.0.2
       compiler: ": #GHC 8.0.2"
       addons: {apt: {packages: [cabal-install-1.24,ghc-8.0.2,happy-1.19.5], sources: [hvr-ghc]}}
-    # blocked on https://github.com/ygale/timezone-olson/pull/4
-    # - env: CABALVER=1.24 GHCVER=8.2.1
-    #   compiler: ": #GHC 8.2.1"
-    #   addons: {apt: {packages: [cabal-install-1.24,ghc-8.2.1,happy-1.19.5], sources: [hvr-ghc]}}
+    - env: CABALVER=2.0 GHCVER=8.2.1
+      compiler: ": #GHC 8.2.1"
+      addons: {apt: {packages: [cabal-install-2.0,ghc-8.2.1,happy-1.19.5], sources: [hvr-ghc]}}
 
 before_install:
  - unset CC

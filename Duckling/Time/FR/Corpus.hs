@@ -530,6 +530,8 @@ allExamples = concat
   , examples (datetimeInterval ((2013, 2, 12, 4, 0, 0), (2013, 2, 12, 12, 0, 0)) Hour)
              [ "dès le matin"
              , "dès la matinée"
+             , "matin"
+             , "matinée"
              ]
   , examples (datetimeInterval ((2013, 2, 12, 12, 0, 0), (2013, 2, 12, 14, 0, 0)) Hour)
              [ "aujourd'hui en début d'après-midi"
@@ -571,6 +573,8 @@ allExamples = concat
              [ "ce soir"
              , "le soir"
              , "dans la soirée"
+             , "soir"
+             , "soirée"
              ]
   , examples (datetimeInterval ((2013, 2, 12, 18, 0, 0), (2013, 2, 12, 21, 0, 0)) Hour)
              [ "aujourd'hui en début de soirée"

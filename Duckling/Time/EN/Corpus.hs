@@ -486,6 +486,9 @@ allExamples = concat
              [ "one year After christmas"
              , "a year from Christmas"
              ]
+  , examples (datetimeInterval ((2013, 12, 18, 0, 0, 0), (2013, 12, 29, 0, 0, 0)) Day)
+             [ "for 10 days from 18th Dec"
+             ]
   , examples (datetimeInterval ((2013, 6, 21, 0, 0, 0), (2013, 9, 24, 0, 0, 0)) Day)
              [ "this Summer"
              , "current summer"

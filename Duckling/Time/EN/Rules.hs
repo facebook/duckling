@@ -1564,6 +1564,21 @@ ruleDurationAfterBeforeTime = Rule
       _ -> Nothing
   }
 
+ruleIntervalForDurationFrom :: Rule
+ruleIntervalForDurationFrom = Rule
+  { name = "for <duration> from <time>"
+  , pattern =
+    [ regex "for"
+    , dimension Duration
+    , regex "(from|starting|beginning|after|starting from)"
+    , dimension Time
+    ]
+  , prod = \tokens -> case tokens of
+      (_:Token Duration dd:_:Token Time td1:_) ->
+        Token Time <$> interval TTime.Open td1 (durationAfter dd td1)
+      _ -> Nothing
+}
+
 ruleTimezone :: Rule
 ruleTimezone = Rule
   { name = "<time> timezone"
@@ -1677,6 +1692,7 @@ rules =
   , ruleDurationInWithinAfter
   , ruleDurationHenceAgo
   , ruleDurationAfterBeforeTime
+  , ruleIntervalForDurationFrom
   , ruleInNumeral
   , ruleTimezone
   , rulePartOfMonth

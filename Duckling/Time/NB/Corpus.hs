@@ -5,7 +5,6 @@
 -- LICENSE file in the root directory of this source tree. An additional grant
 -- of patent rights can be found in the PATENTS file in the same directory.
 
-
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Time.NB.Corpus
@@ -408,7 +407,7 @@ allExamples = concat
   , examples (datetime (1954, 0, 0, 0, 0, 0) Year)
              [ "1954"
              ]
-  , examples (datetime (2013, 12, 0, 0, 0, 0) Month)
+  , examples (datetime (2013, 12, 24, 0, 0, 0) Day)
              [ "et år etter julaften"
              , "ett år etter julaften"
              ]

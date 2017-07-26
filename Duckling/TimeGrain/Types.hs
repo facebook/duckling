@@ -15,23 +15,25 @@ module Duckling.TimeGrain.Types
   ( Grain(..)
   , add
   , inSeconds
+  , lower
   )
   where
 
 import Control.DeepSeq
 import Data.Aeson
 import Data.Hashable
-import qualified Data.Text as Text
 import Data.Text.Lazy.Builder (fromText)
-import qualified Data.Time as Time
 import GHC.Generics
-import TextShow
-
 import Prelude
+import TextShow
+import qualified Data.Text as Text
+import qualified Data.Time as Time
 
 import Duckling.Resolve (Resolve(..))
 
-data Grain = Second | Minute | Hour | Day | Week | Month | Quarter | Year
+data Grain
+  -- NoGrain is helpful to define "now"
+  = NoGrain | Second | Minute | Hour | Day | Week | Month | Quarter | Year
   deriving (Eq, Generic, Hashable, Ord, Bounded, Enum, Show, NFData)
 
 instance Resolve Grain where
@@ -48,6 +50,7 @@ updateUTCDay :: Time.UTCTime -> (Time.Day -> Time.Day) -> Time.UTCTime
 updateUTCDay (Time.UTCTime day diffTime) f = Time.UTCTime (f day) diffTime
 
 add :: Time.UTCTime -> Grain -> Integer -> Time.UTCTime
+add utcTime NoGrain n = Time.addUTCTime (realToFrac n) utcTime
 add utcTime Second n = Time.addUTCTime (realToFrac n) utcTime
 add utcTime Minute n = Time.addUTCTime (realToFrac $ 60 * n) utcTime
 add utcTime Hour n = Time.addUTCTime (realToFrac $ 3600 * n) utcTime
@@ -59,6 +62,7 @@ add utcTime Quarter n =
 add utcTime Year n = updateUTCDay utcTime $ Time.addGregorianYearsClip n
 
 inSeconds :: Grain -> Int -> Int
+inSeconds NoGrain n = n
 inSeconds Second  n = n
 inSeconds Minute  n = n * 60
 inSeconds Hour    n = n * inSeconds Minute 60
@@ -67,3 +71,10 @@ inSeconds Week    n = n * inSeconds Day 7
 inSeconds Month   n = n * inSeconds Day 30
 inSeconds Quarter n = n * inSeconds Month 3
 inSeconds Year    n = n * inSeconds Day 365
+
+lower :: Grain -> Grain
+lower NoGrain = Second
+lower Second = Second
+lower Year = Month
+lower Month = Day
+lower x = pred x

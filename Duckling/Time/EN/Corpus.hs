@@ -415,23 +415,31 @@ allExamples = concat
              , "in few hours"
              ]
   , examples (datetime (2013, 2, 13, 4, 30, 0) Minute)
-             ["in 24 hours"]
+             [ "in 24 hours"
+             ]
   , examples (datetime (2013, 2, 13, 4, 0, 0) Hour)
              [ "in a day"
              , "a day from now"
              ]
-  , examples (datetime (2016, 2, 1, 0, 0, 0) Month)
-             ["3 years from today"]
+  , examples (datetime (2013, 2, 13, 4, 30, 0) Second)
+             [ "a day from right now"
+             ]
+  , examples (datetime (2016, 2, 12, 0, 0, 0) Day)
+             [ "3 years from today"
+             ]
   , examples (datetime (2013, 2, 19, 4, 0, 0) Hour)
-             ["in 7 days"]
+             [ "in 7 days"
+             ]
   , examples (datetime (2013, 2, 19, 0, 0, 0) Day)
              [ "in 1 week"
              , "in a week"
              ]
   , examples (datetime (2013, 2, 12, 5, 0, 0) Second)
-             ["in about half an hour"]
+             [ "in about half an hour"
+             ]
   , examples (datetime (2013, 2, 5, 4, 0, 0) Hour)
-             ["7 days ago"]
+             [ "7 days ago"
+             ]
   , examples (datetime (2013, 1, 29, 4, 0, 0) Hour)
              [ "14 days Ago"
              , "a fortnight ago"
@@ -442,15 +450,20 @@ allExamples = concat
              , "1 week ago"
              ]
   , examples (datetime (2013, 1, 22, 0, 0, 0) Day)
-             ["three weeks ago"]
+             [ "three weeks ago"
+             ]
   , examples (datetime (2012, 11, 12, 0, 0, 0) Day)
-             ["three months ago"]
+             [ "three months ago"
+             ]
   , examples (datetime (2011, 2, 1, 0, 0, 0) Month)
-             ["two years ago"]
+             [ "two years ago"
+             ]
   , examples (datetime (1954, 1, 1, 0, 0, 0) Year)
-             ["1954"]
+             [ "1954"
+             ]
   , examples (datetime (2013, 2, 19, 4, 0, 0) Hour)
-             ["7 days hence"]
+             [ "7 days hence"
+             ]
   , examples (datetime (2013, 2, 26, 4, 0, 0) Hour)
              [ "14 days hence"
              , "a fortnight hence"
@@ -461,12 +474,15 @@ allExamples = concat
              , "1 week hence"
              ]
   , examples (datetime (2013, 3, 5, 0, 0, 0) Day)
-             ["three weeks hence"]
+             [ "three weeks hence"
+             ]
   , examples (datetime (2013, 5, 12, 0, 0, 0) Day)
-             ["three months hence"]
+             [ "three months hence"
+             ]
   , examples (datetime (2015, 2, 1, 0, 0, 0) Month)
-             ["two years hence"]
-  , examples (datetime (2013, 12, 1, 0, 0, 0) Month)
+             [ "two years hence"
+             ]
+  , examples (datetime (2013, 12, 25, 0, 0, 0) Day)
              [ "one year After christmas"
              , "a year from Christmas"
              ]
@@ -475,7 +491,8 @@ allExamples = concat
              , "current summer"
              ]
   , examples (datetimeInterval ((2012, 12, 21, 0, 0, 0), (2013, 3, 21, 0, 0, 0)) Day)
-             ["this winter"]
+             [ "this winter"
+             ]
   , examples (datetime (2013, 12, 25, 0, 0, 0) Day)
              [ "xmas"
              , "christmas"
@@ -701,19 +718,26 @@ allExamples = concat
              , "this Thu 9-11am"
              ]
   , examples (datetimeInterval ((2013, 2, 12, 11, 30, 0), (2013, 2, 12, 13, 31, 0)) Minute)
-             ["11:30-1:30"]
+             [ "11:30-1:30"
+             ]
   , examples (datetime (2013, 9, 21, 13, 30, 0) Minute)
-             ["1:30 PM on Sat, Sep 21"]
+             [ "1:30 PM on Sat, Sep 21"
+             ]
   , examples (datetimeInterval ((2013, 2, 12, 4, 30, 0), (2013, 2, 26, 0, 0, 0)) Second)
-             ["Within 2 weeks"]
+             [ "Within 2 weeks"
+             ]
   , examples (datetimeInterval ((2013, 2, 12, 4, 30, 0), (2013, 2, 12, 14, 0, 0)) Second)
-             ["by 2:00pm"]
+             [ "by 2:00pm"
+             ]
   , examples (datetimeInterval ((2013, 2, 12, 4, 30, 0), (2013, 2, 13, 0, 0, 0)) Second)
-             ["by EOD"]
+             [ "by EOD"
+             ]
   , examples (datetimeInterval ((2013, 2, 12, 4, 30, 0), (2013, 3, 1, 0, 0, 0)) Second)
-             ["by EOM"]
+             [ "by EOM"
+             ]
   , examples (datetimeInterval ((2013, 2, 12, 4, 30, 0), (2013, 4, 1, 0, 0, 0)) Second)
-             ["by the end of next month"]
+             [ "by the end of next month"
+             ]
   , examples (datetime (2013, 2, 12, 13, 0, 0) Minute)
              [ "4pm CET"
              ]
@@ -726,7 +750,8 @@ allExamples = concat
              , "at 2pm"
              ]
   , examples (datetime (2013, 4, 25, 16, 0, 0) Minute)
-             ["4/25 at 4:00pm"]
+             [ "4/25 at 4:00pm"
+             ]
   , examples (datetime (2013, 2, 13, 15, 0, 0) Hour)
              [ "3pm tomorrow"
              ]
@@ -735,13 +760,17 @@ allExamples = concat
              , "through 2:00pm"
              ]
   , examples (datetimeOpenInterval After (2013, 2, 12, 14, 0, 0) Hour)
-             ["after 2 pm"]
+             [ "after 2 pm"
+             ]
   , examples (datetimeOpenInterval After (2013, 2, 17, 4, 0, 0) Hour)
-             ["after 5 days"]
+             [ "after 5 days"
+             ]
   , examples (datetimeOpenInterval Before (2013, 2, 12, 11, 0, 0) Hour)
-             ["before 11 am"]
+             [ "before 11 am"
+             ]
   , examples (datetimeInterval ((2013, 2, 12, 12, 0, 0), (2013, 2, 12, 19, 0, 0)) Hour)
-             ["in the afternoon"]
+             [ "in the afternoon"
+             ]
   , examples (datetimeInterval ((2013, 2, 12, 8, 0, 0), (2013, 2, 12, 19, 0, 0)) Hour)
              [ "8am until 6"
              ]
@@ -755,7 +784,8 @@ allExamples = concat
              , "in 15"
              ]
   , examples (datetimeInterval ((2013, 2, 12, 13, 0, 0), (2013, 2, 12, 17, 0, 0)) Hour)
-             ["after lunch"]
+             [ "after lunch"
+             ]
   , examples (datetimeInterval ((2013, 2, 12, 15, 0, 0), (2013, 2, 12, 21, 0, 0)) Hour)
              [ "after school"
              ]
@@ -764,9 +794,11 @@ allExamples = concat
              , "approximately 1030"
              ]
   , examples (datetimeInterval ((2013, 2, 12, 4, 0, 0), (2013, 2, 12, 12, 0, 0)) Hour)
-             ["this morning"]
+             [ "this morning"
+             ]
   , examples (datetime (2013, 2, 18, 0, 0, 0) Day)
-             ["next monday"]
+             [ "next monday"
+             ]
   , examples (datetime (2013, 2, 12, 12, 0, 0) Hour)
              [ "at 12pm"
              , "at noon"

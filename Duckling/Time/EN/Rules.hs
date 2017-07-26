@@ -108,7 +108,7 @@ ruleAbsorbCommaTOD = Rule
 
 instants :: [(Text, String, TG.Grain, Int)]
 instants =
-  [ ("now", "((just|right)\\s*)?now|immediately", TG.Second, 0)
+  [ ("right now", "((just|right)\\s*)now|immediately", TG.Second, 0)
   , ("today", "todays?|(at this time)", TG.Day, 0)
   , ("tomorrow", "(tmrw?|tomm?or?rows?)", TG.Day, 1)
   , ("yesterday", "yesterdays?", TG.Day, - 1)
@@ -124,6 +124,15 @@ ruleInstants = map go instants
       , pattern = [regex regexPattern]
       , prod = \_ -> tt $ cycleNth grain n
       }
+
+ruleNow :: Rule
+ruleNow = Rule
+  { name = "now"
+  , pattern =
+    [ regex "now"
+    ]
+  , prod = \_ -> tt now
+  }
 
 ruleNextDOW :: Rule
 ruleNextDOW = Rule
@@ -1671,6 +1680,7 @@ rules =
   , ruleInNumeral
   , ruleTimezone
   , rulePartOfMonth
+  , ruleNow
   ]
   ++ ruleInstants
   ++ ruleDaysOfWeek

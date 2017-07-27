@@ -158,6 +158,8 @@ library
                      , Duckling.AmountOfMoney.RO.Rules
                      , Duckling.AmountOfMoney.SV.Corpus
                      , Duckling.AmountOfMoney.SV.Rules
+                     , Duckling.AmountOfMoney.TR.Corpus
+                     , Duckling.AmountOfMoney.TR.Rules
                      , Duckling.AmountOfMoney.VI.Corpus
                      , Duckling.AmountOfMoney.VI.Rules
                      , Duckling.AmountOfMoney.Helpers
@@ -548,6 +550,7 @@ test-suite duckling-test
                      , Duckling.AmountOfMoney.PT.Tests
                      , Duckling.AmountOfMoney.RO.Tests
                      , Duckling.AmountOfMoney.SV.Tests
+                     , Duckling.AmountOfMoney.TR.Tests
                      , Duckling.AmountOfMoney.VI.Tests
                      , Duckling.AmountOfMoney.Tests
 

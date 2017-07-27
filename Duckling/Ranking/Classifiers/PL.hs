@@ -1005,40 +1005,40 @@ classifiers
                                likelihoods = HashMap.fromList [("", 0.0)], n = 2}}),
        ("<unit-of-duration> as a duration",
         Classifier{okData =
-                     ClassData{prior = -2.3608540011180215,
-                               unseen = -3.8501476017100584,
+                     ClassData{prior = -2.2356908581640154,
+                               unseen = -3.9318256327243257,
                                likelihoods =
                                  HashMap.fromList
-                                   [("week", -1.6314168191528755),
-                                    ("hour (grain)", -2.7300291078209855),
-                                    ("second", -2.4423470353692043),
-                                    ("week (grain)", -1.6314168191528755),
-                                    ("day", -3.1354942159291497),
-                                    ("minute (grain)", -3.1354942159291497),
-                                    ("second (grain)", -2.4423470353692043),
-                                    ("hour", -2.7300291078209855), ("minute", -3.1354942159291497),
-                                    ("day (grain)", -3.1354942159291497)],
-                               n = 15},
+                                   [("week", -1.7147984280919266),
+                                    ("hour (grain)", -2.8134107167600364),
+                                    ("second", -2.5257286443082556),
+                                    ("week (grain)", -1.7147984280919266),
+                                    ("day", -2.5257286443082556),
+                                    ("minute (grain)", -3.2188758248682006),
+                                    ("second (grain)", -2.5257286443082556),
+                                    ("hour", -2.8134107167600364), ("minute", -3.2188758248682006),
+                                    ("day (grain)", -2.5257286443082556)],
+                               n = 17},
                    koData =
-                     ClassData{prior = -9.909090264423089e-2,
-                               unseen = -5.720311776607412,
+                     ClassData{prior = -0.11307714461897077,
+                               unseen = -5.707110264748875,
                                likelihoods =
                                  HashMap.fromList
-                                   [("week", -2.161679639916808),
-                                    ("month (grain)", -3.2321210516182215),
-                                    ("hour (grain)", -2.7212954278522306),
-                                    ("year (grain)", -2.8838143573500057),
-                                    ("second", -2.8838143573500057),
-                                    ("week (grain)", -2.161679639916808),
-                                    ("day", -2.498151876538021), ("quarter", -3.5198031240700023),
-                                    ("minute (grain)", -2.8838143573500057),
-                                    ("year", -2.8838143573500057),
-                                    ("second (grain)", -2.8838143573500057),
-                                    ("hour", -2.7212954278522306), ("month", -3.2321210516182215),
-                                    ("quarter (grain)", -3.5198031240700023),
-                                    ("minute", -2.8838143573500057),
-                                    ("day (grain)", -2.498151876538021)],
-                               n = 144}}),
+                                   [("week", -2.1484344131667874),
+                                    ("month (grain)", -3.2188758248682006),
+                                    ("hour (grain)", -2.70805020110221),
+                                    ("year (grain)", -2.870569130599985),
+                                    ("second", -2.870569130599985),
+                                    ("week (grain)", -2.1484344131667874),
+                                    ("day", -2.5682882587270512), ("quarter", -3.506557897319982),
+                                    ("minute (grain)", -2.870569130599985),
+                                    ("year", -2.870569130599985),
+                                    ("second (grain)", -2.870569130599985),
+                                    ("hour", -2.70805020110221), ("month", -3.2188758248682006),
+                                    ("quarter (grain)", -3.506557897319982),
+                                    ("minute", -2.870569130599985),
+                                    ("day (grain)", -2.5682882587270512)],
+                               n = 142}}),
        ("this <part-of-day>",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -2.3025850929940455,
@@ -1402,16 +1402,16 @@ classifiers
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("<duration> after <time>",
         Classifier{okData =
-                     ClassData{prior = -infinity, unseen = -1.0986122886681098,
-                               likelihoods = HashMap.fromList [], n = 0},
-                   koData =
                      ClassData{prior = 0.0, unseen = -1.6094379124341003,
                                likelihoods =
                                  HashMap.fromList
                                    [("dayday", -0.6931471805599453),
                                     ("<unit-of-duration> as a durationtomorrow",
                                      -0.6931471805599453)],
-                               n = 1}}),
+                               n = 1},
+                   koData =
+                     ClassData{prior = -infinity, unseen = -1.0986122886681098,
+                               likelihoods = HashMap.fromList [], n = 0}}),
        ("relative minutes after|past <integer> (hour-of-day)",
         Classifier{okData =
                      ClassData{prior = -0.5108256237659907,
@@ -1524,16 +1524,16 @@ classifiers
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("<duration> before <time>",
         Classifier{okData =
-                     ClassData{prior = -infinity, unseen = -1.0986122886681098,
-                               likelihoods = HashMap.fromList [], n = 0},
-                   koData =
                      ClassData{prior = 0.0, unseen = -1.6094379124341003,
                                likelihoods =
                                  HashMap.fromList
                                    [("dayday", -0.6931471805599453),
                                     ("<unit-of-duration> as a durationyesterday",
                                      -0.6931471805599453)],
-                               n = 1}}),
+                               n = 1},
+                   koData =
+                     ClassData{prior = -infinity, unseen = -1.0986122886681098,
+                               likelihoods = HashMap.fromList [], n = 0}}),
        ("second (grain)",
         Classifier{okData =
                      ClassData{prior = -0.9985288301111273,

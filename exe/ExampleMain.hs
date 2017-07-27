@@ -96,7 +96,7 @@ parseHandler tzs = do
 
       writeLBS $ encode parsedResult
   where
-    defaultLang = TR
+    defaultLang = EN
     defaultTimeZone = "America/Los_Angeles"
 
     parseLang :: Maybe ByteString -> Lang

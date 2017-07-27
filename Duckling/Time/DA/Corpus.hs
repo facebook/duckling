@@ -403,7 +403,7 @@ allExamples = concat
   , examples (datetime (1954, 0, 0, 0, 0, 0) Year)
              [ "1954"
              ]
-  , examples (datetime (2013, 12, 0, 0, 0, 0) Month)
+  , examples (datetime (2013, 12, 24, 0, 0, 0) Day)
              [ "et år efter juleaften"
              , "ét år efter juleaften"
              ]

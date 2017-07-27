@@ -26,20 +26,11 @@ import qualified Duckling.Numeral.Types as TNumeral
 import Duckling.Regex.Types
 import Duckling.Types
 
-ruleLira :: Rule
-ruleLira = Rule
-  { name = "TRY"
-  , pattern =
-    [ regex "\x20BA|türk lirası|tl|lira?"
-    ]
-  , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly TRY
-  }
-
 rulePounds :: Rule
 rulePounds = Rule
   { name = "£"
   , pattern =
-    [ regex "pound?"
+    [ regex "pounds?"
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly Pound
   }
@@ -48,7 +39,7 @@ ruleOtherPounds :: Rule
 ruleOtherPounds = Rule
   { name = "other pounds"
   , pattern =
-    [ regex "(egyptian|lebanese) ?pound?"
+    [ regex "(egyptian|lebanese) ?pounds?"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
@@ -62,7 +53,7 @@ ruleRiyals :: Rule
 ruleRiyals = Rule
   { name = "riyals"
   , pattern =
-    [ regex "(qatari|saudi) ?riyal?"
+    [ regex "(qatari|saudi) ?riyals?"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
@@ -76,7 +67,7 @@ ruleDinars :: Rule
 ruleDinars = Rule
   { name = "dinars"
   , pattern =
-    [ regex "(kuwaiti) ?dinar?"
+    [ regex "(kuwaiti) ?dinars?"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
@@ -87,9 +78,9 @@ ruleDinars = Rule
 
 ruleDirham :: Rule
 ruleDirham = Rule
-  { name = "Dirhem"
+  { name = "dirham"
   , pattern =
-    [ regex "dirhem?"
+    [ regex "dirhams?"
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly AED
   }
@@ -98,7 +89,7 @@ ruleRinggit :: Rule
 ruleRinggit = Rule
   { name = "ringgit"
   , pattern =
-    [ regex "(malezya? )?ringgit?"
+    [ regex "(malaysian? )?ringgits?"
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly MYR
   }
@@ -107,7 +98,7 @@ ruleCent :: Rule
 ruleCent = Rule
   { name = "cent"
   , pattern =
-    [ regex "sent?"
+    [ regex "cents?|penn(y|ies)|pence|sens?"
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly Cent
   }
@@ -116,7 +107,7 @@ ruleBucks :: Rule
 ruleBucks = Rule
   { name = "bucks"
   , pattern =
-    [ regex "papel?"
+    [ regex "bucks?"
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly Unnamed
   }
@@ -329,5 +320,4 @@ rules =
   , rulePrecision
   , ruleRinggit
   , ruleRiyals
-  , ruleLira
   ]

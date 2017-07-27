@@ -433,7 +433,7 @@ allExamples = concat
   , examples (datetime (2015, 2, 0, 0, 0, 0) Month)
              [ "za dvije godine"
              ]
-  , examples (datetime (2013, 12, 0, 0, 0, 0) Month)
+  , examples (datetime (2013, 12, 25, 0, 0, 0) Day)
              [ "jednu godinu poslije Bozica"
              ]
   , examples (datetimeInterval ((2013, 6, 21, 0, 0, 0), (2013, 9, 24, 0, 0, 0)) Day)

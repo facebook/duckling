@@ -21,10 +21,9 @@ module Duckling.Time.Helpers
   , daysOfWeekOfMonth, durationAfter, durationAgo, durationBefore, form, hour
   , hourMinute, hourMinuteSecond, inDuration, intersect, intersectDOM, interval
   , inTimezone, longWEBefore, minute, minutesAfter, minutesBefore, mkLatent
-  , month, monthDay, notLatent, nthDOWOfMonth, partOfDay, predLastOf, predNth
-  , predNthAfter, second, timeOfDayAMPM, weekend, withDirection, year
-  , yearMonthDay
-  , tt
+  , month, monthDay, notLatent, now, nthDOWOfMonth, partOfDay, predLastOf
+  , predNth, predNthAfter, second, timeOfDayAMPM, weekend, withDirection, year
+  , yearMonthDay, tt
     -- Other
   , getIntValue
   ) where
@@ -190,16 +189,23 @@ takeLastOf cyclicPred basePred =
 timeCompose :: TTime.Predicate -> TTime.Predicate -> TTime.Predicate
 timeCompose pred1 pred2 = mkIntersectPredicate pred1 pred2
 
-shiftDuration :: TTime.Predicate -> DurationData -> TTime.Predicate
-shiftDuration pred1 (DurationData n g) =
+addDuration :: DurationData -> TTime.TimeObject -> TTime.TimeObject
+addDuration (DurationData n g) t = TTime.timePlus t g $ toInteger n
+
+mergeDuration :: TTime.Predicate -> DurationData -> TTime.Predicate
+mergeDuration pred1 dd@(DurationData _ g) =
   mkSeriesPredicate $! TTime.timeSeqMap False f pred1
   where
-    grain = case g of
-      TG.Second -> TG.Second
-      TG.Year -> TG.Month
-      TG.Month -> TG.Day
-      _ -> pred g
-    f x _ = Just $ TTime.timePlus (TTime.timeRound x grain) g $ toInteger n
+    f x@TTime.TimeObject{TTime.grain = tg} _ = Just $ addDuration dd t'
+      where
+        g' = min tg g
+        t' = if g' == tg then x else TTime.timeRound x g'
+
+shiftDuration :: TTime.Predicate -> DurationData -> TTime.Predicate
+shiftDuration pred1 dd@(DurationData _ g) =
+  mkSeriesPredicate $! TTime.timeSeqMap False f pred1
+  where
+    f x _ = Just . addDuration dd . TTime.timeRound x $ TG.lower g
 
 shiftTimezone :: Series.TimeZoneSeries -> TTime.Predicate -> TTime.Predicate
 shiftTimezone providedSeries pred1 =
@@ -320,6 +326,10 @@ intersect' (TimeData pred1 _ g1 _ _ d1, TimeData pred2 _ g2 _ _ d2)
       [] -> Nothing
       (x:_) -> Just x
 
+now :: TimeData
+now = td {TTime.timeGrain = TG.NoGrain}
+  where
+    td = cycleNth TG.Second 0
 
 hour :: Bool -> Int -> TimeData
 hour is12H n = timeOfDay (Just n) is12H $ TTime.timedata'
@@ -432,18 +442,24 @@ durationAgo :: DurationData -> TimeData
 durationAgo dd = inDuration $ timeNegPeriod dd
 
 durationAfter :: DurationData -> TimeData -> TimeData
-durationAfter dd TimeData {TTime.timePred = pred1} = TTime.timedata'
-  { TTime.timePred = shiftDuration pred1 dd
-  , TTime.timeGrain = TDuration.grain dd}
+durationAfter dd TimeData {TTime.timePred = pred1, TTime.timeGrain = g} =
+  TTime.timedata'
+    { TTime.timePred = if g == TG.NoGrain
+      then shiftDuration pred1 dd
+      else mergeDuration pred1 dd
+    , TTime.timeGrain = TDuration.grain dd
+    }
 
 durationBefore :: DurationData -> TimeData -> TimeData
 durationBefore dd pred1 = durationAfter (timeNegPeriod dd) pred1
 
 inDuration :: DurationData -> TimeData
 inDuration dd = TTime.timedata'
-  { TTime.timePred = shiftDuration (takeNth 0 False $ timeCycle TG.Second) dd
+  { TTime.timePred = shiftDuration t dd
   , TTime.timeGrain = TDuration.grain dd
   }
+  where
+    t = takeNth 0 False $ timeCycle TG.Second
 
 inTimezone :: Text -> TimeData -> Maybe TimeData
 inTimezone input td@TimeData {TTime.timePred = p} = do

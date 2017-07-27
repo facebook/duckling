@@ -108,7 +108,7 @@ ruleAbsorbCommaTOD = Rule
 
 instants :: [(Text, String, TG.Grain, Int)]
 instants =
-  [ ("now", "((just|right)\\s*)?now|immediately", TG.Second, 0)
+  [ ("right now", "((just|right)\\s*)now|immediately", TG.Second, 0)
   , ("today", "todays?|(at this time)", TG.Day, 0)
   , ("tomorrow", "(tmrw?|tomm?or?rows?)", TG.Day, 1)
   , ("yesterday", "yesterdays?", TG.Day, - 1)
@@ -124,6 +124,15 @@ ruleInstants = map go instants
       , pattern = [regex regexPattern]
       , prod = \_ -> tt $ cycleNth grain n
       }
+
+ruleNow :: Rule
+ruleNow = Rule
+  { name = "now"
+  , pattern =
+    [ regex "now"
+    ]
+  , prod = \_ -> tt now
+  }
 
 ruleNextDOW :: Rule
 ruleNextDOW = Rule
@@ -680,6 +689,20 @@ ruleHalfHOD = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td:_) -> Token Time <$> minutesAfter 30 td
+      _ -> Nothing
+  }
+
+ruleMMYYYY :: Rule
+ruleMMYYYY = Rule
+  { name = "mm/yyyy"
+  , pattern =
+    [ regex "(0?[1-9]|1[0-2])[/-](\\d{4})"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (mm:yy:_)):_) -> do
+        y <- parseInt yy
+        m <- parseInt mm
+        tt $ yearMonthDay y m 1
       _ -> Nothing
   }
 
@@ -1541,6 +1564,21 @@ ruleDurationAfterBeforeTime = Rule
       _ -> Nothing
   }
 
+ruleIntervalForDurationFrom :: Rule
+ruleIntervalForDurationFrom = Rule
+  { name = "for <duration> from <time>"
+  , pattern =
+    [ regex "for"
+    , dimension Duration
+    , regex "(from|starting|beginning|after|starting from)"
+    , dimension Time
+    ]
+  , prod = \tokens -> case tokens of
+      (_:Token Duration dd:_:Token Time td1:_) ->
+        Token Time <$> interval TTime.Open td1 (durationAfter dd td1)
+      _ -> Nothing
+}
+
 ruleTimezone :: Rule
 ruleTimezone = Rule
   { name = "<time> timezone"
@@ -1608,6 +1646,7 @@ rules =
   , ruleMMDDYYYY
   , ruleYYYYMMDD
   , ruleMMDD
+  , ruleMMYYYY
   , ruleNoonMidnightEOD
   , rulePartOfDays
   , ruleEarlyMorning
@@ -1653,9 +1692,11 @@ rules =
   , ruleDurationInWithinAfter
   , ruleDurationHenceAgo
   , ruleDurationAfterBeforeTime
+  , ruleIntervalForDurationFrom
   , ruleInNumeral
   , ruleTimezone
   , rulePartOfMonth
+  , ruleNow
   ]
   ++ ruleInstants
   ++ ruleDaysOfWeek

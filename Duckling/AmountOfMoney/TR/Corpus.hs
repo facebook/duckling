@@ -1,4 +1,3 @@
-
 -- Copyright (c) 2016-present, Facebook, Inc.
 -- All rights reserved.
 --
@@ -24,21 +23,21 @@ corpus = (testContext, allExamples)
 allExamples :: [Example]
 allExamples = concat
   [ examples (simple Dollar 1)
-             [ "1$"
-             , "bir dollar"
-             , "1 dollar"
+             [ "$1"
+             , "one dollar"
+             , "a dollar"
              ]
   , examples (simple Dollar 10)
-             [ "10$"
-             , "10 $"
+             [ "$10"
+             , "$ 10"
              , "10$"
-             , "10 dollar"
-             , "on dollar"
+             , "10 dollars"
+             , "ten dollars"
              ]
   , examples (simple Cent 10)
-             [ "10 sent"
-             , "on peni"
-             , "on sent"
+             [ "10 cent"
+             , "ten pennies"
+             , "ten cents"
              , "10 c"
              , "10¢"
              ]
@@ -48,53 +47,53 @@ allExamples = concat
              , "$10,000"
              ]
   , examples (simple USD 3.14)
-             [ "3.14USD"
+             [ "USD3.14"
              , "3.14US$"
-             , "3.14 US$"
+             , "US$ 3.14"
              ]
   , examples (simple EUR 20)
              [ "20\x20ac"
-             , "20 euro"
+             , "20 euros"
              , "20 Euro"
-             , "20 Euro"
-             , "20 EUR"
-             , "20.0 EUR"
+             , "20 Euros"
+             , "EUR 20"
+             , "EUR 20.0"
              , "20€"
              , "20 €ur"
              ]
   , examples (simple Pound 10)
              [ "\x00a3\&10"
-             , "ten pound"
+             , "ten pounds"
              ]
   , examples (simple INR 20)
              [ "Rs. 20"
              , "Rs 20"
-             , "20 Rupi"
+             , "20 Rupees"
              , "20Rs"
              , "Rs20"
              ]
   , examples (simple INR 20.43)
-             [ "20 Rupi 43"
-             , "yirmi rupi 43"
+             [ "20 Rupees 43"
+             , "twenty rupees 43"
              ]
   , examples (simple Dollar 20.43)
-             [ "20$ 43c"
-             , "20$ 43 sent"
+             [ "$20 and 43c"
+             , "$20 43"
              , "20 dollar 43c"
-             , "20 dollar 43 sent"
-             , "yirmi dollar 43 sent"
+             , "20 dollars 43 cents"
+             , "twenty dollar 43 cents"
              , "20 dollar 43"
-             , "yirmi dollar 43 sent"
+             , "twenty dollar and 43"
              ]
   , examples (simple GBP 3.01)
-             [ "3.01GBP"
-             , "3.01GBP"
+             [ "GBP3.01"
+             , "GBP 3.01"
              , "3 GBP 1 pence"
              ]
   , examples (simple Unnamed 42)
-             [ "42 papel"
-             , "yaklaşık 42 papel"
-             , "42 papel"
+             [ "42 bucks"
+             , "around 42 bucks"
+             , "exactly 42 bucks"
              ]
   , examples (simple KWD 42)
              [ "42 KWD"
@@ -102,35 +101,20 @@ allExamples = concat
              ]
   , examples (simple LBP 42)
              [ "42 LBP"
-             , "42 Lübnan Poundu"
+             , "42 Lebanese Pounds"
              ]
   , examples (simple EGP 42)
              [ "42 EGP"
-             , "42 mısır poundu"
+             , "42 egyptianpound"
              ]
   , examples (simple QAR 42)
              [ "42 QAR"
-             , "42 katar riyali"
+             , "42 qatari riyals"
              ]
   , examples (simple SAR 42)
              [ "42 SAR"
-             , "42 suudi arabistan riyali"
+             , "42 Saudiriyal"
              ]
-  , examples (simple TRY 1)
-               [ "₺1"
-               , "1 tl"
-               , "1 TRY"
-               , "1tl"
-               , "1 Lira"
-               , "1 Türk lirası"
-               ]
-  , examples (simple TRY 10)
-               [ "₺10"
-               , "10 tl"
-               , "10tl"
-               , "10 Lira"
-               , "10 Türk lirası"
-               ]
   , examples (simple MYR 42)
              [ "42 MYR"
              , "42 RM"
@@ -140,39 +124,42 @@ allExamples = concat
              , "42RM"
              , "RM42"
              , "MYR42"
-             , "42 ringgit"
+             , "ringgit 42"
              , "42 ringgit"
              , "42 malaysia ringgit"
              , "malaysia ringgit 42"
-             , "42 malezya ringgiti"
-             , "42 malezya ringgit"
-             , "42 malezya ringgiti"
-             , "malezya ringgiti 42"
+             , "42 malaysian ringgit"
+             , "malaysian ringgit 42"
+             , "42 malaysia ringgits"
+             , "malaysia ringgits 42"
+             , "42 malaysian ringgits"
+             , "malaysian ringgits 42"
              ]
   , examples (simple MYR 20.43)
              [ "20 ringgit and 43c"
              , "20 ringgit and 43 sen"
              , "twenty ringgit 43 sens"
              , "20 ringgit 43"
-             , "yirmi ringgit and 43"
+             , "twenty ringgit and 43"
              ]
   , examples (between Dollar (10, 20))
-             [ "10 ila 20 dolar arasında"
-             , "10 dolardan 20 dolara"
-             , "10-20 dolar civarında"
-             , "10 ila 20 dolardan"
-             , "yaklaşık 10- 20 $"
-             , "10-20 dollar"
+             [ "between 10 and 20 dollars"
+             , "from 10 dollars to 20 dollars"
+             , "around 10-20 dollars"
+             , "between 10 dollars and 20 dollars"
+             , "from 10 to 20 dollars"
+             , "about $10-$20"
+             , "10-20 dollars"
              ]
   , examples (under EUR 7)
-             [ "yedi avronun altında"
-             , "7 EUR'den az"
-             , "7 € 'dan daha düşük"
+             [ "under seven euros"
+             , "less than 7 EUR"
+             , "lower than 7€"
              ]
   , examples (above Dollar 1.42)
-             [ "1 dolar kırk iki sentten fazla"
-             , "en az 1,42 dolar"
-             , "1.42 dolardan fazla"
-             , "bir dolar 42 sentin üstünde"
+             [ "more than 1 dollar and forty-two cents"
+             , "at least $1.42"
+             , "over 1.42 dollars"
+             , "above a dollar and 42 cents"
              ]
   ]

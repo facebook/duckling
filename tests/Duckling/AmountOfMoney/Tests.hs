@@ -23,6 +23,7 @@ import qualified Duckling.AmountOfMoney.NB.Tests as NB
 import qualified Duckling.AmountOfMoney.PT.Tests as PT
 import qualified Duckling.AmountOfMoney.RO.Tests as RO
 import qualified Duckling.AmountOfMoney.SV.Tests as SV
+import qualified Duckling.AmountOfMoney.TR.Tests as TR
 import qualified Duckling.AmountOfMoney.VI.Tests as VI
 
 tests :: TestTree
@@ -38,5 +39,6 @@ tests = testGroup "AmountOfMoney Tests"
   , PT.tests
   , RO.tests
   , SV.tests
+  , TR.tests
   , VI.tests
   ]

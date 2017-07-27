@@ -1,6 +1,6 @@
 FROM haskell:8
 
-RUN git clone https://github.com/senolakkas/duckling.git
+RUN git clone https://github.com/facebookincubator/duckling.git
 
 RUN mkdir /log
 

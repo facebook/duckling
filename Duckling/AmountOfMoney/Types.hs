@@ -53,7 +53,6 @@ data Currency
   | SAR
   | SEK
   | SGD
-  | TRY
   | USD
   | VND
   deriving (Eq, Generic, Hashable, Show, Ord, NFData)
@@ -61,7 +60,6 @@ data Currency
 instance ToJSON Currency where
   toJSON Cent    = "cent"
   toJSON Dollar  = "$"
-  toJSON TRY     = "\x20BA"
   toJSON Pound   = "\x00a3"
   toJSON Unnamed = "unknown"
   toJSON AED     = "AED"
@@ -85,7 +83,6 @@ instance ToJSON Currency where
   toJSON SAR     = "SAR"
   toJSON SEK     = "SEK"
   toJSON SGD     = "SGD"
-  toJSON TRY     = "TRY"
   toJSON USD     = "USD"
   toJSON VND     = "VND"
 

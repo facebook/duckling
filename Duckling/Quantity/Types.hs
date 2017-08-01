@@ -30,6 +30,7 @@ data Unit
   | Custom Text
   | Dish
   | Gram
+  | Ounce
   | Pint
   | Pound
   | Quart

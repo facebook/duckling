@@ -18,8 +18,8 @@ module Duckling.Time.Helpers
   , isOrdinalBetween, isMidnightOrNoon, isNumeralSafeToUse
     -- Production
   , cycleLastOf, cycleN, cycleNth, cycleNthAfter, dayOfMonth, dayOfWeek
-  , daysOfWeekOfMonth, durationAfter, durationAgo, durationBefore, form, hour
-  , hourMinute, hourMinuteSecond, inDuration, intersect, intersectDOM, interval
+  , durationAfter, durationAgo, durationBefore, form, hour, hourMinute
+  , hourMinuteSecond, inDuration, intersect, intersectDOM, interval
   , inTimezone, longWEBefore, minute, minutesAfter, minutesBefore, mkLatent
   , month, monthDay, notLatent, now, nthDOWOfMonth, partOfDay, predLastOf
   , predNth, predNthAfter, second, timeOfDayAMPM, weekend, withDirection, year
@@ -511,16 +511,13 @@ weekend = interval' TTime.Open (fri, mon)
     fri = intersect' (dayOfWeek 5, hour False 18)
     mon = intersect' (dayOfWeek 1, hour False 0)
 
-daysOfWeekOfMonth :: Int -> Int -> TimeData
-daysOfWeekOfMonth dow m = intersect' (dayOfWeek dow, month m)
-
 -- Zero-indexed weeks, Monday is 1
 -- Use `predLastOf` for last day of week of month
 nthDOWOfMonth :: Int -> Int -> Int -> TimeData
-nthDOWOfMonth n dow m = intersect' (dowsM, week)
+nthDOWOfMonth n dow m = predNthAfter (n - 1) dow_ month_
   where
-    dowsM = daysOfWeekOfMonth dow m
-    week = cycleNthAfter False TG.Week n $ monthDay m 1
+    dow_ = dayOfWeek dow
+    month_ = month m
 
 intersectDOM :: TimeData -> Token -> Maybe TimeData
 intersectDOM td token = do

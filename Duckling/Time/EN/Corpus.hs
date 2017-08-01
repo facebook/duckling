@@ -518,15 +518,20 @@ allExamples = concat
              , "next mothers day"
              ]
   , examples (datetime (2012, 5, 13, 0, 0, 0) Day)
-             ["last mothers day"]
+             [ "last mothers day"
+             ]
   , examples (datetime (2014, 5, 11, 0, 0, 0) Day)
-             ["mothers day 2014"]
+             [ "mothers day 2014"
+             ]
   , examples (datetime (2013, 6, 16, 0, 0, 0) Day)
-             ["Father's Day"]
+             [ "Father's Day"
+             ]
   , examples (datetime (2012, 6, 17, 0, 0, 0) Day)
-             ["last fathers day"]
+             [ "last fathers day"
+             ]
   , examples (datetime (1996, 6, 16, 0, 0, 0) Day)
-             ["fathers day 1996"]
+             [ "fathers day 1996"
+             ]
   , examples (datetime (2013, 5, 27, 0, 0, 0) Day)
              [ "memorial day"
              , "Next Memorial Day"
@@ -536,20 +541,23 @@ allExamples = concat
              , "memorial day of last year"
              ]
   , examples (datetimeInterval ((2013, 5, 24, 18, 0, 0), (2013, 5, 28, 0, 0, 0)) Hour)
-             ["memorial day week-end"]
+             [ "memorial day week-end"
+             ]
   , examples (datetime (2013, 7, 4, 0, 0, 0) Day)
              [ "independence day"
              , "4th of July"
              , "4 of july"
              ]
   , examples (datetime (2013, 9, 2, 0, 0, 0) Day)
-             ["labor day"]
+             [ "labor day"
+             ]
   , examples (datetime (2012, 9, 3, 0, 0, 0) Day)
              [ "labor day of last year"
              , "Labor Day 2012"
              ]
   , examples (datetimeInterval ((2013, 8, 30, 18, 0, 0), (2013, 9, 3, 0, 0, 0)) Hour)
-             ["labor day weekend"]
+             [ "labor day weekend"
+             ]
   , examples (datetime (2013, 10, 31, 0, 0, 0) Day)
              [ "halloween"
              , "next halloween"
@@ -566,13 +574,24 @@ allExamples = concat
              [ "thanksgiving of next year"
              , "thanksgiving 2014"
              ]
-  {- FIXME (jodent) Doesn't work in Duckling either. t13908315
   , examples (datetime (2012, 11, 22, 0, 0, 0) Day)
              [ "last thanksgiving"
              , "thanksgiving day 2012"
              ]
   , examples (datetime (2016, 11, 24, 0, 0, 0) Day)
-             ["thanksgiving 2016"]-}
+             [ "thanksgiving 2016"
+             ]
+  , examples (datetime (2017, 11, 23, 0, 0, 0) Day)
+             [ "thanksgiving 2017"
+             ]
+  , examples (datetime (2013, 11, 29, 0, 0, 0) Day)
+             [ "black friday"
+             , "black friday of this year"
+             , "black friday 2013"
+             ]
+  , examples (datetime (2017, 11, 24, 0, 0, 0) Day)
+             [ "black friday 2017"
+             ]
   , examples (datetime (2014, 1, 20, 0, 0, 0) Day)
              [ "MLK day"
              , "next Martin Luther King day"
@@ -592,19 +611,24 @@ allExamples = concat
              , "tonight"
              ]
   , examples (datetimeInterval ((2013, 2, 8, 18, 0, 0), (2013, 2, 11, 0, 0, 0)) Hour)
-             ["this past weekend"]
+             [ "this past weekend"
+             ]
   , examples (datetimeInterval ((2013, 2, 13, 18, 0, 0), (2013, 2, 14, 0, 0, 0)) Hour)
-             ["tomorrow evening"]
+             [ "tomorrow evening"
+             ]
   , examples (datetimeInterval ((2013, 2, 13, 12, 0, 0), (2013, 2, 13, 14, 0, 0)) Hour)
              [ "tomorrow lunch"
              , "tomorrow at lunch"
              ]
   , examples (datetimeInterval ((2013, 2, 11, 18, 0, 0), (2013, 2, 12, 0, 0, 0)) Hour)
-             ["yesterday evening"]
+             [ "yesterday evening"
+             ]
   , examples (datetimeInterval ((2013, 2, 15, 18, 0, 0), (2013, 2, 18, 0, 0, 0)) Hour)
-             ["this week-end"]
+             [ "this week-end"
+             ]
   , examples (datetimeInterval ((2013, 2, 18, 4, 0, 0), (2013, 2, 18, 12, 0, 0)) Hour)
-             ["monday mOrnIng"]
+             [ "monday mOrnIng"
+             ]
   , examples (datetimeInterval ((2013, 2, 18, 4, 0, 0), (2013, 2, 18, 9, 0, 0)) Hour)
              [ "monday early in the morning"
              , "monday early morning"
@@ -649,7 +673,8 @@ allExamples = concat
              , "next three days"
              ]
   , examples (datetimeInterval ((2013, 2, 13, 0, 0, 0), (2013, 2, 16, 0, 0, 0)) Day)
-             ["next few days"]
+             [ "next few days"
+             ]
   , examples (datetimeInterval ((2013, 1, 28, 0, 0, 0), (2013, 2, 11, 0, 0, 0)) Week)
              [ "last 2 weeks"
              , "last two weeks"

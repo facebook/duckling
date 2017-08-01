@@ -14,19 +14,19 @@ module Duckling.Time.PL.Rules
   ( rules ) where
 
 import Control.Monad (liftM2)
-import qualified Data.Text as Text
 import Prelude
+import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
 import Duckling.Numeral.Helpers (parseInt)
 import Duckling.Ordinal.Types (OrdinalData(..))
-import qualified Duckling.Ordinal.Types as TOrdinal
 import Duckling.Regex.Types
 import Duckling.Time.Helpers
 import Duckling.Time.Types (TimeData (..))
+import Duckling.Types
+import qualified Duckling.Ordinal.Types as TOrdinal
 import qualified Duckling.Time.Types as TTime
 import qualified Duckling.TimeGrain.Types as TG
-import Duckling.Types
 
 ruleOrdinalCycleTime :: Rule
 ruleOrdinalCycleTime = Rule
@@ -1549,7 +1549,7 @@ ruleFathersDay = Rule
   , pattern =
     [ regex "dzie(n|\x0144) ?(taty|ojca)"
     ]
-  , prod = \_ -> tt $ nthDOWOfMonth 2 7 6
+  , prod = \_ -> tt $ nthDOWOfMonth 3 7 6
   }
 
 ruleLastCycleTime :: Rule
@@ -1736,9 +1736,9 @@ ruleMothersDay :: Rule
 ruleMothersDay = Rule
   { name = "Mother's Day"
   , pattern =
-    [ regex "dzie(n|\x0144) ? ma(my|tki|m)"
+    [ regex "dzie(n|\x0144) ?ma(my|tki|m)"
     ]
-  , prod = \_ -> tt $ nthDOWOfMonth 1 7 5
+  , prod = \_ -> tt $ nthDOWOfMonth 2 7 5
   }
 
 ruleTimeofdayOclock :: Rule

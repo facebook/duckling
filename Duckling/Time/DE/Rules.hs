@@ -14,19 +14,19 @@ module Duckling.Time.DE.Rules
   ( rules ) where
 
 import Control.Monad (liftM2)
-import qualified Data.Text as Text
 import Prelude
+import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
 import Duckling.Numeral.Helpers (parseInt)
 import Duckling.Ordinal.Types (OrdinalData (..))
-import qualified Duckling.Ordinal.Types as TOrdinal
 import Duckling.Regex.Types
 import Duckling.Time.Helpers
 import Duckling.Time.Types (TimeData (..))
+import Duckling.Types
+import qualified Duckling.Ordinal.Types as TOrdinal
 import qualified Duckling.Time.Types as TTime
 import qualified Duckling.TimeGrain.Types as TG
-import Duckling.Types
 
 ruleNamedday :: Rule
 ruleNamedday = Rule
@@ -1710,7 +1710,7 @@ ruleLastDayofweekOfTime = Rule
   , pattern =
     [ regex "letzte(r|n|s)?"
     , Predicate isADayOfWeek
-    , regex "um|im"
+    , regex "[ui]m"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -1723,9 +1723,9 @@ ruleFathersDay :: Rule
 ruleFathersDay = Rule
   { name = "Father's Day"
   , pattern =
-    [ regex "vatt?ertag|vatt?er (tag)?"
+    [ regex "vatt?er( ?tag)?"
     ]
-  , prod = \_ -> tt $ nthDOWOfMonth 2 7 6
+  , prod = \_ -> tt $ nthDOWOfMonth 3 7 6
   }
 
 ruleHhmmMilitaryAmpm :: Rule
@@ -1897,7 +1897,7 @@ ruleMothersDay = Rule
   , pattern =
     [ regex "mutt?ertag|mutt?er (tag)?"
     ]
-  , prod = \_ -> tt $ nthDOWOfMonth 1 7 5
+  , prod = \_ -> tt $ nthDOWOfMonth 2 7 5
   }
 
 ruleTimeofdayOclock :: Rule

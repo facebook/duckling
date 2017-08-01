@@ -19,13 +19,13 @@ import Prelude
 import Duckling.Dimensions.Types
 import Duckling.Numeral.Helpers (parseInt)
 import Duckling.Ordinal.Types (OrdinalData (..))
-import qualified Duckling.Ordinal.Types as TOrdinal
 import Duckling.Regex.Types
 import Duckling.Time.Helpers
 import Duckling.Time.Types (TimeData (..))
+import Duckling.Types
+import qualified Duckling.Ordinal.Types as TOrdinal
 import qualified Duckling.Time.Types as TTime
 import qualified Duckling.TimeGrain.Types as TG
-import Duckling.Types
 
 ruleNamedday :: Rule
 ruleNamedday = Rule
@@ -1586,7 +1586,7 @@ ruleFathersDay = Rule
   , pattern =
     [ regex "farsdag"
     ]
-  , prod = \_ -> tt $ nthDOWOfMonth 1 7 11
+  , prod = \_ -> tt $ nthDOWOfMonth 2 7 11
   }
 
 ruleCycleBeforeTime :: Rule
@@ -1744,7 +1744,7 @@ ruleMothersDay = Rule
   , pattern =
     [ regex "morsdag"
     ]
-  , prod = \_ -> tt $ nthDOWOfMonth 1 7 2
+  , prod = \_ -> tt $ nthDOWOfMonth 2 7 2
   }
 
 ruleTimeofdayOclock :: Rule

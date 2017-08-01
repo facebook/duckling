@@ -1523,7 +1523,7 @@ ruleFathersDay = Rule
   , pattern =
     [ regex "dan (o(c|\x010d)eva|tata)"
     ]
-  , prod = \_ -> tt $ nthDOWOfMonth 2 7 6
+  , prod = \_ -> tt $ nthDOWOfMonth 3 7 6
   }
 
 ruleByTime :: Rule
@@ -1686,7 +1686,7 @@ ruleMothersDay = Rule
   , pattern =
     [ regex "maj(c|\x010d)in dan"
     ]
-  , prod = \_ -> tt $ nthDOWOfMonth 1 7 5
+  , prod = \_ -> tt $ nthDOWOfMonth 2 7 5
   }
 
 ruleTimeofdayOclock :: Rule

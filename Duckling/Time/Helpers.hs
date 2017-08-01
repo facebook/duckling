@@ -12,10 +12,10 @@
 
 module Duckling.Time.Helpers
   ( -- Patterns
-    isADayOfWeek, isAMonth, isAnHourOfDay, isAPartOfDay, isATimeOfDay
-  , isDOMInteger, isDOMOrdinal, isDOMValue, isGrain, isGrainFinerThan
-  , isGrainOfTime, isIntegerBetween, isNotLatent, isOrdinalBetween
-  , isMidnightOrNoon, isNumeralSafeToUse
+    hasNoDirection, isADayOfWeek, isAMonth, isAnHourOfDay, isAPartOfDay
+  , isATimeOfDay, isDOMInteger, isDOMOrdinal, isDOMValue, isGrain
+  , isGrainFinerThan, isGrainOfTime, isIntegerBetween, isNotLatent
+  , isOrdinalBetween, isMidnightOrNoon, isNumeralSafeToUse
     -- Production
   , cycleLastOf, cycleN, cycleNth, cycleNthAfter, dayOfMonth, dayOfWeek
   , daysOfWeekOfMonth, durationAfter, durationAgo, durationBefore, form, hour
@@ -274,6 +274,10 @@ isMidnightOrNoon _ = False
 isNotLatent :: Predicate
 isNotLatent (Token Time td) = not $ TTime.latent td
 isNotLatent _ = False
+
+hasNoDirection :: Predicate
+hasNoDirection (Token Time td) = isNothing $ TTime.direction td
+hasNoDirection _ = False
 
 isIntegerBetween :: Int -> Int -> Predicate
 isIntegerBetween low high (Token Numeral nd) =

@@ -12,6 +12,7 @@ module Duckling.Ranking.Classifiers
 
 import Duckling.Lang
 import qualified Duckling.Ranking.Classifiers.AR as ARClassifiers
+import qualified Duckling.Ranking.Classifiers.BG as BGClassifiers
 import qualified Duckling.Ranking.Classifiers.CS as CSClassifiers
 import qualified Duckling.Ranking.Classifiers.DA as DAClassifiers
 import qualified Duckling.Ranking.Classifiers.DE as DEClassifiers
@@ -42,6 +43,7 @@ import Duckling.Ranking.Types
 
 classifiers :: Lang -> Classifiers
 classifiers AR = ARClassifiers.classifiers
+classifiers BG = BGClassifiers.classifiers
 classifiers CS = CSClassifiers.classifiers
 classifiers DA = DAClassifiers.classifiers
 classifiers DE = DEClassifiers.classifiers

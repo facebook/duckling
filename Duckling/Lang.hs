@@ -23,6 +23,7 @@ import qualified TextShow as TS
 
 data Lang
   = AR
+  | BG
   | CS
   | DA
   | DE

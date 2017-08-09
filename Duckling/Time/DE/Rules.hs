@@ -1222,7 +1222,7 @@ ruleNextTime = Rule
   { name = "next <time>"
   , pattern =
     [ regex "(n(\x00e4)chste|kommende)[ns]?"
-    , dimension Time
+    , Predicate isNotLatent
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td:_) ->

@@ -1245,19 +1245,15 @@ moreUSHolidays =
     )
   , ( "Father's Day" -- Third Sunday of June
     , "father'?s?'? day"
-    , 2, 7, 6
+    , 3, 7, 6
     )
   , ( "Mother's Day" -- Second Sunday of May
     , "mother'?s?'? day"
-    , 1, 7, 5
+    , 2, 7, 5
     )
   , ( "Thanksgiving Day" -- Fourth Thursday of November
     , "thanks?giving( day)?"
     , 4, 4, 11
-    )
-  , ( "Black Friday" -- Fourth Friday of November
-    , "black frid?day"
-    , 4, 5, 11
     )
   ,  ( "Labor Day" -- First Monday of September
      , "labor day"
@@ -1273,6 +1269,16 @@ ruleMoreUSHolidays = map go moreUSHolidays
       , pattern = [regex regexPattern]
       , prod = \_ -> tt $ nthDOWOfMonth n dow m
       }
+
+-- The day after Thanksgiving (not always the fourth Friday of November)
+ruleBlackFriday :: Rule
+ruleBlackFriday = Rule
+  { name = "black friday"
+  , pattern =
+    [ regex "black frid?day"
+    ]
+  , prod = \_ -> tt . cycleNthAfter False TG.Day 1 $ nthDOWOfMonth 4 4 11
+  }
 
 -- Last Monday of May
 ruleMemorialDay :: Rule
@@ -1697,6 +1703,7 @@ rules =
   , ruleTimezone
   , rulePartOfMonth
   , ruleNow
+  , ruleBlackFriday
   ]
   ++ ruleInstants
   ++ ruleDaysOfWeek

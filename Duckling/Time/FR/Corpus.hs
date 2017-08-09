@@ -10,6 +10,7 @@
 
 module Duckling.Time.FR.Corpus
   ( corpus
+  , negativeCorpus
   ) where
 
 import Data.String
@@ -17,13 +18,20 @@ import Prelude
 
 import Duckling.Lang
 import Duckling.Resolve
+import Duckling.Testing.Types hiding (examples)
 import Duckling.Time.Corpus
 import Duckling.Time.Types hiding (Month)
 import Duckling.TimeGrain.Types hiding (add)
-import Duckling.Testing.Types hiding (examples)
 
 corpus :: Corpus
 corpus = (testContext {lang = FR}, allExamples)
+
+negativeCorpus :: NegativeCorpus
+negativeCorpus = (testContext {lang = FR}, examples)
+  where
+    examples =
+      [ "Ana a un court de tennis"
+      ]
 
 allExamples :: [Example]
 allExamples = concat

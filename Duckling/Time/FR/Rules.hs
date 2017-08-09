@@ -718,7 +718,7 @@ ruleHourofdayInteger :: Rule
 ruleHourofdayInteger = Rule
   { name = "<hour-of-day> <integer> (as relative minutes)"
   , pattern =
-    [ Predicate isAnHourOfDay
+    [ Predicate $ liftM2 (&&) isAnHourOfDay hasNoDirection
     , Predicate $ isIntegerBetween 1 59
     ]
   , prod = \tokens -> case tokens of
@@ -1587,11 +1587,10 @@ ruleVersTimeofday = Rule
   { name = "à|vers <time-of-day>"
   , pattern =
     [ regex "(vers|autour de|(a|\x00e0) environ|aux alentours de|(a|\x00e0))"
-    , Predicate isATimeOfDay
+    , Predicate $ liftM2 (&&) isATimeOfDay isNotLatent
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td:_) ->
-        tt $ notLatent td
+      (_:x:_) -> Just x
       _ -> Nothing
   }
 
@@ -1667,7 +1666,7 @@ ruleLeCycleAprssuivantTime :: Rule
 ruleLeCycleAprssuivantTime = Rule
   { name = "le <cycle> après|suivant <time>"
   , pattern =
-    [ regex "l[ea']? ?"
+    [ regex "l[ea']?"
     , dimension TimeGrain
     , regex "suivante?|apr(e|\x00e8|\x00e9)s"
     , dimension Time
@@ -1689,7 +1688,12 @@ ruleEntreDdEtDdMonthinterval = Rule
     , Predicate isAMonth
     ]
   , prod = \tokens -> case tokens of
-      (_:Token RegexMatch (GroupMatch (m1:_)):_:Token RegexMatch (GroupMatch (m2:_)):Token Time td:_) -> do
+      (_:
+       Token RegexMatch (GroupMatch (m1:_)):
+       _:
+       Token RegexMatch (GroupMatch (m2:_)):
+       Token Time td:
+       _) -> do
         n1 <- parseInt m1
         n2 <- parseInt m2
         from <- intersect (dayOfMonth n1) td
@@ -1742,7 +1746,7 @@ ruleDudansLePartofday :: Rule
 ruleDudansLePartofday = Rule
   { name = "du|dans le <part-of-day>"
   , pattern =
-    [ regex "du|dans l[ae']? ?|au|en|l[ae' ]|d(\x00e8|e)s l?[ae']? ?"
+    [ regex "du|dans l[ae']? ?|au|en|l[ae' ]|d(\x00e8|e)s l?[ae']?"
     , Predicate isAPartOfDay
     ]
   , prod = \tokens -> case tokens of
@@ -1787,7 +1791,7 @@ ruleMaintenant :: Rule
 ruleMaintenant = Rule
   { name = "maintenant"
   , pattern =
-    [ regex "maintenant|(tout de suite)"
+    [ regex "maintenant|tout de suite"
     ]
   , prod = \_ -> tt $ cycleNth TG.Second 0
   }
@@ -1811,7 +1815,7 @@ ruleLeCycleAvantprcdentTime :: Rule
 ruleLeCycleAvantprcdentTime = Rule
   { name = "le <cycle> avant|précédent <time>"
   , pattern =
-    [ regex "l[ea']? ?"
+    [ regex "l[ea']?"
     , dimension TimeGrain
     , regex "avant|pr(\x00e9|e)c(\x00e9|e)dent"
     , dimension Time
@@ -1826,7 +1830,7 @@ ruleDayOfMonthPremier :: Rule
 ruleDayOfMonthPremier = Rule
   { name = "day of month (premier)"
   , pattern =
-    [ regex "premier|prem\\.?|1er|1 er"
+    [ regex "premier|prem\\.?|1 ?er"
     ]
   , prod = \_ -> tt $ dayOfMonth 1
   }

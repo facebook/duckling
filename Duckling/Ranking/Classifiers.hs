@@ -22,6 +22,7 @@ import qualified Duckling.Ranking.Classifiers.FR as FRClassifiers
 import qualified Duckling.Ranking.Classifiers.GA as GAClassifiers
 import qualified Duckling.Ranking.Classifiers.HE as HEClassifiers
 import qualified Duckling.Ranking.Classifiers.HR as HRClassifiers
+import qualified Duckling.Ranking.Classifiers.HU as HUClassifiers
 import qualified Duckling.Ranking.Classifiers.ID as IDClassifiers
 import qualified Duckling.Ranking.Classifiers.IT as ITClassifiers
 import qualified Duckling.Ranking.Classifiers.JA as JAClassifiers
@@ -52,6 +53,7 @@ classifiers FR = FRClassifiers.classifiers
 classifiers GA = GAClassifiers.classifiers
 classifiers HE = HEClassifiers.classifiers
 classifiers HR = HRClassifiers.classifiers
+classifiers HU = HUClassifiers.classifiers
 classifiers ID = IDClassifiers.classifiers
 classifiers IT = ITClassifiers.classifiers
 classifiers JA = JAClassifiers.classifiers

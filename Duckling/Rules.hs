@@ -33,6 +33,7 @@ import qualified Duckling.Rules.FR as FRRules
 import qualified Duckling.Rules.GA as GARules
 import qualified Duckling.Rules.HE as HERules
 import qualified Duckling.Rules.HR as HRRules
+import qualified Duckling.Rules.HU as HURules
 import qualified Duckling.Rules.ID as IDRules
 import qualified Duckling.Rules.IT as ITRules
 import qualified Duckling.Rules.JA as JARules
@@ -79,6 +80,7 @@ langRules FR = FRRules.rules
 langRules GA = GARules.rules
 langRules HE = HERules.rules
 langRules HR = HRRules.rules
+langRules HU = HURules.rules
 langRules ID = IDRules.rules
 langRules IT = ITRules.rules
 langRules JA = JARules.rules

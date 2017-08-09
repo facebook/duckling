@@ -21,6 +21,7 @@ import qualified Data.HashSet as HashSet
 import Duckling.Dimensions.Types
 import qualified Duckling.Dimensions.Common as CommonDimensions
 import qualified Duckling.Dimensions.AR as ARDimensions
+import qualified Duckling.Dimensions.BG as BGDimensions
 import qualified Duckling.Dimensions.CS as CSDimensions
 import qualified Duckling.Dimensions.DA as DADimensions
 import qualified Duckling.Dimensions.DE as DEDimensions
@@ -78,6 +79,7 @@ dependents (This Volume) = HashSet.singleton (This Numeral)
 
 langDimensions :: Lang -> [Some Dimension]
 langDimensions AR = ARDimensions.allDimensions
+langDimensions BG = BGDimensions.allDimensions
 langDimensions CS = CSDimensions.allDimensions
 langDimensions DA = DADimensions.allDimensions
 langDimensions DE = DEDimensions.allDimensions

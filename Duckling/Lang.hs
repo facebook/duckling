@@ -34,6 +34,7 @@ data Lang
   | GA
   | HE
   | HR
+  | HU
   | ID
   | IT
   | JA

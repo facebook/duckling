@@ -146,7 +146,7 @@ toJText = Text.decodeUtf8 . LB.toStrict . encode
 regex :: String -> PatternItem
 regex = Regex . R.makeRegexOpts compOpts execOpts
   where
-    compOpts = PCRE.defaultCompOpt + PCRE.compCaseless
+    compOpts = PCRE.defaultCompOpt + PCRE.compCaseless + PCRE.compUTF8
     execOpts = PCRE.defaultExecOpt
 
 dimension :: Typeable a => Dimension a -> PatternItem

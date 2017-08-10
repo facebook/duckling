@@ -30,10 +30,12 @@ data Currency
   = Cent
   | Dollar
   | Pound
+  | Stotinka
   | Unnamed -- e.g. bucks
   -- unambiguous
   | AED
   | AUD
+  | BGN
   | BRL
   | EGP
   | EUR
@@ -58,33 +60,35 @@ data Currency
   deriving (Eq, Generic, Hashable, Show, Ord, NFData)
 
 instance ToJSON Currency where
-  toJSON Cent    = "cent"
-  toJSON Dollar  = "$"
-  toJSON Pound   = "\x00a3"
-  toJSON Unnamed = "unknown"
-  toJSON AED     = "AED"
-  toJSON AUD     = "AUD"
-  toJSON BRL     = "BRL"
-  toJSON EGP     = "EGP"
-  toJSON EUR     = "EUR"
-  toJSON GBP     = "GBP"
-  toJSON HRK     = "HRK"
-  toJSON IDR     = "IDR"
-  toJSON INR     = "INR"
-  toJSON JPY     = "JPY"
-  toJSON KRW     = "KRW"
-  toJSON KWD     = "KWD"
-  toJSON LBP     = "LBP"
-  toJSON MYR     = "MYR"
-  toJSON NOK     = "NOK"
-  toJSON PTS     = "PTS"
-  toJSON QAR     = "QAR"
-  toJSON RON     = "RON"
-  toJSON SAR     = "SAR"
-  toJSON SEK     = "SEK"
-  toJSON SGD     = "SGD"
-  toJSON USD     = "USD"
-  toJSON VND     = "VND"
+  toJSON Cent     = "cent"
+  toJSON Dollar   = "$"
+  toJSON Pound    = "\x00a3"
+  toJSON Stotinka = "стотинка"
+  toJSON Unnamed  = "unknown"
+  toJSON AED      = "AED"
+  toJSON AUD      = "AUD"
+  toJSON BGN      = "BGN"
+  toJSON BRL      = "BRL"
+  toJSON EGP      = "EGP"
+  toJSON EUR      = "EUR"
+  toJSON GBP      = "GBP"
+  toJSON HRK      = "HRK"
+  toJSON IDR      = "IDR"
+  toJSON INR      = "INR"
+  toJSON JPY      = "JPY"
+  toJSON KRW      = "KRW"
+  toJSON KWD      = "KWD"
+  toJSON LBP      = "LBP"
+  toJSON MYR      = "MYR"
+  toJSON NOK      = "NOK"
+  toJSON PTS      = "PTS"
+  toJSON QAR      = "QAR"
+  toJSON RON      = "RON"
+  toJSON SAR      = "SAR"
+  toJSON SEK      = "SEK"
+  toJSON SGD      = "SGD"
+  toJSON USD      = "USD"
+  toJSON VND      = "VND"
 
 data AmountOfMoneyData = AmountOfMoneyData
   { value    :: Maybe Double

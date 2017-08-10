@@ -144,6 +144,8 @@ library
                      -- AmountOfMoney
                      , Duckling.AmountOfMoney.EN.Corpus
                      , Duckling.AmountOfMoney.EN.Rules
+                     , Duckling.AmountOfMoney.BG.Corpus
+                     , Duckling.AmountOfMoney.BG.Rules
                      , Duckling.AmountOfMoney.ES.Corpus
                      , Duckling.AmountOfMoney.ES.Rules
                      , Duckling.AmountOfMoney.FR.Corpus
@@ -548,6 +550,7 @@ test-suite duckling-test
 
                      -- AmountOfMoney
                      , Duckling.AmountOfMoney.EN.Tests
+                     , Duckling.AmountOfMoney.BG.Tests
                      , Duckling.AmountOfMoney.ES.Tests
                      , Duckling.AmountOfMoney.FR.Tests
                      , Duckling.AmountOfMoney.GA.Tests

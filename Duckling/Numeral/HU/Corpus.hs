@@ -66,8 +66,16 @@ allExamples = concat
   , examples (NumeralValue 17)
              [ "tizenhét"
              ]
+  , examples (NumeralValue 20)
+             [ "20"
+             , "húsz"
+             ]
   , examples (NumeralValue 22)
              [ "huszonkettő"
+             ]
+  , examples (NumeralValue 24)
+             [ "24"
+             , "huszonnégy"
              ]
   , examples (NumeralValue 26)
              [ "huszonhat"

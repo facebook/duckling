@@ -8,6 +8,7 @@
 
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE NoRebindableSyntax #-}
 
 module Duckling.Numeral.HU.Rules
   ( rules ) where
@@ -119,24 +120,28 @@ ruleTwentyoneToTwentynine = Rule
       _ -> Nothing
   }
 
+dozensMap :: HashMap Text Integer
+dozensMap = HashMap.fromList
+  [ ( "h\x00FAsz", 20 )
+  , ( "harminc", 30 )
+  , ( "negyven", 40 )
+  , ( "\x00F6tven", 50 )
+  , ( "hatvan", 60 )
+  , ( "hetven", 70 )
+  , ( "nyolcvan", 80 )
+  , ( "kilencven", 90 )
+  ]
+
 ruleTens :: Rule
 ruleTens = Rule
   { name = "integer (20,30..90)"
-  , pattern = [regex "(h\x00FAsz|harminc|negyven|\x00F6tven|hatvan|hetven|nyolcvan|kilencven)"]
-  , prod = \tokens ->
-      case tokens of
-        (Token RegexMatch (GroupMatch (match:_)):_) ->
-          case Text.toLower match of
-            "h\x00FAsz"  -> integer 20
-            "harminc"    -> integer 30
-            "negyven"    -> integer 40
-            "\x00F6tven" -> integer 50
-            "hatvan"     -> integer 60
-            "hetven"     -> integer 70
-            "nyolcvan"   -> integer 80
-            "kilencven"  -> integer 90
-            _            -> Nothing
-        _ -> Nothing
+  , pattern =
+    [ regex "(h\x00FAsz|harminc|negyven|\x00f6tven|hatvan|hetven|nyolcvan|kilencven)"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        HashMap.lookup (Text.toLower match) dozensMap >>= integer
+      _ -> Nothing
   }
 
 ruleCompositeTens :: Rule
@@ -147,26 +152,8 @@ ruleCompositeTens = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (m1:m2:_)):_) -> do
-        v1 <- case Text.toLower m1 of
-          "harminc"      -> Just 30
-          "negyven"      -> Just 40
-          "\x00F6tven"   -> Just 50
-          "hatvan"       -> Just 60
-          "hetven"       -> Just 70
-          "nyolcvan"     -> Just 80
-          "kilencven"    -> Just 90
-          _ -> Nothing
-        v2 <- case Text.toLower m2 of
-          "egy"          -> Just 1 
-          "kett\x0151"   -> Just 2 
-          "h\x00E1rom"   -> Just 3 
-          "n\x00E9gy"    -> Just 4 
-          "\x00F6t"      -> Just 5
-          "hat"          -> Just 6
-          "h\x00E9t"     -> Just 7
-          "nyolc"        -> Just 8
-          "kilenc"       -> Just 9
-          _ -> Nothing
+        v1 <- HashMap.lookup (Text.toLower m1) dozensMap
+        v2 <- HashMap.lookup (Text.toLower m2) ruleNumeralMap
         integer $ v1 + v2
       _ -> Nothing
   }

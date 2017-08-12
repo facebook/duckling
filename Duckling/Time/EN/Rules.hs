@@ -971,6 +971,29 @@ ruleIntervalFromMonthDDDD = Rule
       _ -> Nothing
   }
 
+ruleIntervalFromDDDDMonth :: Rule
+ruleIntervalFromDDDDMonth = Rule
+  { name = "from <day-of-month> (ordinal or number) to <day-of-month> (ordinal or number) <named-month> (interval)"
+  , pattern =
+    [ regex "from"
+    , Predicate isDOMValue
+    , regex "\\-|to|th?ru|through|(un)?til(l)?"
+    , Predicate isDOMValue
+    , Predicate isAMonth
+    ]
+  , prod = \tokens -> case tokens of
+      (_:
+       token1:
+       _:
+       token2:
+       Token Time td:
+       _) -> do
+        dom1 <- intersectDOM td token1
+        dom2 <- intersectDOM td token2
+        Token Time <$> interval TTime.Closed dom1 dom2
+      _ -> Nothing
+  }
+
 -- Blocked for :latent time. May need to accept certain latents only, like hours
 ruleIntervalDash :: Rule
 ruleIntervalDash = Rule
@@ -1667,6 +1690,7 @@ rules =
   , ruleTODPrecision
   , rulePrecisionTOD
   , ruleIntervalFromMonthDDDD
+  , ruleIntervalFromDDDDMonth
   , ruleIntervalMonthDDDD
   , ruleIntervalDash
   , ruleIntervalFrom

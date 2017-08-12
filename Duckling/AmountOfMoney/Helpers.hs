@@ -13,6 +13,7 @@ module Duckling.AmountOfMoney.Helpers
   ( currencyOnly
   , financeWith
   , withCents
+  , withStotinki
   , withInterval
   , withMax
   , withMin
@@ -50,6 +51,12 @@ withCents x fd@AmountOfMoneyData {value = Just value} = fd
   {value = Just $ value + x / 100}
 withCents x AmountOfMoneyData {value = Nothing} = AmountOfMoneyData
   {value = Just x, currency = Cent, minValue = Nothing, maxValue = Nothing}
+
+withStotinki :: Double -> AmountOfMoneyData -> AmountOfMoneyData
+withStotinki x fd@AmountOfMoneyData {value = Just value} = fd
+  {value = Just $ value + x / 100}
+withStotinki x AmountOfMoneyData {value = Nothing} = AmountOfMoneyData
+  {value = Just x, currency = Stotinka, minValue = Nothing, maxValue = Nothing}
 
 withInterval :: (Double, Double) -> AmountOfMoneyData -> AmountOfMoneyData
 withInterval (from, to) fd = fd {minValue = Just from, maxValue = Just to}

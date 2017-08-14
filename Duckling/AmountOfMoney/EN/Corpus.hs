@@ -115,6 +115,9 @@ allExamples = concat
              [ "42 SAR"
              , "42 Saudiriyal"
              ]
+  , examples (simple BGN 42)
+             [ "42 BGN"
+             ]
   , examples (simple MYR 42)
              [ "42 MYR"
              , "42 RM"

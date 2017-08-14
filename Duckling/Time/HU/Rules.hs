@@ -13,6 +13,7 @@
 module Duckling.Time.HU.Rules
   ( rules ) where
 
+import Control.Monad (liftM2)
 import Data.Maybe
 import Data.Text (Text)
 import Prelude
@@ -20,6 +21,7 @@ import Data.String
 import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
+import Duckling.Numeral.Helpers (parseInt)
 import qualified Duckling.TimeGrain.Types as TG
 import Duckling.Types
 import Duckling.Time.Helpers
@@ -110,8 +112,92 @@ ruleCycleThisLastNext = Rule
       _ -> Nothing
   }
 
+ruleNextDOW :: Rule
+ruleNextDOW = Rule
+  { name = "next <day-of-week>"
+  , pattern =
+    [ regex "j\x00F6v\x0151"
+    , Predicate isADayOfWeek
+    ]
+  , prod = \tokens -> case tokens of
+      (_:Token Time td:_) -> tt $ predNth 1 True td
+      _ -> Nothing
+  }
+
+ruleHHMM :: Rule
+ruleHHMM = Rule
+  { name = "hh:mm"
+  , pattern = [regex "((?:[01]?\\d)|(?:2[0-3]))[:.]([0-5]\\d)"]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (hh:mm:_)):_) -> do
+        h <- parseInt hh
+        m <- parseInt mm
+        tt $ hourMinute True h m
+      _ -> Nothing
+  }
+
+
+ruleHHMMSS :: Rule
+ruleHHMMSS = Rule
+  { name = "hh:mm:ss"
+  , pattern = [regex "((?:[01]?\\d)|(?:2[0-3]))[:.]([0-5]\\d)[:.]([0-5]\\d)"]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (hh:mm:ss:_)):_) -> do
+        h <- parseInt hh
+        m <- parseInt mm
+        s <- parseInt ss
+        tt $ hourMinuteSecond True h m s
+      _ -> Nothing
+  }
+
+ruleTODLatent :: Rule
+ruleTODLatent = Rule
+  { name = "time-of-day (latent)"
+  , pattern =
+    [ Predicate $ liftM2 (&&) isNumeralSafeToUse (isIntegerBetween 0 23)
+    ]
+  , prod = \tokens -> case tokens of
+      (token:_) -> do
+        n <- getIntValue token
+        tt . mkLatent $ hour True n
+      _ -> Nothing
+  }
+
+ruleTODAM :: Rule
+ruleTODAM = Rule
+  { name = "am <time-of-day>"
+  , pattern =
+    [ regex "(de\\.?|d\x00E9lel\x0151tt)"
+    , Predicate isATimeOfDay
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (ap:_)):Token Time td:_) ->
+        tt . timeOfDayAMPM td $ True
+      _ -> Nothing
+  }
+
+ruleTODPM :: Rule
+ruleTODPM = Rule
+  { name = "pm <time-of-day>"
+  , pattern =
+    [ regex "(du\\.?|d\x00E9lut\x00E1n)"
+    , Predicate isATimeOfDay
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (ap:_)):Token Time td:_) ->
+        tt . timeOfDayAMPM td $ False
+      _ -> Nothing
+  }
+
 rules :: [Rule]
-rules = [ ruleCycleThisLastNext]
+rules = [ ruleCycleThisLastNext
+  , ruleNextDOW
+  , ruleHHMM
+  , ruleHHMMSS
+  , ruleTODLatent
+  , ruleTODAM
+  , ruleTODPM
+  ]
   ++ ruleInstants
   ++ ruleDaysOfWeek
   ++ ruleMonths

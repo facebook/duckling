@@ -86,4 +86,31 @@ allExamples = concat
              [ "előző év"
              , "múlt év"
              ]
+  , examples (datetime (2013, 2, 21, 0, 0, 0) Day)
+             [ "jövő csütörtök"
+             ]
+  , examples (datetime (2013, 2, 12, 15, 20, 0) Minute)
+             [ "15:20"
+             ]
+  , examples (datetime (2013, 2, 12, 8, 20, 0) Minute)
+             [ "08:20"
+             , "8:20"
+             ]
+  , examples (datetime (2013, 2, 12, 15, 20, 44) Second)
+             [ "15:20:44"
+             ]
+  , examples (datetime (2013, 2, 12, 8, 20, 44) Second)
+             [ "08:20:44"
+             , "8:20:44"
+             ]
+  , examples (datetime (2013, 2, 12, 11, 0, 0) Hour)
+             [ "de 11"
+             , "de. 11"
+             , "délelőtt 11"
+             ]
+  , examples (datetime (2013, 2, 12, 23, 0, 0) Hour)
+             [ "du 11"
+             , "du. 11"
+             , "délután 11"
+             ]
   ]

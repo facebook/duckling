@@ -38,15 +38,6 @@ ordinalsMap = HashMap.fromList
   , ( "nyolcadik", 8 )
   , ( "kilencedik", 9 )
   , ( "tizedik", 10 )
-  , ( "tizenegyedik", 11 )
-  , ( "tizenkettedik", 12 )
-  , ( "tizenharmadik", 13 )
-  , ( "tizennegyedik", 14 )
-  , ( "tizenötödik", 15 )
-  , ( "tizenhatodik", 16 )
-  , ( "tizenhetedik", 17 )
-  , ( "tizennyolcadik", 18 )
-  , ( "tizenkilencedik", 19 )
   , ( "huszadik", 20 )
   , ( "harmincadik", 30 )
   , ( "negyvenedik", 40 )
@@ -73,7 +64,8 @@ ordinalsMap2 = HashMap.fromList
 
 cardinalsMap :: HashMap Text Int
 cardinalsMap = HashMap.fromList
-  [ ( "huszon", 20 )
+  [ ( "tizen", 10 )
+  , ( "huszon", 20 )
   , ( "harminc", 30 )
   , ( "negyven", 40 )
   , ( "ötven", 50 )
@@ -87,7 +79,7 @@ cardinalsMap = HashMap.fromList
 ruleOrdinals :: Rule
 ruleOrdinals = Rule
   { name = "ordinals (first..twentieth,thirtieth,...)"
-  , pattern = [regex "(első|második|harmadik|negyedik|ötödik|hatodik|hetedik|nyolcadik|kilencedik|tizedik|tizenegyedik|tizenkettedik|tizenharmadik|tizennegyedik|tizenötödik|tizenhatodik|tizenhetedik|tizennyolcadik|tizenkilencedik|huszadik|harmincadik|negyvenedik|ötvenedik|hatvanadik|hetvenedik|nyolcvanadik|kilencvenedik)"]
+  , pattern = [regex "(első|második|harmadik|negyedik|ötödik|hatodik|hetedik|nyolcadik|kilencedik|tizedik|huszadik|harmincadik|negyvenedik|ötvenedik|hatvanadik|hetvenedik|nyolcvanadik|kilencvenedik)"]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
         ordinal <$> HashMap.lookup (Text.toLower match) ordinalsMap
@@ -97,7 +89,7 @@ ruleOrdinals = Rule
 ruleCompositeOrdinals :: Rule
 ruleCompositeOrdinals = Rule
   { name = "ordinals (composite, e.g., eighty-seven)"
-  , pattern = [regex "(huszon|harminc|negyven|ötven|hatvan|hetven|nyolcvan|kilencven)\\-?(egyedik|kettedik|harmadik|negyedik|ötödik|hatodik|hetedik|nyolcadik|kilencedik)"]
+  , pattern = [regex "(tizen|huszon|harminc|negyven|ötven|hatvan|hetven|nyolcvan|kilencven)\\-?(egyedik|kettedik|harmadik|negyedik|ötödik|hatodik|hetedik|nyolcadik|kilencedik)"]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (tens:units:_)):_) -> do
         tt <- HashMap.lookup (Text.toLower tens) cardinalsMap

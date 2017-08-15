@@ -896,4 +896,8 @@ allExamples = concat
   , examples (datetimeInterval ((2017, 10, 27, 18, 0, 0), (2017, 10, 30, 0, 0, 0)) Hour)
              [ "last weekend of October 2017"
              ]
+  , examples (datetimeInterval ((2013, 8, 27, 0, 0, 0), (2013, 8, 30, 0, 0, 0)) Day)
+             [ "August 27th - 29th"
+             , "from August 27th - 29th"
+             ]
   ]

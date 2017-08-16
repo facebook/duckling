@@ -944,6 +944,27 @@ ruleIntervalMonthDDDD = Rule
       _ -> Nothing
   }
 
+ruleIntervalDDDDMonth :: Rule
+ruleIntervalDDDDMonth = Rule
+  { name = "dd-dd <month> (interval)"
+  , pattern =
+    [ Predicate isDOMValue
+    , regex "\\-|to|th?ru|through|(un)?til(l)?"
+    , Predicate isDOMValue
+    , Predicate isAMonth
+    ]
+  , prod = \tokens -> case tokens of
+      (token1:
+       _:
+       token2:
+       Token Time td:
+       _) -> do
+        dom1 <- intersectDOM td token1
+        dom2 <- intersectDOM td token2
+        Token Time <$> interval TTime.Closed dom1 dom2
+      _ -> Nothing
+  }
+
 ruleIntervalFromMonthDDDD :: Rule
 ruleIntervalFromMonthDDDD = Rule
   { name = "from <month> dd-dd (interval)"
@@ -1688,6 +1709,7 @@ rules =
   , ruleIntervalFromMonthDDDD
   , ruleIntervalFromDDDDMonth
   , ruleIntervalMonthDDDD
+  , ruleIntervalDDDDMonth
   , ruleIntervalDash
   , ruleIntervalFrom
   , ruleIntervalBetween

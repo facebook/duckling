@@ -900,4 +900,17 @@ allExamples = concat
              [ "August 27th - 29th"
              , "from August 27th - 29th"
              ]
+  , examples (datetimeInterval ((2013, 10, 23, 0, 0, 0), (2013, 10, 27, 0, 0, 0)) Day)
+             [ "23rd to 26th Oct"
+             ]
+  , examples (datetimeInterval ((2013, 9, 1, 0, 0, 0), (2013, 9, 9, 0, 0, 0)) Day)
+             [ "1-8 september"
+             ]
+  , examples (datetimeInterval ((2013, 9, 12, 0, 0, 0), (2013, 9, 17, 0, 0, 0)) Day)
+             [ "12 to 16 september"
+             ]
+  , examples (datetimeInterval ((2013, 8, 19, 0, 0, 0), (2013, 8, 22, 0, 0, 0)) Day)
+             [ "19th To 21st aug"
+             ]
+
   ]

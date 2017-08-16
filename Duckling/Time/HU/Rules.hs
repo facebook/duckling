@@ -27,6 +27,19 @@ import Duckling.Types
 import Duckling.Time.Helpers
 import Duckling.Regex.Types
 
+
+ruleIntersect :: Rule
+ruleIntersect = Rule
+  { name = "intersect"
+  , pattern =
+    [ Predicate isNotLatent
+    , Predicate isNotLatent
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Time td1:Token Time td2:_) -> Token Time <$> intersect td1 td2
+      _ -> Nothing
+  }
+
 instants :: [(Text, String, TG.Grain, Int)]
 instants =
   [ ("right now",            "((\x00E9pp )?most)|azonnal", TG.Second, 0  )
@@ -92,6 +105,18 @@ ruleMonths = zipWith go months [1..12]
       , pattern = [regex regexPattern]
       , prod = \_ -> tt $ month i
       }
+
+ruleMonthDOMNumeral :: Rule
+ruleMonthDOMNumeral = Rule
+  { name = "<named-month> <day-of-month> (non ordinal)"
+  , pattern =
+    [ Predicate isAMonth
+    , Predicate isDOMInteger
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Time td:token:_) -> Token Time <$> intersectDOM td token
+      _ -> Nothing
+  }
 
 ruleCycleThisLastNext :: Rule
 ruleCycleThisLastNext = Rule
@@ -189,14 +214,43 @@ ruleTODPM = Rule
       _ -> Nothing
   }
 
+ruleYYYYMMDD :: Rule
+ruleYYYYMMDD = Rule
+  { name = "yyyy.mm.dd"
+  , pattern = [regex "(\\d{2,4})\\s?[-\\.]\\s?(0?[1-9]|1[0-2])\\s?[-\\.]\\s?(3[01]|[12]\\d|0?[1-9])"]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (yy:mm:dd:_)):_) -> do
+        y <- parseInt yy
+        m <- parseInt mm
+        d <- parseInt dd
+        tt $ yearMonthDay y m d
+      _ -> Nothing
+  }
+
+ruleMMDD :: Rule
+ruleMMDD = Rule
+  { name = "mm.dd"
+  , pattern = [regex "(0?[1-9]|1[0-2])\\s?[-\\.]\\s?(3[01]|[12]\\d|0?[1-9])"]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (mm:dd:_)):_) -> do
+        m <- parseInt mm
+        d <- parseInt dd
+        tt $ monthDay m d
+      _ -> Nothing
+  }
+
 rules :: [Rule]
-rules = [ ruleCycleThisLastNext
+rules = [ ruleIntersect
+  , ruleMonthDOMNumeral
+  , ruleCycleThisLastNext
   , ruleNextDOW
   , ruleHHMM
   , ruleHHMMSS
   , ruleTODLatent
   , ruleTODAM
   , ruleTODPM
+  , ruleYYYYMMDD
+  , ruleMMDD
   ]
   ++ ruleInstants
   ++ ruleDaysOfWeek

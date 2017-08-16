@@ -78,6 +78,13 @@ allExamples = concat
              , "márc"
              , "márc"
              ]
+  , examples (datetime (2013, 3, 15, 0, 0, 0) Day)
+             [ "március 15"
+             , "már 15"
+             , "már. 15"
+             , "márc 15"
+             , "márc. 15"
+             ]
   , examples (datetime (2013, 3, 1, 0, 0, 0) Month)
              [ "következő hónap"
              , "jövő hónap"
@@ -112,5 +119,33 @@ allExamples = concat
              [ "du 11"
              , "du. 11"
              , "délután 11"
+             ]
+  , examples (datetime (2013, 2, 13, 23, 0, 0) Hour)
+             [ "szerda du 11"
+             , "szerda du. 11"
+             , "szerda délután 11"
+             ]
+  , examples (datetime (2013, 2, 20, 23, 0, 0) Hour)
+             [ "jövő szerda du 11"
+             , "jövő szerda du. 11"
+             , "jövő szerda délután 11"
+             ]
+  , examples (datetime (2013, 8, 20, 0, 0, 0) Day)
+             [ "2013.08.20"
+             , "2013 . 08 . 20"
+             , "2013-08-20"
+             , "2013 - 08 - 20"
+             ]
+  , examples (datetime (2013, 8, 20, 11, 45, 0) Minute)
+             [ "2013.08.20 11:45"
+             ]
+  , examples (datetime (2013, 8, 20, 17, 0, 0) Hour)
+             [ "2013.08.20 délután 5"
+             ]
+  , examples (datetime (2013, 8, 20, 0, 0, 0) Day)
+             [ "08.20"
+             , "08 . 20"
+             , "08-20"
+             , "08 - 20"
              ]
   ]

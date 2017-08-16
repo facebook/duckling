@@ -21,6 +21,7 @@ import qualified Duckling.Ordinal.FR.Tests as FR
 import qualified Duckling.Ordinal.GA.Tests as GA
 import qualified Duckling.Ordinal.HE.Tests as HE
 import qualified Duckling.Ordinal.HR.Tests as HR
+import qualified Duckling.Ordinal.HU.Tests as HU
 import qualified Duckling.Ordinal.ID.Tests as ID
 import qualified Duckling.Ordinal.IT.Tests as IT
 import qualified Duckling.Ordinal.JA.Tests as JA
@@ -63,4 +64,5 @@ tests = testGroup "Ordinal Tests"
   , UK.tests
   , VI.tests
   , ZH.tests
+  , HU.tests
   ]

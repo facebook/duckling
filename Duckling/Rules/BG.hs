@@ -16,13 +16,15 @@ module Duckling.Rules.BG
 import Duckling.Dimensions.Types
 import Duckling.Types
 import qualified Duckling.Numeral.BG.Rules as Numeral
+import qualified Duckling.AmountOfMoney.BG.Rules as AmountOfMoney
+
 
 rules :: Some Dimension -> [Rule]
 rules (This Distance) = []
 rules (This Duration) = []
 rules (This Numeral) = Numeral.rules
 rules (This Email) = []
-rules (This AmountOfMoney) = []
+rules (This AmountOfMoney) = AmountOfMoney.rules
 rules (This Ordinal) = []
 rules (This PhoneNumber) = []
 rules (This Quantity) = []

@@ -928,20 +928,39 @@ ruleIntervalMonthDDDD = Rule
   { name = "<month> dd-dd (interval)"
   , pattern =
     [ Predicate isAMonth
-    , regex "(3[01]|[12]\\d|0?[1-9])"
+    , Predicate isDOMValue
     , regex "\\-|to|th?ru|through|(un)?til(l)?"
-    , regex "(3[01]|[12]\\d|0?[1-9])"
+    , Predicate isDOMValue
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:
-       Token RegexMatch (GroupMatch (d1:_)):
+       token1:
        _:
-       Token RegexMatch (GroupMatch (d2:_)):
+       token2:
        _) -> do
-        dd1 <- parseInt d1
-        dd2 <- parseInt d2
-        dom1 <- intersect (dayOfMonth dd1) td
-        dom2 <- intersect (dayOfMonth dd2) td
+        dom1 <- intersectDOM td token1
+        dom2 <- intersectDOM td token2
+        Token Time <$> interval TTime.Closed dom1 dom2
+      _ -> Nothing
+  }
+
+ruleIntervalDDDDMonth :: Rule
+ruleIntervalDDDDMonth = Rule
+  { name = "dd-dd <month> (interval)"
+  , pattern =
+    [ Predicate isDOMValue
+    , regex "\\-|to|th?ru|through|(un)?til(l)?"
+    , Predicate isDOMValue
+    , Predicate isAMonth
+    ]
+  , prod = \tokens -> case tokens of
+      (token1:
+       _:
+       token2:
+       Token Time td:
+       _) -> do
+        dom1 <- intersectDOM td token1
+        dom2 <- intersectDOM td token2
         Token Time <$> interval TTime.Closed dom1 dom2
       _ -> Nothing
   }
@@ -952,21 +971,42 @@ ruleIntervalFromMonthDDDD = Rule
   , pattern =
     [ regex "from"
     , Predicate isAMonth
-    , regex "(3[01]|[12]\\d|0?[1-9])"
+    , Predicate isDOMValue
     , regex "\\-|to|th?ru|through|(un)?til(l)?"
-    , regex "(3[01]|[12]\\d|0?[1-9])"
+    , Predicate isDOMValue
     ]
   , prod = \tokens -> case tokens of
       (_:
        Token Time td:
-       Token RegexMatch (GroupMatch (d1:_)):
+       token1:
        _:
-       Token RegexMatch (GroupMatch (d2:_)):
+       token2:
        _) -> do
-        dd1 <- parseInt d1
-        dd2 <- parseInt d2
-        dom1 <- intersect (dayOfMonth dd1) td
-        dom2 <- intersect (dayOfMonth dd2) td
+        dom1 <- intersectDOM td token1
+        dom2 <- intersectDOM td token2
+        Token Time <$> interval TTime.Closed dom1 dom2
+      _ -> Nothing
+  }
+
+ruleIntervalFromDDDDMonth :: Rule
+ruleIntervalFromDDDDMonth = Rule
+  { name = "from <day-of-month> (ordinal or number) to <day-of-month> (ordinal or number) <named-month> (interval)"
+  , pattern =
+    [ regex "from"
+    , Predicate isDOMValue
+    , regex "\\-|to|th?ru|through|(un)?til(l)?"
+    , Predicate isDOMValue
+    , Predicate isAMonth
+    ]
+  , prod = \tokens -> case tokens of
+      (_:
+       token1:
+       _:
+       token2:
+       Token Time td:
+       _) -> do
+        dom1 <- intersectDOM td token1
+        dom2 <- intersectDOM td token2
         Token Time <$> interval TTime.Closed dom1 dom2
       _ -> Nothing
   }
@@ -1667,7 +1707,9 @@ rules =
   , ruleTODPrecision
   , rulePrecisionTOD
   , ruleIntervalFromMonthDDDD
+  , ruleIntervalFromDDDDMonth
   , ruleIntervalMonthDDDD
+  , ruleIntervalDDDDMonth
   , ruleIntervalDash
   , ruleIntervalFrom
   , ruleIntervalBetween

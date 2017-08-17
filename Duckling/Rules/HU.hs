@@ -18,6 +18,7 @@ import Duckling.Types
 import qualified Duckling.Numeral.HU.Rules as Numeral
 import qualified Duckling.Time.HU.Rules as Time
 import qualified Duckling.TimeGrain.HU.Rules as TimeGrain
+import qualified Duckling.Ordinal.HU.Rules as Ordinal
 
 rules :: Some Dimension -> [Rule]
 rules (This Distance) = []
@@ -25,7 +26,7 @@ rules (This Duration) = []
 rules (This Numeral) = Numeral.rules
 rules (This Email) = []
 rules (This AmountOfMoney) = []
-rules (This Ordinal) = []
+rules (This Ordinal) = Ordinal.rules
 rules (This PhoneNumber) = []
 rules (This Quantity) = []
 rules (This RegexMatch) = []

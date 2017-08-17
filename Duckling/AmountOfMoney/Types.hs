@@ -34,6 +34,7 @@ data Currency
   -- unambiguous
   | AED
   | AUD
+  | BGN
   | BRL
   | EGP
   | EUR
@@ -64,6 +65,7 @@ instance ToJSON Currency where
   toJSON Unnamed = "unknown"
   toJSON AED     = "AED"
   toJSON AUD     = "AUD"
+  toJSON BGN     = "BGN"
   toJSON BRL     = "BRL"
   toJSON EGP     = "EGP"
   toJSON EUR     = "EUR"

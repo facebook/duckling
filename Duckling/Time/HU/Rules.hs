@@ -273,6 +273,29 @@ ruleTimePOD = Rule
       _ -> Nothing
   }
 
+ruleSeasons :: Rule
+ruleSeasons = Rule
+  { name = "seasons"
+  , pattern = [regex "(ny\x00E1r|\x0151sz|t\x00E9l|tavasz)"]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (match:_)):_) -> do
+        start <- case Text.toLower match of
+          "ny\x00E1r" -> Just $ monthDay 6 21
+          "\x0151sz"  -> Just $ monthDay 9 23
+          "t\x00E9l"  -> Just $ monthDay 12 21
+          "tavasz"    -> Just $ monthDay 3 20
+          _ -> Nothing
+        end <- case Text.toLower match of
+          "ny\x00E1r" -> Just $ monthDay 9 23
+          "\x0151sz"  -> Just $ monthDay 12 21
+          "t\x00E9l"  -> Just $ monthDay 3 20
+          "tavasz"    -> Just $ monthDay 6 21
+          _ -> Nothing
+        Token Time <$> interval TTime.Open start end
+      _ -> Nothing
+
+  }
+
 rules :: [Rule]
 rules = [ ruleIntersect
   , ruleMonthDOMNumeral
@@ -287,6 +310,7 @@ rules = [ ruleIntersect
   , ruleMMDD
   , rulePartOfDays
   , ruleTimePOD
+  , ruleSeasons
   ]
   ++ ruleInstants
   ++ ruleDaysOfWeek

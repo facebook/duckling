@@ -170,4 +170,7 @@ allExamples = concat
              [ "ma éjszaka"
              , "éjszaka"
              ]
+  , examples (datetimeInterval ((2013, 6, 21, 0, 0, 0), (2013, 9, 24, 0, 0, 0)) Day)
+             [ "nyár"
+             ]
   ]

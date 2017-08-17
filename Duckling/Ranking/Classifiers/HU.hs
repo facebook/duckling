@@ -265,6 +265,13 @@ classifiers
                    koData =
                      ClassData{prior = -infinity, unseen = -1.0986122886681098,
                                likelihoods = HashMap.fromList [], n = 0}}),
+       ("seasons",
+        Classifier{okData =
+                     ClassData{prior = 0.0, unseen = -1.0986122886681098,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 1},
+                   koData =
+                     ClassData{prior = -infinity, unseen = -0.6931471805599453,
+                               likelihoods = HashMap.fromList [], n = 0}}),
        ("mm.dd",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -1.791759469228055,

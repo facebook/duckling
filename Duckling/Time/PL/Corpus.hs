@@ -27,11 +27,15 @@ corpus :: Corpus
 corpus = (testContext {lang = PL}, allExamples)
 
 negativeCorpus :: NegativeCorpus
-negativeCorpus = (testContext, examples)
+negativeCorpus = (testContext {lang = PL}, examples)
   where
     examples =
       [ "nie"
       , "niez"
+      , "Za Herbatke"
+      , "za herbatke"
+      , "No nic"
+      , "no nic"
       ]
 
 allExamples :: [Example]

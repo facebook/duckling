@@ -43,6 +43,8 @@ negativeCorpus = (testContext, examples)
       , "at dozens"
       , "single o'clock"
       , "dozens o'clock"
+      , "Rat 6"
+      , "rat 6"
       ]
 
 allExamples :: [Example]

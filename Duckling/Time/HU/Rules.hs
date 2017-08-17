@@ -26,6 +26,7 @@ import qualified Duckling.TimeGrain.Types as TG
 import Duckling.Types
 import Duckling.Time.Helpers
 import Duckling.Regex.Types
+import qualified Duckling.Time.Types as TTime
 
 
 ruleIntersect :: Rule
@@ -83,18 +84,18 @@ ruleDaysOfWeek = zipWith go daysOfWeek [1..7]
 
 months :: [(Text, String)]
 months =
-  [ ( "January"  , "január|jan\\.?"        )
-  , ( "February" , "február|febr?\\.?"     )
-  , ( "March"    , "március|márc?\\.?"     )
-  , ( "April"    , "április|ápr\\.?"       )
-  , ( "May"      , "május|máj\\.?"         )
-  , ( "June"     , "június|jún\\.?"        )
-  , ( "July"     , "július|júl\\.?"        )
-  , ( "August"   , "augusztus|aug\\.?"     )
-  , ( "September", "szeptember|szept?\\.?" )
-  , ( "October"  , "október|okt\\.?"       )
-  , ( "November" , "november|nov\\.?"      )
-  , ( "December" , "december|dec\\.?"      )
+  [ ( "January"  , "janu\x00E1r|jan\\.?"         )
+  , ( "February" , "febru\x00E1r|febr?\\.?"      )
+  , ( "March"    , "m\x00E1rcius|m\x00E1rc?\\.?" )
+  , ( "April"    , "\x00E1prilis|\x00E1pr\\.?"   )
+  , ( "May"      , "m\x00E1jus|m\x00E1j\\.?"     )
+  , ( "June"     , "j\x00FAnius|j\x00FAn\\.?"    )
+  , ( "July"     , "j\x00FAlius|j\x00FAl\\.?"    )
+  , ( "August"   , "augusztus|aug\\.?"           )
+  , ( "September", "szeptember|szept?\\.?"       )
+  , ( "October"  , "okt\x00F3ber|okt\\.?"        )
+  , ( "November" , "november|nov\\.?"            )
+  , ( "December" , "december|dec\\.?"            )
   ]
 
 ruleMonths :: [Rule]
@@ -239,6 +240,39 @@ ruleMMDD = Rule
       _ -> Nothing
   }
 
+rulePartOfDays :: Rule
+rulePartOfDays = Rule
+  { name = "part of days"
+  , pattern =
+    [ regex "(reggel|d\x00E9lel\x0151tt|d\x00E9lben|d\x00E9lut\x00E1n|este|\x00E9jszaka)"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (match:_)):_) -> do
+        let (start, end) = case Text.toLower match of
+              "reggel"             -> (hour False 6, hour False 10)
+              "d\x00E9lel\x0151tt" -> (hour False 08, hour False 12)
+              "d\x00E9lben"        -> (hour False 12, hour False 13)
+              "d\x00E9lut\x00E1n"  -> (hour False 12, hour False 18)
+              "este"               -> (hour False 16, hour False 20)
+              "\x00E9jszaka"       -> (hour False 20, hour False 23)
+        td <- interval TTime.Open start end
+        tt . partOfDay $ td
+      _ -> Nothing
+  }
+
+-- Since part of days are latent, general time intersection is blocked
+ruleTimePOD :: Rule
+ruleTimePOD = Rule
+  { name = "<time> <part-of-day>"
+  , pattern =
+    [ dimension Time
+    , Predicate isAPartOfDay
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Time td:Token Time pod:_) -> Token Time <$> intersect pod td
+      _ -> Nothing
+  }
+
 rules :: [Rule]
 rules = [ ruleIntersect
   , ruleMonthDOMNumeral
@@ -251,6 +285,8 @@ rules = [ ruleIntersect
   , ruleTODPM
   , ruleYYYYMMDD
   , ruleMMDD
+  , rulePartOfDays
+  , ruleTimePOD
   ]
   ++ ruleInstants
   ++ ruleDaysOfWeek

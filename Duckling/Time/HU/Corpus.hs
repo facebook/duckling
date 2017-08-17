@@ -148,4 +148,26 @@ allExamples = concat
              , "08-20"
              , "08 - 20"
              ]
+  , examples (datetimeInterval ((2013, 2, 12, 6, 0, 0), (2013, 2, 12, 10, 0, 0)) Hour)
+             [ "ma reggel"
+             , "reggel"
+             ]
+  , examples (datetimeInterval ((2013, 2, 13, 8, 0, 0), (2013, 2, 13, 12, 0, 0)) Hour)
+             [ "holnap délelőtt"
+             ]
+  , examples (datetimeInterval ((2013, 2, 11, 12, 0, 0), (2013, 2, 11, 13, 0, 0)) Hour)
+             [ "tegnap délben"
+             ]
+  , examples (datetimeInterval ((2013, 2, 12, 12, 0, 0), (2013, 2, 12, 18, 0, 0)) Hour)
+             [ "ma délután"
+             , "délután"
+             ]
+  , examples (datetimeInterval ((2013, 2, 12, 16, 0, 0), (2013, 2, 12, 20, 0, 0)) Hour)
+             [ "ma este"
+             , "este"
+             ]
+  , examples (datetimeInterval ((2013, 2, 12, 20, 0, 0), (2013, 2, 12, 23, 0, 0)) Hour)
+             [ "ma éjszaka"
+             , "éjszaka"
+             ]
   ]

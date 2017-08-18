@@ -17,6 +17,7 @@ import Test.Tasty
 import qualified Duckling.Duration.EN.Tests as EN
 import qualified Duckling.Duration.FR.Tests as FR
 import qualified Duckling.Duration.GA.Tests as GA
+import qualified Duckling.Duration.HU.Tests as HU
 import qualified Duckling.Duration.JA.Tests as JA
 import qualified Duckling.Duration.KO.Tests as KO
 import qualified Duckling.Duration.NB.Tests as NB
@@ -32,6 +33,7 @@ tests = testGroup "Duration Tests"
   [ EN.tests
   , FR.tests
   , GA.tests
+  , HU.tests
   , JA.tests
   , KO.tests
   , NB.tests

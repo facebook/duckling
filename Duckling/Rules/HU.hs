@@ -18,11 +18,13 @@ import Duckling.Types
 import qualified Duckling.Numeral.HU.Rules as Numeral
 import qualified Duckling.Time.HU.Rules as Time
 import qualified Duckling.TimeGrain.HU.Rules as TimeGrain
+import qualified Duckling.Duration.HU.Rules as Duration
 import qualified Duckling.Ordinal.HU.Rules as Ordinal
+
 
 rules :: Some Dimension -> [Rule]
 rules (This Distance) = []
-rules (This Duration) = []
+rules (This Duration) = Duration.rules
 rules (This Numeral) = Numeral.rules
 rules (This Email) = []
 rules (This AmountOfMoney) = []

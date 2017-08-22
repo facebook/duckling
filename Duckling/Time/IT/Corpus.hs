@@ -79,6 +79,8 @@ allExamples = concat
              ]
   , examples (datetime (2013, 2, 19, 0, 0, 0) Day)
              [ "Martedì"
+             , "Martedi"
+             , "mar"
              ]
   , examples (datetime (2013, 2, 13, 0, 0, 0) Day)
              [ "Mercoledì"
@@ -94,6 +96,7 @@ allExamples = concat
              ]
   , examples (datetime (2013, 2, 14, 0, 0, 0) Day)
              [ "giovedi"
+             , "giovedì"
              , "gio"
              ]
   , examples (datetime (2013, 2, 15, 0, 0, 0) Day)
@@ -111,6 +114,16 @@ allExamples = concat
              , "dom"
              , "dom."
              ]
+   , examples (datetime (2013, 1, 1, 0, 0, 0) Month)
+              [ "gennaio 2013"
+              , "genn 2013"
+              , "genn. 2013"
+              ]
+  , examples (datetime (2013, 12, 1, 0, 0, 0) Month)
+              [ "dicembre 2013"
+              , "dic 2013"
+              , "dic. 2013"
+              ]
   , examples (datetime (2013, 2, 10, 0, 0, 0) Day)
              [ "domenica 10 febbraio"
              ]

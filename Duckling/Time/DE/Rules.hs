@@ -1173,10 +1173,7 @@ ruleWeekend = Rule
   , pattern =
     [ regex "wochen ?ende?"
     ]
-  , prod = \_ -> do
-      from <- intersect (dayOfWeek 5) (hour False 18)
-      to <- intersect (dayOfWeek 1) (hour False 0)
-      Token Time <$> interval TTime.Open from to
+  , prod = \_ -> tt weekend
   }
 
 ruleTagDerDeutschenEinheit :: Rule

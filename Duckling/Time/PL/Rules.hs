@@ -1072,10 +1072,7 @@ ruleWeekend = Rule
   , pattern =
     [ regex "((wek|week|wik)(\\s|-)?end|wkend)"
     ]
-  , prod = \_ -> do
-      from <- intersect (dayOfWeek 5) (hour False 18)
-      to <- intersect (dayOfWeek 1) (hour False 0)
-      Token Time <$> interval TTime.Open from to
+  , prod = \_ -> tt weekend
   }
 
 ruleEomendOfMonth :: Rule

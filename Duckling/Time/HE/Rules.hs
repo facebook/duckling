@@ -896,10 +896,7 @@ ruleWeekend = Rule
   , pattern =
     [ regex "(\x05e1\x05d5\x05e4\x05f4\x05e9|\x05e1\x05d5\x05e3 \x05d4\x05e9\x05d1\x05d5\x05e2)"
     ]
-  , prod = \_ -> do
-      fri <- intersect (dayOfWeek 5) (hour False 18)
-      mon <- intersect (dayOfWeek 1) (hour False 0)
-      Token Time <$> interval TTime.Open fri mon
+  , prod = \_ -> tt weekend
   }
 
 ruleNameddayDayofmonthOrdinal :: Rule

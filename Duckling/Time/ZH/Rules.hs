@@ -725,10 +725,7 @@ ruleWeekend = Rule
   , pattern =
     [ regex "\x5468\x672b|\x9031\x672b"
     ]
-  , prod = \_ -> do
-      from <- intersect (dayOfWeek 5) (hour False 18)
-      to <- intersect (dayOfWeek 1) (hour False 0)
-      Token Time <$> interval TTime.Open from to
+  , prod = \_ -> tt weekend
   }
 
 ruleLastYear :: Rule

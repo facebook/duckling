@@ -15,21 +15,25 @@ module Duckling.Rules.HU
 
 import Duckling.Dimensions.Types
 import Duckling.Types
+import qualified Duckling.Duration.HU.Rules as Duration
 import qualified Duckling.Numeral.HU.Rules as Numeral
 import qualified Duckling.Ordinal.HU.Rules as Ordinal
+import qualified Duckling.Time.HU.Rules as Time
+import qualified Duckling.TimeGrain.HU.Rules as TimeGrain
+
 
 rules :: Some Dimension -> [Rule]
+rules (This AmountOfMoney) = []
 rules (This Distance) = []
-rules (This Duration) = []
+rules (This Duration) = Duration.rules
 rules (This Numeral) = Numeral.rules
 rules (This Email) = []
-rules (This AmountOfMoney) = []
 rules (This Ordinal) = Ordinal.rules
 rules (This PhoneNumber) = []
 rules (This Quantity) = []
 rules (This RegexMatch) = []
 rules (This Temperature) = []
-rules (This Time) = []
-rules (This TimeGrain) = []
+rules (This Time) = Time.rules
+rules (This TimeGrain) = TimeGrain.rules
 rules (This Url) = []
 rules (This Volume) = []

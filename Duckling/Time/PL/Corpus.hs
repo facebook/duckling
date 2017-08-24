@@ -36,6 +36,8 @@ negativeCorpus = (testContext {lang = PL}, examples)
       , "za herbatke"
       , "No nic"
       , "no nic"
+      , "pierwszy"
+      , "drugiej"
       ]
 
 allExamples :: [Example]
@@ -354,6 +356,12 @@ allExamples = concat
              , "3 z rana"
              , "o trzeciej rano"
              , "o trzeciej z rana"
+             ]
+  , examples (datetime (2013, 2, 12, 13, 0, 0) Hour)
+             [ "o pierwszy"
+             ]
+  , examples (datetime (2013, 2, 12, 14, 0, 0) Hour)
+             [ "o drugiej"
              ]
   , examples (datetime (2013, 2, 13, 3, 18, 0) Minute)
              [ "3:18 rano"

@@ -325,7 +325,7 @@ ruleOrdinalAsHour = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Ordinal (OrdinalData {TOrdinal.value = v}):_) ->
-        tt $ hour True v
+        tt . mkLatent $ hour True v
       _ -> Nothing
   }
 
@@ -1000,11 +1000,11 @@ ruleUntilTimeofday = Rule
   { name = "until <time-of-day>"
   , pattern =
     [ regex "(a(\x017c|z) )?do|przed"
-    , dimension Time
+    , Predicate isATimeOfDay
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td:_) ->
-        tt $ withDirection TTime.Before td
+        tt . notLatent $ withDirection TTime.Before td
       _ -> Nothing
   }
 

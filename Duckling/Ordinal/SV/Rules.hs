@@ -75,7 +75,7 @@ cardinalsMap = HashMap.fromList
 ruleOrdinals :: Rule
 ruleOrdinals = Rule
   { name = "ordinals (first..twentieth,thirtieth,...)"
-  , pattern = [regex "(f\x00f6rsta|f\x00f6rste|andra|andre|tredje|fj\x00e4rde|femte|sj\x00e4tte|sjunde|\x00e5ttonde|nionde|tionde|elfte|tolfte|trettionde|fjortonde|femtonde|sextonde|sjuttonde|artonde|nittonde|sjugonde|trettionde|fyrtionde|femtonde|sextionde|sjuttionde|\x00e5ttionde|nittionde)"]
+  , pattern = [regex "(f\x00f6rsta|f\x00f6rste|andra|andre|tredje|fj\x00e4rde|femte|sj\x00e4tte|sjunde|\x00e5ttonde|nionde|tionde|elfte|tolfte|trettionde|fjortonde|femtonde|sextonde|sjuttonde|artonde|nittonde|tjugonde|trettionde|fyrtionde|femtonde|sextionde|sjuttionde|\x00e5ttionde|nittionde)"]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
         ordinal <$> HashMap.lookup (Text.toLower match) ordinalsMap

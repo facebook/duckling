@@ -622,9 +622,7 @@ ruleOrdinalWeekendDeTime = Rule
   , prod = \tokens -> case tokens of
       (token:_:Token Time td:_) -> do
         n <- getIntValue token
-        from <- intersect (dayOfWeek 5) (hour False 18)
-        to <- intersect (dayOfWeek 1) (hour False 0)
-        td2 <- intersect td =<< interval TTime.Open from to
+        td2 <- intersect td weekend
         tt $ predNth (n - 1) False td2
       _ -> Nothing
   }
@@ -1283,10 +1281,7 @@ ruleWeekend = Rule
   , pattern =
     [ regex "week(\\s|-)?end"
     ]
-  , prod = \_ -> do
-      from <- intersect (dayOfWeek 5) (hour False 18)
-      to <- intersect (dayOfWeek 1) (hour False 0)
-      Token Time <$> interval TTime.Open from to
+  , prod = \_ -> tt weekend
   }
 
 ruleCedansLeCycle :: Rule
@@ -1352,10 +1347,7 @@ ruleDernierWeekendDeTime = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td:_) -> do
-        from <- intersect (dayOfWeek 5) (hour False 18)
-        to <- intersect (dayOfWeek 1) (hour False 0)
-        td2 <- interval TTime.Open from to
-        tt $ predLastOf td2 td
+        tt $ predLastOf weekend td
       _ -> Nothing
   }
 

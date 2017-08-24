@@ -1058,10 +1058,7 @@ ruleWeekend = Rule
   , pattern =
     [ regex "(za )?vikenda?"
     ]
-  , prod = \_ -> do
-      fri <- intersect (dayOfWeek 5) (hour False 18)
-      mon <- intersect (dayOfWeek 1) (hour False 0)
-      Token Time <$> interval TTime.Open fri mon
+  , prod = \_ -> tt weekend
   }
 
 rulePrijeDuration :: Rule

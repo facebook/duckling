@@ -13,6 +13,7 @@ import Prelude
 import Test.Tasty
 
 import qualified Duckling.Numeral.AR.Tests as AR
+import qualified Duckling.Numeral.BG.Tests as BG
 import qualified Duckling.Numeral.CS.Tests as CS
 import qualified Duckling.Numeral.DA.Tests as DA
 import qualified Duckling.Numeral.DE.Tests as DE
@@ -23,6 +24,7 @@ import qualified Duckling.Numeral.FR.Tests as FR
 import qualified Duckling.Numeral.GA.Tests as GA
 import qualified Duckling.Numeral.HE.Tests as HE
 import qualified Duckling.Numeral.HR.Tests as HR
+import qualified Duckling.Numeral.HU.Tests as HU
 import qualified Duckling.Numeral.ID.Tests as ID
 import qualified Duckling.Numeral.IT.Tests as IT
 import qualified Duckling.Numeral.JA.Tests as JA
@@ -43,6 +45,7 @@ import qualified Duckling.Numeral.ZH.Tests as ZH
 tests :: TestTree
 tests = testGroup "Numeral Tests"
   [ AR.tests
+  , BG.tests
   , CS.tests
   , DA.tests
   , DE.tests
@@ -53,6 +56,7 @@ tests = testGroup "Numeral Tests"
   , GA.tests
   , HE.tests
   , HR.tests
+  , HU.tests
   , ID.tests
   , IT.tests
   , JA.tests

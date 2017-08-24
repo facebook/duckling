@@ -43,6 +43,8 @@ negativeCorpus = (testContext, examples)
       , "at dozens"
       , "single o'clock"
       , "dozens o'clock"
+      , "Rat 6"
+      , "rat 6"
       ]
 
 allExamples :: [Example]
@@ -707,6 +709,8 @@ allExamples = concat
              , "July 13 through 15"
              , "July 13 - July 15"
              , "from July 13-15"
+             , "from 13 to 15 July"
+             , "from 13th to 15th July"
              ]
   , examples (datetimeInterval ((2013, 8, 8, 0, 0, 0), (2013, 8, 13, 0, 0, 0)) Day)
              [ "Aug 8 - Aug 12"
@@ -894,4 +898,21 @@ allExamples = concat
   , examples (datetimeInterval ((2017, 10, 27, 18, 0, 0), (2017, 10, 30, 0, 0, 0)) Hour)
              [ "last weekend of October 2017"
              ]
+  , examples (datetimeInterval ((2013, 8, 27, 0, 0, 0), (2013, 8, 30, 0, 0, 0)) Day)
+             [ "August 27th - 29th"
+             , "from August 27th - 29th"
+             ]
+  , examples (datetimeInterval ((2013, 10, 23, 0, 0, 0), (2013, 10, 27, 0, 0, 0)) Day)
+             [ "23rd to 26th Oct"
+             ]
+  , examples (datetimeInterval ((2013, 9, 1, 0, 0, 0), (2013, 9, 9, 0, 0, 0)) Day)
+             [ "1-8 september"
+             ]
+  , examples (datetimeInterval ((2013, 9, 12, 0, 0, 0), (2013, 9, 17, 0, 0, 0)) Day)
+             [ "12 to 16 september"
+             ]
+  , examples (datetimeInterval ((2013, 8, 19, 0, 0, 0), (2013, 8, 22, 0, 0, 0)) Day)
+             [ "19th To 21st aug"
+             ]
+
   ]

@@ -19,19 +19,19 @@ module Duckling.Types.Document
   , isRangeValid
   ) where
 
-import qualified Data.Array.Unboxed as Array
 import Data.Array.Unboxed (UArray)
 import Data.ByteString (ByteString)
-import qualified Data.ByteString as BS
-import qualified Data.Char as Char
 import Data.List (scanl', foldl', foldr)
 import Data.String
 import Data.Text (Text)
+import Prelude hiding (length)
+import qualified Data.Array.Unboxed as Array
+import qualified Data.ByteString as BS
+import qualified Data.Char as Char
 import qualified Data.Text.Unsafe as UText
 import qualified Data.Text.Encoding as Text
 import qualified Data.Text as Text
 import qualified Data.Text.Internal.Unsafe.Char as UText
-import Prelude hiding (length)
 
 
 data Document = Document
@@ -124,8 +124,7 @@ isRangeValid doc start end =
   where
     charClass :: Char -> Char
     charClass c
-      | Char.isLower c = 'l'
-      | Char.isUpper c = 'u'
+      | Char.isLower c || Char.isUpper c = 'c'
       | Char.isDigit c = 'd'
       | otherwise = c
     isDifferent :: Char -> Char -> Bool

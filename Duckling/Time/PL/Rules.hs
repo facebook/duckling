@@ -717,19 +717,6 @@ ruleIntersectBy = Rule
         Token Time <$> intersect td1 td2
       _ -> Nothing
   }
-ruleIntersectBy2 :: Rule
-ruleIntersectBy2 = Rule
-  { name = "intersect by \",\" 2"
-  , pattern =
-    [ Predicate isNotLatent
-    , regex ","
-    , Predicate isNotLatent
-    ]
-  , prod = \tokens -> case tokens of
-      (Token Time td1:_:Token Time td2:_) ->
-        Token Time <$> intersect td1 td2
-      _ -> Nothing
-  }
 
 ruleNthTimeAfterTime :: Rule
 ruleNthTimeAfterTime = Rule
@@ -992,8 +979,7 @@ ruleIntersect = Rule
     , Predicate isNotLatent
     ]
   , prod = \tokens -> case tokens of
-      (Token Time td1:Token Time td2:_) ->
-        Token Time <$> intersect td1 td2
+      (Token Time td1:Token Time td2:_) -> Token Time <$> intersect td1 td2
       _ -> Nothing
   }
 
@@ -1013,7 +999,7 @@ ruleUntilTimeofday :: Rule
 ruleUntilTimeofday = Rule
   { name = "until <time-of-day>"
   , pattern =
-    [ regex "(a[\x017cz] )?do|przed"
+    [ regex "(a(\x017c|z) )?do|przed"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -1030,8 +1016,7 @@ ruleAtTimeofday = Rule
     , Predicate isATimeOfDay
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td:_) ->
-        tt $ notLatent td
+      (_:Token Time td:_) -> tt $ notLatent td
       _ -> Nothing
   }
 
@@ -1087,10 +1072,7 @@ ruleWeekend = Rule
   , pattern =
     [ regex "((wek|week|wik)(\\s|-)?end|wkend)"
     ]
-  , prod = \_ -> do
-      from <- intersect (dayOfWeek 5) (hour False 18)
-      to <- intersect (dayOfWeek 1) (hour False 0)
-      Token Time <$> interval TTime.Open from to
+  , prod = \_ -> tt weekend
   }
 
 ruleEomendOfMonth :: Rule
@@ -1425,7 +1407,7 @@ ruleNamedday7 :: Rule
 ruleNamedday7 = Rule
   { name = "named-day"
   , pattern =
-    [ regex "niedziela|niedzieli|niedziel\x0119|niedziele|niedziela|niedziel\x0105|niedzieli|niedzielo|nied?z?\\.?"
+    [ regex "niedziel(a|i|\x0119|e|\x0105|o)|n(ie)?dz?\\.?"
     ]
   , prod = \_ -> tt $ dayOfWeek 7
   }
@@ -1863,7 +1845,6 @@ rules =
   , ruleIntegerLatentTimeofday
   , ruleIntersect
   , ruleIntersectBy
-  , ruleIntersectBy2
   , ruleIntersectByOfFromS
   , ruleLastCycle
   , ruleLastCycleOfTime

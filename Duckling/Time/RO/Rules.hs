@@ -14,6 +14,7 @@ module Duckling.Time.RO.Rules
   ( rules ) where
 
 import Control.Monad (liftM2)
+import Data.Text (Text)
 import Prelude
 
 import Duckling.Dimensions.Types
@@ -34,15 +35,6 @@ ruleAcum = Rule
   , prod = \_ -> tt $ cycleNth TG.Second 0
   }
 
-ruleNamedday :: Rule
-ruleNamedday = Rule
-  { name = "named-day"
-  , pattern =
-    [ regex "lu(n(ea|i)?)?"
-    ]
-  , prod = \_ -> tt $ dayOfWeek 1
-  }
-
 ruleDupamiaza :: Rule
 ruleDupamiaza = Rule
   { name = "dupamiaza"
@@ -51,24 +43,6 @@ ruleDupamiaza = Rule
     ]
   , prod = \_ -> Token Time . mkLatent . partOfDay <$>
       interval TTime.Open (hour False 12) (hour False 19)
-  }
-
-ruleNamedmonth12 :: Rule
-ruleNamedmonth12 = Rule
-  { name = "named-month"
-  , pattern =
-    [ regex "dec(embrie)?"
-    ]
-  , prod = \_ -> tt $ month 12
-  }
-
-ruleNamedday2 :: Rule
-ruleNamedday2 = Rule
-  { name = "named-day"
-  , pattern =
-    [ regex "ma(r((t|\x021b)(ea|i))?)?"
-    ]
-  , prod = \_ -> tt $ dayOfWeek 2
   }
 
 ruleValentinesDay :: Rule
@@ -99,24 +73,6 @@ ruleNewYearsDay = Rule
     [ regex "(siua de )? an(ul)? nou"
     ]
   , prod = \_ -> tt $ monthDay 1 1
-  }
-
-ruleNamedday6 :: Rule
-ruleNamedday6 = Rule
-  { name = "named-day"
-  , pattern =
-    [ regex "s(a|\x00e2)mb(a|\x0103)t(a|\x0103)|s(a|\x00e2)m|s(a|\x00e2)"
-    ]
-  , prod = \_ -> tt $ dayOfWeek 6
-  }
-
-ruleNamedmonth7 :: Rule
-ruleNamedmonth7 = Rule
-  { name = "named-month"
-  , pattern =
-    [ regex "iul(ie)?"
-    ]
-  , prod = \_ -> tt $ month 7
   }
 
 ruleOrdinalTrimestruYear :: Rule
@@ -194,15 +150,6 @@ ruleMonthDdddInterval = Rule
         dom2 <- intersect (dayOfMonth d2) td
         Token Time <$> interval TTime.Closed dom1 dom2
       _ -> Nothing
-  }
-
-ruleNamedday4 :: Rule
-ruleNamedday4 = Rule
-  { name = "named-day"
-  , pattern =
-    [ regex "jo(ia?)?"
-    ]
-  , prod = \_ -> tt $ dayOfWeek 4
   }
 
 ruleInDuration :: Rule
@@ -308,15 +255,6 @@ ruleBetweenTimeofdayAndTimeofdayInterval = Rule
       _ -> Nothing
   }
 
-ruleNamedmonth :: Rule
-ruleNamedmonth = Rule
-  { name = "named-month"
-  , pattern =
-    [ regex "ian(uarie)?"
-    ]
-  , prod = \_ -> tt $ month 1
-  }
-
 ruleUrmatoareaCycle :: Rule
 ruleUrmatoareaCycle = Rule
   { name = "urmatoarea <cycle>"
@@ -339,15 +277,6 @@ ruleCycleAcesta2 = Rule
   , prod = \tokens -> case tokens of
       (Token TimeGrain grain:_) -> tt $ cycleNth grain 0
       _ -> Nothing
-  }
-
-ruleNamedmonth3 :: Rule
-ruleNamedmonth3 = Rule
-  { name = "named-month"
-  , pattern =
-    [ regex "martie|mar"
-    ]
-  , prod = \_ -> tt $ month 3
   }
 
 ruleCraciun :: Rule
@@ -398,15 +327,6 @@ ruleLaTimeofday = Rule
   , prod = \tokens -> case tokens of
       (_:Token Time td:_) -> tt $ notLatent td
       _ -> Nothing
-  }
-
-ruleNamedmonth4 :: Rule
-ruleNamedmonth4 = Rule
-  { name = "named-month"
-  , pattern =
-    [ regex "apr(ilie)?"
-    ]
-  , prod = \_ -> tt $ month 4
   }
 
 ruleBlackFriday :: Rule
@@ -479,15 +399,6 @@ ruleHourofdayJumatate = Rule
       (Token Time TimeData {TTime.form = Just (TTime.TimeOfDay (Just hours) is12H)}:
        _) -> tt $ hourMinute is12H hours 30
       _ -> Nothing
-  }
-
-ruleNamedday5 :: Rule
-ruleNamedday5 = Rule
-  { name = "named-day"
-  , pattern =
-    [ regex "vi(n(er(ea|i))?)?"
-    ]
-  , prod = \_ -> tt $ dayOfWeek 5
   }
 
 ruleDiseara :: Rule
@@ -585,15 +496,6 @@ ruleFromTimeofdayTimeofdayInterval = Rule
       (_:Token Time td1:_:Token Time td2:_) ->
         Token Time <$> interval TTime.Closed td1 td2
       _ -> Nothing
-  }
-
-ruleNamedmonth2 :: Rule
-ruleNamedmonth2 = Rule
-  { name = "named-month"
-  , pattern =
-    [ regex "feb(ruarie)?"
-    ]
-  , prod = \_ -> tt $ month 2
   }
 
 ruleSeason3 :: Rule
@@ -741,15 +643,6 @@ ruleDayofmonthnumberNamedmonth = Rule
       _ -> Nothing
   }
 
-ruleNamedmonth6 :: Rule
-ruleNamedmonth6 = Rule
-  { name = "named-month"
-  , pattern =
-    [ regex "iun(ie)?"
-    ]
-  , prod = \_ -> tt $ month 6
-  }
-
 ruleIntreDatetimeSiDatetimeInterval :: Rule
 ruleIntreDatetimeSiDatetimeInterval = Rule
   { name = "intre <datetime> si <datetime> (interval)"
@@ -781,15 +674,6 @@ ruleNthTimeOfTime = Rule
       _ -> Nothing
   }
 
-ruleNamedmonth8 :: Rule
-ruleNamedmonth8 = Rule
-  { name = "named-month"
-  , pattern =
-    [ regex "aug(ust)?"
-    ]
-  , prod = \_ -> tt $ month 8
-  }
-
 ruleTimePartofday :: Rule
 ruleTimePartofday = Rule
   { name = "<time> <part-of-day>"
@@ -809,10 +693,7 @@ ruleWeekend = Rule
   , pattern =
     [ regex "(week(\\s|\\-)?end|wkend)"
     ]
-  , prod = \_ -> do
-      fri <- intersect (dayOfWeek 5) (hour False 18)
-      mon <- intersect (dayOfWeek 1) (hour False 0)
-      Token Time <$> interval TTime.Open fri mon
+  , prod = \_ -> tt weekend
   }
 
 rulePeDayofmonthNonOrdinal :: Rule
@@ -1086,15 +967,6 @@ ruleTimeUrmatoarer = Rule
       _ -> Nothing
   }
 
-ruleNamedmonth5 :: Rule
-ruleNamedmonth5 = Rule
-  { name = "named-month"
-  , pattern =
-    [ regex "mai"
-    ]
-  , prod = \_ -> tt $ month 5
-  }
-
 ruleTimeofdayFix :: Rule
 ruleTimeofdayFix = Rule
   { name = "<time-of-day> fix"
@@ -1105,15 +977,6 @@ ruleTimeofdayFix = Rule
   , prod = \tokens -> case tokens of
       (Token Time td:_) -> tt $ notLatent td
       _ -> Nothing
-  }
-
-ruleNamedday7 :: Rule
-ruleNamedday7 = Rule
-  { name = "named-day"
-  , pattern =
-    [ regex "du(m(inic(a|\x0103))?)?"
-    ]
-  , prod = \_ -> tt $ dayOfWeek 7
   }
 
 ruleHhmm :: Rule
@@ -1164,15 +1027,6 @@ ruleYear = Rule
         v <- getIntValue token
         tt $ year v
       _ -> Nothing
-  }
-
-ruleNamedmonth10 :: Rule
-ruleNamedmonth10 = Rule
-  { name = "named-month"
-  , pattern =
-    [ regex "oct(ombrie)?"
-    ]
-  , prod = \_ -> tt $ month 10
   }
 
 ruleHalloweenDay :: Rule
@@ -1297,24 +1151,6 @@ ruleDdmmyyyy = Rule
       _ -> Nothing
   }
 
-ruleNamedmonth11 :: Rule
-ruleNamedmonth11 = Rule
-  { name = "named-month"
-  , pattern =
-    [ regex "noi(embrie)?"
-    ]
-  , prod = \_ -> tt $ month 11
-  }
-
-ruleNamedday3 :: Rule
-ruleNamedday3 = Rule
-  { name = "named-day"
-  , pattern =
-    [ regex "mi(e(rcur(ea|i))?)?"
-    ]
-  , prod = \_ -> tt $ dayOfWeek 3
-  }
-
 ruleMmddyyyy :: Rule
 ruleMmddyyyy = Rule
   { name = "mm/dd/yyyy"
@@ -1360,15 +1196,6 @@ ruleNameddayDayofmonthNumeral = Rule
       _ -> Nothing
   }
 
-ruleNamedmonth9 :: Rule
-ruleNamedmonth9 = Rule
-  { name = "named-month"
-  , pattern =
-    [ regex "sept(embrie)?"
-    ]
-  , prod = \_ -> tt $ month 9
-  }
-
 ruleHhmmss :: Rule
 ruleHhmmss = Rule
   { name = "hh:mm:ss"
@@ -1383,6 +1210,51 @@ ruleHhmmss = Rule
         tt $ hourMinuteSecond True h m s
       _ -> Nothing
   }
+
+daysOfWeek :: [(Text, String)]
+daysOfWeek =
+  [ ( "luni"  , "lu(n(ea|i)?)?"                                                )
+  , ( "marti"  , "ma(r((t|\x021b)(ea|i))?)?"                                   )
+  , ( "miercuri"  , "mi(e(rcur(ea|i))?)?"                                      )
+  , ( "joi"  , "jo(ia?)?"                                                      )
+  , ( "vineri"  , "vi(n(er(ea|i))?)?"                                          )
+  , ( "sambata" , "s(a|\x00e2)mb(a|\x0103)t(a|\x0103)|s(a|\x00e2)m|s(a|\x00e2)")
+  , ( "duminica"  , "du(m(inic(a|\x0103))?)?"                                  )
+  ]
+
+ruleDaysOfWeek :: [Rule]
+ruleDaysOfWeek = zipWith go daysOfWeek [1..7]
+  where
+    go (name, regexPattern) i = Rule
+      { name = name
+      , pattern = [regex regexPattern]
+      , prod = \_ -> tt $ dayOfWeek i
+      }
+
+months :: [(Text, String)]
+months =
+  [ ( "ianuarie"  , "ian(uarie)?"     )
+  , ( "februarie"  , "feb(ruarie)?"   )
+  , ( "martie"  , "martie|mar"        )
+  , ( "aprilie"  , "apr(ilie)?"       )
+  , ( "mai"  , "mai"                  )
+  , ( "iunie"  , "iun(ie)?"           )
+  , ( "iulie"  , "iul(ie)?"           )
+  , ( "august"  , "aug(ust)?"         )
+  , ( "septembrie"  , "sept(embrie)?" )
+  , ( "octombrie"  , "oct(ombrie)?"   )
+  , ( "noiembrie"  , "noi(embrie)?"   )
+  , ( "decembrie"  , "dec(embrie)?"   )
+  ]
+
+ruleMonths :: [Rule]
+ruleMonths = zipWith go months [1..12]
+  where
+    go (name, regexPattern) i = Rule
+      { name = name
+      , pattern = [regex regexPattern]
+      , prod = \_ -> tt $ month i
+      }
 
 rules :: [Rule]
 rules =
@@ -1440,27 +1312,8 @@ rules =
   , ruleMmddyyyy
   , ruleMonthDdddInterval
   , ruleMothersDay
-  , ruleNamedday
-  , ruleNamedday2
-  , ruleNamedday3
-  , ruleNamedday4
-  , ruleNamedday5
-  , ruleNamedday6
-  , ruleNamedday7
   , ruleNameddayDayofmonthNumeral
   , ruleNameddayPeDayofmonthNumeral
-  , ruleNamedmonth
-  , ruleNamedmonth10
-  , ruleNamedmonth11
-  , ruleNamedmonth12
-  , ruleNamedmonth2
-  , ruleNamedmonth3
-  , ruleNamedmonth4
-  , ruleNamedmonth5
-  , ruleNamedmonth6
-  , ruleNamedmonth7
-  , ruleNamedmonth8
-  , ruleNamedmonth9
   , ruleNamedmonthDayofmonthNonOrdinal
   , ruleNewYearsDay
   , ruleNewYearsEve
@@ -1501,3 +1354,5 @@ rules =
   , ruleYearLatent2
   , ruleYyyymmdd
   ]
+  ++ ruleDaysOfWeek
+  ++ ruleMonths

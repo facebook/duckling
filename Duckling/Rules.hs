@@ -23,6 +23,7 @@ import Duckling.Dimensions.Types
 import Duckling.Lang
 import qualified Duckling.Rules.AR as ARRules
 import qualified Duckling.Rules.Common as CommonRules
+import qualified Duckling.Rules.BG as BGRules
 import qualified Duckling.Rules.CS as CSRules
 import qualified Duckling.Rules.DA as DARules
 import qualified Duckling.Rules.DE as DERules
@@ -33,6 +34,7 @@ import qualified Duckling.Rules.FR as FRRules
 import qualified Duckling.Rules.GA as GARules
 import qualified Duckling.Rules.HE as HERules
 import qualified Duckling.Rules.HR as HRRules
+import qualified Duckling.Rules.HU as HURules
 import qualified Duckling.Rules.ID as IDRules
 import qualified Duckling.Rules.IT as ITRules
 import qualified Duckling.Rules.JA as JARules
@@ -69,6 +71,7 @@ rulesFor' lang dim = CommonRules.rules dim ++ langRules lang dim
 
 langRules :: Lang -> Some Dimension -> [Rule]
 langRules AR = ARRules.rules
+langRules BG = BGRules.rules
 langRules CS = CSRules.rules
 langRules DA = DARules.rules
 langRules DE = DERules.rules
@@ -79,6 +82,7 @@ langRules FR = FRRules.rules
 langRules GA = GARules.rules
 langRules HE = HERules.rules
 langRules HR = HRRules.rules
+langRules HU = HURules.rules
 langRules ID = IDRules.rules
 langRules IT = ITRules.rules
 langRules JA = JARules.rules

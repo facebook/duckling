@@ -9,20 +9,34 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Time.PL.Corpus
-  ( corpus ) where
+  ( corpus
+  , negativeCorpus
+  ) where
 
 import Prelude
 import Data.String
 
 import Duckling.Lang
 import Duckling.Resolve
+import Duckling.Testing.Types hiding (examples)
 import Duckling.Time.Corpus
 import Duckling.Time.Types hiding (Month)
 import Duckling.TimeGrain.Types hiding (add)
-import Duckling.Testing.Types hiding (examples)
 
 corpus :: Corpus
 corpus = (testContext {lang = PL}, allExamples)
+
+negativeCorpus :: NegativeCorpus
+negativeCorpus = (testContext {lang = PL}, examples)
+  where
+    examples =
+      [ "nie"
+      , "niez"
+      , "Za Herbatke"
+      , "za herbatke"
+      , "No nic"
+      , "no nic"
+      ]
 
 allExamples :: [Example]
 allExamples = concat
@@ -94,6 +108,8 @@ allExamples = concat
              , "ta niedziela"
              , "niedz"
              , "niedz."
+             , "nd"
+             , "ndz"
              ]
   , examples (datetime (2013, 3, 1, 0, 0, 0) Day)
              [ "pierwszy marca"

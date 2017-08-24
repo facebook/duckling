@@ -690,10 +690,7 @@ ruleWeekend = Rule
   , pattern =
     [ regex "(cu(\x1ed1)i|h(\x1ebf)t) tu(\x1ea7)n"
     ]
-  , prod = \_ -> do
-      fri <- intersect (dayOfWeek 5) (hour False 18)
-      mon <- intersect (dayOfWeek 1) (hour False 0)
-      Token Time <$> interval TTime.Open fri mon
+  , prod = \_ -> tt weekend
   }
 
 ruleTimeofdaySngchiuti :: Rule

@@ -12,6 +12,10 @@
 module Duckling.Ordinal.SV.Rules
   ( rules ) where
 
+import Control.Monad (join)
+import Data.HashMap.Strict ( HashMap)
+import qualified Data.HashMap.Strict as HashMap
+import Data.Text (Text)
 import qualified Data.Text as Text
 import Prelude
 import Data.String
@@ -22,66 +26,78 @@ import Duckling.Ordinal.Helpers
 import Duckling.Regex.Types
 import Duckling.Types
 
-ruleOrdinalsFirstst :: Rule
-ruleOrdinalsFirstst = Rule
-  { name = "ordinals (first..31st)"
-  , pattern =
-    [ regex "(f\x00f6rste|f\x00f6rsta|andra|tredje|fj\x00e4rde|femte|sj\x00e4tte|sjunde|\x00e5ttonde|nionde|tionde|ellevte|tolfte|trettonde|fjortonde|femtonde|sekstende|syttende|attende|nittende|tyvende|tjuende|enogtyvende|toogtyvende|treogtyvende|fireogtyvende|femogtyvende|seksogtyvende|syvogtyvende|\x00e5tteogtyvende|niogtyvende|enogtjuende|toogtjuende|treogtjuende|fireogtjuende|femogtjuende|seksogtjuende|syvogtjuende|\x00e5tteogtyvend|niogtjuende|tredefte|enogtredefte)"
-    ]
+ordinalsMap :: HashMap Text Int
+ordinalsMap = HashMap.fromList
+  [ ( "f\x00f6rsta", 1 )
+  , ( "f\x00f6rste", 1 )
+  , ( "andra", 2 )
+  , ( "andre", 2)
+  , ( "tredje", 3 )
+  , ( "fj\x00e4rde", 4 )
+  , ( "femte", 5 )
+  , ( "sj\x00e4tte", 6 )
+  , ( "sjunde", 7 )
+  , ( "\x00e5ttonde", 8 )
+  , ( "nionde", 9 )
+  , ( "tionde", 10 )
+  , ( "elfte", 11 )
+  , ( "tolfte", 12 )
+  , ( "trettonde", 13 )
+  , ( "fjortonde", 14 )
+  , ( "femtonde", 15 )
+  , ( "sextonde", 16 )
+  , ( "sjuttonde", 17 )
+  , ( "artonde", 18 )
+  , ( "nittonde", 19 )
+  , ( "tjugonde", 20 )
+  , ( "trettionde", 30 )
+  , ( "fyrtionde", 40 )
+  , ( "femtionde", 50 )
+  , ( "sextionde", 60 )
+  , ( "sjuttionde", 70 )
+  , ( "\x00e5ttionde", 80 )
+  , ( "nittionde", 90 )
+  ]
+
+cardinalsMap :: HashMap Text Int
+cardinalsMap = HashMap.fromList
+  [ ( "tjugo", 20 )
+  , ( "trettio", 30 )
+  , ( "fyrtio", 40 )
+  , ( "femtio", 50 )
+  , ( "sextio", 60 )
+  , ( "sjuttio", 70 )
+  , ( "\x00e5ttio", 80 )
+  , ( "nittio", 90 )
+  ]
+
+
+ruleOrdinals :: Rule
+ruleOrdinals = Rule
+  { name = "ordinals (first..twentieth,thirtieth,...)"
+  , pattern = [regex "(f\x00f6rsta|f\x00f6rste|andra|andre|tredje|fj\x00e4rde|femte|sj\x00e4tte|sjunde|\x00e5ttonde|nionde|tionde|elfte|tolfte|trettionde|fjortonde|femtonde|sextonde|sjuttonde|artonde|nittonde|tjugonde|trettionde|fyrtionde|femtonde|sextionde|sjuttionde|\x00e5ttionde|nittionde)"]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
-        "f\x00f6rsta" -> Just $ ordinal 1
-        "f\x00f6rste" -> Just $ ordinal 1
-        "andra" -> Just $ ordinal 2
-        "tredje" -> Just $ ordinal 3
-        "fj\x00e4rde" -> Just $ ordinal 4
-        "femte" -> Just $ ordinal 5
-        "sj\x00e4tte" -> Just $ ordinal 6
-        "sjunde" -> Just $ ordinal 7
-        "\x00e5ttonde" -> Just $ ordinal 8
-        "nionde" -> Just $ ordinal 9
-        "tionde" -> Just $ ordinal 10
-        "ellevte" -> Just $ ordinal 11
-        "tolfte" -> Just $ ordinal 12
-        "trettonde" -> Just $ ordinal 13
-        "fjortonde" -> Just $ ordinal 14
-        "femtonde" -> Just $ ordinal 15
-        "sekstende" -> Just $ ordinal 16
-        "syttende" -> Just $ ordinal 17
-        "attende" -> Just $ ordinal 18
-        "nittende" -> Just $ ordinal 19
-        "tyvende" -> Just $ ordinal 20
-        "tjuende" -> Just $ ordinal 20
-        "enogtjuende" -> Just $ ordinal 21
-        "enogtyvende" -> Just $ ordinal 21
-        "toogtyvende" -> Just $ ordinal 22
-        "toogtjuende" -> Just $ ordinal 22
-        "treogtyvende" -> Just $ ordinal 23
-        "treogtjuende" -> Just $ ordinal 23
-        "fireogtjuende" -> Just $ ordinal 24
-        "fireogtyvende" -> Just $ ordinal 24
-        "femogtyvende" -> Just $ ordinal 25
-        "femogtjuende" -> Just $ ordinal 25
-        "seksogtjuende" -> Just $ ordinal 26
-        "seksogtyvende" -> Just $ ordinal 26
-        "syvogtyvende" -> Just $ ordinal 27
-        "syvogtjuende" -> Just $ ordinal 27
-        "\x00e5tteogtyvende" -> Just $ ordinal 28
-        "\x00e5tteogtjuende" -> Just $ ordinal 28
-        "niogtyvende" -> Just $ ordinal 29
-        "niogtjuende" -> Just $ ordinal 29
-        "tredefte" -> Just $ ordinal 30
-        "enogtredefte" -> Just $ ordinal 31
-        _ -> Nothing
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        ordinal <$> HashMap.lookup (Text.toLower match) ordinalsMap
+      _ -> Nothing
+    }
+
+ruleCompositeOrdinals :: Rule
+ruleCompositeOrdinals = Rule
+  { name = "ordinals (composite, e.g., eighty-seven)"
+  , pattern = [regex "(tjugo|trettio|fyrtio|femtio|sextio|sjuttio|\x00e5ttio|nittio)(f\x00f6rsta|f\x00f6rste|andra|andre|tredje|fj\x00e4rde|femte|sj\x00e4tte|sjunde|\x00e5ttonde|nionde)"]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (tens:units:_)):_) -> do
+        tt <- HashMap.lookup (Text.toLower tens) cardinalsMap
+        uu <- HashMap.lookup (Text.toLower units) ordinalsMap
+        Just (ordinal (tt + uu))
       _ -> Nothing
   }
 
 ruleOrdinalDigits :: Rule
 ruleOrdinalDigits = Rule
   { name = "ordinal (digits)"
-  , pattern =
-    [ regex "0*(\\d+)(\\.|e|\\:[ae])?"
-    ]
+  , pattern = [regex "0*(\\d+):?(a|e)"]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> ordinal <$> parseInt match
       _ -> Nothing
@@ -89,6 +105,7 @@ ruleOrdinalDigits = Rule
 
 rules :: [Rule]
 rules =
-  [ ruleOrdinalDigits
-  , ruleOrdinalsFirstst
+  [ ruleOrdinals
+  , ruleCompositeOrdinals
+  , ruleOrdinalDigits
   ]

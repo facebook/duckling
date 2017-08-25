@@ -11,15 +11,15 @@
 module Duckling.Time.SV.Corpus
   ( corpus ) where
 
-import Prelude
 import Data.String
+import Prelude
 
 import Duckling.Lang
 import Duckling.Resolve
+import Duckling.Testing.Types hiding (examples)
 import Duckling.Time.Corpus
 import Duckling.Time.Types hiding (Month)
 import Duckling.TimeGrain.Types hiding (add)
-import Duckling.Testing.Types hiding (examples)
 
 corpus :: Corpus
 corpus = (testContext {lang = SV}, allExamples)
@@ -75,18 +75,18 @@ allExamples = concat
   , examples (datetime (2013, 3, 1, 0, 0, 0) Day)
              [ "Den förste mars"
              , "Den första mars"
-             , "1. mars"
-             , "Den 1. mars"
+             , "1:a mars"
+             , "Den 1:a mars"
              ]
   , examples (datetime (2013, 3, 3, 0, 0, 0) Day)
              [ "3 mars"
              , "den tredje mars"
-             , "den 3. mars"
+             , "den 3:e mars"
              ]
   , examples (datetime (2015, 3, 3, 0, 0, 0) Day)
              [ "3 mars 2015"
              , "tredje mars 2015"
-             , "3. mars 2015"
+             , "3:e mars 2015"
              , "3-3-2015"
              , "03-03-2015"
              , "3/3/2015"
@@ -95,14 +95,13 @@ allExamples = concat
              , "2015-03-03"
              ]
   , examples (datetime (2013, 2, 15, 0, 0, 0) Day)
-             [ "På den 15."
+             [ "På den 15:e"
              , "På den 15"
-             , "Den 15."
-             , "Den 15"
+             , "Den 15:e"
              ]
   , examples (datetime (2013, 2, 15, 0, 0, 0) Day)
-             [ "den 15. februari"
-             , "15. februari"
+             [ "den 15:e februari"
+             , "15:e februari"
              , "februari 15"
              , "15-02"
              , "15/02"
@@ -167,24 +166,25 @@ allExamples = concat
              ]
   , examples (datetime (2013, 7, 1, 0, 0, 0) Quarter)
              [ "tredje kvartalet"
-             , "3. kvartal"
-             , "3 kvartal"
+             , "3:e kvartal"
              ]
   , examples (datetime (2018, 10, 1, 0, 0, 0) Quarter)
-             [ "4. kvartal 2018"
+             [ "4:e kvartal 2018"
              , "fjärde kvartalet 2018"
              ]
-  , examples (datetime (2012, 0, 0, 0, 0, 0) Year)
+  , examples (datetime (2012, 1, 1, 0, 0, 0) Year)
              [ "förra år"
+             , "förra året"
+             , "föregående år"
              ]
-  , examples (datetime (2012, 0, 0, 0, 0, 0) Year)
+  , examples (datetime (2012, 1, 1, 0, 0, 0) Year)
              [ "i fjol"
              ]
-  , examples (datetime (2013, 0, 0, 0, 0, 0) Year)
+  , examples (datetime (2013, 1, 1, 0, 0, 0) Year)
              [ "i år"
              , "detta år"
              ]
-  , examples (datetime (2014, 0, 0, 0, 0, 0) Year)
+  , examples (datetime (2014, 1, 1, 0, 0, 0) Year)
              [ "nästa år"
              ]
   , examples (datetime (2013, 2, 10, 0, 0, 0) Day)

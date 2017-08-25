@@ -25,19 +25,57 @@ corpus = (testContext {lang = SV}, allExamples)
 allExamples :: [Example]
 allExamples = concat
   [ examples (OrdinalData 1)
-             [ "förste"
-             , "första"
+             [ "första"
+             , "förste"
+             , "1a"
              , "1:a"
-             , "1:e"
              ]
-  , examples (OrdinalData 10)
-             [ "tionde"
-             , "10."
-             , "10"
+  , examples (OrdinalData 2)
+             [ "andra"
+             , "andre"
+             , "2a"
+             , "2:a"
              ]
-  , examples (OrdinalData 26)
-             [ "seksogtjuende"
-             , "Seksogtyvende"
-             , "26e"
+  , examples (OrdinalData 3)
+             [ "tredje"
+             , "3e"
+             , "3:e"
              ]
+  , examples (OrdinalData 4)
+             [ "fjärde"
+             , "4e"
+             , "4:e"
+             ]
+  , examples (OrdinalData 8)
+             [ "åttonde"
+             , "8e"
+             , "8:e"
+             ]
+  , examples (OrdinalData 25)
+             [ "tjugofemte"
+             , "25e"
+             , "25:e"
+             ]
+  , examples (OrdinalData 31)
+             [ "trettioförsta"
+             , "trettioförste"
+             , "31a"
+             , "31:a"
+             ]
+  , examples (OrdinalData 42)
+             [ "fyrtioandra"
+             , "fyrtioandre"
+             , "42a"
+             , "42:a"
+             ]
+  , examples (OrdinalData 77)
+            [ "sjuttiosjunde"
+            , "77e"
+            , "77:e"
+            ]
+  , examples (OrdinalData 90)
+            [ "nittionde"
+            , "90e"
+            , "90:e"
+            ]
   ]

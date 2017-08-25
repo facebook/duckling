@@ -635,7 +635,7 @@ ruleLastCycle :: Rule
 ruleLastCycle = Rule
   { name = "last <cycle>"
   , pattern =
-    [ regex "sista|senaste|f\x00f6rra"
+    [ regex "sista|senaste|f(\x00f6)rra|f(\x00f6)reg(\x00e5)ende"
     , dimension TimeGrain
     ]
   , prod = \tokens -> case tokens of

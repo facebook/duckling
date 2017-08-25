@@ -13,17 +13,17 @@
 module Duckling.Time.PT.Rules
   ( rules ) where
 
-import qualified Data.Text as Text
 import Prelude
+import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
 import Duckling.Numeral.Helpers (parseInt)
 import Duckling.Regex.Types
 import Duckling.Time.Helpers
 import Duckling.Time.Types (TimeData (..))
+import Duckling.Types
 import qualified Duckling.Time.Types as TTime
 import qualified Duckling.TimeGrain.Types as TG
-import Duckling.Types
 
 ruleNamedday :: Rule
 ruleNamedday = Rule
@@ -99,13 +99,12 @@ ruleIntersectByDaOrDe :: Rule
 ruleIntersectByDaOrDe = Rule
   { name = "intersect by `da` or `de`"
   , pattern =
-    [ Predicate isNotLatent
+    [ dimension Time
     , regex "d[ae]"
     , Predicate isNotLatent
     ]
   , prod = \tokens -> case tokens of
-      (Token Time td1:_:Token Time td2:_) ->
-        Token Time <$> intersect td1 td2
+      (Token Time td1:_:Token Time td2:_) -> Token Time <$> intersect td1 td2
       _ -> Nothing
   }
 
@@ -132,8 +131,7 @@ ruleLastTime = Rule
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td:_) ->
-        tt $ predNth (-1) False td
+      (_:Token Time td:_) -> tt $ predNth (-1) False td
       _ -> Nothing
   }
 
@@ -188,7 +186,7 @@ ruleDayOfMonthSt = Rule
   , pattern =
     [ regex "primeiro|um|1o"
     ]
-  , prod = \_ -> tt $ dayOfMonth 1
+  , prod = \_ -> tt . mkLatent $ dayOfMonth 1
   }
 
 ruleNow :: Rule

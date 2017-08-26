@@ -69,6 +69,11 @@ files need to be updated:
 * `Duckling/<dimension>/<language>/Rules.hs`
 * `Duckling/<dimension>/<language>/Corpus.hs`
 
+To add a new language:
+* Make sure that the language code used follows the [ISO-639-1 standard](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes).
+* The first dimension to implement is `Numeral`.
+* Follow [this example](https://github.com/facebookincubator/duckling/commit/24d3f199768be970149412c95b1c1bf5d76f8240).
+
 Rules have a name, a pattern and a production.
 Patterns are used to perform character-level matching (regexes on input) and
 concept-level matching (predicates on tokens).

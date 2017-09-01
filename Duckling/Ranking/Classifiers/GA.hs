@@ -21,7 +21,14 @@ import Data.String
 classifiers :: Classifiers
 classifiers
   = HashMap.fromList
-      [("integer (numeric)",
+      [("Thursday",
+        Classifier{okData =
+                     ClassData{prior = -infinity, unseen = -0.6931471805599453,
+                               likelihoods = HashMap.fromList [], n = 0},
+                   koData =
+                     ClassData{prior = 0.0, unseen = -1.3862943611198906,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 2}}),
+       ("integer (numeric)",
         Classifier{okData =
                      ClassData{prior = -infinity, unseen = -0.6931471805599453,
                                likelihoods = HashMap.fromList [], n = 0},
@@ -49,6 +56,13 @@ classifiers
                    koData =
                      ClassData{prior = -infinity, unseen = -0.6931471805599453,
                                likelihoods = HashMap.fromList [], n = 0}}),
+       ("Monday",
+        Classifier{okData =
+                     ClassData{prior = 0.0, unseen = -2.0794415416798357,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 6},
+                   koData =
+                     ClassData{prior = -infinity, unseen = -0.6931471805599453,
+                               likelihoods = HashMap.fromList [], n = 0}}),
        ("dd/mm/yyyy",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -1.0986122886681098,
@@ -69,9 +83,8 @@ classifiers
                      ClassData{prior = 0.0, unseen = -2.833213344056216,
                                likelihoods =
                                  HashMap.fromList
-                                   [("day", -0.8266785731844679),
+                                   [("Monday", -1.3862943611198906), ("day", -0.8266785731844679),
                                     ("d\233 named-day", -2.0794415416798357),
-                                    ("named-day", -1.3862943611198906),
                                     ("an named-day", -1.6739764335716716)],
                                n = 6},
                    koData =
@@ -82,8 +95,7 @@ classifiers
                      ClassData{prior = 0.0, unseen = -1.9459101490553135,
                                likelihoods =
                                  HashMap.fromList
-                                   [("day", -0.6931471805599453),
-                                    ("named-day", -0.6931471805599453)],
+                                   [("Monday", -0.6931471805599453), ("day", -0.6931471805599453)],
                                n = 2},
                    koData =
                      ClassData{prior = -infinity, unseen = -1.0986122886681098,
@@ -95,22 +107,12 @@ classifiers
                    koData =
                      ClassData{prior = -infinity, unseen = -0.6931471805599453,
                                likelihoods = HashMap.fromList [], n = 0}}),
-       ("named-day",
-        Classifier{okData =
-                     ClassData{prior = -0.2876820724517809,
-                               unseen = -2.0794415416798357,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 6},
-                   koData =
-                     ClassData{prior = -1.3862943611198906,
-                               unseen = -1.3862943611198906,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 2}}),
        ("an named-day",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -2.3978952727983707,
                                likelihoods =
                                  HashMap.fromList
-                                   [("day", -0.6931471805599453),
-                                    ("named-day", -0.6931471805599453)],
+                                   [("Monday", -0.6931471805599453), ("day", -0.6931471805599453)],
                                n = 4},
                    koData =
                      ClassData{prior = -infinity, unseen = -1.0986122886681098,
@@ -138,9 +140,8 @@ classifiers
                      ClassData{prior = 0.0, unseen = -3.044522437723423,
                                likelihoods =
                                  HashMap.fromList
-                                   [("day", -0.7985076962177716),
+                                   [("Monday", -1.3862943611198906), ("day", -0.7985076962177716),
                                     ("d\233 named-day", -2.3025850929940455),
-                                    ("named-day", -1.3862943611198906),
                                     ("an named-day", -1.6094379124341003)],
                                n = 8},
                    koData =

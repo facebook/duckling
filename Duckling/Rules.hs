@@ -38,6 +38,7 @@ import qualified Duckling.Rules.HU as HURules
 import qualified Duckling.Rules.ID as IDRules
 import qualified Duckling.Rules.IT as ITRules
 import qualified Duckling.Rules.JA as JARules
+import qualified Duckling.Rules.KA as KARules
 import qualified Duckling.Rules.KO as KORules
 import qualified Duckling.Rules.MY as MYRules
 import qualified Duckling.Rules.NB as NBRules
@@ -86,6 +87,7 @@ langRules HU = HURules.rules
 langRules ID = IDRules.rules
 langRules IT = ITRules.rules
 langRules JA = JARules.rules
+langRules KA = KARules.rules
 langRules KO = KORules.rules
 langRules MY = MYRules.rules
 langRules NB = NBRules.rules

@@ -85,6 +85,7 @@ regenClassifiers lang = do
       ID -> (testContext, [])
       IT -> ITTime.corpus
       JA -> (testContext, [])
+      KA -> (testContext, [])
       KO -> KOTime.corpus
       MY -> (testContext, [])
       NB -> NBTime.corpus

@@ -27,6 +27,7 @@ import qualified Duckling.Ranking.Classifiers.HU as HUClassifiers
 import qualified Duckling.Ranking.Classifiers.ID as IDClassifiers
 import qualified Duckling.Ranking.Classifiers.IT as ITClassifiers
 import qualified Duckling.Ranking.Classifiers.JA as JAClassifiers
+import qualified Duckling.Ranking.Classifiers.KA as KAClassifiers
 import qualified Duckling.Ranking.Classifiers.KO as KOClassifiers
 import qualified Duckling.Ranking.Classifiers.MY as MYClassifiers
 import qualified Duckling.Ranking.Classifiers.NB as NBClassifiers
@@ -59,6 +60,7 @@ classifiers HU = HUClassifiers.classifiers
 classifiers ID = IDClassifiers.classifiers
 classifiers IT = ITClassifiers.classifiers
 classifiers JA = JAClassifiers.classifiers
+classifiers KA = KAClassifiers.classifiers
 classifiers KO = KOClassifiers.classifiers
 classifiers MY = MYClassifiers.classifiers
 classifiers NB = NBClassifiers.classifiers

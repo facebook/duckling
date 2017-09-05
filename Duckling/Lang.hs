@@ -38,6 +38,7 @@ data Lang
   | ID
   | IT
   | JA
+  | KA
   | KO
   | MY
   | NB

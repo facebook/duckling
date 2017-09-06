@@ -16,6 +16,7 @@ import qualified Duckling.Ordinal.AR.Tests as AR
 import qualified Duckling.Ordinal.DA.Tests as DA
 import qualified Duckling.Ordinal.DE.Tests as DE
 import qualified Duckling.Ordinal.EN.Tests as EN
+import qualified Duckling.Ordinal.ES.Tests as ES
 import qualified Duckling.Ordinal.ET.Tests as ET
 import qualified Duckling.Ordinal.FR.Tests as FR
 import qualified Duckling.Ordinal.GA.Tests as GA
@@ -44,6 +45,7 @@ tests = testGroup "Ordinal Tests"
   , DA.tests
   , DE.tests
   , EN.tests
+  , ES.tests
   , ET.tests
   , FR.tests
   , GA.tests

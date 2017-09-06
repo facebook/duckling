@@ -319,6 +319,7 @@ library
                      , Duckling.Ordinal.DE.Rules
                      , Duckling.Ordinal.EN.Corpus
                      , Duckling.Ordinal.EN.Rules
+                     , Duckling.Ordinal.ES.Corpus
                      , Duckling.Ordinal.ES.Rules
                      , Duckling.Ordinal.ET.Corpus
                      , Duckling.Ordinal.ET.Rules

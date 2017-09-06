@@ -66,21 +66,21 @@ ordinalsMap = HashMap.fromList
   , ( "novena" , 9 )
   , ( "noveno" , 9 )
   , ( "novenas" , 9 )
-  , ( "d\x00e9cimos" , 10 )
+  , ( "d\233cimos" , 10 )
   , ( "decimo" , 10 )
   , ( "decimos" , 10 )
-  , ( "d\x00e9cimo" , 10 )
+  , ( "d\233cimo" , 10 )
   , ( "decimas" , 10 )
-  , ( "d\x00e9cima" , 10 )
+  , ( "d\233cima" , 10 )
   , ( "decima" , 10 )
-  , ( "d\x00e9cimas" , 10 )
+  , ( "d\233cimas" , 10 )
   ]
 
 ruleOrdinalsPrimero :: Rule
 ruleOrdinalsPrimero = Rule
   { name = "ordinals (primero..10)"
   , pattern =
-    [ regex "(primer|tercer(os?|as?)?|(primer|segund|cuart|quint|sext|s[e\x00e9]ptim|octav|noven|d[e\x00e9]cim)(os?|as?))"
+    [ regex "((primer|segund|cuart|quint|sext|s(e|\x00e9)ptim|octav|noven|d(e|\x00e9)cim)(os?|as?)|(prim|terc)er)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->

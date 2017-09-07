@@ -409,7 +409,7 @@ ruleDayOfMonthSt :: Rule
 ruleDayOfMonthSt = Rule
   { name = "day of month (1st)"
   , pattern =
-    [ regex "(primo|1o|1\x00ba|1\x00b0)"
+    [ regex "(primo|1o|1º|1°)"
     ]
   , prod = \_ -> tt $ dayOfMonth 1
   }
@@ -1020,7 +1020,7 @@ ruleFestaDelPap :: Rule
 ruleFestaDelPap = Rule
   { name = "festa del papà"
   , pattern =
-    [ regex "festa del pap(a|\x00e0)|(festa di )?s(an|\\.) giuseppe"
+    [ regex "festa del pap(a|à)|(festa di )?s(an|\\.) giuseppe"
     ]
   , prod = \_ -> tt $ monthDay 3 19
   }
@@ -1112,11 +1112,11 @@ ruleNextCycle = Rule
 
 daysOfWeek :: [(Text, String)]
 daysOfWeek =
-  [ ( "Lunedi"   , "luned(i|\x00ec)|lun?\\.?"   )
-  , ( "Martedi"  , "marted(i|\x00ec)|mar\\.?"   )
-  , ( "Mercoledi", "mercoled(i|\x00ec)|mer\\.?" )
-  , ( "Giovedi"  , "gioved(i|\x00ec)|gio\\.?"   )
-  , ( "Venerdi"  , "venerd(i|\x00ec)|ven\\.?"   )
+  [ ( "Lunedi"   , "luned(i|ì)|lun?\\.?"   )
+  , ( "Martedi"  , "marted(i|ì)|mar\\.?"   )
+  , ( "Mercoledi", "mercoled(i|ì)|mer\\.?" )
+  , ( "Giovedi"  , "gioved(i|ì)|gio\\.?"   )
+  , ( "Venerdi"  , "venerd(i|ì)|ven\\.?"   )
   , ( "Sabato"   , "sabato|sab\\.?"             )
   , ( "Domenica" , "domenica|dom\\.?"           )
   ]

@@ -26,7 +26,7 @@ ruleLatentTempDegrees = Rule
   { name = "<latent temp> degrees"
   , pattern =
     [ dimension Temperature
-    , regex "(deg(r(\x00e9|e|\x00e8))?s?\\.?)|\x00b0"
+    , regex "(deg(r(é|e|è))?s?\\.?)|°"
     ]
   , prod = \tokens -> case tokens of
       (Token Temperature td:_) -> Just . Token Temperature $
@@ -65,7 +65,7 @@ ruleLatentTempEnDessousDeZero = Rule
   { name = "<latent temp> en dessous de zero"
   , pattern =
     [ dimension Temperature
-    , regex "en dessous de (0|z(\x00e9|e)ro)"
+    , regex "en dessous de (0|z(é|e)ro)"
     ]
   , prod = \tokens -> case tokens of
       (Token Temperature td@(TemperatureData {TTemperature.value = v}):_) ->

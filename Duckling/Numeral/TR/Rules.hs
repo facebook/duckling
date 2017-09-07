@@ -29,15 +29,15 @@ import Duckling.Types
 
 hundredsMap :: HashMap Text Integer
 hundredsMap = HashMap.fromList
-  [ ( "y\x00fcz", 100)
-  , ( "ikiy\x00fcz", 200)
-  , ( "\x00fc\x00e7y\x00fcz", 300)
-  , ( "d\x00f6rty\x00fcz", 400)
-  , ( "be\x015fy\x00fcz", 500)
-  , ( "alt\x0131y\x00fcz", 600)
-  , ( "yediy\x00fcz", 700)
-  , ( "sekizy\x00fcz", 800)
-  , ( "dokuzy\x00fcz", 900)
+  [ ( "yüz", 100)
+  , ( "ikiyüz", 200)
+  , ( "üçyüz", 300)
+  , ( "dörtyüz", 400)
+  , ( "beşyüz", 500)
+  , ( "altıyüz", 600)
+  , ( "yediyüz", 700)
+  , ( "sekizyüz", 800)
+  , ( "dokuzyüz", 900)
   ]
 
 
@@ -45,7 +45,7 @@ ruleInteger5 :: Rule
 ruleInteger5 = Rule
   { name = "integer 100..900"
   , pattern =
-    [ regex "(y\x00fcz|ikiy\x00fcz|\x00fc\x00e7y\x00fcz|d\x00f6rty\x00fcz|be\x015fy\x00fcz|alt\x0131y\x00fcz|yediy\x00fcz|sekizy\x00fcz|dokuzy\x00fcz)"
+    [ regex "(yüz|ikiyüz|üçyüz|dörtyüz|beşyüz|altıyüz|yediyüz|sekizyüz|dokuzyüz)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
@@ -83,7 +83,7 @@ ruleACoupleOf :: Rule
 ruleACoupleOf = Rule
   { name = "a couple (of)"
   , pattern =
-    [ regex "(bir )?\x00e7ift"
+    [ regex "(bir )?çift"
     ]
   , prod = \_ -> integer 2 >>= withGrain 1
   }
@@ -151,23 +151,23 @@ ruleDecimalNumeral = Rule
 
 numeralSuffixesHalfsuffixTextMap :: HashMap Text Double
 numeralSuffixesHalfsuffixTextMap = HashMap.fromList
-  [ ( "birbu\x00e7uk", 1.5)
-  , ( "bibu\x00e7uk", 1.5)
-  , ( "ikibu\x00e7uk", 2.5)
-  , ( "\x00fc\231bu\x00e7uk", 3.5)
-  , ( "d\x00f6rtbu\x00e7uk", 4.5)
-  , ( "be\351bu\x00e7uk", 5.5)
-  , ( "alt\x0131bu\x00e7uk", 6.5)
-  , ( "yedibu\x00e7uk", 7.5)
-  , ( "sekizbu\x00e7uk", 8.5)
-  , ( "dokuzbu\x00e7uk", 9.5)
+  [ ( "birbuçuk", 1.5)
+  , ( "bibuçuk", 1.5)
+  , ( "ikibuçuk", 2.5)
+  , ( "ü\231buçuk", 3.5)
+  , ( "dörtbuçuk", 4.5)
+  , ( "be\351buçuk", 5.5)
+  , ( "altıbuçuk", 6.5)
+  , ( "yedibuçuk", 7.5)
+  , ( "sekizbuçuk", 8.5)
+  , ( "dokuzbuçuk", 9.5)
   ]
 
 ruleNumeralSuffixesHalfsuffixText :: Rule
 ruleNumeralSuffixesHalfsuffixText = Rule
   { name = "number suffixes (half-suffix text) (1..9)"
   , pattern =
-    [ regex "((bir?|iki|\x00fc\x00e7|d\x00f6rt|be\x015f|alt\x0131|yedi|sekiz|dokuz)(bu\x00e7uk))"
+    [ regex "((bir?|iki|üç|dört|beş|altı|yedi|sekiz|dokuz)(buçuk))"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
@@ -180,98 +180,98 @@ tenToNintynineMap = HashMap.fromList
   [ ( "onbi", 11)
   , ( "onbir", 11)
   , ( "oniki", 12)
-  , ( "on\x00fc\x00e7", 13)
-  , ( "ond\x00f6rt", 14)
-  , ( "onbe\x015f", 15)
-  , ( "onalt\x0131", 16)
+  , ( "onüç", 13)
+  , ( "ondört", 14)
+  , ( "onbeş", 15)
+  , ( "onaltı", 16)
   , ( "onyedi", 17)
   , ( "onsekiz", 18)
   , ( "ondokuz", 19)
   , ( "yirmibi", 21)
   , ( "yirmibir", 21)
   , ( "yirmiiki", 22)
-  , ( "yirmi\x00fc\x00e7", 23)
-  , ( "yirmid\x00f6rt", 24)
-  , ( "yirmibe\x015f", 25)
-  , ( "yirmialt\x0131", 26)
+  , ( "yirmiüç", 23)
+  , ( "yirmidört", 24)
+  , ( "yirmibeş", 25)
+  , ( "yirmialtı", 26)
   , ( "yirmiyedi", 27)
   , ( "yirmisekiz", 28)
   , ( "yirmidokuz", 29)
   , ( "otuzbi", 31)
   , ( "otuzbir", 31)
   , ( "otuziki", 32)
-  , ( "otuz\x00fc\x00e7", 33)
-  , ( "otuzd\x00f6rt", 34)
-  , ( "otuzbe\x015f", 35)
-  , ( "otuzalt\x0131", 36)
+  , ( "otuzüç", 33)
+  , ( "otuzdört", 34)
+  , ( "otuzbeş", 35)
+  , ( "otuzaltı", 36)
   , ( "otuzyedi", 37)
   , ( "otuzsekiz", 38)
   , ( "otuzdokuz", 39)
-  , ( "k\x0131rkbir", 41)
-  , ( "k\x0131rkbi", 41)
-  , ( "k\x0131rkiki", 42)
-  , ( "k\x0131rk\x00fc\x00e7", 43)
-  , ( "k\x0131rkd\x00f6rt", 44)
-  , ( "k\x0131rkbe\x015f", 45)
-  , ( "k\x0131rkalt\x0131", 46)
-  , ( "k\x0131rkyedi", 47)
-  , ( "k\x0131rksekiz", 48)
-  , ( "k\x0131rkdokuz", 49)
+  , ( "kırkbir", 41)
+  , ( "kırkbi", 41)
+  , ( "kırkiki", 42)
+  , ( "kırküç", 43)
+  , ( "kırkdört", 44)
+  , ( "kırkbeş", 45)
+  , ( "kırkaltı", 46)
+  , ( "kırkyedi", 47)
+  , ( "kırksekiz", 48)
+  , ( "kırkdokuz", 49)
   , ( "ellibi", 51)
   , ( "ellibir", 51)
   , ( "elliiki", 52)
-  , ( "elli\x00fc\x00e7", 53)
-  , ( "ellid\x00f6rt", 54)
-  , ( "ellibe\x015f", 55)
-  , ( "ellialt\x0131", 56)
+  , ( "elliüç", 53)
+  , ( "ellidört", 54)
+  , ( "ellibeş", 55)
+  , ( "ellialtı", 56)
   , ( "elliyedi", 57)
   , ( "ellisekiz", 58)
   , ( "ellidokuz", 59)
-  , ( "altm\x0131\x015fbir", 61)
-  , ( "atm\x0131\x015fbir", 61)
-  , ( "atm\x0131\x015fiki", 62)
-  , ( "altm\x0131\x015fiki", 62)
-  , ( "atm\x0131\x015f\x00fc\x00e7", 63)
-  , ( "altm\x0131\x015f\x00fc\x00e7", 63)
-  , ( "atm\x0131\x015fd\x00f6rt", 64)
-  , ( "altm\x0131\x015fd\x00f6rt", 64)
-  , ( "atm\x0131\x015fbe\x015f", 65)
-  , ( "altm\x0131\x015fbe\x015f", 65)
-  , ( "atm\x0131\x015falt\x0131", 66)
-  , ( "altm\x0131\x015falt\x0131", 66)
-  , ( "altm\x0131\x015fyedi", 67)
-  , ( "atm\x0131\x015fyedi", 67)
-  , ( "altm\x0131\x015fsekiz", 68)
-  , ( "atm\x0131\x015fsekiz", 68)
-  , ( "atm\x0131\x015fdokuz", 69)
-  , ( "altm\x0131\x015fdokuz", 69)
-  , ( "yetmi\x015fbir", 71)
-  , ( "yetmi\x015fbi", 71)
-  , ( "yetmi\x015fiki", 72)
-  , ( "yetmi\x015f\x00fc\x00e7", 73)
-  , ( "yetmi\x015fd\x00f6rt", 74)
-  , ( "yetmi\x015fbe\x015f", 75)
-  , ( "yetmi\x015falt\x0131", 76)
-  , ( "yetmi\x015fyedi", 77)
-  , ( "yetmi\x015fsekiz", 78)
-  , ( "yetmi\x015fdokuz", 79)
+  , ( "altmışbir", 61)
+  , ( "atmışbir", 61)
+  , ( "atmışiki", 62)
+  , ( "altmışiki", 62)
+  , ( "atmışüç", 63)
+  , ( "altmışüç", 63)
+  , ( "atmışdört", 64)
+  , ( "altmışdört", 64)
+  , ( "atmışbeş", 65)
+  , ( "altmışbeş", 65)
+  , ( "atmışaltı", 66)
+  , ( "altmışaltı", 66)
+  , ( "altmışyedi", 67)
+  , ( "atmışyedi", 67)
+  , ( "altmışsekiz", 68)
+  , ( "atmışsekiz", 68)
+  , ( "atmışdokuz", 69)
+  , ( "altmışdokuz", 69)
+  , ( "yetmişbir", 71)
+  , ( "yetmişbi", 71)
+  , ( "yetmişiki", 72)
+  , ( "yetmişüç", 73)
+  , ( "yetmişdört", 74)
+  , ( "yetmişbeş", 75)
+  , ( "yetmişaltı", 76)
+  , ( "yetmişyedi", 77)
+  , ( "yetmişsekiz", 78)
+  , ( "yetmişdokuz", 79)
   , ( "seksenbir", 81)
   , ( "seksenbi", 81)
   , ( "sekseniki", 82)
-  , ( "seksen\x00fc\x00e7", 83)
-  , ( "seksend\x00f6rt", 84)
-  , ( "seksenbe\x015f", 85)
-  , ( "seksenalt\x0131", 86)
+  , ( "seksenüç", 83)
+  , ( "seksendört", 84)
+  , ( "seksenbeş", 85)
+  , ( "seksenaltı", 86)
   , ( "seksenyedi", 87)
   , ( "seksensekiz", 88)
   , ( "seksendokuz", 89)
   , ( "doksanbi", 91)
   , ( "doksanbir", 91)
   , ( "doksaniki", 92)
-  , ( "doksan\x00fc\x00e7", 93)
-  , ( "doksand\x00f6rt", 94)
-  , ( "doksanbe\x015f", 95)
-  , ( "doksanalt\x0131", 96)
+  , ( "doksanüç", 93)
+  , ( "doksandört", 94)
+  , ( "doksanbeş", 95)
+  , ( "doksanaltı", 96)
   , ( "doksanyedi", 97)
   , ( "doksansekiz", 98)
   , ( "doksandokuz", 99)
@@ -281,7 +281,7 @@ ruleInteger3 :: Rule
 ruleInteger3 = Rule
   { name = "integer 11..19 21..29 31..39 41..49 51..59 61..69 71..79 81..89 91..99"
   , pattern =
-    [ regex "((on|yirmi|otuz|k\x0131rk|elli|atm\x0131\x015f|altm\x0131\x015f|yetmi\x015f|seksen|doksan)(bir|bi|iki|\x00fc\x00e7|d\x00f6rt|be\x015f|alt\x0131|yedi|sekiz|dokuz))"
+    [ regex "((on|yirmi|otuz|kırk|elli|atmış|altmış|yetmiş|seksen|doksan)(bir|bi|iki|üç|dört|beş|altı|yedi|sekiz|dokuz))"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
@@ -294,10 +294,10 @@ thousandsMap :: HashMap Text Integer
 thousandsMap = HashMap.fromList
   [ ( "bin", 1000)
   , ( "ikibin", 2000)
-  , ( "\x00fc\x00e7bin", 3000)
-  , ( "d\x00f6rtbin", 4000)
-  , ( "be\x015fbin", 5000)
-  , ( "alt\x0131bin", 6000)
+  , ( "üçbin", 3000)
+  , ( "dörtbin", 4000)
+  , ( "beşbin", 5000)
+  , ( "altıbin", 6000)
   , ( "yedibin", 7000)
   , ( "sekizbin", 8000)
   , ( "dokuzbin", 9000)
@@ -307,7 +307,7 @@ ruleInteger6 :: Rule
 ruleInteger6 = Rule
   { name = "integer 1000..9000"
   , pattern =
-    [ regex "(bin|ikibin|\x00fc\x00e7bin|d\x00f6rtbin|be\x015fbin|alt\x0131bin|yedibin|sekizbin|dokuzbin)"
+    [ regex "(bin|ikibin|üçbin|dörtbin|beşbin|altıbin|yedibin|sekizbin|dokuzbin)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
@@ -334,7 +334,7 @@ ruleNumeralsSuffixesKMG = Rule
   { name = "numbers suffixes (K, M, G)"
   , pattern =
     [ dimension Numeral
-    , regex "([kmgb])(?=[\\W\\$\x20ac]|$)"
+    , regex "([kmgb])(?=[\\W\\$€]|$)"
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral (NumeralData {TNumeral.value = v}):
@@ -352,11 +352,11 @@ rulePowersOfTen :: Rule
 rulePowersOfTen = Rule
   { name = "powers of tens"
   , pattern =
-    [ regex "(y(\x00fc)z|bin|milyon)"
+    [ regex "(y(ü)z|bin|milyon)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
-        "y\x00fcz" -> double 1e2 >>= withGrain 2 >>= withMultipliable
+        "yüz" -> double 1e2 >>= withGrain 2 >>= withMultipliable
         "bin"      -> double 1e3 >>= withGrain 3 >>= withMultipliable
         "milyon"   -> double 1e6 >>= withGrain 6 >>= withMultipliable
         _          -> Nothing
@@ -368,11 +368,11 @@ tenThousandsMap = HashMap.fromList
   [  ( "onbin", 10000)
    , ( "yirmibin", 20000)
    , ( "otuzbin", 30000)
-   , ( "k\x0131rkbin", 40000)
+   , ( "kırkbin", 40000)
    , ( "ellibin", 50000)
-   , ( "altm\x0131\x015fbin", 60000)
-   , ( "atm\x0131\x015fbin", 60000)
-   , ( "yetmi\x015fbin", 70000)
+   , ( "altmışbin", 60000)
+   , ( "atmışbin", 60000)
+   , ( "yetmişbin", 70000)
    , ( "seksenbin", 80000)
    , ( "doksanbin", 90000)
   ]
@@ -381,7 +381,7 @@ ruleInteger7 :: Rule
 ruleInteger7 = Rule
   { name = "integer 10000..90000"
   , pattern =
-    [ regex "(onbin|yirmibin|otuzbin|k\x0131rkbin|ellibin|atm\x0131\x015fbin|altm\x0131\x015fbin|yetmi\x015fbin|seksenbin|doksanbin)"
+    [ regex "(onbin|yirmibin|otuzbin|kırkbin|ellibin|atmışbin|altmışbin|yetmişbin|seksenbin|doksanbin)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
@@ -391,22 +391,22 @@ ruleInteger7 = Rule
 
 hundredThousandsMap :: HashMap Text Integer
 hundredThousandsMap = HashMap.fromList
-  [ ( "y\x00fczbin", 100000)
-  , ( "ikiy\x00fczbin", 200000)
-  , ( "\x00fc\x00e7y\x00fczbin", 300000)
-  , ( "d\x00f6rty\x00fczbin", 400000)
-  , ( "be\x015fy\x00fczbin", 500000)
-  , ( "alt\x0131y\x00fczbin", 600000)
-  , ( "yediy\x00fczbin", 700000)
-  , ( "sekizy\x00fczbin", 800000)
-  , ( "dokuzy\x00fczbin", 900000)
+  [ ( "yüzbin", 100000)
+  , ( "ikiyüzbin", 200000)
+  , ( "üçyüzbin", 300000)
+  , ( "dörtyüzbin", 400000)
+  , ( "beşyüzbin", 500000)
+  , ( "altıyüzbin", 600000)
+  , ( "yediyüzbin", 700000)
+  , ( "sekizyüzbin", 800000)
+  , ( "dokuzyüzbin", 900000)
   ]
 
 ruleInteger8 :: Rule
 ruleInteger8 = Rule
   { name = "integer 100000..900000"
   , pattern =
-    [ regex "(y\x00fczbin|ikiy\x00fczbin|\x00fc\x00e7y\x00fczbin|d\x00f6rty\x00fczbin|be\x015fy\x00fczbin|alt\x0131y\x00fczbin|yediy\x00fczbin|sekizy\x00fczbin|dokuzy\x00fczbin)"
+    [ regex "(yüzbin|ikiyüzbin|üçyüzbin|dörtyüzbin|beşyüzbin|altıyüzbin|yediyüzbin|sekizyüzbin|dokuzyüzbin)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
@@ -418,118 +418,118 @@ ruleHalf :: Rule
 ruleHalf = Rule
   { name = "half"
   , pattern =
-    [ regex "(yar\x0131m)"
+    [ regex "(yarım)"
     ]
   , prod = \_ -> double 0.5
   }
 
 integer9Map :: HashMap Text Double
 integer9Map = HashMap.fromList
-  [ ( "onbirbu\x00e7uk", 11.5)
-  , ( "onbibu\x00e7uk", 11.5)
-  , ( "onikibu\x00e7uk", 12.5)
-  , ( "on\x00fc\x00e7bu\x00e7uk", 13.5)
-  , ( "ond\x00f6rtbu\x00e7uk", 14.5)
-  , ( "onbe\x015fbu\x00e7uk", 15.5)
-  , ( "onalt\x0131bu\x00e7uk", 16.5)
-  , ( "onyedibu\x00e7uk", 17.5)
-  , ( "onsekizbu\x00e7uk", 18.5)
-  , ( "ondokuzbu\x00e7uk", 19.5)
-  , ( "yirmibibu\x00e7uk", 21.5)
-  , ( "yirmibirbu\x00e7uk", 21.5)
-  , ( "yirmiikibu\x00e7uk", 22.5)
-  , ( "yirmi\x00fc\x00e7bu\x00e7uk", 23.5)
-  , ( "yirmid\x00f6rtbu\x00e7uk", 24.5)
-  , ( "yirmibe\x015fbu\x00e7uk", 25.5)
-  , ( "yirmialt\x0131bu\x00e7uk", 26.5)
-  , ( "yirmiyedibu\x00e7uk", 27.5)
-  , ( "yirmisekizbu\x00e7uk", 28.5)
-  , ( "yirmidokuzbu\x00e7uk", 29.5)
-  , ( "otuzbibu\x00e7uk", 31.5)
-  , ( "otuzbirbu\x00e7uk", 31.5)
-  , ( "otuzikibu\x00e7uk", 32.5)
-  , ( "otuz\x00fc\x00e7bu\x00e7uk", 33.5)
-  , ( "otuzd\x00f6rtbu\x00e7uk", 34.5)
-  , ( "otuzbe\x015fbu\x00e7uk", 35.5)
-  , ( "otuzalt\x0131bu\x00e7uk", 36.5)
-  , ( "otuzyedibu\x00e7uk", 37.5)
-  , ( "otuzsekizbu\x00e7uk", 38.5)
-  , ( "otuzdokuzbu\x00e7uk", 39.5)
-  , ( "k\x0131rkbirbu\x00e7uk", 41.5)
-  , ( "k\x0131rkbibu\x00e7uk", 41.5)
-  , ( "k\x0131rkikibu\x00e7uk", 42.5)
-  , ( "k\x0131rk\x00fc\x00e7bu\x00e7uk", 43.5)
-  , ( "k\x0131rkd\x00f6rtbu\x00e7uk", 44.5)
-  , ( "k\x0131rkbe\x015fbu\x00e7uk", 45.5)
-  , ( "k\x0131rkalt\x0131bu\x00e7uk", 46.5)
-  , ( "k\x0131rkyedibu\x00e7uk", 47.5)
-  , ( "k\x0131rksekizbu\x00e7uk", 48.5)
-  , ( "k\x0131rkdokuzbu\x00e7uk", 49.5)
-  , ( "ellibibu\x00e7uk", 51.5)
-  , ( "ellibirbu\x00e7uk", 51.5)
-  , ( "elliikibu\x00e7uk", 52.5)
-  , ( "elli\x00fc\x00e7bu\x00e7uk", 53.5)
-  , ( "ellid\x00f6rtbu\x00e7uk", 54.5)
-  , ( "ellibe\x015fbu\x00e7uk", 55.5)
-  , ( "ellialt\x0131bu\x00e7uk", 56.5)
-  , ( "elliyedibu\x00e7uk", 57.5)
-  , ( "ellisekizbu\x00e7uk", 58.5)
-  , ( "ellidokuzbu\x00e7uk", 59.5)
-  , ( "altm\x0131\x015fbirbu\x00e7uk", 61.5)
-  , ( "atm\x0131\x015fbirbu\x00e7uk", 61.5)
-  , ( "altm\x0131\x015fikibu\x00e7uk", 62.5)
-  , ( "atm\x0131\x015fikibu\x00e7uk", 62.5)
-  , ( "atm\x0131\x015f\x00fc\x00e7bu\x00e7uk", 63.5)
-  , ( "altm\x0131\x015f\x00fc\x00e7bu\x00e7uk", 63.5)
-  , ( "altm\x0131\x015fd\x00f6rtbu\x00e7uk", 64.5)
-  , ( "atm\x0131\x015fd\x00f6rtbu\x00e7uk", 64.5)
-  , ( "altm\x0131\x015fbe\x015fbu\x00e7uk", 65.5)
-  , ( "atm\x0131\x015fbe\x015fbu\x00e7uk", 65.5)
-  , ( "altm\x0131\x015falt\x0131bu\x00e7uk", 66.5)
-  , ( "atm\x0131\x015falt\x0131bu\x00e7uk", 66.5)
-  , ( "atm\x0131\x015fyedibu\x00e7uk", 67.5)
-  , ( "altm\x0131\x015fyedibu\x00e7uk", 67.5)
-  , ( "altm\x0131\x015fsekizbu\x00e7uk", 68.5)
-  , ( "atm\x0131\x015fsekizbu\x00e7uk", 68.5)
-  , ( "altm\x0131\x015fdokuzbu\x00e7uk", 69.5)
-  , ( "atm\x0131\x015fdokuzbu\x00e7uk", 69.5)
-  , ( "yetmi\x015fbibu\x00e7uk", 71.5)
-  , ( "yetmi\x015fbirbu\x00e7uk", 71.5)
-  , ( "yetmi\x015fikibu\x00e7uk", 72.5)
-  , ( "yetmi\x015f\x00fc\x00e7bu\x00e7uk", 73.5)
-  , ( "yetmi\x015fd\x00f6rtbu\x00e7uk", 74.5)
-  , ( "yetmi\x015fbe\x015fbu\x00e7uk", 75.5)
-  , ( "yetmi\x015falt\x0131bu\x00e7uk", 76.5)
-  , ( "yetmi\x015fyedibu\x00e7uk", 77.5)
-  , ( "yetmi\x015fsekizbu\x00e7uk", 78.5)
-  , ( "yetmi\x015fdokuzbu\x00e7uk", 79.5)
-  , ( "seksenbibu\x00e7uk", 81.5)
-  , ( "seksenbirbu\x00e7uk", 81.5)
-  , ( "seksenikibu\x00e7uk", 82.5)
-  , ( "seksen\x00fc\x00e7bu\x00e7uk", 83.5)
-  , ( "seksend\x00f6rtbu\x00e7uk", 84.5)
-  , ( "seksenbe\x015fbu\x00e7uk", 85.5)
-  , ( "seksenalt\x0131bu\x00e7uk", 86.5)
-  , ( "seksenyedibu\x00e7uk", 87.5)
-  , ( "seksensekizbu\x00e7uk", 88.5)
-  , ( "seksendokuzbu\x00e7uk", 89.5)
-  , ( "doksanbirbu\x00e7uk", 91.5)
-  , ( "doksanbibu\x00e7uk", 91.5)
-  , ( "doksanikibu\x00e7uk", 92.5)
-  , ( "doksan\x00fc\x00e7bu\x00e7uk", 93.5)
-  , ( "doksand\x00f6rtbu\x00e7uk", 94.5)
-  , ( "doksanbe\x015fbu\x00e7uk", 95.5)
-  , ( "doksanalt\x0131bu\x00e7uk", 96.5)
-  , ( "doksanyedibu\x00e7uk", 97.5)
-  , ( "doksansekizbu\x00e7uk", 98.5)
-  , ( "doksandokuzbu\x00e7uk", 99.5)
+  [ ( "onbirbuçuk", 11.5)
+  , ( "onbibuçuk", 11.5)
+  , ( "onikibuçuk", 12.5)
+  , ( "onüçbuçuk", 13.5)
+  , ( "ondörtbuçuk", 14.5)
+  , ( "onbeşbuçuk", 15.5)
+  , ( "onaltıbuçuk", 16.5)
+  , ( "onyedibuçuk", 17.5)
+  , ( "onsekizbuçuk", 18.5)
+  , ( "ondokuzbuçuk", 19.5)
+  , ( "yirmibibuçuk", 21.5)
+  , ( "yirmibirbuçuk", 21.5)
+  , ( "yirmiikibuçuk", 22.5)
+  , ( "yirmiüçbuçuk", 23.5)
+  , ( "yirmidörtbuçuk", 24.5)
+  , ( "yirmibeşbuçuk", 25.5)
+  , ( "yirmialtıbuçuk", 26.5)
+  , ( "yirmiyedibuçuk", 27.5)
+  , ( "yirmisekizbuçuk", 28.5)
+  , ( "yirmidokuzbuçuk", 29.5)
+  , ( "otuzbibuçuk", 31.5)
+  , ( "otuzbirbuçuk", 31.5)
+  , ( "otuzikibuçuk", 32.5)
+  , ( "otuzüçbuçuk", 33.5)
+  , ( "otuzdörtbuçuk", 34.5)
+  , ( "otuzbeşbuçuk", 35.5)
+  , ( "otuzaltıbuçuk", 36.5)
+  , ( "otuzyedibuçuk", 37.5)
+  , ( "otuzsekizbuçuk", 38.5)
+  , ( "otuzdokuzbuçuk", 39.5)
+  , ( "kırkbirbuçuk", 41.5)
+  , ( "kırkbibuçuk", 41.5)
+  , ( "kırkikibuçuk", 42.5)
+  , ( "kırküçbuçuk", 43.5)
+  , ( "kırkdörtbuçuk", 44.5)
+  , ( "kırkbeşbuçuk", 45.5)
+  , ( "kırkaltıbuçuk", 46.5)
+  , ( "kırkyedibuçuk", 47.5)
+  , ( "kırksekizbuçuk", 48.5)
+  , ( "kırkdokuzbuçuk", 49.5)
+  , ( "ellibibuçuk", 51.5)
+  , ( "ellibirbuçuk", 51.5)
+  , ( "elliikibuçuk", 52.5)
+  , ( "elliüçbuçuk", 53.5)
+  , ( "ellidörtbuçuk", 54.5)
+  , ( "ellibeşbuçuk", 55.5)
+  , ( "ellialtıbuçuk", 56.5)
+  , ( "elliyedibuçuk", 57.5)
+  , ( "ellisekizbuçuk", 58.5)
+  , ( "ellidokuzbuçuk", 59.5)
+  , ( "altmışbirbuçuk", 61.5)
+  , ( "atmışbirbuçuk", 61.5)
+  , ( "altmışikibuçuk", 62.5)
+  , ( "atmışikibuçuk", 62.5)
+  , ( "atmışüçbuçuk", 63.5)
+  , ( "altmışüçbuçuk", 63.5)
+  , ( "altmışdörtbuçuk", 64.5)
+  , ( "atmışdörtbuçuk", 64.5)
+  , ( "altmışbeşbuçuk", 65.5)
+  , ( "atmışbeşbuçuk", 65.5)
+  , ( "altmışaltıbuçuk", 66.5)
+  , ( "atmışaltıbuçuk", 66.5)
+  , ( "atmışyedibuçuk", 67.5)
+  , ( "altmışyedibuçuk", 67.5)
+  , ( "altmışsekizbuçuk", 68.5)
+  , ( "atmışsekizbuçuk", 68.5)
+  , ( "altmışdokuzbuçuk", 69.5)
+  , ( "atmışdokuzbuçuk", 69.5)
+  , ( "yetmişbibuçuk", 71.5)
+  , ( "yetmişbirbuçuk", 71.5)
+  , ( "yetmişikibuçuk", 72.5)
+  , ( "yetmişüçbuçuk", 73.5)
+  , ( "yetmişdörtbuçuk", 74.5)
+  , ( "yetmişbeşbuçuk", 75.5)
+  , ( "yetmişaltıbuçuk", 76.5)
+  , ( "yetmişyedibuçuk", 77.5)
+  , ( "yetmişsekizbuçuk", 78.5)
+  , ( "yetmişdokuzbuçuk", 79.5)
+  , ( "seksenbibuçuk", 81.5)
+  , ( "seksenbirbuçuk", 81.5)
+  , ( "seksenikibuçuk", 82.5)
+  , ( "seksenüçbuçuk", 83.5)
+  , ( "seksendörtbuçuk", 84.5)
+  , ( "seksenbeşbuçuk", 85.5)
+  , ( "seksenaltıbuçuk", 86.5)
+  , ( "seksenyedibuçuk", 87.5)
+  , ( "seksensekizbuçuk", 88.5)
+  , ( "seksendokuzbuçuk", 89.5)
+  , ( "doksanbirbuçuk", 91.5)
+  , ( "doksanbibuçuk", 91.5)
+  , ( "doksanikibuçuk", 92.5)
+  , ( "doksanüçbuçuk", 93.5)
+  , ( "doksandörtbuçuk", 94.5)
+  , ( "doksanbeşbuçuk", 95.5)
+  , ( "doksanaltıbuçuk", 96.5)
+  , ( "doksanyedibuçuk", 97.5)
+  , ( "doksansekizbuçuk", 98.5)
+  , ( "doksandokuzbuçuk", 99.5)
   ]
 
 ruleInteger9 :: Rule
 ruleInteger9 = Rule
   { name = "integer 11..19 21..29 31..39 41..49 51..59 61..69 71..79 81..89 91..99"
   , pattern =
-    [ regex "((on|yirmi|otuz|k\x0131rk|elli|atm\x0131\x015f|altm\x0131\x015f|yetmi\x015f|seksen|doksan)(bir|bi|iki|\x00fc\x00e7|d\x00f6rt|be\x015f|alt\x0131|yedi|sekiz|dokuz)(bu\x00e7uk))"
+    [ regex "((on|yirmi|otuz|kırk|elli|atmış|altmış|yetmiş|seksen|doksan)(bir|bi|iki|üç|dört|beş|altı|yedi|sekiz|dokuz)(buçuk))"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
@@ -541,7 +541,7 @@ ruleDozen :: Rule
 ruleDozen = Rule
   { name = "dozen"
   , pattern =
-    [ regex "d\x00fczine"
+    [ regex "düzine"
     ]
   , prod = \_ -> integer 12 >>= withGrain 1 >>= withMultipliable
   }
@@ -550,16 +550,16 @@ oneToNineMap :: HashMap Text Integer
 oneToNineMap = HashMap.fromList
   [ ( "s\305f\305r", 0)
   , ( "yok", 0)
-  , ( "hi\x00e7", 0)
+  , ( "hiç", 0)
   , ( "bir", 1)
   , ( "bi", 1)
   , ( "yek", 1)
   , ( "tek", 1)
   , ( "iki", 2)
-  , ( "\x00fc\x00e7", 3)
-  , ( "d\x00f6rt", 4)
-  , ( "be\x015f", 5)
-  , ( "alt\x0131", 6)
+  , ( "üç", 3)
+  , ( "dört", 4)
+  , ( "beş", 5)
+  , ( "altı", 6)
   , ( "yedi", 7)
   , ( "sekiz", 8)
   , ( "dokuz", 9)
@@ -569,7 +569,7 @@ ruleInteger :: Rule
 ruleInteger = Rule
   { name = "integer (0..9)"
   , pattern =
-    [ regex "(yok|hi(\x00e7)|s(\x0131)f(\x0131)r|bir?|[ty]ek|iki|(\x00fc)(\x00e7)|d(\x00f6)rt|be(\x015f)|alt(\x0131)|yedi|sekiz|dokuz)"
+    [ regex "(yok|hi(ç)|s(ı)f(ı)r|bir?|[ty]ek|iki|(ü)(ç)|d(ö)rt|be(ş)|alt(ı)|yedi|sekiz|dokuz)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
@@ -579,23 +579,23 @@ ruleInteger = Rule
 
 numeralSuffixesHalfsuffixText2Map :: HashMap Text Double
 numeralSuffixesHalfsuffixText2Map = HashMap.fromList
-  [ ( "onbu\x00e7uk", 10.5)
-  , ( "yirmibu\x00e7uk", 20.5)
-  , ( "otuzbu\x00e7uk", 30.5)
-  , ( "k\x0131rkbu\x00e7uk", 40.5)
-  , ( "ellibu\x00e7uk", 50.5)
-  , ( "atm\x0131\x015fbu\x00e7uk", 60.5)
-  , ( "altm\x0131\x015fbu\x00e7uk", 60.5)
-  , ( "yetmi\x015fbu\x00e7uk", 70.5)
-  , ( "seksenbu\x00e7uk", 80.5)
-  , ( "doksanbu\x00e7uk", 90.5)
+  [ ( "onbuçuk", 10.5)
+  , ( "yirmibuçuk", 20.5)
+  , ( "otuzbuçuk", 30.5)
+  , ( "kırkbuçuk", 40.5)
+  , ( "ellibuçuk", 50.5)
+  , ( "atmışbuçuk", 60.5)
+  , ( "altmışbuçuk", 60.5)
+  , ( "yetmişbuçuk", 70.5)
+  , ( "seksenbuçuk", 80.5)
+  , ( "doksanbuçuk", 90.5)
   ]
 
 ruleNumeralSuffixesHalfsuffixText2 :: Rule
 ruleNumeralSuffixesHalfsuffixText2 = Rule
   { name = "number suffixes (half-suffix text) (10..90)"
   , pattern =
-    [ regex "((on|yirmi|otuz|k\x0131rk|elli|atm\x0131\x015f|altm\x0131\x015f|yetmi\x015f|seksen|doksan)(bu\x00e7uk))"
+    [ regex "((on|yirmi|otuz|kırk|elli|atmış|altmış|yetmiş|seksen|doksan)(buçuk))"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
@@ -609,7 +609,7 @@ ruleNumeralSuffixesHalfSuffix = Rule
   { name = "number suffixes (half-suffix)"
   , pattern =
     [ dimension Numeral
-    , regex "(bu\x00e7uk)(?=[\\W\\$\x20ac]|$)"
+    , regex "(buçuk)(?=[\\W\\$€]|$)"
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral (NumeralData {TNumeral.value = v}):_) -> double $ v + 0.5
@@ -644,11 +644,11 @@ tensMap = HashMap.fromList
   [ ( "on", 10)
   , ( "yirmi", 20)
   , ( "otuz", 30)
-  , ( "k\x0131rk", 40)
+  , ( "kırk", 40)
   , ( "elli", 50)
-  , ( "altm\x0131\x015f", 60)
-  , ( "atm\x0131\x015f", 60)
-  , ( "yetmi\x015f", 70)
+  , ( "altmış", 60)
+  , ( "atmış", 60)
+  , ( "yetmiş", 70)
   , ( "seksen", 80)
   , ( "doksan", 90)
   ]
@@ -657,7 +657,7 @@ ruleInteger2 :: Rule
 ruleInteger2 = Rule
   { name = "integer (10..90)"
   , pattern =
-    [ regex "(on|yirmi|otuz|k\x0131rk|elli|atm\x0131\x015f|altm\x0131\x015f|yetmi\x015f|seksen|doksan)"
+    [ regex "(on|yirmi|otuz|kırk|elli|atmış|altmış|yetmiş|seksen|doksan)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
@@ -669,7 +669,7 @@ ruleQuarter :: Rule
 ruleQuarter = Rule
   { name = "quarter"
   , pattern =
-    [ regex "(\x00e7eyrek)"
+    [ regex "(çeyrek)"
     ]
   , prod = \_ -> double 0.25
   }
@@ -679,7 +679,7 @@ ruleNumeralDotNumeral = Rule
   { name = "number dot number"
   , pattern =
     [ dimension Numeral
-    , regex "nokta|virg\x00fcl"
+    , regex "nokta|virgül"
     , numberWith TNumeral.grain isNothing
     ]
   , prod = \tokens -> case tokens of

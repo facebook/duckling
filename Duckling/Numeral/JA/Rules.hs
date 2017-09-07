@@ -27,7 +27,7 @@ ruleInteger5 :: Rule
 ruleInteger5 = Rule
   { name = "integer (100)"
   , pattern =
-    [ regex "\x767e"
+    [ regex "百"
     ]
   , prod = \_ -> integer 100
   }
@@ -36,7 +36,7 @@ ruleNumeralsPrefixWithNegativeOrMinus :: Rule
 ruleNumeralsPrefixWithNegativeOrMinus = Rule
   { name = "numbers prefix with -, negative or minus"
   , pattern =
-    [ regex "-|\x30de\x30a4\x30ca\x30b9\\s?|\x8ca0\\s?"
+    [ regex "-|マイナス\\s?|負\\s?"
     , dimension Numeral
     ]
   , prod = \tokens -> case tokens of
@@ -48,22 +48,22 @@ ruleInteger17 :: Rule
 ruleInteger17 = Rule
   { name = "integer (0..10)"
   , pattern =
-    [ regex "(\x30bc\x30ed|\x96f6|\x4e00|\x4e8c|\x4e09|\x56db|\x4e94|\x516d|\x4e03|\x516b|\x4e5d|\x5341)"
+    [ regex "(ゼロ|零|一|二|三|四|五|六|七|八|九|十)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> case match of
-        "\x30bc\x30ed" -> integer 0
-        "\x96f6" -> integer 0
-        "\x4e00" -> integer 1
-        "\x4e8c" -> integer 2
-        "\x4e09" -> integer 3
-        "\x56db" -> integer 4
-        "\x4e94" -> integer 5
-        "\x516d" -> integer 6
-        "\x4e03" -> integer 7
-        "\x516b" -> integer 8
-        "\x4e5d" -> integer 9
-        "\x5341" -> integer 10
+        "ゼロ" -> integer 0
+        "零" -> integer 0
+        "一" -> integer 1
+        "二" -> integer 2
+        "三" -> integer 3
+        "四" -> integer 4
+        "五" -> integer 5
+        "六" -> integer 6
+        "七" -> integer 7
+        "八" -> integer 8
+        "九" -> integer 9
+        "十" -> integer 10
         _ -> Nothing
       _ -> Nothing
   }
@@ -85,7 +85,7 @@ ruleInteger10 :: Rule
 ruleInteger10 = Rule
   { name = "integer (1000..1999)"
   , pattern =
-    [ regex "\x5343"
+    [ regex "千"
     , numberBetween 1 1000
     ]
   , prod = \tokens -> case tokens of
@@ -111,7 +111,7 @@ ruleInteger15 = Rule
   { name = "integer (20000..90000)"
   , pattern =
     [ numberBetween 2 10
-    , regex "\x4e07"
+    , regex "万"
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral (NumeralData {TNumeral.value = v}):_) -> double $ v * 10000
@@ -134,7 +134,7 @@ ruleNumeral = Rule
   { name = "<number>个"
   , pattern =
     [ dimension Numeral
-    , regex "\x4e2a"
+    , regex "个"
     ]
   , prod = \tokens -> case tokens of
       (token:_) -> Just token
@@ -146,7 +146,7 @@ ruleInteger3 = Rule
   { name = "integer (20..90)"
   , pattern =
     [ numberBetween 2 10
-    , regex "\x5341"
+    , regex "十"
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral (NumeralData {TNumeral.value = v}):_) -> double $ v * 10
@@ -157,7 +157,7 @@ ruleInteger13 :: Rule
 ruleInteger13 = Rule
   { name = "integer (10000)"
   , pattern =
-    [ regex "\x4e07"
+    [ regex "万"
     ]
   , prod = \_ -> integer 10000
   }
@@ -166,7 +166,7 @@ ruleInteger6 :: Rule
 ruleInteger6 = Rule
   { name = "integer (100..199)"
   , pattern =
-    [ regex "\x767e"
+    [ regex "百"
     , numberBetween 1 100
     ]
   , prod = \tokens -> case tokens of
@@ -193,15 +193,15 @@ ruleNumeralsSuffixesKMG = Rule
   { name = "numbers suffixes (K, M, G, 千, 万)"
   , pattern =
     [ dimension Numeral
-    , regex "(k|m|g|\x5343|\x4e07)"
+    , regex "(k|m|g|千|万)"
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral (NumeralData {TNumeral.value = v}):
        Token RegexMatch (GroupMatch (match:_)):
        _) -> case Text.toLower match of
           "k"      -> double $ v * 1e3
-          "\x5343" -> double $ v * 1e3
-          "\x4e07" -> double $ v * 1e4
+          "千" -> double $ v * 1e3
+          "万" -> double $ v * 1e4
           "m"      -> double $ v * 1e6
           "g"      -> double $ v * 1e9
           _ -> Nothing
@@ -213,7 +213,7 @@ ruleInteger7 = Rule
   { name = "integer (200..900)"
   , pattern =
     [ numberBetween 2 10
-    , regex "\x767e"
+    , regex "百"
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral (NumeralData {TNumeral.value = v}):_) -> double $ v * 100
@@ -224,7 +224,7 @@ ruleInteger14 :: Rule
 ruleInteger14 = Rule
   { name = "integer (10000..19999)"
   , pattern =
-    [ regex "\x4e07"
+    [ regex "万"
     , numberBetween 1 10000
     ]
   , prod = \tokens -> case tokens of
@@ -265,7 +265,7 @@ ruleInteger9 :: Rule
 ruleInteger9 = Rule
   { name = "integer (1000)"
   , pattern =
-    [ regex "\x5343"
+    [ regex "千"
     ]
   , prod = \_ -> integer 1000
   }
@@ -274,22 +274,22 @@ ruleInteger :: Rule
 ruleInteger = Rule
   { name = "integer (0..10)"
   , pattern =
-    [ regex "\x30bc\x30ed|\x96f6|\x4e00|\x4e8c|\x4e09|\x56db|\x4e94|\x516d|\x4e03|\x516b|\x4e5d|\x5341"
+    [ regex "ゼロ|零|一|二|三|四|五|六|七|八|九|十"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> case match of
-        "\x96f6" -> integer 0
-        "\x30bc\x30ed" -> integer 0
-        "\x4e00" -> integer 1
-        "\x4e8c" -> integer 2
-        "\x4e09" -> integer 3
-        "\x56db" -> integer 4
-        "\x4e94" -> integer 5
-        "\x516d" -> integer 6
-        "\x4e03" -> integer 7
-        "\x516b" -> integer 8
-        "\x4e5d" -> integer 9
-        "\x5341" -> integer 10
+        "零" -> integer 0
+        "ゼロ" -> integer 0
+        "一" -> integer 1
+        "二" -> integer 2
+        "三" -> integer 3
+        "四" -> integer 4
+        "五" -> integer 5
+        "六" -> integer 6
+        "七" -> integer 7
+        "八" -> integer 8
+        "九" -> integer 9
+        "十" -> integer 10
         _ -> Nothing
       _ -> Nothing
   }
@@ -312,7 +312,7 @@ ruleInteger2 :: Rule
 ruleInteger2 = Rule
   { name = "integer (11..19)"
   , pattern =
-    [ regex "\x5341"
+    [ regex "十"
     , numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
@@ -325,7 +325,7 @@ ruleInteger11 = Rule
   { name = "integer (2000..9000)"
   , pattern =
     [ numberBetween 2 10
-    , regex "\x5343"
+    , regex "千"
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral (NumeralData {TNumeral.value = v}):_) -> double $ v * 1000

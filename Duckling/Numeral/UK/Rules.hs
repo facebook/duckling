@@ -29,21 +29,21 @@ import Duckling.Types
 
 twentyNinetyMap :: HashMap Text Integer
 twentyNinetyMap = HashMap.fromList
-  [ ( "\x0434\x0432\x0430\x0434\x0446\x044f\x0442\x044c"             , 20 )
-  , ( "\x0442\x0440\x0438\x0434\x0446\x044f\x0442\x044c"             , 30 )
-  , ( "\x0441\x043e\x0440\x043e\x043a"                               , 40 )
-  , ( "\x043f\x2018\x044f\x0442\x0434\x0435\x0441\x044f\x0442"       , 50 )
-  , ( "\x0448\x0456\x0441\x0442\x0434\x0435\x0441\x044f\x0442"       , 60 )
-  , ( "\x0441\x0456\x043c\x0434\x0435\x0441\x044f\x0442"             , 70 )
-  , ( "\x0434\x0435\x0432\x2018\x044f\x043d\x043e\x0441\x0442\x043e" , 90 )
-  , ( "\x0432\x0456\x0441\x0456\x043c\x0434\x0435\x0441\x044f\x0442" , 80 )
+  [ ( "двадцять"             , 20 )
+  , ( "тридцять"             , 30 )
+  , ( "сорок"                               , 40 )
+  , ( "п‘ятдесят"       , 50 )
+  , ( "шістдесят"       , 60 )
+  , ( "сімдесят"             , 70 )
+  , ( "дев‘яносто" , 90 )
+  , ( "вісімдесят" , 80 )
   ]
 
 ruleInteger5 :: Rule
 ruleInteger5 = Rule
   { name = "integer (20..90)"
   , pattern =
-    [ regex "(\x0434\x0432\x0430\x0434\x0446\x044f\x0442\x044c|\x0442\x0440\x0438\x0434\x0446\x044f\x0442\x044c|\x0441\x043e\x0440\x043e\x043a|\x043f\x2018\x044f\x0442\x0434\x0435\x0441\x044f\x0442|\x0448\x0456\x0441\x0442\x0434\x0435\x0441\x044f\x0442|\x0441\x0456\x043c\x0434\x0435\x0441\x044f\x0442|\x0432\x0456\x0441\x0456\x043c\x0434\x0435\x0441\x044f\x0442|\x0434\x0435\x0432\x2018\x044f\x043d\x043e\x0441\x0442\x043e)"
+    [ regex "(двадцять|тридцять|сорок|п‘ятдесят|шістдесят|сімдесят|вісімдесят|дев‘яносто)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
@@ -91,28 +91,28 @@ ruleInteger3 :: Rule
 ruleInteger3 = Rule
   { name = "integer 2"
   , pattern =
-    [ regex "(\x0434\x0432\x0430|\x0434\x0432\x0456|\x0434\x0432\x043e\x0454|\x043f\x0430\x0440\x0430|\x043f\x0430\x0440\x0443|\x043f\x0430\x0440\x043e\x0447\x043a\x0443|\x043f\x0430\x0440\x043e\x0447\x043a\x0430)"
+    [ regex "(два|дві|двоє|пара|пару|парочку|парочка)"
     ]
   , prod = \_ -> integer 2
   }
 
 hundredsMap :: HashMap Text Integer
 hundredsMap = HashMap.fromList
-  [ ( "\x0441\x0442\x043e"                                     , 100 )
-  , ( "\x0434\x0432\x0456\x0441\x0442\x0456"                   , 200 )
-  , ( "\x0442\x0440\x0438\x0441\x0442\x0430"                   , 300 )
-  , ( "\x0447\x043e\x0442\x0438\x0440\x0438\x0441\x0442\x0430" , 400 )
-  , ( "\x043f\x2018\x044f\x0442\x0441\x043e\x0442"             , 500 )
-  , ( "\x0448\x0456\x0441\x0442\x0441\x043e\x0442"             , 600 )
-  , ( "\x0441\x0456\x043c\x0441\x043e\x0442"                   , 700 )
-  , ( "\x0432\x0456\x0441\x0456\x043c\x0441\x043e\x0442"       , 800 )
-  , ( "\x0434\x0435\x0432\x2018\x044f\x0442\x0441\x043e\x0442" , 900 )
+  [ ( "сто"                                     , 100 )
+  , ( "двісті"                   , 200 )
+  , ( "триста"                   , 300 )
+  , ( "чотириста" , 400 )
+  , ( "п‘ятсот"             , 500 )
+  , ( "шістсот"             , 600 )
+  , ( "сімсот"                   , 700 )
+  , ( "вісімсот"       , 800 )
+  , ( "дев‘ятсот" , 900 )
   ]
 ruleInteger6 :: Rule
 ruleInteger6 = Rule
   { name = "integer (100..900)"
   , pattern =
-    [ regex "(\x0441\x0442\x043e|\x0434\x0432\x0456\x0441\x0442\x0456|\x0442\x0440\x0438\x0441\x0442\x0430|\x0447\x043e\x0442\x0438\x0440\x0438\x0441\x0442\x0430|\x043f\x2018\x044f\x0442\x0441\x043e\x0442|\x0448\x0456\x0441\x0442\x0441\x043e\x0442|\x0441\x0456\x043c\x0441\x043e\x0442|\x0432\x0456\x0441\x0456\x043c\x0441\x043e\x0442|\x0434\x0435\x0432\x2018\x044f\x0442\x0441\x043e\x0442)"
+    [ regex "(сто|двісті|триста|чотириста|п‘ятсот|шістсот|сімсот|вісімсот|дев‘ятсот)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
@@ -124,7 +124,7 @@ ruleNumeralsPrefixWithMinus :: Rule
 ruleNumeralsPrefixWithMinus = Rule
   { name = "numbers prefix with -, minus"
   , pattern =
-    [ regex "-|\x043c\x0456\x043d\x0443\x0441\\s?"
+    [ regex "-|мінус\\s?"
     , dimension Numeral
     ]
   , prod = \tokens -> case tokens of
@@ -137,18 +137,18 @@ ruleNumeralsSuffixesKMG = Rule
   { name = "numbers suffixes (K, M, G)"
   , pattern =
     [ dimension Numeral
-    , regex "((\x043a|\x043c|\x0433)|(\x041a|\x041c|\x0413))(?=[\\W\\$\x20ac]|$)"
+    , regex "((к|м|г)|(К|М|Г))(?=[\\W\\$€]|$)"
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral (NumeralData {TNumeral.value = v}):
        Token RegexMatch (GroupMatch (match:_)):
        _) -> case Text.toLower match of
-         "\x043a" -> double $ v * 1e3
-         "\x041a" -> double $ v * 1e3
-         "\x043c" -> double $ v * 1e6
-         "\x041c" -> double $ v * 1e6
-         "\x0433" -> double $ v * 1e9
-         "\x0413" -> double $ v * 1e9
+         "к" -> double $ v * 1e3
+         "К" -> double $ v * 1e3
+         "м" -> double $ v * 1e6
+         "М" -> double $ v * 1e6
+         "г" -> double $ v * 1e9
+         "Г" -> double $ v * 1e9
          _   -> Nothing
       _ -> Nothing
   }
@@ -185,36 +185,36 @@ ruleInteger :: Rule
 ruleInteger = Rule
   { name = "integer 0"
   , pattern =
-    [ regex "(\x043d\x0443\x043b\x044c)"
+    [ regex "(нуль)"
     ]
   , prod = \_ -> integer 0
   }
 
 threeNineteenMap :: HashMap Text Integer
 threeNineteenMap = HashMap.fromList
-  [ ( "\x0442\x0440\x0438"                                           , 3 )
-  , ( "\x0447\x043e\x0442\x0438\x0440\x0438"                         , 4 )
-  , ( "\x043f\x2018\x044f\x0442\x044c"                               , 5 )
-  , ( "\x0448\x0456\x0441\x0442\x044c"                               , 6 )
-  , ( "\x0441\x0456\x043c"                                           , 7 )
-  , ( "\x0432\x0456\x0441\x0456\x043c"                               , 8 )
-  , ( "\x0434\x0435\x0432\x2018\x044f\x0442\x044c"                   , 9 )
-  , ( "\x0434\x0435\x0441\x044f\x0442\x044c"                         , 10 )
-  , ( "\x043e\x0434\x0438\x043d\x0430\x0434\x0446\x044f\x0442\x044c" , 11 )
-  , ( "\x0434\x0432\x0430\x043d\x0430\x0434\x0446\x044f\x0442\x044c" , 12 )
-  , ( "\x0442\x0440\x0438\x043d\x0430\x0434\x0446\x044f\x0442\x044c" , 13 )
-  , ( "\x0447\x043e\x0442\x0438\x0440\x043d\x0430\x0434\x0446\x044f\x0442\x044c" , 14 )
-  , ( "\x043f\x2018\x044f\x0442\x043d\x0430\x0434\x0446\x044f\x0442\x044c"       , 15 )
-  , ( "\x0448\x0456\x0441\x0442\x043d\x0430\x0434\x0446\x044f\x0442\x044c"       , 16 )
-  , ( "\x0441\x0456\x043c\x043d\x0430\x0434\x0446\x044f\x0442\x044c"             , 17 )
-  , ( "\x0432\x0456\x0441\x0456\x043c\x043d\x0430\x0434\x0446\x044f\x0442\x044c" , 18 )
-  , ( "\x0434\x0435\x0432\x2018\x044f\x0442\x043d\x0430\x0434\x0446\x044f\x0442\x044c" , 19 )
+  [ ( "три"                                           , 3 )
+  , ( "чотири"                         , 4 )
+  , ( "п‘ять"                               , 5 )
+  , ( "шість"                               , 6 )
+  , ( "сім"                                           , 7 )
+  , ( "вісім"                               , 8 )
+  , ( "дев‘ять"                   , 9 )
+  , ( "десять"                         , 10 )
+  , ( "одинадцять" , 11 )
+  , ( "дванадцять" , 12 )
+  , ( "тринадцять" , 13 )
+  , ( "чотирнадцять" , 14 )
+  , ( "п‘ятнадцять"       , 15 )
+  , ( "шістнадцять"       , 16 )
+  , ( "сімнадцять"             , 17 )
+  , ( "вісімнадцять" , 18 )
+  , ( "дев‘ятнадцять" , 19 )
   ]
 ruleInteger4 :: Rule
 ruleInteger4 = Rule
   { name = "integer (3..19)"
   , pattern =
-    [ regex "(\x0442\x0440\x0438|\x0447\x043e\x0442\x0438\x0440\x043d\x0430\x0434\x0446\x044f\x0442\x044c|\x0447\x043e\x0442\x0438\x0440\x0438|\x043f\x2018\x044f\x0442\x043d\x0430\x0434\x0446\x044f\x0442\x044c|\x043f\x2018\x044f\x0442\x044c|\x0448\x0456\x0441\x0442\x043d\x0430\x0434\x0446\x044f\x0442\x044c|\x0448\x0456\x0441\x0442\x044c|\x0441\x0456\x043c\x043d\x0430\x0434\x0446\x044f\x0442\x044c|\x0441\x0456\x043c|\x0432\x0456\x0441\x0456\x043c\x043d\x0430\x0434\x0446\x044f\x0442\x044c|\x0432\x0456\x0441\x0456\x043c|\x0434\x0435\x0432\x2018\x044f\x0442\x043d\x0430\x0434\x0446\x044f\x0442\x044c|\x0434\x0435\x0432\x2018\x044f\x0442\x044c|\x0434\x0435\x0441\x044f\x0442\x044c|\x043e\x0434\x0438\x043d\x0430\x0434\x0446\x044f\x0442\x044c|\x0434\x0432\x0430\x043d\x0430\x0434\x0446\x044f\x0442\x044c|\x0442\x0440\x0438\x043d\x0430\x0434\x0446\x044f\x0442\x044c)"
+    [ regex "(три|чотирнадцять|чотири|п‘ятнадцять|п‘ять|шістнадцять|шість|сімнадцять|сім|вісімнадцять|вісім|дев‘ятнадцять|дев‘ять|десять|одинадцять|дванадцять|тринадцять)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
@@ -226,7 +226,7 @@ ruleInteger2 :: Rule
 ruleInteger2 = Rule
   { name = "integer 1"
   , pattern =
-    [ regex "(\x043e\x0434\x0438\x043d|\x043e\x0434\x043d\x0430|\x043e\x0434\x043d\x0443|\x043e\x0434\x043d\x0435|\x043e\x0434\x043d\x043e\x0433\x043e)"
+    [ regex "(один|одна|одну|одне|одного)"
     ]
   , prod = \_ -> integer 1
   }
@@ -236,7 +236,7 @@ ruleNumeralDotNumeral = Rule
   { name = "number dot number"
   , pattern =
     [ dimension Numeral
-    , regex "\x043a\x0440\x0430\x043f\x043a\x0430"
+    , regex "крапка"
     , numberWith TNumeral.grain isNothing
     ]
   , prod = \tokens -> case tokens of

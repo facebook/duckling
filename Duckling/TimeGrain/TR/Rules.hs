@@ -24,7 +24,7 @@ grains :: [(Text, String, TG.Grain)]
 grains = [ ("saniye (grain)",     "sa?n(iye)?",           TG.Second)
          , ("dakika (grain)",     "da?k(ika)?",           TG.Minute)
          , ("saat (grain)",       "sa(at)?",              TG.Hour)
-         , ("gün (grain)",        "g\x00fcn",             TG.Day)
+         , ("gün (grain)",        "gün",             TG.Day)
          , ("hafta (grain)",      "hafta",                TG.Week)
          , ("ay (grain)",         "ay",                   TG.Month)
          , ("çeyrek yıl (grain)", "\231eyrek y\305l",     TG.Quarter)

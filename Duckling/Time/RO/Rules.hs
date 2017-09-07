@@ -39,7 +39,7 @@ ruleDupamiaza :: Rule
 ruleDupamiaza = Rule
   { name = "dupamiaza"
   , pattern =
-    [ regex "dupamiaz(a|\x0103)|dup(a|\x0103) amiaz(a|\x0103)"
+    [ regex "dupamiaz(a|ă)|dup(a|ă) amiaz(a|ă)"
     ]
   , prod = \_ -> Token Time . mkLatent . partOfDay <$>
       interval TTime.Open (hour False 12) (hour False 19)
@@ -49,7 +49,7 @@ ruleValentinesDay :: Rule
 ruleValentinesDay = Rule
   { name = "valentine's day"
   , pattern =
-    [ regex "sf\\.?((a|\x00e2)ntul)? Valentin"
+    [ regex "sf\\.?((a|â)ntul)? Valentin"
     ]
   , prod = \_ -> tt $ monthDay 2 14
   }
@@ -94,7 +94,7 @@ ruleInNamedmonth :: Rule
 ruleInNamedmonth = Rule
   { name = "in <named-month>"
   , pattern =
-    [ regex "(i|\x00ee)n"
+    [ regex "(i|î)n"
     , Predicate isAMonth
     ]
   , prod = \tokens -> case tokens of
@@ -121,7 +121,7 @@ ruleIntroNamedday :: Rule
 ruleIntroNamedday = Rule
   { name = "intr-o <named-day>"
   , pattern =
-    [ regex "((i|\x00ee)n(tr)?(\\-?o)?)"
+    [ regex "((i|î)n(tr)?(\\-?o)?)"
     , Predicate isADayOfWeek
     ]
   , prod = \tokens -> case tokens of
@@ -156,7 +156,7 @@ ruleInDuration :: Rule
 ruleInDuration = Rule
   { name = "in <duration>"
   , pattern =
-    [ regex "(i|\x00ee)n"
+    [ regex "(i|î)n"
     , dimension Duration
     ]
   , prod = \tokens -> case tokens of
@@ -177,7 +177,7 @@ ruleCycleAcesta :: Rule
 ruleCycleAcesta = Rule
   { name = "<cycle> acesta"
   , pattern =
-    [ regex "aceasta|acest|(a|\x0103)sta"
+    [ regex "aceasta|acest|(a|ă)sta"
     , dimension TimeGrain
     ]
   , prod = \tokens -> case tokens of
@@ -202,7 +202,7 @@ ruleAzi :: Rule
 ruleAzi = Rule
   { name = "azi"
   , pattern =
-    [ regex "a(st(a|\x0103))?zi"
+    [ regex "a(st(a|ă))?zi"
     ]
   , prod = \_ -> tt $ cycleNth TG.Day 0
   }
@@ -221,7 +221,7 @@ ruleTimeTrecuta = Rule
   { name = "<time> trecut[aă]?"
   , pattern =
     [ dimension Time
-    , regex "(trecut(a|\x0103)?)"
+    , regex "(trecut(a|ă)?)"
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td:_) -> tt $ predNth (-1) False td
@@ -233,7 +233,7 @@ ruleThisnextDayofweek = Rule
   { name = "this|next <day-of-week>"
   , pattern =
     [ Predicate isADayOfWeek
-    , regex "aceasta|(a|\x0103)sta|urm(a|\x0103)toare"
+    , regex "aceasta|(a|ă)sta|urm(a|ă)toare"
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_) -> tt $ predNth 0 True td
@@ -244,9 +244,9 @@ ruleBetweenTimeofdayAndTimeofdayInterval :: Rule
 ruleBetweenTimeofdayAndTimeofdayInterval = Rule
   { name = "between <time-of-day> and <time-of-day> (interval)"
   , pattern =
-    [ regex "(i|\x00ee)ntre"
+    [ regex "(i|î)ntre"
     , Predicate isATimeOfDay
-    , regex "(s|\x0219)i"
+    , regex "(s|ș)i"
     , Predicate isATimeOfDay
     ]
   , prod = \tokens -> case tokens of
@@ -259,7 +259,7 @@ ruleUrmatoareaCycle :: Rule
 ruleUrmatoareaCycle = Rule
   { name = "urmatoarea <cycle>"
   , pattern =
-    [ regex "(urm(a|\x0103)to(area|rul)|viito(are|r))"
+    [ regex "(urm(a|ă)to(area|rul)|viito(are|r))"
     , dimension TimeGrain
     ]
   , prod = \tokens -> case tokens of
@@ -272,7 +272,7 @@ ruleCycleAcesta2 = Rule
   { name = "<cycle> acesta"
   , pattern =
     [ dimension TimeGrain
-    , regex "aceasta|acest|(a|\x0103)sta|curent(a|\x0103)"
+    , regex "aceasta|acest|(a|ă)sta|curent(a|ă)"
     ]
   , prod = \tokens -> case tokens of
       (Token TimeGrain grain:_) -> tt $ cycleNth grain 0
@@ -283,7 +283,7 @@ ruleCraciun :: Rule
 ruleCraciun = Rule
   { name = "craciun"
   , pattern =
-    [ regex "(ziua de )?cr(a|\x0103)ciun"
+    [ regex "(ziua de )?cr(a|ă)ciun"
     ]
   , prod = \_ -> tt $ monthDay 12 25
   }
@@ -342,7 +342,7 @@ ruleChristmasEve :: Rule
 ruleChristmasEve = Rule
   { name = "christmas eve"
   , pattern =
-    [ regex "ajun(ul)? (de )?cr(a|\x0103)ciun"
+    [ regex "ajun(ul)? (de )?cr(a|ă)ciun"
     ]
   , prod = \_ -> tt $ monthDay 12 24
   }
@@ -380,7 +380,7 @@ ruleHourofdaySfert = Rule
   { name = "<hour-of-day> sfert"
   , pattern =
     [ Predicate isAnHourOfDay
-    , regex "((s|\x0219)i )?(un )?sfert"
+    , regex "((s|ș)i )?(un )?sfert"
     ]
   , prod = \tokens -> case tokens of
       (Token Time TimeData {TTime.form = Just (TTime.TimeOfDay (Just hours) is12H)}:
@@ -393,7 +393,7 @@ ruleHourofdayJumatate = Rule
   { name = "<hour-of-day> sfert"
   , pattern =
     [ Predicate isAnHourOfDay
-    , regex "((s|\x0219)i )?jum(a|\x0103)tate|jumate"
+    , regex "((s|ș)i )?jum(a|ă)tate|jumate"
     ]
   , prod = \tokens -> case tokens of
       (Token Time TimeData {TTime.form = Just (TTime.TimeOfDay (Just hours) is12H)}:
@@ -405,7 +405,7 @@ ruleDiseara :: Rule
 ruleDiseara = Rule
   { name = "diseara"
   , pattern =
-    [ regex "disear(a|\x0103)|((i|\x00ee)n aceas(a|\x0103) )?sear(a|\x0103)"
+    [ regex "disear(a|ă)|((i|î)n aceas(a|ă) )?sear(a|ă)"
     ]
   , prod = \_ -> do
       let td1 = cycleNth TG.Day 0
@@ -446,7 +446,7 @@ ruleNthTimeAfterTime = Rule
   , pattern =
     [ dimension Ordinal
     , dimension Time
-    , regex "dup(a|\x0103)"
+    , regex "dup(a|ă)"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -487,9 +487,9 @@ ruleFromTimeofdayTimeofdayInterval :: Rule
 ruleFromTimeofdayTimeofdayInterval = Rule
   { name = "from <time-of-day> - <time-of-day> (interval)"
   , pattern =
-    [ regex "(dup(a|\x0103)|(i|\x00ee)ncep(a|\x00e2)nd cu)"
+    [ regex "(dup(a|ă)|(i|î)ncep(a|â)nd cu)"
     , Predicate isATimeOfDay
-    , regex "(dar |(s|\x0219)i )?((i|\x00ee)nainte|p(a|\x00e2)n(a|\x0103) la( de)?)"
+    , regex "(dar |(s|ș)i )?((i|î)nainte|p(a|â)n(a|ă) la( de)?)"
     , Predicate isATimeOfDay
     ]
   , prod = \tokens -> case tokens of
@@ -502,7 +502,7 @@ ruleSeason3 :: Rule
 ruleSeason3 = Rule
   { name = "season"
   , pattern =
-    [ regex "primavar(a|\x0103)"
+    [ regex "primavar(a|ă)"
     ]
   , prod = \_ -> Token Time <$>
       interval TTime.Open (monthDay 3 20) (monthDay 6 21)
@@ -512,7 +512,7 @@ ruleUrmatoareleNCycle :: Rule
 ruleUrmatoareleNCycle = Rule
   { name = "urmatoarele n <cycle>"
   , pattern =
-    [ regex "urm(a|\x0103)to(arele|rii|area)"
+    [ regex "urm(a|ă)to(arele|rii|area)"
     , Predicate $ isIntegerBetween 1 9999
     , dimension TimeGrain
     ]
@@ -527,7 +527,7 @@ ruleSeason :: Rule
 ruleSeason = Rule
   { name = "season"
   , pattern =
-    [ regex "toamn(a|\x0103)"
+    [ regex "toamn(a|ă)"
     ]
   , prod = \_ -> Token Time <$>
       interval TTime.Open (monthDay 9 23) (monthDay 12 21)
@@ -537,7 +537,7 @@ ruleDupaDuration :: Rule
 ruleDupaDuration = Rule
   { name = "dupa <duration>"
   , pattern =
-    [ regex "dup(a|\x0103)"
+    [ regex "dup(a|ă)"
     , dimension Duration
     ]
   , prod = \tokens -> case tokens of
@@ -559,7 +559,7 @@ ruleByTheEndOfTime :: Rule
 ruleByTheEndOfTime = Rule
   { name = "by the end of <time>"
   , pattern =
-    [ regex "p(a|\x00ee)n(a|\x0103) ((i|\x00ee)n|la)"
+    [ regex "p(a|î)n(a|ă) ((i|î)n|la)"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -610,7 +610,7 @@ ruleAboutTimeofday :: Rule
 ruleAboutTimeofday = Rule
   { name = "about <time-of-day>"
   , pattern =
-    [ regex "(cam|aproximativ|(i|\x00ee)n jur de)"
+    [ regex "(cam|aproximativ|(i|î)n jur de)"
     , Predicate isATimeOfDay
     ]
   , prod = \tokens -> case tokens of
@@ -622,7 +622,7 @@ ruleUntilTimeofday :: Rule
 ruleUntilTimeofday = Rule
   { name = "until <time-of-day>"
   , pattern =
-    [ regex "p(a|\x00ee)n(a|\x0103) ((i|\x00ee)n|la)"
+    [ regex "p(a|î)n(a|ă) ((i|î)n|la)"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -647,9 +647,9 @@ ruleIntreDatetimeSiDatetimeInterval :: Rule
 ruleIntreDatetimeSiDatetimeInterval = Rule
   { name = "intre <datetime> si <datetime> (interval)"
   , pattern =
-    [ regex "(i|\x00ee)nre"
+    [ regex "(i|î)nre"
     , dimension Time
-    , regex "(s|\x0219)i"
+    , regex "(s|ș)i"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -715,7 +715,7 @@ ruleTimeAceastaacestaasta = Rule
   { name = "<time> (aceasta|acesta|[aă]sta)"
   , pattern =
     [ dimension Time
-    , regex "aceasta|(a|\x0103)sta|urm(a|\x0103)toare"
+    , regex "aceasta|(a|ă)sta|urm(a|ă)toare"
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_) ->
@@ -727,7 +727,7 @@ ruleEomendOfMonth :: Rule
 ruleEomendOfMonth = Rule
   { name = "EOM|End of month"
   , pattern =
-    [ regex "sf(a|\x00e2)r(s|\x0219)itul lunii"
+    [ regex "sf(a|â)r(s|ș)itul lunii"
     ]
   , prod = \_ -> tt $ cycleNth TG.Month 1
   }
@@ -762,7 +762,7 @@ ruleCycleUrmatoare = Rule
   { name = "<cycle> urmatoare"
   , pattern =
     [ dimension TimeGrain
-    , regex "(urm(a|\x0103)to(are|r)|viito(are|r))"
+    , regex "(urm(a|ă)to(are|r)|viito(are|r))"
     ]
   , prod = \tokens -> case tokens of
       (_:Token TimeGrain grain:_) -> tt $ cycleNth grain 1
@@ -803,7 +803,7 @@ ruleCycleTrecut = Rule
   { name = "<cycle> trecut"
   , pattern =
     [ dimension TimeGrain
-    , regex "trecut(a|\x0103)?"
+    , regex "trecut(a|ă)?"
     ]
   , prod = \tokens -> case tokens of
       (Token TimeGrain grain:_) ->
@@ -829,7 +829,7 @@ ruleDurationInainteDeTime = Rule
   { name = "<duration> inainte de <time>"
   , pattern =
     [ dimension Duration
-    , regex "(i|\x00ee)nainte de"
+    , regex "(i|î)nainte de"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -856,7 +856,7 @@ ruleDurationInUrma = Rule
   { name = "<duration> in urma"
   , pattern =
     [ dimension Duration
-    , regex "(i|\x00ee)n urm(a|\x0103)"
+    , regex "(i|î)n urm(a|ă)"
     ]
   , prod = \tokens -> case tokens of
       (Token Duration dd:_) -> tt $ durationAgo dd
@@ -879,7 +879,7 @@ ruleSezonAnotimp :: Rule
 ruleSezonAnotimp = Rule
   { name = "sezon anotimp"
   , pattern =
-    [ regex "var(a|\x0103)"
+    [ regex "var(a|ă)"
     ]
   , prod = \_ ->
       Token Time <$> interval TTime.Open (monthDay 6 21) (monthDay 9 23)
@@ -889,7 +889,7 @@ ruleSearaNoapte :: Rule
 ruleSearaNoapte = Rule
   { name = "sear[aă] noapte"
   , pattern =
-    [ regex "sear(a|\x0103)|noapte"
+    [ regex "sear(a|ă)|noapte"
     ]
   , prod = \_ -> Token Time . mkLatent . partOfDay <$>
       interval TTime.Open (hour False 18) (hour False 0)
@@ -912,7 +912,7 @@ ruleSeason2 :: Rule
 ruleSeason2 = Rule
   { name = "season"
   , pattern =
-    [ regex "iarn(a|\x0103)"
+    [ regex "iarn(a|ă)"
     ]
   , prod = \_ ->
       Token Time <$> interval TTime.Open (monthDay 12 21) (monthDay 3 20)
@@ -937,7 +937,7 @@ ruleAfterTimeofday :: Rule
 ruleAfterTimeofday = Rule
   { name = "after <time-of-day>"
   , pattern =
-    [ regex "dup(a|\x0103)"
+    [ regex "dup(a|ă)"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -949,7 +949,7 @@ ruleDimineata :: Rule
 ruleDimineata = Rule
   { name = "diminea[tț][aă]"
   , pattern =
-    [ regex "diminea(t|\x021b)(a|\x0103)"
+    [ regex "diminea(t|ț)(a|ă)"
     ]
   , prod = \_ -> Token Time . mkLatent . partOfDay <$>
       interval TTime.Open (hour False 4) (hour False 12)
@@ -959,7 +959,7 @@ ruleTimeUrmatoarer :: Rule
 ruleTimeUrmatoarer = Rule
   { name = "<time> urm[aă]to(are|r)"
   , pattern =
-    [ regex "urm(a|\x0103)to(are|r)"
+    [ regex "urm(a|ă)to(are|r)"
     , Predicate isNotLatent
     ]
   , prod = \tokens -> case tokens of
@@ -997,7 +997,7 @@ ruleMaine :: Rule
 ruleMaine = Rule
   { name = "maine"
   , pattern =
-    [ regex "m(a|\x00e2)ine"
+    [ regex "m(a|â)ine"
     ]
   , prod = \_ -> tt $ cycleNth TG.Day 1
   }
@@ -1127,7 +1127,7 @@ ruleByTime :: Rule
 ruleByTime = Rule
   { name = "by <time>"
   , pattern =
-    [ regex "p(a|\x00e2)n(a|\x0103) (la|(i|\x00ee)n)"
+    [ regex "p(a|â)n(a|ă) (la|(i|î)n)"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -1170,7 +1170,7 @@ ruleEoyendOfYear :: Rule
 ruleEoyendOfYear = Rule
   { name = "EOY|End of year"
   , pattern =
-    [ regex "sf(a|\x00e2)r(s|\x0219)itul anului"
+    [ regex "sf(a|â)r(s|ș)itul anului"
     ]
   , prod = \_ -> tt $ cycleNth TG.Year 1
   }
@@ -1214,12 +1214,12 @@ ruleHhmmss = Rule
 daysOfWeek :: [(Text, String)]
 daysOfWeek =
   [ ( "luni"  , "lu(n(ea|i)?)?"                                                )
-  , ( "marti"  , "ma(r((t|\x021b)(ea|i))?)?"                                   )
+  , ( "marti"  , "ma(r((t|ț)(ea|i))?)?"                                   )
   , ( "miercuri"  , "mi(e(rcur(ea|i))?)?"                                      )
   , ( "joi"  , "jo(ia?)?"                                                      )
   , ( "vineri"  , "vi(n(er(ea|i))?)?"                                          )
-  , ( "sambata" , "s(a|\x00e2)mb(a|\x0103)t(a|\x0103)|s(a|\x00e2)m|s(a|\x00e2)")
-  , ( "duminica"  , "du(m(inic(a|\x0103))?)?"                                  )
+  , ( "sambata" , "s(a|â)mb(a|ă)t(a|ă)|s(a|â)m|s(a|â)")
+  , ( "duminica"  , "du(m(inic(a|ă))?)?"                                  )
   ]
 
 ruleDaysOfWeek :: [Rule]

@@ -234,7 +234,7 @@ ruleSuffixes = Rule
   { name = "suffixes (K,M,G))"
   , pattern =
     [ dimension Numeral
-    , regex "(k|m|g)(?=[\\W$\x20ac\x00a2\x00a3]|$)"
+    , regex "(k|m|g)(?=[\\W$€¢£]|$)"
     ]
   , prod = \tokens ->
       case tokens of

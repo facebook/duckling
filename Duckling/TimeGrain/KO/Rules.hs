@@ -21,14 +21,14 @@ import qualified Duckling.TimeGrain.Types as TG
 import Duckling.Types
 
 grains :: [(Text, String, TG.Grain)]
-grains = [ ("second (grain)", "\xcd08", TG.Second)
-         , ("minute (grain)", "\xbd84", TG.Minute)
-         , ("hour (grain)", "\xc2dc(\xac04)?", TG.Hour)
-         , ("day (grain)", "\xb0a0|\xc77c(\xac04|\xb3d9\xc548)?", TG.Day)
-         , ("week (grain)", "\xc8fc(\xac04|\xb3d9\xc548|\xc77c)?", TG.Week)
-         , ("month (grain)", "(\xb2ec)(\xac04|\xb3d9\xc548)?", TG.Month)
-         , ("quarter (grain)", "\xbd84\xae30(\xac04|\xb3d9\xc548)?", TG.Quarter)
-         , ("year (grain)", "\xd574|\xc5f0\xac04|\xb144(\xac04|\xb3d9\xc548)?", TG.Year)
+grains = [ ("second (grain)", "초", TG.Second)
+         , ("minute (grain)", "분", TG.Minute)
+         , ("hour (grain)", "시(간)?", TG.Hour)
+         , ("day (grain)", "날|일(간|동안)?", TG.Day)
+         , ("week (grain)", "주(간|동안|일)?", TG.Week)
+         , ("month (grain)", "(달)(간|동안)?", TG.Month)
+         , ("quarter (grain)", "분기(간|동안)?", TG.Quarter)
+         , ("year (grain)", "해|연간|년(간|동안)?", TG.Year)
          ]
 
 rules :: [Rule]

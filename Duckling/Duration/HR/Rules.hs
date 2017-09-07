@@ -33,7 +33,7 @@ ruleExactlyDuration :: Rule
 ruleExactlyDuration = Rule
   { name = "exactly <duration>"
   , pattern =
-    [ regex "to(c|\x010d)no"
+    [ regex "to(c|č)no"
     , dimension Duration
     ]
   , prod = \tokens -> case tokens of
@@ -59,7 +59,7 @@ ruleIntegerMoreUnitofduration = Rule
   { name = "<integer> more <unit-of-duration>"
   , pattern =
     [ Predicate isNatural
-    , regex "vi(s|\x0161)e|manje"
+    , regex "vi(s|š)e|manje"
     , dimension TimeGrain
     ]
   , prod = \tokens -> case tokens of
@@ -74,7 +74,7 @@ ruleQuarterOfAnHour :: Rule
 ruleQuarterOfAnHour = Rule
   { name = "quarter of an hour"
   , pattern =
-    [ regex "((1/4|frtalj|kvarat|(c|\x010d)etvrt)\\s?(h|sata)?)"
+    [ regex "((1/4|frtalj|kvarat|(c|č)etvrt)\\s?(h|sata)?)"
     ]
   , prod = \_ -> Just . Token Duration $ duration TG.Minute 15
   }
@@ -111,7 +111,7 @@ ruleThreequartersOfAnHour :: Rule
 ruleThreequartersOfAnHour = Rule
   { name = "three-quarters of an hour"
   , pattern =
-    [ regex "((3/4|tri-?frtalja|tri-?kvarat|tri-?(c|\x010d)etvrt(ine)?)\\s?(h|sata)?)"
+    [ regex "((3/4|tri-?frtalja|tri-?kvarat|tri-?(c|č)etvrt(ine)?)\\s?(h|sata)?)"
     ]
   , prod = \_ -> Just . Token Duration $ duration TG.Minute 45
   }

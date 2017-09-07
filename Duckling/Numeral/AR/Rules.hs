@@ -28,7 +28,7 @@ ruleInteger5 :: Rule
 ruleInteger5 = Rule
   { name = "integer 4"
   , pattern =
-    [ regex "(\x0623\x0631\x0628\x0639(\x0629)?)"
+    [ regex "(أربع(ة)?)"
     ]
   , prod = \_ -> integer 4
   }
@@ -38,7 +38,7 @@ ruleInteger23 = Rule
   { name = "integer 101..999"
   , pattern =
     [ oneOf [100, 200 .. 900]
-    , regex "\x0648"
+    , regex "و"
     , numberBetween 1 100
     ]
   , prod = \tokens -> case tokens of
@@ -53,7 +53,7 @@ ruleInteger18 :: Rule
 ruleInteger18 = Rule
   { name = "integer 12"
   , pattern =
-    [ regex "(\x0625\x062b\x0646(\x062a)?\x0649 \x0639\x0634\x0631)"
+    [ regex "(إثن(ت)?ى عشر)"
     ]
   , prod = \_ -> integer 12
   }
@@ -75,18 +75,18 @@ ruleInteger19 :: Rule
 ruleInteger19 = Rule
   { name = "integer (20..90)"
   , pattern =
-    [ regex "(\x0639\x0634\x0631\x0648\x0646|\x062b\x0644\x0627\x062b\x0648\x0646|\x0623\x0631\x0628\x0639\x0648\x0646|\x062e\x0645\x0633\x0648\x0646|\x0633\x062a\x0648\x0646|\x0633\x0628\x0639\x0648\x0646|\x062b\x0645\x0627\x0646\x0648\x0646|\x062a\x0633\x0639\x0648\x0646)"
+    [ regex "(عشرون|ثلاثون|أربعون|خمسون|ستون|سبعون|ثمانون|تسعون)"
     ]
   , prod = \tokens -> case tokens of
       Token RegexMatch (GroupMatch (match:_)):_ -> case match of
-        "\x0639\x0634\x0631\x0648\x0646" -> integer 20
-        "\x062b\x0644\x0627\x062b\x0648\x0646" -> integer 30
-        "\x0623\x0631\x0628\x0639\x0648\x0646" -> integer 40
-        "\x062e\x0645\x0633\x0648\x0646" -> integer 50
-        "\x0633\x062a\x0648\x0646" -> integer 60
-        "\x0633\x0628\x0639\x0648\x0646" -> integer 70
-        "\x062b\x0645\x0627\x0646\x0648\x0646" -> integer 80
-        "\x062a\x0633\x0639\x0648\x0646" -> integer 90
+        "عشرون" -> integer 20
+        "ثلاثون" -> integer 30
+        "أربعون" -> integer 40
+        "خمسون" -> integer 50
+        "ستون" -> integer 60
+        "سبعون" -> integer 70
+        "ثمانون" -> integer 80
+        "تسعون" -> integer 90
         _ -> Nothing
       _ -> Nothing
   }
@@ -96,7 +96,7 @@ ruleInteger22 = Rule
   { name = "integer 21..99"
   , pattern =
     [ numberBetween 1 10
-    , regex "\x0648"
+    , regex "و"
     , oneOf [20, 30 .. 90]
     ]
   , prod = \tokens -> case tokens of
@@ -147,7 +147,7 @@ ruleInteger15 :: Rule
 ruleInteger15 = Rule
   { name = "integer 11"
   , pattern =
-    [ regex "(\x0625\x062d\x062f\x0649 \x0639\x0634\x0631(\x0629)?)"
+    [ regex "(إحدى عشر(ة)?)"
     ]
   , prod = \_ -> integer 11
   }
@@ -168,21 +168,21 @@ rulePowersOfTen :: Rule
 rulePowersOfTen = Rule
   { name = "powers of tens"
   , pattern =
-    [ regex "(\x0645\x0627\x0626\x0629|\x0645\x0626\x0627\x062a|\x0623\x0644\x0641|\x0627\x0644\x0641|\x0622\x0644\x0627\x0641|\x0645\x0644\x0627\x064a\x064a(\x0646)?)"
+    [ regex "(مائة|مئات|ألف|الف|آلاف|ملايي(ن)?)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
-        "\x0645\x0627\x0626\x0629" ->
+        "مائة" ->
           double 1e2 >>= withGrain 2 >>= withMultipliable
-        "\x0645\x0626\x0627\x062a" ->
+        "مئات" ->
           double 1e2 >>= withGrain 2 >>= withMultipliable
-        "\x0623\x0644\x0641" -> double 1e3 >>= withGrain 3 >>= withMultipliable
-        "\x0627\x0644\x0641" -> double 1e3 >>= withGrain 3 >>= withMultipliable
-        "\x0622\x0644\x0627\x0641" ->
+        "ألف" -> double 1e3 >>= withGrain 3 >>= withMultipliable
+        "الف" -> double 1e3 >>= withGrain 3 >>= withMultipliable
+        "آلاف" ->
           double 1e3 >>= withGrain 3 >>= withMultipliable
-        "\x0645\x0644\x0627\x064a\x064a" ->
+        "ملايي" ->
           double 1e6 >>= withGrain 6 >>= withMultipliable
-        "\x0645\x0644\x0627\x064a\x064a\x0646" ->
+        "ملايين" ->
           double 1e6 >>= withGrain 6 >>= withMultipliable
         _ -> Nothing
       _ -> Nothing
@@ -192,7 +192,7 @@ ruleInteger3 :: Rule
 ruleInteger3 = Rule
   { name = "integer 2"
   , pattern =
-    [ regex "(\x0627\x062b\x0646\x0627\x0646|\x0627\x062b\x0646\x064a\x0646)"
+    [ regex "(اثنان|اثنين)"
     ]
   , prod = \_ -> integer 2
   }
@@ -201,7 +201,7 @@ ruleInteger13 :: Rule
 ruleInteger13 = Rule
   { name = "integer 9"
   , pattern =
-    [ regex "(\x062a\x0633\x0639\x0629|\x062a\x0633\x0639)"
+    [ regex "(تسعة|تسع)"
     ]
   , prod = \_ -> integer 9
   }
@@ -210,7 +210,7 @@ ruleInteger12 :: Rule
 ruleInteger12 = Rule
   { name = "integer 8"
   , pattern =
-    [ regex "(\x062b\x0645\x0627\x0646\x064a\x0629|\x062b\x0645\x0627\x0646)"
+    [ regex "(ثمانية|ثمان)"
     ]
   , prod = \_ -> integer 8
   }
@@ -232,7 +232,7 @@ ruleInteger7 :: Rule
 ruleInteger7 = Rule
   { name = "integer 5"
   , pattern =
-    [ regex "(\x062e\x0645\x0633)(\x0629)?"
+    [ regex "(خمس)(ة)?"
     ]
   , prod = \_ -> integer 5
   }
@@ -241,7 +241,7 @@ ruleInteger14 :: Rule
 ruleInteger14 = Rule
   { name = "integer 10"
   , pattern =
-    [ regex "(\x0639\x0634\x0631\x0629|\x0639\x0634\x0631)"
+    [ regex "(عشرة|عشر)"
     ]
   , prod = \_ -> integer 10
   }
@@ -250,7 +250,7 @@ ruleInteger9 :: Rule
 ruleInteger9 = Rule
   { name = "integer 6"
   , pattern =
-    [ regex "(\x0633\x062a(\x0629)?)"
+    [ regex "(ست(ة)?)"
     ]
   , prod = \_ -> integer 6
   }
@@ -259,7 +259,7 @@ ruleInteger :: Rule
 ruleInteger = Rule
   { name = "integer 0"
   , pattern =
-    [ regex "(\x0635\x0641\x0631)"
+    [ regex "(صفر)"
     ]
   , prod = \_ -> integer 0
   }
@@ -268,7 +268,7 @@ ruleInteger4 :: Rule
 ruleInteger4 = Rule
   { name = "integer 3"
   , pattern =
-    [ regex "(\x062b\x0644\x0627\x062b|\x062b\x0644\x0627\x062b\x0629)"
+    [ regex "(ثلاث|ثلاثة)"
     ]
   , prod = \_ -> integer 3
   }
@@ -277,7 +277,7 @@ ruleInteger2 :: Rule
 ruleInteger2 = Rule
   { name = "integer 1"
   , pattern =
-    [ regex "(\x0648\x0627\x062d\x062f\x0629|\x0648\x0627\x062d\x062f\x0647|\x0648\x0627\x062d\x062f)"
+    [ regex "(واحدة|واحده|واحد)"
     ]
   , prod = \_ -> integer 1
   }
@@ -286,7 +286,7 @@ ruleInteger11 :: Rule
 ruleInteger11 = Rule
   { name = "integer 7"
   , pattern =
-    [ regex "(\x0633\x0628\x0639\x0629|\x0633\x0628\x0639)"
+    [ regex "(سبعة|سبع)"
     ]
   , prod = \_ -> integer 7
   }
@@ -295,19 +295,19 @@ ruleInteger20 :: Rule
 ruleInteger20 = Rule
   { name = "integer (100..900)"
   , pattern =
-    [ regex "(\x0645\x0627\x0626\x0629|\x0645\x0627\x0626\x062a\x0627\x0646|\x062b\x0644\x0627\x062b\x0645\x0627\x0626\x0629|\x0623\x0631\x0628\x0639\x0645\x0627\x0626\x0629|\x062e\x0645\x0633\x0645\x0627\x0626\x0629|\x0633\x062a\x0645\x0627\x0626\x0629|\x0633\x0628\x0639\x0645\x0627\x0626\x0629|\x062b\x0645\x0627\x0646\x0645\x0627\x0626\x0629|\x062a\x0633\x0639\x0645\x0627\x0626\x0629)"
+    [ regex "(مائة|مائتان|ثلاثمائة|أربعمائة|خمسمائة|ستمائة|سبعمائة|ثمانمائة|تسعمائة)"
     ]
   , prod = \tokens -> case tokens of
       Token RegexMatch (GroupMatch (match:_)):_ -> case match of
-        "\x0645\x0627\x0626\x0629" -> integer 100
-        "\x0633\x0628\x0639\x0645\x0627\x0626\x0629" -> integer 700
-        "\x062e\x0645\x0633\x0645\x0627\x0626\x0629" -> integer 500
-        "\x0623\x0631\x0628\x0639\x0645\x0627\x0626\x0629" -> integer 400
-        "\x0633\x062a\x0645\x0627\x0626\x0629" -> integer 600
-        "\x0645\x0627\x0626\x062a\x0627\x0646" -> integer 200
-        "\x062b\x0644\x0627\x062b\x0645\x0627\x0626\x0629" -> integer 300
-        "\x062b\x0645\x0627\x0646\x0645\x0627\x0626\x0629" -> integer 800
-        "\x062a\x0633\x0639\x0645\x0627\x0626\x0629" -> integer 900
+        "مائة" -> integer 100
+        "سبعمائة" -> integer 700
+        "خمسمائة" -> integer 500
+        "أربعمائة" -> integer 400
+        "ستمائة" -> integer 600
+        "مائتان" -> integer 200
+        "ثلاثمائة" -> integer 300
+        "ثمانمائة" -> integer 800
+        "تسعمائة" -> integer 900
         _ -> Nothing
       _ -> Nothing
   }
@@ -317,7 +317,7 @@ ruleNumeralDotNumeral = Rule
   { name = "number dot number"
   , pattern =
     [ dimension Numeral
-    , regex "\x0641\x0627\x0635\x0644\x0629"
+    , regex "فاصلة"
     , numberWith TNumeral.grain isNothing
     ]
   , prod = \tokens -> case tokens of

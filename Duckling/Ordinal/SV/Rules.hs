@@ -28,16 +28,16 @@ import Duckling.Types
 
 ordinalsMap :: HashMap Text Int
 ordinalsMap = HashMap.fromList
-  [ ( "f\x00f6rsta", 1 )
-  , ( "f\x00f6rste", 1 )
+  [ ( "första", 1 )
+  , ( "förste", 1 )
   , ( "andra", 2 )
   , ( "andre", 2)
   , ( "tredje", 3 )
-  , ( "fj\x00e4rde", 4 )
+  , ( "fjärde", 4 )
   , ( "femte", 5 )
-  , ( "sj\x00e4tte", 6 )
+  , ( "sjätte", 6 )
   , ( "sjunde", 7 )
-  , ( "\x00e5ttonde", 8 )
+  , ( "åttonde", 8 )
   , ( "nionde", 9 )
   , ( "tionde", 10 )
   , ( "elfte", 11 )
@@ -55,7 +55,7 @@ ordinalsMap = HashMap.fromList
   , ( "femtionde", 50 )
   , ( "sextionde", 60 )
   , ( "sjuttionde", 70 )
-  , ( "\x00e5ttionde", 80 )
+  , ( "åttionde", 80 )
   , ( "nittionde", 90 )
   ]
 
@@ -67,7 +67,7 @@ cardinalsMap = HashMap.fromList
   , ( "femtio", 50 )
   , ( "sextio", 60 )
   , ( "sjuttio", 70 )
-  , ( "\x00e5ttio", 80 )
+  , ( "åttio", 80 )
   , ( "nittio", 90 )
   ]
 
@@ -75,7 +75,7 @@ ruleOrdinals :: Rule
 ruleOrdinals = Rule
   { name = "ordinals (first..twentieth,thirtieth,...)"
   , pattern =
-    [ regex "(f\x00f6rsta|f\x00f6rste|andra|andre|tredje|fj\x00e4rde|femte|sj\x00e4tte|sjunde|\x00e5ttonde|nionde|tionde|elfte|tolfte|trettionde|fjortonde|femtonde|sextonde|sjuttonde|artonde|nittonde|tjugonde|trettionde|fyrtionde|femtonde|sextionde|sjuttionde|\x00e5ttionde|nittionde)"
+    [ regex "(första|förste|andra|andre|tredje|fjärde|femte|sjätte|sjunde|åttonde|nionde|tionde|elfte|tolfte|trettionde|fjortonde|femtonde|sextonde|sjuttonde|artonde|nittonde|tjugonde|trettionde|fyrtionde|femtonde|sextionde|sjuttionde|åttionde|nittionde)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
@@ -87,7 +87,7 @@ ruleCompositeOrdinals :: Rule
 ruleCompositeOrdinals = Rule
   { name = "ordinals (composite, e.g., eighty-seven)"
   , pattern =
-    [ regex "(tjugo|trettio|fyrtio|femtio|sextio|sjuttio|\x00e5ttio|nittio)(f\x00f6rsta|f\x00f6rste|andra|andre|tredje|fj\x00e4rde|femte|sj\x00e4tte|sjunde|\x00e5ttonde|nionde)"
+    [ regex "(tjugo|trettio|fyrtio|femtio|sextio|sjuttio|åttio|nittio)(första|förste|andra|andre|tredje|fjärde|femte|sjätte|sjunde|åttonde|nionde)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (tens:units:_)):_) -> do

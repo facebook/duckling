@@ -28,7 +28,7 @@ ruleSixteen :: Rule
 ruleSixteen = Rule
   { name = "sixteen"
   , pattern =
-    [ regex "szesna(s|\x015b)(tu|cie|toma)"
+    [ regex "szesna(s|ś)(tu|cie|toma)"
     ]
   , prod = \_ -> integer 16
   }
@@ -37,7 +37,7 @@ ruleFourteen :: Rule
 ruleFourteen = Rule
   { name = "fourteen"
   , pattern =
-    [ regex "czterna(s|\x015b)(tu|cie|toma)"
+    [ regex "czterna(s|ś)(tu|cie|toma)"
     ]
   , prod = \_ -> integer 14
   }
@@ -46,7 +46,7 @@ ruleTwo :: Rule
 ruleTwo = Rule
   { name = "two"
   , pattern =
-    [ regex "dw(a|(o|\x00f3)(ch|m)|oma|iema|ie)"
+    [ regex "dw(a|(o|ó)(ch|m)|oma|iema|ie)"
     ]
   , prod = \_ -> integer 2
   }
@@ -55,7 +55,7 @@ ruleSixty :: Rule
 ruleSixty = Rule
   { name = "sixty"
   , pattern =
-    [ regex "sze(\x015b\x0107)dziesi(\x0105)t|sze(\x015b\x0107)dziesi(\x0119)ci(u|oma)"
+    [ regex "sze(ść)dziesi(ą)t|sze(ść)dziesi(ę)ci(u|oma)"
     ]
   , prod = \_ -> integer 60
   }
@@ -92,7 +92,7 @@ ruleOne :: Rule
 ruleOne = Rule
   { name = "one"
   , pattern =
-    [ regex "jed(en|nego|nemu|nym|nej|n(a|\x0105))"
+    [ regex "jed(en|nego|nemu|nym|nej|n(a|ą))"
     ]
   , prod = \_ -> integer 1
   }
@@ -114,7 +114,7 @@ ruleTen :: Rule
 ruleTen = Rule
   { name = "ten"
   , pattern =
-    [ regex "dzisi(e|\x0119)(\x0107|c)(iu|ioma)?"
+    [ regex "dzisi(e|ę)(ć|c)(iu|ioma)?"
     ]
   , prod = \_ -> integer 10
   }
@@ -149,7 +149,7 @@ ruleNine :: Rule
 ruleNine = Rule
   { name = "nine"
   , pattern =
-    [ regex "dziewi(e|\x0119)(\x0107|c)(iu|ioma)?"
+    [ regex "dziewi(e|ę)(ć|c)(iu|ioma)?"
     ]
   , prod = \_ -> integer 9
   }
@@ -167,7 +167,7 @@ ruleTwelve :: Rule
 ruleTwelve = Rule
   { name = "twelve"
   , pattern =
-    [ regex "dwunast(u|oma)|dwana(\x015b|s)cie"
+    [ regex "dwunast(u|oma)|dwana(ś|s)cie"
     ]
   , prod = \_ -> integer 12
   }
@@ -187,7 +187,7 @@ ruleFifteen :: Rule
 ruleFifteen = Rule
   { name = "fifteen"
   , pattern =
-    [ regex "pi(\x0119)tna(s|\x015b)(ta|tu|cie|toma)"
+    [ regex "pi(ę)tna(s|ś)(ta|tu|cie|toma)"
     ]
   , prod = \_ -> integer 15
   }
@@ -196,7 +196,7 @@ ruleEleven :: Rule
 ruleEleven = Rule
   { name = "eleven"
   , pattern =
-    [ regex "jedena(stu|(s|\x015b)cie|stoma)"
+    [ regex "jedena(stu|(s|ś)cie|stoma)"
     ]
   , prod = \_ -> integer 11
   }
@@ -205,7 +205,7 @@ ruleThirteen :: Rule
 ruleThirteen = Rule
   { name = "thirteen"
   , pattern =
-    [ regex "trzyna(\x015b|s)(tu|cie|toma)"
+    [ regex "trzyna(ś|s)(tu|cie|toma)"
     ]
   , prod = \_ -> integer 13
   }
@@ -214,7 +214,7 @@ ruleThirty :: Rule
 ruleThirty = Rule
   { name = "thirty"
   , pattern =
-    [ regex "trzydzie(\x015b)ci|trzydziest(u|oma)"
+    [ regex "trzydzie(ś)ci|trzydziest(u|oma)"
     ]
   , prod = \_ -> integer 30
   }
@@ -223,7 +223,7 @@ ruleNumeral2 :: Rule
 ruleNumeral2 = Rule
   { name = "number 200"
   , pattern =
-    [ regex "dwie((\x015b)cie| setki)"
+    [ regex "dwie((ś)cie| setki)"
     ]
   , prod = \_ -> integer 200 >>= withGrain 2
   }
@@ -232,7 +232,7 @@ ruleSeventeen :: Rule
 ruleSeventeen = Rule
   { name = "seventeen"
   , pattern =
-    [ regex "siedemna(s|\x015b)(tu|cie|toma)"
+    [ regex "siedemna(s|ś)(tu|cie|toma)"
     ]
   , prod = \_ -> integer 17
   }
@@ -250,7 +250,7 @@ ruleNumeral9 :: Rule
 ruleNumeral9 = Rule
   { name = "number 900"
   , pattern =
-    [ regex "dziewi(\x0119\x0107)(set| setek)"
+    [ regex "dziewi(ęć)(set| setek)"
     ]
   , prod = \_ -> integer 900 >>= withGrain 2
   }
@@ -268,7 +268,7 @@ ruleTwenty :: Rule
 ruleTwenty = Rule
   { name = "twenty"
   , pattern =
-    [ regex "dwadzie(\x015b|s)cia|dwudziest(u|oma)"
+    [ regex "dwadzie(ś|s)cia|dwudziest(u|oma)"
     ]
   , prod = \_ -> integer 20
   }
@@ -286,7 +286,7 @@ ruleEight :: Rule
 ruleEight = Rule
   { name = "eight"
   , pattern =
-    [ regex "o(s|\x015b)(iem|miu|mioma)"
+    [ regex "o(s|ś)(iem|miu|mioma)"
     ]
   , prod = \_ -> integer 8
   }
@@ -295,7 +295,7 @@ ruleNumeral5 :: Rule
 ruleNumeral5 = Rule
   { name = "number 500"
   , pattern =
-    [ regex "pi(\x0119\x0107)(set| setek)"
+    [ regex "pi(ęć)(set| setek)"
     ]
   , prod = \_ -> integer 500 >>= withGrain 2
   }
@@ -322,7 +322,7 @@ ruleThousand :: Rule
 ruleThousand = Rule
   { name = "thousand"
   , pattern =
-    [ regex "ty(s|\x015b)i(a|\x0105|\x0119)c(e|y)?"
+    [ regex "ty(s|ś)i(a|ą|ę)c(e|y)?"
     ]
   , prod = \_ -> integer 1000 >>= withGrain 3 >>= withMultipliable
   }
@@ -331,7 +331,7 @@ ruleMillion :: Rule
 ruleMillion = Rule
   { name = "million"
   , pattern =
-    [ regex "milion(y|(\x00f3)w)?"
+    [ regex "milion(y|(ó)w)?"
     ]
   , prod = \_ -> integer 1000000 >>= withGrain 6 >>= withMultipliable
   }
@@ -385,7 +385,7 @@ ruleNumeralsSuffixesKMG = Rule
   { name = "numbers suffixes (K, M, G)"
   , pattern =
     [ dimension Numeral
-    , regex "([kmg])(?=[\\W\\$\x20ac]|$)"
+    , regex "([kmg])(?=[\\W\\$€]|$)"
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral (NumeralData {TNumeral.value = v}):
@@ -429,7 +429,7 @@ ruleSix :: Rule
 ruleSix = Rule
   { name = "six"
   , pattern =
-    [ regex "sze(s|\x015b)(c|\x0107)(iu|oma|u)?"
+    [ regex "sze(s|ś)(c|ć)(iu|oma|u)?"
     ]
   , prod = \_ -> integer 6
   }
@@ -438,7 +438,7 @@ ruleNumeral6 :: Rule
 ruleNumeral6 = Rule
   { name = "number 600"
   , pattern =
-    [ regex "(sze\x015b\x0107(set| setek))"
+    [ regex "(sześć(set| setek))"
     ]
   , prod = \_ -> integer 600 >>= withGrain 2
   }
@@ -456,7 +456,7 @@ ruleFive :: Rule
 ruleFive = Rule
   { name = "five"
   , pattern =
-    [ regex "pi(e|\x0119)(c|\x0107)(iu|oma|u)?"
+    [ regex "pi(e|ę)(c|ć)(iu|oma|u)?"
     ]
   , prod = \_ -> integer 5
   }
@@ -465,7 +465,7 @@ ruleFourty :: Rule
 ruleFourty = Rule
   { name = "fou?rty"
   , pattern =
-    [ regex "czterdzie(\x015b)ci|czterdziest(u|oma)"
+    [ regex "czterdzie(ś)ci|czterdziest(u|oma)"
     ]
   , prod = \_ -> integer 40
   }
@@ -492,7 +492,7 @@ ruleNineteen :: Rule
 ruleNineteen = Rule
   { name = "nineteen"
   , pattern =
-    [ regex "dziewietna(s|\x015b)(tu|cie|toma)"
+    [ regex "dziewietna(s|ś)(tu|cie|toma)"
     ]
   , prod = \_ -> integer 19
   }
@@ -515,7 +515,7 @@ ruleEighteen :: Rule
 ruleEighteen = Rule
   { name = "eighteen"
   , pattern =
-    [ regex "osiemna(s|\x015b)(tu|cie|toma)"
+    [ regex "osiemna(s|ś)(tu|cie|toma)"
     ]
   , prod = \_ -> integer 18
   }
@@ -550,7 +550,7 @@ ruleFifty :: Rule
 ruleFifty = Rule
   { name = "fifty"
   , pattern =
-    [ regex "pi(\x0119\x0107)dziesi(\x0105)t|pi(\x0119\x0107)dziesi(\x0119)ci(u|oma)"
+    [ regex "pi(ęć)dziesi(ą)t|pi(ęć)dziesi(ę)ci(u|oma)"
     ]
   , prod = \_ -> integer 50
   }

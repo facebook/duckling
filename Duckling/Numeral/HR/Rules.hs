@@ -98,7 +98,7 @@ ruleInteger3 :: Rule
 ruleInteger3 = Rule
   { name = "integer (100..900)"
   , pattern =
-    [ regex "(sto|dvjest(o|a)|tristo|(c|\x010d)etiristo|petsto|(\x0161|s)esto|sedamsto|osamsto|devetsto)"
+    [ regex "(sto|dvjest(o|a)|tristo|(c|č)etiristo|petsto|(š|s)esto|sedamsto|osamsto|devetsto)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
@@ -131,7 +131,7 @@ rulePowersOfTen :: Rule
 rulePowersOfTen = Rule
   { name = "powers of tens"
   , pattern =
-    [ regex "(stotin(u|a|e)|tisu(c|\x0107)(a|u|e)|milij(u|o)na?)"
+    [ regex "(stotin(u|a|e)|tisu(c|ć)(a|u|e)|milij(u|o)na?)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
@@ -187,7 +187,7 @@ ruleNumbersSuffixesKMG = Rule
   { name = "numbers suffixes (K, M, G)"
   , pattern =
     [ dimension Numeral
-    , regex "([kmg])(?=[\\W\\$\x20ac]|$)"
+    , regex "([kmg])(?=[\\W\\$€]|$)"
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral (NumeralData {TNumeral.value = v}):
@@ -222,7 +222,7 @@ ruleInteger :: Rule
 ruleInteger = Rule
   { name = "integer (0..19)"
   , pattern =
-    [ regex "(ni(s|\x0161)ta|ni(s|\x0161)tica|nula|jedanaest|dvanaest|trinaest|jeda?n(a|u|o(ga?)?)?|dv(i?je)?(a|o)?(ma)?|tri(ma)?|(\x010d|c)etiri|(\x010d|c)etrnaest|petnaest|pet|(s|\x0161)esnaest|(\x0161|s)est|sedamnaest|sedam|osamnaest|osam|devetnaest|devet)"
+    [ regex "(ni(s|š)ta|ni(s|š)tica|nula|jedanaest|dvanaest|trinaest|jeda?n(a|u|o(ga?)?)?|dv(i?je)?(a|o)?(ma)?|tri(ma)?|(č|c)etiri|(č|c)etrnaest|petnaest|pet|(s|š)esnaest|(š|s)est|sedamnaest|sedam|osamnaest|osam|devetnaest|devet)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
@@ -283,7 +283,7 @@ ruleInteger2 :: Rule
 ruleInteger2 = Rule
   { name = "integer (20..90)"
   , pattern =
-    [ regex "(dvadeset|trideset|(c|\x010d)etrdeset|pedeset|(\x0161|s)esdeset|sedamdeset|osamdeset|devedeset)"
+    [ regex "(dvadeset|trideset|(c|č)etrdeset|pedeset|(š|s)esdeset|sedamdeset|osamdeset|devedeset)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
@@ -322,7 +322,7 @@ ruleNumberDotNumber = Rule
   { name = "number dot number"
   , pattern =
     [ dimension Numeral
-    , regex "cijela|to(c|\x010d)ka|zarez"
+    , regex "cijela|to(c|č)ka|zarez"
     , numberWith TNumeral.grain isNothing
     ]
   , prod = \tokens -> case tokens of

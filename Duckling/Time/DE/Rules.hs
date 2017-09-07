@@ -37,7 +37,7 @@ instants =
        "heute|(um diese zeit|zu dieser zeit|um diesen zeitpunkt|zu diesem zeitpunkt)" )
  , ( "tomorrow"        , TG.Day   ,  1, "morgen" )
  , ( "yesterday"       , TG.Day   , -1, "gestern" )
- , ( "after tomorrow"  , TG.Day   ,  2, "(\x00fc)bermorgen" )
+ , ( "after tomorrow"  , TG.Day   ,  2, "(ü)bermorgen" )
  , ( "before yesterday", TG.Day   , -2, "vorgestern" )
  , ( "EOM|End of month", TG.Month ,  1, "(das )?ende des monats?" )
  , ( "EOY|End of year" , TG.Year  ,  1,
@@ -77,7 +77,7 @@ months :: [(Text, String)]
 months =
   [ ( "Januar"   , "januar|jan\\.?"             )
   , ( "Februar"  , "februar|feb\\.?"            )
-  , ( "Marz"     , "m(\x00e4)rz|m(\x00e4)r\\.?" )
+  , ( "Marz"     , "m(ä)rz|m(ä)r\\.?" )
   , ( "April"    , "april|apr\\.?"              )
   , ( "Mai"      , "mai\\.?"                    )
   , ( "Juni"     , "juni|jun\\.?"               )
@@ -103,7 +103,7 @@ seasons =
   [ ( "sommer"  , "sommer"                , monthDay  6 21, monthDay  9 23 )
   , ( "herbst"  , "herbst"                , monthDay  9 23, monthDay 12 21 )
   , ( "winter"  , "winter"                , monthDay 12 21, monthDay  3 20 )
-  , ( "fruhling", "fr(\x00fc)h(ling|jahr)", monthDay  3 20, monthDay  6 21 )
+  , ( "fruhling", "fr(ü)h(ling|jahr)", monthDay  3 20, monthDay  6 21 )
   ]
 
 ruleSeasons :: [Rule]
@@ -124,7 +124,7 @@ holidays =
   , ( "Tag der Deutschen Einheit"         , monthDay 10  3,
         "tag (der)? deutsc?hen? einheit" )
   , ( "Oesterreichischer Nationalfeiertag", monthDay 10 26,
-        "((\x00f6)sterreichischer?)? nationalfeiertag|national feiertag" )
+        "((ö)sterreichischer?)? nationalfeiertag|national feiertag" )
   , ( "halloween day"                     , monthDay 10 31, "hall?owe?en?" )
   , ( "Allerheiligen"                     , monthDay 11  1,
         "allerheiligen?|aller heiligen?" )
@@ -493,7 +493,7 @@ ruleTimeAfterNext = Rule
   { name = "<time> after next"
   , pattern =
     [ dimension Time
-    , regex "nach dem n(\x00e4)chsten"
+    , regex "nach dem n(ä)chsten"
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_) ->
@@ -519,7 +519,7 @@ ruleNoon :: Rule
 ruleNoon = Rule
   { name = "noon"
   , pattern =
-    [ regex "mittags?|zw(\x00f6)lf (uhr)?"
+    [ regex "mittags?|zw(ö)lf (uhr)?"
     ]
   , prod = \_ -> tt $ hour False 12
   }
@@ -528,7 +528,7 @@ ruleThisnextDayofweek :: Rule
 ruleThisnextDayofweek = Rule
   { name = "this|next <day-of-week>"
   , pattern =
-    [ regex "diese(n|r)|kommenden|n(\x00e4)chsten"
+    [ regex "diese(n|r)|kommenden|n(ä)chsten"
     , Predicate isADayOfWeek
     ]
   , prod = \tokens -> case tokens of
@@ -556,7 +556,7 @@ ruleNextCycle :: Rule
 ruleNextCycle = Rule
   { name = "next <cycle>"
   , pattern =
-    [ regex "n(\x00e4)chste(r|n|s)?|kommende(r|n|s)?"
+    [ regex "n(ä)chste(r|n|s)?|kommende(r|n|s)?"
     , dimension TimeGrain
     ]
   , prod = \tokens -> case tokens of
@@ -570,7 +570,7 @@ ruleTimeofdayApproximately = Rule
   { name = "<time-of-day> approximately"
   , pattern =
     [ Predicate isATimeOfDay
-    , regex "(um )?zirka|ungef(\x00e4)hr|etwa"
+    , regex "(um )?zirka|ungef(ä)hr|etwa"
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_) -> tt $ notLatent td
@@ -670,7 +670,7 @@ ruleInduringThePartofday :: Rule
 ruleInduringThePartofday = Rule
   { name = "in|during the <part-of-day>"
   , pattern =
-    [ regex "(in|an|am|w(\x00e4)h?rend)( der| dem| des)?"
+    [ regex "(in|an|am|w(ä)h?rend)( der| dem| des)?"
     , Predicate isAPartOfDay
     ]
   , prod = \tokens -> case tokens of
@@ -809,7 +809,7 @@ ruleFromTimeofdayTimeofdayInterval :: Rule
 ruleFromTimeofdayTimeofdayInterval = Rule
   { name = "from <time-of-day> - <time-of-day> (interval)"
   , pattern =
-    [ regex "(von|nach|ab|fr(\x00fc)hestens (um)?)"
+    [ regex "(von|nach|ab|fr(ü)hestens (um)?)"
     , Predicate isATimeOfDay
     , regex "((noch|aber|jedoch)? vor)|\\-|bis"
     , Predicate isATimeOfDay
@@ -824,7 +824,7 @@ ruleExactlyTimeofday :: Rule
 ruleExactlyTimeofday = Rule
   { name = "exactly <time-of-day>"
   , pattern =
-    [ regex "genau|exakt|p(\x00fc)nktlich|punkt( um)?"
+    [ regex "genau|exakt|p(ü)nktlich|punkt( um)?"
     , Predicate isATimeOfDay
     ]
   , prod = \tokens -> case tokens of
@@ -905,7 +905,7 @@ ruleTimeofdaySharp = Rule
   { name = "<time-of-day> sharp"
   , pattern =
     [ Predicate isATimeOfDay
-    , regex "genau|exakt|p(\x00fc)nktlich|punkt( um)?"
+    , regex "genau|exakt|p(ü)nktlich|punkt( um)?"
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_) -> tt $ notLatent td
@@ -963,7 +963,7 @@ ruleAboutTimeofday :: Rule
 ruleAboutTimeofday = Rule
   { name = "about <time-of-day>"
   , pattern =
-    [ regex "(um )?zirka|ca\\.?|ungef(\x00e4)hr|etwa|gegen"
+    [ regex "(um )?zirka|ca\\.?|ungef(ä)hr|etwa|gegen"
     , Predicate isATimeOfDay
     ]
   , prod = \tokens -> case tokens of
@@ -975,7 +975,7 @@ ruleUntilTimeofday :: Rule
 ruleUntilTimeofday = Rule
   { name = "until <time-of-day>"
   , pattern =
-    [ regex "vor|bis( zu[rm]?)?|sp(\x00e4)testens?"
+    [ regex "vor|bis( zu[rm]?)?|sp(ä)testens?"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -988,7 +988,7 @@ ruleUntilTimeofdayPostfix = Rule
   { name = "<time-of-day> until"
   , pattern =
     [ dimension Time
-    , regex "sp(\x00e4)testens"
+    , regex "sp(ä)testens"
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_:_) -> tt $ withDirection TTime.Before td
@@ -1071,7 +1071,7 @@ ruleNextTime :: Rule
 ruleNextTime = Rule
   { name = "next <time>"
   , pattern =
-    [ regex "(n(\x00e4)chste|kommende)[ns]?"
+    [ regex "(n(ä)chste|kommende)[ns]?"
     , Predicate isNotLatent
     ]
   , prod = \tokens -> case tokens of
@@ -1143,7 +1143,7 @@ ruleNextNCycle :: Rule
 ruleNextNCycle = Rule
   { name = "next n <cycle>"
   , pattern =
-    [ regex "n(\x00e4)chsten?|kommenden?"
+    [ regex "n(ä)chsten?|kommenden?"
     , Predicate $ isIntegerBetween 1 9999
     , dimension TimeGrain
     ]
@@ -1171,7 +1171,7 @@ ruleMorning :: Rule
 ruleMorning = Rule
   { name = "morning"
   , pattern =
-    [ regex "morgens|(in der )?fr(\x00fc)h|vor ?mittags?|am morgen"
+    [ regex "morgens|(in der )?fr(ü)h|vor ?mittags?|am morgen"
     ]
   , prod = \_ ->
       let from = hour False 3
@@ -1287,7 +1287,7 @@ ruleAfterTimeofday :: Rule
 ruleAfterTimeofday = Rule
   { name = "after <time-of-day>"
   , pattern =
-    [ regex "nach|ab|fr(\x00fc)he?stens"
+    [ regex "nach|ab|fr(ü)he?stens"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -1300,7 +1300,7 @@ ruleAfterTimeofdayPostfix = Rule
   { name = "<time-of-day> after"
   , pattern =
     [ dimension Time
-    , regex "fr(\x00fc)he?stens"
+    , regex "fr(ü)he?stens"
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_:_) -> tt $ withDirection TTime.After td
@@ -1393,7 +1393,7 @@ ruleAfterNextTime :: Rule
 ruleAfterNextTime = Rule
   { name = "after next <time>"
   , pattern =
-    [ regex "(\x00fc)ber ?n(\x00e4)chste[ns]?"
+    [ regex "(ü)ber ?n(ä)chste[ns]?"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of

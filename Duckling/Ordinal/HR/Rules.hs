@@ -152,7 +152,7 @@ ruleOrdinalsFirstth :: Rule
 ruleOrdinalsFirstth = Rule
   { name = "ordinals (first..19th)"
   , pattern =
-    [ regex "(prv(i|a|o(ga?)?)|drug(i|a|o(ga?)?)|tre(c|\x0107)(i|a|e(ga?)?)|(\x010d|c)etvrt(i|a|o(ga?)?)|pet(i|a|o(ga?)?)|(\x0161|s)est(i|a|o(ga?)?)|sedm(i|a|o(ga?)?)|osm(i|a|o(ga?)?)|devet(i|a|o(ga?)?)|deset(i|a|o(ga?)?)|jedanaest(i|a|o(ga?)?)|dvanaest(i|a|o(ga?)?)|trinaest(i|a|o(ga?)?)|(c|\x010d)etrnaest(i|a|o(ga?)?)|petnaest(i|a|o(ga?)?)|(s|\x0161)esnaest(i|a|o(ga?)?)|sedamnaest(i|a|o(ga?)?)|osamnaest(i|a|o(ga?)?)|devetnaest(i|a|o(ga?)?))"
+    [ regex "(prv(i|a|o(ga?)?)|drug(i|a|o(ga?)?)|tre(c|ć)(i|a|e(ga?)?)|(č|c)etvrt(i|a|o(ga?)?)|pet(i|a|o(ga?)?)|(š|s)est(i|a|o(ga?)?)|sedm(i|a|o(ga?)?)|osm(i|a|o(ga?)?)|devet(i|a|o(ga?)?)|deset(i|a|o(ga?)?)|jedanaest(i|a|o(ga?)?)|dvanaest(i|a|o(ga?)?)|trinaest(i|a|o(ga?)?)|(c|č)etrnaest(i|a|o(ga?)?)|petnaest(i|a|o(ga?)?)|(s|š)esnaest(i|a|o(ga?)?)|sedamnaest(i|a|o(ga?)?)|osamnaest(i|a|o(ga?)?)|devetnaest(i|a|o(ga?)?))"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->

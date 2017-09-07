@@ -28,7 +28,7 @@ ruleArInn :: Rule
 ruleArInn = Rule
   { name = "arú inné"
   , pattern =
-    [ regex "ar(\x00fa|u) inn(\x00e9|e)"
+    [ regex "ar(ú|u) inn(é|e)"
     ]
   , prod = \_ -> tt . cycleNth TG.Day $ - 2
   }
@@ -37,7 +37,7 @@ ruleNollaigNaMban :: Rule
 ruleNollaigNaMban = Rule
   { name = "Nollaig na mBan"
   , pattern =
-    [ regex "(l(\x00e1|a) |an )?nollaig (bheag|na mban)"
+    [ regex "(l(á|a) |an )?nollaig (bheag|na mban)"
     ]
   , prod = \_ -> tt $ monthDay 1 6
   }
@@ -58,7 +58,7 @@ ruleAnOrdinalCycleINdiaidhTime = Rule
     [ regex "an"
     , dimension Ordinal
     , dimension TimeGrain
-    , regex "(i ndiaidh|tar (\x00e9|e)is)"
+    , regex "(i ndiaidh|tar (é|e)is)"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -71,7 +71,7 @@ ruleInn :: Rule
 ruleInn = Rule
   { name = "inné"
   , pattern =
-    [ regex "inn(\x00e9|e)"
+    [ regex "inn(é|e)"
     ]
   , prod = \_ -> tt . cycleNth TG.Day $ - 1
   }
@@ -80,7 +80,7 @@ ruleLFhileBrde :: Rule
 ruleLFhileBrde = Rule
   { name = "Lá Fhéile Bríde"
   , pattern =
-    [ regex "(l(\x00e1|a) )?(fh(e|\x00e9)ile|'?le) bh?r(\x00ed|i)de"
+    [ regex "(l(á|a) )?(fh(e|é)ile|'?le) bh?r(í|i)de"
     ]
   , prod = \_ -> tt $ monthDay 2 1
   }
@@ -89,7 +89,7 @@ ruleLFhileVailintn :: Rule
 ruleLFhileVailintn = Rule
   { name = "Lá Fhéile Vailintín"
   , pattern =
-    [ regex "(l(\x00e1|a) )?(fh(e|\x00e9)ile|'?le) vailint(\x00ed|i)n"
+    [ regex "(l(á|a) )?(fh(e|é)ile|'?le) vailint(í|i)n"
     ]
   , prod = \_ -> tt $ monthDay 2 14
   }
@@ -125,7 +125,7 @@ ruleTimeSeoChugainn = Rule
   { name = "<time> seo chugainn"
   , pattern =
     [ Predicate isNotLatent
-    , regex "seo (chugainn|at(a|\x00e1) ag teacht)"
+    , regex "seo (chugainn|at(a|á) ag teacht)"
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_) ->
@@ -137,7 +137,7 @@ ruleAmrach :: Rule
 ruleAmrach = Rule
   { name = "amárach"
   , pattern =
-    [ regex "am(\x00e1|a)rach"
+    [ regex "am(á|a)rach"
     ]
   , prod = \_ -> tt $ cycleNth TG.Day 1
   }
@@ -190,7 +190,7 @@ ruleCycleShin = Rule
   { name = "<cycle> ó shin"
   , pattern =
     [ dimension TimeGrain
-    , regex "(\x00f3|o) shin"
+    , regex "(ó|o) shin"
     ]
   , prod = \tokens -> case tokens of
       (Token TimeGrain grain:_) ->
@@ -287,7 +287,7 @@ ruleCycleInniu = Rule
   , pattern =
     [ Predicate $ isIntegerBetween 1 9999
     , dimension TimeGrain
-    , regex "(\x00f3|o)(n l(\x00e1|a) (at(\x00e1|a) )?)?inniu"
+    , regex "(ó|o)(n l(á|a) (at(á|a) )?)?inniu"
     ]
   , prod = \tokens -> case tokens of
       (token:Token TimeGrain grain:_) -> do
@@ -302,7 +302,7 @@ ruleOrdinalCycleINdiaidhTime = Rule
   , pattern =
     [ dimension Ordinal
     , dimension TimeGrain
-    , regex "(i ndiaidh|tar (\x00e9|e)is)"
+    , regex "(i ndiaidh|tar (é|e)is)"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -358,7 +358,7 @@ ruleLNaNaithreacha :: Rule
 ruleLNaNaithreacha = Rule
   { name = "Lá na nAithreacha"
   , pattern =
-    [ regex "l(\x00e1|a) na naithreacha"
+    [ regex "l(á|a) na naithreacha"
     ]
   , prod = \_ -> tt $ nthDOWOfMonth 2 7 6
   }
@@ -367,7 +367,7 @@ ruleArAmrach :: Rule
 ruleArAmrach = Rule
   { name = "arú amárach"
   , pattern =
-    [ regex "ar(\x00fa|u) am(\x00e1|a)rach"
+    [ regex "ar(ú|u) am(á|a)rach"
     ]
   , prod = \_ -> tt $ cycleNth TG.Day 2
   }
@@ -418,7 +418,7 @@ ruleAnNollaig :: Rule
 ruleAnNollaig = Rule
   { name = "An Nollaig"
   , pattern =
-    [ regex "(l(\x00e1|a) |an )?(nollai?g)"
+    [ regex "(l(á|a) |an )?(nollai?g)"
     ]
   , prod = \_ -> tt $ monthDay 12 25
   }
@@ -461,7 +461,7 @@ ruleLFhilePdraig :: Rule
 ruleLFhilePdraig = Rule
   { name = "Lá Fhéile Pádraig"
   , pattern =
-    [ regex "(l(\x00e1|a) )?(fh(e|\x00e9)ile|'?le) ph?(\x00e1|a)draig"
+    [ regex "(l(á|a) )?(fh(e|é)ile|'?le) ph?(á|a)draig"
     ]
   , prod = \_ -> tt $ monthDay 3 17
   }
@@ -472,7 +472,7 @@ ruleAnCycleINdiaidhTime = Rule
   , pattern =
     [ regex "the"
     , dimension TimeGrain
-    , regex "(i ndiaidh|tar (\x00e9|e)is)"
+    , regex "(i ndiaidh|tar (é|e)is)"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -526,7 +526,7 @@ ruleDNamedday :: Rule
 ruleDNamedday = Rule
   { name = "dé named-day"
   , pattern =
-    [ regex "d(\x00e9|e)"
+    [ regex "d(é|e)"
     , Predicate isADayOfWeek
     ]
   , prod = \tokens -> case tokens of
@@ -603,9 +603,9 @@ ruleAnNamedday = Rule
 daysOfWeek :: [(Text, String)]
 daysOfWeek =
   [ ( "Monday"   , "luai?n|lu\\.?"                       )
-  , ( "Tuesday"  , "mh?(\x00e1|a)irt|m(\x00e1|a)?\\.?"   )
-  , ( "Wednesday", "ch?(\x00e9|e)adaoin|c(\x00e9|e)\\.?" )
-  , ( "Thursday" , "d(\x00e9|e)ardaoin|d(\x00e9|e)?\\.?" )
+  , ( "Tuesday"  , "mh?(á|a)irt|m(á|a)?\\.?"   )
+  , ( "Wednesday", "ch?(é|e)adaoin|c(é|e)\\.?" )
+  , ( "Thursday" , "d(é|e)ardaoin|d(é|e)?\\.?" )
   , ( "Friday"   , "h?aoine|ao\\.?"                      )
   , ( "Saturday" , "sathai?rn|sa\\.?"                    )
   , ( "Sunday"   , "domhnai?[cg]h|do\\.?"                )
@@ -622,18 +622,18 @@ ruleDaysOfWeek = zipWith go daysOfWeek [1..7]
 
 months :: [(Text, String)]
 months =
-  [ ( "January"  , "(mh?(\x00ed|i) )?(an )?t?ean(\x00e1|a)ir|ean\\.?"          )
-  , ( "February" , "(mh?(\x00ed|i) )?(na )?feabhra|fea\\.?"                    )
-  , ( "March"    , "(mh?(\x00ed|i) )?(an )?mh?(\x00e1|a)rta|m(\x00e1|a)r\\.?"  )
-  , ( "April"    , "(mh?(\x00ed|i) )?(an )?t?aibre(\x00e1|a)i?n|abr\\.?"       )
-  , ( "May"      , "(mh?(\x00ed|i) )?(na )?bh?ealtaine|bea\\.?"                )
-  , ( "June"     , "(mh?(\x00ed|i) )?(an )?mh?eith(ea|i)mh|mei\\.?"            )
-  , ( "July"     , "(mh?(\x00ed|i) )?i(\x00fa|u)il|i(\x00fa|u)i\\.?"           )
-  , ( "August"   , "(mh?(\x00ed|i) )?(na )?l(\x00fa|u)nasa|l(\x00fa|u)n\\.?"   )
-  , ( "September", "(mh?(\x00ed|i) )?mh?e(\x00e1|a)n f(\x00f3|o)mhair|mef?\\.?")
-  , ( "October"  , "(mh?(\x00ed|i) )?(na )?nollai?g|nol\\.?"                   )
-  , ( "November" , "(mh?(\x00ed|i) )?(na )?samh(ain|na)|sam\\.?"               )
-  , ( "December" , "(mh?(\x00ed|i) )?(na )?nollai?g|nol\\.?"                   )
+  [ ( "January"  , "(mh?(í|i) )?(an )?t?ean(á|a)ir|ean\\.?"          )
+  , ( "February" , "(mh?(í|i) )?(na )?feabhra|fea\\.?"                    )
+  , ( "March"    , "(mh?(í|i) )?(an )?mh?(á|a)rta|m(á|a)r\\.?"  )
+  , ( "April"    , "(mh?(í|i) )?(an )?t?aibre(á|a)i?n|abr\\.?"       )
+  , ( "May"      , "(mh?(í|i) )?(na )?bh?ealtaine|bea\\.?"                )
+  , ( "June"     , "(mh?(í|i) )?(an )?mh?eith(ea|i)mh|mei\\.?"            )
+  , ( "July"     , "(mh?(í|i) )?i(ú|u)il|i(ú|u)i\\.?"           )
+  , ( "August"   , "(mh?(í|i) )?(na )?l(ú|u)nasa|l(ú|u)n\\.?"   )
+  , ( "September", "(mh?(í|i) )?mh?e(á|a)n f(ó|o)mhair|mef?\\.?")
+  , ( "October"  , "(mh?(í|i) )?(na )?nollai?g|nol\\.?"                   )
+  , ( "November" , "(mh?(í|i) )?(na )?samh(ain|na)|sam\\.?"               )
+  , ( "December" , "(mh?(í|i) )?(na )?nollai?g|nol\\.?"                   )
   ]
 
 ruleMonths :: [Rule]
@@ -650,7 +650,7 @@ ruleCycleINdiaidhTime = Rule
   { name = "<cycle> i ndiaidh <time>"
   , pattern =
     [ dimension TimeGrain
-    , regex "(i ndiaidh|tar (\x00e9|e)is)"
+    , regex "(i ndiaidh|tar (é|e)is)"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of

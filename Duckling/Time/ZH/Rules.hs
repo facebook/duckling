@@ -33,7 +33,7 @@ ruleTheDayAfterTomorrow :: Rule
 ruleTheDayAfterTomorrow = Rule
   { name = "the day after tomorrow"
   , pattern =
-    [ regex "\x540e\x5929|\x5f8c\x5929|\x5f8c\x65e5"
+    [ regex "后天|後天|後日"
     ]
   , prod = \_ -> tt $ cycleNth TG.Day 2
   }
@@ -43,7 +43,7 @@ ruleRelativeMinutesTotillbeforeIntegerHourofday = Rule
   { name = "relative minutes to|till|before <integer> (hour-of-day)"
   , pattern =
     [ Predicate isAnHourOfDay
-    , regex "(\x70b9|\x9ede)\x5dee"
+    , regex "(点|點)差"
     , Predicate $ isIntegerBetween 1 59
     ]
   , prod = \tokens -> case tokens of
@@ -59,7 +59,7 @@ ruleRelativeMinutesTotillbeforeNoonmidnight = Rule
   { name = "relative minutes to|till|before noon|midnight"
   , pattern =
     [ Predicate isMidnightOrNoon
-    , regex "\x5dee"
+    , regex "差"
     , Predicate $ isIntegerBetween 1 59
     ]
   , prod = \tokens -> case tokens of
@@ -75,7 +75,7 @@ ruleRelativeMinutesAfterpastIntegerHourofday = Rule
   { name = "relative minutes after|past <integer> (hour-of-day)"
   , pattern =
     [ Predicate isAnHourOfDay
-    , regex "\x70b9|\x9ede"
+    , regex "点|點"
     , Predicate $ isIntegerBetween 1 59
     ]
   , prod = \tokens -> case tokens of
@@ -93,7 +93,7 @@ ruleRelativeMinutesAfterpastNoonmidnight = Rule
   { name = "relative minutes after|past noon|midnight"
   , pattern =
     [ Predicate isMidnightOrNoon
-    , regex "\x8fc7|\x904e"
+    , regex "过|\x904e"
     , Predicate $ isIntegerBetween 1 59
     ]
   , prod = \tokens -> case tokens of
@@ -111,8 +111,8 @@ ruleQuarterTotillbeforeIntegerHourofday = Rule
   { name = "quarter to|till|before <integer> (hour-of-day)"
   , pattern =
     [ Predicate isAnHourOfDay
-    , regex "(\x70b9|\x9ede)\x5dee"
-    , regex "\x4e00\x523b"
+    , regex "(点|點)差"
+    , regex "一刻"
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_) -> Token Time <$> minutesBefore 15 td
@@ -123,8 +123,8 @@ ruleQuarterTotillbeforeNoonmidnight = Rule
   { name = "quarter to|till|before noon|midnight"
   , pattern =
     [ Predicate isMidnightOrNoon
-    , regex "\x5dee"
-    , regex "\x4e00\x523b"
+    , regex "差"
+    , regex "一刻"
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_) -> Token Time <$> minutesBefore 15 td
@@ -135,8 +135,8 @@ ruleQuarterAfterpastIntegerHourofday = Rule
   { name = "quarter after|past <integer> (hour-of-day)"
   , pattern =
     [ Predicate isAnHourOfDay
-    , regex "\x70b9|\x9ede"
-    , regex "\x4e00\x523b"
+    , regex "点|點"
+    , regex "一刻"
     ]
   , prod = \tokens -> case tokens of
       (Token Time TimeData {TTime.form = Just (TTime.TimeOfDay (Just hours) _)}:
@@ -148,8 +148,8 @@ ruleQuarterAfterpastNoonmidnight = Rule
   { name = "quarter after|past noon|midnight"
   , pattern =
     [ Predicate isMidnightOrNoon
-    , regex "\x8fc7"
-    , regex "\x4e00\x523b"
+    , regex "过"
+    , regex "一刻"
     ]
   , prod = \tokens -> case tokens of
       (Token Time TimeData {TTime.form = Just (TTime.TimeOfDay (Just hours) _)}:
@@ -162,8 +162,8 @@ ruleHalfTotillbeforeIntegerHourofday = Rule
   { name = "half to|till|before <integer> (hour-of-day)"
   , pattern =
     [ Predicate isAnHourOfDay
-    , regex "(\x70b9|\x9ede)\x5dee"
-    , regex "\x534a"
+    , regex "(点|點)差"
+    , regex "半"
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_) -> Token Time <$> minutesBefore 30 td
@@ -174,8 +174,8 @@ ruleHalfTotillbeforeNoonmidnight = Rule
   { name = "half to|till|before noon|midnight"
   , pattern =
     [ Predicate isMidnightOrNoon
-    , regex "\x5dee"
-    , regex "\x534a"
+    , regex "差"
+    , regex "半"
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_) -> Token Time <$> minutesBefore 30 td
@@ -186,8 +186,8 @@ ruleHalfAfterpastIntegerHourofday = Rule
   { name = "half after|past <integer> (hour-of-day)"
   , pattern =
     [ Predicate isAnHourOfDay
-    , regex "\x70b9|\x9ede"
-    , regex "\x534a"
+    , regex "点|點"
+    , regex "半"
     ]
   , prod = \tokens -> case tokens of
       (Token Time TimeData {TTime.form = Just (TTime.TimeOfDay (Just hours) _)}:
@@ -199,8 +199,8 @@ ruleHalfAfterpastNoonmidnight = Rule
   { name = "half after|past noon|midnight"
   , pattern =
     [ Predicate isMidnightOrNoon
-    , regex "\x8fc7"
-    , regex "\x534a"
+    , regex "过"
+    , regex "半"
     ]
   , prod = \tokens -> case tokens of
       (Token Time TimeData {TTime.form = Just (TTime.TimeOfDay (Just hours) _)}:
@@ -212,7 +212,7 @@ ruleValentinesDay :: Rule
 ruleValentinesDay = Rule
   { name = "valentine's day"
   , pattern =
-    [ regex "\x60c5\x4eba(\x8282|\x7bc0)"
+    [ regex "情人(节|節)"
     ]
   , prod = \_ -> tt $ monthDay 2 14
   }
@@ -235,7 +235,7 @@ ruleThisDayofweek :: Rule
 ruleThisDayofweek = Rule
   { name = "this <day-of-week>"
   , pattern =
-    [ regex "\x8fd9|\x9019|\x4eca(\x4e2a|\x500b)?"
+    [ regex "这|這|今(个|個)?"
     , Predicate isADayOfWeek
     ]
   , prod = \tokens -> case tokens of
@@ -249,7 +249,7 @@ ruleNthTimeOfTime2 = Rule
   { name = "nth <time> of <time>"
   , pattern =
     [ dimension Time
-    , regex "\x7684"
+    , regex "的"
     , dimension Ordinal
     , dimension Time
     ]
@@ -263,7 +263,7 @@ ruleNewYearsDay :: Rule
 ruleNewYearsDay = Rule
   { name = "new year's day"
   , pattern =
-    [ regex "\x5143\x65e6(\x8282|\x7bc0)?"
+    [ regex "元旦(节|節)?"
     ]
   , prod = \_ -> tt $ monthDay 1 1
   }
@@ -272,7 +272,7 @@ ruleLastTime :: Rule
 ruleLastTime = Rule
   { name = "last <time>"
   , pattern =
-    [ regex "\x53bb|\x4e0a(\x4e2a|\x500b)?"
+    [ regex "去|上(个|個)?"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -285,7 +285,7 @@ ruleInDuration :: Rule
 ruleInDuration = Rule
   { name = "in <duration>"
   , pattern =
-    [ regex "\x518d"
+    [ regex "再"
     , dimension Duration
     ]
   , prod = \tokens -> case tokens of
@@ -298,7 +298,7 @@ ruleNow :: Rule
 ruleNow = Rule
   { name = "now"
   , pattern =
-    [ regex "\x73b0\x5728|\x6b64\x65f6|\x6b64\x523b|\x5f53\x524d|\x73fe\x5728|\x6b64\x6642|\x7576\x524d|\x5b9c\x5bb6|\x800c\x5bb6|\x4f9d\x5bb6"
+    [ regex "现在|此时|此刻|当前|現在|此時|當前|\x5b9c\x5bb6|\x800c\x5bb6|\x4f9d\x5bb6"
     ]
   , prod = \_ -> tt $ cycleNth TG.Second 0
   }
@@ -307,7 +307,7 @@ ruleNationalDay :: Rule
 ruleNationalDay = Rule
   { name = "national day"
   , pattern =
-    [ regex "(\x56fd\x5e86|\x570b\x6176)(\x8282|\x7bc0)?"
+    [ regex "(国庆|國慶)(节|節)?"
     ]
   , prod = \_ -> tt $ monthDay 10 1
   }
@@ -316,9 +316,9 @@ ruleTheCycleAfterTime :: Rule
 ruleTheCycleAfterTime = Rule
   { name = "the <cycle> after <time>"
   , pattern =
-    [ regex "\x90a3"
+    [ regex "那"
     , dimension TimeGrain
-    , regex "(\x4e4b)?(\x540e|\x5f8c)"
+    , regex "(之)?(后|後)"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -331,9 +331,9 @@ ruleTheCycleBeforeTime :: Rule
 ruleTheCycleBeforeTime = Rule
   { name = "the <cycle> before <time>"
   , pattern =
-    [ regex "\x90a3"
+    [ regex "那"
     , dimension TimeGrain
-    , regex "(\x4e4b)?\x524d"
+    , regex "(之)?前"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -346,7 +346,7 @@ ruleNoon :: Rule
 ruleNoon = Rule
   { name = "noon"
   , pattern =
-    [ regex "\x4e2d\x5348"
+    [ regex "中午"
     ]
   , prod = \_ -> tt $ hour False 12
   }
@@ -355,7 +355,7 @@ ruleToday :: Rule
 ruleToday = Rule
   { name = "today"
   , pattern =
-    [ regex "\x4eca\x5929|\x4eca\x65e5"
+    [ regex "今天|今日"
     ]
   , prod = \_ -> tt $ cycleNth TG.Day 0
   }
@@ -364,7 +364,7 @@ ruleNextDayofweek :: Rule
 ruleNextDayofweek = Rule
   { name = "next <day-of-week>"
   , pattern =
-    [ regex "\x660e|\x4e0b(\x4e2a|\x500b)?"
+    [ regex "明|下(个|個)?"
     , Predicate isADayOfWeek
     ]
   , prod = \tokens -> case tokens of
@@ -377,7 +377,7 @@ ruleTheDayBeforeYesterday :: Rule
 ruleTheDayBeforeYesterday = Rule
   { name = "the day before yesterday"
   , pattern =
-    [ regex "\x524d\x5929|\x524d\x65e5"
+    [ regex "前天|前日"
     ]
   , prod = \_ -> tt . cycleNth TG.Day $ - 2
   }
@@ -386,7 +386,7 @@ ruleLaborDay :: Rule
 ruleLaborDay = Rule
   { name = "labor day"
   , pattern =
-    [ regex "\x52b3\x52a8\x8282|\x52de\x52d5\x7bc0"
+    [ regex "劳动节|勞動節"
     ]
   , prod = \_ -> tt $ monthDay 5 1
   }
@@ -395,7 +395,7 @@ ruleNextCycle :: Rule
 ruleNextCycle = Rule
   { name = "next <cycle>"
   , pattern =
-    [ regex "\x4e0b(\x4e2a|\x500b)?"
+    [ regex "下(个|個)?"
     , dimension TimeGrain
     ]
   , prod = \tokens -> case tokens of
@@ -409,7 +409,7 @@ ruleDurationFromNow = Rule
   { name = "<duration> from now"
   , pattern =
     [ dimension Duration
-    , regex "\x540e|\x5f8c|\x4e4b\x5f8c"
+    , regex "后|後|之後"
     ]
   , prod = \tokens -> case tokens of
       (Token Duration dd:_) ->
@@ -421,7 +421,7 @@ ruleLastCycle :: Rule
 ruleLastCycle = Rule
   { name = "last <cycle>"
   , pattern =
-    [ regex "\x4e0a(\x4e2a|\x500b)?"
+    [ regex "上(个|個)?"
     , dimension TimeGrain
     ]
   , prod = \tokens -> case tokens of
@@ -434,7 +434,7 @@ ruleAfternoon :: Rule
 ruleAfternoon = Rule
   { name = "afternoon"
   , pattern =
-    [ regex "\x4e0b\x5348|\x4e2d\x5348|\x664f\x665d"
+    [ regex "下午|中午|\x664f\x665d"
     ]
   , prod = \_ ->
       let from = hour False 12
@@ -447,7 +447,7 @@ ruleMidnight :: Rule
 ruleMidnight = Rule
   { name = "midnight"
   , pattern =
-    [ regex "\x5348\x591c|\x51cc\x6668|\x534a\x591c"
+    [ regex "午夜|凌晨|半夜"
     ]
   , prod = \_ -> tt $ hour False 0
   }
@@ -457,7 +457,7 @@ ruleInduringThePartofday = Rule
   { name = "in|during the <part-of-day>"
   , pattern =
     [ Predicate isAPartOfDay
-    , regex "\x70b9|\x9ede"
+    , regex "点|點"
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_) ->
@@ -511,7 +511,7 @@ ruleYearNumericWithYearSymbol = Rule
   { name = "year (numeric with year symbol)"
   , pattern =
     [ Predicate $ isIntegerBetween 1000 9999
-    , regex "\x5e74"
+    , regex "年"
     ]
   , prod = \tokens -> case tokens of
       (token:_) -> do
@@ -525,7 +525,7 @@ ruleDurationAgo = Rule
   { name = "<duration> ago"
   , pattern =
     [ dimension Duration
-    , regex "(\x4e4b)?\x524d"
+    , regex "(之)?前"
     ]
   , prod = \tokens -> case tokens of
       (Token Duration dd:_) ->
@@ -551,7 +551,7 @@ ruleLastNCycle :: Rule
 ruleLastNCycle = Rule
   { name = "last n <cycle>"
   , pattern =
-    [ regex "\x4e0a|\x524d"
+    [ regex "上|前"
     , Predicate $ isIntegerBetween 1 9999
     , dimension TimeGrain
     ]
@@ -568,7 +568,7 @@ ruleNCycleLast = Rule
   , pattern =
     [ Predicate $ isIntegerBetween 1 9999
     , dimension TimeGrain
-    , regex "(\x4e4b)?\x524d"
+    , regex "(之)?前"
     ]
   , prod = \tokens -> case tokens of
       (token:Token TimeGrain grain:_) -> do
@@ -608,7 +608,7 @@ ruleWeekend :: Rule
 ruleWeekend = Rule
   { name = "week-end"
   , pattern =
-    [ regex "\x5468\x672b|\x9031\x672b"
+    [ regex "周末|週末"
     ]
   , prod = \_ -> tt weekend
   }
@@ -617,7 +617,7 @@ ruleLastYear :: Rule
 ruleLastYear = Rule
   { name = "last year"
   , pattern =
-    [ regex "\x53bb\x5e74|\x4e0a\x5e74"
+    [ regex "去年|上年"
     ]
   , prod = \_ -> tt . cycleNth TG.Year $ - 1
   }
@@ -639,7 +639,7 @@ ruleNextTime :: Rule
 ruleNextTime = Rule
   { name = "next <time>"
   , pattern =
-    [ regex "\x660e|\x4e0b(\x4e2a|\x500b)?"
+    [ regex "明|下(个|個)?"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -667,7 +667,7 @@ ruleNextNCycle :: Rule
 ruleNextNCycle = Rule
   { name = "next n <cycle>"
   , pattern =
-    [ regex "\x4e0b|\x540e|\x5f8c"
+    [ regex "下|后|後"
     , Predicate $ isIntegerBetween 1 9999
     , dimension TimeGrain
     ]
@@ -684,7 +684,7 @@ ruleNCycleNext = Rule
   , pattern =
     [ Predicate $ isIntegerBetween 1 9999
     , dimension TimeGrain
-    , regex "\x4e0b|(\x4e4b)?\x540e|(\x4e4b)?\x5f8c"
+    , regex "下|(之)?后|(之)?後"
     ]
   , prod = \tokens -> case tokens of
       (token:Token TimeGrain grain:_) -> do
@@ -697,7 +697,7 @@ ruleMorning :: Rule
 ruleMorning = Rule
   { name = "morning"
   , pattern =
-    [ regex "\x65e9\x4e0a|\x65e9\x6668|\x671d(\x982d)?\x65e9"
+    [ regex "早上|早晨|\x671d(\x982d)?早"
     ]
   , prod = \_ ->
       let from = hour False 4
@@ -710,7 +710,7 @@ ruleNextYear :: Rule
 ruleNextYear = Rule
   { name = "next year"
   , pattern =
-    [ regex "\x660e\x5e74|\x4e0b\x5e74"
+    [ regex "明年|下年"
     ]
   , prod = \_ -> tt $ cycleNth TG.Year 1
   }
@@ -719,7 +719,7 @@ ruleThisCycle :: Rule
 ruleThisCycle = Rule
   { name = "this <cycle>"
   , pattern =
-    [ regex "(\x8fd9|\x9019)(\x4e00)?|\x4eca\x500b"
+    [ regex "(这|這)(一)?|今個"
     , dimension TimeGrain
     ]
   , prod = \tokens -> case tokens of
@@ -732,7 +732,7 @@ ruleThisTime :: Rule
 ruleThisTime = Rule
   { name = "this <time>"
   , pattern =
-    [ regex "\x4eca(\x4e2a|\x500b)?|\x8fd9(\x4e2a)?|\x9019(\x500b)?"
+    [ regex "今(个|個)?|这(个)?|這(個)?"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -745,7 +745,7 @@ ruleYesterday :: Rule
 ruleYesterday = Rule
   { name = "yesterday"
   , pattern =
-    [ regex "\x6628\x5929|\x6628\x65e5|\x5c0b\x65e5"
+    [ regex "昨天|昨日|\x5c0b日"
     ]
   , prod = \_ -> tt . cycleNth TG.Day $ - 1
   }
@@ -754,7 +754,7 @@ ruleChristmas :: Rule
 ruleChristmas = Rule
   { name = "christmas"
   , pattern =
-    [ regex "(\x5723\x8bde|\x8056\x8a95)(\x8282|\x7bc0)?"
+    [ regex "(圣诞|聖誕)(节|節)?"
     ]
   , prod = \_ -> tt $ monthDay 12 25
   }
@@ -763,7 +763,7 @@ ruleLastNight :: Rule
 ruleLastNight = Rule
   { name = "last night"
   , pattern =
-    [ regex "\x6628\x665a|\x6628\x5929\x665a\x4e0a|\x5c0b\x665a"
+    [ regex "昨晚|昨天晚上|\x5c0b晚"
     ]
   , prod = \_ -> do
       let td1 = cycleNth TG.Day $ - 1
@@ -788,7 +788,7 @@ ruleArmysDay :: Rule
 ruleArmysDay = Rule
   { name = "army's day"
   , pattern =
-    [ regex "\x5efa(\x519b\x8282|\x8ecd\x7bc0)"
+    [ regex "建(军节|軍節)"
     ]
   , prod = \_ -> tt $ monthDay 8 1
   }
@@ -799,7 +799,7 @@ ruleNamedmonthDayofmonth = Rule
   , pattern =
     [ Predicate isAMonth
     , dimension Numeral
-    , regex "\x53f7|\x865f|\x65e5"
+    , regex "号|號|日"
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:token:_) -> Token Time <$> intersectDOM td token
@@ -810,7 +810,7 @@ ruleLastTuesdayLastJuly :: Rule
 ruleLastTuesdayLastJuly = Rule
   { name = "last tuesday, last july"
   , pattern =
-    [ regex "\x4e0a"
+    [ regex "上"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -837,7 +837,7 @@ ruleMonthNumericWithMonthSymbol = Rule
   { name = "month (numeric with month symbol)"
   , pattern =
     [ Predicate $ isIntegerBetween 1 12
-    , regex "\x6708"
+    , regex "月"
     ]
   , prod = \tokens -> case tokens of
       (token:_) -> do
@@ -850,7 +850,7 @@ ruleTonight :: Rule
 ruleTonight = Rule
   { name = "tonight"
   , pattern =
-    [ regex "\x4eca\x665a|\x4eca\x5929\x665a\x4e0a"
+    [ regex "今晚|今天晚上"
     ]
   , prod = \_ -> do
       let td1 = cycleNth TG.Day 0
@@ -862,7 +862,7 @@ ruleTomorrowNight :: Rule
 ruleTomorrowNight = Rule
   { name = "tomorrow night"
   , pattern =
-    [ regex "\x660e\x665a|\x660e\x5929\x665a\x4e0a|\x807d\x665a"
+    [ regex "明晚|明天晚上|\x807d晚"
     ]
   , prod = \_ -> do
       let td1 = cycleNth TG.Day 1
@@ -874,7 +874,7 @@ ruleChildrensDay :: Rule
 ruleChildrensDay = Rule
   { name = "children's day"
   , pattern =
-    [ regex "(\x513f|\x5152)\x7ae5(\x8282|\x7bc0)"
+    [ regex "(儿|兒)童(节|節)"
     ]
   , prod = \_ -> tt $ monthDay 6 1
   }
@@ -883,7 +883,7 @@ ruleThisYear :: Rule
 ruleThisYear = Rule
   { name = "this year"
   , pattern =
-    [ regex "\x4eca\x5e74"
+    [ regex "今年"
     ]
   , prod = \_ -> tt $ cycleNth TG.Year 0
   }
@@ -904,7 +904,7 @@ ruleWomensDay :: Rule
 ruleWomensDay = Rule
   { name = "women's day"
   , pattern =
-    [ regex "(\x5987|\x5a66)\x5973(\x8282|\x7bc0)"
+    [ regex "(妇|婦)女(节|節)"
     ]
   , prod = \_ -> tt $ monthDay 3 8
   }
@@ -913,7 +913,7 @@ ruleEveningnight :: Rule
 ruleEveningnight = Rule
   { name = "evening|night"
   , pattern =
-    [ regex "\x665a\x4e0a|\x665a\x95f4"
+    [ regex "晚上|晚间"
     ]
   , prod = \_ ->
       let from = hour False 18
@@ -941,7 +941,7 @@ ruleTomorrow :: Rule
 ruleTomorrow = Rule
   { name = "tomorrow"
   , pattern =
-    [ regex "\x660e\x5929|\x660e\x65e5|\x807d\x65e5"
+    [ regex "明天|明日|\x807d日"
     ]
   , prod = \_ -> tt $ cycleNth TG.Day 1
   }
@@ -951,7 +951,7 @@ ruleTimeofdayOclock = Rule
   { name = "<time-of-day> o'clock"
   , pattern =
     [ Predicate isATimeOfDay
-    , regex "\x9ede|\x70b9|\x6642"
+    , regex "點|点|時"
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_) ->
@@ -976,13 +976,13 @@ ruleTimezone = Rule
 
 daysOfWeek :: [(Text, String)]
 daysOfWeek =
-  [ ( "Monday", "\x661f\x671f\x4e00|\x5468\x4e00|\x793c\x62dc\x4e00|\x79ae\x62dc\x4e00|\x9031\x4e00" )
-  , ( "Tuesday", "\x661f\x671f\x4e8c|\x5468\x4e8c|\x793c\x62dc\x4e8c|\x79ae\x62dc\x4e8c|\x9031\x4e8c" )
-  , ( "Wednesday", "\x661f\x671f\x4e09|\x5468\x4e09|\x793c\x62dc\x4e09|\x79ae\x62dc\x4e09|\x9031\x4e09" )
-  , ( "Thursday", "\x661f\x671f\x56db|\x5468\x56db|\x793c\x62dc\x56db|\x79ae\x62dc\x56db|\x9031\x56db" )
-  , ( "Friday", "\x661f\x671f\x4e94|\x5468\x4e94|\x793c\x62dc\x4e94|\x79ae\x62dc\x4e94|\x9031\x4e94" )
-  , ( "Saturday", "\x661f\x671f\x516d|\x5468\x516d|\x793c\x62dc\x516d|\x79ae\x62dc\x516d|\x9031\x516d" )
-  , ( "Sunday", "\x661f\x671f\x65e5|\x661f\x671f\x5929|\x793c\x62dc\x5929|\x5468\x65e5|\x79ae\x62dc\x5929|\x9031\x65e5|\x79ae\x62dc\x65e5" )
+  [ ( "Monday", "星期一|周一|礼拜一|禮拜一|週一" )
+  , ( "Tuesday", "星期二|周二|礼拜二|禮拜二|週二" )
+  , ( "Wednesday", "星期三|周三|礼拜三|禮拜三|週三" )
+  , ( "Thursday", "星期四|周四|礼拜四|禮拜四|週四" )
+  , ( "Friday", "星期五|周五|礼拜五|禮拜五|週五" )
+  , ( "Saturday", "星期六|周六|礼拜六|禮拜六|週六" )
+  , ( "Sunday", "星期日|星期天|礼拜天|周日|禮拜天|週日|禮拜日" )
   ]
 
 ruleDaysOfWeek :: [Rule]
@@ -996,18 +996,18 @@ ruleDaysOfWeek = zipWith go daysOfWeek [1..7]
 
 months :: [(Text, String)]
 months =
-  [ ( "January", "\x4e00\x6708(\x4efd)?" )
-  , ( "February", "\x4e8c\x6708(\x4efd)?" )
-  , ( "March", "\x4e09\x6708(\x4efd)?" )
-  , ( "April", "\x56db\x6708(\x4efd)?" )
-  , ( "May", "\x4e94\x6708(\x4efd)?" )
-  , ( "June", "\x516d\x6708(\x4efd)?" )
-  , ( "July", "\x4e03\x6708(\x4efd)?" )
-  , ( "August", "\x516b\x6708(\x4efd)?" )
-  , ( "September", "\x4e5d\x6708(\x4efd)?" )
-  , ( "October", "\x5341\x6708(\x4efd)?" )
-  , ( "November", "\x5341\x4e00\x6708(\x4efd)?" )
-  , ( "December", "\x5341\x4e8c\x6708(\x4efd)?" )
+  [ ( "January", "一月(份)?" )
+  , ( "February", "二月(份)?" )
+  , ( "March", "三月(份)?" )
+  , ( "April", "四月(份)?" )
+  , ( "May", "五月(份)?" )
+  , ( "June", "六月(份)?" )
+  , ( "July", "七月(份)?" )
+  , ( "August", "八月(份)?" )
+  , ( "September", "九月(份)?" )
+  , ( "October", "十月(份)?" )
+  , ( "November", "十一月(份)?" )
+  , ( "December", "十二月(份)?" )
   ]
 
 ruleMonths :: [Rule]

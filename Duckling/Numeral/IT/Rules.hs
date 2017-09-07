@@ -174,7 +174,7 @@ ruleNumeralsSuffixesKMG = Rule
   { name = "numbers suffixes (K, M, G)"
   , pattern =
     [ dimension Numeral
-    , regex "([kmg])(?=[\\W\\$\x20ac]|$)"
+    , regex "([kmg])(?=[\\W\\$€]|$)"
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral (NumeralData {TNumeral.value = v}):
@@ -191,14 +191,14 @@ ruleNumeral4 :: Rule
 ruleNumeral4 = Rule
   { name = "number (21..29 31..39 41..49 51..59 61..69 71..79 81..89 91..99)"
   , pattern =
-    [ regex "((venti|trenta|quaranta|cinquanta|sessanta|settanta|ottanta|novanta)(due|tre|tr\x00e9|quattro|cinque|sei|sette|nove))|((vent|trent|quarant|cinquant|sessant|settant|ottant|novant)(uno|otto))"
+    [ regex "((venti|trenta|quaranta|cinquanta|sessanta|settanta|ottanta|novanta)(due|tre|tré|quattro|cinque|sei|sette|nove))|((vent|trent|quarant|cinquant|sessant|settant|ottant|novant)(uno|otto))"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
         "ventuno" -> integer 21
         "ventidue" -> integer 22
         "ventitre" -> integer 23
-        "ventitr\x00e9" -> integer 23
+        "ventitré" -> integer 23
         "ventiquattro" -> integer 24
         "venticinque" -> integer 25
         "ventisei" -> integer 26
@@ -208,7 +208,7 @@ ruleNumeral4 = Rule
         "trentuno" -> integer 31
         "trentadue" -> integer 32
         "trentatre" -> integer 33
-        "trentatr\x00e9" -> integer 33
+        "trentatré" -> integer 33
         "trentaquattro" -> integer 34
         "trentacinque" -> integer 35
         "trentasei" -> integer 36
@@ -218,7 +218,7 @@ ruleNumeral4 = Rule
         "quarantuno" -> integer 41
         "quarantadue" -> integer 42
         "quarantatre" -> integer 43
-        "quarantatr\x00e9" -> integer 43
+        "quarantatré" -> integer 43
         "quarantaquattro" -> integer 44
         "quarantacinque" -> integer 45
         "quarantasei" -> integer 46
@@ -228,7 +228,7 @@ ruleNumeral4 = Rule
         "cinquantuno" -> integer 51
         "cinquantadue" -> integer 52
         "cinquantatre" -> integer 53
-        "cinquantatr\x00e9" -> integer 53
+        "cinquantatré" -> integer 53
         "cinquantaquattro" -> integer 54
         "cinquantacinque" -> integer 55
         "cinquantasei" -> integer 56
@@ -237,7 +237,7 @@ ruleNumeral4 = Rule
         "cinquantanove" -> integer 59
         "sessantuno" -> integer 61
         "sessantadue" -> integer 62
-        "sessantatr\x00e9" -> integer 63
+        "sessantatré" -> integer 63
         "sessantatre" -> integer 63
         "sessantaquattro" -> integer 64
         "sessantacinque" -> integer 65
@@ -247,7 +247,7 @@ ruleNumeral4 = Rule
         "sessantanove" -> integer 69
         "settantuno" -> integer 71
         "settantadue" -> integer 72
-        "settantatr\x00e9" -> integer 73
+        "settantatré" -> integer 73
         "settantatre" -> integer 73
         "settantaquattro" -> integer 74
         "settantacinque" -> integer 75
@@ -257,7 +257,7 @@ ruleNumeral4 = Rule
         "settantanove" -> integer 79
         "ottantuno" -> integer 81
         "ottantadue" -> integer 82
-        "ottantatr\x00e9" -> integer 83
+        "ottantatré" -> integer 83
         "ottantatre" -> integer 83
         "ottantaquattro" -> integer 84
         "ottantacinque" -> integer 85
@@ -268,7 +268,7 @@ ruleNumeral4 = Rule
         "novantuno" -> integer 91
         "novantadue" -> integer 92
         "novantatre" -> integer 93
-        "novantatr\x00e9" -> integer 93
+        "novantatré" -> integer 93
         "novantaquattro" -> integer 94
         "novantacinque" -> integer 95
         "novantasei" -> integer 96

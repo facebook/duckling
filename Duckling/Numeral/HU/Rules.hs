@@ -136,7 +136,7 @@ ruleTens :: Rule
 ruleTens = Rule
   { name = "integer (20,30..90)"
   , pattern =
-    [ regex "(h\x00FAsz|harminc|negyven|\x00f6tven|hatvan|hetven|nyolcvan|kilencven)"
+    [ regex "(h\x00FAsz|harminc|negyven|ötven|hatvan|hetven|nyolcvan|kilencven)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->

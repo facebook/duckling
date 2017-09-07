@@ -27,7 +27,7 @@ ruleLatentDistYard = Rule
   { name = "<latent dist> yard"
   , pattern =
     [ dimension Distance
-    , regex "y(ar)?ds?|\xc57c\xb4dc"
+    , regex "y(ar)?ds?|야드"
     ]
   , prod = \tokens -> case tokens of
       (Token Distance dd:_) ->
@@ -40,7 +40,7 @@ ruleDistCentimeters = Rule
   { name = "<dist> centimeters"
   , pattern =
     [ dimension Distance
-    , regex "cm|\xc13c(\xd2f0|\xce58)((\xbbf8|\xba54)\xd130)?"
+    , regex "cm|센(티|치)((미|메)터)?"
     ]
   , prod = \tokens -> case tokens of
       (Token Distance dd:_) ->
@@ -53,9 +53,9 @@ ruleLatentDistFeetAndLatentDistInch = Rule
   { name = "<latent dist> feet and <latent dist> inch "
   , pattern =
     [ dimension Distance
-    , regex "('|f(oo|ee)?ts?)|\xd53c\xd2b8"
+    , regex "('|f(oo|ee)?ts?)|피트"
     , dimension Distance
-    , regex "(''|inch(es)?)|\xc778\xce58"
+    , regex "(''|inch(es)?)|인치"
     ]
   , prod = \tokens -> case tokens of
       (Token Distance dd:_) ->
@@ -68,7 +68,7 @@ ruleDistMeters = Rule
   { name = "<dist> meters"
   , pattern =
     [ dimension Distance
-    , regex "m|(\xbbf8|\xba54|\xb9e4)\xd130"
+    , regex "m|(미|메|매)터"
     ]
   , prod = \tokens -> case tokens of
       (Token Distance dd:_) ->
@@ -81,7 +81,7 @@ ruleLatentDistFeet = Rule
   { name = "<latent dist> feet"
   , pattern =
     [ dimension Distance
-    , regex "('|f(oo|ee)?ts?)|\xd53c\xd2b8"
+    , regex "('|f(oo|ee)?ts?)|피트"
     ]
   , prod = \tokens -> case tokens of
       (Token Distance dd:_) ->
@@ -94,7 +94,7 @@ ruleLatentDistKm = Rule
   { name = "<latent dist> km"
   , pattern =
     [ dimension Distance
-    , regex "km|(\xd0ac|\xd0a4)\xb85c((\xbbf8|\xba54)\xd130)?"
+    , regex "km|(킬|키)로((미|메)터)?"
     ]
   , prod = \tokens -> case tokens of
       (Token Distance dd:_) ->
@@ -106,7 +106,7 @@ ruleHalf :: Rule
 ruleHalf = Rule
   { name = "half"
   , pattern =
-    [ regex "\xbc18"
+    [ regex "반"
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData {TNumeral.value = v}:_) ->
@@ -119,7 +119,7 @@ ruleDistMiles = Rule
   { name = "<dist> miles"
   , pattern =
     [ dimension Distance
-    , regex "miles?|\xb9c8\xc77c(\xc988)?"
+    , regex "miles?|마일(즈)?"
     ]
   , prod = \tokens -> case tokens of
       (Token Distance dd:_) ->
@@ -132,7 +132,7 @@ ruleLatentDistInch = Rule
   { name = "<latent dist> inch"
   , pattern =
     [ dimension Distance
-    , regex "(''|inch(es)?)|\xc778\xce58"
+    , regex "(''|inch(es)?)|인치"
     ]
   , prod = \tokens -> case tokens of
       (Token Distance dd:_) ->

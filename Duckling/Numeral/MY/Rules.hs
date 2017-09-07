@@ -27,7 +27,7 @@ ruleInteger5 = Rule
   { name = "integer (11..99) "
   , pattern =
     [ numberBetween 1 10
-    , regex "\x1006\x101a\x103a\x1037"
+    , regex "ဆယ့်"
     , numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
@@ -42,20 +42,20 @@ ruleIntegerNumeric :: Rule
 ruleIntegerNumeric = Rule
   { name = "integer (0..9) - numeric"
   , pattern =
-    [ regex "(\x1040|\x1041|\x1042|\x1043|\x1044|\x1045|\x1046|\x1047|\x1048|\x1049)"
+    [ regex "(၀|၁|၂|၃|၄|၅|၆|၇|၈|၉)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> case match of
-        "\x1040" -> integer 0
-        "\x1041" -> integer 1
-        "\x1042" -> integer 2
-        "\x1043" -> integer 3
-        "\x1044" -> integer 4
-        "\x1045" -> integer 5
-        "\x1046" -> integer 6
-        "\x1047" -> integer 7
-        "\x1048" -> integer 8
-        "\x1049" -> integer 9
+        "၀" -> integer 0
+        "၁" -> integer 1
+        "၂" -> integer 2
+        "၃" -> integer 3
+        "၄" -> integer 4
+        "၅" -> integer 5
+        "၆" -> integer 6
+        "၇" -> integer 7
+        "၈" -> integer 8
+        "၉" -> integer 9
         _ -> Nothing
       _ -> Nothing
   }
@@ -64,7 +64,7 @@ ruleInteger3 :: Rule
 ruleInteger3 = Rule
   { name = "integer (11..19) "
   , pattern =
-    [ regex "\x1006\x101a\x103a\x1037"
+    [ regex "ဆယ့်"
     , numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
@@ -76,13 +76,13 @@ ruleIntegerPali :: Rule
 ruleIntegerPali = Rule
   { name = "integer (1..3) - pali"
   , pattern =
-    [ regex "(\x1015\x1011\x1019|\x1012\x102f\x1010\x102d\x101a|\x1010\x1010\x102d\x101a)"
+    [ regex "(ပထမ|ဒုတိယ|တတိယ)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> case match of
-        "\x1015\x1011\x1019" -> integer 1
-        "\x1012\x102f\x1010\x102d\x101a" -> integer 2
-        "\x1010\x1010\x102d\x101a" -> integer 3
+        "ပထမ" -> integer 1
+        "ဒုတိယ" -> integer 2
+        "တတိယ" -> integer 3
         _ -> Nothing
       _ -> Nothing
   }
@@ -92,7 +92,7 @@ ruleInteger6 = Rule
   { name = "integer (100..900)"
   , pattern =
     [ numberBetween 1 10
-    , regex "\x101b\x102c"
+    , regex "ရာ"
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral (NumeralData {TNumeral.value = v}):_) -> double $ v * 100
@@ -104,7 +104,7 @@ ruleInteger7 = Rule
   { name = "integer (1000..9000)"
   , pattern =
     [ numberBetween 1 10
-    , regex "\x1011\x1031\x102c\x1004\x103a"
+    , regex "ထောင်"
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral (NumeralData {TNumeral.value = v}):_) -> double $ v * 1000
@@ -116,7 +116,7 @@ ruleInteger8 = Rule
   { name = "integer (10000..90000)"
   , pattern =
     [ numberBetween 1 10
-    , regex "\x101e\x1031\x102c\x1004\x103a\x1038"
+    , regex "သောင်း"
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral (NumeralData {TNumeral.value = v}):_) -> double $ v * 10000
@@ -127,7 +127,7 @@ ruleInteger :: Rule
 ruleInteger = Rule
   { name = "integer 0"
   , pattern =
-    [ regex "\x101e\x102f\x1036\x100a|\x1019\x101b\x103e\x102d"
+    [ regex "သုံည|မရှိ"
     ]
   , prod = \_ -> integer 0
   }
@@ -137,7 +137,7 @@ ruleInteger4 = Rule
   { name = "integer (10..90)"
   , pattern =
     [ numberBetween 1 10
-    , regex "\x1006\x101a\x103a"
+    , regex "ဆယ်"
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral (NumeralData {TNumeral.value = v}):_) -> double $ v * 10
@@ -148,20 +148,20 @@ ruleInteger2 :: Rule
 ruleInteger2 = Rule
   { name = "integer (1..10)"
   , pattern =
-    [ regex "(\x1010\x1005\x103a|\x1014\x103e\x1005\x103a|\x101e\x102f\x1036\x1038|\x101c\x1031\x1038|\x1004\x102b\x1038|\x1001\x103c\x1031\x102b\x1000\x103a|\x1001\x102f\x1014\x103e\x1005\x103a|\x101b\x103e\x1005\x103a|\x1000\x102d\x102f\x1038|\x1010\x1005\x103a\x1006\x101a\x103a)"
+    [ regex "(တစ်|နှစ်|သုံး|လေး|ငါး|ခြေါက်|ခုနှစ်|ရှစ်|ကိုး|တစ်ဆယ်)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> case match of
-        "\x1010\x1005\x103a" -> integer 1
-        "\x1014\x103e\x1005\x103a" -> integer 2
-        "\x101e\x102f\x1036\x1038" -> integer 3
-        "\x101c\x1031\x1038" -> integer 4
-        "\x1004\x102b\x1038" -> integer 5
-        "\x1001\x103c\x1031\x102b\x1000\x103a" -> integer 6
-        "\x1001\x102f\x1014\x103e\x1005\x103a" -> integer 7
-        "\x101b\x103e\x1005\x103a" -> integer 8
-        "\x1000\x102d\x102f\x1038" -> integer 9
-        "\x1010\x1005\x103a\x1006\x101a\x103a" -> integer 10
+        "တစ်" -> integer 1
+        "နှစ်" -> integer 2
+        "သုံး" -> integer 3
+        "လေး" -> integer 4
+        "ငါး" -> integer 5
+        "ခြေါက်" -> integer 6
+        "ခုနှစ်" -> integer 7
+        "ရှစ်" -> integer 8
+        "ကိုး" -> integer 9
+        "တစ်ဆယ်" -> integer 10
         _ -> Nothing
       _ -> Nothing
   }

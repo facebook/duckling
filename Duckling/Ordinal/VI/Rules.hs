@@ -22,7 +22,7 @@ ruleOrdinals :: Rule
 ruleOrdinals = Rule
   { name = "ordinals"
   , pattern =
-    [ regex "(\x0111\x1ea7u ti\x00ean|th\x1ee9 nh\x1ea5t|th\x1ee9 1)"
+    [ regex "(đầu tiên|thứ nhất|thứ 1)"
     ]
   , prod = \_ -> Just $ ordinal 1
   }

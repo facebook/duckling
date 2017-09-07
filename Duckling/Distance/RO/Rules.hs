@@ -103,7 +103,7 @@ ruleDistMiles = Rule
   { name = "<dist> miles"
   , pattern =
     [ dimension Distance
-    , regex "mil(e|a|\x0103)"
+    , regex "mil(e|a|ă)"
     ]
   , prod = \tokens -> case tokens of
       (Token Distance dd:_) ->

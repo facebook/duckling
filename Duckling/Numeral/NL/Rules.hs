@@ -102,7 +102,7 @@ ruleInteger3 :: Rule
 ruleInteger3 = Rule
   { name = "integer ([2-9][1-9])"
   , pattern =
-    [ regex "(een|twee|drie|vier|vijf|zes|zeven|acht|negen)(?:e|\x00eb)n(twintig|dertig|veertig|vijftig|zestig|zeventig|tachtig|negentig)"
+    [ regex "(een|twee|drie|vier|vijf|zes|zeven|acht|negen)(?:e|ë)n(twintig|dertig|veertig|vijftig|zestig|zeventig|tachtig|negentig)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (m1:m2:_)):_) -> do
@@ -143,7 +143,7 @@ ruleNumeralsSuffixesKMG = Rule
   { name = "numbers suffixes (K, M, G)"
   , pattern =
     [ dimension Numeral
-    , regex "([kmg])(?=[\\W\\$\x20ac]|$)"
+    , regex "([kmg])(?=[\\W\\$€]|$)"
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral (NumeralData {TNumeral.value = v}):
@@ -210,7 +210,7 @@ zeroNineteenMap = HashMap.fromList
   [ ("niks", 0)
   , ("nul", 0)
   , ("geen", 0)
-  , ("\x00e9\x00e9n", 1)
+  , ("één", 1)
   , ("een", 1)
   , ("twee", 2)
   , ("drie", 3)
@@ -236,7 +236,7 @@ ruleInteger :: Rule
 ruleInteger = Rule
   { name = "integer (0..19)"
   , pattern =
-    [ regex "(geen|nul|niks|een|\x00e9\x00e9n|twee|drie|vier|vijftien|vijf|zestien|zes|zeventien|zeven|achtien|acht|negentien|negen|tien|elf|twaalf|dertien|veertien)"
+    [ regex "(geen|nul|niks|een|één|twee|drie|vier|vijftien|vijf|zestien|zes|zeventien|zeven|achtien|acht|negentien|negen|tien|elf|twaalf|dertien|veertien)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->

@@ -33,7 +33,7 @@ ruleQuarterOfAnHour :: Rule
 ruleQuarterOfAnHour = Rule
   { name = "quarter of an hour"
   , pattern =
-    [ regex "(1/4/s \x05e9\x05e2\x05d4|\x05e8\x05d1\x05e2 \x05e9\x05e2\x05d4)"
+    [ regex "(1/4/s שעה|רבע שעה)"
     ]
   , prod = \_ -> Just . Token Duration $ duration TG.Minute 15
   }
@@ -42,7 +42,7 @@ ruleHalfAnHour :: Rule
 ruleHalfAnHour = Rule
   { name = "half an hour"
   , pattern =
-    [ regex "(1/2/s \x05e9\x05e2\x05d4|\x05d7\x05e6\x05d9 \x05e9\x05e2\x05d4)"
+    [ regex "(1/2/s שעה|חצי שעה)"
     ]
   , prod = \_ -> Just . Token Duration $ duration TG.Minute 30
   }
@@ -51,7 +51,7 @@ ruleThreequartersOfAnHour :: Rule
 ruleThreequartersOfAnHour = Rule
   { name = "three-quarters of an hour"
   , pattern =
-    [ regex "(3/4/s \x05e9\x05e2\x05d4|\x05e9\x05dc\x05d5\x05e9\x05ea \x05e8\x05d1\x05e2\x05d9 \x05e9\x05e2\x05d4)"
+    [ regex "(3/4/s שעה|שלושת רבעי שעה)"
     ]
   , prod = \_ -> Just . Token Duration $ duration TG.Minute 45
   }
@@ -61,7 +61,7 @@ ruleNumbernumberHours = Rule
   { name = "number.number hours"
   , pattern =
     [ regex "(\\d+)\\.(\\d+)"
-    , regex "\x05e9\x05e2\x05d4|\x05e9\x05e2\x05d5\x05ea"
+    , regex "שעה|שעות"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (h:m:_)):_) -> do
@@ -77,7 +77,7 @@ ruleIntegerAndAnHalfHours = Rule
   { name = "<integer> and an half hours"
   , pattern =
     [ Predicate isNatural
-    , regex "\x05d5\x05d7\x05e6\x05d9 (\x05e9\x05e2\x05d5\x05ea|\x05e9\x05e2\x05d4)"
+    , regex "וחצי (שעות|שעה)"
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral (NumeralData {TNumeral.value = v}):_) ->
@@ -89,7 +89,7 @@ ruleAboutDuration :: Rule
 ruleAboutDuration = Rule
   { name = "about <duration>"
   , pattern =
-    [ regex "(\x05d1\x05e2\x05e8\x05da|\x05e1\x05d1\x05d9\x05d1\x05d5\x05ea|\x05d1\x05e7\x05d9\x05e8\x05d5\x05d1)"
+    [ regex "(בערך|סביבות|בקירוב)"
     , dimension Duration
     ]
   , prod = \tokens -> case tokens of
@@ -101,7 +101,7 @@ ruleExactlyDuration :: Rule
 ruleExactlyDuration = Rule
   { name = "exactly <duration>"
   , pattern =
-    [ regex "\x05d1\x05d3\x05d9\x05d5\x05e7"
+    [ regex "בדיוק"
     , dimension Duration
     ]
   , prod = \tokens -> case tokens of

@@ -25,7 +25,7 @@ ruleLatentTempDegrees = Rule
   { name = "<latent temp> degrees"
   , pattern =
     [ Predicate isLatent
-    , regex "\xb3c4|\x00b0"
+    , regex "도|°"
     ]
   , prod = \tokens -> case tokens of
       (Token Temperature td:_) -> Just . Token Temperature $
@@ -37,7 +37,7 @@ ruleTemp :: Rule
 ruleTemp = Rule
   { name = "섭씨 <temp>"
   , pattern =
-    [ regex "\xc12d\xc528"
+    [ regex "섭씨"
     , dimension Temperature
     ]
   , prod = \tokens -> case tokens of
@@ -63,7 +63,7 @@ ruleTemp2 :: Rule
 ruleTemp2 = Rule
   { name = "화씨 <temp>"
   , pattern =
-    [ regex "\xd654\xc528"
+    [ regex "화씨"
     , dimension Temperature
     ]
   , prod = \tokens -> case tokens of

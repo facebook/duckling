@@ -75,7 +75,7 @@ ruleFew :: Rule
 ruleFew = Rule
   { name = "few"
   , pattern =
-    [ regex "(n\x00e5gra )?f\x00e5"
+    [ regex "(några )?få"
     ]
   , prod = \_ -> integer 3
   }
@@ -161,7 +161,7 @@ ruleNumeralsSuffixesKMG = Rule
   { name = "numbers suffixes (K, M, G)"
   , pattern =
     [ dimension Numeral
-    , regex "([kmg])(?=[\\W\\$\x20ac]|$)"
+    , regex "([kmg])(?=[\\W\\$€]|$)"
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral (NumeralData {TNumeral.value = v}):
@@ -217,13 +217,13 @@ zeroToNineteenMap = HashMap.fromList
   , ( "noll"     , 0 )
   , ( "en"       , 1 )
   , ( "ett"      , 1 )
-  , ( "tv\x00e5" , 2 )
+  , ( "två" , 2 )
   , ( "tre"      , 3 )
   , ( "fyra"     , 4 )
   , ( "fem"      , 5 )
   , ( "sex"      , 6 )
   , ( "sju"      , 7 )
-  , ( "\x00e5tta", 8 )
+  , ( "åtta", 8 )
   , ( "nio"      , 9 )
   , ( "tio"      , 10 )
   , ( "elva"     , 11 )
@@ -241,7 +241,7 @@ ruleInteger :: Rule
 ruleInteger = Rule
   { name = "integer (0..19)"
   , pattern =
-    [ regex "(inget|ingen|noll|en|ett|tv\x00e5|tretton|tre|fyra|femton|fem|sexton|sex|sjutton|sju|\x00e5tta|nio|tio|elva|tolv|fjorton|arton|nitton)"
+    [ regex "(inget|ingen|noll|en|ett|två|tretton|tre|fyra|femton|fem|sexton|sex|sjutton|sju|åtta|nio|tio|elva|tolv|fjorton|arton|nitton)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
@@ -257,7 +257,7 @@ dozenMap = HashMap.fromList
   , ( "femtio"     , 50)
   , ( "sextio"     , 60)
   , ( "sjuttio"    , 70)
-  , ( "\x00e5ttio" , 80)
+  , ( "åttio" , 80)
   , ( "nittio"     , 90)
   ]
 
@@ -265,7 +265,7 @@ ruleInteger2 :: Rule
 ruleInteger2 = Rule
   { name = "integer (20..90)"
   , pattern =
-    [ regex "(tjugo|trettio|fyrtio|femtio|sextio|sjuttio|\x00e5ttio|nittio)"
+    [ regex "(tjugo|trettio|fyrtio|femtio|sextio|sjuttio|åttio|nittio)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->

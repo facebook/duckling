@@ -32,7 +32,7 @@ ruleTheDayAfterTomorrow :: Rule
 ruleTheDayAfterTomorrow = Rule
   { name = "the day after tomorrow"
   , pattern =
-    [ regex "pasado\\s?ma(n|\x00f1)ana"
+    [ regex "pasado\\s?ma(n|ñ)ana"
     ]
   , prod = \_ -> tt $ cycleNth TG.Day 2
   }
@@ -67,10 +67,10 @@ daysOfWeek :: [(Text.Text, String)]
 daysOfWeek =
   [ ( "Lunes"     , "lunes|lun?\\.?"                        )
   , ( "Martes"    , "martes|mar?\\.?"                       )
-  , ( "Miercoles" , "mi(e|\x00e9)\\.?(rcoles)?|mx|mier?\\." )
+  , ( "Miercoles" , "mi(e|é)\\.?(rcoles)?|mx|mier?\\." )
   , ( "Jueves"    , "jueves|jue|jue\\."                     )
   , ( "Viernes"   , "viernes|vie|vie\\."                    )
-  , ( "Sabado"    , "s(\x00e1|a)bado|s(\x00e1|a)b\\.?"      )
+  , ( "Sabado"    , "s(á|a)bado|s(á|a)b\\.?"      )
   , ( "Domingo"   , "domingo|dom\\.?"                       )
   ]
 
@@ -183,7 +183,7 @@ ruleUltimoDayofweekDeTime :: Rule
 ruleUltimoDayofweekDeTime = Rule
   { name = "ultimo <day-of-week> de <time>"
   , pattern =
-    [ regex "(\x00fa|u)ltimo"
+    [ regex "(ú|u)ltimo"
     , Predicate isADayOfWeek
     , regex "de|en"
     , dimension Time
@@ -257,7 +257,7 @@ ruleElProximoCycle = Rule
   { name = "el proximo <cycle> "
   , pattern =
     [ regex "(el|los|la|las) ?"
-    , regex "pr(\x00f3|o)xim(o|a)s?|siguientes?"
+    , regex "pr(ó|o)xim(o|a)s?|siguientes?"
     , dimension TimeGrain
     ]
   , prod = \tokens -> case tokens of
@@ -324,7 +324,7 @@ ruleNoon :: Rule
 ruleNoon = Rule
   { name = "noon"
   , pattern =
-    [ regex "mediod(\x00ed|i)a"
+    [ regex "mediod(í|i)a"
     ]
   , prod = \_ -> tt $ hour False 12
   }
@@ -333,7 +333,7 @@ ruleProximasNCycle :: Rule
 ruleProximasNCycle = Rule
   { name = "proximas n <cycle>"
   , pattern =
-    [ regex "pr(\x00f3|o)xim(o|a)s?"
+    [ regex "pr(ó|o)xim(o|a)s?"
     , Predicate $ isIntegerBetween 2 9999
     , dimension TimeGrain
     ]
@@ -602,7 +602,7 @@ ruleDelYear :: Rule
 ruleDelYear = Rule
   { name = "del <year>"
   , pattern =
-    [ regex "del( a(\x00f1|n)o)?"
+    [ regex "del( a(ñ|n)o)?"
     , Predicate $ isIntegerBetween 1000 2100
     ]
   , prod = \tokens -> case tokens of
@@ -652,7 +652,7 @@ ruleAnoNuevo :: Rule
 ruleAnoNuevo = Rule
   { name = "ano nuevo"
   , pattern =
-    [ regex "a(n|\x00f1)o nuevo"
+    [ regex "a(n|ñ)o nuevo"
     ]
   , prod = \_ -> tt $ monthDay 1 1
   }
@@ -775,7 +775,7 @@ ruleNCycleProximoqueViene = Rule
   , pattern =
     [ Predicate $ isIntegerBetween 2 9999
     , dimension TimeGrain
-    , regex "(pr(\x00f3|o)xim(o|a)s?|que vienen?|siguientes?)"
+    , regex "(pr(ó|o)xim(o|a)s?|que vienen?|siguientes?)"
     ]
   , prod = \tokens -> case tokens of
       (token:Token TimeGrain grain:_) -> do
@@ -828,7 +828,7 @@ ruleDimTimeDeLaManana = Rule
   { name = "<dim time> de la manana"
   , pattern =
     [ Predicate isATimeOfDay
-    , regex "(a|en|de) la ma(\x00f1|n)ana"
+    , regex "(a|en|de) la ma(ñ|n)ana"
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_) -> do
@@ -980,7 +980,7 @@ ruleMorning :: Rule
 ruleMorning = Rule
   { name = "morning"
   , pattern =
-    [ regex "ma(\x00f1|n)ana"
+    [ regex "ma(ñ|n)ana"
     ]
   , prod = \_ ->
       let from = hour False 4
@@ -1021,7 +1021,7 @@ ruleLaCyclePasado = Rule
   , pattern =
     [ regex "(el|los|la|las) ?"
     , dimension TimeGrain
-    , regex "pasad(a|o)s?|(u|\x00fa)ltim[ao]s?"
+    , regex "pasad(a|o)s?|(u|ú)ltim[ao]s?"
     ]
   , prod = \tokens -> case tokens of
       (_:Token TimeGrain grain:_) ->
@@ -1055,7 +1055,7 @@ ruleSeason2 :: Rule
 ruleSeason2 = Rule
   { name = "season"
   , pattern =
-    [ regex "oto(\x00f1|n)o"
+    [ regex "oto(ñ|n)o"
     ]
   , prod = \_ ->
       let from = monthDay 9 23
@@ -1183,7 +1183,7 @@ ruleNProximasCycle = Rule
   { name = "n proximas <cycle>"
   , pattern =
     [ Predicate $ isIntegerBetween 2 9999
-    , regex "pr(\x00f3|o)xim(o|a)s?"
+    , regex "pr(ó|o)xim(o|a)s?"
     , dimension TimeGrain
     ]
   , prod = \tokens -> case tokens of
@@ -1198,7 +1198,7 @@ ruleLaPasadoCycle = Rule
   { name = "la pasado <cycle>"
   , pattern =
     [ regex "(el|los|la|las) ?"
-    , regex "pasad(a|o)s?|(u|\x00fa)ltim[ao]s?"
+    , regex "pasad(a|o)s?|(u|ú)ltim[ao]s?"
     , dimension TimeGrain
     ]
   , prod = \tokens -> case tokens of
@@ -1255,7 +1255,7 @@ ruleElCycleProximoqueViene = Rule
   , pattern =
     [ regex "(el|los|la|las) ?"
     , dimension TimeGrain
-    , regex "(pr(\x00f3|o)xim(o|a)s?|que vienen?|siguientes?)"
+    , regex "(pr(ó|o)xim(o|a)s?|que vienen?|siguientes?)"
     ]
   , prod = \tokens -> case tokens of
       (_:Token TimeGrain grain:_) ->
@@ -1269,7 +1269,7 @@ ruleElCycleProximoqueVieneTime = Rule
   , pattern =
     [ regex "(el|los|la|las)"
     , dimension TimeGrain
-    , regex "(pr(\x00f3|o)xim(o|a)s?|que vienen?|siguientes?)"
+    , regex "(pr(ó|o)xim(o|a)s?|que vienen?|siguientes?)"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -1282,7 +1282,7 @@ ruleDelMedioda :: Rule
 ruleDelMedioda = Rule
   { name = "del mediodía"
   , pattern =
-    [ regex "del mediod(i|\x00ed)a"
+    [ regex "del mediod(i|í)a"
     ]
   , prod = \_ ->
       let from = hour False 12
@@ -1309,7 +1309,7 @@ ruleTomorrow :: Rule
 ruleTomorrow = Rule
   { name = "tomorrow"
   , pattern =
-    [ regex "ma(n|\x00f1)ana"
+    [ regex "ma(n|ñ)ana"
     ]
   , prod = \_ -> tt $ cycleNth TG.Day 1
   }

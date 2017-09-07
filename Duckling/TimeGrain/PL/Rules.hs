@@ -21,13 +21,13 @@ import qualified Duckling.TimeGrain.Types as TG
 import Duckling.Types
 
 grains :: [(Text, String, TG.Grain)]
-grains = [ ("second (grain)", "sekund(y|zie|(e|\x0119)|om|ami|ach|o|a)?|s", TG.Second)
-         , ("minute (grain)", "minut(y|cie|(e|\x0119)|om|o|ami|ach|(a|\x0105))?|m", TG.Minute)
-         , ("hour (grain)", "h|godzin(y|(e|\x0119)|ie|om|o|ami|ach|(a|\x0105))?", TG.Hour)
-         , ("day (grain)", "dzie(n|\x0144|ni(a|\x0105))|dni(owi|ach|a|\x0105)?", TG.Day)
-         , ("week (grain)", "tydzie(n|\x0144|)|tygod(ni(owi|u|a|em))|tygodn(iach|iami|iom|ie|i)|tyg\\.?", TG.Week)
-         , ("month (grain)", "miesi(a|\x0105)c(owi|em|u|e|om|ami|ach|a)?", TG.Month)
-         , ("quarter (grain)", "kwarta(l|\x0142)(u|owi|em|e|(o|\x00f3)w|om|ach|ami|y)?", TG.Quarter)
+grains = [ ("second (grain)", "sekund(y|zie|(e|ę)|om|ami|ach|o|a)?|s", TG.Second)
+         , ("minute (grain)", "minut(y|cie|(e|ę)|om|o|ami|ach|(a|ą))?|m", TG.Minute)
+         , ("hour (grain)", "h|godzin(y|(e|ę)|ie|om|o|ami|ach|(a|ą))?", TG.Hour)
+         , ("day (grain)", "dzie(n|ń|ni(a|ą))|dni(owi|ach|a|ą)?", TG.Day)
+         , ("week (grain)", "tydzie(n|ń|)|tygod(ni(owi|u|a|em))|tygodn(iach|iami|iom|ie|i)|tyg\\.?", TG.Week)
+         , ("month (grain)", "miesi(a|ą)c(owi|em|u|e|om|ami|ach|a)?", TG.Month)
+         , ("quarter (grain)", "kwarta(l|ł)(u|owi|em|e|(o|ó)w|om|ach|ami|y)?", TG.Quarter)
          , ("year (grain)", "rok(u|owi|iem)?|lat(ami|ach|a|om)?", TG.Year)
          ]
 

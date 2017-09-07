@@ -25,7 +25,7 @@ ruleLatentTempStupnjevi = Rule
   { name = "<latent temp> stupnjevi"
   , pattern =
     [ dimension Temperature
-    , regex "deg\\.?|stupa?nj((ev)?a)?|\x00b0"
+    , regex "deg\\.?|stupa?nj((ev)?a)?|°"
     ]
   , prod = \tokens -> case tokens of
       (Token Temperature td:_) -> Just . Token Temperature $

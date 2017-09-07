@@ -30,7 +30,7 @@ import qualified Duckling.TimeGrain.Types as TG
 ruleDurationQuarterOfAnHour :: Rule
 ruleDurationQuarterOfAnHour = Rule
   { name = "quarter of an hour"
-  , pattern = [ regex "(1/4\\s?sa(at)?|\x00e7eyrek saat)" ]
+  , pattern = [ regex "(1/4\\s?sa(at)?|çeyrek saat)" ]
   , prod = \_ -> Just . Token Duration $ duration TG.Minute 15
   }
 
@@ -44,7 +44,7 @@ ruleDurationHalfAnHour = Rule
 ruleDurationThreeQuartersOfAnHour :: Rule
 ruleDurationThreeQuartersOfAnHour = Rule
   { name = "three-quarters of an hour"
-  , pattern = [regex "(3/4\\s?sa(at)?|\x00fc\x00e7e \231eyrek sa(at)?)"]
+  , pattern = [regex "(3/4\\s?sa(at)?|üçe \231eyrek sa(at)?)"]
   , prod = \_ -> Just . Token Duration $ duration TG.Minute 45
   }
 
@@ -90,7 +90,7 @@ ruleDurationAndHalfHour = Rule
   { name = "<integer> and an half hour"
   , pattern =
     [ Predicate isNatural
-    , regex "bu\x00e7euk sa(at)?"
+    , regex "buçeuk sa(at)?"
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral (NumeralData {TNumeral.value = v}):_) ->
@@ -103,7 +103,7 @@ ruleDurationPrecision :: Rule
 ruleDurationPrecision = Rule
   { name = "<duration> about|exactly"
   , pattern =
-    [ regex "(gibi|civar\305nda|yakla\x015f\305k|tam( olarak)?)"
+    [ regex "(gibi|civar\305nda|yaklaş\305k|tam( olarak)?)"
     , dimension Duration
     ]
     , prod = \tokens -> case tokens of

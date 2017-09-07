@@ -28,15 +28,15 @@ ruleIntegerForOrdinals :: Rule
 ruleIntegerForOrdinals = Rule
   { name = "integer (1..4) - for ordinals"
   , pattern =
-    [ regex "(\xd55c|\xccab|\xb450|\xc138|\xb124)"
+    [ regex "(한|첫|두|세|네)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> case match of
-        "\xd55c" -> integer 1
-        "\xccab" -> integer 1
-        "\xb450" -> integer 2
-        "\xc138" -> integer 3
-        "\xb124" -> integer 4
+        "한" -> integer 1
+        "첫" -> integer 1
+        "두" -> integer 2
+        "세" -> integer 3
+        "네" -> integer 4
         _ -> Nothing
       _ -> Nothing
   }
@@ -58,7 +58,7 @@ ruleFew :: Rule
 ruleFew = Rule
   { name = "few 몇"
   , pattern =
-    [ regex "\xba87"
+    [ regex "몇"
     ]
   , prod = \_ -> integer 3
   }
@@ -106,7 +106,7 @@ ruleNumeralsPrefixWithOr :: Rule
 ruleNumeralsPrefixWithOr = Rule
   { name = "numbers prefix with -, 마이너스, or 마이나스"
   , pattern =
-    [ regex "-|\xb9c8\xc774\xb108\xc2a4\\s?|\xb9c8\xc774\xb098\xc2a4\\s?"
+    [ regex "-|마이너스\\s?|마이나스\\s?"
     , dimension Numeral
     ]
   , prod = \tokens -> case tokens of
@@ -118,7 +118,7 @@ ruleHalf :: Rule
 ruleHalf = Rule
   { name = "half - 반"
   , pattern =
-    [ regex "\xbc18"
+    [ regex "반"
     ]
   , prod = \_ -> double 0.5
   }
@@ -127,7 +127,7 @@ ruleInteger :: Rule
 ruleInteger = Rule
   { name = "integer 0"
   , pattern =
-    [ regex "\xc601|\xacf5|\xbe75"
+    [ regex "영|공|빵"
     ]
   , prod = \_ -> integer 0
   }
@@ -136,19 +136,19 @@ ruleIntegerTypeAndOrdinals :: Rule
 ruleIntegerTypeAndOrdinals = Rule
   { name = "integer (20..90) - TYPE 2 and ordinals"
   , pattern =
-    [ regex "(\xc5f4|\xc2a4\xbb3c|\xc11c\xb978|\xb9c8\xd754|\xc270|\xc608\xc21c|\xc77c\xd754|\xc5ec\xb4e0|\xc544\xd754)"
+    [ regex "(열|스물|서른|마흔|쉰|예순|일흔|여든|아흔)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> case match of
-        "\xc5f4" -> integer 10
-        "\xc2a4\xbb3c" -> integer 20
-        "\xc11c\xb978" -> integer 30
-        "\xb9c8\xd754" -> integer 40
-        "\xc270" -> integer 50
-        "\xc608\xc21c" -> integer 60
-        "\xc77c\xd754" -> integer 70
-        "\xc5ec\xb4e0" -> integer 80
-        "\xc544\xd754" -> integer 90
+        "열" -> integer 10
+        "스물" -> integer 20
+        "서른" -> integer 30
+        "마흔" -> integer 40
+        "쉰" -> integer 50
+        "예순" -> integer 60
+        "일흔" -> integer 70
+        "여든" -> integer 80
+        "아흔" -> integer 90
         _ -> Nothing
       _ -> Nothing
   }
@@ -157,20 +157,20 @@ ruleIntegerType1 :: Rule
 ruleIntegerType1 = Rule
   { name = "integer - TYPE 1"
   , pattern =
-    [ regex "(\xc601|\xc77c|\xc774|\xc0bc|\xc0ac|\xc624|\xc721|\xce60|\xd314|\xad6c)"
+    [ regex "(영|일|이|삼|사|오|육|칠|팔|구)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> case match of
-        "\xc601" -> integer 0
-        "\xc77c" -> integer 1
-        "\xc774" -> integer 2
-        "\xc0bc" -> integer 3
-        "\xc0ac" -> integer 4
-        "\xc624" -> integer 5
-        "\xc721" -> integer 6
-        "\xce60" -> integer 7
-        "\xd314" -> integer 8
-        "\xad6c" -> integer 9
+        "영" -> integer 0
+        "일" -> integer 1
+        "이" -> integer 2
+        "삼" -> integer 3
+        "사" -> integer 4
+        "오" -> integer 5
+        "육" -> integer 6
+        "칠" -> integer 7
+        "팔" -> integer 8
+        "구" -> integer 9
         _ -> Nothing
       _ -> Nothing
   }
@@ -179,16 +179,16 @@ ruleIntegerType1PowersOfTen :: Rule
 ruleIntegerType1PowersOfTen = Rule
   { name = "integer - TYPE 1: powers of ten"
   , pattern =
-    [ regex "(\xc2ed|\xbc31|\xcc9c|\xb9cc|\xc5b5|\xc870)"
+    [ regex "(십|백|천|만|억|조)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> case match of
-        "\xc2ed" -> double 10   >>= withGrain 1  >>= withMultipliable
-        "\xbc31" -> double 1e2  >>= withGrain 2  >>= withMultipliable
-        "\xcc9c" -> double 1e3  >>= withGrain 3  >>= withMultipliable
-        "\xb9cc" -> double 1e4  >>= withGrain 4  >>= withMultipliable
-        "\xc5b5" -> double 1e8  >>= withGrain 8  >>= withMultipliable
-        "\xc870" -> double 1e12 >>= withGrain 12 >>= withMultipliable
+        "십" -> double 10   >>= withGrain 1  >>= withMultipliable
+        "백" -> double 1e2  >>= withGrain 2  >>= withMultipliable
+        "천" -> double 1e3  >>= withGrain 3  >>= withMultipliable
+        "만" -> double 1e4  >>= withGrain 4  >>= withMultipliable
+        "억" -> double 1e8  >>= withGrain 8  >>= withMultipliable
+        "조" -> double 1e12 >>= withGrain 12 >>= withMultipliable
         _ -> Nothing
       _ -> Nothing
   }
@@ -224,19 +224,19 @@ ruleIntegerType2 :: Rule
 ruleIntegerType2 = Rule
   { name = "integer (1..10) - TYPE 2"
   , pattern =
-    [ regex "(\xd558\xb098|\xb458|\xc14b|\xb137|\xb2e4\xc12f|\xc5ec\xc12f|\xc77c\xacf1|\xc5ec\xb35f|\xc544\xd649)"
+    [ regex "(하나|둘|셋|넷|다섯|여섯|일곱|여덟|아홉)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> case match of
-        "\xd558\xb098" -> integer 1
-        "\xb458" -> integer 2
-        "\xc14b" -> integer 3
-        "\xb137" -> integer 4
-        "\xb2e4\xc12f" -> integer 5
-        "\xc5ec\xc12f" -> integer 6
-        "\xc77c\xacf1" -> integer 7
-        "\xc5ec\xb35f" -> integer 8
-        "\xc544\xd649" -> integer 9
+        "하나" -> integer 1
+        "둘" -> integer 2
+        "셋" -> integer 3
+        "넷" -> integer 4
+        "다섯" -> integer 5
+        "여섯" -> integer 6
+        "일곱" -> integer 7
+        "여덟" -> integer 8
+        "아홉" -> integer 9
         _ -> Nothing
       _ -> Nothing
   }
@@ -246,7 +246,7 @@ ruleFraction = Rule
   { name = "fraction"
   , pattern =
     [ dimension Numeral
-    , regex "\xbd84(\xc758|\xc5d0)"
+    , regex "분(의|에)"
     , dimension Numeral
     ]
   , prod = \tokens -> case tokens of
@@ -262,22 +262,22 @@ ruleNumeralDotNumeral = Rule
   { name = "number dot number - 삼점사"
   , pattern =
     [ dimension Numeral
-    , regex "(\xc810|\xca5c)((\xc601|\xc77c|\xc774|\xc0bc|\xc0ac|\xc624|\xc721|\xce60|\xd314|\xad6c)+)"
+    , regex "(점|쩜)((영|일|이|삼|사|오|육|칠|팔|구)+)"
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral (NumeralData {TNumeral.value = v1}):
        Token RegexMatch (GroupMatch (_:match:_)):
        _) -> do
-        let getDigit '\xc601' = Just "0"
-            getDigit '\xc77c' = Just "1"
-            getDigit '\xc774' = Just "2"
-            getDigit '\xc0bc' = Just "3"
-            getDigit '\xc0ac' = Just "4"
-            getDigit '\xc624' = Just "5"
-            getDigit '\xc721' = Just "6"
-            getDigit '\xce60' = Just "7"
-            getDigit '\xd314' = Just "8"
-            getDigit '\xad6c' = Just "9"
+        let getDigit '영' = Just "0"
+            getDigit '일' = Just "1"
+            getDigit '이' = Just "2"
+            getDigit '삼' = Just "3"
+            getDigit '사' = Just "4"
+            getDigit '오' = Just "5"
+            getDigit '육' = Just "6"
+            getDigit '칠' = Just "7"
+            getDigit '팔' = Just "8"
+            getDigit '구' = Just "9"
             getDigit _ = Nothing
         v2 <- parseDouble . Text.concat . mapMaybe getDigit $ Text.unpack match
         double $ v1 + decimalsToDouble v2

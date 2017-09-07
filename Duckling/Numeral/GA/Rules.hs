@@ -27,7 +27,7 @@ ruleNumeralsPrefixWithNegativeOrMinus :: Rule
 ruleNumeralsPrefixWithNegativeOrMinus = Rule
   { name = "numbers prefix with -, negative or minus"
   , pattern =
-    [ regex "-|m(\x00ed|i)neas(\\sa)?\\s?"
+    [ regex "-|m(í|i)neas(\\sa)?\\s?"
     , dimension Numeral
     ]
   , prod = \tokens -> case tokens of
@@ -54,19 +54,19 @@ ruleNumerals2 :: Rule
 ruleNumerals2 = Rule
   { name = "numbers, 1-10"
   , pattern =
-    [ regex "(aon|dh(\x00e1|a)|tr(\x00ed|i)|ceithre|c(\x00fa|u)ig|seacht|s(\x00e9|e)|ocht|naoi|deich)"
+    [ regex "(aon|dh(á|a)|tr(í|i)|ceithre|c(ú|u)ig|seacht|s(é|e)|ocht|naoi|deich)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
         "aon" -> integer 1
         "dha" -> integer 2
-        "dh\x00e1" -> integer 2
-        "tr\x00ed" -> integer 3
+        "dhá" -> integer 2
+        "trí" -> integer 3
         "tri" -> integer 3
         "ceithre" -> integer 4
         "cuig" -> integer 5
-        "c\x00faig" -> integer 5
-        "s\x00e9" -> integer 6
+        "cúig" -> integer 5
+        "sé" -> integer 6
         "se" -> integer 6
         "seacht" -> integer 7
         "ocht" -> integer 8
@@ -103,7 +103,7 @@ ruleDag :: Rule
 ruleDag = Rule
   { name = "déag"
   , pattern =
-    [ regex "d(\x00e9|e)ag"
+    [ regex "d(é|e)ag"
     ]
   , prod = \_ -> integer 10
   }
@@ -113,7 +113,7 @@ ruleNumeralsSuffixesKMG = Rule
   { name = "numbers suffixes (K, M, G)"
   , pattern =
     [ dimension Numeral
-    , regex "([kmg])(?=[\\W\\$\x20ac]|$)"
+    , regex "([kmg])(?=[\\W\\$€]|$)"
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral (NumeralData {TNumeral.value = v}):
@@ -130,15 +130,15 @@ ruleOldVigesimalNumeralsS :: Rule
 ruleOldVigesimalNumeralsS = Rule
   { name = "old vigesimal numbers, 20s"
   , pattern =
-    [ regex "is (dh?(\x00e1|a) fhichead|tr(\x00ed|i) fichid|ceithre fichid)"
+    [ regex "is (dh?(á|a) fhichead|tr(í|i) fichid|ceithre fichid)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
-        "d\x00e1 fhichead" -> integer 40
+        "dá fhichead" -> integer 40
         "da fhichead" -> integer 40
-        "dh\x00e1 fhichead" -> integer 40
+        "dhá fhichead" -> integer 40
         "dha fhichead" -> integer 40
-        "tr\x00ed fichid" -> integer 60
+        "trí fichid" -> integer 60
         "tri fichid" -> integer 60
         "ceithre fichid" -> integer 80
         _ -> Nothing
@@ -149,16 +149,16 @@ ruleOldVigesimalNumeralsS2 :: Rule
 ruleOldVigesimalNumeralsS2 = Rule
   { name = "old vigesimal numbers, 20s + 10"
   , pattern =
-    [ regex "d(\x00e9|e)ag is (fiche|dh?(\x00e1|a) fhichead|tr(\x00ed|i) fichid|ceithre fichid)"
+    [ regex "d(é|e)ag is (fiche|dh?(á|a) fhichead|tr(í|i) fichid|ceithre fichid)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
         "fiche" -> integer 30
-        "d\x00e1 fhichead" -> integer 50
+        "dá fhichead" -> integer 50
         "da fhichead" -> integer 50
-        "dh\x00e1 fhichead" -> integer 50
+        "dhá fhichead" -> integer 50
         "dha fhichead" -> integer 50
-        "tr\x00ed fichid" -> integer 70
+        "trí fichid" -> integer 70
         "tri fichid" -> integer 70
         "ceithre fichid" -> integer 90
         _ -> Nothing
@@ -169,7 +169,7 @@ ruleAmhin :: Rule
 ruleAmhin = Rule
   { name = "amháin"
   , pattern =
-    [ regex "amh(\x00e1|a)in"
+    [ regex "amh(á|a)in"
     ]
   , prod = \_ -> integer 1
   }
@@ -178,21 +178,21 @@ ruleNumerals :: Rule
 ruleNumerals = Rule
   { name = "numbers, 20-90"
   , pattern =
-    [ regex "(fiche|tr(\x00ed|i)ocha|daichead|caoga|seasca|seacht(\x00f3|o)|ocht(\x00f3|o)|n(\x00f3|o)cha)"
+    [ regex "(fiche|tr(í|i)ocha|daichead|caoga|seasca|seacht(ó|o)|ocht(ó|o)|n(ó|o)cha)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
         "fiche" -> integer 20
         "triocha" -> integer 30
-        "tr\x00edocha" -> integer 30
+        "tríocha" -> integer 30
         "daichead" -> integer 40
         "caoga" -> integer 50
         "seasca" -> integer 60
         "seachto" -> integer 70
-        "seacht\x00f3" -> integer 70
+        "seachtó" -> integer 70
         "ochto" -> integer 80
-        "ocht\x00f3" -> integer 80
-        "n\x00f3cha" -> integer 90
+        "ochtó" -> integer 80
+        "nócha" -> integer 90
         "nocha" -> integer 90
         _ -> Nothing
       _ -> Nothing
@@ -214,21 +214,21 @@ ruleCountNumerals :: Rule
 ruleCountNumerals = Rule
   { name = "count numbers"
   , pattern =
-    [ regex "a (n(\x00e1|a)id|haon|d(\x00f3|o)|tr(\x00ed|i)|ceathair|c(\x00fa|u)ig|s(\x00e9|e)|seacht|hocht|naoi|deich)"
+    [ regex "a (n(á|a)id|haon|d(ó|o)|tr(í|i)|ceathair|c(ú|u)ig|s(é|e)|seacht|hocht|naoi|deich)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
         "naid" -> integer 0
-        "n\x00e1id" -> integer 0
+        "náid" -> integer 0
         "haon" -> integer 1
-        "d\x00f3" -> integer 2
+        "dó" -> integer 2
         "do" -> integer 2
-        "tr\x00ed" -> integer 3
+        "trí" -> integer 3
         "tri" -> integer 3
         "ceathair" -> integer 4
         "cuig" -> integer 5
-        "c\x00faig" -> integer 5
-        "s\x00e9" -> integer 6
+        "cúig" -> integer 5
+        "sé" -> integer 6
         "se" -> integer 6
         "seacht" -> integer 7
         "hocht" -> integer 8

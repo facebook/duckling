@@ -21,13 +21,13 @@ import qualified Duckling.TimeGrain.Types as TG
 import Duckling.Types
 
 grains :: [(Text, String, TG.Grain)]
-grains = [ ("second (grain)", "\x79d2(\x6bce|\x9593)?", TG.Second)
-         , ("minute (grain)", "\x5206(\x6bce|\x9593)?", TG.Minute)
-         , ("hour (grain)", "\x6642(\x6bce|\x9593)?", TG.Hour)
-         , ("day (grain)", "\x65e5(\x6bce|\x9593)?", TG.Day)
-         , ("week (grain)", "\x9031(\x6bce|\x9593)?", TG.Week)
-         , ("month (grain)", "\x6708(\x6bce|\x9593)?", TG.Month)
-         , ("year (grain)", "\x5e74(\x6bce|\x9593)?", TG.Year)
+grains = [ ("second (grain)", "秒(毎|間)?", TG.Second)
+         , ("minute (grain)", "分(毎|間)?", TG.Minute)
+         , ("hour (grain)", "時(毎|間)?", TG.Hour)
+         , ("day (grain)", "日(毎|間)?", TG.Day)
+         , ("week (grain)", "週(毎|間)?", TG.Week)
+         , ("month (grain)", "月(毎|間)?", TG.Month)
+         , ("year (grain)", "年(毎|間)?", TG.Year)
          ]
 
 rules :: [Rule]

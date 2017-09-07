@@ -103,7 +103,7 @@ ruleInteger3 :: Rule
 ruleInteger3 = Rule
   { name = "integer ([2-9][1-9])"
   , pattern =
-    [ regex "(ein|zwei|drei|vier|f\x00fcnf|sechs|sieben|acht|neun)und(zwanzig|dreissig|vierzig|f\x00fcnfzig|sechzig|siebzig|achtzig|neunzig)"
+    [ regex "(ein|zwei|drei|vier|fünf|sechs|sieben|acht|neun)und(zwanzig|dreissig|vierzig|fünfzig|sechzig|siebzig|achtzig|neunzig)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (m1:m2:_)):_) -> do
@@ -112,7 +112,7 @@ ruleInteger3 = Rule
           "zwei" -> Just 2
           "drei" -> Just 3
           "vier" -> Just 4
-          "f\x00fcnf" -> Just 5
+          "fünf" -> Just 5
           "sechs" -> Just 6
           "sieben" -> Just 7
           "acht" -> Just 8
@@ -122,7 +122,7 @@ ruleInteger3 = Rule
           "zwanzig" -> Just 20
           "dreissig" -> Just 30
           "vierzig" -> Just 40
-          "f\x00fcnfzig" -> Just 50
+          "fünfzig" -> Just 50
           "sechzig" -> Just 60
           "siebzig" -> Just 70
           "achtzig" -> Just 80
@@ -179,7 +179,7 @@ ruleNumeralsSuffixesKMG = Rule
   { name = "numbers suffixes (K, M, G)"
   , pattern =
     [ dimension Numeral
-    , regex "([kmg])(?=[\\W\\$\x20ac]|$)"
+    , regex "([kmg])(?=[\\W\\$€]|$)"
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral (NumeralData {TNumeral.value = v}):
@@ -246,17 +246,17 @@ zeroNineteenMap = HashMap.fromList
   , ("zwei", 2)
   , ("drei", 3)
   , ("vier", 4)
-  , ("f\x00fcnf", 5)
+  , ("fünf", 5)
   , ("sechs", 6)
   , ("sieben", 7)
   , ("acht", 8)
   , ("neun", 9)
   , ("zehn", 10)
   , ("elf", 11)
-  , ("zw\x00f6lf", 12)
+  , ("zwölf", 12)
   , ("dreizehn", 13)
   , ("vierzehn", 14)
-  , ("f\x00fcnfzehn", 15)
+  , ("fünfzehn", 15)
   , ("sechzehn", 16)
   , ("siebzehn", 17)
   , ("achtzehn", 18)
@@ -268,7 +268,7 @@ ruleToNineteen = Rule
   { name = "integer (0..19)"
   -- e.g. fourteen must be before four,
   -- otherwise four will always shadow fourteen
-  , pattern = [regex "(keine?|keine?s|keiner|keinen|null|nichts|eins?(er)?|zwei|dreizehn|drei|vierzehn|vier|f\x00fcnf|sechzehn|sechs|siebzehn|sieben|achtzehn|acht|neunzehn|neun|elf|zw\x00f6lf|f\x00fcfzehn)"]
+  , pattern = [regex "(keine?|keine?s|keiner|keinen|null|nichts|eins?(er)?|zwei|dreizehn|drei|vierzehn|vier|fünf|sechzehn|sechs|siebzehn|sieben|achtzehn|acht|neunzehn|neun|elf|zwölf|füfzehn)"]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
         HashMap.lookup (Text.toLower match) zeroNineteenMap >>= integer
@@ -279,7 +279,7 @@ ruleInteger :: Rule
 ruleInteger = Rule
   { name = "integer (0..19)"
   , pattern =
-    [ regex "(keine?|keine?s|keiner|keinen|null|nichts|eins?(er)?|zwei|dreizehn|drei|vierzehn|vier|f\x00fcnf|sechzehn|sechs|siebzehn|sieben|achtzehn|acht|neunzehn|neun|elf|zw\x00f6lf|f\x00fcfzehn)"
+    [ regex "(keine?|keine?s|keiner|keinen|null|nichts|eins?(er)?|zwei|dreizehn|drei|vierzehn|vier|fünf|sechzehn|sechs|siebzehn|sieben|achtzehn|acht|neunzehn|neun|elf|zwölf|füfzehn)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
@@ -298,17 +298,17 @@ ruleInteger = Rule
         "zwei" -> integer 2
         "drei" -> integer 3
         "vier" -> integer 4
-        "f\x00fcnf" -> integer 5
+        "fünf" -> integer 5
         "sechs" -> integer 6
         "sieben" -> integer 7
         "acht" -> integer 8
         "neun" -> integer 9
         "zehn" -> integer 10
         "elf" -> integer 11
-        "zw\x00f6lf" -> integer 12
+        "zwölf" -> integer 12
         "dreizehn" -> integer 13
         "vierzehn" -> integer 14
-        "f\x00fcnfzehn" -> integer 15
+        "fünfzehn" -> integer 15
         "sechzehn" -> integer 16
         "siebzehn" -> integer 17
         "achtzehn" -> integer 18
@@ -321,14 +321,14 @@ ruleInteger2 :: Rule
 ruleInteger2 = Rule
   { name = "integer (20..90)"
   , pattern =
-    [ regex "(zwanzig|dreissig|vierzig|f\x00fcnfzig|sechzig|siebzig|achtzig|neunzig)"
+    [ regex "(zwanzig|dreissig|vierzig|fünfzig|sechzig|siebzig|achtzig|neunzig)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
         "zwanzig" -> integer 20
         "dreissig" -> integer 30
         "vierzig" -> integer 40
-        "f\x00fcnfzig" -> integer 50
+        "fünfzig" -> integer 50
         "sechzig" -> integer 60
         "siebzig" -> integer 70
         "achtzig" -> integer 80

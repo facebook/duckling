@@ -77,7 +77,7 @@ ruleTen :: Rule
 ruleTen = Rule
   { name = "ten"
   , pattern =
-    [ regex "k\x00fcmme"
+    [ regex "kümme"
     ]
   , prod = \_ -> integer 10 >>= withGrain 1
   }
@@ -122,7 +122,7 @@ ruleAFew :: Rule
 ruleAFew = Rule
   { name = "(a )?few"
   , pattern =
-    [ regex "m\x00f5ni"
+    [ regex "mõni"
     ]
   , prod = \_ -> integer 3
   }
@@ -158,7 +158,7 @@ ruleNumeralsSuffixesKMG = Rule
   { name = "numbers suffixes (K, M, G)"
   , pattern =
     [ dimension Numeral
-    , regex "([kmg])(?=[\\W\\$\x20ac]|$)"
+    , regex "([kmg])(?=[\\W\\$€]|$)"
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral (NumeralData {TNumeral.value = v}):
@@ -187,12 +187,12 @@ ruleInteger :: Rule
 ruleInteger = Rule
   { name = "integer (0..19)"
   , pattern =
-    [ regex "(null|\x00fcksteist|\x00fcks|kaksteist|kaks|kolmteist|kolm|neliteist|neli|viisteist|viis|kuusteist|kuus|seitseteist|seitse|kaheksateist|kaheksa|\x00fcheksateist|\x00fcheksa|k\x00fcmme)"
+    [ regex "(null|üksteist|üks|kaksteist|kaks|kolmteist|kolm|neliteist|neli|viisteist|viis|kuusteist|kuus|seitseteist|seitse|kaheksateist|kaheksa|üheksateist|üheksa|kümme)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
         "null" -> integer 0
-        "\x00fcks" -> integer 1
+        "üks" -> integer 1
         "kaks" -> integer 2
         "kolm" -> integer 3
         "neli" -> integer 4
@@ -200,9 +200,9 @@ ruleInteger = Rule
         "kuus" -> integer 6
         "seitse" -> integer 7
         "kaheksa" -> integer 8
-        "\x00fcheksa" -> integer 9
-        "k\x00fcmme" -> integer 10
-        "\x00fcksteist" -> integer 11
+        "üheksa" -> integer 9
+        "kümme" -> integer 10
+        "üksteist" -> integer 11
         "kaksteist" -> integer 12
         "kolmteist" -> integer 13
         "neliteist" -> integer 14
@@ -210,7 +210,7 @@ ruleInteger = Rule
         "kuusteist" -> integer 16
         "seitseteist" -> integer 17
         "kaheksateist" -> integer 18
-        "\x00fcheksateist" -> integer 19
+        "üheksateist" -> integer 19
         _ -> Nothing
       _ -> Nothing
   }
@@ -219,7 +219,7 @@ ruleInteger4 :: Rule
 ruleInteger4 = Rule
   { name = "integer (200..900)"
   , pattern =
-    [ regex "(kakssada|kolmsada|nelisada|viissada|kuussada|seitsesada|kaheksasada|\x00fcheksasada)"
+    [ regex "(kakssada|kolmsada|nelisada|viissada|kuussada|seitsesada|kaheksasada|üheksasada)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
@@ -230,7 +230,7 @@ ruleInteger4 = Rule
         "kuussada"        -> integer 600 >>= withGrain 2 >>= withMultipliable
         "seitsesada"      -> integer 700 >>= withGrain 2 >>= withMultipliable
         "kaheksasada"     -> integer 800 >>= withGrain 2 >>= withMultipliable
-        "\x00fcheksasada" -> integer 900 >>= withGrain 2 >>= withMultipliable
+        "üheksasada" -> integer 900 >>= withGrain 2 >>= withMultipliable
         _ -> Nothing
       _ -> Nothing
   }
@@ -239,18 +239,18 @@ ruleInteger2 :: Rule
 ruleInteger2 = Rule
   { name = "integer (20..90)"
   , pattern =
-    [ regex "((kaks|kolm|neli|viis|kuus|seitse|kaheksa|(\x00fc)heksa)k(\x00fc)mmend)"
+    [ regex "((kaks|kolm|neli|viis|kuus|seitse|kaheksa|(ü)heksa)k(ü)mmend)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
-        "kaksk\x00fcmmend" -> integer 20
-        "kolmk\x00fcmmend" -> integer 30
-        "nelik\x00fcmmend" -> integer 40
-        "viisk\x00fcmmend" -> integer 50
-        "kuusk\x00fcmmend" -> integer 60
-        "seitsek\x00fcmmend" -> integer 70
-        "kaheksak\x00fcmmend" -> integer 80
-        "\x00fcheksak\x00fcmmend" -> integer 90
+        "kakskümmend" -> integer 20
+        "kolmkümmend" -> integer 30
+        "nelikümmend" -> integer 40
+        "viiskümmend" -> integer 50
+        "kuuskümmend" -> integer 60
+        "seitsekümmend" -> integer 70
+        "kaheksakümmend" -> integer 80
+        "üheksakümmend" -> integer 90
         _ -> Nothing
       _ -> Nothing
   }

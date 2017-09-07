@@ -26,7 +26,7 @@ ruleCoics :: Rule
 ruleCoics = Rule
   { name = "coicís"
   , pattern =
-    [ regex "coic(\x00ed|i)s(\x00ed|i|e)?"
+    [ regex "coic(í|i)s(í|i|e)?"
     ]
   , prod = \_ -> Just . Token Duration $ duration TG.Day 14
   }

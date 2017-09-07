@@ -30,7 +30,7 @@ ruleExactlyDuration :: Rule
 ruleExactlyDuration = Rule
   { name = "exactly <duration>"
   , pattern =
-    [ regex "pr(\x00e6)cis"
+    [ regex "pr(æ)cis"
     , dimension Duration
     ]
   , prod = \tokens -> case tokens of

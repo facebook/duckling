@@ -26,7 +26,7 @@ ruleOrdinalsFirstth :: Rule
 ruleOrdinalsFirstth = Rule
   { name = "ordinals (first..19th)"
   , pattern =
-    [ regex "(erste(r|s)?|zweite(r|s)|dritte(r|s)|vierte(r|s)|fuenfte(r|s)|sechste(r|s)|siebte(r|s)|achte(r|s)|neunte(r|s)|zehnte(r|s)|elfter|zw\x00f6lfter|dreizenter|vierzehnter|f\x00fcnfzehnter|sechzenter|siebzehnter|achtzehnter|neunzehnter)"
+    [ regex "(erste(r|s)?|zweite(r|s)|dritte(r|s)|vierte(r|s)|fuenfte(r|s)|sechste(r|s)|siebte(r|s)|achte(r|s)|neunte(r|s)|zehnte(r|s)|elfter|zwölfter|dreizenter|vierzehnter|fünfzehnter|sechzenter|siebzehnter|achtzehnter|neunzehnter)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
@@ -42,9 +42,9 @@ ruleOrdinalsFirstth = Rule
         "viertes" -> Just $ ordinal 4
         "vierte" -> Just $ ordinal 4
         "vierter" -> Just $ ordinal 4
-        "f\x00fcnftes" -> Just $ ordinal 5
-        "f\x00fcnfter" -> Just $ ordinal 5
-        "f\x00fcnfte" -> Just $ ordinal 5
+        "fünftes" -> Just $ ordinal 5
+        "fünfter" -> Just $ ordinal 5
+        "fünfte" -> Just $ ordinal 5
         "sechste" -> Just $ ordinal 6
         "sechstes" -> Just $ ordinal 6
         "sechster" -> Just $ ordinal 6
@@ -61,10 +61,10 @@ ruleOrdinalsFirstth = Rule
         "zehnter" -> Just $ ordinal 10
         "zehntes" -> Just $ ordinal 10
         "elfter" -> Just $ ordinal 11
-        "zw\x00f6lfter" -> Just $ ordinal 12
+        "zwölfter" -> Just $ ordinal 12
         "dreizehnter" -> Just $ ordinal 13
         "vierzehnter" -> Just $ ordinal 14
-        "f\x00fcnfzehnter" -> Just $ ordinal 15
+        "fünfzehnter" -> Just $ ordinal 15
         "sechzehnter" -> Just $ ordinal 16
         "siebzehnter" -> Just $ ordinal 17
         "achtzehnter" -> Just $ ordinal 18

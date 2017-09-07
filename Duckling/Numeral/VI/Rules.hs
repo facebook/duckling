@@ -27,21 +27,21 @@ import Duckling.Types
 
 powersOfTenMap :: HashMap.HashMap Text.Text (Double, Int)
 powersOfTenMap = HashMap.fromList
-  [ ( "tr\x0103",   (1e2, 2) )
-  , ( "tr\x0103m",  (1e2, 2) )
-  , ( "ngh\x00ec",  (1e3, 3) )
-  , ( "ngh\x00ecn", (1e3, 3) )
-  , ( "tri\x1ec7",  (1e6, 6) )
-  , ( "tri\x1ec7u", (1e6, 6) )
+  [ ( "tră",   (1e2, 2) )
+  , ( "trăm",  (1e2, 2) )
+  , ( "nghì",  (1e3, 3) )
+  , ( "nghìn", (1e3, 3) )
+  , ( "triệ",  (1e6, 6) )
+  , ( "triệu", (1e6, 6) )
   , ( "t",          (1e9, 9) )
-  , ( "t\x1ef7",    (1e9, 9) )
+  , ( "tỷ",    (1e9, 9) )
   ]
 
 rulePowersOfTen :: Rule
 rulePowersOfTen = Rule
   { name = "powers of tens"
   , pattern =
-    [ regex "(tr\x0103m?|ngh\x00ecn?|tri\x1ec7u?|t\x1ef7?)"
+    [ regex "(trăm?|nghìn?|triệu?|tỷ?)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
@@ -84,7 +84,7 @@ ruleNumeralsPrefixWithM :: Rule
 ruleNumeralsPrefixWithM = Rule
   { name = "numbers prefix with -, âm"
   , pattern =
-    [ regex "-|\x00e2m\\s?"
+    [ regex "-|âm\\s?"
     , dimension Numeral
     ]
   , prod = \tokens -> case tokens of
@@ -97,7 +97,7 @@ ruleNumerals2 = Rule
   { name = "numbers 25 35 45 55 65 75 85 95"
   , pattern =
     [ oneOf [20, 30 .. 90]
-    , regex "l\x0103m"
+    , regex "lăm"
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral (NumeralData {TNumeral.value = v}):_) -> double $ v + 5
@@ -146,7 +146,7 @@ ruleNumeralDot = Rule
   { name = "number dot 1 9"
   , pattern =
     [ dimension Numeral
-    , regex "ch\x1ea5m|ph\x1ea9y"
+    , regex "chấm|phẩy"
     , numberWith TNumeral.grain isNothing
     ]
   , prod = \tokens -> case tokens of
@@ -186,7 +186,7 @@ ruleNumeralsSuffixesKMG = Rule
   { name = "numbers suffixes (K, M, G)"
   , pattern =
     [ dimension Numeral
-    , regex "([kmg])(?=[\\W\\$\x20ac]|$)"
+    , regex "([kmg])(?=[\\W\\$€]|$)"
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral (NumeralData {TNumeral.value = v}):
@@ -215,53 +215,53 @@ ruleNumeralNghn = Rule
 
 integerMap :: HashMap.HashMap Text.Text Integer
 integerMap = HashMap.fromList
-  [ ("kh\x00f4ng",               0)
-  , ("m\x1ed9t",                 1)
-  , ("linh m\x1ed9t",            1)
-  , ("l\x1ebb m\x1ed9t",         1)
+  [ ("không",               0)
+  , ("một",                 1)
+  , ("linh một",            1)
+  , ("lẻ một",         1)
   , ("hai",                      2)
-  , ("l\x1ebb hai",              2)
+  , ("lẻ hai",              2)
   , ("linh hai",                 2)
   , ("ba",                       3)
-  , ("l\x1ebb",                  3)
+  , ("lẻ",                  3)
   , ("linh ba",                  3)
-  , ("l\x1ebb b\x1ed1n",         4)
-  , ("linh b\x1ed1n",            4)
-  , ("b\x1ed1n",                 4)
-  , ("n\x0103m",                 5)
-  , ("l\x1ebb n\x0103m",         5)
-  , ("linh n\x0103m",            5)
-  , ("linh s\x00e1u",            6)
-  , ("s\x00e1u",                 6)
-  , ("l\x1ebb s\x00e1u",         6)
-  , ("linh b\x1ea3y",            7)
-  , ("l\x1ebb b\x1ea3y",         7)
-  , ("b\x1ea3y",                 7)
-  , ("l\x1ebb t\x00e1m",         8)
-  , ("linh t\x00e1m",            8)
-  , ("t\x00e1m",                 8)
-  , ("l\x1ebb ch\x00edn",        9)
-  , ("ch\x00edn",                9)
-  , ("linh ch\x00edn",           9)
-  , ("linh m\x01b0\x1eddi",      10)
-  , ("m\x01b0\x1eddi",           10)
-  , ("l\x1ebb m\x01b0\x1eddi",   10)
-  , ("m\x01b0\x1eddi m\x1ed9t",  11)
-  , ("m\x01b0\x1eddi hai",       12)
-  , ("m\x01b0\x1eddi ba",        13)
-  , ("m\x01b0\x1eddi b\x1ed1n",  14)
-  , ("m\x01b0\x1eddi l\x0103m",  15)
-  , ("m\x01b0\x1eddi s\x00e1u",  16)
-  , ("m\x01b0\x1eddi b\x1ea3y",  17)
-  , ("m\x01b0\x1eddi t\x00e1m",  18)
-  , ("m\x01b0\x1eddi ch\x00edn", 19)
+  , ("lẻ bốn",         4)
+  , ("linh bốn",            4)
+  , ("bốn",                 4)
+  , ("năm",                 5)
+  , ("lẻ năm",         5)
+  , ("linh năm",            5)
+  , ("linh sáu",            6)
+  , ("sáu",                 6)
+  , ("lẻ sáu",         6)
+  , ("linh bảy",            7)
+  , ("lẻ bảy",         7)
+  , ("bảy",                 7)
+  , ("lẻ tám",         8)
+  , ("linh tám",            8)
+  , ("tám",                 8)
+  , ("lẻ chín",        9)
+  , ("chín",                9)
+  , ("linh chín",           9)
+  , ("linh mười",      10)
+  , ("mười",           10)
+  , ("lẻ mười",   10)
+  , ("mười một",  11)
+  , ("mười hai",       12)
+  , ("mười ba",        13)
+  , ("mười bốn",  14)
+  , ("mười lăm",  15)
+  , ("mười sáu",  16)
+  , ("mười bảy",  17)
+  , ("mười tám",  18)
+  , ("mười chín", 19)
   ]
 
 ruleInteger :: Rule
 ruleInteger = Rule
   { name = "integer (0..19)"
   , pattern =
-    [ regex "(kh\x00f4ng|m\x1ed9t|linh m\x1ed9t|l\x1ebb m\x1ed9t|hai|linh hai|l\x1ebb hai|ba|linh ba|l\x1ebb ba|b\x1ed1n|linh b\x1ed1n|l\x1ebb b\x1ed1n|n\x0103m|linh n\x0103m|l\x1ebb n\x0103m|s\x00e1u|l\x1ebb s\x00e1u|linh s\x00e1u|b\x1ea3y|l\x1ebb b\x1ea3y|linh b\x1ea3y|t\x00e1m|linh t\x00e1m|l\x1ebb t\x00e1m|ch\x00edn|linh ch\x00edn|l\x1ebb ch\x00edn|m\x01b0\x1eddi m\x1ed9t|m\x01b0\x1eddi hai|m\x01b0\x1eddi ba|m\x01b0\x1eddi b\x1ed1n|m\x01b0\x1eddi l\x0103m|m\x01b0\x1eddi s\x00e1u|m\x01b0\x1eddi b\x1ea3y|m\x01b0\x1eddi t\x00e1m|m\x01b0\x1eddi ch\x00edn|m\x01b0\x1eddi|linh m\x01b0\x1eddi)"
+    [ regex "(không|một|linh một|lẻ một|hai|linh hai|lẻ hai|ba|linh ba|lẻ ba|bốn|linh bốn|lẻ bốn|năm|linh năm|lẻ năm|sáu|lẻ sáu|linh sáu|bảy|lẻ bảy|linh bảy|tám|linh tám|lẻ tám|chín|linh chín|lẻ chín|mười một|mười hai|mười ba|mười bốn|mười lăm|mười sáu|mười bảy|mười tám|mười chín|mười|linh mười)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
@@ -271,21 +271,21 @@ ruleInteger = Rule
 
 tensMap :: HashMap.HashMap Text.Text Integer
 tensMap = HashMap.fromList
-  [ ("hai m\x01b0\x01a1i",       20)
-  , ("ba m\x01b0\x01a1i",        30)
-  , ("b\x1ed1n m\x01b0\x01a1i",  40)
-  , ("n\x0103m m\x01b0\x01a1i",  50)
-  , ("s\x00e1u m\x01b0\x01a1i",  60)
-  , ("b\x1ea3y m\x01b0\x01a1i",  70)
-  , ("t\x00e1m m\x01b0\x01a1i",  80)
-  , ("ch\x00edn m\x01b0\x01a1i", 90)
+  [ ("hai mươi",       20)
+  , ("ba mươi",        30)
+  , ("bốn mươi",  40)
+  , ("năm mươi",  50)
+  , ("sáu mươi",  60)
+  , ("bảy mươi",  70)
+  , ("tám mươi",  80)
+  , ("chín mươi", 90)
   ]
 
 ruleInteger2 :: Rule
 ruleInteger2 = Rule
   { name = "integer (20..90)"
   , pattern =
-    [ regex "(hai m\x01b0\x01a1i|ba m\x01b0\x01a1i|b\x1ed1n m\x01b0\x01a1i|n\x0103m m\x01b0\x01a1i|s\x00e1u m\x01b0\x01a1i|b\x1ea3y m\x01b0\x01a1i|t\x00e1m m\x01b0\x01a1i|ch\x00edn m\x01b0\x01a1i)"
+    [ regex "(hai mươi|ba mươi|bốn mươi|năm mươi|sáu mươi|bảy mươi|tám mươi|chín mươi)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
@@ -298,7 +298,7 @@ ruleNumerals = Rule
   { name = "numbers 21 31 41 51 61 71 81 91"
   , pattern =
     [ oneOf [20, 30 .. 90]
-    , regex "m\x1ed1t"
+    , regex "mốt"
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral (NumeralData {TNumeral.value = v}):_) -> double $ v + 1
@@ -309,7 +309,7 @@ ruleT :: Rule
 ruleT = Rule
   { name = "tá"
   , pattern =
-    [ regex "t\x00e1"
+    [ regex "tá"
     ]
   , prod = \_ -> integer 12 >>= withGrain 1 >>= withMultipliable
   }

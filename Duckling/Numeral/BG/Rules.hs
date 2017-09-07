@@ -226,7 +226,7 @@ ruleSuffixes = Rule
   { name = "suffixes (K,M,G))"
   , pattern =
     [ dimension Numeral
-    , regex "((к|м|г)|(К|М|Г))(?=[\\W$\x20ac\x00a2\x00a3]|$)"
+    , regex "((к|м|г)|(К|М|Г))(?=[\\W$€¢£]|$)"
     ]
   , prod = \tokens ->
       case tokens of

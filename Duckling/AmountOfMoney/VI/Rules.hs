@@ -28,7 +28,7 @@ ruleNg :: Rule
 ruleNg = Rule
   { name = "đồng"
   , pattern =
-    [ regex "\x0111\x1ed3ng?"
+    [ regex "đồng?"
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly VND
   }
@@ -37,7 +37,7 @@ ruleDollar :: Rule
 ruleDollar = Rule
   { name = "$"
   , pattern =
-    [ regex "\x0111\x00f4 la|\x0111\x00f4 m\x1ef9|\x0111(\x00f4)?"
+    [ regex "đô la|đô mỹ|đ(ô)?"
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly Dollar
   }
@@ -46,7 +46,7 @@ ruleVnd :: Rule
 ruleVnd = Rule
   { name = "VNĐ"
   , pattern =
-    [ regex "vn(\x0110|\\$)"
+    [ regex "vn(Đ|\\$)"
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly VND
   }
@@ -88,7 +88,7 @@ ruleIntersectAndNumeral = Rule
   { name = "intersect and number"
   , pattern =
     [ financeWith TAmountOfMoney.value isJust
-    , regex "v\x00e0"
+    , regex "và"
     , dimension Numeral
     ]
   , prod = \tokens -> case tokens of
@@ -118,7 +118,7 @@ ruleIntersectVXXuxen = Rule
   { name = "intersect (và X xu|xen)"
   , pattern =
     [ financeWith TAmountOfMoney.value isJust
-    , regex "v\x00e0"
+    , regex "và"
     , financeWith TAmountOfMoney.currency (== Cent)
     ]
   , prod = \tokens -> case tokens of

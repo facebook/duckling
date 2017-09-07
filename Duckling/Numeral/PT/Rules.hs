@@ -80,7 +80,7 @@ ruleNumeral2 :: Rule
 ruleNumeral2 = Rule
   { name = "number (20..90)"
   , pattern =
-    [ regex "(vinte|trinta|quarenta|cincoenta|cinq(\x00fc)enta|cinquenta|sessenta|setenta|oitenta|noventa)"
+    [ regex "(vinte|trinta|quarenta|cincoenta|cinq(ü)enta|cinquenta|sessenta|setenta|oitenta|noventa)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
@@ -102,7 +102,7 @@ ruleNumeral :: Rule
 ruleNumeral = Rule
   { name = "number (0..15)"
   , pattern =
-    [ regex "(zero|uma?|d(oi|ua)s|tr(\x00ea|e)s|quatro|cinco|seis|sete|oito|nove|dez|onze|doze|treze|(ca|qua)torze|quinze)"
+    [ regex "(zero|uma?|d(oi|ua)s|tr(ê|e)s|quatro|cinco|seis|sete|oito|nove|dez|onze|doze|treze|(ca|qua)torze|quinze)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
@@ -111,7 +111,7 @@ ruleNumeral = Rule
         "um" -> integer 1
         "dois" -> integer 2
         "duas" -> integer 2
-        "tr\x00eas" -> integer 3
+        "três" -> integer 3
         "tres" -> integer 3
         "quatro" -> integer 4
         "cinco" -> integer 5
@@ -167,7 +167,7 @@ ruleNumeralsSuffixesKMG = Rule
   { name = "numbers suffixes (K, M, G)"
   , pattern =
     [ dimension Numeral
-    , regex "([kmg])(?=[\\W\\$\x20ac]|$)"
+    , regex "([kmg])(?=[\\W\\$€]|$)"
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral (NumeralData {TNumeral.value = v}):
@@ -224,7 +224,7 @@ ruleDozen :: Rule
 ruleDozen = Rule
   { name = "dozen"
   , pattern =
-    [ regex "d(\x00fa|u)zias?"
+    [ regex "d(ú|u)zias?"
     ]
   , prod = \_ -> integer 12 >>= withGrain 1 >>= withMultipliable
   }

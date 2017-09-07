@@ -25,7 +25,7 @@ ruleDistMeters = Rule
   { name = "<dist> meters"
   , pattern =
     [ dimension Distance
-    , regex "mh?(e|\x00e9)adai?r"
+    , regex "mh?(e|é)adai?r"
     ]
   , prod = \tokens -> case tokens of
       (Token Distance dd:_) ->
@@ -38,7 +38,7 @@ ruleDistCentimeters = Rule
   { name = "<dist> centimeters"
   , pattern =
     [ dimension Distance
-    , regex "(c\\.?m\\.?|g?ch?eintimh?(e|\x00e9)adai?r)"
+    , regex "(c\\.?m\\.?|g?ch?eintimh?(e|é)adai?r)"
     ]
   , prod = \tokens -> case tokens of
       (Token Distance dd:_) ->
@@ -51,7 +51,7 @@ ruleDistMiles = Rule
   { name = "<dist> miles"
   , pattern =
     [ dimension Distance
-    , regex "mh?(\x00ed|i)lt?e"
+    , regex "mh?(í|i)lt?e"
     ]
   , prod = \tokens -> case tokens of
       (Token Distance dd:_) ->
@@ -64,7 +64,7 @@ ruleLatentDistKm = Rule
   { name = "<latent dist> km"
   , pattern =
     [ dimension Distance
-    , regex "(k\\.?(m\\.?)?|g?ch?ilim(e|\x00e9)adai?r)"
+    , regex "(k\\.?(m\\.?)?|g?ch?ilim(e|é)adai?r)"
     ]
   , prod = \tokens -> case tokens of
       (Token Distance dd:_) ->
@@ -90,7 +90,7 @@ ruleLatentDistOrlach = Rule
   { name = "<latent dist> orlach"
   , pattern =
     [ dimension Distance
-    , regex "(''|([nth]-?)?orl(ach|aigh|a(\x00ed|i)|\\.))"
+    , regex "(''|([nth]-?)?orl(ach|aigh|a(í|i)|\\.))"
     ]
   , prod = \tokens -> case tokens of
       (Token Distance dd:_) ->

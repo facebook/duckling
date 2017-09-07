@@ -28,7 +28,7 @@ ruleDollar :: Rule
 ruleDollar = Rule
   { name = "dollar"
   , pattern =
-    [ regex "d(\x00f3|o)lar(es)?"
+    [ regex "d(ó|o)lar(es)?"
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly Dollar
   }

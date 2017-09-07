@@ -72,7 +72,7 @@ ruleFew :: Rule
 ruleFew = Rule
   { name = "few"
   , pattern =
-    [ regex "(noen )?f\x00e5"
+    [ regex "(noen )?få"
     ]
   , prod = \_ -> integer 3
   }
@@ -158,7 +158,7 @@ ruleNumeralsSuffixesKMG = Rule
   { name = "numbers suffixes (K, M, G)"
   , pattern =
     [ dimension Numeral
-    , regex "([kmg])(?=[\\W\\$\x20ac]|$)"
+    , regex "([kmg])(?=[\\W\\$€]|$)"
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral (NumeralData {TNumeral.value = v}):
@@ -214,7 +214,7 @@ zeroToNineteenMap = HashMap.fromList
   , ( "intet" , 0 )
   , ( "en" , 1 )
   , ( "ett" , 1 )
-  , ( "\x00e9n" , 1 )
+  , ( "én" , 1 )
   , ( "to" , 2 )
   , ( "tre" , 3 )
   , ( "fire" , 4 )
@@ -231,7 +231,7 @@ zeroToNineteenMap = HashMap.fromList
   , ( "fjorten" , 14 )
   , ( "femten" , 15 )
   , ( "seksten" , 16 )
-  , ( "s\x00f8tten" , 17 )
+  , ( "søtten" , 17 )
   , ( "sytten" , 17 )
   , ( "atten" , 18 )
   , ( "nitten" , 19 )
@@ -241,7 +241,7 @@ ruleInteger :: Rule
 ruleInteger = Rule
   { name = "integer (0..19)"
   , pattern =
-    [ regex "(intet|ingen|null|en|ett|\x00e9n|to|tretten|tre|fire|femten|fem|seksten|seks|syv|sju|\x00e5tte|nitten|ni|ti|elleve|tolv|fjorten|sytten|s\x00f8tten|atten)"
+    [ regex "(intet|ingen|null|en|ett|én|to|tretten|tre|fire|femten|fem|seksten|seks|syv|sju|åtte|nitten|ni|ti|elleve|tolv|fjorten|sytten|søtten|atten)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
@@ -255,12 +255,12 @@ dozensMap = HashMap.fromList
   , ( "tjue" , 20 )
   , ( "tredve" , 30 )
   , ( "tretti" , 30 )
-  , ( "f\x00f8rti" , 40 )
+  , ( "førti" , 40 )
   , ( "femti" , 50 )
   , ( "seksti" , 60 )
   , ( "sytti" , 70 )
-  , ( "s\x00f8tti" , 70 )
-  , ( "\x00e5tti" , 80 )
+  , ( "søtti" , 70 )
+  , ( "åtti" , 80 )
   , ( "nitti" , 90 )
   ]
 
@@ -268,7 +268,7 @@ ruleInteger2 :: Rule
 ruleInteger2 = Rule
   { name = "integer (20..90)"
   , pattern =
-    [ regex "(tyve|tjue|tredve|tretti|f\x00f8rti|femti|seksti|sytti|s\x00f8tti|\x00e5tti|nitti)"
+    [ regex "(tyve|tjue|tredve|tretti|førti|femti|seksti|sytti|søtti|åtti|nitti)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->

@@ -57,7 +57,7 @@ ruleFew :: Rule
 ruleFew = Rule
   { name = "few"
   , pattern =
-    [ regex "(nogle )?f\x00e5"
+    [ regex "(nogle )?få"
     ]
   , prod = \_ -> integer 3
   }
@@ -137,7 +137,7 @@ ruleNumeralsSuffixesKMG = Rule
   { name = "numbers suffixes (K, M, G)"
   , pattern =
     [ dimension Numeral
-    , regex "([kmg])(?=[\\W\\$\x20ac]|$)"
+    , regex "([kmg])(?=[\\W\\$€]|$)"
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral (NumeralData {TNumeral.value = v}):
@@ -221,8 +221,8 @@ zeroNineteenMap = HashMap.fromList
   , ("intet", 0)
   , ("en", 1)
   , ("et", 1)
-  , ("\x00e9n", 1)
-  , ("\x00e9t", 1)
+  , ("én", 1)
+  , ("ét", 1)
   , ("to", 2)
   , ("tre", 3)
   , ("fire", 4)
@@ -247,7 +247,7 @@ ruleInteger :: Rule
 ruleInteger = Rule
   { name = "integer (0..19)"
   , pattern =
-    [ regex "(intet|ingen|nul|en|et|\x00e9n|\x00e9t|to|tretten|tre|fire|femten|fem|seksten|seks|syv|otte|nitten|ni|ti|elleve|tolv|fjorten|sytten|atten)"
+    [ regex "(intet|ingen|nul|en|et|én|ét|to|tretten|tre|fire|femten|fem|seksten|seks|syv|otte|nitten|ni|ti|elleve|tolv|fjorten|sytten|atten)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->

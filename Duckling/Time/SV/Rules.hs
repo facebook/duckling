@@ -30,13 +30,13 @@ import Duckling.Types
 
 daysOfWeek :: [(Text, String)]
 daysOfWeek =
-  [ ( "Mandag"  , "m\x00e5ndag(en)?|m\x00e5n\\.?" )
+  [ ( "Mandag"  , "måndag(en)?|mån\\.?" )
   , ( "Tisdag"  , "tisdag(en)?|tis?\\.?"          )
   , ( "Onsdag"  , "onsdag(en)?|ons\\.?"           )
   , ( "Torsdag" , "torsdag(en)?|tors?\\.?"        )
   , ( "Fredag"  , "fredag(en)?|fre\\.?"           )
-  , ( "Lordag"  , "l\x00f6rdag(en)?|l\x00f6r\\.?" )
-  , ( "Sondag"  , "s\x00f6ndag(en)?|s\x00f6n\\.?" )
+  , ( "Lordag"  , "lördag(en)?|lör\\.?" )
+  , ( "Sondag"  , "söndag(en)?|sön\\.?" )
   ]
 
 ruleDaysOfWeek :: [Rule]
@@ -77,7 +77,7 @@ ruleTheDayAfterTomorrow :: Rule
 ruleTheDayAfterTomorrow = Rule
   { name = "the day after tomorrow"
   , pattern =
-    [ regex "i \x00f6verimorgon"
+    [ regex "i överimorgon"
     ]
   , prod = \_ -> tt $ cycleNth TG.Day 2
   }
@@ -103,7 +103,7 @@ ruleRelativeMinutesAfterpastIntegerHourofday = Rule
   { name = "relative minutes after|past <integer> (hour-of-day)"
   , pattern =
     [ Predicate $ isIntegerBetween 1 59
-    , regex "\x00f6ver"
+    , regex "över"
     , Predicate isAnHourOfDay
     ]
   , prod = \tokens -> case tokens of
@@ -150,7 +150,7 @@ ruleQuarterAfterpastIntegerHourofday = Rule
   { name = "quarter after|past <integer> (hour-of-day)"
   , pattern =
     [ regex "(en)? ?(kvart)(er)?"
-    , regex "\x00f6ver"
+    , regex "över"
     , Predicate isAnHourOfDay
     ]
   , prod = \tokens -> case tokens of
@@ -192,7 +192,7 @@ ruleHalfAfterpastIntegerHourofday = Rule
   { name = "half after|past <integer> (hour-of-day)"
   , pattern =
     [ regex "halvtimme"
-    , regex "\x00f6ver"
+    , regex "över"
     , Predicate isAnHourOfDay
     ]
   , prod = \tokens -> case tokens of
@@ -223,7 +223,7 @@ ruleTheOrdinalCycleOfTime = Rule
     [ regex "den"
     , dimension Ordinal
     , dimension TimeGrain
-    , regex "av|i|fr\x00e5n"
+    , regex "av|i|från"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -256,7 +256,7 @@ ruleNewYearsDay :: Rule
 ruleNewYearsDay = Rule
   { name = "new year's day"
   , pattern =
-    [ regex "ny\x00e5rsdag(en)?"
+    [ regex "nyårsdag(en)?"
     ]
   , prod = \_ -> tt $ monthDay 1 1
   }
@@ -265,7 +265,7 @@ ruleLastTime :: Rule
 ruleLastTime = Rule
   { name = "last <time>"
   , pattern =
-    [ regex "(sista|f\x00f6rra|senaste)"
+    [ regex "(sista|förra|senaste)"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -292,7 +292,7 @@ ruleEvening :: Rule
 ruleEvening = Rule
   { name = "evening"
   , pattern =
-    [ regex "kv\x00e4ll(en)?"
+    [ regex "kväll(en)?"
     ]
   , prod = \_ ->
       let from = hour False 18
@@ -346,7 +346,7 @@ ruleNow :: Rule
 ruleNow = Rule
   { name = "now"
   , pattern =
-    [ regex "just nu|nu|(i )?detta \x00f6gonblick"
+    [ regex "just nu|nu|(i )?detta ögonblick"
     ]
   , prod = \_ -> tt $ cycleNth TG.Second 0
   }
@@ -370,7 +370,7 @@ ruleFromDatetimeDatetimeInterval :: Rule
 ruleFromDatetimeDatetimeInterval = Rule
   { name = "from <datetime> - <datetime> (interval)"
   , pattern =
-    [ regex "fr\x00e5n"
+    [ regex "från"
     , dimension Time
     , regex "\\-|till|till och med|tom"
     , dimension Time
@@ -423,7 +423,7 @@ ruleTheCycleBeforeTime = Rule
   { name = "the <cycle> before <time>"
   , pattern =
     [ dimension TimeGrain
-    , regex "(en|na|et)? f\x00f6re"
+    , regex "(en|na|et)? före"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -449,7 +449,7 @@ ruleTimeAfterNext :: Rule
 ruleTimeAfterNext = Rule
   { name = "<time> after next"
   , pattern =
-    [ regex "n\x00e4sta"
+    [ regex "nästa"
     , dimension Time
     , regex "igen"
     ]
@@ -495,7 +495,7 @@ ruleThisnextDayofweek :: Rule
 ruleThisnextDayofweek = Rule
   { name = "this|next <day-of-week>"
   , pattern =
-    [ regex "(kommande|n\x00e4sta)"
+    [ regex "(kommande|nästa)"
     , Predicate isADayOfWeek
     ]
   , prod = \tokens -> case tokens of
@@ -508,7 +508,7 @@ ruleTheDayBeforeYesterday :: Rule
 ruleTheDayBeforeYesterday = Rule
   { name = "the day before yesterday"
   , pattern =
-    [ regex "i f\x00f6rrg\x00e5r"
+    [ regex "i förrgår"
     ]
   , prod = \_ -> tt . cycleNth TG.Day $ - 2
   }
@@ -532,7 +532,7 @@ ruleNextCycle :: Rule
 ruleNextCycle = Rule
   { name = "next <cycle>"
   , pattern =
-    [ regex "n\x00e4sta|kommande"
+    [ regex "nästa|kommande"
     , dimension TimeGrain
     ]
   , prod = \tokens -> case tokens of
@@ -571,7 +571,7 @@ ruleOnDate :: Rule
 ruleOnDate = Rule
   { name = "on <date>"
   , pattern =
-    [ regex "den|p\x00e5|under"
+    [ regex "den|på|under"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -584,7 +584,7 @@ ruleDurationFromNow = Rule
   { name = "<duration> from now"
   , pattern =
     [ dimension Duration
-    , regex "fr\x00e5n (idag|nu)"
+    , regex "från (idag|nu)"
     ]
   , prod = \tokens -> case tokens of
       (Token Duration dd:_) ->
@@ -609,7 +609,7 @@ ruleLastCycle :: Rule
 ruleLastCycle = Rule
   { name = "last <cycle>"
   , pattern =
-    [ regex "sista|senaste|f(\x00f6)rra|f(\x00f6)reg(\x00e5)ende"
+    [ regex "sista|senaste|f(ö)rra|f(ö)reg(å)ende"
     , dimension TimeGrain
     ]
   , prod = \tokens -> case tokens of
@@ -780,9 +780,9 @@ ruleFromTimeofdayTimeofdayInterval :: Rule
 ruleFromTimeofdayTimeofdayInterval = Rule
   { name = "from <time-of-day> - <time-of-day> (interval)"
   , pattern =
-    [ regex "(efter|fr\x00e5n)"
+    [ regex "(efter|från)"
     , Predicate isATimeOfDay
-    , regex "((men )?f\x00f6re)|\\-|till|till och med|tom"
+    , regex "((men )?före)|\\-|till|till och med|tom"
     , Predicate isATimeOfDay
     ]
   , prod = \tokens -> case tokens of
@@ -848,7 +848,7 @@ ruleNewYearsEve :: Rule
 ruleNewYearsEve = Rule
   { name = "new year's eve"
   , pattern =
-    [ regex "ny\x00e5rsafton?"
+    [ regex "nyårsafton?"
     ]
   , prod = \_ -> tt $ monthDay 12 31
   }
@@ -895,7 +895,7 @@ ruleLastNCycle :: Rule
 ruleLastNCycle = Rule
   { name = "last n <cycle>"
   , pattern =
-    [ regex "sista|senaste|f\x00f6rra"
+    [ regex "sista|senaste|förra"
     , Predicate $ isIntegerBetween 1 9999
     , dimension TimeGrain
     ]
@@ -922,7 +922,7 @@ ruleWithinDuration :: Rule
 ruleWithinDuration = Rule
   { name = "within <duration>"
   , pattern =
-    [ regex "(innanf\x00f6r|inom)"
+    [ regex "(innanför|inom)"
     , dimension Duration
     ]
   , prod = \tokens -> case tokens of
@@ -983,7 +983,7 @@ ruleUntilTimeofday :: Rule
 ruleUntilTimeofday = Rule
   { name = "until <time-of-day>"
   , pattern =
-    [ regex "innan|f\x00f6re|intill"
+    [ regex "innan|före|intill"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -1087,7 +1087,7 @@ ruleNextTime :: Rule
 ruleNextTime = Rule
   { name = "next <time>"
   , pattern =
-    [ regex "n\x00e4sta|kommande"
+    [ regex "nästa|kommande"
     , Predicate isNotLatent
     ]
   , prod = \tokens -> case tokens of
@@ -1159,7 +1159,7 @@ ruleNextNCycle :: Rule
 ruleNextNCycle = Rule
   { name = "next n <cycle>"
   , pattern =
-    [ regex "n\x00e4sta"
+    [ regex "nästa"
     , Predicate $ isIntegerBetween 1 9999
     , dimension TimeGrain
     ]
@@ -1226,7 +1226,7 @@ ruleThisTime :: Rule
 ruleThisTime = Rule
   { name = "this <time>"
   , pattern =
-    [ regex "(denna|detta|i|den h\x00e4r)"
+    [ regex "(denna|detta|i|den här)"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -1264,7 +1264,7 @@ ruleOnANamedday :: Rule
 ruleOnANamedday = Rule
   { name = "on a named-day"
   , pattern =
-    [ regex "p\x00e5 en"
+    [ regex "på en"
     , Predicate isADayOfWeek
     ]
   , prod = \tokens -> case tokens of
@@ -1289,7 +1289,7 @@ ruleYesterday :: Rule
 ruleYesterday = Rule
   { name = "yesterday"
   , pattern =
-    [ regex "i g\x00e5r|ig\x00e5r"
+    [ regex "i går|igår"
     ]
   , prod = \_ -> tt . cycleNth TG.Day $ - 1
   }
@@ -1374,7 +1374,7 @@ ruleOrdinalCycleOfTime = Rule
   , pattern =
     [ dimension Ordinal
     , dimension TimeGrain
-    , regex "av|i|fr\x00e5n"
+    , regex "av|i|från"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -1401,7 +1401,7 @@ ruleTonight :: Rule
 ruleTonight = Rule
   { name = "tonight"
   , pattern =
-    [ regex "ikv\x00e4ll"
+    [ regex "ikväll"
     ]
   , prod = \_ -> do
       let td1 = cycleNth TG.Day 0
@@ -1466,7 +1466,7 @@ ruleCycleBeforeTime = Rule
   { name = "<cycle> before <time>"
   , pattern =
     [ dimension TimeGrain
-    , regex "f\x00f6re"
+    , regex "före"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -1550,7 +1550,7 @@ ruleDurationBeforeTime = Rule
   { name = "<duration> before <time>"
   , pattern =
     [ dimension Duration
-    , regex "f\x00f6re"
+    , regex "före"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of

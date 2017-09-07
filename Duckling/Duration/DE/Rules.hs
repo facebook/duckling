@@ -104,7 +104,7 @@ ruleAboutDuration :: Rule
 ruleAboutDuration = Rule
   { name = "about <duration>"
   , pattern =
-    [ regex "ungef\x00e4hr|zirka"
+    [ regex "ungefähr|zirka"
     , dimension Duration
     ]
   , prod = \tokens -> case tokens of

@@ -36,7 +36,7 @@ ruleNextDayofweek = Rule
   { name = "next <day-of-week>"
   , pattern =
     [ Predicate isADayOfWeek
-    , regex "(\x05d4\x05d1\x05d0(\x05d4)?)"
+    , regex "(הבא(ה)?)"
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_) ->
@@ -48,7 +48,7 @@ ruleNamedday :: Rule
 ruleNamedday = Rule
   { name = "ב <named-day>"
   , pattern =
-    [ regex "\x05d1"
+    [ regex "ב"
     , Predicate isADayOfWeek
     ]
   , prod = \tokens -> case tokens of
@@ -60,7 +60,7 @@ ruleAtHourTimeofday :: Rule
 ruleAtHourTimeofday = Rule
   { name = "at hour <time-of-day>"
   , pattern =
-    [ regex "\x05d1\x05e9\x05e2\x05d4"
+    [ regex "בשעה"
     , Predicate isATimeOfDay
     ]
   , prod = \tokens -> case tokens of
@@ -73,7 +73,7 @@ ruleNamedmonth12 :: Rule
 ruleNamedmonth12 = Rule
   { name = "named-month"
   , pattern =
-    [ regex "\x05d3\x05e6\x05de\x05d1\x05e8"
+    [ regex "דצמבר"
     ]
   , prod = \_ -> tt $ month 12
   }
@@ -83,7 +83,7 @@ ruleHourofdayAndInteger = Rule
   { name = "<hour-of-day> and <integer>"
   , pattern =
     [ Predicate isAnHourOfDay
-    , regex "\x05d5"
+    , regex "ו"
     , Predicate $ isIntegerBetween 1 59
     ]
   , prod = \tokens -> case tokens of
@@ -101,8 +101,8 @@ ruleHourofdayAndQuarter = Rule
   { name = "<hour-of-day> and quarter"
   , pattern =
     [ Predicate isAnHourOfDay
-    , regex "\x05d5"
-    , regex "\x05e8\x05d1\x05e2(\x05d9)?"
+    , regex "ו"
+    , regex "רבע(י)?"
     ]
   , prod = \tokens -> case tokens of
       (Token Time TimeData {TTime.form = Just (TTime.TimeOfDay (Just hours) is12H)}:_) ->
@@ -115,8 +115,8 @@ ruleHourofdayAndHalf = Rule
   { name = "<hour-of-day> and half"
   , pattern =
     [ Predicate isAnHourOfDay
-    , regex "\x05d5"
-    , regex "\x05d7\x05e6\x05d9|\x05de\x05d7\x05e6\x05d9\x05ea"
+    , regex "ו"
+    , regex "חצי|מחצית"
     ]
   , prod = \tokens -> case tokens of
       (Token Time TimeData {TTime.form = Just (TTime.TimeOfDay (Just hours) is12H)}:_) ->
@@ -145,7 +145,7 @@ ruleHourofdayQuarter = Rule
   { name = "<hour-of-day> quarter"
   , pattern =
     [ Predicate isAnHourOfDay
-    , regex "\x05e8\x05d1\x05e2(\x05d9)?"
+    , regex "רבע(י)?"
     ]
   , prod = \tokens -> case tokens of
       (Token Time TimeData {TTime.form = Just (TTime.TimeOfDay (Just hours) is12H)}:_) ->
@@ -158,7 +158,7 @@ ruleHourofdayHalf = Rule
   { name = "<hour-of-day> half"
   , pattern =
     [ Predicate isAnHourOfDay
-    , regex "\x05d7\x05e6\x05d9|\x05de\x05d7\x05e6\x05d9\x05ea"
+    , regex "חצי|מחצית"
     ]
   , prod = \tokens -> case tokens of
       (Token Time TimeData {TTime.form = Just (TTime.TimeOfDay (Just hours) is12H)}:_) ->
@@ -171,7 +171,7 @@ ruleIntegerTotillbeforeIntegerHourofday = Rule
   { name = "<integer> to|till|before <integer> (hour-of-day)"
   , pattern =
     [ Predicate $ isIntegerBetween 1 59
-    , regex "\x05dc\x05e4\x05e0\x05d9|\x05dc"
+    , regex "לפני|ל"
     , Predicate isAnHourOfDay
     ]
   , prod = \tokens -> case tokens of
@@ -186,8 +186,8 @@ ruleQuarterTotillbeforeIntegerHourofday :: Rule
 ruleQuarterTotillbeforeIntegerHourofday = Rule
   { name = "quarter to|till|before <integer> (hour-of-day)"
   , pattern =
-    [ regex "\x05e8\x05d1\x05e2(\x05d9)?"
-    , regex "\x05dc\x05e4\x05e0\x05d9|\x05dc"
+    [ regex "רבע(י)?"
+    , regex "לפני|ל"
     , Predicate isAnHourOfDay
     ]
   , prod = \tokens -> case tokens of
@@ -199,8 +199,8 @@ ruleHalfTotillbeforeIntegerHourofday :: Rule
 ruleHalfTotillbeforeIntegerHourofday = Rule
   { name = "half to|till|before <integer> (hour-of-day)"
   , pattern =
-    [ regex "\x05d7\x05e6\x05d9|\x05de\x05d7\x05e6\x05d9\x05ea"
-    , regex "\x05dc\x05e4\x05e0\x05d9|\x05dc"
+    [ regex "חצי|מחצית"
+    , regex "לפני|ל"
     , Predicate isAnHourOfDay
     ]
   , prod = \tokens -> case tokens of
@@ -213,7 +213,7 @@ ruleIntegerAfterpastIntegerHourofday = Rule
   { name = "integer after|past <integer> (hour-of-day)"
   , pattern =
     [ Predicate $ isIntegerBetween 1 59
-    , regex "\x05d0\x05d7\x05e8\x05d9"
+    , regex "אחרי"
     , Predicate isAnHourOfDay
     ]
   , prod = \tokens -> case tokens of
@@ -228,8 +228,8 @@ ruleQuarterAfterpastIntegerHourofday :: Rule
 ruleQuarterAfterpastIntegerHourofday = Rule
   { name = "quarter after|past <integer> (hour-of-day)"
   , pattern =
-    [ regex "\x05e8\x05d1\x05e2(\x05d9)?"
-    , regex "\x05d0\x05d7\x05e8\x05d9"
+    [ regex "רבע(י)?"
+    , regex "אחרי"
     , Predicate isAnHourOfDay
     ]
   , prod = \tokens -> case tokens of
@@ -241,8 +241,8 @@ ruleHalfAfterpastIntegerHourofday :: Rule
 ruleHalfAfterpastIntegerHourofday = Rule
   { name = "half after|past <integer> (hour-of-day)"
   , pattern =
-    [ regex "\x05d7\x05e6\x05d9|\x05de\x05d7\x05e6\x05d9\x05ea"
-    , regex "\x05d0\x05d7\x05e8\x05d9"
+    [ regex "חצי|מחצית"
+    , regex "אחרי"
     , Predicate isAnHourOfDay
     ]
   , prod = \tokens -> case tokens of
@@ -254,7 +254,7 @@ ruleNamedday2 :: Rule
 ruleNamedday2 = Rule
   { name = "named-day"
   , pattern =
-    [ regex "(\x05d9\x05d5\x05dd )?\x05e9\x05e0\x05d9"
+    [ regex "(יום )?שני"
     ]
   , prod = \_ -> tt $ dayOfWeek 1
   }
@@ -263,7 +263,7 @@ ruleSinceTimeofday :: Rule
 ruleSinceTimeofday = Rule
   { name = "since <time-of-day>"
   , pattern =
-    [ regex "\x05de"
+    [ regex "מ"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -276,7 +276,7 @@ ruleLastTime = Rule
   { name = "last <time>"
   , pattern =
     [ dimension Time
-    , regex "\x05e9\x05e2\x05d1\x05e8|(\x05d4)?\x05e7\x05d5\x05d3\x05dd|(\x05d4)?\x05d0\x05d7\x05e8\x05d5\x05df"
+    , regex "שעבר|(ה)?קודם|(ה)?אחרון"
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_) ->
@@ -288,7 +288,7 @@ ruleNamedday6 :: Rule
 ruleNamedday6 = Rule
   { name = "named-day"
   , pattern =
-    [ regex "(\x05d9\x05d5\x05dd )?\x05e9\x05d9\x05e9\x05d9"
+    [ regex "(יום )?שישי"
     ]
   , prod = \_ -> tt $ dayOfWeek 5
   }
@@ -298,7 +298,7 @@ ruleDatetimeDatetimeInterval = Rule
   { name = "<datetime> - <datetime> (interval)"
   , pattern =
     [ Predicate isNotLatent
-    , regex "\\-|\x05e2(\x05d3)?"
+    , regex "\\-|ע(ד)?"
     , Predicate isNotLatent
     ]
   , prod = \tokens -> case tokens of
@@ -311,7 +311,7 @@ ruleNamedmonth7 :: Rule
 ruleNamedmonth7 = Rule
   { name = "named-month"
   , pattern =
-    [ regex "\x05d9\x05d5\x05dc\x05d9"
+    [ regex "יולי"
     ]
   , prod = \_ -> tt $ month 7
   }
@@ -320,7 +320,7 @@ ruleTheDayofmonthNonOrdinal :: Rule
 ruleTheDayofmonthNonOrdinal = Rule
   { name = "the <day-of-month> (non ordinal)"
   , pattern =
-    [ regex "\x05d4/S"
+    [ regex "ה/S"
     , Predicate isDOMInteger
     ]
   , prod = \tokens -> case tokens of
@@ -335,7 +335,7 @@ ruleCycleAfterTime = Rule
   { name = "<cycle> after <time>"
   , pattern =
     [ dimension TimeGrain
-    , regex "\x05d0\x05d7\x05e8\x05d9"
+    , regex "אחרי"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -348,7 +348,7 @@ ruleInDuration :: Rule
 ruleInDuration = Rule
   { name = "in <duration>"
   , pattern =
-    [ regex "\x05d1\x05e2\x05d5\x05d3"
+    [ regex "בעוד"
     , dimension Duration
     ]
   , prod = \tokens -> case tokens of
@@ -360,7 +360,7 @@ ruleInNamedmonth :: Rule
 ruleInNamedmonth = Rule
   { name = "in <named-month>"
   , pattern =
-    [ regex "\x05d1"
+    [ regex "ב"
     , Predicate isAMonth
     ]
   , prod = \tokens -> case tokens of
@@ -372,7 +372,7 @@ ruleNow :: Rule
 ruleNow = Rule
   { name = "now"
   , pattern =
-    [ regex "\x05e2\x05db\x05e9\x05d9\x05d5|\x05de\x05d9\x05d9\x05d3"
+    [ regex "עכשיו|מייד"
     ]
   , prod = \_ -> tt $ cycleNth TG.Second 0
   }
@@ -382,7 +382,7 @@ ruleCurrentDayofweek = Rule
   { name = "current <day-of-week>"
   , pattern =
     [ Predicate isADayOfWeek
-    , regex "(\x05d4\x05d6\x05d4|\x05d4\x05d6\x05d0\x05ea|\x05d4\x05e7\x05e8\x05d5\x05d1(\x05d4)?)"
+    , regex "(הזה|הזאת|הקרוב(ה)?)"
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_) ->
@@ -394,9 +394,9 @@ ruleFromDatetimeDatetimeInterval :: Rule
 ruleFromDatetimeDatetimeInterval = Rule
   { name = "from <datetime> - <datetime> (interval)"
   , pattern =
-    [ regex "\x05de|\x05de\x05e9\x05e2\x05d4"
+    [ regex "מ|משעה"
     , dimension Time
-    , regex "\\-|\x05e2\x05d3"
+    , regex "\\-|עד"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -409,7 +409,7 @@ ruleNamedday4 :: Rule
 ruleNamedday4 = Rule
   { name = "named-day"
   , pattern =
-    [ regex "(\x05d9\x05d5\x05dd )?\x05e8\x05d1\x05d9\x05e2\x05d9"
+    [ regex "(יום )?רביעי"
     ]
   , prod = \_ -> tt $ dayOfWeek 3
   }
@@ -418,9 +418,9 @@ ruleTheCycleAfterTime :: Rule
 ruleTheCycleAfterTime = Rule
   { name = "the <cycle> after <time>"
   , pattern =
-    [ regex "\x05d4"
+    [ regex "ה"
     , dimension TimeGrain
-    , regex "\x05d0\x05d7\x05e8\x05d9"
+    , regex "אחרי"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -433,9 +433,9 @@ ruleTheCycleBeforeTime :: Rule
 ruleTheCycleBeforeTime = Rule
   { name = "the <cycle> before <time>"
   , pattern =
-    [ regex "\x05d4"
+    [ regex "ה"
     , dimension TimeGrain
-    , regex "\x05dc\x05e4\x05e0\x05d9"
+    , regex "לפני"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -449,7 +449,7 @@ ruleLastDayofweek = Rule
   { name = "last <day-of-week>"
   , pattern =
     [ Predicate isADayOfWeek
-    , regex "(\x05e9\x05e2\x05d1\x05e8(\x05d4)?|\x05d4\x05e7\x05d5\x05d3\x05de\x05ea|\x05d4\x05e7\x05d5\x05d3\x05dd)"
+    , regex "(שעבר(ה)?|הקודמת|הקודם)"
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_) ->
@@ -461,7 +461,7 @@ ruleTheIdesOfNamedmonth :: Rule
 ruleTheIdesOfNamedmonth = Rule
   { name = "the ides of <named-month>"
   , pattern =
-    [ regex "\x05d1\x05d0\x05de\x05e6\x05e2"
+    [ regex "באמצע"
     , Predicate isAMonth
     ]
   , prod = \tokens -> case tokens of
@@ -475,7 +475,7 @@ ruleNoon :: Rule
 ruleNoon = Rule
   { name = "noon"
   , pattern =
-    [ regex "(\x05d1)?\x05e6\x05d4\x05e8\x05d9\x05d9\x05dd"
+    [ regex "(ב)?צהריים"
     ]
   , prod = \_ -> tt $ hour False 12
   }
@@ -484,7 +484,7 @@ ruleToday :: Rule
 ruleToday = Rule
   { name = "today"
   , pattern =
-    [ regex "\x05d4\x05d9\x05d5\x05dd"
+    [ regex "היום"
     ]
   , prod = \_ -> tt $ cycleNth TG.Day 0
   }
@@ -493,9 +493,9 @@ ruleBetweenTimeofdayAndTimeofdayInterval :: Rule
 ruleBetweenTimeofdayAndTimeofdayInterval = Rule
   { name = "between <time-of-day> and <time-of-day> (interval)"
   , pattern =
-    [ regex "\x05d1\x05d9\x05df"
+    [ regex "בין"
     , Predicate isATimeOfDay
-    , regex "\x05dc"
+    , regex "ל"
     , Predicate isATimeOfDay
     ]
   , prod = \tokens -> case tokens of
@@ -509,7 +509,7 @@ ruleNextCycle = Rule
   { name = "next <cycle>"
   , pattern =
     [ dimension TimeGrain
-    , regex "\x05d4\x05d1\x05d0(\x05d4)?"
+    , regex "הבא(ה)?"
     ]
   , prod = \tokens -> case tokens of
       (Token TimeGrain grain:_) -> tt $ cycleNth grain 1
@@ -520,7 +520,7 @@ ruleNamedmonth :: Rule
 ruleNamedmonth = Rule
   { name = "named-month"
   , pattern =
-    [ regex "\x05d9\x05e0\x05d5\x05d0\x05e8"
+    [ regex "ינואר"
     ]
   , prod = \_ -> tt $ month 1
   }
@@ -529,7 +529,7 @@ ruleNamedmonth3 :: Rule
 ruleNamedmonth3 = Rule
   { name = "named-month"
   , pattern =
-    [ regex "\x05de\x05e8\x05e5"
+    [ regex "מרץ"
     ]
   , prod = \_ -> tt $ month 3
   }
@@ -538,7 +538,7 @@ ruleForDuration :: Rule
 ruleForDuration = Rule
   { name = "for <duration>"
   , pattern =
-    [ regex "\x05ea\x05d5\x05da"
+    [ regex "תוך"
     , dimension Duration
     ]
   , prod = \tokens -> case tokens of
@@ -552,7 +552,7 @@ ruleDurationFromNow = Rule
   { name = "<duration> from now"
   , pattern =
     [ dimension Duration
-    , regex "\x05de\x05e2\x05db\x05e9\x05d9\x05d5"
+    , regex "מעכשיו"
     ]
   , prod = \tokens -> case tokens of
       (Token Duration dd:_) ->
@@ -564,7 +564,7 @@ ruleLunch :: Rule
 ruleLunch = Rule
   { name = "lunch"
   , pattern =
-    [ regex "(\x05d1)?\x05e6\x05d4\x05e8\x05d9\x05d9\x05dd"
+    [ regex "(ב)?צהריים"
     ]
   , prod = \_ -> Token Time . partOfDay . mkLatent <$>
       interval TTime.Open (hour False 12) (hour False 14)
@@ -575,7 +575,7 @@ ruleLastCycle = Rule
   { name = "last <cycle>"
   , pattern =
     [ dimension TimeGrain
-    , regex "\x05d4\x05d0\x05d7\x05e8\x05d5\x05df|\x05d4\x05d0\x05d7\x05e8\x05d5\x05e0\x05d4|\x05e9\x05e2\x05d1\x05e8|\x05e9\x05e2\x05d1\x05e8\x05d4"
+    , regex "האחרון|האחרונה|שעבר|שעברה"
     ]
   , prod = \tokens -> case tokens of
       (Token TimeGrain grain:_) ->
@@ -587,7 +587,7 @@ ruleAfternoon :: Rule
 ruleAfternoon = Rule
   { name = "afternoon"
   , pattern =
-    [ regex "\x05d0\x05d7\x05d4(\x05f4)?\x05e6|\x05d0\x05d7\x05e8 \x05d4\x05e6\x05d4\x05e8\x05d9\x05d9\x05dd"
+    [ regex "אחה(״)?צ|אחר הצהריים"
     ]
   , prod = \_ -> Token Time . partOfDay . mkLatent <$>
       interval TTime.Open (hour False 12) (hour False 19)
@@ -597,7 +597,7 @@ ruleNamedmonth4 :: Rule
 ruleNamedmonth4 = Rule
   { name = "named-month"
   , pattern =
-    [ regex "\x05d0\x05e4\x05e8\x05d9\x05dc"
+    [ regex "אפריל"
     ]
   , prod = \_ -> tt $ month 4
   }
@@ -618,7 +618,7 @@ ruleNamedday5 :: Rule
 ruleNamedday5 = Rule
   { name = "named-day"
   , pattern =
-    [ regex "(\x05d9\x05d5\x05dd )?\x05d7\x05de\x05d9\x05e9\x05d9"
+    [ regex "(יום )?חמישי"
     ]
   , prod = \_ -> tt $ dayOfWeek 4
   }
@@ -654,7 +654,7 @@ ruleNthTimeAfterTime = Rule
   , pattern =
     [ dimension Ordinal
     , dimension Time
-    , regex "\x05d0\x05d7\x05e8\x05d9"
+    , regex "אחרי"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -681,7 +681,7 @@ ruleAfterDuration :: Rule
 ruleAfterDuration = Rule
   { name = "after <duration>"
   , pattern =
-    [ regex "\x05d0\x05d7\x05e8\x05d9"
+    [ regex "אחרי"
     , dimension Duration
     ]
   , prod = \tokens -> case tokens of
@@ -707,7 +707,7 @@ ruleDayofmonthOrdinalOfNamedmonth = Rule
   { name = "<day-of-month> (ordinal) of <named-month>"
   , pattern =
     [ Predicate isDOMOrdinal
-    , regex "\x05e9\x05dc|\x05d1|\x05dc"
+    , regex "של|ב|ל"
     , Predicate isAMonth
     ]
   , prod = \tokens -> case tokens of
@@ -719,7 +719,7 @@ ruleNamedmonth2 :: Rule
 ruleNamedmonth2 = Rule
   { name = "named-month"
   , pattern =
-    [ regex "\x05e4\x05d1\x05e8\x05d5\x05d0\x05e8"
+    [ regex "פברואר"
     ]
   , prod = \_ -> tt $ month 2
   }
@@ -728,7 +728,7 @@ ruleThisEvening :: Rule
 ruleThisEvening = Rule
   { name = "this evening"
   , pattern =
-    [ regex "\x05d4\x05e2\x05e8\x05d1"
+    [ regex "הערב"
     ]
   , prod = \_ -> do
       td <- interval TTime.Open (hour False 18) (hour False 0)
@@ -739,9 +739,9 @@ ruleBetweenDatetimeAndDatetimeInterval :: Rule
 ruleBetweenDatetimeAndDatetimeInterval = Rule
   { name = "between <datetime> and <datetime> (interval)"
   , pattern =
-    [ regex "\x05d1\x05d9\x05df"
+    [ regex "בין"
     , dimension Time
-    , regex "\x05dc"
+    , regex "ל"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -754,7 +754,7 @@ ruleEndOfYear :: Rule
 ruleEndOfYear = Rule
   { name = "End of year"
   , pattern =
-    [ regex "\x05e1\x05d5\x05e3 (\x05d4)?\x05e9\x05e0\x05d4"
+    [ regex "סוף (ה)?שנה"
     ]
   , prod = \_ -> tt $ cycleNth TG.Year 1
   }
@@ -763,7 +763,7 @@ ruleDurationAgo :: Rule
 ruleDurationAgo = Rule
   { name = "<duration> ago"
   , pattern =
-    [ regex "\x05dc\x05e4\x05e0\x05d9"
+    [ regex "לפני"
     , dimension Duration
     ]
   , prod = \tokens -> case tokens of
@@ -778,7 +778,7 @@ ruleLastNCycle = Rule
   , pattern =
     [ Predicate $ isIntegerBetween 1 9999
     , dimension TimeGrain
-    , regex "\x05d0\x05d7\x05e8\x05d5\x05df|\x05d0\x05d7\x05e8\x05d5\x05e0\x05d5\x05ea|\x05d0\x05d7\x05e8\x05d5\x05e0\x05d4|\x05d0\x05d7\x05e8\x05d5\x05e0\x05d9\x05dd"
+    , regex "אחרון|אחרונות|אחרונה|אחרונים"
     ]
   , prod = \tokens -> case tokens of
       (token:Token TimeGrain grain:_) -> do
@@ -791,7 +791,7 @@ ruleMidnighteodendOfDay :: Rule
 ruleMidnighteodendOfDay = Rule
   { name = "midnight|EOD|end of day"
   , pattern =
-    [ regex "(\x05d1)?\x05d7\x05e6\x05d5\x05ea"
+    [ regex "(ב)?חצות"
     ]
   , prod = \_ -> tt $ hour False 0
   }
@@ -824,7 +824,7 @@ ruleUntilTimeofday :: Rule
 ruleUntilTimeofday = Rule
   { name = "until <time-of-day>"
   , pattern =
-    [ regex "\x05e2\x05d3"
+    [ regex "עד"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -837,7 +837,7 @@ ruleAtTimeofday :: Rule
 ruleAtTimeofday = Rule
   { name = "at <time-of-day>"
   , pattern =
-    [ regex "\x05d1"
+    [ regex "ב"
     , Predicate isATimeOfDay
     ]
   , prod = \tokens -> case tokens of
@@ -849,7 +849,7 @@ ruleNamedmonth6 :: Rule
 ruleNamedmonth6 = Rule
   { name = "named-month"
   , pattern =
-    [ regex "\x05d9\x05d5\x05e0\x05d9"
+    [ regex "יוני"
     ]
   , prod = \_ -> tt $ month 6
   }
@@ -860,7 +860,7 @@ ruleNthTimeOfTime = Rule
   , pattern =
     [ dimension Time
     , dimension Ordinal
-    , regex "\x05e9\x05dc|\x05d1"
+    , regex "של|ב"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -873,7 +873,7 @@ ruleNamedmonth8 :: Rule
 ruleNamedmonth8 = Rule
   { name = "named-month"
   , pattern =
-    [ regex "\x05d0\x05d5\x05d2\x05d5\x05e1\x05d8"
+    [ regex "אוגוסט"
     ]
   , prod = \_ -> tt $ month 8
   }
@@ -894,7 +894,7 @@ ruleWeekend :: Rule
 ruleWeekend = Rule
   { name = "week-end"
   , pattern =
-    [ regex "(\x05e1\x05d5\x05e4\x05f4\x05e9|\x05e1\x05d5\x05e3 \x05d4\x05e9\x05d1\x05d5\x05e2)"
+    [ regex "(סופ״ש|סוף השבוע)"
     ]
   , prod = \_ -> tt weekend
   }
@@ -915,7 +915,7 @@ ruleDate :: Rule
 ruleDate = Rule
   { name = "ב <date>"
   , pattern =
-    [ regex "\x05d1"
+    [ regex "ב"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -928,7 +928,7 @@ ruleNextTime = Rule
   { name = "next <time>"
   , pattern =
     [ Predicate isNotLatent
-    , regex "\x05d4\x05d1\x05d0(\x05d4)?"
+    , regex "הבא(ה)?"
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_) -> tt $ predNth 0 True td
@@ -968,10 +968,10 @@ ruleTheOrdinalCycleAfterTime :: Rule
 ruleTheOrdinalCycleAfterTime = Rule
   { name = "the <ordinal> <cycle> after <time>"
   , pattern =
-    [ regex "\x05d4"
+    [ regex "ה"
     , dimension Ordinal
     , dimension TimeGrain
-    , regex "\x05d0\x05d7\x05e8\x05d9|\x05dc\x05d0\x05d7\x05e8"
+    , regex "אחרי|לאחר"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -986,7 +986,7 @@ ruleNextNCycle = Rule
   , pattern =
     [ Predicate $ isIntegerBetween 1 9999
     , dimension TimeGrain
-    , regex "\x05d4\x05d1\x05d0|\x05d4\x05d1\x05d0\x05d4|\x05d4\x05d1\x05d0\x05d9\x05dd|\x05d4\x05d1\x05d0\x05d5\x05ea"
+    , regex "הבא|הבאה|הבאים|הבאות"
     ]
   , prod = \tokens -> case tokens of
       (token:Token TimeGrain grain:_) -> do
@@ -999,7 +999,7 @@ ruleMorning :: Rule
 ruleMorning = Rule
   { name = "morning"
   , pattern =
-    [ regex "(\x05d1)?\x05d1\x05d5\x05e7\x05e8"
+    [ regex "(ב)?בוקר"
     ]
   , prod = \_ -> Token Time . partOfDay . mkLatent <$>
       interval TTime.Open (hour False 4) (hour False 12)
@@ -1010,7 +1010,7 @@ ruleThisCycle = Rule
   { name = "this <cycle>"
   , pattern =
     [ dimension TimeGrain
-    , regex "\x05d4\x05e7\x05e8\x05d5(\x05d1)?\x05d4|\x05d4\x05d6\x05d4|\x05d4\x05d6\x05d0\x05ea"
+    , regex "הקרו(ב)?ה|הזה|הזאת"
     ]
   , prod = \tokens -> case tokens of
       (Token TimeGrain grain:_) ->
@@ -1023,7 +1023,7 @@ ruleThisTime = Rule
   { name = "this <time>"
   , pattern =
     [ dimension Time
-    , regex "\x05d4\x05e7\x05e8\x05d5\x05d1|\x05d4\x05d6\x05d4"
+    , regex "הקרוב|הזה"
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_) ->
@@ -1036,7 +1036,7 @@ ruleDayofmonthNonOrdinalOfNamedmonth = Rule
   { name = "<day-of-month> (non ordinal) of <named-month>"
   , pattern =
     [ Predicate isDOMInteger
-    , regex "\x05e9\x05dc|\x05d1|\x05dc"
+    , regex "של|ב|ל"
     , Predicate isAMonth
     ]
   , prod = \tokens -> case tokens of
@@ -1048,7 +1048,7 @@ ruleEndOfMonth :: Rule
 ruleEndOfMonth = Rule
   { name = "End of month"
   , pattern =
-    [ regex "\x05e1\x05d5\x05e3 (\x05d4)?\x05d7\x05d5\x05d3\x05e9"
+    [ regex "סוף (ה)?חודש"
     ]
   , prod = \_ -> tt $ cycleNth TG.Month 1
   }
@@ -1057,7 +1057,7 @@ ruleYesterday :: Rule
 ruleYesterday = Rule
   { name = "yesterday"
   , pattern =
-    [ regex "(\x05d0\x05ea\x05de\x05d5\x05dc|\x05d0\x05de\x05e9)"
+    [ regex "(אתמול|אמש)"
     ]
   , prod = \_ -> tt . cycleNth TG.Day $ - 1
   }
@@ -1066,7 +1066,7 @@ ruleAfterTimeofday :: Rule
 ruleAfterTimeofday = Rule
   { name = "after <time-of-day>"
   , pattern =
-    [ regex "\x05d0\x05d7\x05e8\x05d9"
+    [ regex "אחרי"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -1106,7 +1106,7 @@ ruleOrdinalCycleAfterTime = Rule
   , pattern =
     [ dimension Ordinal
     , dimension TimeGrain
-    , regex "\x05d0\x05d7\x05e8\x05d9|\x05dc\x05d0\x05d7\x05e8"
+    , regex "אחרי|לאחר"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -1119,7 +1119,7 @@ ruleNamedmonth5 :: Rule
 ruleNamedmonth5 = Rule
   { name = "named-month"
   , pattern =
-    [ regex "\x05de\x05d0\x05d9"
+    [ regex "מאי"
     ]
   , prod = \_ -> tt $ month 5
   }
@@ -1128,7 +1128,7 @@ ruleNamedday7 :: Rule
 ruleNamedday7 = Rule
   { name = "named-day"
   , pattern =
-    [ regex "(\x05d9\x05d5\x05dd )?\x05e9\x05d1\x05ea"
+    [ regex "(יום )?שבת"
     ]
   , prod = \_ -> tt $ dayOfWeek 6
   }
@@ -1152,7 +1152,7 @@ ruleTimeOfPartofday = Rule
   { name = "<time> of <part-of-day>"
   , pattern =
     [ dimension Time
-    , regex "\x05d1"
+    , regex "ב"
     , Predicate isAPartOfDay
     ]
   , prod = \tokens -> case tokens of
@@ -1177,7 +1177,7 @@ ruleNamedmonth10 :: Rule
 ruleNamedmonth10 = Rule
   { name = "named-month"
   , pattern =
-    [ regex "\x05d0\x05d5\x05e7\x05d8\x05d5\x05d1\x05e8"
+    [ regex "אוקטובר"
     ]
   , prod = \_ -> tt $ month 10
   }
@@ -1198,7 +1198,7 @@ ruleNamedday8 :: Rule
 ruleNamedday8 = Rule
   { name = "named-day"
   , pattern =
-    [ regex "(\x05d9\x05d5\x05dd )?\x05e8\x05d0\x05e9\x05d5\x05df"
+    [ regex "(יום )?ראשון"
     ]
   , prod = \_ -> tt $ dayOfWeek 7
   }
@@ -1220,7 +1220,7 @@ ruleLastDayofweekOfTime = Rule
   { name = "last <day-of-week> of <time>"
   , pattern =
     [ Predicate isADayOfWeek
-    , regex "\x05d4\x05d0\x05d7\x05e8\x05d5\x05df \x05e9\x05dc"
+    , regex "האחרון של"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -1250,7 +1250,7 @@ ruleCycleBeforeTime = Rule
   { name = "<cycle> before <time>"
   , pattern =
     [ dimension TimeGrain
-    , regex "\x05dc\x05e4\x05e0\x05d9"
+    , regex "לפני"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -1263,7 +1263,7 @@ ruleNamedmonth11 :: Rule
 ruleNamedmonth11 = Rule
   { name = "named-month"
   , pattern =
-    [ regex "\x05e0\x05d5\x05d1\x05de\x05d1\x05e8"
+    [ regex "נובמבר"
     ]
   , prod = \_ -> tt $ month 11
   }
@@ -1273,7 +1273,7 @@ ruleDurationAfterTime = Rule
   { name = "<duration> after <time>"
   , pattern =
     [ dimension Duration
-    , regex "\x05d0\x05d7\x05e8\x05d9|\x05dc\x05d0\x05d7\x05e8"
+    , regex "אחרי|לאחר"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -1286,7 +1286,7 @@ ruleEveningnight :: Rule
 ruleEveningnight = Rule
   { name = "evening|night"
   , pattern =
-    [ regex "(\x05d1)?\x05e2\x05e8\x05d1"
+    [ regex "(ב)?ערב"
     ]
   , prod = \_ -> Token Time . partOfDay . mkLatent <$>
       interval TTime.Open (hour False 18) (hour False 0)
@@ -1311,7 +1311,7 @@ ruleNamedday3 :: Rule
 ruleNamedday3 = Rule
   { name = "named-day"
   , pattern =
-    [ regex "(\x05d9\x05d5\x05dd )?\x05e9\x05dc\x05d9\x05e9\x05d9"
+    [ regex "(יום )?שלישי"
     ]
   , prod = \_ -> tt $ dayOfWeek 2
   }
@@ -1320,7 +1320,7 @@ ruleTheDayofmonthOrdinal :: Rule
 ruleTheDayofmonthOrdinal = Rule
   { name = "the <day-of-month> (ordinal)"
   , pattern =
-    [ regex "\x05d4"
+    [ regex "ה"
     , Predicate isDOMOrdinal
     ]
   , prod = \tokens -> case tokens of
@@ -1335,7 +1335,7 @@ ruleDurationBeforeTime = Rule
   { name = "<duration> before <time>"
   , pattern =
     [ dimension Duration
-    , regex "\x05dc\x05e4\x05e0\x05d9"
+    , regex "לפני"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -1348,9 +1348,9 @@ rulePartofdayOfTime :: Rule
 rulePartofdayOfTime = Rule
   { name = "<part-of-day> of <time>"
   , pattern =
-    [ regex "\x05d1"
+    [ regex "ב"
     , Predicate isAPartOfDay
-    , regex "\x05e9\x05dc"
+    , regex "של"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -1377,7 +1377,7 @@ ruleTomorrow :: Rule
 ruleTomorrow = Rule
   { name = "tomorrow"
   , pattern =
-    [ regex "(\x05de\x05d7\x05e8|\x05dc\x05de\x05d7\x05e8\x05ea)"
+    [ regex "(מחר|למחרת)"
     ]
   , prod = \_ -> tt $ cycleNth TG.Day 1
   }
@@ -1398,7 +1398,7 @@ ruleNamedmonth9 :: Rule
 ruleNamedmonth9 = Rule
   { name = "named-month"
   , pattern =
-    [ regex "\x05e1\x05e4\x05d8\x05de\x05d1\x05e8"
+    [ regex "ספטמבר"
     ]
   , prod = \_ -> tt $ month 9
   }

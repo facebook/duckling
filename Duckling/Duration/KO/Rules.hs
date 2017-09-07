@@ -31,7 +31,7 @@ ruleHalfAnHour = Rule
   { name = "half an hour"
   , pattern =
     [ Predicate $ isGrain TG.Hour
-    , regex "\xbc18"
+    , regex "반"
     ]
   , prod = \_ -> Just . Token Duration $ duration TG.Minute 30
   }
@@ -40,7 +40,7 @@ ruleADay :: Rule
 ruleADay = Rule
   { name = "a day - 하루"
   , pattern =
-    [ regex "\xd558\xb8e8"
+    [ regex "하루"
     ]
   , prod = \_ -> Just . Token Duration $ duration TG.Day 1
   }
@@ -50,7 +50,7 @@ ruleNumeralnumberHours = Rule
   { name = "number.number hours"
   , pattern =
     [ regex "(\\d+)\\.(\\d+)"
-    , regex "\xc2dc\xac04"
+    , regex "시간"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (h:m:_)):_) -> do
@@ -66,7 +66,7 @@ ruleIntegerAndAnHalfHours = Rule
   { name = "<integer> and an half hours"
   , pattern =
     [ Predicate isNatural
-    , regex "\xc2dc\xac04\xbc18"
+    , regex "시간반"
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral (NumeralData {TNumeral.value = v}):_) ->
@@ -78,7 +78,7 @@ ruleAboutDuration :: Rule
 ruleAboutDuration = Rule
   { name = "about <duration>"
   , pattern =
-    [ regex "\xb300\xcda9|\xc57d"
+    [ regex "대충|약"
     , dimension Duration
     ]
   , prod = \tokens -> case tokens of
@@ -90,7 +90,7 @@ ruleExactlyDuration :: Rule
 ruleExactlyDuration = Rule
   { name = "exactly <duration>"
   , pattern =
-    [ regex "\xc815\xd655\xd788"
+    [ regex "정확히"
     , dimension Duration
     ]
   , prod = \tokens -> case tokens of

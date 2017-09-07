@@ -78,7 +78,7 @@ ruleOrdinalDigits :: Rule
 ruleOrdinalDigits = Rule
   { name = "ordinal (digits)"
   , pattern =
-    [ regex "0*(\\d+) ?(\x00aa|\x00b0|\x00b0)"
+    [ regex "0*(\\d+) ?(ª|°|°)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> ordinal <$> parseInt match

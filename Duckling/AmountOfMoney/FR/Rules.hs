@@ -44,7 +44,7 @@ rulePrecision :: Rule
 rulePrecision = Rule
   { name = "precision"
   , pattern =
-    [ regex "exactement|quasi|plus ou moins|environ|autour de|(a|\x00e0) peu pr(e|\x00e8)s"
+    [ regex "exactement|quasi|plus ou moins|environ|autour de|(a|à) peu pr(e|è)s"
     , financeWith TAmountOfMoney.value isJust
     ]
   , prod = \tokens -> case tokens of

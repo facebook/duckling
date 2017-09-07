@@ -25,7 +25,7 @@ ruleLatentTempDegrees = Rule
   { name = "<latent temp> degrees"
   , pattern =
     [ dimension Temperature
-    , regex "(grad[io]?\\.?)|\x00b0"
+    , regex "(grad[io]?\\.?)|°"
     ]
   , prod = \tokens -> case tokens of
       (Token Temperature td:_) -> Just . Token Temperature $

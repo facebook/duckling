@@ -110,12 +110,12 @@ zeroToFifteenMap = HashMap.fromList
   , ( "una" , 1 )
   , ( "uno" , 1 )
   , ( "dos" , 2 )
-  , ( "tr\x00e9s" , 3 )
+  , ( "trés" , 3 )
   , ( "tres" , 3 )
   , ( "cuatro" , 4 )
   , ( "cinco" , 5 )
   , ( "seis" , 6 )
-  , ( "s\x00e9is" , 6 )
+  , ( "séis" , 6 )
   , ( "siete" , 7 )
   , ( "ocho" , 8 )
   , ( "nueve" , 9 )
@@ -132,7 +132,7 @@ ruleNumeral :: Rule
 ruleNumeral = Rule
   { name = "number (0..15)"
   , pattern =
-    [ regex "((c|z)ero|un(o|a)?|dos|tr(\x00e9|e)s|cuatro|cinco|s(e|\x00e9)is|siete|ocho|nueve|die(z|s)|once|doce|trece|catorce|quince)"
+    [ regex "((c|z)ero|un(o|a)?|dos|tr(é|e)s|cuatro|cinco|s(e|é)is|siete|ocho|nueve|die(z|s)|once|doce|trece|catorce|quince)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
@@ -143,20 +143,20 @@ ruleNumeral = Rule
 sixteenToTwentyNineMap :: HashMap.HashMap Text.Text Integer
 sixteenToTwentyNineMap = HashMap.fromList
   [ ( "dieciseis" , 16 )
-  , ( "diesis\x00e9is" , 16 )
+  , ( "diesiséis" , 16 )
   , ( "diesiseis" , 16 )
-  , ( "diecis\x00e9is" , 16 )
+  , ( "dieciséis" , 16 )
   , ( "diecisiete" , 17 )
   , ( "dieciocho" , 18 )
   , ( "diecinueve" , 19 )
   , ( "veintiuno" , 21 )
   , ( "veintiuna" , 21 )
   , ( "veintidos" , 22 )
-  , ( "veintitr\x00e9s" , 23 )
+  , ( "veintitrés" , 23 )
   , ( "veintitres" , 23 )
   , ( "veinticuatro" , 24 )
   , ( "veinticinco" , 25 )
-  , ( "veintis\x00e9is" , 26 )
+  , ( "veintiséis" , 26 )
   , ( "veintiseis" , 26 )
   , ( "veintisiete" , 27 )
   , ( "veintiocho" , 28 )
@@ -167,7 +167,7 @@ ruleNumeral5 :: Rule
 ruleNumeral5 = Rule
   { name = "number (16..19 21..29)"
   , pattern =
-    [ regex "(die(c|s)is(\x00e9|e)is|diecisiete|dieciocho|diecinueve|veintiun(o|a)|veintidos|veintitr(\x00e9|e)s|veinticuatro|veinticinco|veintis(\x00e9|e)is|veintisiete|veintiocho|veintinueve)"
+    [ regex "(die(c|s)is(é|e)is|diecisiete|dieciocho|diecinueve|veintiun(o|a)|veintidos|veintitr(é|e)s|veinticuatro|veinticinco|veintis(é|e)is|veintisiete|veintiocho|veintinueve)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
@@ -194,7 +194,7 @@ ruleNumeralsSuffixesKMG = Rule
   { name = "numbers suffixes (K, M, G)"
   , pattern =
     [ dimension Numeral
-    , regex "([kmg])(?=[\\W\\$\x20ac]|$)"
+    , regex "([kmg])(?=[\\W\\$€]|$)"
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral (NumeralData {TNumeral.value = v}):

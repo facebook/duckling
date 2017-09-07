@@ -27,7 +27,7 @@ ruleAmountofmoneyAbout = Rule
   { name = "<amount-of-money> about"
   , pattern =
     [ financeWith TAmountOfMoney.value isJust
-    , regex "\xc815\xb3c4|\xcbe4"
+    , regex "정도|쯤"
     ]
   , prod = \tokens -> case tokens of
       (token:_) -> Just token
@@ -38,7 +38,7 @@ ruleAud :: Rule
 ruleAud = Rule
   { name = "AUD"
   , pattern =
-    [ regex "\xd638\xc8fc\xb2ec\xb7ec"
+    [ regex "호주달러"
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly AUD
   }
@@ -47,7 +47,7 @@ ruleKrw :: Rule
 ruleKrw = Rule
   { name = "₩"
   , pattern =
-    [ regex "\x20a9|\xc6d0"
+    [ regex "₩|원"
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly KRW
   }
@@ -56,7 +56,7 @@ ruleAboutAmountofmoney :: Rule
 ruleAboutAmountofmoney = Rule
   { name = "about <amount-of-money>"
   , pattern =
-    [ regex "\xc57d|\xb300\xcda9|\xc5bc\xcd94"
+    [ regex "약|대충|얼추"
     , financeWith TAmountOfMoney.value isJust
     ]
   , prod = \tokens -> case tokens of
@@ -68,7 +68,7 @@ ruleCent :: Rule
 ruleCent = Rule
   { name = "cent"
   , pattern =
-    [ regex "cents?|\xc13c(\xd2b8|\xce20)"
+    [ regex "cents?|센(트|츠)"
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly Cent
   }
@@ -77,7 +77,7 @@ ruleExactlyAmountofmoney :: Rule
 ruleExactlyAmountofmoney = Rule
   { name = "exactly <amount-of-money>"
   , pattern =
-    [ regex "\xb531|\xc815\xd655\xd788"
+    [ regex "딱|정확히"
     , financeWith TAmountOfMoney.value isJust
     ]
   , prod = \tokens -> case tokens of
@@ -103,7 +103,7 @@ ruleEuro :: Rule
 ruleEuro = Rule
   { name = "€"
   , pattern =
-    [ regex "\x20ac|\xc720\xb85c"
+    [ regex "€|유로"
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly EUR
   }
@@ -112,7 +112,7 @@ ruleDollar :: Rule
 ruleDollar = Rule
   { name = "$"
   , pattern =
-    [ regex "\xb2ec\xb7ec|\xbd88"
+    [ regex "달러|불"
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly Dollar
   }
@@ -121,7 +121,7 @@ ruleInr :: Rule
 ruleInr = Rule
   { name = "INR"
   , pattern =
-    [ regex "\xb8e8\xd53c|\xc778\xb3c4\xb8e8\xd53c"
+    [ regex "루피|인도루피"
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly INR
   }
@@ -130,7 +130,7 @@ rulePounds :: Rule
 rulePounds = Rule
   { name = "£"
   , pattern =
-    [ regex "\xd30c\xc6b4\xb4dc|\xc601\xad6d\xd30c\xc6b4\xb4dc"
+    [ regex "파운드|영국파운드"
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly Pound
   }

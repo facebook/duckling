@@ -50,9 +50,9 @@ ruleNumeralMap = HashMap.fromList
   , ( "dva", 2 )
   , ( "dv\x0115", 2 )
   , ( "t\x0159i", 3 )
-  , ( "\x010dty\x0159i", 4 )
+  , ( "čty\x0159i", 4 )
   , ( "p\x0115t", 5)
-  , ( "\x0161est", 6)
+  , ( "šest", 6)
   , ( "sedm", 7)
   , ( "osm", 8)
   , ( "dev\x0115t", 9)
@@ -63,7 +63,7 @@ ruleNumeral :: Rule
 ruleNumeral = Rule
   { name = "number (0..10)"
   , pattern =
-    [ regex "(nula|jed(en|n[ao])|dv(a|\x0115)|t(\x0159)i|(\x010d)ty(\x0159)i|p(\x0115)t|(\x0161)est|sedm|osm|dev(\x0115)t|deset)"
+    [ regex "(nula|jed(en|n[ao])|dv(a|\x0115)|t(\x0159)i|(č)ty(\x0159)i|p(\x0115)t|(š)est|sedm|osm|dev(\x0115)t|deset)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->

@@ -25,7 +25,7 @@ ruleLatentVolMl = Rule
   { name = "<latent vol> ml"
   , pattern =
     [ dimension Volume
-    , regex "ml|(\xbc00|\xbbf8)\xb9ac\xb9ac\xd130"
+    , regex "ml|(밀|미)리리터"
     ]
   , prod = \tokens -> case tokens of
       (Token Volume vd:_) ->
@@ -38,7 +38,7 @@ ruleVolHectoliters = Rule
   { name = "<vol> hectoliters"
   , pattern =
     [ dimension Volume
-    , regex "(\xd575|\xd5e5)\xd1a0\xb9ac\xd130"
+    , regex "(핵|헥)토리터"
     ]
   , prod = \tokens -> case tokens of
       (Token Volume vd:_) ->
@@ -51,7 +51,7 @@ ruleVolLiters = Rule
   { name = "<vol> liters"
   , pattern =
     [ dimension Volume
-    , regex "l|\xb9ac\xd130"
+    , regex "l|리터"
     ]
   , prod = \tokens -> case tokens of
       (Token Volume vd:_) ->
@@ -64,7 +64,7 @@ ruleLatentVolGallon = Rule
   { name = "<latent vol> gallon"
   , pattern =
     [ dimension Volume
-    , regex "gal(l?ons?)?|\xac24(\xb7f0|\xb860)"
+    , regex "gal(l?ons?)?|갤(런|론)"
     ]
   , prod = \tokens -> case tokens of
       (Token Volume vd:_) ->

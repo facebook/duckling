@@ -144,7 +144,7 @@ ruleNumerals5 = Rule
 ruleNumeralMap :: HashMap Text Integer
 ruleNumeralMap = HashMap.fromList
   [ ( "zero"     , 0 )
-  , ( "z\x00e9ro", 0 )
+  , ( "zéro", 0 )
   , ( "un"       , 1 )
   , ( "une"      , 1 )
   , ( "deux"     , 2 )
@@ -168,7 +168,7 @@ ruleNumeral :: Rule
 ruleNumeral = Rule
   { name = "number (0..16)"
   , pattern =
-    [ regex "(z(e|\x00e9)ro|une?|deux|trois|quatre|cinq|six|sept|huit|neuf|dix|onze|douze|treize|quatorze|quinze|seize)"
+    [ regex "(z(e|é)ro|une?|deux|trois|quatre|cinq|six|sept|huit|neuf|dix|onze|douze|treize|quatorze|quinze|seize)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
@@ -211,7 +211,7 @@ ruleNumeralsSuffixesKMG = Rule
   { name = "numbers suffixes (K, M, G)"
   , pattern =
     [ dimension Numeral
-    , regex "([kmg])(?=[\\W$\x20ac\x00a2\x00a3]|$)"
+    , regex "([kmg])(?=[\\W$€¢£]|$)"
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral (NumeralData {TNumeral.value = v}):

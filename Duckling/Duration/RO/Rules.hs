@@ -24,7 +24,7 @@ ruleQuarterOfAnHour :: Rule
 ruleQuarterOfAnHour = Rule
   { name = "quarter of an hour"
   , pattern =
-    [ regex "(1/4\\s?(h|or(a|\x0103))|sfert de or(a|\x0103))"
+    [ regex "(1/4\\s?(h|or(a|ă))|sfert de or(a|ă))"
     ]
   , prod = \_ -> Just . Token Duration $ duration TG.Minute 15
   }
@@ -33,7 +33,7 @@ ruleJumatateDeOra :: Rule
 ruleJumatateDeOra = Rule
   { name = "jumatate de ora"
   , pattern =
-    [ regex "(1/2\\s?(h|or(a|\x0103))|jum(a|\x0103)tate (de )?or(a|\x0103))"
+    [ regex "(1/2\\s?(h|or(a|ă))|jum(a|ă)tate (de )?or(a|ă))"
     ]
   , prod = \_ -> Just . Token Duration $ duration TG.Minute 30
   }
@@ -42,7 +42,7 @@ ruleTreiSferturiDeOra :: Rule
 ruleTreiSferturiDeOra = Rule
   { name = "trei sferturi de ora"
   , pattern =
-    [ regex "(3/4\\s?(h|or(a|\x0103))|trei sferturi de or(a|\x0103))"
+    [ regex "(3/4\\s?(h|or(a|ă))|trei sferturi de or(a|ă))"
     ]
   , prod = \_ -> Just . Token Duration $ duration TG.Minute 45
   }
@@ -63,7 +63,7 @@ ruleExactInJurDeDuration :: Rule
 ruleExactInJurDeDuration = Rule
   { name = "exact|in jur de <duration>"
   , pattern =
-    [ regex "(exact|aproximativ|(i|\x00ee)n jur de)"
+    [ regex "(exact|aproximativ|(i|î)n jur de)"
     , dimension Duration
     ]
   , prod = \tokens -> case tokens of

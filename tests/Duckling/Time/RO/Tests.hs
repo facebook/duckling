@@ -9,8 +9,8 @@
 module Duckling.Time.RO.Tests
   ( tests ) where
 
-import Prelude
 import Data.String
+import Prelude
 import Test.Tasty
 
 import Duckling.Dimensions.Types
@@ -20,4 +20,5 @@ import Duckling.Time.RO.Corpus
 tests :: TestTree
 tests = testGroup "RO Tests"
   [ makeCorpusTest [This Time] corpus
+  , makeNegativeCorpusTest [This Time] negativeCorpus
   ]

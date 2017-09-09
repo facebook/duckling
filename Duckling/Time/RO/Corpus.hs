@@ -9,16 +9,25 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Time.RO.Corpus
-  ( corpus ) where
+  ( corpus
+  , negativeCorpus
+  ) where
 
-import Prelude
 import Data.String
+import Prelude
 
 import Duckling.Lang
 import Duckling.Resolve
 import Duckling.Time.Corpus
 import Duckling.TimeGrain.Types hiding (add)
 import Duckling.Testing.Types hiding (examples)
+
+negativeCorpus :: NegativeCorpus
+negativeCorpus = (testContext, examples)
+  where
+    examples =
+      [ "sa"
+      ]
 
 corpus :: Corpus
 corpus = (testContext {lang = RO}, allExamples)
@@ -69,7 +78,6 @@ allExamples = concat
              [ "sambata"
              , "sâmbătă"
              , "sam"
-             , "sa"
              ]
   , examples (datetime (2013, 2, 17, 0, 0, 0) Day)
              [ "duminica"

@@ -1213,13 +1213,13 @@ ruleHhmmss = Rule
 
 daysOfWeek :: [(Text, String)]
 daysOfWeek =
-  [ ( "luni"  , "lu(n(ea|i)?)?"                                                )
-  , ( "marti"  , "ma(r((t|ț)(ea|i))?)?"                                   )
-  , ( "miercuri"  , "mi(e(rcur(ea|i))?)?"                                      )
-  , ( "joi"  , "jo(ia?)?"                                                      )
-  , ( "vineri"  , "vi(n(er(ea|i))?)?"                                          )
-  , ( "sambata" , "s(a|â)mb(a|ă)t(a|ă)|s(a|â)m|s(a|â)")
-  , ( "duminica"  , "du(m(inic(a|ă))?)?"                                  )
+  [ ( "luni"  , "lu(n(ea|i)?)?"                        )
+  , ( "marti"  , "ma(r((t|ț)(ea|i))?)?"                )
+  , ( "miercuri"  , "mi(e(rcur(ea|i))?)?"              )
+  , ( "joi"  , "jo(ia?)?"                              )
+  , ( "vineri"  , "vi(n(er(ea|i))?)?"                  )
+  , ( "sambata" , "s(a|â)mb(a|ă)t(a|ă)|s(a|â)m"        )
+  , ( "duminica"  , "du(m(inic(a|ă))?)?"               )
   ]
 
 ruleDaysOfWeek :: [Rule]

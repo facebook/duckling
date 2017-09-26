@@ -69,15 +69,6 @@ ruleAtHourTimeofday = Rule
       _ -> Nothing
   }
 
-ruleNamedmonth12 :: Rule
-ruleNamedmonth12 = Rule
-  { name = "named-month"
-  , pattern =
-    [ regex "דצמבר"
-    ]
-  , prod = \_ -> tt $ month 12
-  }
-
 ruleHourofdayAndInteger :: Rule
 ruleHourofdayAndInteger = Rule
   { name = "<hour-of-day> and <integer>"
@@ -307,15 +298,6 @@ ruleDatetimeDatetimeInterval = Rule
       _ -> Nothing
   }
 
-ruleNamedmonth7 :: Rule
-ruleNamedmonth7 = Rule
-  { name = "named-month"
-  , pattern =
-    [ regex "יולי"
-    ]
-  , prod = \_ -> tt $ month 7
-  }
-
 ruleTheDayofmonthNonOrdinal :: Rule
 ruleTheDayofmonthNonOrdinal = Rule
   { name = "the <day-of-month> (non ordinal)"
@@ -516,24 +498,6 @@ ruleNextCycle = Rule
       _ -> Nothing
   }
 
-ruleNamedmonth :: Rule
-ruleNamedmonth = Rule
-  { name = "named-month"
-  , pattern =
-    [ regex "ינואר"
-    ]
-  , prod = \_ -> tt $ month 1
-  }
-
-ruleNamedmonth3 :: Rule
-ruleNamedmonth3 = Rule
-  { name = "named-month"
-  , pattern =
-    [ regex "מרץ"
-    ]
-  , prod = \_ -> tt $ month 3
-  }
-
 ruleForDuration :: Rule
 ruleForDuration = Rule
   { name = "for <duration>"
@@ -591,15 +555,6 @@ ruleAfternoon = Rule
     ]
   , prod = \_ -> Token Time . partOfDay . mkLatent <$>
       interval TTime.Open (hour False 12) (hour False 19)
-  }
-
-ruleNamedmonth4 :: Rule
-ruleNamedmonth4 = Rule
-  { name = "named-month"
-  , pattern =
-    [ regex "אפריל"
-    ]
-  , prod = \_ -> tt $ month 4
   }
 
 ruleNamedmonthDayofmonthOrdinal :: Rule
@@ -713,15 +668,6 @@ ruleDayofmonthOrdinalOfNamedmonth = Rule
   , prod = \tokens -> case tokens of
       (token:_:Token Time td:_) -> Token Time <$> intersectDOM td token
       _ -> Nothing
-  }
-
-ruleNamedmonth2 :: Rule
-ruleNamedmonth2 = Rule
-  { name = "named-month"
-  , pattern =
-    [ regex "פברואר"
-    ]
-  , prod = \_ -> tt $ month 2
   }
 
 ruleThisEvening :: Rule
@@ -845,15 +791,6 @@ ruleAtTimeofday = Rule
       _ -> Nothing
   }
 
-ruleNamedmonth6 :: Rule
-ruleNamedmonth6 = Rule
-  { name = "named-month"
-  , pattern =
-    [ regex "יוני"
-    ]
-  , prod = \_ -> tt $ month 6
-  }
-
 ruleNthTimeOfTime :: Rule
 ruleNthTimeOfTime = Rule
   { name = "nth <time> of <time>"
@@ -867,15 +804,6 @@ ruleNthTimeOfTime = Rule
       (Token Time td1:Token Ordinal od:_:Token Time td2:_) -> Token Time .
         predNth (TOrdinal.value od - 1) False <$> intersect td2 td1
       _ -> Nothing
-  }
-
-ruleNamedmonth8 :: Rule
-ruleNamedmonth8 = Rule
-  { name = "named-month"
-  , pattern =
-    [ regex "אוגוסט"
-    ]
-  , prod = \_ -> tt $ month 8
   }
 
 ruleTimePartofday :: Rule
@@ -1115,15 +1043,6 @@ ruleOrdinalCycleAfterTime = Rule
       _ -> Nothing
   }
 
-ruleNamedmonth5 :: Rule
-ruleNamedmonth5 = Rule
-  { name = "named-month"
-  , pattern =
-    [ regex "מאי"
-    ]
-  , prod = \_ -> tt $ month 5
-  }
-
 ruleNamedday7 :: Rule
 ruleNamedday7 = Rule
   { name = "named-day"
@@ -1171,15 +1090,6 @@ ruleYear = Rule
         n <- getIntValue token
         tt $ year n
       _ -> Nothing
-  }
-
-ruleNamedmonth10 :: Rule
-ruleNamedmonth10 = Rule
-  { name = "named-month"
-  , pattern =
-    [ regex "אוקטובר"
-    ]
-  , prod = \_ -> tt $ month 10
   }
 
 ruleNamedmonthDayofmonthNonOrdinal :: Rule
@@ -1257,15 +1167,6 @@ ruleCycleBeforeTime = Rule
       (Token TimeGrain grain:_:Token Time td:_) ->
         tt $ cycleNthAfter False grain (-1) td
       _ -> Nothing
-  }
-
-ruleNamedmonth11 :: Rule
-ruleNamedmonth11 = Rule
-  { name = "named-month"
-  , pattern =
-    [ regex "נובמבר"
-    ]
-  , prod = \_ -> tt $ month 11
   }
 
 ruleDurationAfterTime :: Rule
@@ -1394,15 +1295,6 @@ ruleTimeofdayOclock = Rule
       _ -> Nothing
   }
 
-ruleNamedmonth9 :: Rule
-ruleNamedmonth9 = Rule
-  { name = "named-month"
-  , pattern =
-    [ regex "ספטמבר"
-    ]
-  , prod = \_ -> tt $ month 9
-  }
-
 ruleDayofmonthordinalNamedmonthYear :: Rule
 ruleDayofmonthordinalNamedmonthYear = Rule
   { name = "<day-of-month>(ordinal) <named-month> year"
@@ -1433,6 +1325,31 @@ ruleHhmmss = Rule
         tt $ hourMinuteSecond True h m s
       _ -> Nothing
   }
+
+months :: [(Text, String)]
+months =
+  [ ( "ינואר", "ינואר" )
+  , ( "פברואר", "פברואר" )
+  , ( "מרץ", "מרץ" )
+  , ( "אפריל", "אפריל" )
+  , ( "מאי", "מאי" )
+  , ( "יוני", "יוני" )
+  , ( "יולי", "יולי" )
+  , ( "אוגוסט", "אוגוסט" )
+  , ( "ספטמבר", "ספטמבר" )
+  , ( "אוקטובר", "אוקטובר" )
+  , ( "נובמבר", "נובמבר" )
+  , ( "דצמבר", "דצמבר" )
+  ]
+
+ruleMonths :: [Rule]
+ruleMonths = zipWith go months [1..12]
+  where
+    go (name, regexPattern) i = Rule
+      { name = name
+      , pattern = [regex regexPattern]
+      , prod = \_ -> tt $ month i
+      }
 
 rules :: [Rule]
 rules =
@@ -1496,18 +1413,6 @@ rules =
   , ruleNamedday7
   , ruleNamedday8
   , ruleNameddayDayofmonthOrdinal
-  , ruleNamedmonth
-  , ruleNamedmonth10
-  , ruleNamedmonth11
-  , ruleNamedmonth12
-  , ruleNamedmonth2
-  , ruleNamedmonth3
-  , ruleNamedmonth4
-  , ruleNamedmonth5
-  , ruleNamedmonth6
-  , ruleNamedmonth7
-  , ruleNamedmonth8
-  , ruleNamedmonth9
   , ruleNamedmonthDayofmonthNonOrdinal
   , ruleNamedmonthDayofmonthOrdinal
   , ruleNextCycle
@@ -1551,3 +1456,4 @@ rules =
   , ruleYesterday
   , ruleYyyymmdd
   ]
+  ++ ruleMonths

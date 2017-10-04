@@ -813,7 +813,7 @@ rulePODThis = Rule
 ruleTonight :: Rule
 ruleTonight = Rule
   { name = "tonight"
-  , pattern = [regex "toni(ght|gth|te)"]
+  , pattern = [regex "toni(ght|gth|te)s?"]
   , prod = \_ -> do
       let today = cycleNth TG.Day 0
       evening <- interval TTime.Open (hour False 18) (hour False 0)
@@ -869,7 +869,7 @@ ruleWeekend :: Rule
 ruleWeekend = Rule
   { name = "week-end"
   , pattern =
-    [ regex "(week(\\s|-)?end|wkend)"
+    [ regex "(week(\\s|-)?end|wkend)s?"
     ]
   , prod = \_ -> tt weekend
   }
@@ -1332,7 +1332,7 @@ ruleMemorialDay = Rule
 ruleMemorialDayWeekend :: Rule
 ruleMemorialDayWeekend = Rule
   { name = "Memorial Day Weekend"
-  , pattern = [regex "memorial day week(\\s|-)?end"]
+  , pattern = [regex "memorial day week(\\s|-)?ends?"]
   , prod = \_ ->
       tt . longWEBefore $ predLastOf (dayOfWeek 1) (month 5)
   }
@@ -1341,7 +1341,7 @@ ruleMemorialDayWeekend = Rule
 ruleLaborDayWeekend :: Rule
 ruleLaborDayWeekend = Rule
   { name = "Labor Day weekend"
-  , pattern = [regex "labor day week(\\s|-)?end"]
+  , pattern = [regex "labor day week(\\s|-)?ends?"]
   , prod = \_ -> tt . longWEBefore $ nthDOWOfMonth 1 1 9
   }
 

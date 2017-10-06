@@ -12,7 +12,10 @@
 module Duckling.Numeral.JA.Rules
   ( rules ) where
 
+import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Text as Text
+import Data.HashMap.Strict (HashMap)
+import Data.Text (Text)
 import Prelude
 import Data.String
 
@@ -41,30 +44,6 @@ ruleNumeralsPrefixWithNegativeOrMinus = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Numeral nd:_) -> double (TNumeral.value nd * (-1))
-      _ -> Nothing
-  }
-
-ruleInteger17 :: Rule
-ruleInteger17 = Rule
-  { name = "integer (0..10)"
-  , pattern =
-    [ regex "(ゼロ|零|一|二|三|四|五|六|七|八|九|十)"
-    ]
-  , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> case match of
-        "ゼロ" -> integer 0
-        "零" -> integer 0
-        "一" -> integer 1
-        "二" -> integer 2
-        "三" -> integer 3
-        "四" -> integer 4
-        "五" -> integer 5
-        "六" -> integer 6
-        "七" -> integer 7
-        "八" -> integer 8
-        "九" -> integer 9
-        "十" -> integer 10
-        _ -> Nothing
       _ -> Nothing
   }
 
@@ -270,27 +249,31 @@ ruleInteger9 = Rule
   , prod = \_ -> integer 1000
   }
 
+integerMap :: HashMap Text Integer
+integerMap = HashMap.fromList
+  [ ("零", 0)
+  , ("ゼロ", 0)
+  , ("一", 1)
+  , ("二", 2)
+  , ("三", 3)
+  , ("四", 4)
+  , ("五", 5)
+  , ("六", 6)
+  , ("七", 7)
+  , ("八", 8)
+  , ("九", 9)
+  , ("十", 10)
+  ]
+
 ruleInteger :: Rule
 ruleInteger = Rule
   { name = "integer (0..10)"
   , pattern =
-    [ regex "ゼロ|零|一|二|三|四|五|六|七|八|九|十"
+    [ regex "(ゼロ|零|一|二|三|四|五|六|七|八|九|十)"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> case match of
-        "零" -> integer 0
-        "ゼロ" -> integer 0
-        "一" -> integer 1
-        "二" -> integer 2
-        "三" -> integer 3
-        "四" -> integer 4
-        "五" -> integer 5
-        "六" -> integer 6
-        "七" -> integer 7
-        "八" -> integer 8
-        "九" -> integer 9
-        "十" -> integer 10
-        _ -> Nothing
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        HashMap.lookup (Text.toLower match) integerMap >>= integer
       _ -> Nothing
   }
 
@@ -356,7 +339,6 @@ rules =
   , ruleInteger14
   , ruleInteger15
   , ruleInteger16
-  , ruleInteger17
   , ruleInteger2
   , ruleInteger3
   , ruleInteger4

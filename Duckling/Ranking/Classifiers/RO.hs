@@ -49,29 +49,22 @@ classifiers
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("intersect",
         Classifier{okData =
-                     ClassData{prior = -0.13353139262452263,
-                               unseen = -3.1354942159291497,
+                     ClassData{prior = 0.0, unseen = -3.044522437723423,
                                likelihoods =
                                  HashMap.fromList
-                                   [("daymonth", -1.9924301646902063),
-                                    ("martithe <day-of-month> (number)", -2.3978952727983707),
-                                    ("dayday", -1.2992829841302609),
+                                   [("daymonth", -1.8971199848858813),
+                                    ("martithe <day-of-month> (number)", -2.3025850929940455),
+                                    ("dayday", -1.2039728043259361),
                                     ("absorption of , after named day<day-of-month>(number) <named-month>",
-                                     -1.9924301646902063),
+                                     -1.8971199848858813),
                                     ("absorption of , after named day<day-of-month> (non ordinal) <named-month>",
-                                     -1.9924301646902063),
+                                     -1.8971199848858813),
                                     ("<named-day> <day-of-month> (number)februarie",
-                                     -1.9924301646902063)],
+                                     -1.8971199848858813)],
                                n = 7},
                    koData =
-                     ClassData{prior = -2.0794415416798357,
-                               unseen = -2.3978952727983707,
-                               likelihoods =
-                                 HashMap.fromList
-                                   [("iunie<hour-of-day> <integer> (as relative minutes)",
-                                     -1.6094379124341003),
-                                    ("monthminute", -1.6094379124341003)],
-                               n = 1}}),
+                     ClassData{prior = -infinity, unseen = -1.9459101490553135,
+                               likelihoods = HashMap.fromList [], n = 0}}),
        ("<named-day> <day-of-month> (number)",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -2.4849066497880004,
@@ -157,14 +150,6 @@ classifiers
                    koData =
                      ClassData{prior = -infinity, unseen = -0.6931471805599453,
                                likelihoods = HashMap.fromList [], n = 0}}),
-       ("time-of-day (latent)",
-        Classifier{okData =
-                     ClassData{prior = -infinity, unseen = -0.6931471805599453,
-                               likelihoods = HashMap.fromList [], n = 0},
-                   koData =
-                     ClassData{prior = 0.0, unseen = -1.0986122886681098,
-                               likelihoods = HashMap.fromList [("integer (numeric)", 0.0)],
-                               n = 1}}),
        ("vineri",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -1.3862943611198906,
@@ -286,17 +271,6 @@ classifiers
                    koData =
                      ClassData{prior = -infinity, unseen = -1.0986122886681098,
                                likelihoods = HashMap.fromList [], n = 0}}),
-       ("<hour-of-day> <integer> (as relative minutes)",
-        Classifier{okData =
-                     ClassData{prior = -infinity, unseen = -1.0986122886681098,
-                               likelihoods = HashMap.fromList [], n = 0},
-                   koData =
-                     ClassData{prior = 0.0, unseen = -1.6094379124341003,
-                               likelihoods =
-                                 HashMap.fromList
-                                   [("time-of-day (latent)integer (numeric)", -0.6931471805599453),
-                                    ("hour", -0.6931471805599453)],
-                               n = 1}}),
        ("<day-of-month>(number) <named-month>",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -2.5649493574615367,

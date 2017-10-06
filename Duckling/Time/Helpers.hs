@@ -28,7 +28,6 @@ module Duckling.Time.Helpers
   , getIntValue
   ) where
 
-import Control.Monad (liftM2)
 import Data.Maybe
 import Data.Text (Text)
 import Prelude
@@ -300,7 +299,7 @@ isDOMInteger :: Predicate
 isDOMInteger = isIntegerBetween 1 31
 
 isDOMValue :: Predicate
-isDOMValue = liftM2 (||) isDOMOrdinal isDOMInteger
+isDOMValue = or . sequence [isDOMOrdinal, isDOMInteger]
 
 -- -----------------------------------------------------------------
 -- Production

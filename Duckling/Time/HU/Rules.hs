@@ -13,7 +13,6 @@
 module Duckling.Time.HU.Rules
   ( rules ) where
 
-import Control.Monad (liftM2)
 import Data.Maybe
 import Data.String
 import Data.Text (Text)
@@ -183,7 +182,7 @@ ruleTODLatent :: Rule
 ruleTODLatent = Rule
   { name = "time-of-day (latent)"
   , pattern =
-    [ Predicate $ liftM2 (&&) isNumeralSafeToUse (isIntegerBetween 0 23)
+    [ Predicate $ and . sequence [isNumeralSafeToUse, isIntegerBetween 0 23]
     ]
   , prod = \tokens -> case tokens of
       (token:_) -> do

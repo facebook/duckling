@@ -13,7 +13,6 @@
 module Duckling.Time.EN.Rules
   ( rules ) where
 
-import Control.Monad (liftM2)
 import Data.Maybe
 import Data.Text (Text)
 import Prelude
@@ -315,7 +314,7 @@ ruleYearPastLatent = Rule
  { name = "past year (latent)"
  , pattern =
    [ Predicate $
-       liftM2 (||) (isIntegerBetween (- 10000) 0) (isIntegerBetween 25 999)
+       or . sequence [isIntegerBetween (- 10000) 0, isIntegerBetween 25 999]
    ]
  , prod = \tokens -> case tokens of
      (token:_) -> do
@@ -378,7 +377,7 @@ ruleNamedDOMOrdinal :: Rule
 ruleNamedDOMOrdinal = Rule
   { name = "<named-month>|<named-day> <day-of-month> (ordinal)"
   , pattern =
-    [ Predicate $ liftM2 (||) isAMonth isADayOfWeek
+    [ Predicate $ or . sequence [isAMonth, isADayOfWeek]
     , Predicate isDOMOrdinal
     ]
   , prod = \tokens -> case tokens of
@@ -457,7 +456,7 @@ ruleTODLatent :: Rule
 ruleTODLatent = Rule
   { name = "time-of-day (latent)"
   , pattern =
-    [ Predicate $ liftM2 (&&) isNumeralSafeToUse (isIntegerBetween 0 23)
+    [ Predicate $ and . sequence [isNumeralSafeToUse, isIntegerBetween 0 23]
     ]
   , prod = \tokens -> case tokens of
       (token:_) -> do
@@ -562,7 +561,7 @@ ruleHONumeral :: Rule
 ruleHONumeral = Rule
   { name = "<hour-of-day> <integer>"
   , pattern =
-    [ Predicate $ liftM2 (&&) isNotLatent isAnHourOfDay
+    [ Predicate $ and . sequence [isNotLatent, isAnHourOfDay]
     , Predicate $ isIntegerBetween 1 59
     ]
   , prod = \tokens -> case tokens of
@@ -1061,7 +1060,7 @@ ruleIntervalTODDash :: Rule
 ruleIntervalTODDash = Rule
   { name = "<time-of-day> - <time-of-day> (interval)"
   , pattern =
-    [ Predicate $ liftM2 (&&) isNotLatent isATimeOfDay
+    [ Predicate $ and . sequence [isNotLatent, isATimeOfDay]
     , regex "\\-|:|to|th?ru|through|(un)?til(l)?"
     , Predicate isATimeOfDay
     ]
@@ -1629,7 +1628,7 @@ ruleTimezone :: Rule
 ruleTimezone = Rule
   { name = "<time> timezone"
   , pattern =
-    [ Predicate $ liftM2 (&&) isATimeOfDay isNotLatent
+    [ Predicate $ and . sequence [isNotLatent, isATimeOfDay]
     , regex "\\b(YEKT|YEKST|YAKT|YAKST|WITA|WIT|WIB|WGT|WGST|WFT|WET|WEST|WAT|WAST|VUT|VLAT|VLAST|VET|UZT|UYT|UYST|UTC|ULAT|TVT|TMT|TLT|TKT|TJT|TFT|TAHT|SST|SRT|SGT|SCT|SBT|SAST|SAMT|RET|PYT|PYST|PWT|PST|PONT|PMST|PMDT|PKT|PHT|PHOT|PGT|PETT|PETST|PET|PDT|OMST|OMSST|NZST|NZDT|NUT|NST|NPT|NOVT|NOVST|NFT|NDT|NCT|MYT|MVT|MUT|MST|MSK|MSD|MMT|MHT|MDT|MAWT|MART|MAGT|MAGST|LINT|LHST|LHDT|KUYT|KST|KRAT|KRAST|KGT|JST|IST|IRST|IRKT|IRKST|IRDT|IOT|IDT|ICT|HOVT|HKT|GYT|GST|GMT|GILT|GFT|GET|GAMT|GALT|FNT|FKT|FKST|FJT|FJST|EST|EGT|EGST|EET|EEST|EDT|ECT|EAT|EAST|EASST|DAVT|ChST|CXT|CVT|CST|COT|CLT|CLST|CKT|CHAST|CHADT|CET|CEST|CDT|CCT|CAT|CAST|BTT|BST|BRT|BRST|BOT|BNT|AZT|AZST|AZOT|AZOST|AWST|AWDT|AST|ART|AQTT|ANAT|ANAST|AMT|AMST|ALMT|AKST|AKDT|AFT|AEST|AEDT|ADT|ACST|ACDT)\\b"
     ]
   , prod = \tokens -> case tokens of

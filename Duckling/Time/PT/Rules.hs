@@ -380,7 +380,7 @@ ruleHourofdayIntegerAsRelativeMinutes :: Rule
 ruleHourofdayIntegerAsRelativeMinutes = Rule
   { name = "<hour-of-day> <integer> (as relative minutes)"
   , pattern =
-    [ Predicate isAnHourOfDay
+    [ Predicate $ and . sequence [isNotLatent, isAnHourOfDay]
     , Predicate $ isIntegerBetween 1 59
     ]
   , prod = \tokens -> case tokens of
@@ -428,7 +428,7 @@ ruleHourofdayIntegerAsRelativeMinutes2 :: Rule
 ruleHourofdayIntegerAsRelativeMinutes2 = Rule
   { name = "<hour-of-day> <integer> (as relative minutes) minutos"
   , pattern =
-    [ Predicate isAnHourOfDay
+    [ Predicate $ and . sequence [isNotLatent, isAnHourOfDay]
     , Predicate $ isIntegerBetween 1 59
     , regex "min\\.?(uto)?s?"
     ]

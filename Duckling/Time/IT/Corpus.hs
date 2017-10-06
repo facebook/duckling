@@ -13,8 +13,8 @@ module Duckling.Time.IT.Corpus
   , negativeCorpus
   ) where
 
-import Prelude
 import Data.String
+import Prelude
 
 import Duckling.Lang
 import Duckling.Resolve
@@ -31,6 +31,7 @@ negativeCorpus = (testContext {lang = IT}, examples)
   where
     examples =
       [ "ma"
+      , "3 20"
       ]
 
 allExamples :: [Example]
@@ -342,7 +343,7 @@ allExamples = concat
              , "tre e 20"
              , "3 e 20"
              , "3:20"
-             , "3 20"
+             , "alle 3 20"
              ]
   , examples (datetime (2013, 2, 12, 15, 30, 0) Minute)
              [ "15:30"

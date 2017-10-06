@@ -32,6 +32,8 @@ negativeCorpus = (testContext {lang = PT}, examples)
     examples =
       [ "no 987"
       , "um"
+      , "um dos"
+      , "um dos minutos"
       ]
 
 allExamples :: [Example]

@@ -45,6 +45,8 @@ negativeCorpus = (testContext, examples)
       , "dozens o'clock"
       , "Rat 6"
       , "rat 6"
+      , "3 30"
+      , "three twenty"
       ]
 
 allExamples :: [Example]
@@ -312,6 +314,7 @@ allExamples = concat
              , "3:15pm"
              , "3:15PM"
              , "3:15p"
+             , "at 3 15"
              ]
   , examples (datetime (2013, 2, 12, 15, 20, 0) Minute)
              [ "at 20 past 3pm"
@@ -319,6 +322,7 @@ allExamples = concat
              , "3:20 in afternoon"
              , "twenty after 3pm"
              , "3:20p"
+             , "at three twenty"
              ]
   , examples (datetime (2013, 2, 12, 15, 30, 0) Minute)
              [ "at half past three pm"

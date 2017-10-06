@@ -651,6 +651,7 @@ test-suite duckling-test
                      , Duckling.Ordinal.DA.Tests
                      , Duckling.Ordinal.DE.Tests
                      , Duckling.Ordinal.EN.Tests
+                     , Duckling.Ordinal.ES.Tests
                      , Duckling.Ordinal.ET.Tests
                      , Duckling.Ordinal.FR.Tests
                      , Duckling.Ordinal.GA.Tests

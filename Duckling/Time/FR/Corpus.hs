@@ -31,6 +31,8 @@ negativeCorpus = (testContext {lang = FR}, examples)
   where
     examples =
       [ "Ana a un court de tennis"
+      , "deux trois"
+      , "deux trois minutes"
       ]
 
 allExamples :: [Example]

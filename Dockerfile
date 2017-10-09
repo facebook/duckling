@@ -10,6 +10,6 @@ RUN apt-get update
 
 RUN apt-get install libpcre3 libpcre3-dev
 
-RUN stack build
+RUN stack build --install-ghc
 
 ENTRYPOINT stack exec duckling-example-exe

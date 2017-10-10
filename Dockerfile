@@ -6,6 +6,6 @@ RUN mkdir /log
 
 WORKDIR /duckling
 
-RUN stack build
+RUN stack build --install-ghc
 
 ENTRYPOINT stack exec duckling-example-exe

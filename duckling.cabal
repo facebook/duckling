@@ -1,5 +1,5 @@
 name:                duckling
-version:             0.1.2.0
+version:             0.1.3.0
 synopsis:            A Haskell library for parsing text into structured data.
 description:
   Duckling is a library for parsing text into structured data.
@@ -30,7 +30,7 @@ library
                      , Duckling.Api
                      , Duckling.Engine
                      , Duckling.Engine.Regex
-                     , Duckling.Lang
+                     , Duckling.Locale
                      , Duckling.Resolve
                      , Duckling.Types
                      , Duckling.Types.Document
@@ -77,36 +77,38 @@ library
                      , Duckling.Ranking.Extraction
                      , Duckling.Ranking.Rank
                      , Duckling.Ranking.Classifiers
-                     , Duckling.Ranking.Classifiers.AR
-                     , Duckling.Ranking.Classifiers.BG
-                     , Duckling.Ranking.Classifiers.CS
-                     , Duckling.Ranking.Classifiers.DA
-                     , Duckling.Ranking.Classifiers.DE
-                     , Duckling.Ranking.Classifiers.EN
-                     , Duckling.Ranking.Classifiers.ES
-                     , Duckling.Ranking.Classifiers.ET
-                     , Duckling.Ranking.Classifiers.FR
-                     , Duckling.Ranking.Classifiers.GA
-                     , Duckling.Ranking.Classifiers.HE
-                     , Duckling.Ranking.Classifiers.HR
-                     , Duckling.Ranking.Classifiers.HU
-                     , Duckling.Ranking.Classifiers.ID
-                     , Duckling.Ranking.Classifiers.IT
-                     , Duckling.Ranking.Classifiers.JA
-                     , Duckling.Ranking.Classifiers.KA
-                     , Duckling.Ranking.Classifiers.KO
-                     , Duckling.Ranking.Classifiers.MY
-                     , Duckling.Ranking.Classifiers.NB
-                     , Duckling.Ranking.Classifiers.NL
-                     , Duckling.Ranking.Classifiers.PL
-                     , Duckling.Ranking.Classifiers.PT
-                     , Duckling.Ranking.Classifiers.RO
-                     , Duckling.Ranking.Classifiers.RU
-                     , Duckling.Ranking.Classifiers.SV
-                     , Duckling.Ranking.Classifiers.TR
-                     , Duckling.Ranking.Classifiers.UK
-                     , Duckling.Ranking.Classifiers.VI
-                     , Duckling.Ranking.Classifiers.ZH
+                     , Duckling.Ranking.Classifiers.AR_XX
+                     , Duckling.Ranking.Classifiers.BG_XX
+                     , Duckling.Ranking.Classifiers.CS_XX
+                     , Duckling.Ranking.Classifiers.DA_XX
+                     , Duckling.Ranking.Classifiers.DE_XX
+                     , Duckling.Ranking.Classifiers.EN_GB
+                     , Duckling.Ranking.Classifiers.EN_US
+                     , Duckling.Ranking.Classifiers.EN_XX
+                     , Duckling.Ranking.Classifiers.ES_XX
+                     , Duckling.Ranking.Classifiers.ET_XX
+                     , Duckling.Ranking.Classifiers.FR_XX
+                     , Duckling.Ranking.Classifiers.GA_XX
+                     , Duckling.Ranking.Classifiers.HE_XX
+                     , Duckling.Ranking.Classifiers.HR_XX
+                     , Duckling.Ranking.Classifiers.HU_XX
+                     , Duckling.Ranking.Classifiers.ID_XX
+                     , Duckling.Ranking.Classifiers.IT_XX
+                     , Duckling.Ranking.Classifiers.JA_XX
+                     , Duckling.Ranking.Classifiers.KA_XX
+                     , Duckling.Ranking.Classifiers.KO_XX
+                     , Duckling.Ranking.Classifiers.MY_XX
+                     , Duckling.Ranking.Classifiers.NB_XX
+                     , Duckling.Ranking.Classifiers.NL_XX
+                     , Duckling.Ranking.Classifiers.PL_XX
+                     , Duckling.Ranking.Classifiers.PT_XX
+                     , Duckling.Ranking.Classifiers.RO_XX
+                     , Duckling.Ranking.Classifiers.RU_XX
+                     , Duckling.Ranking.Classifiers.SV_XX
+                     , Duckling.Ranking.Classifiers.TR_XX
+                     , Duckling.Ranking.Classifiers.UK_XX
+                     , Duckling.Ranking.Classifiers.VI_XX
+                     , Duckling.Ranking.Classifiers.ZH_XX
 
   -- ------------------------------------------------------------------
   -- Dimensions
@@ -428,6 +430,10 @@ library
                      , Duckling.Time.DE.Rules
                      , Duckling.Time.EN.Corpus
                      , Duckling.Time.EN.Rules
+                     , Duckling.Time.EN.GB.Corpus
+                     , Duckling.Time.EN.GB.Rules
+                     , Duckling.Time.EN.US.Corpus
+                     , Duckling.Time.EN.US.Rules
                      , Duckling.Time.ES.Corpus
                      , Duckling.Time.ES.Rules
                      , Duckling.Time.FR.Corpus

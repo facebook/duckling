@@ -14,14 +14,14 @@ module Duckling.Time.ZH.Corpus
 import Prelude
 import Data.String
 
-import Duckling.Lang
+import Duckling.Locale
 import Duckling.Resolve
 import Duckling.Time.Corpus
 import Duckling.TimeGrain.Types hiding (add)
 import Duckling.Testing.Types hiding (examples)
 
 corpus :: Corpus
-corpus = (testContext {lang = ZH}, allExamples)
+corpus = (testContext {locale = makeLocale ZH Nothing}, allExamples)
 
 allExamples :: [Example]
 allExamples = concat

@@ -9,12 +9,13 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Time.SV.Corpus
-  ( corpus ) where
+  ( corpus
+  ) where
 
 import Data.String
 import Prelude
 
-import Duckling.Lang
+import Duckling.Locale
 import Duckling.Resolve
 import Duckling.Testing.Types hiding (examples)
 import Duckling.Time.Corpus
@@ -22,7 +23,7 @@ import Duckling.Time.Types hiding (Month)
 import Duckling.TimeGrain.Types hiding (add)
 
 corpus :: Corpus
-corpus = (testContext {lang = SV}, allExamples)
+corpus = (testContext {locale = makeLocale SV Nothing}, allExamples)
 
 allExamples :: [Example]
 allExamples = concat

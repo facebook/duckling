@@ -16,13 +16,13 @@ import Data.String
 import Prelude
 
 import Duckling.Duration.Types
-import Duckling.Lang
+import Duckling.Locale
 import Duckling.Resolve
 import Duckling.Testing.Types
 import Duckling.TimeGrain.Types (Grain (..))
 
 corpus :: Corpus
-corpus = (testContext {lang = TR}, allExamples)
+corpus = (testContext {locale = makeLocale TR Nothing}, allExamples)
 
 allExamples :: [Example]
 allExamples = concat

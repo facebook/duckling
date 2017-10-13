@@ -17,14 +17,14 @@ import Test.Tasty.HUnit
 
 import Duckling.Dimensions.Types
 import Duckling.Duration.ZH.Corpus
-import Duckling.Lang
+import Duckling.Locale
 import Duckling.Resolve
 import Duckling.Testing.Asserts
 
 tests :: TestTree
 tests = testGroup "ZH Tests"
   [ testCase "Corpus Tests" $
-      mapM_ (analyzedFirstTest context {lang = ZH} . withTargets [This Duration])
+      mapM_ (analyzedFirstTest context {locale = makeLocale ZH Nothing} . withTargets [This Duration])
         xs
   ]
   where

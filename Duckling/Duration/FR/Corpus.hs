@@ -17,16 +17,16 @@ import Prelude
 import Data.String
 
 import Duckling.Duration.Types
-import Duckling.Lang
+import Duckling.Locale
 import Duckling.Resolve
 import Duckling.Testing.Types
 import Duckling.TimeGrain.Types (Grain(..))
 
 corpus :: Corpus
-corpus = (testContext {lang = FR}, allExamples)
+corpus = (testContext {locale = makeLocale FR Nothing}, allExamples)
 
 negativeCorpus :: NegativeCorpus
-negativeCorpus = (testContext {lang = FR}, examples)
+negativeCorpus = (testContext {locale = makeLocale FR Nothing}, examples)
   where
     examples =
       [ "les jours"

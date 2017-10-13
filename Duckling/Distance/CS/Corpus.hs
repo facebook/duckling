@@ -9,18 +9,19 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Distance.CS.Corpus
-  ( corpus ) where
+  ( corpus
+  ) where
 
 import Data.String
 import Prelude
 
 import Duckling.Distance.Types
-import Duckling.Lang
+import Duckling.Locale
 import Duckling.Resolve
 import Duckling.Testing.Types
 
 corpus :: Corpus
-corpus = (testContext {lang = CS}, allExamples)
+corpus = (testContext {locale = makeLocale CS Nothing}, allExamples)
 
 allExamples :: [Example]
 allExamples = concat

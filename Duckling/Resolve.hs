@@ -22,7 +22,7 @@ import Prelude
 import qualified Data.Time as Time
 import qualified Data.Time.LocalTime.TimeZone.Series as Series
 
-import Duckling.Lang
+import Duckling.Locale
 
 -- | Internal time reference.
 -- We work as if we were in UTC time and use `ZoneSeriesTime` to house the info.
@@ -32,7 +32,7 @@ newtype DucklingTime = DucklingTime Series.ZoneSeriesTime
 
 data Context = Context
   { referenceTime :: DucklingTime
-  , lang :: Lang
+  , locale :: Locale
   }
   deriving (Eq, Show)
 

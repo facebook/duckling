@@ -14,13 +14,13 @@ module Duckling.Ordinal.ES.Corpus
 import Data.String
 import Prelude
 
-import Duckling.Lang
+import Duckling.Locale
 import Duckling.Ordinal.Types
 import Duckling.Resolve
 import Duckling.Testing.Types
 
 corpus :: Corpus
-corpus = (testContext {lang = ES}, allExamples)
+corpus = (testContext {locale = makeLocale ES Nothing}, allExamples)
 
 allExamples :: [Example]
 allExamples = concat

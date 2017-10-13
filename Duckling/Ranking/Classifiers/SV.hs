@@ -58,8 +58,8 @@ classifiers
                                likelihoods = HashMap.fromList [("", 0.0)], n = 1}}),
        ("Tisdag",
         Classifier{okData =
-                     ClassData{prior = 0.0, unseen = -2.3025850929940455,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 8},
+                     ClassData{prior = 0.0, unseen = -2.3978952727983707,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 9},
                    koData =
                      ClassData{prior = -infinity, unseen = -0.6931471805599453,
                                likelihoods = HashMap.fromList [], n = 0}}),
@@ -756,6 +756,16 @@ classifiers
                                likelihoods = HashMap.fromList [("", 0.0)], n = 15},
                    koData =
                      ClassData{prior = -infinity, unseen = -0.6931471805599453,
+                               likelihoods = HashMap.fromList [], n = 0}}),
+       ("last <day-of-week>",
+        Classifier{okData =
+                     ClassData{prior = 0.0, unseen = -1.6094379124341003,
+                               likelihoods =
+                                 HashMap.fromList
+                                   [("Tisdag", -0.6931471805599453), ("day", -0.6931471805599453)],
+                               n = 1},
+                   koData =
+                     ClassData{prior = -infinity, unseen = -1.0986122886681098,
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("<time> after next",
         Classifier{okData =
@@ -1587,29 +1597,31 @@ classifiers
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("this <time>",
         Classifier{okData =
-                     ClassData{prior = -1.276293465905562, unseen = -3.6635616461296463,
+                     ClassData{prior = -1.2992829841302609,
+                               unseen = -3.6888794541139363,
                                likelihoods =
                                  HashMap.fromList
-                                   [("week", -2.9444389791664407),
-                                    ("intersect", -2.538973871058276),
-                                    ("season", -2.0281482472922856),
-                                    ("next <cycle>", -2.9444389791664407),
-                                    ("day", -2.0281482472922856), ("Oktober", -2.538973871058276),
-                                    ("hour", -2.2512917986064953), ("month", -2.0281482472922856),
-                                    ("week-end", -2.2512917986064953)],
+                                   [("week", -2.9704144655697013),
+                                    ("intersect", -2.5649493574615367),
+                                    ("season", -2.0541237336955462),
+                                    ("next <cycle>", -2.9704144655697013),
+                                    ("day", -2.0541237336955462), ("Oktober", -2.5649493574615367),
+                                    ("hour", -2.277267285009756), ("month", -2.0541237336955462),
+                                    ("week-end", -2.277267285009756)],
                                n = 12},
                    koData =
-                     ClassData{prior = -0.3272129112084162, unseen = -4.343805421853684,
+                     ClassData{prior = -0.3184537311185346, unseen = -4.382026634673881,
                                likelihoods =
                                  HashMap.fromList
-                                   [("September", -2.7212954278522306),
-                                    ("intersect", -1.845826690498331),
-                                    ("time-of-day (latent)", -3.2321210516182215),
-                                    ("Oktober", -1.9328380674879604), ("Mars", -3.2321210516182215),
-                                    ("noon", -3.6375861597263857), ("hour", -2.7212954278522306),
-                                    ("month", -0.9985288301111273),
-                                    ("morning", -3.6375861597263857)],
-                               n = 31}}),
+                                   [("Tisdag", -3.676300671907076),
+                                    ("September", -2.760009940032921),
+                                    ("intersect", -1.8845412026790211), ("day", -3.676300671907076),
+                                    ("time-of-day (latent)", -3.270835563798912),
+                                    ("Oktober", -1.971552579668651), ("Mars", -3.270835563798912),
+                                    ("noon", -3.676300671907076), ("hour", -2.760009940032921),
+                                    ("month", -1.0372433422918175),
+                                    ("morning", -3.676300671907076)],
+                               n = 32}}),
        ("within <duration>",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -1.6094379124341003,

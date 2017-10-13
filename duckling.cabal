@@ -223,6 +223,8 @@ library
                      , Duckling.Duration.KO.Rules
                      , Duckling.Duration.NB.Corpus
                      , Duckling.Duration.NB.Rules
+                     , Duckling.Duration.NL.Corpus
+                     , Duckling.Duration.NL.Rules
                      , Duckling.Duration.PL.Corpus
                      , Duckling.Duration.PL.Rules
                      , Duckling.Duration.PT.Corpus
@@ -289,6 +291,8 @@ library
                      , Duckling.Numeral.MY.Rules
                      , Duckling.Numeral.NB.Corpus
                      , Duckling.Numeral.NB.Rules
+                     , Duckling.Numeral.NL.Corpus
+                     , Duckling.Numeral.NL.Rules
                      , Duckling.Numeral.PL.Corpus
                      , Duckling.Numeral.PL.Rules
                      , Duckling.Numeral.PT.Corpus
@@ -305,8 +309,6 @@ library
                      , Duckling.Numeral.VI.Rules
                      , Duckling.Numeral.ZH.Corpus
                      , Duckling.Numeral.ZH.Rules
-                     , Duckling.Numeral.NL.Corpus
-                     , Duckling.Numeral.NL.Rules
                      , Duckling.Numeral.RO.Corpus
                      , Duckling.Numeral.RO.Rules
                      , Duckling.Numeral.Helpers
@@ -484,6 +486,7 @@ library
                      , Duckling.TimeGrain.JA.Rules
                      , Duckling.TimeGrain.KO.Rules
                      , Duckling.TimeGrain.NB.Rules
+                     , Duckling.TimeGrain.NL.Rules
                      , Duckling.TimeGrain.PL.Rules
                      , Duckling.TimeGrain.PT.Rules
                      , Duckling.TimeGrain.RO.Rules
@@ -605,6 +608,7 @@ test-suite duckling-test
                      , Duckling.Duration.JA.Tests
                      , Duckling.Duration.KO.Tests
                      , Duckling.Duration.NB.Tests
+                     , Duckling.Duration.NL.Tests
                      , Duckling.Duration.PL.Tests
                      , Duckling.Duration.PT.Tests
                      , Duckling.Duration.RO.Tests

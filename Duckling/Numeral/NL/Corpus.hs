@@ -47,6 +47,10 @@ allExamples = concat
              , "drie en dertig"
              , "0033"
              ]
+  , examples (NumeralValue 12)
+             [ "twaalf"
+             , "dozijn"
+             ]
   , examples (NumeralValue 14)
              [ "14"
              , "veertien"
@@ -79,6 +83,9 @@ allExamples = concat
   , examples (NumeralValue 5000)
              [ "5 duizend"
              , "vijf duizend"
+             ]
+  , examples (NumeralValue 144)
+             [ "gros"
              ]
   , examples (NumeralValue 122)
              [ "honderd tweeëntwintig"

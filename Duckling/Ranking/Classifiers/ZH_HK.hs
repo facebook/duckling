@@ -12,7 +12,7 @@
 --  @generated
 -----------------------------------------------------------------
 {-# LANGUAGE OverloadedStrings #-}
-module Duckling.Ranking.Classifiers.ZH_XX (classifiers) where
+module Duckling.Ranking.Classifiers.ZH_HK (classifiers) where
 import Data.String
 import Prelude
 import qualified Data.HashMap.Strict as HashMap
@@ -117,6 +117,13 @@ classifiers
                                    [("<integer> (latent time-of-day)", -0.6931471805599453),
                                     ("hour", -0.6931471805599453)],
                                n = 5}}),
+       ("national day",
+        Classifier{okData =
+                     ClassData{prior = 0.0, unseen = -2.3025850929940455,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 8},
+                   koData =
+                     ClassData{prior = -infinity, unseen = -0.6931471805599453,
+                               likelihoods = HashMap.fromList [], n = 0}}),
        ("Wednesday",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -2.9444389791664407,
@@ -254,6 +261,13 @@ classifiers
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -1.791759469228055,
                                likelihoods = HashMap.fromList [("", 0.0)], n = 4},
+                   koData =
+                     ClassData{prior = -infinity, unseen = -0.6931471805599453,
+                               likelihoods = HashMap.fromList [], n = 0}}),
+       ("evening|night",
+        Classifier{okData =
+                     ClassData{prior = 0.0, unseen = -1.3862943611198906,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 2},
                    koData =
                      ClassData{prior = -infinity, unseen = -0.6931471805599453,
                                likelihoods = HashMap.fromList [], n = 0}}),
@@ -464,16 +478,17 @@ classifiers
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("<dim time> <part-of-day>",
         Classifier{okData =
-                     ClassData{prior = 0.0, unseen = -3.891820298110627,
+                     ClassData{prior = 0.0, unseen = -3.9889840465642745,
                                likelihoods =
                                  HashMap.fromList
-                                   [("dayhour", -0.7357067949787413),
-                                    ("<named-month> <day-of-month>morning", -1.3062516534463542),
-                                    ("children's dayafternoon", -2.772588722239781),
-                                    ("Mondaymorning", -1.6739764335716716)],
-                               n = 22},
+                                   [("dayhour", -0.7514160886839211),
+                                    ("national dayevening|night", -2.871679624884012),
+                                    ("<named-month> <day-of-month>morning", -1.405342556090585),
+                                    ("children's dayafternoon", -2.871679624884012),
+                                    ("Mondaymorning", -1.7730673362159024)],
+                               n = 24},
                    koData =
-                     ClassData{prior = -infinity, unseen = -1.6094379124341003,
+                     ClassData{prior = -infinity, unseen = -1.791759469228055,
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("<part-of-day> <dim time>",
         Classifier{okData =

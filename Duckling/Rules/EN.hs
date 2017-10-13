@@ -44,7 +44,7 @@ defaultRules dim = langRules dim
 localeRules :: Region -> Some Dimension -> [Rule]
 localeRules GB (This Time) = TimeGB.rules
 localeRules US (This Time) = TimeUS.rules
-localeRules _ _ = []
+localeRules _ _            = []
 
 langRules :: Some Dimension -> [Rule]
 langRules (This AmountOfMoney) = AmountOfMoney.rules

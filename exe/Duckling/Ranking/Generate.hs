@@ -47,6 +47,10 @@ import qualified Duckling.Time.RO.Corpus as ROTime
 import qualified Duckling.Time.SV.Corpus as SVTime
 import qualified Duckling.Time.VI.Corpus as VITime
 import qualified Duckling.Time.ZH.Corpus as ZHTime
+import qualified Duckling.Time.ZH.CN.Corpus as ZH_CNTime
+import qualified Duckling.Time.ZH.HK.Corpus as ZH_HKTime
+import qualified Duckling.Time.ZH.MO.Corpus as ZH_MOTime
+import qualified Duckling.Time.ZH.TW.Corpus as ZH_TWTime
 
 -- -----------------------------------------------------------------
 -- Main
@@ -186,6 +190,10 @@ getCorpusForLang ZH = ZHTime.corpus
 getExamplesForLocale :: Lang -> Region -> [Example]
 getExamplesForLocale EN GB = EN_GBTime.allExamples
 getExamplesForLocale EN US = EN_USTime.allExamples
+getExamplesForLocale ZH CN = ZH_CNTime.allExamples
+getExamplesForLocale ZH HK = ZH_HKTime.allExamples
+getExamplesForLocale ZH MO = ZH_MOTime.allExamples
+getExamplesForLocale ZH TW = ZH_TWTime.allExamples
 getExamplesForLocale _ _   = []
 
 -- -----------------------------------------------------------------

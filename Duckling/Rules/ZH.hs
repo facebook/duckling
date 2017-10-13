@@ -22,13 +22,21 @@ import qualified Duckling.Numeral.ZH.Rules as Numeral
 import qualified Duckling.Ordinal.ZH.Rules as Ordinal
 import qualified Duckling.Temperature.ZH.Rules as Temperature
 import qualified Duckling.Time.ZH.Rules as Time
+import qualified Duckling.Time.ZH.CN.Rules as TimeCN
+import qualified Duckling.Time.ZH.HK.Rules as TimeHK
+import qualified Duckling.Time.ZH.MO.Rules as TimeMO
+import qualified Duckling.Time.ZH.TW.Rules as TimeTW
 import qualified Duckling.TimeGrain.ZH.Rules as TimeGrain
 
 defaultRules :: Some Dimension -> [Rule]
 defaultRules = langRules
 
 localeRules :: Region -> Some Dimension -> [Rule]
-localeRules _ _ = []
+localeRules CN (This Time) = TimeCN.rules
+localeRules HK (This Time) = TimeHK.rules
+localeRules MO (This Time) = TimeMO.rules
+localeRules TW (This Time) = TimeTW.rules
+localeRules _ _            = []
 
 langRules :: Some Dimension -> [Rule]
 langRules (This AmountOfMoney) = []

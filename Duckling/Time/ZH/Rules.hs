@@ -11,7 +11,8 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Time.ZH.Rules
-  ( rules ) where
+  ( rules
+  ) where
 
 import Data.Text (Text)
 import Prelude
@@ -299,15 +300,6 @@ ruleNow = Rule
     [ regex "现在|此时|此刻|当前|現在|此時|當前|\x5b9c\x5bb6|\x800c\x5bb6|\x4f9d\x5bb6"
     ]
   , prod = \_ -> tt $ cycleNth TG.Second 0
-  }
-
-ruleNationalDay :: Rule
-ruleNationalDay = Rule
-  { name = "national day"
-  , pattern =
-    [ regex "(国庆|國慶)(节|節)?"
-    ]
-  , prod = \_ -> tt $ monthDay 10 1
   }
 
 ruleTheCycleAfterTime :: Rule
@@ -1049,7 +1041,6 @@ rules =
   , ruleMonthNumericWithMonthSymbol
   , ruleMorning
   , ruleNamedmonthDayofmonth
-  , ruleNationalDay
   , ruleNewYearsDay
   , ruleNextCycle
   , ruleNextNCycle

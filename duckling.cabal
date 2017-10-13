@@ -465,6 +465,7 @@ library
                      , Duckling.Time.TimeZone.Parse
 
                      -- TimeGrain
+                     , Duckling.TimeGrain.AR.Rules
                      , Duckling.TimeGrain.DA.Rules
                      , Duckling.TimeGrain.DE.Rules
                      , Duckling.TimeGrain.EN.Rules

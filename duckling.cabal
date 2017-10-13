@@ -203,6 +203,8 @@ library
                      , Duckling.Distance.Types
 
                      -- Duration
+                     , Duckling.Duration.AR.Corpus
+                     , Duckling.Duration.AR.Rules
                      , Duckling.Duration.DA.Rules
                      , Duckling.Duration.DE.Rules
                      , Duckling.Duration.EN.Corpus
@@ -593,6 +595,7 @@ test-suite duckling-test
                      , Duckling.Distance.Tests
 
                      -- Duration
+                     , Duckling.Duration.AR.Tests
                      , Duckling.Duration.EN.Tests
                      , Duckling.Duration.FR.Tests
                      , Duckling.Duration.GA.Tests

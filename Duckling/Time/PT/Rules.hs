@@ -69,7 +69,7 @@ ruleNamedday2 :: Rule
 ruleNamedday2 = Rule
   { name = "named-day"
   , pattern =
-    [ regex "ter(ç|c)a((\\s|\\-)feira)?|ter\\.?"
+    [ regex "ter(ç|c)a((\\s|\\-)feira)?|ter\\."
     ]
   , prod = \_ -> tt $ dayOfWeek 2
   }

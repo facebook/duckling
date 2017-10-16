@@ -34,6 +34,7 @@ negativeCorpus = (testContext {locale = makeLocale PT Nothing}, examples)
       , "um"
       , "um dos"
       , "um dos minutos"
+      , "ter"
       ]
 
 allExamples :: [Example]
@@ -86,7 +87,6 @@ allExamples = concat
              , "terca feira"
              , "terca"
              , "ter."
-             , "ter"
              ]
   , examples (datetime (2013, 2, 13, 0, 0, 0) Day)
              [ "quarta-feira"

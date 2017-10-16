@@ -1002,8 +1002,8 @@ classifiers
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("named-day",
         Classifier{okData =
-                     ClassData{prior = 0.0, unseen = -4.189654742026425,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 64},
+                     ClassData{prior = 0.0, unseen = -4.174387269895637,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 63},
                    koData =
                      ClassData{prior = -infinity, unseen = -0.6931471805599453,
                                likelihoods = HashMap.fromList [], n = 0}}),

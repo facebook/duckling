@@ -195,6 +195,7 @@ allExamples = concat
              ]
   , examples (datetime (2013, 2, 5, 0, 0, 0) Day)
              [ "förra tisdag"
+             , "i tisdags"
              ]
   , examples (datetime (2013, 2, 19, 0, 0, 0) Day)
              [ "nästa tisdag"

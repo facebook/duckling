@@ -29,13 +29,13 @@ import qualified Duckling.TimeGrain.Types as TG
 
 daysOfWeek :: [(Text, String)]
 daysOfWeek =
-  [ ( "Mandag"  , "måndag(en)?|mån\\.?" )
-  , ( "Tisdag"  , "tisdag(en)?|tis?\\.?"          )
-  , ( "Onsdag"  , "onsdag(en)?|ons\\.?"           )
-  , ( "Torsdag" , "torsdag(en)?|tors?\\.?"        )
-  , ( "Fredag"  , "fredag(en)?|fre\\.?"           )
-  , ( "Lordag"  , "lördag(en)?|lör\\.?" )
-  , ( "Sondag"  , "söndag(en)?|sön\\.?" )
+  [ ( "Mandag"  , "måndag(en)?s?|mån\\.?"    )
+  , ( "Tisdag"  , "tisdag(en)?s?|tis?\\.?"   )
+  , ( "Onsdag"  , "onsdag(en)?s?|ons\\.?"    )
+  , ( "Torsdag" , "torsdag(en)?s?|tors?\\.?" )
+  , ( "Fredag"  , "fredag(en)?s?|fre\\.?"    )
+  , ( "Lordag"  , "lördag(en)?s?|lör\\.?"    )
+  , ( "Sondag"  , "söndag(en)?s?|sön\\.?"    )
   ]
 
 ruleDaysOfWeek :: [Rule]
@@ -500,6 +500,18 @@ ruleThisnextDayofweek = Rule
   , prod = \tokens -> case tokens of
       (_:Token Time td:_) ->
         tt $ predNth 0 True td
+      _ -> Nothing
+  }
+
+ruleLastDayofweek :: Rule
+ruleLastDayofweek = Rule
+  { name = "last <day-of-week>"
+  , pattern =
+    [ regex "i"
+    , Predicate isADayOfWeek
+    ]
+  , prod = \tokens -> case tokens of
+      (_:Token Time td:_) -> tt $ predNth (-1) True td
       _ -> Nothing
   }
 
@@ -1752,6 +1764,7 @@ rules =
   , ruleThisPartofday
   , ruleThisTime
   , ruleThisnextDayofweek
+  , ruleLastDayofweek
   , ruleTimeAfterNext
   , ruleTimeBeforeLast
   , ruleTimePartofday

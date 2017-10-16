@@ -82,6 +82,7 @@ library
                      , Duckling.Ranking.Classifiers.CS_XX
                      , Duckling.Ranking.Classifiers.DA_XX
                      , Duckling.Ranking.Classifiers.DE_XX
+                     , Duckling.Ranking.Classifiers.EN_CA
                      , Duckling.Ranking.Classifiers.EN_GB
                      , Duckling.Ranking.Classifiers.EN_US
                      , Duckling.Ranking.Classifiers.EN_XX
@@ -436,6 +437,8 @@ library
                      , Duckling.Time.DE.Rules
                      , Duckling.Time.EN.Corpus
                      , Duckling.Time.EN.Rules
+                     , Duckling.Time.EN.CA.Corpus
+                     , Duckling.Time.EN.CA.Rules
                      , Duckling.Time.EN.GB.Corpus
                      , Duckling.Time.EN.GB.Rules
                      , Duckling.Time.EN.US.Corpus

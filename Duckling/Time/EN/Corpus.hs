@@ -44,6 +44,27 @@ defaultCorpus = (testContext, allExamples ++ custom)
       , examples (datetime (2013, 4, 25, 16, 0, 0) Minute)
                  [ "4/25 at 4:00pm"
                  ]
+      , examples (datetime (2013, 11, 28, 0, 0, 0) Day)
+                 [ "thanksgiving day"
+                 , "thanksgiving"
+                 , "thanksgiving 2013"
+                 , "this thanksgiving"
+                 , "next thanksgiving day"
+                 ]
+      , examples (datetime (2014, 11, 27, 0, 0, 0) Day)
+                 [ "thanksgiving of next year"
+                 , "thanksgiving 2014"
+                 ]
+      , examples (datetime (2012, 11, 22, 0, 0, 0) Day)
+                 [ "last thanksgiving"
+                 , "thanksgiving day 2012"
+                 ]
+      , examples (datetime (2016, 11, 24, 0, 0, 0) Day)
+                 [ "thanksgiving 2016"
+                 ]
+      , examples (datetime (2017, 11, 23, 0, 0, 0) Day)
+                 [ "thanksgiving 2017"
+                 ]
       ]
 
 negativeCorpus :: NegativeCorpus
@@ -612,27 +633,6 @@ allExamples = concat
              [ "halloween"
              , "next halloween"
              , "Halloween 2013"
-             ]
-  , examples (datetime (2013, 11, 28, 0, 0, 0) Day)
-             [ "thanksgiving day"
-             , "thanksgiving"
-             , "thanksgiving 2013"
-             , "this thanksgiving"
-             , "next thanksgiving day"
-             ]
-  , examples (datetime (2014, 11, 27, 0, 0, 0) Day)
-             [ "thanksgiving of next year"
-             , "thanksgiving 2014"
-             ]
-  , examples (datetime (2012, 11, 22, 0, 0, 0) Day)
-             [ "last thanksgiving"
-             , "thanksgiving day 2012"
-             ]
-  , examples (datetime (2016, 11, 24, 0, 0, 0) Day)
-             [ "thanksgiving 2016"
-             ]
-  , examples (datetime (2017, 11, 23, 0, 0, 0) Day)
-             [ "thanksgiving 2017"
              ]
   , examples (datetime (2013, 11, 29, 0, 0, 0) Day)
              [ "black friday"

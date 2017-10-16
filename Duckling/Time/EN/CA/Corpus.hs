@@ -7,7 +7,7 @@
 
 {-# LANGUAGE OverloadedStrings #-}
 
-module Duckling.Time.EN.GB.Corpus
+module Duckling.Time.EN.CA.Corpus
   ( allExamples
   ) where
 
@@ -22,39 +22,39 @@ import Duckling.TimeGrain.Types hiding (add)
 allExamples :: [Example]
 allExamples = concat
   [ examples (datetime (2013, 2, 15, 0, 0, 0) Day)
-             [ "15/2"
-             , "on 15/2"
-             , "15 / 2"
-             , "15-2"
-             , "15 - 2"
+             [ "2/15"
+             , "on 2/15"
+             , "2 / 15"
+             , "2-15"
+             , "2 - 15"
              ]
   , examples (datetime (1974, 10, 31, 0, 0, 0) Day)
-             [ "31/10/1974"
-             , "31/10/74"
-             , "31-10-74"
+             [ "10/31/1974"
+             , "10/31/74"
+             , "10-31-74"
              ]
   , examples (datetime (2013, 4, 25, 16, 0, 0) Minute)
-             [ "25/4 at 4:00pm"
+             [ "4/25 at 4:00pm"
              ]
-  , examples (datetime (2013, 11, 28, 0, 0, 0) Day)
+  , examples (datetime (2013, 10, 14, 0, 0, 0) Day)
              [ "thanksgiving day"
              , "thanksgiving"
              , "thanksgiving 2013"
              , "this thanksgiving"
              , "next thanksgiving day"
              ]
-  , examples (datetime (2014, 11, 27, 0, 0, 0) Day)
+  , examples (datetime (2014, 10, 13, 0, 0, 0) Day)
              [ "thanksgiving of next year"
              , "thanksgiving 2014"
              ]
-  , examples (datetime (2012, 11, 22, 0, 0, 0) Day)
+  , examples (datetime (2012, 10, 8, 0, 0, 0) Day)
              [ "last thanksgiving"
              , "thanksgiving day 2012"
              ]
-  , examples (datetime (2016, 11, 24, 0, 0, 0) Day)
+  , examples (datetime (2016, 10, 10, 0, 0, 0) Day)
              [ "thanksgiving 2016"
              ]
-  , examples (datetime (2017, 11, 23, 0, 0, 0) Day)
+  , examples (datetime (2017, 10, 9, 0, 0, 0) Day)
              [ "thanksgiving 2017"
              ]
   ]

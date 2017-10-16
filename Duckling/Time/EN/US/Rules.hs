@@ -14,6 +14,7 @@ module Duckling.Time.EN.US.Rules
   ( rules
   , ruleMMDD
   , ruleMMDDYYYY
+  , ruleThanksgiving
   ) where
 
 import Data.Maybe
@@ -52,8 +53,18 @@ ruleMMDDYYYY = Rule
       _ -> Nothing
   }
 
+ruleThanksgiving :: Rule
+ruleThanksgiving = Rule
+  { name = "Thanksgiving Day"
+  , pattern =
+    [ regex "thanks?giving( day)?"
+    ]
+  , prod = \_ -> tt $ nthDOWOfMonth 4 4 11 -- Fourth Thursday of November
+  }
+
 rules :: [Rule]
 rules =
   [ ruleMMDD
   , ruleMMDDYYYY
+  , ruleThanksgiving
   ]

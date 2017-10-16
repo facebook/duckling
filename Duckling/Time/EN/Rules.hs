@@ -1264,10 +1264,6 @@ moreUSHolidays =
     , "mother'?s?'? day"
     , 2, 7, 5
     )
-  , ( "Thanksgiving Day" -- Fourth Thursday of November
-    , "thanks?giving( day)?"
-    , 4, 4, 11
-    )
   ,  ( "Labor Day" -- First Monday of September
      , "labor day"
      , 1, 1, 9

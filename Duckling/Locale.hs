@@ -69,7 +69,8 @@ instance TextShow Lang where
 -- | ISO 3166-1 alpha-2 Country code (includes regions and territories).
 -- See https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
 data Region
-  = CN
+  = CA
+  | CN
   | GB
   | HK
   | MO
@@ -100,6 +101,6 @@ makeLocale lang (Just region)
 
 allLocales :: HashMap Lang (HashSet Region)
 allLocales = HashMap.fromList
-  [ (EN, HashSet.fromList [GB, US])
+  [ (EN, HashSet.fromList [CA, GB, US])
   , (ZH, HashSet.fromList [CN, HK, MO, TW])
   ]

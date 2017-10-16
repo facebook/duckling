@@ -30,6 +30,7 @@ import Duckling.Testing.Types
 import qualified Duckling.Time.DA.Corpus as DATime
 import qualified Duckling.Time.DE.Corpus as DETime
 import qualified Duckling.Time.EN.Corpus as ENTime
+import qualified Duckling.Time.EN.CA.Corpus as EN_CATime
 import qualified Duckling.Time.EN.GB.Corpus as EN_GBTime
 import qualified Duckling.Time.EN.US.Corpus as EN_USTime
 import qualified Duckling.Time.ES.Corpus as ESTime
@@ -188,6 +189,7 @@ getCorpusForLang VI = VITime.corpus
 getCorpusForLang ZH = ZHTime.corpus
 
 getExamplesForLocale :: Lang -> Region -> [Example]
+getExamplesForLocale EN CA = EN_CATime.allExamples
 getExamplesForLocale EN GB = EN_GBTime.allExamples
 getExamplesForLocale EN US = EN_USTime.allExamples
 getExamplesForLocale ZH CN = ZH_CNTime.allExamples

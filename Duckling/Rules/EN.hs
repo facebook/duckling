@@ -29,6 +29,7 @@ import qualified Duckling.Ordinal.EN.Rules as Ordinal
 import qualified Duckling.Quantity.EN.Rules as Quantity
 import qualified Duckling.Temperature.EN.Rules as Temperature
 import qualified Duckling.Time.EN.Rules as Time
+import qualified Duckling.Time.EN.CA.Rules as TimeCA
 import qualified Duckling.Time.EN.GB.Rules as TimeGB
 import qualified Duckling.Time.EN.US.Rules as TimeUS
 import qualified Duckling.TimeGrain.EN.Rules as TimeGrain
@@ -38,10 +39,12 @@ defaultRules :: Some Dimension -> [Rule]
 defaultRules dim@(This Time) =
   [ TimeUS.ruleMMDD
   , TimeUS.ruleMMDDYYYY
+  , TimeUS.ruleThanksgiving
   ] ++ langRules dim
 defaultRules dim = langRules dim
 
 localeRules :: Region -> Some Dimension -> [Rule]
+localeRules CA (This Time) = TimeCA.rules
 localeRules GB (This Time) = TimeGB.rules
 localeRules US (This Time) = TimeUS.rules
 localeRules _ _            = []

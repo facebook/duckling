@@ -10,7 +10,7 @@
 {-# LANGUAGE NoRebindableSyntax #-}
 {-# LANGUAGE OverloadedStrings #-}
 
-module Duckling.Time.EN.GB.Rules
+module Duckling.Time.EN.CA.Rules
   ( rules
   ) where
 
@@ -24,31 +24,30 @@ import Duckling.Time.Helpers
 import Duckling.Time.Types (TimeData (..))
 import Duckling.Types
 
-ruleDDMM :: Rule
-ruleDDMM = Rule
-  { name = "dd/mm"
-  , pattern =
-    [ regex "(3[01]|[12]\\d|0?[1-9])\\s?[/-]\\s?(0?[1-9]|1[0-2])"
-    ]
+-- Although one can see both MMDD and DDMM in Canada,
+-- there is no direct way to implement this today. Let's fallback to MMDD (US).
+ruleMMDD :: Rule
+ruleMMDD = Rule
+  { name = "mm/dd"
+  , pattern = [regex "(0?[1-9]|1[0-2])\\s?[/-]\\s?(3[01]|[12]\\d|0?[1-9])"]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (dd:mm:_)):_) -> do
-        d <- parseInt dd
+      (Token RegexMatch (GroupMatch (mm:dd:_)):_) -> do
         m <- parseInt mm
+        d <- parseInt dd
         tt $ monthDay m d
       _ -> Nothing
   }
 
-ruleDDMMYYYY :: Rule
-ruleDDMMYYYY = Rule
-  { name = "dd/mm/yyyy"
+ruleMMDDYYYY :: Rule
+ruleMMDDYYYY = Rule
+  { name = "mm/dd/yyyy"
   , pattern =
-    [ regex "(3[01]|[12]\\d|0?[1-9])[/-](0?[1-9]|1[0-2])[-/](\\d{2,4})"
-    ]
+    [regex "(0?[1-9]|1[0-2])[/-](3[01]|[12]\\d|0?[1-9])[-/](\\d{2,4})"]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (dd:mm:yy:_)):_) -> do
+      (Token RegexMatch (GroupMatch (mm:dd:yy:_)):_) -> do
         y <- parseInt yy
-        d <- parseInt dd
         m <- parseInt mm
+        d <- parseInt dd
         tt $ yearMonthDay y m d
       _ -> Nothing
   }
@@ -59,12 +58,12 @@ ruleThanksgiving = Rule
   , pattern =
     [ regex "thanks?giving( day)?"
     ]
-  , prod = \_ -> tt $ nthDOWOfMonth 4 4 11 -- Fourth Thursday of November
+  , prod = \_ -> tt $ nthDOWOfMonth 2 1 10 -- Second Monday of October
   }
 
 rules :: [Rule]
 rules =
-  [ ruleDDMM
-  , ruleDDMMYYYY
+  [ ruleMMDD
+  , ruleMMDDYYYY
   , ruleThanksgiving
   ]

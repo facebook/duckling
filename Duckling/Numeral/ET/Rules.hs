@@ -10,31 +10,20 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Numeral.ET.Rules
-  ( rules ) where
+  ( rules
+  ) where
 
 import Data.Maybe
-import qualified Data.Text as Text
-import Prelude
 import Data.String
+import Prelude
+import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
 import Duckling.Numeral.Helpers
 import Duckling.Numeral.Types (NumeralData (..))
-import qualified Duckling.Numeral.Types as TNumeral
 import Duckling.Regex.Types
 import Duckling.Types
-
-ruleIntegerWithThousandsSeparatorSpace :: Rule
-ruleIntegerWithThousandsSeparatorSpace = Rule
-  { name = "integer with thousands separator space"
-  , pattern =
-    [ regex "(\\d{1,3}(\\s\\d\\d\\d){1,5})"
-    ]
-  , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) ->
-        parseDouble (Text.replace (Text.singleton ' ') Text.empty match) >>= double
-      _ -> Nothing
-  }
+import qualified Duckling.Numeral.Types as TNumeral
 
 ruleNumeralsPrefixWithNegativeOrMinus :: Rule
 ruleNumeralsPrefixWithNegativeOrMinus = Rule
@@ -275,11 +264,11 @@ ruleIntegerWithThousandsSeparator :: Rule
 ruleIntegerWithThousandsSeparator = Rule
   { name = "integer with thousands separator ,"
   , pattern =
-    [ regex "(\\d{1,3}(,\\d\\d\\d){1,5})"
+    [ regex "(\\d{1,3}(([, ])\\d\\d\\d){1,5})"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) ->
-        parseDouble (Text.replace (Text.singleton ',') Text.empty match) >>= double
+      (Token RegexMatch (GroupMatch (match:_:sep:_)):_) ->
+        parseDouble (Text.replace sep Text.empty match) >>= double
       _ -> Nothing
   }
 
@@ -295,7 +284,6 @@ rules =
   , ruleInteger4
   , ruleIntegerNumeric
   , ruleIntegerWithThousandsSeparator
-  , ruleIntegerWithThousandsSeparatorSpace
   , ruleIntersect
   , ruleMultiply
   , ruleNumeralDotNumeral

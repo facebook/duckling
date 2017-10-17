@@ -11,7 +11,8 @@
 {-# LANGUAGE NoRebindableSyntax #-}
 
 module Duckling.Numeral.EN.Rules
-  ( rules ) where
+  ( rules
+  ) where
 
 import Control.Applicative ((<|>))
 import Data.HashMap.Strict (HashMap)
@@ -225,7 +226,7 @@ ruleCommas = Rule
   , pattern = [regex "(\\d+(,\\d\\d\\d)+(\\.\\d+)?)"]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
-        parseDouble (Text.replace (Text.singleton ',') Text.empty match) >>= double
+        parseDouble (Text.replace "," Text.empty match) >>= double
       _ -> Nothing
   }
 

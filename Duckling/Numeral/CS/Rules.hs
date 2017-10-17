@@ -10,7 +10,8 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Numeral.CS.Rules
-  ( rules ) where
+  ( rules
+  ) where
 
 import Data.HashMap.Strict (HashMap)
 import Data.Maybe

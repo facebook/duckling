@@ -10,6 +10,7 @@
 
 module Duckling.Email.EN.Corpus
   ( corpus
+  , negativeCorpus
   ) where
 
 import Data.String
@@ -17,6 +18,15 @@ import Prelude
 
 import Duckling.Email.Types
 import Duckling.Testing.Types
+
+negativeCorpus :: NegativeCorpus
+negativeCorpus = (testContext, examples)
+  where
+    examples =
+      [ "fitness at 6.40"
+      , "class at 12.00"
+      , "tonight at 9.15"
+      ]
 
 corpus :: Corpus
 corpus = (testContext, allExamples)

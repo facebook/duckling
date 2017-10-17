@@ -9,19 +9,24 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Time.ZH.Corpus
-  ( corpus ) where
+  ( corpus
+  , defaultCorpus
+  ) where
 
-import Prelude
 import Data.String
+import Prelude
 
-import Duckling.Lang
+import Duckling.Locale
 import Duckling.Resolve
 import Duckling.Time.Corpus
 import Duckling.TimeGrain.Types hiding (add)
 import Duckling.Testing.Types hiding (examples)
 
+defaultCorpus :: Corpus
+defaultCorpus = corpus
+
 corpus :: Corpus
-corpus = (testContext {lang = ZH}, allExamples)
+corpus = (testContext {locale = makeLocale ZH Nothing}, allExamples)
 
 allExamples :: [Example]
 allExamples = concat
@@ -482,21 +487,11 @@ allExamples = concat
              [ "建军节"
              , "建軍節"
              ]
-  , examples (datetime (2013, 10, 1, 0, 0, 0) Day)
-             [ "国庆"
-             , "國慶"
-             , "国庆节"
-             , "國慶節"
-             ]
   , examples (datetime (2013, 12, 25, 0, 0, 0) Day)
              [ "圣诞"
              , "聖誕"
              , "圣诞节"
              , "聖誕節"
-             ]
-  , examples (datetimeInterval ((2013, 10, 1, 18, 0, 0), (2013, 10, 2, 0, 0, 0)) Hour)
-             [ "国庆节晚上"
-             , "國慶節晚上"
              ]
   , examples (datetime (2013, 6, 1, 15, 15, 0) Minute)
              [ "儿童节下午三点十五"

@@ -16,9 +16,9 @@ import Data.Aeson
 import Data.ByteString (ByteString)
 import Data.HashMap.Strict (HashMap)
 import Data.Maybe
+import Data.String
 import Data.Text (Text)
 import Data.Time.LocalTime.TimeZone.Series
-import Data.String
 import Prelude
 import System.Directory
 import TextShow
@@ -75,6 +75,7 @@ parseHandler tzs = do
   l <- getPostParam "lang"
   ds <- getPostParam "dims"
   tz <- getPostParam "tz"
+  loc <- getPostParam "locale"
 
   case t of
     Nothing -> do
@@ -86,7 +87,7 @@ parseHandler tzs = do
       let
         context = Context
           { referenceTime = refTime
-          , lang = parseLang l
+          , locale = maybe (makeLocale (parseLang l) Nothing) parseLocale loc
           }
 
         dimParse = fromMaybe [] $ decode $ LBS.fromStrict $ fromMaybe "" ds
@@ -97,7 +98,17 @@ parseHandler tzs = do
       writeLBS $ encode parsedResult
   where
     defaultLang = EN
+    defaultLocale = makeLocale defaultLang Nothing
     defaultTimeZone = "America/Los_Angeles"
+
+    parseLocale :: ByteString -> Locale
+    parseLocale x = maybe defaultLocale (`makeLocale` mregion) mlang
+      where
+        (mlang, mregion) = case chunks of
+          [a, b] -> (readMaybe a :: Maybe Lang, readMaybe b :: Maybe Region)
+          _      -> (Nothing, Nothing)
+        chunks = map Text.unpack . Text.split (== '_') . Text.toUpper
+          $ Text.decodeUtf8 x
 
     parseLang :: Maybe ByteString -> Lang
     parseLang l = fromMaybe defaultLang $ l >>=

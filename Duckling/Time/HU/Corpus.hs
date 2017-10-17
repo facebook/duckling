@@ -14,7 +14,7 @@ module Duckling.Time.HU.Corpus
 import Data.String
 import Prelude
 
-import Duckling.Lang
+import Duckling.Locale
 import Duckling.Resolve
 import Duckling.Time.Corpus
 import Duckling.Time.Types hiding (Month)
@@ -22,7 +22,7 @@ import Duckling.TimeGrain.Types hiding (add)
 import Duckling.Testing.Types hiding (examples)
 
 corpus :: Corpus
-corpus = (testContext {lang = HU}, allExamples)
+corpus = (testContext {locale = makeLocale HU Nothing}, allExamples)
 
 allExamples :: [Example]
 allExamples = concat

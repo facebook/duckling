@@ -16,7 +16,7 @@ module Duckling.Time.PT.Corpus
 import Data.String
 import Prelude
 
-import Duckling.Lang
+import Duckling.Locale
 import Duckling.Resolve
 import Duckling.Testing.Types hiding (examples)
 import Duckling.Time.Corpus
@@ -24,16 +24,17 @@ import Duckling.Time.Types hiding (Month)
 import Duckling.TimeGrain.Types hiding (add)
 
 corpus :: Corpus
-corpus = (testContext {lang = PT}, allExamples)
+corpus = (testContext {locale = makeLocale PT Nothing}, allExamples)
 
 negativeCorpus :: NegativeCorpus
-negativeCorpus = (testContext {lang = PT}, examples)
+negativeCorpus = (testContext {locale = makeLocale PT Nothing}, examples)
   where
     examples =
       [ "no 987"
       , "um"
       , "um dos"
       , "um dos minutos"
+      , "ter"
       ]
 
 allExamples :: [Example]
@@ -86,7 +87,6 @@ allExamples = concat
              , "terca feira"
              , "terca"
              , "ter."
-             , "ter"
              ]
   , examples (datetime (2013, 2, 13, 0, 0, 0) Day)
              [ "quarta-feira"

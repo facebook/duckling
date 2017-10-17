@@ -10,10 +10,14 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Rules.IT
-  ( rules
+  ( defaultRules
+  , langRules
+  , localeRules
   ) where
 
 import Duckling.Dimensions.Types
+import Duckling.Locale
+import Duckling.Types
 import qualified Duckling.Duration.IT.Rules as Duration
 import qualified Duckling.Email.IT.Rules as Email
 import qualified Duckling.Numeral.IT.Rules as Numeral
@@ -22,20 +26,25 @@ import qualified Duckling.Temperature.IT.Rules as Temperature
 import qualified Duckling.Time.IT.Rules as Time
 import qualified Duckling.TimeGrain.IT.Rules as TimeGrain
 import qualified Duckling.Volume.IT.Rules as Volume
-import Duckling.Types
 
-rules :: Some Dimension -> [Rule]
-rules (This Distance) = []
-rules (This Duration) = Duration.rules
-rules (This Numeral) = Numeral.rules
-rules (This Email) = Email.rules
-rules (This AmountOfMoney) = []
-rules (This Ordinal) = Ordinal.rules
-rules (This PhoneNumber) = []
-rules (This Quantity) = []
-rules (This RegexMatch) = []
-rules (This Temperature) = Temperature.rules
-rules (This Time) = Time.rules
-rules (This TimeGrain) = TimeGrain.rules
-rules (This Url) = []
-rules (This Volume) = Volume.rules
+defaultRules :: Some Dimension -> [Rule]
+defaultRules = langRules
+
+localeRules :: Region -> Some Dimension -> [Rule]
+localeRules _ _ = []
+
+langRules :: Some Dimension -> [Rule]
+langRules (This AmountOfMoney) = []
+langRules (This Distance) = []
+langRules (This Duration) = Duration.rules
+langRules (This Email) = Email.rules
+langRules (This Numeral) = Numeral.rules
+langRules (This Ordinal) = Ordinal.rules
+langRules (This PhoneNumber) = []
+langRules (This Quantity) = []
+langRules (This RegexMatch) = []
+langRules (This Temperature) = Temperature.rules
+langRules (This Time) = Time.rules
+langRules (This TimeGrain) = TimeGrain.rules
+langRules (This Url) = []
+langRules (This Volume) = Volume.rules

@@ -10,22 +10,16 @@ module Duckling.Duration.ZH.Tests
   ( tests
   ) where
 
-import Prelude
 import Data.String
+import Prelude
 import Test.Tasty
-import Test.Tasty.HUnit
 
 import Duckling.Dimensions.Types
 import Duckling.Duration.ZH.Corpus
-import Duckling.Lang
-import Duckling.Resolve
 import Duckling.Testing.Asserts
+import Duckling.Testing.Types
 
 tests :: TestTree
 tests = testGroup "ZH Tests"
-  [ testCase "Corpus Tests" $
-      mapM_ (analyzedFirstTest context {lang = ZH} . withTargets [This Duration])
-        xs
+  [ makeCorpusTest [This Duration] corpus
   ]
-  where
-    (context, xs) = corpus

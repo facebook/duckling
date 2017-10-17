@@ -22,7 +22,7 @@ import Test.Tasty.HUnit
 
 import Duckling.Api
 import Duckling.Dimensions.Types
-import Duckling.Lang
+import Duckling.Locale
 import qualified Duckling.Numeral.Types as TNumeral
 import Duckling.Testing.Asserts
 import Duckling.Testing.Types

@@ -16,16 +16,16 @@ module Duckling.Ordinal.DE.Corpus
 import Prelude
 import Data.String
 
-import Duckling.Lang
+import Duckling.Locale
 import Duckling.Ordinal.Types
 import Duckling.Resolve
 import Duckling.Testing.Types
 
 corpus :: Corpus
-corpus = (testContext {lang = DE}, allExamples)
+corpus = (testContext {locale = makeLocale DE Nothing}, allExamples)
 
 negativeCorpus :: NegativeCorpus
-negativeCorpus = (testContext {lang = DE}, examples)
+negativeCorpus = (testContext {locale = makeLocale DE Nothing}, examples)
   where
     examples =
       [ "1.1"

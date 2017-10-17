@@ -22,21 +22,46 @@ import Test.Tasty
 import Test.Tasty.HUnit
 
 import Duckling.Dimensions.Types
+import Duckling.Locale
 import Duckling.Resolve
 import Duckling.Testing.Asserts
 import Duckling.Testing.Types hiding (examples)
 import Duckling.Time.Corpus
 import Duckling.Time.EN.Corpus
 import Duckling.TimeGrain.Types (Grain(..))
+import qualified Duckling.Time.EN.CA.Corpus as CA
+import qualified Duckling.Time.EN.GB.Corpus as GB
+import qualified Duckling.Time.EN.US.Corpus as US
 
 tests :: TestTree
 tests = testGroup "EN Tests"
-  [ makeCorpusTest [This Time] corpus
+  [ makeCorpusTest [This Time] defaultCorpus
   , makeNegativeCorpusTest [This Time] negativeCorpus
   , exactSecondTests
   , valuesTest
   , intersectTests
+  , localeTests
   ]
+
+localeTests :: TestTree
+localeTests = testGroup "Locale Tests"
+  [ testGroup "EN_CA Tests"
+    [ makeCorpusTest [This Time] $ withLocale corpus localeCA CA.allExamples
+    , makeNegativeCorpusTest [This Time] $ withLocale negativeCorpus localeCA []
+    ]
+  , testGroup "EN_GB Tests"
+    [ makeCorpusTest [This Time] $ withLocale corpus localeGB GB.allExamples
+    , makeNegativeCorpusTest [This Time] $ withLocale negativeCorpus localeGB []
+    ]
+  , testGroup "EN_US Tests"
+    [ makeCorpusTest [This Time] $ withLocale corpus localeUS US.allExamples
+    , makeNegativeCorpusTest [This Time] $ withLocale negativeCorpus localeUS []
+    ]
+  ]
+  where
+    localeCA = makeLocale EN $ Just CA
+    localeGB = makeLocale EN $ Just GB
+    localeUS = makeLocale EN $ Just US
 
 exactSecondTests :: TestTree
 exactSecondTests = testCase "Exact Second Tests" $

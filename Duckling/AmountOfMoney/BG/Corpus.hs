@@ -8,18 +8,19 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.AmountOfMoney.BG.Corpus
-  ( corpus ) where
+  ( corpus
+  ) where
 
-import Prelude
 import Data.String
+import Prelude
 
-import Duckling.Lang
 import Duckling.AmountOfMoney.Types
+import Duckling.Locale
 import Duckling.Resolve
 import Duckling.Testing.Types
 
 corpus :: Corpus
-corpus = (testContext {lang = BG}, allExamples)
+corpus = (testContext {locale = makeLocale BG Nothing}, allExamples)
 
 allExamples :: [Example]
 allExamples = concat

@@ -18,16 +18,17 @@ module Duckling.Testing.Asserts
   , withTargets
   ) where
 
-import qualified Data.HashSet as HashSet
 import Data.String
 import Data.Text (Text)
-import qualified Data.Text as Text
 import Prelude
 import Test.Tasty
 import Test.Tasty.HUnit
+import qualified Data.HashSet as HashSet
+import qualified Data.Text as Text
 
 import Duckling.Api
 import Duckling.Dimensions.Types
+import Duckling.Locale
 import Duckling.Resolve
 import Duckling.Testing.Types
 import Duckling.Types

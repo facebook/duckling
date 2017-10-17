@@ -12,16 +12,20 @@
 
 module Duckling.Core
   ( Context(..)
+  , Region(..)
   , Dimension(..)
-  , fromName
   , Entity(..)
   , Lang(..)
+  , Locale
   , Some(..)
+  , fromName
+  , makeLocale
   , toName
 
   -- Duckling API
   , parse
   , supportedDimensions
+  , allLocales
 
   -- Reference time builders
   , currentReftime
@@ -39,7 +43,7 @@ import qualified Data.HashMap.Strict as HashMap
 
 import Duckling.Api
 import Duckling.Dimensions.Types
-import Duckling.Lang
+import Duckling.Locale
 import Duckling.Resolve
 import Duckling.Types
 

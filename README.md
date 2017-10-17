@@ -30,7 +30,7 @@ The first time you run it, it will download all required packages.
 
 This runs a basic HTTP server. Example request:
 ```
-$ curl -XPOST http://0.0.0.0:8000/parse --data 'lang=en&text=tomorrow at eight'
+$ curl -XPOST http://0.0.0.0:8000/parse --data 'locale=en_GB&text=tomorrow at eight'
 ```
 
 See `exe/ExampleMain.hs` for an example on how to integrate Duckling in your
@@ -88,7 +88,7 @@ shouldn't) parse. The reference time for the corpus is Tuesday Feb 12, 2013 at
 ```
 $ stack repl --no-load
 > :l Duckling.Debug
-> debug EN "in two minutes" [This Time]
+> debug (makeLocale EN $ Just US) "in two minutes" [This Time]
 in|within|after <duration> (in two minutes)
 -- regex (in)
 -- <integer> <unit-of-duration> (two minutes)

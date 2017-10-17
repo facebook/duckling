@@ -205,6 +205,15 @@ ruleDozen = Rule
   , prod = \_ -> integer 12 >>= withGrain 1
   }
 
+ruleGross :: Rule
+ruleGross = Rule
+  { name = "gros"
+  , pattern =
+    [ regex "gros"
+    ]
+  , prod = \_ -> integer 144 >>= withGrain 1
+  }
+
 zeroNineteenMap :: HashMap Text Integer
 zeroNineteenMap = HashMap.fromList
   [ ("niks", 0)
@@ -274,6 +283,7 @@ rules =
   , ruleDecimalNumeral
   , ruleDecimalWithThousandsSeparator
   , ruleDozen
+  , ruleGross
   , ruleFew
   , ruleInteger
   , ruleInteger2

@@ -21,6 +21,7 @@ module Duckling.Testing.Types
   , parserCheck
   , refTime
   , testContext
+  , withLocale
   , zTime
   ) where
 
@@ -69,4 +70,10 @@ refTime datetime offset = fromZonedTime $ zTime datetime offset
 -- Tuesday Feb 12, 2013 at 4:30am is the "now" for the tests
 testContext :: Context
 testContext = Context
-  {lang = EN, referenceTime = refTime (2013, 2, 12, 4, 30, 0) (-2)}
+  { locale = makeLocale EN Nothing
+  , referenceTime = refTime (2013, 2, 12, 4, 30, 0) (-2)
+  }
+
+withLocale :: (Context, [a]) -> Locale -> [a] -> (Context, [a])
+withLocale (langContext, langXs) locale localeXs
+  = (langContext {locale = locale}, langXs ++ localeXs)

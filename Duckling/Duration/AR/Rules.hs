@@ -102,7 +102,7 @@ ruleDurationA = Rule
       _ -> Nothing
   }
 
-  ruleTwoSeconds :: Rule
+ruleTwoSeconds :: Rule
 ruleTwoSeconds = Rule
   { name = "two seconds"
   , pattern = [regex "ثانيتين|ثانيتان|لحظتين|لحظتان"]
@@ -175,7 +175,6 @@ rules =
   , ruleDurationDotNumeralHours
   , ruleDurationAndHalfHour
   , ruleDurationA
-  , ruleDurationPrecision
   , ruleNumeralQuotes
   , ruleTwoSeconds
   , ruleTwoMinutes

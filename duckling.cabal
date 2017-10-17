@@ -210,6 +210,8 @@ library
                      , Duckling.Distance.Types
 
                      -- Duration
+                     , Duckling.Duration.AR.Corpus
+                     , Duckling.Duration.AR.Rules
                      , Duckling.Duration.DA.Rules
                      , Duckling.Duration.DE.Rules
                      , Duckling.Duration.EN.Corpus
@@ -488,6 +490,7 @@ library
                      , Duckling.Time.TimeZone.Parse
 
                      -- TimeGrain
+                     , Duckling.TimeGrain.AR.Rules
                      , Duckling.TimeGrain.DA.Rules
                      , Duckling.TimeGrain.DE.Rules
                      , Duckling.TimeGrain.EN.Rules
@@ -616,6 +619,7 @@ test-suite duckling-test
                      , Duckling.Distance.Tests
 
                      -- Duration
+                     , Duckling.Duration.AR.Tests
                      , Duckling.Duration.EN.Tests
                      , Duckling.Duration.FR.Tests
                      , Duckling.Duration.GA.Tests

@@ -15,18 +15,19 @@ import Prelude
 import Data.String
 
 import Duckling.Duration.Types
+import Duckling.Lang
+import Duckling.Resolve
 import Duckling.Testing.Types
 import Duckling.TimeGrain.Types (Grain(..))
 
 corpus :: Corpus
-corpus = (testContext, allExamples)
+corpus = (testContext {lang = AR}, allExamples)
 
 allExamples :: [Example]
 allExamples = concat
   [ examples (DurationData 1 Second)
              [ "ثانية"
              , "لحظة"
-             , "لحظة واحدة"
              ]
   , examples (DurationData 2 Minute)
              [ "دقيقتان"
@@ -46,6 +47,9 @@ allExamples = concat
              ]
   , examples (DurationData 1 Month)
              [ "شهر"
+             ]
+  , examples (DurationData 2 Month)
+             [ "شهرين"
              ]
   , examples (DurationData 2 Year)
              [ "سنتين"

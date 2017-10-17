@@ -36,22 +36,15 @@ ruleDurationQuarterOfAnHour = Rule
 ruleDurationHalfAnHour :: Rule
 ruleDurationHalfAnHour = Rule
   { name = "half an hour"
-  , pattern = [regex "(1/2\\s?h(our)?|half an? hour)"]
+  , pattern = [regex "(1/2\\s?ساع[ةه]?|نصف? ساع[ةه])"]
   , prod = \_ -> Just . Token Duration $ duration TG.Minute 30
   }
 
 ruleDurationThreeQuartersOfAnHour :: Rule
 ruleDurationThreeQuartersOfAnHour = Rule
   { name = "three-quarters of an hour"
-  , pattern = [regex "(3/4\\s?h(our)?|three(\\s|-)quarters of an hour)"]
+  , pattern = [regex "(3/4\\s?(ال)?ساع[ةه]?|ثلاث[ةه]?(\\s|-)[أا]رباع (ال)?ساع[ةه])"]
   , prod = \_ -> Just . Token Duration $ duration TG.Minute 45
-  }
-
-ruleDurationFortnight :: Rule
-ruleDurationFortnight = Rule
-  { name = "fortnight"
-  , pattern = [regex "(a|one)? fortnight"]
-  , prod = \_ -> Just . Token Duration $ duration TG.Day 14
   }
 
 ruleNumeralQuotes :: Rule
@@ -68,20 +61,6 @@ ruleNumeralQuotes = Rule
          "'"  -> Just . Token Duration . duration TG.Minute $ floor v
          "\"" -> Just . Token Duration . duration TG.Second $ floor v
          _    -> Nothing
-      _ -> Nothing
-  }
-
-ruleDurationNumeralMore :: Rule
-ruleDurationNumeralMore = Rule
-  { name = "<integer> more <unit-of-duration>"
-  , pattern =
-    [ Predicate isNatural
-    , regex "more|less"
-    , dimension TimeGrain
-    ]
-  , prod = \tokens -> case tokens of
-      (Token Numeral nd:_:Token TimeGrain grain:_) ->
-        Just . Token Duration . duration grain . floor $ TNumeral.value nd
       _ -> Nothing
   }
 
@@ -103,7 +82,7 @@ ruleDurationAndHalfHour = Rule
   { name = "<integer> and an half hour"
   , pattern =
     [ Predicate isNatural
-    , regex "and (an? )?half hours?"
+    , regex "و ?نصف? ساع[ةه]"
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral (NumeralData {TNumeral.value = v}):_) ->
@@ -123,28 +102,85 @@ ruleDurationA = Rule
       _ -> Nothing
   }
 
-ruleDurationPrecision :: Rule
-ruleDurationPrecision = Rule
-  { name = "about|exactly <duration>"
-  , pattern =
-    [ regex "(about|around|approximately|exactly)"
-    , dimension Duration
-    ]
-    , prod = \tokens -> case tokens of
-        (_:token:_) -> Just token
-        _ -> Nothing
+  ruleTwoSeconds :: Rule
+ruleTwoSeconds = Rule
+  { name = "two seconds"
+  , pattern = [regex "ثانيتين|ثانيتان|لحظتين|لحظتان"]
+  , prod = \_ -> Just . Token Duration $ duration TG.Second 2
   }
+
+ruleTwoMinutes :: Rule
+ruleTwoMinutes = Rule
+  { name = "two minutes"
+  , pattern = [regex "دقيقتين|دقيقتان"]
+  , prod = \_ -> Just . Token Duration $ duration TG.Minute 2
+  }
+
+ruleTwoHours :: Rule
+ruleTwoHours = Rule
+  { name = "two hours"
+  , pattern = [regex "ساعتين|ساعتان"]
+  , prod = \_ -> Just . Token Duration $ duration TG.Hour 2
+  }
+
+ruleTwoYears :: Rule
+ruleTwoYears = Rule
+  { name = "dual years"
+  , pattern = [regex "سنتين|سنتان"]
+  , prod = \_ -> Just . Token Duration $ duration TG.Year 2
+  }
+
+-- this rule handles TG.Day, TG.Week and TG.Month
+ruleDualUnitofduration :: Rule
+ruleDualUnitofduration = Rule
+  { name = "dual <unit-of-duration>"
+  , pattern =
+    [ dimension TimeGrain
+    , regex "(ان|ين)"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token TimeGrain grain:_) -> Just . Token Duration $ duration grain 2
+      _ -> Nothing
+  }
+
+ruleSingleUnitofduration :: Rule
+ruleSingleUnitofduration = Rule
+  { name = "single <unit-of-duration>"
+  , pattern =
+    [ dimension TimeGrain ]
+  , prod = \tokens -> case tokens of
+      (Token TimeGrain grain:_) -> Just . Token Duration $ duration grain 1
+      _ -> Nothing
+  }
+
+ruleIntegerUnitofduration :: Rule
+ruleIntegerUnitofduration = Rule
+  { name = "<unit-of-duration> <integer>"
+  , pattern =
+    [ Predicate isNatural
+    , dimension TimeGrain
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Numeral (NumeralData {TNumeral.value = v}):
+        Token TimeGrain grain:
+        _) -> Just . Token Duration . duration grain $ floor v
+      _ -> Nothing
+  }  
 
 rules :: [Rule]
 rules =
   [ ruleDurationQuarterOfAnHour
   , ruleDurationHalfAnHour
   , ruleDurationThreeQuartersOfAnHour
-  , ruleDurationFortnight
-  , ruleDurationNumeralMore
   , ruleDurationDotNumeralHours
   , ruleDurationAndHalfHour
   , ruleDurationA
   , ruleDurationPrecision
   , ruleNumeralQuotes
+  , ruleTwoSeconds
+  , ruleTwoMinutes
+  , ruleTwoHours
+  , ruleTwoYears
+  , ruleDualUnitofduration
+  , ruleSingleUnitofduration
   ]

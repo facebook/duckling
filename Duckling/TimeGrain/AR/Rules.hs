@@ -20,13 +20,13 @@ import qualified Duckling.TimeGrain.Types as TG
 import Duckling.Types
 
 grains :: [(Text, String, TG.Grain)]
-grains = [ ("second (grain) ", "ثاني(ة|ه|تان|تين)|ثواني|لحظ(ة|ه|تان|تين|ات)",      TG.Second)
-         , ("minute (grain)" , "دق(يق(ة|ه|تان|تين)|ائق)",      TG.Minute)
-         , ("hour (grain)"   , "ساع(ة|ه|تين|تان|ات)", TG.Hour)
-         , ("day (grain)"    , "يوم(|ان|ين)|(ا|أ)يام",            TG.Day)
-         , ("week (grain)"   , "(ا|أ|إ)س(بوع(|ان|ين)|ابيع)",           TG.Week)
-         , ("month (grain)"  , "شهر(|ان|ين)|(ا|أ|إ)شهر",          TG.Month)
-         , ("year (grain)"   , "سن(ة|تين|تان|ين)",           TG.Year)
+grains = [ ("second (grain) ", "(ثاني(ة|ه)?|ثواني|لحظ(ة|ه|ات))",      TG.Second)
+         , ("minute (grain)" , "دق(يق(ة|ه)|ائق)",      TG.Minute)
+         , ("hour (grain)"   , "ساع(ة|ه|ات)", TG.Hour)
+         , ("day (grain)"    , "يوم|(ا|أ)يام",            TG.Day)
+         , ("week (grain)"   , "(ا|أ|إ)س(بوع|ابيع)",           TG.Week)
+         , ("month (grain)"  , "شهر|(ا|أ|إ)شهر",          TG.Month)
+         , ("year (grain)"   , "سن(ة|ين)|عام",           TG.Year)
          ]
 
 rules :: [Rule]

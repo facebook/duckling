@@ -9,13 +9,13 @@
 module Duckling.AmountOfMoney.FR.Tests
   ( tests ) where
 
-import Prelude
 import Data.String
+import Prelude
 import Test.Tasty
 
+import Duckling.AmountOfMoney.FR.Corpus
 import Duckling.Dimensions.Types
 import Duckling.Testing.Asserts
-import Duckling.AmountOfMoney.FR.Corpus
 
 tests :: TestTree
 tests = testGroup "FR Tests"

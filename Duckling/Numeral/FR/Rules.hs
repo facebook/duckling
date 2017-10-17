@@ -10,22 +10,23 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Numeral.FR.Rules
-  ( rules ) where
+  ( rules
+  ) where
 
 import Data.HashMap.Strict (HashMap)
-import qualified Data.HashMap.Strict as HashMap
-import Data.Text (Text)
-import qualified Data.Text as Text
-import Prelude
 import Data.Maybe
 import Data.String
+import Data.Text (Text)
+import Prelude
+import qualified Data.HashMap.Strict as HashMap
+import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
 import Duckling.Numeral.Helpers
 import Duckling.Numeral.Types (NumeralData (..))
-import qualified Duckling.Numeral.Types as TNumeral
 import Duckling.Regex.Types
 import Duckling.Types
+import qualified Duckling.Numeral.Types as TNumeral
 
 ruleNumerals4 :: Rule
 ruleNumerals4 = Rule
@@ -83,13 +84,11 @@ ruleDecimalWithThousandsSeparator :: Rule
 ruleDecimalWithThousandsSeparator = Rule
   { name = "decimal with thousands separator"
   , pattern =
-    [ regex "(\\d+(\\.\\d\\d\\d)+,\\d+)"
+    [ regex "(\\d+(([\\. ])\\d\\d\\d)+,\\d+)"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) ->
-        let dot = Text.singleton '.'
-            comma = Text.singleton ','
-            fmt = Text.replace comma dot $ Text.replace dot Text.empty match
+      (Token RegexMatch (GroupMatch (match:_:sep:_)):
+       _) -> let fmt = Text.replace "," "." $ Text.replace sep Text.empty match
         in parseDouble fmt >>= double
       _ -> Nothing
   }
@@ -144,7 +143,7 @@ ruleNumerals5 = Rule
 ruleNumeralMap :: HashMap Text Integer
 ruleNumeralMap = HashMap.fromList
   [ ( "zero"     , 0 )
-  , ( "zéro", 0 )
+  , ( "zéro"     , 0 )
   , ( "un"       , 1 )
   , ( "une"      , 1 )
   , ( "deux"     , 2 )
@@ -254,11 +253,11 @@ ruleIntegerWithThousandsSeparator :: Rule
 ruleIntegerWithThousandsSeparator = Rule
   { name = "integer with thousands separator ."
   , pattern =
-    [ regex "(\\d{1,3}(\\.\\d\\d\\d){1,5})"
+    [ regex "(\\d{1,3}(([\\. ])\\d\\d\\d){1,5})"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):
-       _) -> let fmt = Text.replace (Text.singleton '.') Text.empty match
+      (Token RegexMatch (GroupMatch (match:_:sep:_)):
+       _) -> let fmt = Text.replace sep Text.empty match
         in parseDouble fmt >>= double
       _ -> Nothing
   }

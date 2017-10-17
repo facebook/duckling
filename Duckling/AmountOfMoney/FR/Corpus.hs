@@ -34,6 +34,8 @@ allExamples = concat
              [ "$10.000"
              , "10K$"
              , "$10k"
+             , "10 000 dollars"
+             , "10 000,00 $"
              ]
   , examples (simple USD 1.23)
              [ "USD1,23"

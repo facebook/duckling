@@ -14,6 +14,7 @@ import Prelude
 import Data.String
 import Test.Tasty
 
+import qualified Duckling.Duration.AR.Tests as AR
 import qualified Duckling.Duration.EN.Tests as EN
 import qualified Duckling.Duration.FR.Tests as FR
 import qualified Duckling.Duration.GA.Tests as GA
@@ -31,7 +32,8 @@ import qualified Duckling.Duration.ZH.Tests as ZH
 
 tests :: TestTree
 tests = testGroup "Duration Tests"
-  [ EN.tests
+  [ AR.tests
+  , EN.tests
   , FR.tests
   , GA.tests
   , HU.tests

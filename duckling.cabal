@@ -463,6 +463,8 @@ library
                      , Duckling.Time.KO.Rules
                      , Duckling.Time.NB.Corpus
                      , Duckling.Time.NB.Rules
+                     , Duckling.Time.NL.Corpus
+                     , Duckling.Time.NL.Rules
                      , Duckling.Time.PL.Corpus
                      , Duckling.Time.PL.Rules
                      , Duckling.Time.PT.Corpus
@@ -745,6 +747,7 @@ test-suite duckling-test
                      , Duckling.Time.IT.Tests
                      , Duckling.Time.KO.Tests
                      , Duckling.Time.NB.Tests
+                     , Duckling.Time.NL.Tests
                      , Duckling.Time.PL.Tests
                      , Duckling.Time.PT.Tests
                      , Duckling.Time.RO.Tests

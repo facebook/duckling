@@ -22,11 +22,11 @@ import qualified Duckling.TimeGrain.Types as TG
 grains :: [(Text, String, TG.Grain)]
 grains = [ ("second (grain) " , "(seconde(n|s)?|sec|s)" , TG.Second)
          , ("minute (grain)"  , "(minuut|minuten|min|m)", TG.Minute)
-         , ("hour (grain)"    , "(u|h|uur|uren)",         TG.Hour)
-         , ("day (grain)"     , "(dagen|dag|d)",          TG.Day)
+         , ("hour (grain)"    , "(uur|uren|u|h)",         TG.Hour)
+         , ("day (grain)"     , "dagen|dag|d",            TG.Day)
          , ("week (grain)"    , "(weken|week|w)",         TG.Week)
          , ("month (grain)"   , "(maanden|maand|mnd)",    TG.Month)
-         , ("quarter (grain)" , "kwartier",               TG.Quarter)
+         , ("quarter (grain)" , "(kwartaal|kwartalen)",   TG.Quarter)
          , ("year (grain)"    , "(jaren|jaar|j)",         TG.Year)
          ]
 

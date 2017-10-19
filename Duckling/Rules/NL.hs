@@ -22,6 +22,7 @@ import qualified Duckling.Distance.NL.Rules as Distance
 import qualified Duckling.Duration.NL.Rules as Duration
 import qualified Duckling.Numeral.NL.Rules as Numeral
 import qualified Duckling.Ordinal.NL.Rules as Ordinal
+import qualified Duckling.Time.NL.Rules as Time
 import qualified Duckling.TimeGrain.NL.Rules as TimeGrain
 import qualified Duckling.Volume.NL.Rules as Volume
 
@@ -42,7 +43,7 @@ langRules (This PhoneNumber) = []
 langRules (This Quantity) = []
 langRules (This RegexMatch) = []
 langRules (This Temperature) = []
-langRules (This Time) = []
+langRules (This Time) = Time.rules
 langRules (This TimeGrain) = TimeGrain.rules
 langRules (This Url) = []
 langRules (This Volume) = Volume.rules

@@ -36,6 +36,7 @@ import qualified Duckling.Time.HU.Tests as HU
 import qualified Duckling.Time.IT.Tests as IT
 import qualified Duckling.Time.KO.Tests as KO
 import qualified Duckling.Time.NB.Tests as NB
+import qualified Duckling.Time.NL.Tests as NL
 import qualified Duckling.Time.PL.Tests as PL
 import qualified Duckling.Time.PT.Tests as PT
 import qualified Duckling.Time.RO.Tests as RO
@@ -57,6 +58,7 @@ tests = testGroup "Time Tests"
   , IT.tests
   , KO.tests
   , NB.tests
+  , NL.tests
   , PL.tests
   , PT.tests
   , RO.tests

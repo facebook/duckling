@@ -29,8 +29,21 @@ import qualified Duckling.TimeGrain.Types as TG
 ruleDurationQuarterOfAnHour :: Rule
 ruleDurationQuarterOfAnHour = Rule
   { name = "quarter of an hour"
-  , pattern = [ regex "1/4\\s?uur"]
+  , pattern = [ regex "1/4\\s?(h|u(ur)?)|kwartier"]
   , prod = \_ -> Just . Token Duration $ duration TG.Minute 15
+  }
+
+ruleDurationKwartier :: Rule
+ruleDurationKwartier = Rule
+  { name = "<integer> kwartier"
+  , pattern =
+    [ Predicate isNatural
+    , regex "kwartier"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Numeral (NumeralData {TNumeral.value = v}):_) ->
+        Just . Token Duration . duration TG.Minute $ 15 * floor v
+      _ -> Nothing
   }
 
 ruleDurationHalfAnHour :: Rule
@@ -105,6 +118,7 @@ ruleDurationPrecision = Rule
 rules :: [Rule]
 rules =
   [ ruleDurationQuarterOfAnHour
+  , ruleDurationKwartier
   , ruleDurationHalfAnHour
   , ruleDurationThreeQuartersOfAnHour
   , ruleDurationDotNumeralHours

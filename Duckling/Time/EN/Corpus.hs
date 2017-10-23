@@ -90,6 +90,8 @@ negativeCorpus = (testContext, examples)
       , "rat 6"
       , "3 30"
       , "three twenty"
+      , "at 650.650.6500"
+      , "at 650-650-6500"
       ]
 
 allExamples :: [Example]

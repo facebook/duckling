@@ -505,7 +505,7 @@ ruleHHMMLatent :: Rule
 ruleHHMMLatent = Rule
   { name = "hhmm (latent)"
   , pattern =
-    [ regex "((?:[01]?\\d)|(?:2[0-3]))([0-5]\\d)"
+    [ regex "((?:[01]?\\d)|(?:2[0-3]))([0-5]\\d)(?!.\\d)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (hh:mm:_)):_) -> do

@@ -102,4 +102,5 @@ intersectTests = testCase "Intersect Test" $
     xs = [ ("tomorrow July", 2)
          , ("Mar tonight", 2)
          , ("Feb tomorrow", 1) -- we are in February
+         , ("at 615.", 1) -- make sure ruleHHMMLatent allows this
          ]

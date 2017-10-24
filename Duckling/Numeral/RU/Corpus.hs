@@ -27,6 +27,7 @@ allExamples = concat
   [ examples (NumeralValue 0)
              [ "0"
              , "ноль"
+             , "нисколько"
              ]
   , examples (NumeralValue 1)
              [ "1"
@@ -88,6 +89,10 @@ allExamples = concat
   , examples (NumeralValue 525)
              [ "пятьсот двадцать пять"
              , "525"
+             ]
+  , examples (NumeralValue 1.5)
+             [ "1.5"
+             , "полторы"
              ]
   , examples (NumeralValue 1.1)
              [ "1.1"

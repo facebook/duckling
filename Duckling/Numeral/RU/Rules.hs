@@ -97,6 +97,15 @@ ruleInteger3 = Rule
   , prod = \_ -> integer 2
   }
 
+ruleDecimalOneAndAHalf :: Rule
+ruleDecimalOneAndAHalf = Rule
+  { name = "decimal one and a half"
+   , pattern =
+    [ regex "(полтора|полторы|полутора)"
+    ]
+   , prod = \_ -> double 1.5
+  }
+
 hundredsMap :: HashMap Text Integer
 hundredsMap = HashMap.fromList
   [ ( "сто", 100)
@@ -187,7 +196,7 @@ ruleInteger :: Rule
 ruleInteger = Rule
   { name = "integer 0"
   , pattern =
-    [ regex "(ноль)"
+    [ regex "(ноль|нуля|нисколько)"
     ]
   , prod = \_ -> integer 0
   }
@@ -272,6 +281,7 @@ rules =
   , ruleInteger6
   , ruleInteger7
   , ruleInteger8
+  , ruleDecimalOneAndAHalf
   , ruleIntegerNumeric
   , ruleIntegerWithThousandsSeparator
   , ruleNumeralDotNumeral

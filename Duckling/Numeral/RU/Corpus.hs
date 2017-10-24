@@ -57,6 +57,10 @@ allExamples = concat
              , "тридцать три"
              , "0033"
              ]
+  , examples (NumeralValue 11)
+             [ "11"
+             , "одиннадцать"
+             ]
   , examples (NumeralValue 14)
              [ "14"
              , "четырнадцать"
@@ -72,6 +76,14 @@ allExamples = concat
   , examples (NumeralValue 18)
              [ "18"
              , "восемнадцать"
+             ]
+  , examples (NumeralValue 312)
+             [ "триста двенадцать"
+             , "312"
+             ]
+  , examples (NumeralValue 444)
+             [ "четыреста сорок четыре"
+             , "444"
              ]
   , examples (NumeralValue 525)
              [ "пятьсот двадцать пять"

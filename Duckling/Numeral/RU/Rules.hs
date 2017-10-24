@@ -97,12 +97,21 @@ ruleInteger3 = Rule
   , prod = \_ -> integer 2
   }
 
+ruleDecimalOneAndAHalf :: Rule
+ruleDecimalOneAndAHalf = Rule
+  { name = "decimal one and a half"
+   , pattern =
+    [ regex "(полтора|полторы|полутора)"
+    ]
+   , prod = \_ -> double 1.5
+  }
+
 hundredsMap :: HashMap Text Integer
 hundredsMap = HashMap.fromList
   [ ( "сто", 100)
   , ( "двести", 200)
-  , ( "тристо", 300)
-  , ( "четыресто", 400)
+  , ( "триста", 300)
+  , ( "четыреста", 400)
   , ( "пятьсот", 500)
   , ( "шестьсот", 600)
   , ( "семьсот", 700)
@@ -114,7 +123,7 @@ ruleInteger6 :: Rule
 ruleInteger6 = Rule
   { name = "integer (100..900)"
   , pattern =
-    [ regex "(сто|двести|тристо|четыресто|пятьсот|шестьсот|семьсот|восемьсот|девятьсот)"
+    [ regex "(сто|двести|триста|четыреста|пятьсот|шестьсот|семьсот|восемьсот|девятьсот)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
@@ -187,7 +196,7 @@ ruleInteger :: Rule
 ruleInteger = Rule
   { name = "integer 0"
   , pattern =
-    [ regex "(ноль)"
+    [ regex "(ноль|нуля|нисколько)"
     ]
   , prod = \_ -> integer 0
   }
@@ -202,7 +211,7 @@ threeToNineteenMap = HashMap.fromList
   , ( "восемь", 8)
   , ( "девять", 9)
   , ( "десять", 10)
-  , ( "одинадцать", 11)
+  , ( "одиннадцать", 11)
   , ( "двенадцать", 12)
   , ( "тринадцать", 13)
   , ( "четырнадцать", 14)
@@ -217,7 +226,7 @@ ruleInteger4 :: Rule
 ruleInteger4 = Rule
   { name = "integer (3..19)"
   , pattern =
-    [ regex "(три|четырнадцать|четыре|пятнадцать|пять|шестнадцать|шесть|семнадцать|семь|восемнадцать|восемь|девятнадцать|девять|десять|одинадцать|двенадцать|тринадцать)"
+    [ regex "(три|четырнадцать|четыре|пятнадцать|пять|шестнадцать|шесть|семнадцать|семь|восемнадцать|восемь|девятнадцать|девять|десять|одиннадцать|двенадцать|тринадцать)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
@@ -272,6 +281,7 @@ rules =
   , ruleInteger6
   , ruleInteger7
   , ruleInteger8
+  , ruleDecimalOneAndAHalf
   , ruleIntegerNumeric
   , ruleIntegerWithThousandsSeparator
   , ruleNumeralDotNumeral

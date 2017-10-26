@@ -29,9 +29,18 @@ import qualified Duckling.Ordinal.EN.Rules as Ordinal
 import qualified Duckling.Quantity.EN.Rules as Quantity
 import qualified Duckling.Temperature.EN.Rules as Temperature
 import qualified Duckling.Time.EN.Rules as Time
+import qualified Duckling.Time.EN.AU.Rules as TimeAU
+import qualified Duckling.Time.EN.BZ.Rules as TimeBZ
 import qualified Duckling.Time.EN.CA.Rules as TimeCA
 import qualified Duckling.Time.EN.GB.Rules as TimeGB
+import qualified Duckling.Time.EN.IE.Rules as TimeIE
+import qualified Duckling.Time.EN.IN.Rules as TimeIN
+import qualified Duckling.Time.EN.JM.Rules as TimeJM
+import qualified Duckling.Time.EN.NZ.Rules as TimeNZ
+import qualified Duckling.Time.EN.PH.Rules as TimePH
+import qualified Duckling.Time.EN.TT.Rules as TimeTT
 import qualified Duckling.Time.EN.US.Rules as TimeUS
+import qualified Duckling.Time.EN.ZA.Rules as TimeZA
 import qualified Duckling.TimeGrain.EN.Rules as TimeGrain
 import qualified Duckling.Volume.EN.Rules as Volume
 
@@ -44,9 +53,18 @@ defaultRules dim@(This Time) =
 defaultRules dim = langRules dim
 
 localeRules :: Region -> Some Dimension -> [Rule]
+localeRules AU (This Time) = TimeAU.rules
+localeRules BZ (This Time) = TimeBZ.rules
 localeRules CA (This Time) = TimeCA.rules
 localeRules GB (This Time) = TimeGB.rules
+localeRules IE (This Time) = TimeIE.rules
+localeRules IN (This Time) = TimeIN.rules
+localeRules JM (This Time) = TimeJM.rules
+localeRules NZ (This Time) = TimeNZ.rules
+localeRules PH (This Time) = TimePH.rules
+localeRules TT (This Time) = TimeTT.rules
 localeRules US (This Time) = TimeUS.rules
+localeRules ZA (This Time) = TimeZA.rules
 localeRules _ _            = []
 
 langRules :: Some Dimension -> [Rule]

@@ -439,12 +439,30 @@ library
                      , Duckling.Time.DE.Rules
                      , Duckling.Time.EN.Corpus
                      , Duckling.Time.EN.Rules
+                     , Duckling.Time.EN.AU.Corpus
+                     , Duckling.Time.EN.AU.Rules
+                     , Duckling.Time.EN.BZ.Corpus
+                     , Duckling.Time.EN.BZ.Rules
                      , Duckling.Time.EN.CA.Corpus
                      , Duckling.Time.EN.CA.Rules
                      , Duckling.Time.EN.GB.Corpus
                      , Duckling.Time.EN.GB.Rules
+                     , Duckling.Time.EN.IE.Corpus
+                     , Duckling.Time.EN.IE.Rules
+                     , Duckling.Time.EN.IN.Corpus
+                     , Duckling.Time.EN.IN.Rules
+                     , Duckling.Time.EN.JM.Corpus
+                     , Duckling.Time.EN.JM.Rules
+                     , Duckling.Time.EN.NZ.Corpus
+                     , Duckling.Time.EN.NZ.Rules
+                     , Duckling.Time.EN.PH.Corpus
+                     , Duckling.Time.EN.PH.Rules
+                     , Duckling.Time.EN.TT.Corpus
+                     , Duckling.Time.EN.TT.Rules
                      , Duckling.Time.EN.US.Corpus
                      , Duckling.Time.EN.US.Rules
+                     , Duckling.Time.EN.ZA.Corpus
+                     , Duckling.Time.EN.ZA.Rules
                      , Duckling.Time.ES.Corpus
                      , Duckling.Time.ES.Rules
                      , Duckling.Time.FR.Corpus

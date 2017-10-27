@@ -8,7 +8,9 @@ WORKDIR /duckling
 
 RUN apt-get update
 
-RUN apt-get install libpcre3 libpcre3-dev
+RUN apt-get install -qq -y libpcre3 libpcre3-dev build-essential --fix-missing --no-install-recommends
+
+RUN stack setup
 
 RUN stack build
 

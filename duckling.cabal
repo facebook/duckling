@@ -569,12 +569,12 @@ library
   build-depends:       base                  >= 4.8.2 && < 5.0
                      , array                 >= 0.5.1.1 && < 0.6
                      , attoparsec            >= 0.13.1.0 && < 0.14
-                     , aeson                 >= 0.11.3.0 && < 1.1
+                     , aeson                 >= 0.11.3.0 && < 1.3
                      , bytestring            >= 0.10.6.0 && < 0.11
                      , containers            >= 0.5.6.2 && < 0.6
                      , deepseq               >= 1.4.1.1 && < 1.5
                      , dependent-sum         >= 0.3.2.2 && < 0.5
-                     , extra                 >= 1.4.10 && < 1.6
+                     , extra                 >= 1.4.10 && < 1.7
                      , hashable              >= 1.2.4.0 && < 1.3
                      , regex-base            >= 0.93.2 && < 0.94
                      , regex-pcre            >= 0.94.4 && < 0.95
@@ -803,7 +803,7 @@ executable duckling-regen-exe
                      , Duckling.Ranking.Generate
   build-depends:       duckling
                      , base
-                     , haskell-src-exts      >= 1.18 && < 1.19
+                     , haskell-src-exts      >= 1.18 && < 1.20
                      , text
                      , unordered-containers
   default-language:    Haskell2010

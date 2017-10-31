@@ -16,23 +16,23 @@
 
 module Duckling.Time.Types where
 
+import Control.Applicative ((<|>))
 import Control.Arrow ((***))
 import Control.DeepSeq
 import Control.Monad (join)
-import Control.Applicative ((<|>))
 import Data.Aeson
 import Data.Hashable
-import qualified Data.HashMap.Strict as H
 import Data.Maybe
 import Data.Monoid
 import Data.Text (Text)
+import GHC.Generics
+import Prelude
+import TextShow (showt)
+import qualified Data.HashMap.Strict as H
 import qualified Data.Text as Text
 import qualified Data.Time as Time
 import qualified Data.Time.Calendar.WeekDate as Time
 import qualified Data.Time.LocalTime.TimeZone.Series as Series
-import GHC.Generics
-import TextShow (showt)
-import Prelude
 
 import Duckling.Resolve
 import Duckling.TimeGrain.Types (Grain)
@@ -56,26 +56,26 @@ data Form = DayOfWeek
 data IntervalDirection = Before | After
   deriving (Eq, Generic, Hashable, Ord, Show, NFData)
 
--- Grain needed here for intersect
 data TimeData = TimeData
   { timePred :: Predicate
   , latent :: Bool
-  , timeGrain :: Grain
+  , timeGrain :: Grain -- needed for intersect
   , notImmediate :: Bool
   , form :: Maybe Form
   , direction :: Maybe IntervalDirection
+  , okForThisNext :: Bool -- allows specific this+Time
   }
 
 instance Eq TimeData where
-  (==) (TimeData _ l1 g1 n1 f1 d1) (TimeData _ l2 g2 n2 f2 d2) =
+  (==) (TimeData _ l1 g1 n1 f1 d1 _) (TimeData _ l2 g2 n2 f2 d2 _) =
     l1 == l2 && g1 == g2 && n1 == n2 && f1 == f2 && d1 == d2
 
 instance Hashable TimeData where
-  hashWithSalt s (TimeData _ latent grain imm form dir) = hashWithSalt s
+  hashWithSalt s (TimeData _ latent grain imm form dir _) = hashWithSalt s
     (0::Int, (latent, grain, imm, form, dir))
 
 instance Ord TimeData where
-  compare (TimeData _ l1 g1 n1 f1 d1) (TimeData _ l2 g2 n2 f2 d2) =
+  compare (TimeData _ l1 g1 n1 f1 d1 _) (TimeData _ l2 g2 n2 f2 d2 _) =
     case compare g1 g2 of
       EQ -> case compare f1 f2 of
         EQ -> case compare l1 l2 of
@@ -87,7 +87,7 @@ instance Ord TimeData where
       z -> z
 
 instance Show TimeData where
-  show (TimeData _ latent grain _ form dir) =
+  show (TimeData _ latent grain _ form dir _) =
     "TimeData{" ++
     "latent=" ++ show latent ++
     ", grain=" ++ show grain ++
@@ -135,6 +135,7 @@ timedata' = TimeData
   , notImmediate = False
   , form = Nothing
   , direction = Nothing
+  , okForThisNext = False
   }
 
 data TimeContext = TimeContext

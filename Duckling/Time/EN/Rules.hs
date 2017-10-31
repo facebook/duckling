@@ -150,7 +150,7 @@ ruleThisTime = Rule
   { name = "this <time>"
   , pattern =
     [ regex "this|current|coming"
-    , Predicate isNotLatent
+    , Predicate isOkWithThisNext
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td:_) -> tt $ predNth 0 False td
@@ -162,7 +162,7 @@ ruleNextTime = Rule
   { name = "next <time>"
   , pattern =
     [ regex "next"
-    , Predicate isNotLatent
+    , Predicate isOkWithThisNext
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td:_) -> tt $ predNth 0 True td
@@ -174,7 +174,7 @@ ruleLastTime = Rule
   { name = "last <time>"
   , pattern =
     [ regex "(this past|last|previous)"
-    , Predicate isNotLatent
+    , Predicate isOkWithThisNext
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td:_) -> tt $ predNth (- 1) False td
@@ -844,13 +844,15 @@ ruleWeekend = Rule
   , pattern =
     [ regex "(week(\\s|-)?end|wkend)s?"
     ]
-  , prod = \_ -> tt weekend
+  , prod = \_ -> tt $ mkOkForThisNext weekend
   }
 
 ruleSeasons :: Rule
 ruleSeasons = Rule
   { name = "seasons"
-  , pattern = [regex "(summer|fall|autumn|winter|spring)"]
+  , pattern =
+    [ regex "(summer|fall|autumn|winter|spring)"
+    ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> do
         start <- case Text.toLower match of
@@ -867,9 +869,8 @@ ruleSeasons = Rule
           "winter" -> Just $ monthDay 3 20
           "spring" -> Just $ monthDay 6 21
           _ -> Nothing
-        Token Time <$> interval TTime.Open start end
+        Token Time <$> mkOkForThisNext <$> interval TTime.Open start end
       _ -> Nothing
-
   }
 
 ruleTODPrecision :: Rule
@@ -1180,7 +1181,7 @@ ruleDaysOfWeek = zipWith go daysOfWeek [1..7]
     go (name, regexPattern) i = Rule
       { name = name
       , pattern = [regex regexPattern]
-      , prod = \_ -> tt $ dayOfWeek i
+      , prod = \_ -> tt . mkOkForThisNext $ dayOfWeek i
       }
 
 months :: [(Text, String)]
@@ -1205,7 +1206,7 @@ ruleMonths = zipWith go months [1..12]
     go (name, regexPattern) i = Rule
       { name = name
       , pattern = [regex regexPattern]
-      , prod = \_ -> tt $ month i
+      , prod = \_ -> tt . mkOkForThisNext $ month i
       }
 
 rulePartOfMonth :: Rule
@@ -1247,7 +1248,7 @@ ruleUSHolidays = map go usHolidays
     go (name, regexPattern, m, d) = Rule
       { name = name
       , pattern = [regex regexPattern]
-      , prod = \_ -> tt $ monthDay m d
+      , prod = \_ -> tt . mkOkForThisNext $ monthDay m d
       }
 
 moreUSHolidays :: [(Text, String, Int, Int, Int)]
@@ -1276,7 +1277,7 @@ ruleMoreUSHolidays = map go moreUSHolidays
     go (name, regexPattern, n, dow, m) = Rule
       { name = name
       , pattern = [regex regexPattern]
-      , prod = \_ -> tt $ nthDOWOfMonth n dow m
+      , prod = \_ -> tt . mkOkForThisNext $ nthDOWOfMonth n dow m
       }
 
 -- The day after Thanksgiving (not always the fourth Friday of November)
@@ -1286,32 +1287,39 @@ ruleBlackFriday = Rule
   , pattern =
     [ regex "black frid?day"
     ]
-  , prod = \_ -> tt . cycleNthAfter False TG.Day 1 $ nthDOWOfMonth 4 4 11
+  , prod = \_ ->
+      tt . mkOkForThisNext . cycleNthAfter False TG.Day 1 $ nthDOWOfMonth 4 4 11
   }
 
 -- Last Monday of May
 ruleMemorialDay :: Rule
 ruleMemorialDay = Rule
   { name = "Memorial Day"
-  , pattern = [regex "memorial day"]
-  , prod = \_ -> tt $ predLastOf (dayOfWeek 1) (month 5)
+  , pattern =
+    [ regex "memorial day"
+    ]
+  , prod = \_ -> tt . mkOkForThisNext $ predLastOf (dayOfWeek 1) (month 5)
   }
 
 -- Long weekend before the last Monday of May
 ruleMemorialDayWeekend :: Rule
 ruleMemorialDayWeekend = Rule
   { name = "Memorial Day Weekend"
-  , pattern = [regex "memorial day week(\\s|-)?ends?"]
+  , pattern =
+    [ regex "memorial day week(\\s|-)?ends?"
+    ]
   , prod = \_ ->
-      tt . longWEBefore $ predLastOf (dayOfWeek 1) (month 5)
+      tt . mkOkForThisNext . longWEBefore $ predLastOf (dayOfWeek 1) (month 5)
   }
 
 -- Long weekend before the first Monday of September
 ruleLaborDayWeekend :: Rule
 ruleLaborDayWeekend = Rule
   { name = "Labor Day weekend"
-  , pattern = [regex "labor day week(\\s|-)?ends?"]
-  , prod = \_ -> tt . longWEBefore $ nthDOWOfMonth 1 1 9
+  , pattern =
+    [ regex "labor day week(\\s|-)?ends?"
+    ]
+  , prod = \_ -> tt . mkOkForThisNext . longWEBefore $ nthDOWOfMonth 1 1 9
   }
 
 ruleCycleThisLastNext :: Rule
@@ -1617,8 +1625,8 @@ rules =
   , ruleAbsorbInMonth
   , ruleAbsorbCommaTOD
   , ruleNextDOW
-  , ruleThisTime
   , ruleNextTime
+  , ruleThisTime
   , ruleLastTime
   , ruleTimeBeforeLastAfterNext
   , ruleLastDOWOfTime

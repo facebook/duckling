@@ -19,16 +19,16 @@ module Duckling.Types where
 
 import Control.DeepSeq
 import Data.Aeson
-import qualified Data.ByteString.Lazy as LB
 import Data.GADT.Compare
 import Data.Hashable
 import Data.Maybe
 import Data.String
 import Data.Text (Text)
-import qualified Data.Text.Encoding as Text
 import Data.Typeable ((:~:)(Refl), Typeable)
 import GHC.Generics
 import Prelude
+import qualified Data.ByteString.Lazy as LB
+import qualified Data.Text.Encoding as Text
 import qualified Text.Regex.Base as R
 import qualified Text.Regex.PCRE as PCRE
 

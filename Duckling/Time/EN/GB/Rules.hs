@@ -53,13 +53,14 @@ ruleDDMMYYYY = Rule
       _ -> Nothing
   }
 
+-- Fourth Thursday of November
 ruleThanksgiving :: Rule
 ruleThanksgiving = Rule
   { name = "Thanksgiving Day"
   , pattern =
     [ regex "thanks?giving( day)?"
     ]
-  , prod = \_ -> tt $ nthDOWOfMonth 4 4 11 -- Fourth Thursday of November
+  , prod = \_ -> tt . mkOkForThisNext $ nthDOWOfMonth 4 4 11
   }
 
 rules :: [Rule]

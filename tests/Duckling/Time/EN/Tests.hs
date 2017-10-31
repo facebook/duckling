@@ -29,6 +29,7 @@ import Duckling.Testing.Types hiding (examples)
 import Duckling.Time.Corpus
 import Duckling.Time.EN.Corpus
 import Duckling.TimeGrain.Types (Grain(..))
+import Duckling.Types (Range(..))
 import qualified Duckling.Time.EN.AU.Corpus as AU
 import qualified Duckling.Time.EN.BZ.Corpus as BZ
 import qualified Duckling.Time.EN.CA.Corpus as CA
@@ -49,6 +50,7 @@ tests = testGroup "EN Tests"
   , exactSecondTests
   , valuesTest
   , intersectTests
+  , rangeTests
   , localeTests
   ]
 
@@ -156,5 +158,15 @@ intersectTests = testCase "Intersect Test" $
     xs = [ ("tomorrow July", 2)
          , ("Mar tonight", 2)
          , ("Feb tomorrow", 1) -- we are in February
-         , ("at 615.", 1) -- make sure ruleHHMMLatent allows this
+         ]
+
+rangeTests :: TestTree
+rangeTests = testCase "Range Test" $
+  mapM_ (analyzedRangeTest testContext . withTargets [This Time]) xs
+  where
+    xs = [ ("at 615.", Range 0 6) -- make sure ruleHHMMLatent allows this
+         , ("last in 2'", Range 5 10) -- ruleLastTime too eager
+         , ("this in 2'", Range 5 10) -- ruleThisTime too eager
+         , ("next in 2'", Range 5 10) -- ruleNextTime too eager
+         , ("this this week", Range 5 14) -- ruleThisTime too eager
          ]

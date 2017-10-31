@@ -40,4 +40,25 @@ allExamples = concat
              [ "10/10"
              , "10/10/2013"
              ]
+  , examples (datetime (2013, 11, 28, 0, 0, 0) Day)
+             [ "thanksgiving day"
+             , "thanksgiving"
+             , "thanksgiving 2013"
+             , "this thanksgiving"
+             , "next thanksgiving day"
+             ]
+  , examples (datetime (2014, 11, 27, 0, 0, 0) Day)
+             [ "thanksgiving of next year"
+             , "thanksgiving 2014"
+             ]
+  , examples (datetime (2012, 11, 22, 0, 0, 0) Day)
+             [ "last thanksgiving"
+             , "thanksgiving day 2012"
+             ]
+  , examples (datetime (2016, 11, 24, 0, 0, 0) Day)
+             [ "thanksgiving 2016"
+             ]
+  , examples (datetime (2017, 11, 23, 0, 0, 0) Day)
+             [ "thanksgiving 2017"
+             ]
   ]

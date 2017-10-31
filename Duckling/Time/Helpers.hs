@@ -15,11 +15,11 @@ module Duckling.Time.Helpers
     hasNoDirection, isADayOfWeek, isAMonth, isAnHourOfDay, isAPartOfDay
   , isATimeOfDay, isDOMInteger, isDOMOrdinal, isDOMValue, isGrain
   , isGrainFinerThan, isGrainOfTime, isIntegerBetween, isNotLatent
-  , isOrdinalBetween, isMidnightOrNoon, isNumeralSafeToUse
+  , isOkWithThisNext, isOrdinalBetween, isMidnightOrNoon, isNumeralSafeToUse
     -- Production
   , cycleLastOf, cycleN, cycleNth, cycleNthAfter, dayOfMonth, dayOfWeek
-  , durationAfter, durationAgo, durationBefore, form, hour, hourMinute
-  , hourMinuteSecond, inDuration, intersect, intersectDOM, interval
+  , durationAfter, durationAgo, durationBefore, mkOkForThisNext, form, hour
+  , hourMinute, hourMinuteSecond, inDuration, intersect, intersectDOM, interval
   , inTimezone, longWEBefore, minute, minutesAfter, minutesBefore, mkLatent
   , month, monthDay, notLatent, now, nthDOWOfMonth, partOfDay, predLastOf
   , predNth, predNthAfter, second, timeOfDayAMPM, weekend, withDirection, year
@@ -274,6 +274,10 @@ isNotLatent :: Predicate
 isNotLatent (Token Time td) = not $ TTime.latent td
 isNotLatent _ = False
 
+isOkWithThisNext :: Predicate
+isOkWithThisNext (Token Time TimeData {TTime.okForThisNext = True}) = True
+isOkWithThisNext _ = False
+
 hasNoDirection :: Predicate
 hasNoDirection (Token Time td) = isNothing $ TTime.direction td
 hasNoDirection _ = False
@@ -313,7 +317,7 @@ intersect td1 td2 =
     res -> Just res
 
 intersect' :: (TimeData, TimeData) -> TimeData
-intersect' (TimeData pred1 _ g1 _ _ d1, TimeData pred2 _ g2 _ _ d2)
+intersect' (TimeData pred1 _ g1 _ _ d1 _, TimeData pred2 _ g2 _ _ d2 _)
   | g1 < g2 = TTime.timedata'
     { TTime.timePred = timeCompose pred1 pred2
     , TTime.timeGrain = g1
@@ -424,7 +428,7 @@ predNthAfter n TimeData {TTime.timePred = p, TTime.timeGrain = g} base =
     }
 
 interval' :: TTime.TimeIntervalType -> (TimeData, TimeData) -> TimeData
-interval' intervalType (TimeData p1 _ g1 _ _ _, TimeData p2 _ g2 _ _ _) =
+interval' intervalType (TimeData p1 _ g1 _ _ _ _, TimeData p2 _ g2 _ _ _ _) =
   TTime.timedata'
     { TTime.timePred = mkTimeIntervalsPredicate intervalType' p1 p2
     , TTime.timeGrain = min g1 g2
@@ -440,6 +444,9 @@ interval intervalType td1 td2 =
     TTime.TimeData { TTime.timePred = pred }
       | TTime.isEmptyPredicate pred -> Nothing
     res -> Just res
+
+mkOkForThisNext :: TimeData -> TimeData
+mkOkForThisNext td = td {TTime.okForThisNext = True}
 
 durationAgo :: DurationData -> TimeData
 durationAgo dd = inDuration $ timeNegPeriod dd

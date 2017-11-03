@@ -22,11 +22,13 @@ import Duckling.Numeral.EN.Corpus
 import Duckling.Numeral.Types
 import Duckling.Testing.Asserts
 import Duckling.Testing.Types
+import Duckling.Types (Range(..))
 
 tests :: TestTree
 tests = testGroup "EN Tests"
   [ makeCorpusTest [This Numeral] corpus
   , surroundTests
+  , rangeTests
   ]
 
 surroundTests :: TestTree
@@ -45,3 +47,12 @@ surroundTests = testCase "Surround Tests" $
                  [ "10.99$"
                  ]
       ]
+
+rangeTests :: TestTree
+rangeTests = testCase "Range Test" $
+  mapM_ (analyzedRangeTest testContext . withTargets [This Numeral]) xs
+  where
+    xs = [ ("negative negative 5", Range 9 19) -- prevent double negatives
+         , ("negative-5", Range 8 10) -- prevent double negatives
+         , ("- -5", Range 2 4) -- prevent clash with engine tokenizer
+         ]

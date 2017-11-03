@@ -36,6 +36,7 @@ data Lang
   | CS
   | DA
   | DE
+  | EL
   | EN
   | ES
   | ET

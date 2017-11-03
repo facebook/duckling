@@ -17,6 +17,7 @@ import qualified Duckling.Numeral.BG.Tests as BG
 import qualified Duckling.Numeral.CS.Tests as CS
 import qualified Duckling.Numeral.DA.Tests as DA
 import qualified Duckling.Numeral.DE.Tests as DE
+import qualified Duckling.Numeral.EL.Tests as EL
 import qualified Duckling.Numeral.EN.Tests as EN
 import qualified Duckling.Numeral.ES.Tests as ES
 import qualified Duckling.Numeral.ET.Tests as ET
@@ -50,6 +51,7 @@ tests = testGroup "Numeral Tests"
   , CS.tests
   , DA.tests
   , DE.tests
+  , EL.tests
   , EN.tests
   , ES.tests
   , ET.tests

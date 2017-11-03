@@ -163,6 +163,7 @@ getCorpusForLang BG = (testContext, [])
 getCorpusForLang CS = (testContext, [])
 getCorpusForLang DA = DATime.corpus
 getCorpusForLang DE = DETime.corpus
+getCorpusForLang EL = (testContext, [])
 getCorpusForLang EN = ENTime.corpus
 getCorpusForLang ES = ESTime.corpus
 getCorpusForLang ET = (testContext, [])

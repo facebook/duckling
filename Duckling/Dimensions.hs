@@ -25,6 +25,7 @@ import qualified Duckling.Dimensions.BG as BGDimensions
 import qualified Duckling.Dimensions.CS as CSDimensions
 import qualified Duckling.Dimensions.DA as DADimensions
 import qualified Duckling.Dimensions.DE as DEDimensions
+import qualified Duckling.Dimensions.EL as ELDimensions
 import qualified Duckling.Dimensions.EN as ENDimensions
 import qualified Duckling.Dimensions.ES as ESDimensions
 import qualified Duckling.Dimensions.ET as ETDimensions
@@ -85,6 +86,7 @@ langDimensions BG = BGDimensions.allDimensions
 langDimensions CS = CSDimensions.allDimensions
 langDimensions DA = DADimensions.allDimensions
 langDimensions DE = DEDimensions.allDimensions
+langDimensions EL = ELDimensions.allDimensions
 langDimensions EN = ENDimensions.allDimensions
 langDimensions ES = ESDimensions.allDimensions
 langDimensions ET = ETDimensions.allDimensions

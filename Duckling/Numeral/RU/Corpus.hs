@@ -93,6 +93,11 @@ allExamples = concat
   , examples (NumeralValue 1.5)
              [ "1.5"
              , "полторы"
+             , "один с половиной"
+             ]
+  , examples (NumeralValue 3.5)
+             [ "3.5"
+             , "три с половиной"
              ]
   , examples (NumeralValue 1.1)
              [ "1.1"

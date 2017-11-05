@@ -206,6 +206,8 @@ library
                      , Duckling.Distance.NL.Rules
                      , Duckling.Distance.RO.Corpus
                      , Duckling.Distance.RO.Rules
+                     , Duckling.Distance.RU.Corpus
+                     , Duckling.Distance.RU.Rules
                      , Duckling.Distance.TR.Corpus
                      , Duckling.Distance.TR.Rules
                      , Duckling.Distance.Helpers
@@ -640,6 +642,7 @@ test-suite duckling-test
                      , Duckling.Distance.NL.Tests
                      , Duckling.Distance.PT.Tests
                      , Duckling.Distance.RO.Tests
+                     , Duckling.Distance.RU.Tests
                      , Duckling.Distance.TR.Tests
                      , Duckling.Distance.Tests
 

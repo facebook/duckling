@@ -568,6 +568,8 @@ library
                      , Duckling.Volume.NL.Rules
                      , Duckling.Volume.RO.Corpus
                      , Duckling.Volume.RO.Rules
+                     , Duckling.Volume.RU.Corpus
+                     , Duckling.Volume.RU.Rules
                      , Duckling.Volume.TR.Corpus
                      , Duckling.Volume.TR.Rules
                      , Duckling.Volume.Helpers
@@ -797,6 +799,7 @@ test-suite duckling-test
                      , Duckling.Volume.PT.Tests
                      , Duckling.Volume.NL.Tests
                      , Duckling.Volume.RO.Tests
+                     , Duckling.Volume.RU.Tests
                      , Duckling.Volume.TR.Tests
                      , Duckling.Volume.Tests
 

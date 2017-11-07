@@ -18,7 +18,9 @@ module Duckling.Rules.EL
 import Duckling.Dimensions.Types
 import Duckling.Locale
 import Duckling.Types
+import qualified Duckling.Duration.EL.Rules as Duration
 import qualified Duckling.Numeral.EL.Rules as Numeral
+import qualified Duckling.TimeGrain.EL.Rules as TimeGrain
 
 defaultRules :: Some Dimension -> [Rule]
 defaultRules = langRules
@@ -29,7 +31,7 @@ localeRules _ _ = []
 langRules :: Some Dimension -> [Rule]
 langRules (This AmountOfMoney) = []
 langRules (This Distance) = []
-langRules (This Duration) = []
+langRules (This Duration) = Duration.rules
 langRules (This Email) = []
 langRules (This Numeral) = Numeral.rules
 langRules (This Ordinal) = []
@@ -38,6 +40,6 @@ langRules (This Quantity) = []
 langRules (This RegexMatch) = []
 langRules (This Temperature) = []
 langRules (This Time) = []
-langRules (This TimeGrain) = []
+langRules (This TimeGrain) = TimeGrain.rules
 langRules (This Url) = []
 langRules (This Volume) = []

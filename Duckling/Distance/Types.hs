@@ -32,6 +32,7 @@ data Unit
   | Inch
   | M -- ambiguous between Mile and Metre
   | Metre
+  | Millimetre
   | Mile
   | Yard
   deriving (Eq, Generic, Hashable, Ord, Show, NFData)

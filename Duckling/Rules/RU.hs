@@ -18,8 +18,10 @@ module Duckling.Rules.RU
 import Duckling.Dimensions.Types
 import Duckling.Locale
 import Duckling.Types
+import qualified Duckling.Distance.RU.Rules as Distance
 import qualified Duckling.Numeral.RU.Rules as Numeral
 import qualified Duckling.Ordinal.RU.Rules as Ordinal
+import qualified Duckling.Volume.RU.Rules as Volume
 
 defaultRules :: Some Dimension -> [Rule]
 defaultRules = langRules
@@ -29,7 +31,7 @@ localeRules _ _ = []
 
 langRules :: Some Dimension -> [Rule]
 langRules (This AmountOfMoney) = []
-langRules (This Distance) = []
+langRules (This Distance) = Distance.rules
 langRules (This Duration) = []
 langRules (This Email) = []
 langRules (This Numeral) = Numeral.rules
@@ -41,4 +43,4 @@ langRules (This Temperature) = []
 langRules (This Time) = []
 langRules (This TimeGrain) = []
 langRules (This Url) = []
-langRules (This Volume) = []
+langRules (This Volume) = Volume.rules

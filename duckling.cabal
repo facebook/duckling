@@ -206,6 +206,8 @@ library
                      , Duckling.Distance.NL.Rules
                      , Duckling.Distance.RO.Corpus
                      , Duckling.Distance.RO.Rules
+                     , Duckling.Distance.RU.Corpus
+                     , Duckling.Distance.RU.Rules
                      , Duckling.Distance.TR.Corpus
                      , Duckling.Distance.TR.Rules
                      , Duckling.Distance.Helpers
@@ -569,6 +571,8 @@ library
                      , Duckling.Volume.NL.Rules
                      , Duckling.Volume.RO.Corpus
                      , Duckling.Volume.RO.Rules
+                     , Duckling.Volume.RU.Corpus
+                     , Duckling.Volume.RU.Rules
                      , Duckling.Volume.TR.Corpus
                      , Duckling.Volume.TR.Rules
                      , Duckling.Volume.Helpers
@@ -643,6 +647,7 @@ test-suite duckling-test
                      , Duckling.Distance.NL.Tests
                      , Duckling.Distance.PT.Tests
                      , Duckling.Distance.RO.Tests
+                     , Duckling.Distance.RU.Tests
                      , Duckling.Distance.TR.Tests
                      , Duckling.Distance.Tests
 
@@ -798,6 +803,7 @@ test-suite duckling-test
                      , Duckling.Volume.PT.Tests
                      , Duckling.Volume.NL.Tests
                      , Duckling.Volume.RO.Tests
+                     , Duckling.Volume.RU.Tests
                      , Duckling.Volume.TR.Tests
                      , Duckling.Volume.Tests
 

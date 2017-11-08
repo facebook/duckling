@@ -20,6 +20,7 @@ import Duckling.Locale
 import Duckling.Types
 import qualified Duckling.Duration.EL.Rules as Duration
 import qualified Duckling.Numeral.EL.Rules as Numeral
+import qualified Duckling.Ordinal.EL.Rules as Ordinal
 import qualified Duckling.TimeGrain.EL.Rules as TimeGrain
 
 defaultRules :: Some Dimension -> [Rule]
@@ -34,7 +35,7 @@ langRules (This Distance) = []
 langRules (This Duration) = Duration.rules
 langRules (This Email) = []
 langRules (This Numeral) = Numeral.rules
-langRules (This Ordinal) = []
+langRules (This Ordinal) = Ordinal.rules
 langRules (This PhoneNumber) = []
 langRules (This Quantity) = []
 langRules (This RegexMatch) = []

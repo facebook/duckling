@@ -6,8 +6,11 @@
 -- of patent rights can be found in the PATENTS file in the same directory.
 
 
+{-# LANGUAGE GADTs #-}
+
 module Duckling.Ordinal.Helpers
   ( ordinal
+  , oneOf
   ) where
 
 import Prelude
@@ -25,3 +28,9 @@ import Duckling.Types
 
 ordinal :: Int -> Token
 ordinal x = Token Ordinal OrdinalData {TOrdinal.value = x}
+
+oneOf :: [Int] -> PatternItem
+oneOf vs = Predicate $ \x ->
+  case x of
+    (Token Ordinal OrdinalData {TOrdinal.value = v}) -> elem v vs
+    _ -> False

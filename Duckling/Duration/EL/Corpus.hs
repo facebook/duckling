@@ -22,11 +22,14 @@ import Duckling.Resolve
 import Duckling.Testing.Types
 import Duckling.TimeGrain.Types (Grain(..))
 
+context :: Context
+context = testContext {locale = makeLocale EL Nothing}
+
 corpus :: Corpus
-corpus = (testContext {locale = makeLocale EL Nothing}, allExamples)
+corpus = (context, allExamples)
 
 negativeCorpus :: NegativeCorpus
-negativeCorpus = (testContext, examples)
+negativeCorpus = (context, examples)
   where
     examples =
       [ "για μήνες"

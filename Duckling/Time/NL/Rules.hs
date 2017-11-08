@@ -31,8 +31,8 @@ import qualified Duckling.Ordinal.Types as TOrdinal
 import qualified Duckling.Time.Types as TTime
 import qualified Duckling.TimeGrain.Types as TG
 
-instants :: [(Text, TG.Grain, Int, String)]
-instants =
+ruleInstants :: [Rule]
+ruleInstants = mkRuleInstants
  [ ( "now"             , TG.Second,  0, "meteen|nu|direct|zojuist" )
  , ( "today"           , TG.Day   ,  0, "vandaag|op deze dag" )
  , ( "tomorrow"        , TG.Day   ,  1, "morgen" )
@@ -43,17 +43,8 @@ instants =
  , ( "EOY|End of year" , TG.Year  ,  1, "(het )? einde? van het jaar" )
  ]
 
-ruleInstants :: [Rule]
-ruleInstants = map go instants
-  where
-    go (name, grain, n, regexPattern) = Rule
-      { name = name
-      , pattern = [regex regexPattern]
-      , prod = \_ -> tt $ cycleNth grain n
-      }
-
-daysOfWeek :: [(Text, String)]
-daysOfWeek =
+ruleDaysOfWeek :: [Rule]
+ruleDaysOfWeek = mkRuleDaysOfWeek
   [ ( "monday"    , "maandags?|ma\\.?"          )
   , ( "tuesday"   , "dinsdags?|di?\\.?"         )
   , ( "wednesday" , "woensdags?|woe?\\.?"       )
@@ -63,17 +54,8 @@ daysOfWeek =
   , ( "sunday"    , "zondags?|zon?\\.?"         )
   ]
 
-ruleDaysOfWeek :: [Rule]
-ruleDaysOfWeek = zipWith go daysOfWeek [1..7]
-  where
-    go (name, regexPattern) i = Rule
-      { name = name
-      , pattern = [regex regexPattern]
-      , prod = \_ -> tt $ dayOfWeek i
-      }
-
-months :: [(Text, String)]
-months =
+ruleMonths :: [Rule]
+ruleMonths = mkRuleMonths
   [ ( "January"   , "januari|jan\\.?"           )
   , ( "February"  , "februari|feb\\.?"          )
   , ( "March"     , "maart|mar\\.?"             )
@@ -88,34 +70,16 @@ months =
   , ( "December" , "december|dec\\.?"           )
   ]
 
-ruleMonths :: [Rule]
-ruleMonths = zipWith go months [1..12]
-  where
-    go (name, regexPattern) i = Rule
-      { name = name
-      , pattern = [regex regexPattern]
-      , prod = \_ -> tt $ month i
-      }
-
-seasons :: [(Text, String, TimeData, TimeData)]
-seasons =
+ruleSeasons :: [Rule]
+ruleSeasons = mkRuleSeasons
   [ ( "summer" , "zomer"          , monthDay  6 21, monthDay  9 23 )
   , ( "fall"   , "herfst|najaar"  , monthDay  9 23, monthDay 12 21 )
   , ( "winter" , "winter"         , monthDay 12 21, monthDay  3 20 )
   , ( "spring" , "lente|voorjaar" , monthDay  3 20, monthDay  6 21 )
   ]
 
-ruleSeasons :: [Rule]
-ruleSeasons = map go seasons
-  where
-    go (name, regexPattern, start, end) = Rule
-      { name = name
-      , pattern = [regex regexPattern]
-      , prod = \_ -> Token Time <$> interval TTime.Open start end
-      }
-
-holidays :: [(Text, TimeData, String)]
-holidays =
+ruleHolidays :: [Rule]
+ruleHolidays = mkRuleHolidays
   [ ( "new year's day"                    , monthDay  1  1,
         "nieuwjaars?(dag)?" )
   , ( "valentine's day"                   , monthDay  2 14,
@@ -141,15 +105,6 @@ holidays =
   , ( "Father's Day"                      , nthDOWOfMonth 3 7 6,
         "vaderdag" )
   ]
-
-ruleHolidays :: [Rule]
-ruleHolidays = map go holidays
-  where
-    go (name, date, regexPattern) = Rule
-      { name = name
-      , pattern = [regex regexPattern]
-      , prod = \_ -> tt date
-      }
 
 ruleRelativeMinutesToOrAfterIntegerPartOfDay :: Rule
 ruleRelativeMinutesToOrAfterIntegerPartOfDay = Rule

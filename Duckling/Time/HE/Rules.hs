@@ -1326,8 +1326,8 @@ ruleHhmmss = Rule
       _ -> Nothing
   }
 
-months :: [(Text, String)]
-months =
+ruleMonths :: [Rule]
+ruleMonths = mkRuleMonths
   [ ( "ינואר", "ינואר" )
   , ( "פברואר", "פברואר" )
   , ( "מרץ", "מרץ" )
@@ -1341,15 +1341,6 @@ months =
   , ( "נובמבר", "נובמבר" )
   , ( "דצמבר", "דצמבר" )
   ]
-
-ruleMonths :: [Rule]
-ruleMonths = zipWith go months [1..12]
-  where
-    go (name, regexPattern) i = Rule
-      { name = name
-      , pattern = [regex regexPattern]
-      , prod = \_ -> tt $ month i
-      }
 
 rules :: [Rule]
 rules =

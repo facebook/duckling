@@ -1210,8 +1210,8 @@ ruleHhmmss = Rule
       _ -> Nothing
   }
 
-daysOfWeek :: [(Text, String)]
-daysOfWeek =
+ruleDaysOfWeek :: [Rule]
+ruleDaysOfWeek = mkRuleDaysOfWeek
   [ ( "luni"  , "lu(n(ea|i)?)?"                        )
   , ( "marti"  , "ma(r((t|ț)(ea|i))?)?"                )
   , ( "miercuri"  , "mi(e(rcur(ea|i))?)?"              )
@@ -1221,17 +1221,8 @@ daysOfWeek =
   , ( "duminica"  , "du(m(inic(a|ă))?)?"               )
   ]
 
-ruleDaysOfWeek :: [Rule]
-ruleDaysOfWeek = zipWith go daysOfWeek [1..7]
-  where
-    go (name, regexPattern) i = Rule
-      { name = name
-      , pattern = [regex regexPattern]
-      , prod = \_ -> tt $ dayOfWeek i
-      }
-
-months :: [(Text, String)]
-months =
+ruleMonths :: [Rule]
+ruleMonths = mkRuleMonths
   [ ( "ianuarie"  , "ian(uarie)?"     )
   , ( "februarie"  , "feb(ruarie)?"   )
   , ( "martie"  , "martie|mar"        )
@@ -1245,15 +1236,6 @@ months =
   , ( "noiembrie"  , "noi(embrie)?"   )
   , ( "decembrie"  , "dec(embrie)?"   )
   ]
-
-ruleMonths :: [Rule]
-ruleMonths = zipWith go months [1..12]
-  where
-    go (name, regexPattern) i = Rule
-      { name = name
-      , pattern = [regex regexPattern]
-      , prod = \_ -> tt $ month i
-      }
 
 rules :: [Rule]
 rules =

@@ -41,8 +41,8 @@ ruleOrdinalCycleTime = Rule
       _ -> Nothing
   }
 
-daysOfWeek :: [(Text.Text, String)]
-daysOfWeek =
+ruleDaysOfWeek :: [Rule]
+ruleDaysOfWeek = mkRuleDaysOfWeek
   [ ( "Monday" , "poniedzia(l|ł)(ek|ku|kowi|kiem|kowy)|pon\\.?" )
   , ( "Tuesday" , "wtorek|wtorku|wtorkowi|wtorkiem|wtr?\\.?" )
   , ( "Wednesday" , "(Ś|ś|s)rod(a|ą|y|e|ę|zie|owy|o)|(s|ś|Ś)ro?\\.?" )
@@ -52,17 +52,8 @@ daysOfWeek =
   , ( "Sunday" , "niedziel(a|i|ę|e|ą|o)|n(ie)?dz?\\.?" )
   ]
 
-ruleDaysOfWeek :: [Rule]
-ruleDaysOfWeek = zipWith go daysOfWeek [1..7]
-  where
-    go (name, regexPattern) i = Rule
-      { name = name
-      , pattern = [regex regexPattern]
-      , prod = \_ -> tt $ dayOfWeek i
-      }
-
-months :: [(Text.Text, String)]
-months =
+ruleMonths :: [Rule]
+ruleMonths = mkRuleMonths
   [ ( "January" , "styczeń|styczen|stycznia|styczniowi|styczniem|styczniu|sty(cz)?\\.?" )
   , ( "February" , "luty|lutego|lutemu|lut?\\.?" )
   , ( "March" , "marzec|marca|marcowi|marcem|marcu|marz?\\.?" )
@@ -76,15 +67,6 @@ months =
   , ( "November" , "listopad|listopada|listopadowi|listopadem|listopadzie|lis\\.?|list\\.?" )
   , ( "December" , "grudzień|grudzien|grudnia|grudniowi|grudniem|grudniu|gru\\.?|grud\\.?" )
   ]
-
-ruleMonths :: [Rule]
-ruleMonths = zipWith go months [1..12]
-  where
-    go (name, regexPattern) i = Rule
-      { name = name
-      , pattern = [regex regexPattern]
-      , prod = \_ -> tt $ month i
-      }
 
 ruleRelativeMinutesTotillbeforeIntegerHourofday :: Rule
 ruleRelativeMinutesTotillbeforeIntegerHourofday = Rule

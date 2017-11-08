@@ -105,24 +105,15 @@ ruleAbsorbCommaTOD = Rule
       _ -> Nothing
   }
 
-instants :: [(Text, String, TG.Grain, Int)]
-instants =
-  [ ("right now", "((just|right)\\s*)now|immediately", TG.Second, 0)
-  , ("today", "todays?|(at this time)", TG.Day, 0)
-  , ("tomorrow", "(tmrw?|tomm?or?rows?)", TG.Day, 1)
-  , ("yesterday", "yesterdays?", TG.Day, - 1)
-  , ("end of month", "(the )?(EOM|end of (the )?month)", TG.Month, 1)
-  , ("end of year", "(the )?(EOY|end of (the )?year)", TG.Year, 1)
-  ]
-
 ruleInstants :: [Rule]
-ruleInstants = map go instants
-  where
-    go (name, regexPattern, grain, n) = Rule
-      { name = name
-      , pattern = [regex regexPattern]
-      , prod = \_ -> tt $ cycleNth grain n
-      }
+ruleInstants = mkRuleInstants
+  [ ("right now"    , TG.Second, 0  , "((just|right)\\s*)now|immediately")
+  , ("today"        , TG.Day   , 0  , "todays?|(at this time)"           )
+  , ("tomorrow"     , TG.Day   , 1  , "(tmrw?|tomm?or?rows?)"            )
+  , ("yesterday"    , TG.Day   , - 1, "yesterdays?"                      )
+  , ("end of month" , TG.Month , 1  , "(the )?(EOM|end of (the )?month)" )
+  , ("end of year"  , TG.Year  , 1  , "(the )?(EOY|end of (the )?year)"  )
+  ]
 
 ruleNow :: Rule
 ruleNow = Rule

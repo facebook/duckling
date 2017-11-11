@@ -540,6 +540,7 @@ library
                      , Duckling.TimeGrain.PL.Rules
                      , Duckling.TimeGrain.PT.Rules
                      , Duckling.TimeGrain.RO.Rules
+                     , Duckling.TimeGrain.RU.Rules
                      , Duckling.TimeGrain.SV.Rules
                      , Duckling.TimeGrain.TR.Rules
                      , Duckling.TimeGrain.VI.Rules

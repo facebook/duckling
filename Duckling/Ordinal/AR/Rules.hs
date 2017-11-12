@@ -30,6 +30,8 @@ ordinalsMap :: HashMap Text Int
 ordinalsMap = HashMap.fromList
   [ ( "اول", 1 )
   , ( "أول", 1 )
+  , ( "حاد", 1 )
+  , ( "حادي", 1 )
   , ( "واحد", 1 )
   , ( "ثان", 2 )
   , ( "ثاني", 2 )
@@ -59,7 +61,7 @@ cardinalsMap = HashMap.fromList
 ruleCompositeOrdinals :: Rule
 ruleCompositeOrdinals = Rule
   { name = "ordinals (composite, e.g., eighty-seven)"
-  , pattern = [regex "ال(واحد|ثاني?|ثالث|رابع|خامس|ثامن|تاسع|عاشر) و ?ال(عشر|ثلاث|اربع|خمس|ست|سبع|ثمان|تسع)(ون|ين)"]
+  , pattern = [regex "ال(واحد|حادي?|ثاني?|ثالث|رابع|خامس|سادس|سابع|ثامن|تاسع|عاشر) و ?ال(عشر|ثلاث|اربع|خمس|ست|سبع|ثمان|تسع)(ون|ين)"]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (tens:units:_)):_) -> do
         tt <- HashMap.lookup (Text.toLower tens) ordinalsMap
@@ -71,7 +73,7 @@ ruleCompositeOrdinals = Rule
 ruleOrdinals1To10 :: Rule
 ruleOrdinals1To10 = Rule
   { name = "ordinals (first..tenth)"
-  , pattern = [regex "ال([أا]ول|ثاني?|ثالث|رابع|خامس|ثامن|تاسع|عاشر)[ةهى]?"]
+  , pattern = [regex "(?:ال)?([أا]ول|ثاني?|ثالث|رابع|خامس|سادس|سابع|ثامن|تاسع|عاشر)[ةهى]?"]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
         ordinal <$> HashMap.lookup (Text.toLower match) ordinalsMap
@@ -95,7 +97,7 @@ ruleOrdinals12 = Rule
 ruleOrdinals13To19 :: Rule
 ruleOrdinals13To19 = Rule
   { name = "ordinals (thirtieth..nineteenth)"
-  , pattern = [regex "ال(ثالث|رابع|خامس|ثامن|تاسع) ?عشرة?"]
+  , pattern = [regex "ال(ثالث|رابع|خامس|سادس|سابع|ثامن|تاسع)[ةهى]? ?عشرة?"]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> do
         uu <- HashMap.lookup (Text.toLower match) ordinalsMap

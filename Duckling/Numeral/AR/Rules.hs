@@ -242,7 +242,7 @@ ruleInteger14 :: Rule
 ruleInteger14 = Rule
   { name = "integer 10"
   , pattern =
-    [ regex "(عشرة|عشر)"
+    [ regex "عشرة?"
     ]
   , prod = \_ -> integer 10
   }
@@ -269,7 +269,7 @@ ruleInteger4 :: Rule
 ruleInteger4 = Rule
   { name = "integer 3"
   , pattern =
-    [ regex "(ثلاث|ثلاثة)"
+    [ regex "(ثلاث[ةه]?)"
     ]
   , prod = \_ -> integer 3
   }

@@ -74,8 +74,8 @@ classifiers
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("thursday",
         Classifier{okData =
-                     ClassData{prior = 0.0, unseen = -2.4849066497880004,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 10},
+                     ClassData{prior = 0.0, unseen = -2.3978952727983707,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 9},
                    koData =
                      ClassData{prior = -infinity, unseen = -0.6931471805599453,
                                likelihoods = HashMap.fromList [], n = 0}}),
@@ -299,8 +299,8 @@ classifiers
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("wednesday",
         Classifier{okData =
-                     ClassData{prior = 0.0, unseen = -2.1972245773362196,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 7},
+                     ClassData{prior = 0.0, unseen = -2.3025850929940455,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 8},
                    koData =
                      ClassData{prior = -infinity, unseen = -0.6931471805599453,
                                likelihoods = HashMap.fromList [], n = 0}}),
@@ -373,8 +373,8 @@ classifiers
                                n = 1}}),
        ("saturday",
         Classifier{okData =
-                     ClassData{prior = 0.0, unseen = -1.791759469228055,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 4},
+                     ClassData{prior = 0.0, unseen = -1.9459101490553135,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 5},
                    koData =
                      ClassData{prior = -infinity, unseen = -0.6931471805599453,
                                likelihoods = HashMap.fromList [], n = 0}}),
@@ -1007,8 +1007,8 @@ classifiers
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("sunday",
         Classifier{okData =
-                     ClassData{prior = 0.0, unseen = -2.3025850929940455,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 8},
+                     ClassData{prior = 0.0, unseen = -2.3978952727983707,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 9},
                    koData =
                      ClassData{prior = -infinity, unseen = -0.6931471805599453,
                                likelihoods = HashMap.fromList [], n = 0}}),
@@ -1419,8 +1419,8 @@ classifiers
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("tuesday",
         Classifier{okData =
-                     ClassData{prior = 0.0, unseen = -2.3978952727983707,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 9},
+                     ClassData{prior = 0.0, unseen = -2.4849066497880004,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 10},
                    koData =
                      ClassData{prior = -infinity, unseen = -0.6931471805599453,
                                likelihoods = HashMap.fromList [], n = 0}}),

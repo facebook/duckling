@@ -35,6 +35,7 @@ $ curl -XPOST http://0.0.0.0:8000/parse --data 'locale=en_GB&text=tomorrow at ei
 
 See `exe/ExampleMain.hs` for an example on how to integrate Duckling in your
 project.
+If your backend doesn't run Haskell or if you don't want to spin your own Duckling server, you can directly use [wit.ai](https://wit.ai)'s built-in entities.
 
 ## Supported dimensions
 Duckling supports many languages, but most don't support all dimensions yet

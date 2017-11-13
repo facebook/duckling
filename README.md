@@ -39,7 +39,8 @@ If your backend doesn't run Haskell or if you don't want to spin your own Duckli
 
 ## Supported dimensions
 Duckling supports many languages, but most don't support all dimensions yet
-(we need your help!).
+(**we need your help!**).
+Please look into [this directory](https://github.com/facebook/duckling/blob/master/Duckling/Dimensions) for language-specific support.
 
 | Dimension | Example input | Example value output
 | --------- | ------------- | --------------------

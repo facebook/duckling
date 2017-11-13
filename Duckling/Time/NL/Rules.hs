@@ -45,29 +45,29 @@ ruleInstants = mkRuleInstants
 
 ruleDaysOfWeek :: [Rule]
 ruleDaysOfWeek = mkRuleDaysOfWeek
-  [ ( "monday"    , "maandags?|ma\\.?"          )
-  , ( "tuesday"   , "dinsdags?|di?\\.?"         )
-  , ( "wednesday" , "woensdags?|woe?\\.?"       )
-  , ( "thursday"  , "donderdags?|do\\.?"        )
-  , ( "friday"    , "vrijdags?|vrij\\.?|vr\\.?" )
-  , ( "saturday"  , "zaterdags?|zat?\\.?"       )
-  , ( "sunday"    , "zondags?|zon?\\.?"         )
+  [ ( "monday"    , "maandags?|ma\\."      )
+  , ( "tuesday"   , "dinsdags?|di\\."      )
+  , ( "wednesday" , "woensdags?|woe\\."    )
+  , ( "thursday"  , "donderdags?|do\\."    )
+  , ( "friday"    , "vrijdags?|vr(ij)?\\." )
+  , ( "saturday"  , "zaterdags?|zat?\\."   )
+  , ( "sunday"    , "zondags?|zon?\\."     )
   ]
 
 ruleMonths :: [Rule]
 ruleMonths = mkRuleMonths
-  [ ( "January"   , "januari|jan\\.?"           )
-  , ( "February"  , "februari|feb\\.?"          )
-  , ( "March"     , "maart|mar\\.?"             )
-  , ( "April"    , "april|apr\\.?"              )
-  , ( "May"      , "mei\\.?"                    )
-  , ( "June"     , "juni|jun\\.?"               )
-  , ( "July"     , "juli|jul\\.?"               )
-  , ( "August"   , "augustus|aug\\.?"           )
-  , ( "September", "september|sept?\\.?"        )
-  , ( "October"  , "oktober|okt\\.?"            )
-  , ( "November" , "november|nov\\.?"           )
-  , ( "December" , "december|dec\\.?"           )
+  [ ( "January"   , "januari|jan\\.?"    )
+  , ( "February"  , "februari|feb\\.?"   )
+  , ( "March"     , "maart|mar\\.?"      )
+  , ( "April"    , "april|apr\\.?"       )
+  , ( "May"      , "mei\\.?"             )
+  , ( "June"     , "juni?\\.?"           )
+  , ( "July"     , "juli?\\.?"           )
+  , ( "August"   , "augustus|aug\\.?"    )
+  , ( "September", "september|sept?\\.?" )
+  , ( "October"  , "oktober|okt\\.?"     )
+  , ( "November" , "november|nov\\.?"    )
+  , ( "December" , "december|dec\\.?"    )
   ]
 
 ruleSeasons :: [Rule]

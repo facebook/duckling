@@ -23,16 +23,27 @@ import Duckling.Time.Corpus
 import Duckling.Time.Types hiding (Month)
 import Duckling.TimeGrain.Types hiding (add)
 
+context :: Context
+context = testContext {locale = makeLocale NL Nothing}
+
 corpus :: Corpus
-corpus = (testContext {locale = makeLocale NL Nothing}, allExamples)
+corpus = (context, allExamples)
 
 negativeCorpus :: NegativeCorpus
-negativeCorpus = (testContext {locale = makeLocale NL Nothing}, examples)
+negativeCorpus = (context, examples)
   where
     examples =
       [ "een hotel"
       , "twee aanbiedingen"
       , "komende 5 agendapunten"
+      , "d"
+      , "do"
+      , "di"
+      , "woe"
+      , "vr"
+      , "zat"
+      , "zo"
+      , "zon"
       ]
 
 allExamples :: [Example]
@@ -65,10 +76,10 @@ allExamples = concat
              ]
   , examples (datetime (2013, 2, 19, 0, 0, 0) Day)
              [ "dinsdag"
+             , "di."
              ]
   , examples (datetime (2013, 2, 14, 0, 0, 0) Day)
              [ "donderdag"
-             , "do"
              , "do."
              ]
   , examples (datetime (2013, 2, 15, 0, 0, 0) Day)
@@ -78,10 +89,12 @@ allExamples = concat
   , examples (datetime (2013, 2, 16, 0, 0, 0) Day)
              [ "zaterdag"
              , "za."
+             , "zat."
              ]
   , examples (datetime (2013, 2, 17, 0, 0, 0) Day)
              [ "zondag"
              , "zo."
+             , "zon."
              ]
   , examples (datetime (2013, 3, 1, 0, 0, 0) Day)
              [ "1 maart"
@@ -192,6 +205,7 @@ allExamples = concat
   , examples (datetime (2013, 2, 13, 0, 0, 0) Day)
              [ "komende woensdag"
              , "woensdag"
+             , "woe."
              ]
   , examples (datetime (2013, 2, 20, 0, 0, 0) Day)
              [ "volgende week woensdag"
@@ -324,7 +338,7 @@ allExamples = concat
              [ "Vrij. 18 juli 2014 7 uur 's avonds"
              ]
   , examples (datetime (2014, 7, 18, 0, 0, 0) Day)
-             [ "Vr, 18 Juli 2014"
+             [ "Vr., 18 Juli 2014"
              , "Vrijdag, 18-07-14"
              , "Vrijdag, 18/07/2014"
              , "18de juli 2014"

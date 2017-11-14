@@ -612,7 +612,7 @@ ruleTimeofdaySngchiuti = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:Token RegexMatch (GroupMatch (ap:_)):_) ->
-        tt . timeOfDayAMPM td $ Text.toLower ap == "s\225ng"
+        tt $ timeOfDayAMPM (Text.toLower ap == "s\225ng") td
       _ -> Nothing
   }
 
@@ -768,7 +768,7 @@ ruleTimeofdayAmpm = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:Token RegexMatch (GroupMatch (_:ap:_)):_) ->
-        tt . timeOfDayAMPM td $ Text.toLower ap == "a"
+        tt $ timeOfDayAMPM (Text.toLower ap == "a") td
       _ -> Nothing
   }
 
@@ -887,8 +887,7 @@ ruleHhmmMilitaryAmpm = Rule
        _) -> do
         h <- parseInt hh
         m <- parseInt mm
-        tt . timeOfDayAMPM (hourMinute True h m) $
-          Text.toLower ap == "a"
+        tt . timeOfDayAMPM (Text.toLower ap == "a") $ hourMinute True h m
       _ -> Nothing
   }
 
@@ -905,8 +904,7 @@ ruleHhmmMilitarySngchiuti = Rule
        _) -> do
         h <- parseInt hh
         m <- parseInt mm
-        tt . timeOfDayAMPM (hourMinute True h m) $
-          Text.toLower ap == "s\225ng"
+        tt . timeOfDayAMPM (Text.toLower ap == "s\225ng") $ hourMinute True h m
       _ -> Nothing
   }
 

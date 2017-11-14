@@ -21,6 +21,7 @@ import Duckling.Types
 import qualified Duckling.Distance.RU.Rules as Distance
 import qualified Duckling.Numeral.RU.Rules as Numeral
 import qualified Duckling.Ordinal.RU.Rules as Ordinal
+import qualified Duckling.Quantity.RU.Rules as Quantity
 import qualified Duckling.Volume.RU.Rules as Volume
 
 defaultRules :: Some Dimension -> [Rule]
@@ -37,7 +38,7 @@ langRules (This Email) = []
 langRules (This Numeral) = Numeral.rules
 langRules (This Ordinal) = Ordinal.rules
 langRules (This PhoneNumber) = []
-langRules (This Quantity) = []
+langRules (This Quantity) = Quantity.rules
 langRules (This RegexMatch) = []
 langRules (This Temperature) = []
 langRules (This Time) = []

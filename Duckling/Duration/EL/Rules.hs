@@ -114,6 +114,7 @@ ruleDurationHalfAnHour = Rule
   , prod = \_ -> Just . Token Duration $ duration TG.Minute 30
   }
 
+-- TODO: Single-word composition (#110)
 ruleNumeralWithGrain :: Rule
 ruleNumeralWithGrain = Rule
   { name = "<number><grain> (one word)"
@@ -213,6 +214,7 @@ ruleDurationAndAHalf = Rule
       _ -> Nothing
   }
 
+-- TODO: Single-word composition (#110)
 ruleDurationAndAHalfOneWord :: Rule
 ruleDurationAndAHalfOneWord = Rule
   { name = "<integer-and-half> <grain>"

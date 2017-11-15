@@ -12,8 +12,8 @@ module Duckling.Duration.GA.Corpus
   ( corpus
   ) where
 
-import Prelude
 import Data.String
+import Prelude
 
 import Duckling.Duration.Types
 import Duckling.Locale
@@ -35,6 +35,9 @@ allExamples = concat
   , examples (DurationData 30 Minute)
              [ "leathuair"
              , "30 noimead"
+             ]
+  , examples (DurationData 27 Minute)
+             [ "7 noimead 20"
              ]
   , examples (DurationData 14 Day)
              [ "coicís"

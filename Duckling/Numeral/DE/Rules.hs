@@ -98,6 +98,7 @@ ruleDecimalNumeral = Rule
       _ -> Nothing
   }
 
+-- TODO: Single-word composition (#110)
 ruleInteger3 :: Rule
 ruleInteger3 = Rule
   { name = "integer ([2-9][1-9])"
@@ -262,6 +263,7 @@ zeroNineteenMap = HashMap.fromList
   , ("neunzehn", 19)
   ]
 
+-- TODO: Single-word composition (#110)
 ruleToNineteen :: Rule
 ruleToNineteen = Rule
   { name = "integer (0..19)"
@@ -316,6 +318,7 @@ ruleInteger = Rule
       _ -> Nothing
   }
 
+-- TODO: Single-word composition (#110)
 ruleInteger2 :: Rule
 ruleInteger2 = Rule
   { name = "integer (20..90)"

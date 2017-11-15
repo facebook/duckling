@@ -172,8 +172,7 @@ ruleTODAM = Rule
     , Predicate isATimeOfDay
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td:_) ->
-        tt . timeOfDayAMPM td $ True
+      (_:Token Time td:_) -> tt $ timeOfDayAMPM True td
       _ -> Nothing
   }
 
@@ -185,7 +184,7 @@ ruleTODPM = Rule
     , Predicate isATimeOfDay
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td:_) -> tt . timeOfDayAMPM td $ False
+      (_:Token Time td:_) -> tt $ timeOfDayAMPM False td
       _ -> Nothing
   }
 

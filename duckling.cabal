@@ -410,6 +410,8 @@ library
                      , Duckling.Quantity.PT.Rules
                      , Duckling.Quantity.RO.Corpus
                      , Duckling.Quantity.RO.Rules
+                     , Duckling.Quantity.RU.Corpus
+                     , Duckling.Quantity.RU.Rules
                      , Duckling.Quantity.Helpers
                      , Duckling.Quantity.Types
 
@@ -757,6 +759,7 @@ test-suite duckling-test
                      , Duckling.Quantity.KO.Tests
                      , Duckling.Quantity.PT.Tests
                      , Duckling.Quantity.RO.Tests
+                     , Duckling.Quantity.RU.Tests
                      , Duckling.Quantity.Tests
 
                      -- Temperature

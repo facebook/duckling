@@ -7,11 +7,12 @@
 
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE NoRebindableSyntax #-}
 
 module Duckling.Time.HR.Rules
-  ( rules ) where
+  ( rules
+  ) where
 
-import Control.Monad (join)
 import Data.Maybe
 import Data.String
 import Data.Text (Text)
@@ -1155,7 +1156,7 @@ ruleHhmmMilitaryPrefixedWithMToAvoidAmbiguityWithYears = Rule
       (Token RegexMatch (GroupMatch (hh:mm:_)):_) -> do
         h <- parseInt hh
         m <- parseInt mm
-        tt $ timeOfDayAMPM (hourMinute False h m) False
+        tt . timeOfDayAMPM False $ hourMinute False h m
       _ -> Nothing
   }
 

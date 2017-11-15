@@ -169,4 +169,6 @@ rangeTests = testCase "Range Test" $
          , ("this in 2'", Range 5 10) -- ruleThisTime too eager
          , ("next in 2'", Range 5 10) -- ruleNextTime too eager
          , ("this this week", Range 5 14) -- ruleThisTime too eager
+         , ("one ninety nine a m", Range 11 19) -- ruleMilitarySpelledOutAMPM2
+         , ("thirteen fifty nine a m", Range 15 23) -- ruleMilitarySpelledOutAMPM
          ]

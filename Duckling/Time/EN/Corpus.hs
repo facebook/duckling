@@ -92,6 +92,7 @@ negativeCorpus = (testContext, examples)
       , "three twenty"
       , "at 650.650.6500"
       , "at 650-650-6500"
+      , "two sixty a m"
       ]
 
 allExamples :: [Example]
@@ -401,6 +402,9 @@ allExamples = concat
              , "3:30 p m"
              , "3:30"
              , "half three"
+             ]
+  , examples (datetime (2013, 2, 12, 9, 59, 0) Minute)
+             [ "nine fifty nine a m"
              ]
   , examples (datetime (2013, 2, 12, 15, 23, 24) Second)
              [ "15:23:24"
@@ -910,9 +914,11 @@ allExamples = concat
   , examples (datetime (2013, 2, 12, 10, 30, 0) Minute)
              [ "at 1030"
              , "around 1030"
+             , "ten thirty am"
              ]
   , examples (datetime (2013, 2, 12, 19, 30, 0) Minute)
              [ "at 730 in the evening"
+             , "seven thirty p.m."
              ]
   , examples (datetime (2013, 2, 13, 1, 50, 0) Minute)
              [ "tomorrow at 150ish"
@@ -924,6 +930,7 @@ allExamples = concat
     -- yes, the result is in the past, we may need to revisit
              [ "at 4:23"
              , "4:23am"
+             , "four twenty-three a m"
              ]
   , examples (datetimeInterval ((2013, 3, 1, 0, 0, 0), (2013, 3, 11, 0, 0, 0)) Day)
              [ "early March"

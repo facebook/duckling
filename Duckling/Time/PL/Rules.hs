@@ -882,7 +882,7 @@ ruleTimeofdayRano = Rule
     , regex "(z )?ran(o|a|u|em)"
     ]
   , prod = \tokens -> case tokens of
-      (Token Time td:_) -> tt $ timeOfDayAMPM td True
+      (Token Time td:_) -> tt $ timeOfDayAMPM True td
       _ -> Nothing
   }
 
@@ -1189,7 +1189,7 @@ ruleTimeofdayPopoudniuwieczoremwNocy = Rule
     , regex "(w )?noc(y|(a|ą))|(po ?)?po(l|ł)udni(em|e|a|u)|wiecz(o|ó)r(i|u|a|owi|em|rze)"
     ]
   , prod = \tokens -> case tokens of
-      (Token Time td:_) -> tt $ timeOfDayAMPM td False
+      (Token Time td:_) -> tt $ timeOfDayAMPM False td
       _ -> Nothing
   }
 
@@ -1456,8 +1456,7 @@ ruleHhmmMilitaryAmpm = Rule
        _) -> do
         h <- parseInt hh
         m <- parseInt mm
-        tt . timeOfDayAMPM (hourMinute True h m) $
-          Text.toLower ap == "a"
+        tt . timeOfDayAMPM (Text.toLower ap == "a") $ hourMinute True h m
       _ -> Nothing
   }
 

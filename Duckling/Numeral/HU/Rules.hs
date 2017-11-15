@@ -121,8 +121,8 @@ ruleTwentyoneToTwentynine = Rule
       _ -> Nothing
   }
 
-dozensMap :: HashMap Text Integer
-dozensMap = HashMap.fromList
+tensMap :: HashMap Text Integer
+tensMap = HashMap.fromList
   [ ( "h\x00FAsz", 20 )
   , ( "harminc", 30 )
   , ( "negyven", 40 )
@@ -141,7 +141,7 @@ ruleTens = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
-        HashMap.lookup (Text.toLower match) dozensMap >>= integer
+        HashMap.lookup (Text.toLower match) tensMap >>= integer
       _ -> Nothing
   }
 
@@ -153,7 +153,7 @@ ruleCompositeTens = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (m1:m2:_)):_) -> do
-        v1 <- HashMap.lookup (Text.toLower m1) dozensMap
+        v1 <- HashMap.lookup (Text.toLower m1) tensMap
         v2 <- HashMap.lookup (Text.toLower m2) ruleNumeralMap
         integer $ v1 + v2
       _ -> Nothing

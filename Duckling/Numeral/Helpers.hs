@@ -14,6 +14,7 @@ module Duckling.Numeral.Helpers
   , double
   , integer
   , multiply
+  , isNatural
   , divide
   , notOkForAnyTime
   , numberBetween
@@ -87,6 +88,11 @@ numberBetween low up = Predicate $ \x ->
     (Token Numeral NumeralData {value = v, multipliable = False}) ->
       low <= v && v < up
     _ -> False
+
+isNatural :: Predicate
+isNatural (Token Numeral NumeralData {value = v}) =
+  isInteger v && v > 0
+isNatural _ = False
 
 oneOf :: [Double] -> PatternItem
 oneOf vs = Predicate $ \x ->

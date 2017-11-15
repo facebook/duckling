@@ -247,6 +247,8 @@ library
                      , Duckling.Duration.ZH.Corpus
                      , Duckling.Duration.RO.Corpus
                      , Duckling.Duration.RO.Rules
+                     , Duckling.Duration.RU.Corpus
+                     , Duckling.Duration.RU.Rules
                      , Duckling.Duration.TR.Corpus
                      , Duckling.Duration.TR.Rules
                      , Duckling.Duration.Helpers
@@ -542,6 +544,7 @@ library
                      , Duckling.TimeGrain.PL.Rules
                      , Duckling.TimeGrain.PT.Rules
                      , Duckling.TimeGrain.RO.Rules
+                     , Duckling.TimeGrain.RU.Rules
                      , Duckling.TimeGrain.SV.Rules
                      , Duckling.TimeGrain.TR.Rules
                      , Duckling.TimeGrain.VI.Rules
@@ -669,6 +672,7 @@ test-suite duckling-test
                      , Duckling.Duration.PL.Tests
                      , Duckling.Duration.PT.Tests
                      , Duckling.Duration.RO.Tests
+                     , Duckling.Duration.RU.Tests
                      , Duckling.Duration.SV.Tests
                      , Duckling.Duration.TR.Tests
                      , Duckling.Duration.ZH.Tests

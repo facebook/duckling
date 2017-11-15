@@ -36,6 +36,8 @@ allExamples = concat
              [ "leathuair"
              , "30 noimead"
              ]
+  , examples (DurationData 27 Minute)
+             [ "7 noimead 20" ]
   , examples (DurationData 14 Day)
              [ "coicís"
              ]

@@ -13,7 +13,6 @@ module Duckling.Duration.Helpers
   ( duration
   , isGrain
   , isNatural
-  , isNumeralWith
   , minutesFromHourMixedFraction
   , timesOneAndAHalf
   ) where
@@ -23,10 +22,9 @@ import Prelude
 import Duckling.Dimensions.Types
 import Duckling.Duration.Types (DurationData (DurationData))
 import qualified Duckling.Duration.Types as TDuration
-import Duckling.Numeral.Types (NumeralData (NumeralData))
-import qualified Duckling.Numeral.Types as TNumeral
 import qualified Duckling.TimeGrain.Types as TG
 import Duckling.Types
+import Duckling.Numeral.Helpers (isNatural)
 
 -- -----------------------------------------------------------------
 -- Patterns
@@ -34,16 +32,6 @@ import Duckling.Types
 isGrain :: TG.Grain -> Predicate
 isGrain value (Token TimeGrain grain) = grain == value
 isGrain _ _ = False
-
-isNatural :: Predicate
-isNatural (Token Numeral NumeralData {TNumeral.value = x}) =
-  TNumeral.isNatural x
-isNatural _ = False
-
-isNumeralWith :: (NumeralData -> t) -> (t -> Bool) -> PatternItem
-isNumeralWith f pred = Predicate $ \x -> case x of
-  (Token Numeral x) -> pred $ f x
-  _ -> False
 
 -- -----------------------------------------------------------------
 -- Production

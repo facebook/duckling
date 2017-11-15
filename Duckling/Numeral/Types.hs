@@ -58,9 +58,6 @@ getIntValue x = if rest == 0 then Just int else Nothing
 isInteger :: Double -> Bool
 isInteger = isJust . getIntValue
 
-isNatural :: Double -> Bool
-isNatural x = isInteger x && x > 0
-
 isIntegerBetween :: Double -> Int -> Int -> Bool
 isIntegerBetween x low high = case getIntValue x of
   Just int -> low <= int && int <= high

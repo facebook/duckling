@@ -269,6 +269,19 @@ ruleIntegerWithThousandsSeparator = Rule
       _ -> Nothing
   }
 
+ruleIntegerAndAHalf :: Rule
+ruleIntegerAndAHalf = Rule
+  { name = "<integer> and a half"
+  , pattern =
+    [ Predicate isNatural
+    , regex "с половиной"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Numeral (NumeralData {TNumeral.value = v}):_) ->
+        double (v + 0.5)
+      _ -> Nothing
+  }
+
 rules :: [Rule]
 rules =
   [ ruleDecimalNumeral
@@ -281,6 +294,7 @@ rules =
   , ruleInteger6
   , ruleInteger7
   , ruleInteger8
+  , ruleIntegerAndAHalf
   , ruleDecimalOneAndAHalf
   , ruleIntegerNumeric
   , ruleIntegerWithThousandsSeparator

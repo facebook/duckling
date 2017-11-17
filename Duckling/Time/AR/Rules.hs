@@ -49,7 +49,7 @@ ruleIntersectOf = Rule
   { name = "intersect by \",\", \"of\", \"from\", \"'s\""
   , pattern =
     [ Predicate isNotLatent
-    , regex "من|,|،"
+    , regex "من|,|،|لـ?|بـ?|الموافق( ل ?)?"
     , Predicate isNotLatent
     ]
   , prod = \tokens -> case tokens of
@@ -107,11 +107,11 @@ ruleAbsorbCommaTOD = Rule
 
 instants :: [(Text, String, TG.Grain, Int)]
 instants =
-  [ ("right now", "الان|حالا", TG.Second, 0)
+  [ ("right now", "الان|حالا|(في )?هذه اللحظ[ةه]", TG.Second, 0)
   , ("today", "اليوم", TG.Day, 0)
-  , ("tomorrow", "غداً?|الغد|بكر[ةه]", TG.Day, 1)
+  , ("tomorrow", "((يوم )?(غدا?|الغد))|(بكر[اةه])", TG.Day, 1)
   -- TODO: add regex for more variation of yesterday
-  , ("yesterday", "[أا]مس|(ال)ليل[ةه] (ال)ماضي[ةه]|(ال)بارح[ةه]", TG.Day, - 1)
+  , ("yesterday", "[أا]مس|(ال|ام)بارح[ةه]?", TG.Day, - 1)
   , ("end of month", "(نهاي[ةه] الشهر)", TG.Month, 1)
   , ("end of year", "(نهاي[ةه] (السن[ةه]|العام))", TG.Year, 1)
   ]
@@ -134,8 +134,8 @@ ruleNow = Rule
   , prod = \_ -> tt now
   }
 
-ruleNextDOW :: Rule
-ruleNextDOW = Rule
+ruleThisDOW :: Rule
+ruleThisDOW = Rule
   { name = "this <day-of-week>"
   , pattern =
     [ regex "هذا"
@@ -146,15 +146,27 @@ ruleNextDOW = Rule
       _ -> Nothing
   }
 
-ruleNextDOW2 :: Rule
-ruleNextDOW2 = Rule
-  { name = "<day-of-week> this|next"
+ruleDOWNext :: Rule
+ruleDOWNext = Rule
+  { name = "<day-of-week> next"
   , pattern =
     [ Predicate isADayOfWeek
-    , regex "القادم|التالي|الآت"
+    , regex "القادم|التالي|ال[آا]تي?|القادم"
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_) -> tt $ predNth 0 True td
+      _ -> Nothing
+  }
+
+ruleDOWLast :: Rule
+ruleDOWLast = Rule
+  { name = "<day-of-week> last"
+  , pattern =
+    [ Predicate isADayOfWeek
+    , regex "السابق|الماضي|المنصرم|الفا[يئ]ت"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Time td:_) -> tt $ predNth (- 1) True td
       _ -> Nothing
   }
 
@@ -215,7 +227,7 @@ ruleLastTime2 = Rule
     , regex "((ال)?ماضيت?(ان|ين|ة|ه)?|(ال)?منصرمت?(ان|ين|ة|ه)?|(ال)?سابقت?(ان|ين|ة|ه)?)"
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td:_) -> tt $ predNth (- 1) False td
+      (Token Time td:_) -> tt $ predNth (- 1) False td
       _ -> Nothing
   }
   
@@ -259,13 +271,28 @@ ruleLastDOWOfTime = Rule
       _ -> Nothing
   }
 
+ruleDOWTheLastOfTime :: Rule
+ruleDOWTheLastOfTime = Rule
+  { name = "<day-of-week> the last of <time>"
+  , pattern =
+    [ Predicate isADayOfWeek
+    , regex "(ال[اأآ]خي?رة?) (من|في|ب|ل)"
+    , dimension Time
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Time td1:_:Token Time td2:_) ->
+        tt $ predLastOf td1 td2
+      _ -> Nothing
+  }
+
+--todo add الاخخير
 ruleLastCycleOfTime :: Rule
 ruleLastCycleOfTime = Rule
   { name = "last <cycle> of <time>"
   , pattern =
     [ regex "[اآ]خر"
     , dimension TimeGrain
-    , regex "(في|ل)?"
+    , regex "(من|في|ل|ب)"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -274,20 +301,35 @@ ruleLastCycleOfTime = Rule
       _ -> Nothing
   }
 
--- ruleNthTimeOfTime :: Rule
--- ruleNthTimeOfTime = Rule
---   { name = "nth <time> of <time>"
---   , pattern =
---     [ dimension Ordinal
---     , dimension Time
---     , regex "في|من"
---     , dimension Time
---     ]
---   , prod = \tokens -> case tokens of
---       (Token Ordinal od:Token Time td1:_:Token Time td2:_) -> Token Time .
---         predNth (TOrdinal.value od - 1) False <$> intersect td2 td1
---       _ -> Nothing
---   }
+ruleCycleLastOfTime :: Rule
+ruleCycleLastOfTime = Rule
+  { name = "<cycle> last of <time>"
+  , pattern =
+    [ regex "ال"
+    , dimension TimeGrain
+    , regex "ال[اأ]خيرة? (من|في|ل|ب)"
+    , dimension Time
+    ]
+  , prod = \tokens -> case tokens of
+      (_:Token TimeGrain grain:_:Token Time td:_) ->
+        tt $ cycleLastOf grain td
+      _ -> Nothing
+  }
+
+ruleNthTimeOfTime :: Rule
+ruleNthTimeOfTime = Rule
+  { name = "nth <time> of <time>"
+  , pattern =
+    [ dimension Ordinal
+    , dimension Time
+    , regex "في|من|ب"
+    , dimension Time
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Ordinal od:Token Time td1:_:Token Time td2:_) -> Token Time .
+        predNth (TOrdinal.value od - 1) False <$> intersect td2 td1
+      _ -> Nothing
+  }
 
 ruleTimeNthOfTime :: Rule
 ruleTimeNthOfTime = Rule
@@ -295,7 +337,7 @@ ruleTimeNthOfTime = Rule
   , pattern =
     [ dimension Time
     , dimension Ordinal
-    , regex "من"
+    , regex "من|في"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -304,24 +346,24 @@ ruleTimeNthOfTime = Rule
       _ -> Nothing
   }  
 
--- ruleNthTimeAfterTime :: Rule
--- ruleNthTimeAfterTime = Rule
---   { name = "nth <time> after <time>"
---   , pattern =
---     [ dimension Ordinal
---     , dimension Time
---     , regex "بعد"
---     , dimension Time
---     ]
---   , prod = \tokens -> case tokens of
---       (Token Ordinal od:Token Time td1:_:Token Time td2:_) ->
---         tt $ predNthAfter (TOrdinal.value od - 1) td1 td2
---       _ -> Nothing
---   }
+ruleNthTimeAfterTime :: Rule
+ruleNthTimeAfterTime = Rule
+  { name = "nth <time> after <time>"
+  , pattern =
+    [ dimension Ordinal
+    , dimension Time
+    , regex "بعد"
+    , dimension Time
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Ordinal od:Token Time td1:_:Token Time td2:_) ->
+        tt $ predNthAfter (TOrdinal.value od - 1) td1 td2
+      _ -> Nothing
+  }
 
 ruleTimeNthAfterTime :: Rule
 ruleTimeNthAfterTime = Rule
-  { name = "nth <time> after <time>"
+  { name = "<time> nth after <time>"
   , pattern =
     [ dimension Time
     , dimension Ordinal
@@ -410,7 +452,7 @@ ruleDOMOfMonth = Rule
   { name = "<day-of-month> (ordinal or number) of <named-month>"
   , pattern =
     [ Predicate isDOMValue
-    , regex "(من|في)( شهر)?"
+    , regex "(من|في|بـ?)"
     , Predicate isAMonth
     ]
   , prod = \tokens -> case tokens of
@@ -440,6 +482,23 @@ ruleDOMOrdinalMonthYear = Rule
     ]
   , prod = \tokens -> case tokens of
       (token:Token Time td:Token RegexMatch (GroupMatch (match:_)):_) -> do
+        intVal <- parseInt match
+        dom <- intersectDOM td token
+        Token Time <$> intersect dom (year intVal)
+      _ -> Nothing
+  }
+
+ruleDOMOrdinalDayMonthYear :: Rule
+ruleDOMOrdinalDayMonthYear = Rule
+  { name = "<day-of-month>(ordinal) <named-month> year"
+  , pattern =
+    [ Predicate isDOMOrdinal
+    , regex "يوم( من| في| بـ?)?"
+    , Predicate isAMonth
+    , regex "(\\d{2,4})"
+    ]
+  , prod = \tokens -> case tokens of
+      (token:_:Token Time td:Token RegexMatch (GroupMatch (match:_)):_) -> do
         intVal <- parseInt match
         dom <- intersectDOM td token
         Token Time <$> intersect dom (year intVal)
@@ -753,22 +812,24 @@ ruleNoonMidnightEOD = Rule
       _ -> Nothing
   }
 
--- TODO need more regex here
 rulePartOfDays :: Rule
 rulePartOfDays = Rule
   { name = "part of days"
   , pattern =
-    [ regex "(صباحا|مساء|ليلا|غداء|وقت الغداء)"
+    [ regex "(صبا?ح|فجر|ظهر|عصر|مغرب|مساء|عشاء|ليل[اةه]|غداء)ا?"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> do
         let (start, end) = case Text.toLower match of
-              "صباحا"  -> (hour False 4, hour False 12)
-              "مساء"  -> (hour False 18, hour False 0)
-              "ليلا"    -> (hour False 18, hour False 0)
+              "صبح"     -> (hour False 4, hour False 12)
+              "صباح"    -> (hour False 4, hour False 12)
+              "فجر"     -> (hour False 4, hour False 6)
+              "ظهر"     -> (hour False 11, hour False 3)
+              "عصر"     -> (hour False 3, hour False 6)
+              "مغرب"    -> (hour False 6, hour False 8)
               "غداء"    -> (hour False 12, hour False 14)
-              "وقت الغداء" -> (hour False 12, hour False 14)
-              _          -> (hour False 12, hour False 19)
+              "الغداء"  -> (hour False 12, hour False 14)
+              _         -> (hour False 18, hour False 0)
         td <- interval TTime.Open start end
         tt . partOfDay $ mkLatent td
       _ -> Nothing
@@ -778,7 +839,7 @@ ruleEarlyMorning :: Rule
 ruleEarlyMorning = Rule
   { name = "early morning"
   , pattern =
-    [ regex "(في)? ?(ال)صبا?ح ((ال)باكر|بدري)"
+    [ regex "(ال)?صبا?ح (((ال)?باكر)|بدري)"
     ]
   , prod = \_ -> Token Time . partOfDay . mkLatent <$>
       interval TTime.Open (hour False 4) (hour False 9)
@@ -788,7 +849,7 @@ rulePODIn :: Rule
 rulePODIn = Rule
   { name = "in|during the <part-of-day>"
   , pattern =
-    [ regex "(في|خلال|في خلال)( ال)?"
+    [ regex "(في|خلال|في خلال|عند)(وقت )?( ال)?"
     , Predicate isAPartOfDay
     ]
   , prod = \tokens -> case tokens of
@@ -800,7 +861,7 @@ rulePODThis :: Rule
 rulePODThis = Rule
   { name = "this <part-of-day>"
   , pattern =
-    [ regex "هذا"
+    [ regex "هذ[اه](ال)?"
     , Predicate isAPartOfDay
     ]
   , prod = \tokens -> case tokens of
@@ -812,7 +873,7 @@ rulePODThis = Rule
 ruleTonight :: Rule
 ruleTonight = Rule
   { name = "tonight"
-  , pattern = [regex "الليل[ةه]"]
+  , pattern = [regex "(هذه )?الليل[ةه]"]
   , prod = \_ -> do
       let today = cycleNth TG.Day 0
       evening <- interval TTime.Open (hour False 18) (hour False 0)
@@ -874,7 +935,7 @@ ruleSeasons = Rule
           "الشتاء"  -> Just $ monthDay 12 21
           "شتاء"    -> Just $ monthDay 12 21
           "الربيع"  -> Just $ monthDay 3 20
-          "ربيع"    -> Just $ monthDay 3 20          
+          "ربيع"    -> Just $ monthDay 3 20
           _ -> Nothing
         end <- case Text.toLower match of
           "الصيف"   -> Just $ monthDay 9 23
@@ -1009,7 +1070,7 @@ ruleIntervalDash = Rule
   { name = "<datetime> - <datetime> (interval)"
   , pattern =
     [ Predicate isNotLatent
-    , regex "\\-|[اإ]لى|لـ?|حتى"
+    , regex "\\-|[اإ]لى|حتى"
     , Predicate isNotLatent
     ]
   , prod = \tokens -> case tokens of
@@ -1106,18 +1167,18 @@ ruleIntervalBy = Rule
       _ -> Nothing
   }
 
-ruleIntervalByTheEndOf :: Rule
-ruleIntervalByTheEndOf = Rule
-  { name = "by the end of <time>"
-  , pattern =
-    [ regex "(مع |ب|حتى )?نهاي[ةه]"
-    , dimension Time
-    ]
-  , prod = \tokens -> case tokens of
-      (_:Token Time td:_) ->
-        Token Time <$> interval TTime.Closed (cycleNth TG.Second 0) td
-      _ -> Nothing
-  }
+-- ruleIntervalByTheEndOf :: Rule
+-- ruleIntervalByTheEndOf = Rule
+--   { name = "by the end of <time>"
+--   , pattern =
+--     [ regex "(مع |ب|حتى )?نهاي[ةه]"
+--     , dimension Time
+--     ]
+--   , prod = \tokens -> case tokens of
+--       (_:Token Time td:_) ->
+--         Token Time <$> interval TTime.Closed (cycleNth TG.Second 0) td
+--       _ -> Nothing
+--   }
 
 ruleIntervalUntilTOD :: Rule
 ruleIntervalUntilTOD = Rule
@@ -1158,8 +1219,8 @@ ruleIntervalSinceTOD = Rule
 daysOfWeek :: [(Text, String)]
 daysOfWeek =
   [ ( "Monday"   , "(ال)?[اإ]ثنين"          )
-  , ( "Tuesday"  , "(ال)?ثلاثاء"             )
-  , ( "Wednesday", "(ال)?[اأ]ربعاء"         )
+  , ( "Tuesday"  , "(ال)?ثلاثاء?"             )
+  , ( "Wednesday", "(ال)?[اأ]ربعاء?"         )
   , ( "Thursday" , "(ال)?خميس"              )
   , ( "Friday"   , "(ال)?جمع[ةه]"           )
   , ( "Saturday" , "(ال)?سبت"               )
@@ -1177,18 +1238,18 @@ ruleDaysOfWeek = zipWith go daysOfWeek [1..7]
 
 months :: [(Text, String)]
 months =
-  [ ( "January"  , "يناير|كانون (ال)ثاني?"  )
-  , ( "February" , "فبراير|شباط"            )
-  , ( "March"    , "مارس|[اآ]ذار"       )
-  , ( "April"    , "[اأ]بريل|نيسان"       )
-  , ( "May"      , "مايو|[اأ]ي[اآ]ر"                 )
-  , ( "June"     , "يونيو|حزيران"        )
-  , ( "July"     , "يوليو|تموز"        )
-  , ( "August"   , "[اأ]غسطس|[اآ]ب"      )
-  , ( "September", "سي?بتمبر|[اأ]يلول" )
-  , ( "October"  , "[اأ]كتوبر|تشرين (ال)?[اأ]ول"     )
-  , ( "November" , "نوفمبر|تشرين (ال)?ثاني"    )
-  , ( "December" , "ديسمبر|كانون (ال)?[اأ]ول"    )
+  [ ( "January"  , "يناير|كانون (ال)ثاني?"      )
+  , ( "February" , "فبراير|شباط"                )
+  , ( "March"    , "مارس|[اآ]ذار"               )
+  , ( "April"    , "[اأ]بريل|نيسان"             )
+  , ( "May"      , "مايو|[اأ]ي[اآ]ر"            )
+  , ( "June"     , "يونيو|حزيران"               )
+  , ( "July"     , "يوليو|تموز"                 )
+  , ( "August"   , "[اأ]غسطس|[اآ]ب"             )
+  , ( "September", "سي?بتمبر|[اأ]يلول"          )
+  , ( "October"  , "[اأ]كتوبر|تشرين (ال)?[اأ]ول")
+  , ( "November" , "نوفمبر|تشرين (ال)?ثاني"     )
+  , ( "December" , "ديسمبر|كانون (ال)?[اأ]ول"   )
   ]
 
 ruleMonths :: [Rule]
@@ -1200,34 +1261,76 @@ ruleMonths = zipWith go months [1..12]
       , prod = \_ -> tt $ month i
       }
 
+ruleMonthsNumeral :: Rule
+ruleMonthsNumeral = Rule
+  { name = "month (integer)"
+  , pattern =
+    [ regex "شهر"
+    , Predicate $ isIntegerBetween 1 12
+    ]
+  , prod = \tokens -> case tokens of
+      (_:token:_) -> do
+        n <- getIntValue token
+        tt $ month n
+      _ -> Nothing
+  }
+
+ruleMonthsOrdinal :: Rule
+ruleMonthsOrdinal = Rule
+  { name = "month (ordinal)"
+  , pattern =
+    [ regex "الشهر"
+    , dimension Ordinal
+    ]
+  , prod = \tokens -> case tokens of
+      (_:token:_) -> do
+        n <- getIntValue token
+        tt $ month n
+      _ -> Nothing
+  }
+
+ruleYearInteger :: Rule
+ruleYearInteger = Rule
+  { name = "year (integer)"
+  , pattern =
+    [ regex "سنة|عام"
+    , Predicate $ isIntegerBetween 1 3000
+    ]
+  , prod = \tokens -> case tokens of
+      (_:token:_) -> do
+        n <- getIntValue token
+        tt $ year n
+      _ -> Nothing
+  }
+
+-- TODO: Write in a better syntax
 rulePartOfMonth :: Rule
 rulePartOfMonth = Rule
   { name = "part of <named-month>"
   , pattern =
-    [ regex "(بداي[ةه]|منتصف|[اآ]خر)-?( شهر)?"
+    [ regex "(بداي[ةه]|منتصف|نصف?|[اآ]خر|نهاي[ةه])-?"
     , Predicate isAMonth
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):Token Time td:_) -> do
-        (sd, ed) <- case Text.toLower match of
-          "بداية" -> Just (1, 10)
-          "بدايه" -> Just (1, 10)
-          "منتصف"   -> Just (11, 20)
-          "اخر"  -> Just (21, -1)
-          "آخر"  -> Just (21, -1)
-          _       -> Nothing
-        start <- intersect td $ dayOfMonth sd
+        ed <- case Text.toLower match of
+          "بداية" -> Just 1
+          "بدايه" -> Just 1
+          "منتصف" -> Just 15
+          "نصف"   -> Just 15
+          "نص"    -> Just 15
+          _       -> Just (-1)
         end <- if ed /= -1
           then intersect td $ dayOfMonth ed
           else Just $ cycleLastOf TG.Day td
-        Token Time <$> interval TTime.Open start end
+        tt end
       _ -> Nothing
   }
 
 usHolidays :: [(Text, String, Int, Int)]
 usHolidays =
-  [ ( "Christmas"       , "(يوم |عطل[ةه] )?((ال)كري?سماس)"                    , 12, 25 )
-  , ( "Christmas Eve"   , "(ليل[ةه] )((ال)كري?سماس)"                          , 12, 24 )
+  [ ( "Christmas"       , "(يوم |عطل[ةه] )?((ال)?كري?سماس)"                    , 12, 25 )
+  , ( "Christmas Eve"   , "(ليل[ةه] )((ال)?كري?سماس)"                          , 12, 24 )
   , ( "New Year's Eve"  , "(ليل[ةه] )(ر[اأ]س السن[ةه])"                       , 12, 31 )
   , ( "New Year's Day"  , "(يوم |عطل[ةه] )?(ر[اأ]س السن[ةه])"                 , 1 , 1  )
   , ( "Valentine's Day" , "(عيد |يوم |عطل[ةه] )?((ال)?حب|(ال)?فالنتا?ين)"     , 2 , 14 )
@@ -1268,23 +1371,46 @@ ruleCycleThisLastNext = Rule
   , pattern =
     [ regex "ال"
     , dimension TimeGrain
-    , regex "(هذا|هذه|القادم|التالي|السابق|الماضي|المنصرم)"
+    , regex "(هذ|القادم|التالي|الحالي|المقبل|الجاي|السابق|الماضي?|الفا[ئي]ت|المنصرم)[اةه]?"
     ]
   , prod = \tokens -> case tokens of
       (_:Token TimeGrain grain:Token RegexMatch (GroupMatch (match:_)):_) ->
         case Text.toLower match of
-          "هذا"           -> tt $ cycleNth grain 0
-          "هذه"           -> tt $ cycleNth grain 0
-          "القادم"           -> tt $ cycleNth grain 1
-          "التالي"           -> tt $ cycleNth grain 1
-          "الجالي"           -> tt $ cycleNth grain 1
+          "هذ"            -> tt $ cycleNth grain 0
+          "الحالي"        -> tt $ cycleNth grain 0
+          "القادم"        -> tt $ cycleNth grain 1
+          "التالي"        -> tt $ cycleNth grain 1
+          "المقبل"        -> tt $ cycleNth grain 1
+          "الجاي"         -> tt $ cycleNth grain 1
           "السابق"        -> tt . cycleNth grain $ - 1
           "الماضي"        -> tt . cycleNth grain $ - 1
-          "المنصرم"        -> tt . cycleNth grain $ - 1
+          "الماض"         -> tt . cycleNth grain $ - 1
+          "المنصرم"       -> tt . cycleNth grain $ - 1
+          "الفائت"        -> tt . cycleNth grain $ - 1
+          "الفايت"        -> tt . cycleNth grain $ - 1
           _ -> Nothing
       _ -> Nothing
   }
 
+ruleCycleTheAfterBeforeTime :: Rule
+ruleCycleTheAfterBeforeTime = Rule
+  { name = "the <cycle> after|before <time>"
+  , pattern =
+    [ regex "ال"
+    , dimension TimeGrain
+    , regex "(الذ?ي |ال)(قبل|بعد)"
+    , dimension Time
+    ]
+  , prod = \tokens -> case tokens of
+      (  _
+       : Token TimeGrain grain
+       : Token RegexMatch (GroupMatch (_:match:_))
+       : Token Time td
+       : _) ->
+        let n = if match == "بعد" then 1 else - 1 in
+          tt $ cycleNthAfter False grain n td
+      _ -> Nothing
+  }
 
 ruleCycleAfterBeforeTime :: Rule
 ruleCycleAfterBeforeTime = Rule
@@ -1301,9 +1427,9 @@ ruleCycleAfterBeforeTime = Rule
       _ -> Nothing
   }
 
-ruleCycleLastNextN :: Rule
-ruleCycleLastNextN = Rule
-  { name = "last|next n <cycle>"
+ruleCycleLastN :: Rule
+ruleCycleLastN = Rule
+  { name = "last n <cycle>"
   , pattern =
     [ regex "([اآ]خر)"
     , Predicate $ isIntegerBetween 1 9999
@@ -1322,7 +1448,7 @@ ruleCycleOrdinalOfTime = Rule
   , pattern =
     [ dimension Ordinal
     , dimension TimeGrain
-    , regex "في|من"
+    , regex "في|من|بـ?"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -1331,6 +1457,40 @@ ruleCycleOrdinalOfTime = Rule
         tt $ cycleNthAfter True grain (n - 1) td
       _ -> Nothing
   }
+
+ruleCycleOrdinalDayOfTime :: Rule
+ruleCycleOrdinalDayOfTime = Rule
+  { name = "<cycle> <ordinal> day? of <time>"
+  , pattern =
+    [ dimension TimeGrain
+    , dimension Ordinal
+    , regex "((ال)?يوم )?(بـ?|في|من)"
+    , dimension Time
+    ]
+  , prod = \tokens -> case tokens of
+      (Token TimeGrain grain:token:_:Token Time td:_) -> do
+        n <- getIntValue token
+        tt $ cycleNthAfter True grain (n - 1) td
+      _ -> Nothing
+  }
+
+ruleTheCycleTheOrdinalOfTime :: Rule
+ruleTheCycleTheOrdinalOfTime = Rule
+  { name = "the <cycle> the <ordinal> of <time>"
+  , pattern =
+    [ regex "ال"
+    , dimension TimeGrain
+    , dimension Ordinal
+    , regex "في|من|بـ?"
+    , dimension Time
+    ]
+  , prod = \tokens -> case tokens of
+      (_:Token TimeGrain grain:token:_:Token Time td:_) -> do
+        n <- getIntValue token
+        tt $ cycleNthAfter True grain (n - 1) td
+      _ -> Nothing
+  }
+
 
 ruleCycleOrdinalAfterTime :: Rule
 ruleCycleOrdinalAfterTime = Rule
@@ -1372,14 +1532,14 @@ ruleDurationHenceAgo = Rule
   { name = "<duration> hence|ago"
   , pattern =
     [ dimension Duration
-    , regex "(مضت|من الان)"
+    , regex "(مض[تى]|من الان)"
     ]
   , prod = \tokens -> case tokens of
       (Token Duration dd:
        Token RegexMatch (GroupMatch (match:_)):
        _) -> case Text.toLower match of
-        "مضت" -> tt $ durationAgo dd
-        _ -> tt $ inDuration dd
+        "من الان" -> tt $ inDuration dd
+        _ -> tt $ durationAgo dd
       _ -> Nothing
   }
 
@@ -1429,6 +1589,20 @@ ruleIntervalForDurationFrom = Rule
       _ -> Nothing
 }
 
+ruleTimeForDurationFrom :: Rule
+ruleTimeForDurationFrom = Rule
+  { name = "for <duration> from <time>"
+  , pattern =
+    [ dimension Time
+    , regex "لمدة|ل"
+    , dimension Duration 
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Time td1:_:Token Duration dd:_) ->
+        Token Time <$> interval TTime.Open td1 (durationAfter dd td1)
+      _ -> Nothing
+}
+
 ruleTimezone :: Rule
 ruleTimezone = Rule
   { name = "<time> timezone"
@@ -1451,24 +1625,35 @@ rules =
   , ruleAbsorbOnADOW
   , ruleAbsorbInMonth
   , ruleAbsorbCommaTOD
-  , ruleNextDOW
-  , ruleNextDOW2
+  , ruleThisDOW
+  , ruleDOWNext
+  , ruleDOWLast
   , ruleThisTime
   , ruleNextTime
   , ruleLastTime
   , ruleLastTime2
   , ruleLastDOWOfTime
+  , ruleDOWTheLastOfTime
   , ruleLastCycleOfTime
+  , ruleCycleLastOfTime
+  , ruleNthTimeOfTime
   , ruleTimeNthOfTime
+  , ruleNthTimeAfterTime
+  , ruleTimeNthAfterTime
   , ruleYear
   , ruleYearPastLatent
   , ruleYearFutureLatent
+  , ruleYearInteger
+  , ruleMonthsNumeral
+  , ruleMonthsOrdinal
   , ruleDOMLatent
   , ruleNamedDOMOrdinal
   , ruleMonthDOMNumeral
   , ruleDOMMonth
   , ruleDOMOfMonth
+  -- , ruleDOMOfMonthNamed
   , ruleDOMOrdinalMonthYear
+  , ruleDOMOrdinalDayMonthYear
   , ruleTODLatent
   , ruleAtTOD
   , ruleHHMM
@@ -1514,20 +1699,23 @@ rules =
   , ruleIntervalTODFrom
   , ruleIntervalTODBetween
   , ruleIntervalBy
-  , ruleIntervalByTheEndOf
   , ruleIntervalUntilTOD
   , ruleIntervalAfterTOD
   , ruleIntervalSinceTOD
   , ruleThisLastNextCycle
   , ruleCycleThisLastNext
+  , ruleCycleTheAfterBeforeTime
   , ruleCycleAfterBeforeTime
-  , ruleCycleLastNextN
+  , ruleCycleLastN
+  , ruleTheCycleTheOrdinalOfTime
   , ruleCycleOrdinalOfTime
+  , ruleCycleOrdinalDayOfTime
   , ruleCycleOrdinalAfterTime
   , ruleDurationInWithinAfter
   , ruleDurationHenceAgo
   , ruleDurationAfterBeforeTime
   , ruleIntervalForDurationFrom
+  , ruleTimeForDurationFrom
   , ruleInNumeral
   , ruleTimezone
   , rulePartOfMonth

@@ -26,6 +26,9 @@ negativeCorpus = (testContext, examples)
       [ "fitness at 6.40"
       , "class at 12.00"
       , "tonight at 9.15"
+      , " dot 2@abci"
+      , "x@ dot x"
+      , "x@ x dot "
       ]
 
 corpus :: Corpus
@@ -44,5 +47,8 @@ allExamples = concat
              ]
   , examples (EmailData "jean-jacques@stuff.co.uk")
              [ "jean-jacques at stuff.co.uk"
+             ]
+  , examples (EmailData "lukas.koebis+a.b@gmail.com")
+             [ "lukas dot koebis+a dot b at gmail dot com"
              ]
   ]

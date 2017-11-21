@@ -22,17 +22,15 @@ import Duckling.Regex.Types
 import Duckling.Types
 import qualified Duckling.Email.Types as TEmail
 
-
 ruleEmailSpelledOut :: Rule
 ruleEmailSpelledOut = Rule
   { name = "email spelled out"
   , pattern =
-    [ regex "((?:[\\w\\._+-]| dot )+) at ([\\w_-]+((?:\\.| dot )[a-zA-Z]+)+)"
+    [ regex "([\\w\\._+-]+) at ([\\w_-]+(\\.[a-zA-Z]+)+)"
     ]
   , prod = \xs -> case xs of
       (Token RegexMatch (GroupMatch (m1:m2:_)):_) ->
-        Just $ Token Email EmailData {TEmail.value = Text.concat [replaceDots m1, "@", replaceDots m2]}
-        where replaceDots = Text.replace " dot " "."
+        Just $ Token Email EmailData {TEmail.value = Text.concat [m1, "@", m2]}
       _ -> Nothing
   }
 

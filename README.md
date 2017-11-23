@@ -74,7 +74,12 @@ files need to be updated:
 To add a new language:
 * Make sure that the language code used follows the [ISO-639-1 standard](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes).
 * The first dimension to implement is `Numeral`.
-* Follow [this example](https://github.com/facebookincubator/duckling/commit/24d3f199768be970149412c95b1c1bf5d76f8240).
+* Follow [this example](https://github.com/facebook/duckling/commit/24d3f199768be970149412c95b1c1bf5d76f8240).
+
+To add a new locale:
+* There should be a need for diverging rules between the locale and the language.
+* Make sure that the locale code is a valid [ISO3166 alpha2 country code](https://www.iso.org/obp/ui/#search/code/).
+* Follow [this example](https://github.com/facebook/duckling/commit/1ab5f447d2635fe6d48887a501d333a52adff5b9).
 
 Rules have a name, a pattern and a production.
 Patterns are used to perform character-level matching (regexes on input) and

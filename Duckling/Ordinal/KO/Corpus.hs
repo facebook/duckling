@@ -33,6 +33,6 @@ allExamples = concat
              , "첫째"
              ]
   , examples (OrdinalData 4)
-             [ "네째번"
+             [ "네번째"
              ]
   ]

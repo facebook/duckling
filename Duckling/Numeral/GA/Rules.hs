@@ -13,9 +13,12 @@ module Duckling.Numeral.GA.Rules
   ( rules
   ) where
 
+import Data.HashMap.Strict (HashMap)
+import qualified Data.HashMap.Strict as HashMap
 import Data.String
-import Prelude
+import Data.Text (Text)
 import qualified Data.Text as Text
+import Prelude
 
 import Duckling.Dimensions.Types
 import Duckling.Numeral.Helpers
@@ -51,6 +54,24 @@ ruleIntegerNumeric = Rule
       _ -> Nothing
   }
 
+oneToTenMap :: HashMap Text Integer
+oneToTenMap = HashMap.fromList
+  [ ("aon", 1)
+  , ("dha", 2)
+  , ("dhá", 2)
+  , ("trí", 3)
+  , ("tri", 3)
+  , ("ceithre", 4)
+  , ("cuig", 5)
+  , ("cúig", 5)
+  , ("sé", 6)
+  , ("se", 6)
+  , ("seacht", 7)
+  , ("ocht", 8)
+  , ("naoi", 9)
+  , ("deich", 10)
+  ]
+
 ruleNumerals2 :: Rule
 ruleNumerals2 = Rule
   { name = "numbers, 1-10"
@@ -58,22 +79,8 @@ ruleNumerals2 = Rule
     [ regex "(aon|dh(á|a)|tr(í|i)|ceithre|c(ú|u)ig|seacht|s(é|e)|ocht|naoi|deich)"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
-        "aon" -> integer 1
-        "dha" -> integer 2
-        "dhá" -> integer 2
-        "trí" -> integer 3
-        "tri" -> integer 3
-        "ceithre" -> integer 4
-        "cuig" -> integer 5
-        "cúig" -> integer 5
-        "sé" -> integer 6
-        "se" -> integer 6
-        "seacht" -> integer 7
-        "ocht" -> integer 8
-        "naoi" -> integer 9
-        "deich" -> integer 10
-        _ -> Nothing
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        HashMap.lookup (Text.toLower match) oneToTenMap >>= integer
       _ -> Nothing
   }
 
@@ -127,6 +134,17 @@ ruleNumeralsSuffixesKMG = Rule
       _ -> Nothing
   }
 
+oldVigNumeralsSMap :: HashMap Text Integer
+oldVigNumeralsSMap = HashMap.fromList
+  [ ("dá fhichead",40)
+  , ("da fhichead", 40)
+  , ("dhá fhichead", 40)
+  , ("dha fhichead", 40)
+  , ("trí fichid", 60)
+  , ("tri fichid", 60)
+  , ("ceithre fichid", 80)
+  ]
+
 ruleOldVigesimalNumeralsS :: Rule
 ruleOldVigesimalNumeralsS = Rule
   { name = "old vigesimal numbers, 20s"
@@ -134,17 +152,21 @@ ruleOldVigesimalNumeralsS = Rule
     [ regex "is (dh?(á|a) fhichead|tr(í|i) fichid|ceithre fichid)"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
-        "dá fhichead" -> integer 40
-        "da fhichead" -> integer 40
-        "dhá fhichead" -> integer 40
-        "dha fhichead" -> integer 40
-        "trí fichid" -> integer 60
-        "tri fichid" -> integer 60
-        "ceithre fichid" -> integer 80
-        _ -> Nothing
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        HashMap.lookup (Text.toLower match) oldVigNumeralsSMap >>= integer
       _ -> Nothing
   }
+
+oldVigNumeralsS2Map :: HashMap Text Integer
+oldVigNumeralsS2Map = HashMap.fromList
+  [ ("fiche", 30)
+  , ("dá fhichead", 50)
+  , ("da fhichead", 50)
+  , ("dha fhichead", 50)
+  , ("trí fichid", 70)
+  , ("tri fichid", 70)
+  , ("ceithre fichid", 90)
+  ]
 
 ruleOldVigesimalNumeralsS2 :: Rule
 ruleOldVigesimalNumeralsS2 = Rule
@@ -153,16 +175,8 @@ ruleOldVigesimalNumeralsS2 = Rule
     [ regex "d(é|e)ag is (fiche|dh?(á|a) fhichead|tr(í|i) fichid|ceithre fichid)"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
-        "fiche" -> integer 30
-        "dá fhichead" -> integer 50
-        "da fhichead" -> integer 50
-        "dhá fhichead" -> integer 50
-        "dha fhichead" -> integer 50
-        "trí fichid" -> integer 70
-        "tri fichid" -> integer 70
-        "ceithre fichid" -> integer 90
-        _ -> Nothing
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        HashMap.lookup (Text.toLower match) oldVigNumeralsS2Map >>= integer
       _ -> Nothing
   }
 
@@ -175,6 +189,22 @@ ruleAmhin = Rule
   , prod = \_ -> integer 1
   }
 
+twentyToNinetyMap :: HashMap Text Integer
+twentyToNinetyMap = HashMap.fromList
+ [ ("fiche", 20)
+ , ("triocha", 30)
+ , ("tríocha", 30)
+ , ("daichead", 40)
+ , ("caoga", 50)
+ , ("seasca", 60)
+ , ("seachto", 70)
+ , ("seachtó", 70)
+ , ("ochto", 80)
+ , ("ochtó", 80)
+ , ("nócha", 90)
+ , ("nocha", 90)
+ ]
+
 ruleNumerals :: Rule
 ruleNumerals = Rule
   { name = "numbers, 20-90"
@@ -182,20 +212,8 @@ ruleNumerals = Rule
     [ regex "(fiche|tr(í|i)ocha|daichead|caoga|seasca|seacht(ó|o)|ocht(ó|o)|n(ó|o)cha)"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
-        "fiche" -> integer 20
-        "triocha" -> integer 30
-        "tríocha" -> integer 30
-        "daichead" -> integer 40
-        "caoga" -> integer 50
-        "seasca" -> integer 60
-        "seachto" -> integer 70
-        "seachtó" -> integer 70
-        "ochto" -> integer 80
-        "ochtó" -> integer 80
-        "nócha" -> integer 90
-        "nocha" -> integer 90
-        _ -> Nothing
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        HashMap.lookup (Text.toLower match) twentyToNinetyMap >>= integer
       _ -> Nothing
   }
 
@@ -211,6 +229,26 @@ ruleIntegerWithThousandsSeparator = Rule
       _ -> Nothing
   }
 
+countNumeralsMap :: HashMap Text Integer
+countNumeralsMap = HashMap.fromList
+  [ ("naid", 0)
+  , ("náid", 0)
+  , ("haon", 1)
+  , ("dó", 2)
+  , ("do", 2)
+  , ("trí", 3)
+  , ("tri", 3)
+  , ("ceathair", 4)
+  , ("cuig", 5)
+  , ("cúig", 5)
+  , ("sé", 6)
+  , ("se", 6)
+  , ("seacht", 7)
+  , ("hocht", 8)
+  , ("naoi", 9)
+  , ("deich", 10)
+  ]
+
 ruleCountNumerals :: Rule
 ruleCountNumerals = Rule
   { name = "count numbers"
@@ -218,24 +256,8 @@ ruleCountNumerals = Rule
     [ regex "a (n(á|a)id|haon|d(ó|o)|tr(í|i)|ceathair|c(ú|u)ig|s(é|e)|seacht|hocht|naoi|deich)"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
-        "naid" -> integer 0
-        "náid" -> integer 0
-        "haon" -> integer 1
-        "dó" -> integer 2
-        "do" -> integer 2
-        "trí" -> integer 3
-        "tri" -> integer 3
-        "ceathair" -> integer 4
-        "cuig" -> integer 5
-        "cúig" -> integer 5
-        "sé" -> integer 6
-        "se" -> integer 6
-        "seacht" -> integer 7
-        "hocht" -> integer 8
-        "naoi" -> integer 9
-        "deich" -> integer 10
-        _ -> Nothing
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        HashMap.lookup (Text.toLower match) countNumeralsMap >>= integer
       _ -> Nothing
   }
 

@@ -7,6 +7,7 @@
 
 
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE NoRebindableSyntax #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Numeral.GA.Rules
@@ -14,11 +15,11 @@ module Duckling.Numeral.GA.Rules
   ) where
 
 import Data.HashMap.Strict (HashMap)
-import qualified Data.HashMap.Strict as HashMap
 import Data.String
 import Data.Text (Text)
-import qualified Data.Text as Text
 import Prelude
+import qualified Data.HashMap.Strict as HashMap
+import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
 import Duckling.Numeral.Helpers
@@ -136,7 +137,7 @@ ruleNumeralsSuffixesKMG = Rule
 
 oldVigNumeralsSMap :: HashMap Text Integer
 oldVigNumeralsSMap = HashMap.fromList
-  [ ("dá fhichead",40)
+  [ ("dá fhichead", 40)
   , ("da fhichead", 40)
   , ("dhá fhichead", 40)
   , ("dha fhichead", 40)
@@ -149,35 +150,22 @@ ruleOldVigesimalNumeralsS :: Rule
 ruleOldVigesimalNumeralsS = Rule
   { name = "old vigesimal numbers, 20s"
   , pattern =
-    [ regex "is (dh?(á|a) fhichead|tr(í|i) fichid|ceithre fichid)"
+    [ regex "(d[ée]ag )?is (dh?(á|a) fhichead|tr(í|i) fichid|ceithre fichid)"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) ->
-        HashMap.lookup (Text.toLower match) oldVigNumeralsSMap >>= integer
+      (Token RegexMatch (GroupMatch (ten:match:_)):_) -> do
+        x <- HashMap.lookup (Text.toLower match) oldVigNumeralsSMap
+        integer $ if Text.null ten then x else x + 10
       _ -> Nothing
   }
 
-oldVigNumeralsS2Map :: HashMap Text Integer
-oldVigNumeralsS2Map = HashMap.fromList
-  [ ("fiche", 30)
-  , ("dá fhichead", 50)
-  , ("da fhichead", 50)
-  , ("dha fhichead", 50)
-  , ("trí fichid", 70)
-  , ("tri fichid", 70)
-  , ("ceithre fichid", 90)
-  ]
-
-ruleOldVigesimalNumeralsS2 :: Rule
-ruleOldVigesimalNumeralsS2 = Rule
-  { name = "old vigesimal numbers, 20s + 10"
+ruleOldVigesimalFiche :: Rule
+ruleOldVigesimalFiche = Rule
+  { name = "old vigesimal 20 + 10"
   , pattern =
-    [ regex "d(é|e)ag is (fiche|dh?(á|a) fhichead|tr(í|i) fichid|ceithre fichid)"
+    [ regex "d[ée]ag is fiche"
     ]
-  , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) ->
-        HashMap.lookup (Text.toLower match) oldVigNumeralsS2Map >>= integer
-      _ -> Nothing
+  , prod = const $ integer 30
   }
 
 ruleAmhin :: Rule
@@ -275,5 +263,5 @@ rules =
   , ruleNumeralsPrefixWithNegativeOrMinus
   , ruleNumeralsSuffixesKMG
   , ruleOldVigesimalNumeralsS
-  , ruleOldVigesimalNumeralsS2
+  , ruleOldVigesimalFiche
   ]

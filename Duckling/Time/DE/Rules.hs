@@ -28,32 +28,23 @@ import qualified Duckling.Ordinal.Types as TOrdinal
 import qualified Duckling.Time.Types as TTime
 import qualified Duckling.TimeGrain.Types as TG
 
-instants :: [(Text, TG.Grain, Int, String)]
-instants =
- [ ( "now"             , TG.Second,  0,
-       "(genau)? ?jetzt|diesen moment|in diesem moment|gerade eben" )
- , ( "today"           , TG.Day   ,  0,
-       "heute|(um diese zeit|zu dieser zeit|um diesen zeitpunkt|zu diesem zeitpunkt)" )
- , ( "tomorrow"        , TG.Day   ,  1, "morgen" )
- , ( "yesterday"       , TG.Day   , -1, "gestern" )
- , ( "after tomorrow"  , TG.Day   ,  2, "(ü)bermorgen" )
- , ( "before yesterday", TG.Day   , -2, "vorgestern" )
- , ( "EOM|End of month", TG.Month ,  1, "(das )?ende des monats?" )
- , ( "EOY|End of year" , TG.Year  ,  1,
-       "(das )?(EOY|jahr(es)? ?ende|ende (des )?jahr(es)?)" )
- ]
-
 ruleInstants :: [Rule]
-ruleInstants = map go instants
-  where
-    go (name, grain, n, regexPattern) = Rule
-      { name = name
-      , pattern = [regex regexPattern]
-      , prod = \_ -> tt $ cycleNth grain n
-      }
+ruleInstants = mkRuleInstants
+  [ ( "now"             , TG.Second,  0,
+       "(genau)? ?jetzt|diesen moment|in diesem moment|gerade eben" )
+  , ( "today"           , TG.Day   ,  0,
+       "heute|(um diese zeit|zu dieser zeit|um diesen zeitpunkt|zu diesem zeitpunkt)" )
+  , ( "tomorrow"        , TG.Day   ,  1, "morgen" )
+  , ( "yesterday"       , TG.Day   , -1, "gestern" )
+  , ( "after tomorrow"  , TG.Day   ,  2, "(ü)bermorgen" )
+  , ( "before yesterday", TG.Day   , -2, "vorgestern" )
+  , ( "EOM|End of month", TG.Month ,  1, "(das )?ende des monats?" )
+  , ( "EOY|End of year" , TG.Year  ,  1,
+       "(das )?(EOY|jahr(es)? ?ende|ende (des )?jahr(es)?)" )
+  ]
 
-daysOfWeek :: [(Text, String)]
-daysOfWeek =
+ruleDaysOfWeek :: [Rule]
+ruleDaysOfWeek = mkRuleDaysOfWeek
   [ ( "Montag"    , "montags?|mo\\.?"              )
   , ( "Dienstag"  , "die?nstags?|di\\.?"           )
   , ( "Mittwoch"  , "mittwochs?|mi\\.?"            )
@@ -63,17 +54,8 @@ daysOfWeek =
   , ( "Sonntag"   , "sonntags?|so\\.?"             )
   ]
 
-ruleDaysOfWeek :: [Rule]
-ruleDaysOfWeek = zipWith go daysOfWeek [1..7]
-  where
-    go (name, regexPattern) i = Rule
-      { name = name
-      , pattern = [regex regexPattern]
-      , prod = \_ -> tt $ dayOfWeek i
-      }
-
-months :: [(Text, String)]
-months =
+ruleMonths :: [Rule]
+ruleMonths = mkRuleMonths
   [ ( "Januar"   , "januar|jan\\.?"             )
   , ( "Februar"  , "februar|feb\\.?"            )
   , ( "Marz"     , "m(ä)rz|m(ä)r\\.?" )
@@ -88,34 +70,16 @@ months =
   , ( "Dezember" , "dezember|dez\\.?"           )
   ]
 
-ruleMonths :: [Rule]
-ruleMonths = zipWith go months [1..12]
-  where
-    go (name, regexPattern) i = Rule
-      { name = name
-      , pattern = [regex regexPattern]
-      , prod = \_ -> tt $ month i
-      }
-
-seasons :: [(Text, String, TimeData, TimeData)]
-seasons =
+ruleSeasons :: [Rule]
+ruleSeasons = mkRuleSeasons
   [ ( "sommer"  , "sommer"                , monthDay  6 21, monthDay  9 23 )
   , ( "herbst"  , "herbst"                , monthDay  9 23, monthDay 12 21 )
   , ( "winter"  , "winter"                , monthDay 12 21, monthDay  3 20 )
   , ( "fruhling", "fr(ü)h(ling|jahr)", monthDay  3 20, monthDay  6 21 )
   ]
 
-ruleSeasons :: [Rule]
-ruleSeasons = map go seasons
-  where
-    go (name, regexPattern, start, end) = Rule
-      { name = name
-      , pattern = [regex regexPattern]
-      , prod = \_ -> Token Time <$> interval TTime.Open start end
-      }
-
-holidays :: [(Text, TimeData, String)]
-holidays =
+ruleHolidays :: [Rule]
+ruleHolidays = mkRuleHolidays
   [ ( "new year's day"                    , monthDay  1  1, "neujahr(s?tag)?" )
   , ( "valentine's day"                   , monthDay  2 14, "valentin'?stag" )
   , ( "Schweizer Bundesfeiertag"          , monthDay  8  1,
@@ -140,15 +104,6 @@ holidays =
   , ( "Father's Day"                      , nthDOWOfMonth 3 7 6,
         "vatt?er( ?tag)?" )
   ]
-
-ruleHolidays :: [Rule]
-ruleHolidays = map go holidays
-  where
-    go (name, date, regexPattern) = Rule
-      { name = name
-      , pattern = [regex regexPattern]
-      , prod = \_ -> tt date
-      }
 
 ruleRelativeMinutesTotillbeforeIntegerHourofday :: Rule
 ruleRelativeMinutesTotillbeforeIntegerHourofday = Rule
@@ -1340,7 +1295,7 @@ ruleTimeofdayAmpm = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:Token RegexMatch (GroupMatch (ap:_)):_) ->
-        tt . timeOfDayAMPM td $ Text.toLower ap == "a"
+        tt $ timeOfDayAMPM (Text.toLower ap == "a") td
       _ -> Nothing
   }
 
@@ -1504,8 +1459,7 @@ ruleHhmmMilitaryAmpm = Rule
       (Token RegexMatch (GroupMatch (hh:mm:_)):Token RegexMatch (GroupMatch (ap:_)):_) -> do
         h <- parseInt hh
         m <- parseInt mm
-        tt . timeOfDayAMPM (hourMinute True h m) $
-          Text.toLower ap == "a"
+        tt . timeOfDayAMPM (Text.toLower ap == "a") $ hourMinute True h m
       _ -> Nothing
   }
 

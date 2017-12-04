@@ -7,11 +7,12 @@
 
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE NoRebindableSyntax #-}
 
 module Duckling.Time.HR.Rules
-  ( rules ) where
+  ( rules
+  ) where
 
-import Control.Monad (join)
 import Data.Maybe
 import Data.String
 import Data.Text (Text)
@@ -31,8 +32,8 @@ import qualified Duckling.Ordinal.Types as TOrdinal
 import qualified Duckling.Time.Types as TTime
 import qualified Duckling.TimeGrain.Types as TG
 
-daysOfWeek :: [(Text, String)]
-daysOfWeek =
+ruleDaysOfWeek :: [Rule]
+ruleDaysOfWeek = mkRuleDaysOfWeek
   [ ( "Monday"   , "ponedjelja?ka?|pon\\.?"                )
   , ( "Tuesday"  , "utora?ka?|uto?\\.?"                    )
   , ( "Wednesday", "srijed(a|e|u)|sri\\.?"                 )
@@ -42,39 +43,21 @@ daysOfWeek =
   , ( "Sunday"   , "nedjelj(a|e|u)|ned\\.?"                )
   ]
 
-ruleDaysOfWeek :: [Rule]
-ruleDaysOfWeek = zipWith go daysOfWeek [1..7]
-  where
-    go (name, regexPattern) i = Rule
-      { name = name
-      , pattern = [regex regexPattern]
-      , prod = \_ -> tt $ dayOfWeek i
-      }
-
-months :: [(Text, String)]
-months =
-  [ ( "January"  , "sije(c|č)a?nj(a|u)?|januar(a|u)?|jan\\.?|sij?\\.?|prv(i|a|o(ga?)?)"                )
-  , ( "February" , "(ve)?lja(c|č)(a|e|i)|februar(a|u)?|feb\\.?|ve(lj)?\\.?|drug(i|a|o(ga?)?)"          )
-  , ( "March"    , "o(z|ž)uja?k(a|u)?|mart(a|u)?|mar\\.?|o(z|ž)u?\\.?|tre(c|ć)(i|a|e(ga?)?)" )
-  , ( "April"    , "trava?nj(a|u)?|april(a|u)?|apr\\.?|tra\\.?|(č|c)etvrt(i|a|o(ga?)?)"                )
-  , ( "May"      , "sviba?nj(a|u)?|maj|svi\\.?|pet(i|a|o(ga?)?)"                                            )
-  , ( "June"     , "lipa?nj(a|u)?|jun(i|u|a)?|jun\\.?|lip?\\.?|(š|s)est(i|a|o(ga?)?)"                  )
-  , ( "July"     , "srpa?nj(a|u)?|jul(i|u|a)?|jul\\.?|srp\\.?|sedm(i|a|o(ga?)?)"                            )
-  , ( "August"   , "kolovoz(a|u)?|august(a|u)?|aug\\.?|kol\\.?|osm(i|a|o(ga?)?)"                            )
-  , ( "September", "ruja?n(a|u)?|septemba?r(a|u)?|sept?\\.?|ruj\\.?|devet(i|a|o(ga?)?)"                     )
-  , ( "October"  , "listopad(a|u)?|oktobar(a|u)?|okt\\.?|lis\\.?|deset(i|a|o(ga?)?)"                        )
-  , ( "November" , "studen(i|oga?|om)|novemba?r(a|u)?|nov\\.?|stu\\.?|jedanaest(i|a|o(ga?)?)"               )
-  , ( "December" , "prosina?c(a|u)?|decemba?r(a|u)?|dec\\.?|pros?\\.?|dvanaest(i|a|o(ga?)?)"                )
-  ]
-
 ruleMonths :: [Rule]
-ruleMonths = zipWith go months [1..12]
-  where
-    go (name, regexPattern) i = Rule
-      { name = name
-      , pattern = [regex regexPattern]
-      , prod = \_ -> tt $ month i
-      }
+ruleMonths = mkRuleMonths
+  [ ( "January"  , "sije(c|č)a?nj(a|u)?|januar(a|u)?|jan\\.?|sij?\\.?|prv(i|a|o(ga?)?)"      )
+  , ( "February" , "(ve)?lja(c|č)(a|e|i)|februar(a|u)?|feb\\.?|ve(lj)?\\.?|drug(i|a|o(ga?)?)")
+  , ( "March"    , "o(z|ž)uja?k(a|u)?|mart(a|u)?|mar\\.?|o(z|ž)u?\\.?|tre(c|ć)(i|a|e(ga?)?)" )
+  , ( "April"    , "trava?nj(a|u)?|april(a|u)?|apr\\.?|tra\\.?|(č|c)etvrt(i|a|o(ga?)?)"      )
+  , ( "May"      , "sviba?nj(a|u)?|maj|svi\\.?|pet(i|a|o(ga?)?)"                             )
+  , ( "June"     , "lipa?nj(a|u)?|jun(i|u|a)?|jun\\.?|lip?\\.?|(š|s)est(i|a|o(ga?)?)"        )
+  , ( "July"     , "srpa?nj(a|u)?|jul(i|u|a)?|jul\\.?|srp\\.?|sedm(i|a|o(ga?)?)"             )
+  , ( "August"   , "kolovoz(a|u)?|august(a|u)?|aug\\.?|kol\\.?|osm(i|a|o(ga?)?)"             )
+  , ( "September", "ruja?n(a|u)?|septemba?r(a|u)?|sept?\\.?|ruj\\.?|devet(i|a|o(ga?)?)"      )
+  , ( "October"  , "listopad(a|u)?|oktobar(a|u)?|okt\\.?|lis\\.?|deset(i|a|o(ga?)?)"         )
+  , ( "November" , "studen(i|oga?|om)|novemba?r(a|u)?|nov\\.?|stu\\.?|jedanaest(i|a|o(ga?)?)")
+  , ( "December" , "prosina?c(a|u)?|decemba?r(a|u)?|dec\\.?|pros?\\.?|dvanaest(i|a|o(ga?)?)" )
+  ]
 
 ruleHalfIntegerHrStyleHourofday :: Rule
 ruleHalfIntegerHrStyleHourofday = Rule
@@ -1173,7 +1156,7 @@ ruleHhmmMilitaryPrefixedWithMToAvoidAmbiguityWithYears = Rule
       (Token RegexMatch (GroupMatch (hh:mm:_)):_) -> do
         h <- parseInt hh
         m <- parseInt mm
-        tt $ timeOfDayAMPM (hourMinute False h m) False
+        tt . timeOfDayAMPM False $ hourMinute False h m
       _ -> Nothing
   }
 

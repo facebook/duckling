@@ -26,11 +26,13 @@ ruleEmailSpelledOut :: Rule
 ruleEmailSpelledOut = Rule
   { name = "email spelled out"
   , pattern =
-    [ regex "([\\w\\._+-]+) at ([\\w_-]+(\\.[a-zA-Z]+)+)"
+    [ regex "([\\w_+-]+(?:(?: dot |\\.)[\\w_+-]+){0,10})(?: at |@)([a-zA-Z]+(?:(?:\\.| dot )[\\w_-]+){1,10})"
     ]
   , prod = \xs -> case xs of
       (Token RegexMatch (GroupMatch (m1:m2:_)):_) ->
-        Just $ Token Email EmailData {TEmail.value = Text.concat [m1, "@", m2]}
+        Just $ Token Email EmailData
+          { TEmail.value = Text.concat [replaceDots m1, "@", replaceDots m2] }
+        where replaceDots = Text.replace " dot " "."
       _ -> Nothing
   }
 

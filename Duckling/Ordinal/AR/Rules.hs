@@ -8,9 +8,11 @@
 
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE NoRebindableSyntax #-}
 
 module Duckling.Ordinal.AR.Rules
-  ( rules ) where
+  ( rules
+  ) where
 
 import Control.Monad (join)
 import Data.HashMap.Strict ( HashMap)
@@ -19,6 +21,10 @@ import Data.Text (Text)
 import qualified Data.Text as Text
 import Prelude
 import Data.String
+import Data.Text (Text)
+import Prelude
+import qualified Data.Text as Text
+import qualified Data.HashMap.Strict as HashMap
 
 import Duckling.Dimensions.Types
 import Duckling.Numeral.Helpers (parseInt)
@@ -78,21 +84,21 @@ ruleOrdinals1To10 = Rule
       (Token RegexMatch (GroupMatch (match:_)):_) ->
         ordinal <$> HashMap.lookup (Text.toLower match) ordinalsMap
       _ -> Nothing
-    }
+  }
 
 ruleOrdinals11 :: Rule
 ruleOrdinals11 = Rule
   { name = "ordinals (eleventh)"
   , pattern = [regex "ال([اأإ]حد[يى]?|حاد(ي[ةه]?)?) ?عشر[ةه]?"]
   , prod = \_ -> Just $ ordinal 11
-    }
+  }
 
 ruleOrdinals12 :: Rule
 ruleOrdinals12 = Rule
   { name = "ordinals (twelveth)"
   , pattern = [regex "ال([اأإ]ثن[يى]?|ثان(ي[ةه]?)?) ?عشر[ةه]?"]
   , prod = \_ -> Just $ ordinal 12
-    }
+  }
 
 ruleOrdinals13To19 :: Rule
 ruleOrdinals13To19 = Rule
@@ -103,7 +109,7 @@ ruleOrdinals13To19 = Rule
         uu <- HashMap.lookup (Text.toLower match) ordinalsMap
         Just (ordinal (10 + uu))
       _ -> Nothing
-    }
+  }
 
 ruleOrdinals3 :: Rule
 ruleOrdinals3 = Rule
@@ -113,7 +119,7 @@ ruleOrdinals3 = Rule
       (Token RegexMatch (GroupMatch (match:_)):_) ->
         ordinal <$> HashMap.lookup (Text.toLower match) cardinalsMap
       _ -> Nothing
-    }
+  }
 
 rules :: [Rule]
 rules =

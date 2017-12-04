@@ -40,29 +40,20 @@ ruleIntersect = Rule
       _ -> Nothing
   }
 
-instants :: [(Text, String, TG.Grain, Int)]
-instants =
-  [ ("right now",            "((\x00E9pp )?most)|azonnal", TG.Second, 0  )
-  , ("today",                "ma",                         TG.Day,    0  )
-  , ("tomorrow",             "holnap",                     TG.Day,    1  )
-  , ("day after tomorrow",   "holnaput\x00E1n",            TG.Day,    2  )
-  , ("yesterday",            "tegnap",                     TG.Day,    -1 )
-  , ("day before yesterday", "tegnapel\x0151tt",           TG.Day,    -2 )
-  , ("end of month",         "(a )?h\x00F3nap v\x00E9ge",  TG.Month,  1  )
-  , ("end of year",          "(az )?\x00E9v v\x00E9ge",    TG.Year,   1  )
+ruleInstants :: [Rule]
+ruleInstants = mkRuleInstants
+  [ ("right now",            TG.Second, 0 , "((\x00E9pp )?most)|azonnal" )
+  , ("today",                TG.Day,    0 , "ma"                         )
+  , ("tomorrow",             TG.Day,    1 , "holnap"                     )
+  , ("day after tomorrow",   TG.Day,    2 , "holnaput\x00E1n"            )
+  , ("yesterday",            TG.Day,    -1, "tegnap"                     )
+  , ("day before yesterday", TG.Day,    -2, "tegnapel\x0151tt"           )
+  , ("end of month",         TG.Month,  1 , "(a )?h\x00F3nap v\x00E9ge"  )
+  , ("end of year",          TG.Year,   1 , "(az )?\x00E9v v\x00E9ge"    )
   ]
 
-ruleInstants :: [Rule]
-ruleInstants = map go instants
-  where
-    go (name, regexPattern, grain, n) = Rule
-      { name = name
-      , pattern = [regex regexPattern]
-      , prod = \_ -> tt $ cycleNth grain n
-      }
-
-daysOfWeek :: [(Text, String)]
-daysOfWeek =
+ruleDaysOfWeek :: [Rule]
+ruleDaysOfWeek = mkRuleDaysOfWeek
   [ ( "Monday"   , "h\x00E9tf\x0151|h\x00E9t\\.?"           )
   , ( "Tuesday"  , "kedd"                                   )
   , ( "Wednesday", "szerda|szer\\.?"                        )
@@ -72,17 +63,8 @@ daysOfWeek =
   , ( "Sunday"   , "vas\x00E1rnap|vas\\.?"                  )
   ]
 
-ruleDaysOfWeek :: [Rule]
-ruleDaysOfWeek = zipWith go daysOfWeek [1..7]
-  where
-    go (name, regexPattern) i = Rule
-      { name = name
-      , pattern = [regex regexPattern]
-      , prod = \_ -> tt $ dayOfWeek i
-      }
-
-months :: [(Text, String)]
-months =
+ruleMonths :: [Rule]
+ruleMonths = mkRuleMonths
   [ ( "January"  , "janu\x00E1r|jan\\.?"         )
   , ( "February" , "febru\x00E1r|febr?\\.?"      )
   , ( "March"    , "m\x00E1rcius|m\x00E1rc?\\.?" )
@@ -96,15 +78,6 @@ months =
   , ( "November" , "november|nov\\.?"            )
   , ( "December" , "december|dec\\.?"            )
   ]
-
-ruleMonths :: [Rule]
-ruleMonths = zipWith go months [1..12]
-  where
-    go (name, regexPattern) i = Rule
-      { name = name
-      , pattern = [regex regexPattern]
-      , prod = \_ -> tt $ month i
-      }
 
 ruleMonthDOMNumeral :: Rule
 ruleMonthDOMNumeral = Rule
@@ -199,8 +172,7 @@ ruleTODAM = Rule
     , Predicate isATimeOfDay
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td:_) ->
-        tt . timeOfDayAMPM td $ True
+      (_:Token Time td:_) -> tt $ timeOfDayAMPM True td
       _ -> Nothing
   }
 
@@ -212,7 +184,7 @@ ruleTODPM = Rule
     , Predicate isATimeOfDay
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td:_) -> tt . timeOfDayAMPM td $ False
+      (_:Token Time td:_) -> tt $ timeOfDayAMPM False td
       _ -> Nothing
   }
 

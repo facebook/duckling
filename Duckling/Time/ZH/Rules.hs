@@ -770,7 +770,7 @@ ruleTimeofdayAmpm = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:Token RegexMatch (GroupMatch (ap:_)):_) ->
-        tt . timeOfDayAMPM td $ Text.toLower ap == "a"
+        tt $ timeOfDayAMPM (Text.toLower ap == "a") td
       _ -> Nothing
   }
 
@@ -963,9 +963,8 @@ ruleTimezone = Rule
       _ -> Nothing
   }
 
-
-daysOfWeek :: [(Text, String)]
-daysOfWeek =
+ruleDaysOfWeek :: [Rule]
+ruleDaysOfWeek = mkRuleDaysOfWeek
   [ ( "Monday", "星期一|周一|礼拜一|禮拜一|週一" )
   , ( "Tuesday", "星期二|周二|礼拜二|禮拜二|週二" )
   , ( "Wednesday", "星期三|周三|礼拜三|禮拜三|週三" )
@@ -975,17 +974,8 @@ daysOfWeek =
   , ( "Sunday", "星期日|星期天|礼拜天|周日|禮拜天|週日|禮拜日" )
   ]
 
-ruleDaysOfWeek :: [Rule]
-ruleDaysOfWeek = zipWith go daysOfWeek [1..7]
-  where
-    go (name, regexPattern) i = Rule
-      { name = name
-      , pattern = [regex regexPattern]
-      , prod = \_ -> tt $ dayOfWeek i
-      }
-
-months :: [(Text, String)]
-months =
+ruleMonths :: [Rule]
+ruleMonths = mkRuleMonths
   [ ( "January", "一月(份)?" )
   , ( "February", "二月(份)?" )
   , ( "March", "三月(份)?" )
@@ -999,15 +989,6 @@ months =
   , ( "November", "十一月(份)?" )
   , ( "December", "十二月(份)?" )
   ]
-
-ruleMonths :: [Rule]
-ruleMonths = zipWith go months [1..12]
-  where
-    go (name, regexPattern) i = Rule
-      { name = name
-      , pattern = [regex regexPattern]
-      , prod = \_ -> tt $ month i
-      }
 
 rules :: [Rule]
 rules =

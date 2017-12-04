@@ -61,7 +61,7 @@ add utcTime Quarter n =
   updateUTCDay utcTime . Time.addGregorianMonthsClip $ 3 * n
 add utcTime Year n = updateUTCDay utcTime $ Time.addGregorianYearsClip n
 
-inSeconds :: Grain -> Int -> Int
+inSeconds :: Num a => Grain -> a -> a
 inSeconds NoGrain n = n
 inSeconds Second  n = n
 inSeconds Minute  n = n * 60

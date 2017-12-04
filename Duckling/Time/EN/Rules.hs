@@ -11,7 +11,8 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Time.EN.Rules
-  ( rules ) where
+  ( rules
+  ) where
 
 import Data.Maybe
 import Data.Text (Text)
@@ -105,24 +106,15 @@ ruleAbsorbCommaTOD = Rule
       _ -> Nothing
   }
 
-instants :: [(Text, String, TG.Grain, Int)]
-instants =
-  [ ("right now", "((just|right)\\s*)now|immediately", TG.Second, 0)
-  , ("today", "todays?|(at this time)", TG.Day, 0)
-  , ("tomorrow", "(tmrw?|tomm?or?rows?)", TG.Day, 1)
-  , ("yesterday", "yesterdays?", TG.Day, - 1)
-  , ("end of month", "(the )?(EOM|end of (the )?month)", TG.Month, 1)
-  , ("end of year", "(the )?(EOY|end of (the )?year)", TG.Year, 1)
-  ]
-
 ruleInstants :: [Rule]
-ruleInstants = map go instants
-  where
-    go (name, regexPattern, grain, n) = Rule
-      { name = name
-      , pattern = [regex regexPattern]
-      , prod = \_ -> tt $ cycleNth grain n
-      }
+ruleInstants = mkRuleInstants
+  [ ("right now"    , TG.Second, 0  , "((just|right)\\s*)now|immediately")
+  , ("today"        , TG.Day   , 0  , "todays?|(at this time)"           )
+  , ("tomorrow"     , TG.Day   , 1  , "(tmrw?|tomm?or?rows?)"            )
+  , ("yesterday"    , TG.Day   , - 1, "yesterdays?"                      )
+  , ("end of month" , TG.Month , 1  , "(the )?(EOM|end of (the )?month)" )
+  , ("end of year"  , TG.Year  , 1  , "(the )?(EOY|end of (the )?year)"  )
+  ]
 
 ruleNow :: Rule
 ruleNow = Rule
@@ -202,7 +194,7 @@ ruleTimeBeforeLastAfterNext = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:Token RegexMatch (GroupMatch (match:_)):_) ->
-        tt $ predNth 1 (match == "after next") td
+        tt $ predNth 1 (Text.toLower match == "after next") td
       _ -> Nothing
   }
 
@@ -536,11 +528,46 @@ ruleMilitaryAMPM = Rule
     , regex "([ap])\\.?m?\\.?"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (hh:mm:_)):Token RegexMatch (GroupMatch (ap:_)):_) -> do
+      (Token RegexMatch (GroupMatch (hh:mm:_)):
+       Token RegexMatch (GroupMatch (ap:_)):
+       _) -> do
         h <- parseInt hh
         m <- parseInt mm
-        tt . timeOfDayAMPM (hourMinute True h m) $
-          Text.toLower ap == "a"
+        tt . timeOfDayAMPM (Text.toLower ap == "a") $ hourMinute True h m
+      _ -> Nothing
+  }
+
+ruleMilitarySpelledOutAMPM :: Rule
+ruleMilitarySpelledOutAMPM = Rule
+  { name = "military spelled out numbers am|pm"
+  , pattern =
+    [ Predicate $ and . sequence [isNumeralSafeToUse, isIntegerBetween 10 12]
+    , Predicate $ and . sequence [isNumeralSafeToUse, isIntegerBetween 1 59]
+    , regex "(in the )?([ap])(\\s|\\.)?m?\\.?"
+    ]
+    , prod = \tokens -> case tokens of
+        (h:m:Token RegexMatch (GroupMatch (_:ap:_)):_) -> do
+          hh <- getIntValue h
+          mm <- getIntValue m
+          tt . timeOfDayAMPM (Text.toLower ap == "a") $ hourMinute True hh mm
+        _ -> Nothing
+  }
+
+ruleMilitarySpelledOutAMPM2 :: Rule
+ruleMilitarySpelledOutAMPM2 = Rule
+  { name = "six thirty six a.m."
+  , pattern =
+    [ Predicate $ isIntegerBetween 110 999
+    , regex "(in the )?([ap])(\\s|\\.)?m?\\.?"
+    ]
+  , prod = \tokens -> case tokens of
+      (token:Token RegexMatch (GroupMatch (_:ap:_)):_) -> do
+        n <- getIntValue token
+        m <- case mod n 100 of
+          v | v < 60 -> Just v
+          _          -> Nothing
+        let h = quot n 100
+        tt . timeOfDayAMPM (Text.toLower ap == "a") $ hourMinute True h m
       _ -> Nothing
   }
 
@@ -553,7 +580,7 @@ ruleTODAMPM = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:Token RegexMatch (GroupMatch (_:ap:_)):_) ->
-        tt . timeOfDayAMPM td $ Text.toLower ap == "a"
+        tt $ timeOfDayAMPM (Text.toLower ap == "a") td
       _ -> Nothing
   }
 
@@ -708,7 +735,9 @@ ruleMMYYYY = Rule
 ruleYYYYMMDD :: Rule
 ruleYYYYMMDD = Rule
   { name = "yyyy-mm-dd"
-  , pattern = [regex "(\\d{2,4})-(0?[1-9]|1[0-2])-(3[01]|[12]\\d|0?[1-9])"]
+  , pattern =
+    [ regex "(\\d{2,4})-(0?[1-9]|1[0-2])-(3[01]|[12]\\d|0?[1-9])"
+    ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (yy:mm:dd:_)):_) -> do
         y <- parseInt yy
@@ -721,10 +750,12 @@ ruleYYYYMMDD = Rule
 ruleNoonMidnightEOD :: Rule
 ruleNoonMidnightEOD = Rule
   { name = "noon|midnight|EOD|end of day"
-  , pattern = [regex "(noon|midni(ght|te)|(the )?(EOD|end of (the )?day))"]
+  , pattern =
+    [ regex "(noon|midni(ght|te)|(the )?(EOD|end of (the )?day))"
+    ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> tt . hour False $
-        if match == "noon" then 12 else 0
+        if Text.toLower match == "noon" then 12 else 0
       _ -> Nothing
   }
 
@@ -1083,7 +1114,7 @@ ruleIntervalTODAMPM = Rule
              Just m -> hourMinute True h m
              Nothing -> hour True h
        Token Time <$>
-         interval TTime.Closed (timeOfDayAMPM td1 ampm) (timeOfDayAMPM td2 ampm)
+         interval TTime.Closed (timeOfDayAMPM ampm td1) (timeOfDayAMPM ampm td2)
      _ -> Nothing
  }
 
@@ -1359,7 +1390,7 @@ ruleCycleTheAfterBeforeTime = Rule
        : Token RegexMatch (GroupMatch (match:_))
        : Token Time td
        : _) ->
-        let n = if match == "after" then 1 else - 1 in
+        let n = if Text.toLower match == "after" then 1 else - 1 in
           tt $ cycleNthAfter False grain n td
       _ -> Nothing
   }
@@ -1373,8 +1404,11 @@ ruleCycleAfterBeforeTime = Rule
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
-      (Token TimeGrain grain:Token RegexMatch (GroupMatch (match:_)):Token Time td:_) ->
-        let n = if match == "after" then 1 else - 1 in
+      (Token TimeGrain grain:
+       Token RegexMatch (GroupMatch (match:_)):
+       Token Time td:
+       _) ->
+        let n = if Text.toLower match == "after" then 1 else - 1 in
           tt $ cycleNthAfter False grain n td
       _ -> Nothing
   }
@@ -1388,9 +1422,12 @@ ruleCycleLastNextN = Rule
     , dimension TimeGrain
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):token:Token TimeGrain grain:_) -> do
+      (Token RegexMatch (GroupMatch (match:_)):
+       token:
+       Token TimeGrain grain:
+       _) -> do
         n <- getIntValue token
-        tt . cycleN True grain $ if match == "next" then n else - n
+        tt . cycleN True grain $ if Text.toLower match == "next" then n else - n
       _ -> Nothing
   }
 
@@ -1534,9 +1571,9 @@ ruleDurationInWithinAfter = Rule
        _) -> case Text.toLower match of
          "within" -> Token Time <$>
            interval TTime.Open (cycleNth TG.Second 0) (inDuration dd)
-         "after" -> tt . withDirection TTime.After $ inDuration dd
-         "in" -> tt $ inDuration dd
-         _ -> Nothing
+         "after"  -> tt . withDirection TTime.After $ inDuration dd
+         "in"     -> tt $ inDuration dd
+         _        -> Nothing
       _ -> Nothing
   }
 
@@ -1552,7 +1589,7 @@ ruleDurationHenceAgo = Rule
        Token RegexMatch (GroupMatch (match:_)):
        _) -> case Text.toLower match of
         "ago" -> tt $ durationAgo dd
-        _ -> tt $ inDuration dd
+        _     -> tt $ inDuration dd
       _ -> Nothing
   }
 
@@ -1655,6 +1692,8 @@ rules =
   , ruleHHMMLatent
   , ruleHHMMSS
   , ruleMilitaryAMPM
+  , ruleMilitarySpelledOutAMPM
+  , ruleMilitarySpelledOutAMPM2
   , ruleTODAMPM
   , ruleHONumeral
   , ruleHODHalf

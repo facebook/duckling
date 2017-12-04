@@ -97,6 +97,7 @@ ruleDecimalNumeral = Rule
       _ -> Nothing
   }
 
+-- TODO: Single-word composition (#110)
 ruleInteger3 :: Rule
 ruleInteger3 = Rule
   { name = "integer ([2-9][1-9])"

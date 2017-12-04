@@ -600,50 +600,32 @@ ruleAnNamedday = Rule
       _ -> Nothing
   }
 
-daysOfWeek :: [(Text, String)]
-daysOfWeek =
-  [ ( "Monday"   , "luai?n|lu\\.?"                       )
+ruleDaysOfWeek :: [Rule]
+ruleDaysOfWeek = mkRuleDaysOfWeek
+  [ ( "Monday"   , "luai?n|lu\\.?"             )
   , ( "Tuesday"  , "mh?(á|a)irt|m(á|a)?\\.?"   )
   , ( "Wednesday", "ch?(é|e)adaoin|c(é|e)\\.?" )
   , ( "Thursday" , "d(é|e)ardaoin|d(é|e)?\\.?" )
-  , ( "Friday"   , "h?aoine|ao\\.?"                      )
-  , ( "Saturday" , "sathai?rn|sa\\.?"                    )
-  , ( "Sunday"   , "domhnai?[cg]h|do\\.?"                )
-  ]
-
-ruleDaysOfWeek :: [Rule]
-ruleDaysOfWeek = zipWith go daysOfWeek [1..7]
-  where
-    go (name, regexPattern) i = Rule
-      { name = name
-      , pattern = [regex regexPattern]
-      , prod = \_ -> tt $ dayOfWeek i
-      }
-
-months :: [(Text, String)]
-months =
-  [ ( "January"  , "(mh?(í|i) )?(an )?t?ean(á|a)ir|ean\\.?"          )
-  , ( "February" , "(mh?(í|i) )?(na )?feabhra|fea\\.?"                    )
-  , ( "March"    , "(mh?(í|i) )?(an )?mh?(á|a)rta|m(á|a)r\\.?"  )
-  , ( "April"    , "(mh?(í|i) )?(an )?t?aibre(á|a)i?n|abr\\.?"       )
-  , ( "May"      , "(mh?(í|i) )?(na )?bh?ealtaine|bea\\.?"                )
-  , ( "June"     , "(mh?(í|i) )?(an )?mh?eith(ea|i)mh|mei\\.?"            )
-  , ( "July"     , "(mh?(í|i) )?i(ú|u)il|i(ú|u)i\\.?"           )
-  , ( "August"   , "(mh?(í|i) )?(na )?l(ú|u)nasa|l(ú|u)n\\.?"   )
-  , ( "September", "(mh?(í|i) )?mh?e(á|a)n f(ó|o)mhair|mef?\\.?")
-  , ( "October"  , "(mh?(í|i) )?(na )?nollai?g|nol\\.?"                   )
-  , ( "November" , "(mh?(í|i) )?(na )?samh(ain|na)|sam\\.?"               )
-  , ( "December" , "(mh?(í|i) )?(na )?nollai?g|nol\\.?"                   )
+  , ( "Friday"   , "h?aoine|ao\\.?"            )
+  , ( "Saturday" , "sathai?rn|sa\\.?"          )
+  , ( "Sunday"   , "domhnai?[cg]h|do\\.?"      )
   ]
 
 ruleMonths :: [Rule]
-ruleMonths = zipWith go months [1..12]
-  where
-    go (name, regexPattern) i = Rule
-      { name = name
-      , pattern = [regex regexPattern]
-      , prod = \_ -> tt $ month i
-      }
+ruleMonths = mkRuleMonths
+  [ ( "January"  , "(mh?(í|i) )?(an )?t?ean(á|a)ir|ean\\.?"     )
+  , ( "February" , "(mh?(í|i) )?(na )?feabhra|fea\\.?"          )
+  , ( "March"    , "(mh?(í|i) )?(an )?mh?(á|a)rta|m(á|a)r\\.?"  )
+  , ( "April"    , "(mh?(í|i) )?(an )?t?aibre(á|a)i?n|abr\\.?"  )
+  , ( "May"      , "(mh?(í|i) )?(na )?bh?ealtaine|bea\\.?"      )
+  , ( "June"     , "(mh?(í|i) )?(an )?mh?eith(ea|i)mh|mei\\.?"  )
+  , ( "July"     , "(mh?(í|i) )?i(ú|u)il|i(ú|u)i\\.?"           )
+  , ( "August"   , "(mh?(í|i) )?(na )?l(ú|u)nasa|l(ú|u)n\\.?"   )
+  , ( "September", "(mh?(í|i) )?mh?e(á|a)n f(ó|o)mhair|mef?\\.?")
+  , ( "October"  , "(mh?(í|i) )?(na )?nollai?g|nol\\.?"         )
+  , ( "November" , "(mh?(í|i) )?(na )?samh(ain|na)|sam\\.?"     )
+  , ( "December" , "(mh?(í|i) )?(na )?nollai?g|nol\\.?"         )
+  ]
 
 ruleCycleINdiaidhTime :: Rule
 ruleCycleINdiaidhTime = Rule

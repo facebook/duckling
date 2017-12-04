@@ -28,6 +28,7 @@ import qualified Duckling.Rules.BG as BGRules
 import qualified Duckling.Rules.CS as CSRules
 import qualified Duckling.Rules.DA as DARules
 import qualified Duckling.Rules.DE as DERules
+import qualified Duckling.Rules.EL as ELRules
 import qualified Duckling.Rules.EN as ENRules
 import qualified Duckling.Rules.ES as ESRules
 import qualified Duckling.Rules.ET as ETRules
@@ -80,6 +81,7 @@ defaultRules BG = BGRules.defaultRules
 defaultRules CS = CSRules.defaultRules
 defaultRules DA = DARules.defaultRules
 defaultRules DE = DERules.defaultRules
+defaultRules EL = ELRules.defaultRules
 defaultRules EN = ENRules.defaultRules
 defaultRules ES = ESRules.defaultRules
 defaultRules ET = ETRules.defaultRules
@@ -112,6 +114,7 @@ localeRules BG = BGRules.localeRules
 localeRules CS = CSRules.localeRules
 localeRules DA = DARules.localeRules
 localeRules DE = DERules.localeRules
+localeRules EL = ELRules.localeRules
 localeRules EN = ENRules.localeRules
 localeRules ES = ESRules.localeRules
 localeRules ET = ETRules.localeRules
@@ -144,6 +147,7 @@ langRules BG = BGRules.langRules
 langRules CS = CSRules.langRules
 langRules DA = DARules.langRules
 langRules DE = DERules.langRules
+langRules EL = ELRules.langRules
 langRules EN = ENRules.langRules
 langRules ES = ESRules.langRules
 langRules ET = ETRules.langRules

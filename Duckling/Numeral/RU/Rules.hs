@@ -28,8 +28,8 @@ import Duckling.Regex.Types
 import Duckling.Types
 import qualified Duckling.Numeral.Types as TNumeral
 
-dozensMap :: HashMap Text Integer
-dozensMap = HashMap.fromList
+tensMap :: HashMap Text Integer
+tensMap = HashMap.fromList
   [ ( "двадцать", 20)
   , ( "тридцать", 30)
   , ( "сорок", 40)
@@ -48,7 +48,7 @@ ruleInteger5 = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
-        HashMap.lookup (Text.toLower match) dozensMap >>= integer
+        HashMap.lookup (Text.toLower match) tensMap >>= integer
       _ -> Nothing
   }
 
@@ -104,6 +104,18 @@ ruleDecimalOneAndAHalf = Rule
     [ regex "(полтора|полторы|полутора)"
     ]
    , prod = \_ -> double 1.5
+  }
+
+ruleIntegerAndAHalf :: Rule
+ruleIntegerAndAHalf = Rule
+  { name = "<integer> and a half"
+  , pattern =
+    [ Predicate isNatural
+    , regex "с половиной"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Numeral (NumeralData {TNumeral.value = v}):_) -> double $ v + 0.5
+      _ -> Nothing
   }
 
 hundredsMap :: HashMap Text Integer
@@ -281,6 +293,7 @@ rules =
   , ruleInteger6
   , ruleInteger7
   , ruleInteger8
+  , ruleIntegerAndAHalf
   , ruleDecimalOneAndAHalf
   , ruleIntegerNumeric
   , ruleIntegerWithThousandsSeparator

@@ -1024,7 +1024,7 @@ ruleTimeofdayAmpm = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:Token RegexMatch (GroupMatch (_:ap:_)):_) ->
-        tt . timeOfDayAMPM td $ Text.toLower ap == "a"
+        tt $ timeOfDayAMPM (Text.toLower ap == "a") td
       _ -> Nothing
   }
 
@@ -1150,8 +1150,7 @@ ruleHhmmMilitaryAmpm = Rule
       (Token RegexMatch (GroupMatch (hh:mm:_)):Token RegexMatch (GroupMatch (ap:_)):_) -> do
         h <- parseInt hh
         m <- parseInt mm
-        tt . timeOfDayAMPM (hourMinute True h m) $
-          Text.toLower ap == "a"
+        tt . timeOfDayAMPM (Text.toLower ap == "a") $ hourMinute True h m
       _ -> Nothing
   }
 
@@ -1326,8 +1325,8 @@ ruleHhmmss = Rule
       _ -> Nothing
   }
 
-months :: [(Text, String)]
-months =
+ruleMonths :: [Rule]
+ruleMonths = mkRuleMonths
   [ ( "ינואר", "ינואר" )
   , ( "פברואר", "פברואר" )
   , ( "מרץ", "מרץ" )
@@ -1341,15 +1340,6 @@ months =
   , ( "נובמבר", "נובמבר" )
   , ( "דצמבר", "דצמבר" )
   ]
-
-ruleMonths :: [Rule]
-ruleMonths = zipWith go months [1..12]
-  where
-    go (name, regexPattern) i = Rule
-      { name = name
-      , pattern = [regex regexPattern]
-      , prod = \_ -> tt $ month i
-      }
 
 rules :: [Rule]
 rules =

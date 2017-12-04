@@ -38,50 +38,32 @@ ruleTtDng = Rule
   , prod = \_ -> tt $ monthDay 1 1
   }
 
-daysOfWeek :: [(Text, String)]
-daysOfWeek =
-  [ ( "Monday"   , "th(ứ) (2|hai)"                                      )
-  , ( "Tuesday"  , "th(ứ) (3|ba)"                                       )
-  , ( "Wednesday", "th(ứ) 4|th(ứ) b(ố)n|th(ứ) t(ư)" )
-  , ( "Thursday" , "th(ứ) (5|n(ă)m)"                               )
-  , ( "Friday"   , "th(ứ) 6|th(ứ) s(á)u"                      )
-  , ( "Saturday" , "th(ứ) (7|b((ả)|(ẩ))y)"                    )
-  , ( "Sunday"   , "ch(ủ) nh(ậ)t"                                  )
-  ]
-
 ruleDaysOfWeek :: [Rule]
-ruleDaysOfWeek = zipWith go daysOfWeek [1..7]
-  where
-    go (name, regexPattern) i = Rule
-      { name = name
-      , pattern = [regex regexPattern]
-      , prod = \_ -> tt $ dayOfWeek i
-      }
-
-months :: [(Text, String)]
-months =
-  [ ( "January"  , "th(á)ng (gi(ê)ng|m(ộ)t)"         )
-  , ( "February" , "th(á)ng hai"                               )
-  , ( "March"    , "th(á)ng ba"                                )
-  , ( "April"    , "th(á)ng t(ư)|th(á)ng b(ố)n" )
-  , ( "May"      , "th(á)ng n(ă)m"                        )
-  , ( "June"     , "th(á)ng s(á)u"                        )
-  , ( "July"     , "th(á)ng b(ả)y"                        )
-  , ( "August"   , "th(á)ng t(á)m"                        )
-  , ( "September", "th(á)ng ch(í)n"                       )
-  , ( "October"  , "th(á)ng m(ư)(ờ)i"                )
-  , ( "November" , "th(á)ng m(ư)(ờ)i m(ộ)t"     )
-  , ( "December" , "th(á)ng m(ư)(ờ)i hai"            )
+ruleDaysOfWeek = mkRuleDaysOfWeek
+  [ ( "Monday"   , "th(ứ) (2|hai)"                  )
+  , ( "Tuesday"  , "th(ứ) (3|ba)"                   )
+  , ( "Wednesday", "th(ứ) 4|th(ứ) b(ố)n|th(ứ) t(ư)" )
+  , ( "Thursday" , "th(ứ) (5|n(ă)m)"                )
+  , ( "Friday"   , "th(ứ) 6|th(ứ) s(á)u"            )
+  , ( "Saturday" , "th(ứ) (7|b((ả)|(ẩ))y)"          )
+  , ( "Sunday"   , "ch(ủ) nh(ậ)t"                   )
   ]
 
 ruleMonths :: [Rule]
-ruleMonths = zipWith go months [1..12]
-  where
-    go (name, regexPattern) i = Rule
-      { name = name
-      , pattern = [regex regexPattern]
-      , prod = \_ -> tt $ month i
-      }
+ruleMonths = mkRuleMonths
+  [ ( "January"  , "th(á)ng (gi(ê)ng|m(ộ)t)"    )
+  , ( "February" , "th(á)ng hai"                )
+  , ( "March"    , "th(á)ng ba"                 )
+  , ( "April"    , "th(á)ng t(ư)|th(á)ng b(ố)n" )
+  , ( "May"      , "th(á)ng n(ă)m"              )
+  , ( "June"     , "th(á)ng s(á)u"              )
+  , ( "July"     , "th(á)ng b(ả)y"              )
+  , ( "August"   , "th(á)ng t(á)m"              )
+  , ( "September", "th(á)ng ch(í)n"             )
+  , ( "October"  , "th(á)ng m(ư)(ờ)i"           )
+  , ( "November" , "th(á)ng m(ư)(ờ)i m(ộ)t"     )
+  , ( "December" , "th(á)ng m(ư)(ờ)i hai"       )
+  ]
 
 ruleDayofmonthNamedmonth :: Rule
 ruleDayofmonthNamedmonth = Rule
@@ -630,7 +612,7 @@ ruleTimeofdaySngchiuti = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:Token RegexMatch (GroupMatch (ap:_)):_) ->
-        tt . timeOfDayAMPM td $ Text.toLower ap == "s\225ng"
+        tt $ timeOfDayAMPM (Text.toLower ap == "s\225ng") td
       _ -> Nothing
   }
 
@@ -786,7 +768,7 @@ ruleTimeofdayAmpm = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:Token RegexMatch (GroupMatch (_:ap:_)):_) ->
-        tt . timeOfDayAMPM td $ Text.toLower ap == "a"
+        tt $ timeOfDayAMPM (Text.toLower ap == "a") td
       _ -> Nothing
   }
 
@@ -905,8 +887,7 @@ ruleHhmmMilitaryAmpm = Rule
        _) -> do
         h <- parseInt hh
         m <- parseInt mm
-        tt . timeOfDayAMPM (hourMinute True h m) $
-          Text.toLower ap == "a"
+        tt . timeOfDayAMPM (Text.toLower ap == "a") $ hourMinute True h m
       _ -> Nothing
   }
 
@@ -923,8 +904,7 @@ ruleHhmmMilitarySngchiuti = Rule
        _) -> do
         h <- parseInt hh
         m <- parseInt mm
-        tt . timeOfDayAMPM (hourMinute True h m) $
-          Text.toLower ap == "s\225ng"
+        tt . timeOfDayAMPM (Text.toLower ap == "s\225ng") $ hourMinute True h m
       _ -> Nothing
   }
 

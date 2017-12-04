@@ -27,8 +27,8 @@ import qualified Duckling.Ordinal.Types as TOrdinal
 import qualified Duckling.Time.Types as TTime
 import qualified Duckling.TimeGrain.Types as TG
 
-daysOfWeek :: [(Text, String)]
-daysOfWeek =
+ruleDaysOfWeek :: [Rule]
+ruleDaysOfWeek = mkRuleDaysOfWeek
   [ ( "Mandag"  , "måndag(en)?s?|mån\\.?"    )
   , ( "Tisdag"  , "tisdag(en)?s?|tis?\\.?"   )
   , ( "Onsdag"  , "onsdag(en)?s?|ons\\.?"    )
@@ -38,17 +38,8 @@ daysOfWeek =
   , ( "Sondag"  , "söndag(en)?s?|sön\\.?"    )
   ]
 
-ruleDaysOfWeek :: [Rule]
-ruleDaysOfWeek = zipWith go daysOfWeek [1..7]
-  where
-    go (name, regexPattern) i = Rule
-      { name = name
-      , pattern = [regex regexPattern]
-      , prod = \_ -> tt $ dayOfWeek i
-      }
-
-months :: [(Text, String)]
-months =
+ruleMonths :: [Rule]
+ruleMonths = mkRuleMonths
   [ ("Januari"   , "januari|jan\\.?"     )
   , ("Februari"  , "februari|feb\\.?"    )
   , ("Mars"      , "mars|mar\\.?"        )
@@ -62,15 +53,6 @@ months =
   , ("November"  , "november|nov\\.?"    )
   , ("December"  , "december|dec\\.?"    )
   ]
-
-ruleMonths :: [Rule]
-ruleMonths = zipWith go months [1..12]
-  where
-    go (name, regexPattern) i = Rule
-      { name = name
-      , pattern = [regex regexPattern]
-      , prod = \_ -> tt $ month i
-      }
 
 ruleTheDayAfterTomorrow :: Rule
 ruleTheDayAfterTomorrow = Rule

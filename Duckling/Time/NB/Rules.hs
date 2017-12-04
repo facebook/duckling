@@ -503,8 +503,8 @@ ruleNextCycle = Rule
       _ -> Nothing
   }
 
-daysOfWeek :: [(Text, String)]
-daysOfWeek =
+ruleDaysOfWeek :: [Rule]
+ruleDaysOfWeek = mkRuleDaysOfWeek
   [ ( "Mandag"  , "mandag|man\\.?"    )
   , ( "Tirsdag" , "tirsdag|tirs?\\.?" )
   , ( "Onsdag"  , "onsdag|ons\\.?"    )
@@ -514,17 +514,8 @@ daysOfWeek =
   , ( "Søndag"  , "søndag|søn\\.?"    )
   ]
 
-ruleDaysOfWeek :: [Rule]
-ruleDaysOfWeek = zipWith go daysOfWeek [1..7]
-  where
-    go (name, regexPattern) i = Rule
-      { name = name
-      , pattern = [regex regexPattern]
-      , prod = \_ -> tt $ dayOfWeek i
-      }
-
-months :: [(Text, String)]
-months =
+ruleMonths :: [Rule]
+ruleMonths = mkRuleMonths
   [ ( "Januar"   , "januar|jan\\.?"      )
   , ( "Februar"  , "februar|feb\\.?"     )
   , ( "Mars"     , "mars|mar\\.?"        )
@@ -538,15 +529,6 @@ months =
   , ( "November" , "november|nov\\.?"    )
   , ( "Desember" , "desember|des\\.?"    )
   ]
-
-ruleMonths :: [Rule]
-ruleMonths = zipWith go months [1..12]
-  where
-    go (name, regexPattern) i = Rule
-      { name = name
-      , pattern = [regex regexPattern]
-      , prod = \_ -> tt $ month i
-      }
 
 ruleTheCycleOfTime :: Rule
 ruleTheCycleOfTime = Rule

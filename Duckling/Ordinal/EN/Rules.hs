@@ -8,17 +8,18 @@
 
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE NoRebindableSyntax #-}
 
 module Duckling.Ordinal.EN.Rules
-  ( rules ) where
+  ( rules
+  ) where
 
-import Control.Monad (join)
-import Data.HashMap.Strict ( HashMap)
-import qualified Data.HashMap.Strict as HashMap
-import Data.Text (Text)
-import qualified Data.Text as Text
-import Prelude
+import Data.HashMap.Strict (HashMap)
 import Data.String
+import Data.Text (Text)
+import Prelude
+import qualified Data.HashMap.Strict as HashMap
+import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
 import Duckling.Numeral.Helpers (parseInt)

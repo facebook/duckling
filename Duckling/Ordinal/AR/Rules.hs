@@ -83,14 +83,14 @@ ruleOrdinals1To10 = Rule
 ruleOrdinals11 :: Rule
 ruleOrdinals11 = Rule
   { name = "ordinals (eleventh)"
-  , pattern = [regex "ال([اأإ]حد[يى]?|حادي?) ?عشرة?"]
+  , pattern = [regex "ال([اأإ]حد[يى]?|حاد(ي[ةه]?)?) ?عشر[ةه]?"]
   , prod = \_ -> Just $ ordinal 11
     }
 
 ruleOrdinals12 :: Rule
 ruleOrdinals12 = Rule
   { name = "ordinals (twelveth)"
-  , pattern = [regex "ال([اأإ]ثن[يى]?|ثاني?) ?عشرة?"]
+  , pattern = [regex "ال([اأإ]ثن[يى]?|ثان(ي[ةه]?)?) ?عشر[ةه]?"]
   , prod = \_ -> Just $ ordinal 12
     }
 

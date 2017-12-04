@@ -88,6 +88,10 @@ allExamples = concat
              [ "ستة و عشرون"
              , "26"
              ]
+  , examples (NumeralValue 40)
+             [ "اربعون"
+             , "أربعين"
+             ]
   , examples (NumeralValue 1.1)
              [ "1.1"
              , "1.10"

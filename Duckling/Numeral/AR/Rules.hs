@@ -29,7 +29,7 @@ ruleInteger5 :: Rule
 ruleInteger5 = Rule
   { name = "integer 4"
   , pattern =
-    [ regex "(أربع(ة)?)"
+    [ regex "([أا]ربع[ةه]?)"
     ]
   , prod = \_ -> integer 4
   }
@@ -54,7 +54,7 @@ ruleInteger18 :: Rule
 ruleInteger18 = Rule
   { name = "integer 12"
   , pattern =
-    [ regex "(إثن(ت)?ى عشر)"
+    [ regex "(إثن(ت)?[يى] عشر)"
     ]
   , prod = \_ -> integer 12
   }
@@ -76,18 +76,19 @@ ruleInteger19 :: Rule
 ruleInteger19 = Rule
   { name = "integer (20..90)"
   , pattern =
-    [ regex "(عشرون|ثلاثون|أربعون|خمسون|ستون|سبعون|ثمانون|تسعون)"
+    [ regex "(عشر|ثلاث|[أا]ربع|خمس|ست|سبع|ثمان|تسع)(ون|ين)"
     ]
   , prod = \tokens -> case tokens of
       Token RegexMatch (GroupMatch (match:_)):_ -> case match of
-        "عشرون" -> integer 20
-        "ثلاثون" -> integer 30
-        "أربعون" -> integer 40
-        "خمسون" -> integer 50
-        "ستون" -> integer 60
-        "سبعون" -> integer 70
-        "ثمانون" -> integer 80
-        "تسعون" -> integer 90
+        "عشر" -> integer 20
+        "ثلاث" -> integer 30
+        "اربع" -> integer 40
+        "أربع" -> integer 40
+        "خمس" -> integer 50
+        "ست" -> integer 60
+        "سبع" -> integer 70
+        "ثمان" -> integer 80
+        "تسع" -> integer 90
         _ -> Nothing
       _ -> Nothing
   }
@@ -148,7 +149,7 @@ ruleInteger15 :: Rule
 ruleInteger15 = Rule
   { name = "integer 11"
   , pattern =
-    [ regex "(إحدى عشر(ة)?)"
+    [ regex "([إاأ]حدى? عشر[ةه]?)"
     ]
   , prod = \_ -> integer 11
   }
@@ -233,7 +234,7 @@ ruleInteger7 :: Rule
 ruleInteger7 = Rule
   { name = "integer 5"
   , pattern =
-    [ regex "(خمس)(ة)?"
+    [ regex "خمسة?"
     ]
   , prod = \_ -> integer 5
   }
@@ -251,7 +252,7 @@ ruleInteger9 :: Rule
 ruleInteger9 = Rule
   { name = "integer 6"
   , pattern =
-    [ regex "(ست(ة)?)"
+    [ regex "ستة?"
     ]
   , prod = \_ -> integer 6
   }

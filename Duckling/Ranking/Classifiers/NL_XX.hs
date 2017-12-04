@@ -901,12 +901,15 @@ classifiers
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("numbers prefix with -, negative or minus",
         Classifier{okData =
-                     ClassData{prior = -infinity, unseen = -0.6931471805599453,
+                     ClassData{prior = -infinity, unseen = -1.0986122886681098,
                                likelihoods = HashMap.fromList [], n = 0},
                    koData =
-                     ClassData{prior = 0.0, unseen = -3.044522437723423,
-                               likelihoods = HashMap.fromList [("integer (numeric)", 0.0)],
-                               n = 19}}),
+                     ClassData{prior = 0.0, unseen = -3.1354942159291497,
+                               likelihoods =
+                                 HashMap.fromList
+                                   [("integer (numeric)", -9.53101798043249e-2),
+                                    ("fractional number", -2.3978952727983707)],
+                               n = 20}}),
        ("new year's eve",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -1.3862943611198906,
@@ -954,6 +957,13 @@ classifiers
                    koData =
                      ClassData{prior = 0.0, unseen = -1.0986122886681098,
                                likelihoods = HashMap.fromList [("", 0.0)], n = 1}}),
+       ("fractional number",
+        Classifier{okData =
+                     ClassData{prior = -infinity, unseen = -0.6931471805599453,
+                               likelihoods = HashMap.fromList [], n = 0},
+                   koData =
+                     ClassData{prior = 0.0, unseen = -2.0794415416798357,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 6}}),
        ("June",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -1.0986122886681098,

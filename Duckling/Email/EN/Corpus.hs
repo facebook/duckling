@@ -15,6 +15,7 @@ module Duckling.Email.EN.Corpus
 
 import Data.String
 import Prelude
+import qualified Data.Text as Text
 
 import Duckling.Email.Types
 import Duckling.Testing.Types
@@ -26,6 +27,11 @@ negativeCorpus = (testContext, examples)
       [ "fitness at 6.40"
       , "class at 12.00"
       , "tonight at 9.15"
+      , " dot 2@abci"
+      , "x@ dot x"
+      , "x@ x dot "
+      , "abc@x dot "
+      , Text.replicate 10000 "a at a"
       ]
 
 corpus :: Corpus
@@ -44,5 +50,11 @@ allExamples = concat
              ]
   , examples (EmailData "jean-jacques@stuff.co.uk")
              [ "jean-jacques at stuff.co.uk"
+             ]
+  , examples (EmailData "asdf+ab.c@gmail.com")
+             [ "asdf+ab dot c at gmail dot com"
+             ]
+  , examples (EmailData "asdf.k@fb.com")
+             [ "asdf dot k@fb dot com"
              ]
   ]

@@ -56,6 +56,8 @@ allExamples = concat
              ]
   , examples (DurationData 2 Minute)
              [ "2 λεπτά"
+             , "δίλεπτο"
+             , "Δίλεπτο"
              , "δύο λεπτά"
              , "δυο λεπτά"
              , "2'"
@@ -64,6 +66,7 @@ allExamples = concat
              [ "ένα τέταρτο"
              , "δεκαπέντε λεπτά"
              , "δεκαπεντάλεπτο"
+             , "Δεκαπεντάλεπτο"
              , "15'"
              ]
   , examples (DurationData 30 Minute)
@@ -86,7 +89,13 @@ allExamples = concat
              , "περίπου μια και μισή ώρα"
              , "ακριβώς μια και μισή ώρα"
              , "μιάμιση ώρα"
+             , "Μιάμιση ώρα"
              , "1,5 ώρα"
+             ]
+  , examples (DurationData 5 Hour)
+             [ "πεντάωρο"
+             , "Πεντάωρο"
+             , "5 ώρες"
              ]
   , examples (DurationData 60 Hour)
              [ "δυόμισι μέρες"

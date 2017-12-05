@@ -452,6 +452,8 @@ library
                      , Duckling.Time.DA.Rules
                      , Duckling.Time.DE.Corpus
                      , Duckling.Time.DE.Rules
+                     , Duckling.Time.EL.Corpus
+                     , Duckling.Time.EL.Rules
                      , Duckling.Time.EN.Corpus
                      , Duckling.Time.EN.Rules
                      , Duckling.Time.EN.AU.Corpus
@@ -780,6 +782,7 @@ test-suite duckling-test
                      -- Time
                      , Duckling.Time.DA.Tests
                      , Duckling.Time.DE.Tests
+                     , Duckling.Time.EL.Tests
                      , Duckling.Time.EN.Tests
                      , Duckling.Time.ES.Tests
                      , Duckling.Time.FR.Tests

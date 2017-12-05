@@ -24,63 +24,12 @@ import qualified Data.Text as Text
 import Duckling.Dimensions.Types
 import Duckling.Duration.Helpers
 import Duckling.Duration.Types (DurationData (DurationData))
-import Duckling.Numeral.Helpers (parseInt, parseInteger, integer)
+import Duckling.Numeral.Helpers (integer, numeralMapEL, parseInt, parseInteger)
 import Duckling.Numeral.Types (NumeralData(..))
 import Duckling.Regex.Types
 import Duckling.Types
 import qualified Duckling.Numeral.Types as TNumeral
 import qualified Duckling.TimeGrain.Types as TG
-
-numeralMap :: HashMap Text Int
-numeralMap = HashMap.fromList
-  [ ( "δι"          , 2  )
-  , ( "δί"          , 2  )
-  , ( "τρι"         , 3  )
-  , ( "τρί"         , 3  )
-  , ( "τετρ"        , 4  )
-  , ( "πεντ"        , 5  )
-  , ( "πενθ"        , 5  )
-  , ( "εξ"          , 6  )
-  , ( "επτ"         , 7  )
-  , ( "εφτ"         , 7  )
-  , ( "οκτ"         , 8  )
-  , ( "οχτ"         , 8  )
-  , ( "εννι"        , 9  )
-  , ( "δεκ"         , 10 )
-  , ( "δεκαπεντ"    , 15 )
-  , ( "δεκαπενθ"    , 15 )
-  , ( "εικοσ"       , 20 )
-  , ( "εικοσιπεντ"  , 25 )
-  , ( "εικοσιπενθ"  , 25 )
-  , ( "τριαντ"      , 30 )
-  , ( "τριανταπεντ" , 35 )
-  , ( "τριανταπενθ" , 35 )
-  , ( "σαραντ"      , 40 )
-  , ( "σαρανταπεντ" , 45 )
-  , ( "σαρανταπενθ" , 45 )
-  , ( "πενηντ"      , 50 )
-  , ( "πενηνταπετν" , 55 )
-  , ( "πενηνταπετθ" , 55 )
-  , ( "εξηντ"       , 60 )
-  , ( "ενενηντ"     , 90 )
-  -- The following are used as prefixes
-  , ( "μιά"         , 1  )
-  , ( "ενά"         , 1  )
-  , ( "δυό"         , 2  )
-  , ( "τρεισί"      , 3  )
-  , ( "τεσσερισή"   , 4  )
-  , ( "τεσσερσή"    , 4  )
-  , ( "πεντέ"       , 5  )
-  , ( "εξί"         , 6  )
-  , ( "επτά"        , 7  )
-  , ( "εφτά"        , 7  )
-  , ( "οκτώ"        , 8  )
-  , ( "οχτώ"        , 8  )
-  , ( "εννιά"       , 9  )
-  , ( "δεκά"        , 10 )
-  , ( "εντεκά"      , 11 )
-  , ( "δωδεκά"      , 12 )
-  ]
 
 timeGrainMap :: HashMap Text TG.Grain
 timeGrainMap = HashMap.fromList
@@ -100,7 +49,7 @@ ruleDurationQuarterOfAnHour :: Rule
 ruleDurationQuarterOfAnHour = Rule
   { name = "quarter of an hour"
   , pattern =
-    [ regex "(1/4\\s?((της )ώρας|ω)|ένα τέταρτο|ενός τετάρτου)"
+    [ regex "(1/4|[εέ]ν(α|ός)\\s+τ[εέ]τ[αά]ρτου?)(\\s*ω|\\s+(της\\s+)?ώρας)?"
     ]
   , prod = \_ -> Just . Token Duration $ duration TG.Minute 15
   }
@@ -112,6 +61,15 @@ ruleDurationHalfAnHour = Rule
     [ regex "(1/2\\s?((της )?ώρας?|ω)|μισάωρου?)"
     ]
   , prod = \_ -> Just . Token Duration $ duration TG.Minute 30
+  }
+
+ruleDurationThreeQuartersOfAnHour :: Rule
+ruleDurationThreeQuartersOfAnHour = Rule
+  { name = "three quarters of an hour"
+  , pattern =
+    [ regex "(3/4|τρ[ιί](α|ών)\\s+τ[εέ]τ[αά]ρτ(α|ων))(\\s*ω|\\s+(της\\s+)?ώρας)?"
+    ]
+  , prod = \_ -> Just . Token Duration $ duration TG.Minute 45
   }
 
 -- TODO: Single-word composition (#110)
@@ -126,18 +84,10 @@ ruleNumeralWithGrain = Rule
     ]
   , prod = \tokens -> case tokens of
       ( Token RegexMatch (GroupMatch (m:g:_)) : _ ) ->
-        (Token Duration .) . duration <$> HashMap.lookup g timeGrainMap
-                                      <*> HashMap.lookup m numeralMap
+        (Token Duration .) . duration
+          <$> HashMap.lookup (Text.toLower g) timeGrainMap
+          <*> HashMap.lookup (Text.toLower m) numeralMapEL
       _ -> Nothing
-  }
-
-ruleDurationThreeQuartersOfAnHour :: Rule
-ruleDurationThreeQuartersOfAnHour = Rule
-  { name = "three-quarters of an hour"
-  , pattern =
-    [ regex "(3/4\\s?((της )ώρας|ω)|τρία τέταρτα|τριών τετάρτων)"
-    ]
-  , prod = \_ -> Just . Token Duration $ duration TG.Minute 45
   }
 
 ruleNumeralQuotes :: Rule
@@ -154,6 +104,20 @@ ruleNumeralQuotes = Rule
          "'"  -> Just . Token Duration . duration TG.Minute $ floor v
          "\"" -> Just . Token Duration . duration TG.Second $ floor v
          _    -> Nothing
+      _ -> Nothing
+  }
+
+ruleDurationMoreNumeral :: Rule
+ruleDurationMoreNumeral = Rule
+  { name = "<integer> more <unit-of-duration>"
+  , pattern =
+    [ Predicate isNatural
+    , regex "ακόμα|λιγότερ[οη]"
+    , dimension TimeGrain
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Numeral nd:_:Token TimeGrain grain:_) ->
+        Just . Token Duration . duration grain . floor $ TNumeral.value nd
       _ -> Nothing
   }
 
@@ -214,18 +178,17 @@ ruleDurationAndAHalf = Rule
       _ -> Nothing
   }
 
--- TODO: Single-word composition (#110)
 ruleDurationAndAHalfOneWord :: Rule
 ruleDurationAndAHalfOneWord = Rule
   { name = "<integer-and-half> <grain>"
   , pattern =
-    [ regex $ "(μιά|ενά|δυό|τρεισί|τεσσερι?σή|πεντέ|εξί|ε[πφ]τά|ο[κχ]τώ|εννιά|"
+    [ regex $ "(μιά|ενά|δυό|τρεισή|τεσσερι?σή|πεντέ|εξί|ε[πφ]τά|ο[κχ]τώ|εννιά|"
            ++ "δεκά|εντεκά|δωδεκά)μισ[ιη]ς?"
     , dimension TimeGrain
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (num:_)):Token TimeGrain grain:_) ->
-        HashMap.lookup num numeralMap >>=
+        HashMap.lookup (Text.toLower num) numeralMapEL >>=
         timesOneAndAHalf grain >>=
         Just . Token Duration
       _ -> Nothing
@@ -249,6 +212,7 @@ rules =
   , ruleDurationHalfAnHour
   , ruleNumeralQuotes
   , ruleDurationNumeralMore
+  , ruleDurationMoreNumeral
   , ruleNumeralWithGrain
   , ruleDurationThreeQuartersOfAnHour
   , ruleDurationDotNumeralHours

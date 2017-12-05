@@ -124,6 +124,15 @@ ruleNumeral = Rule
       , "είκοσι|(τριά|σαρά|πενή|εξή|εβδομή|ογδό|ενενή)ντα"           -- [2..9]0
       ] ++ ")"
 
+ruleFew :: Rule
+ruleFew = Rule
+  { name = "few"
+  , pattern =
+    [ regex "μερικ(ά|ές|οί)"
+    ]
+  , prod = \_ -> integer 3
+  }
+
 ruleCompositeTens :: Rule
 ruleCompositeTens = Rule
   { name = "integer 21..99"
@@ -257,7 +266,8 @@ ruleDots = Rule
 
 rules :: [Rule]
 rules =
-  [ ruleIntegerNumeric
+  [ ruleFew
+  , ruleIntegerNumeric
   , ruleNumeral
   , ruleCompositeTens
   , rulePowersOfTen

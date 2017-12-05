@@ -29,6 +29,7 @@ import Duckling.Rules
 import Duckling.Testing.Types
 import qualified Duckling.Time.DA.Corpus as DATime
 import qualified Duckling.Time.DE.Corpus as DETime
+import qualified Duckling.Time.EL.Corpus as ELTime
 import qualified Duckling.Time.EN.Corpus as ENTime
 import qualified Duckling.Time.EN.CA.Corpus as EN_CATime
 import qualified Duckling.Time.EN.GB.Corpus as EN_GBTime
@@ -163,7 +164,7 @@ getCorpusForLang BG = (testContext, [])
 getCorpusForLang CS = (testContext, [])
 getCorpusForLang DA = DATime.corpus
 getCorpusForLang DE = DETime.corpus
-getCorpusForLang EL = (testContext, [])
+getCorpusForLang EL = ELTime.corpus
 getCorpusForLang EN = ENTime.corpus
 getCorpusForLang ES = ESTime.corpus
 getCorpusForLang ET = (testContext, [])

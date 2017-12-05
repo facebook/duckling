@@ -9,10 +9,11 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Numeral.PT.Corpus
-  ( corpus ) where
+  ( corpus
+  ) where
 
-import Prelude
 import Data.String
+import Prelude
 
 import Duckling.Locale
 import Duckling.Numeral.Types
@@ -33,6 +34,8 @@ allExamples = concat
              [ "2"
              , "dois"
              , "duas"
+             , "pares de"
+             , "um par de"
              ]
   , examples (NumeralValue 3)
              [ "3"
@@ -52,6 +55,7 @@ allExamples = concat
              , "doze"
              , "uma dúzia"
              , "uma duzia"
+             , "uma duzias de"
              ]
   , examples (NumeralValue 14)
              [ "14"
@@ -120,6 +124,10 @@ allExamples = concat
   , examples (NumeralValue 0.77)
              [ "0,77"
              , ",77"
+             , "ponto setenta e sete"
+             ]
+  , examples (NumeralValue 1000)
+             [ "mil"
              ]
   , examples (NumeralValue 100000)
              [ "100.000"
@@ -150,6 +158,9 @@ allExamples = concat
              [ "oitocentos e noventa e um"
              , "891"
              ]
+  , examples (NumeralValue 2200)
+             [ "dois mil e duzentos"
+             ]
   , examples (NumeralValue 3000000)
              [ "3M"
              , "3000K"
@@ -170,6 +181,7 @@ allExamples = concat
              , "-1,2M"
              , "-1200K"
              , "-,0012G"
+             , "negativo 1,2M"
              ]
   , examples (NumeralValue 1.5)
              [ "1 ponto cinco"

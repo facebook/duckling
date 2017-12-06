@@ -13,9 +13,12 @@ module Duckling.Numeral.ET.Rules
   ( rules
   ) where
 
+import Data.HashMap.Strict (HashMap)
 import Data.Maybe
 import Data.String
+import Data.Text (Text)
 import Prelude
+import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
@@ -172,6 +175,30 @@ ruleMultiply = Rule
       _ -> Nothing
   }
 
+zeroNineteenMap :: HashMap Text Integer
+zeroNineteenMap = HashMap.fromList
+  [ ("null", 0)
+  , ("üks", 1)
+  , ("kaks", 2)
+  , ("kolm", 3)
+  , ("neli", 4)
+  , ("viis", 5)
+  , ("kuus", 6)
+  , ("seitse", 7)
+  , ("kaheksa", 8)
+  , ("üheksa", 9)
+  , ("kümme", 10)
+  , ("üksteist", 11)
+  , ("kaksteist", 12)
+  , ("kolmteist", 13)
+  , ("neliteist", 14)
+  , ("viisteist", 15)
+  , ("kuusteist", 16)
+  , ("seitseteist", 17)
+  , ("kaheksateist", 18)
+  , ("üheksateist", 19)
+  ]
+
 ruleInteger :: Rule
 ruleInteger = Rule
   { name = "integer (0..19)"
@@ -179,29 +206,9 @@ ruleInteger = Rule
     [ regex "(null|üksteist|üks|kaksteist|kaks|kolmteist|kolm|neliteist|neli|viisteist|viis|kuusteist|kuus|seitseteist|seitse|kaheksateist|kaheksa|üheksateist|üheksa|kümme)"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
-        "null" -> integer 0
-        "üks" -> integer 1
-        "kaks" -> integer 2
-        "kolm" -> integer 3
-        "neli" -> integer 4
-        "viis" -> integer 5
-        "kuus" -> integer 6
-        "seitse" -> integer 7
-        "kaheksa" -> integer 8
-        "üheksa" -> integer 9
-        "kümme" -> integer 10
-        "üksteist" -> integer 11
-        "kaksteist" -> integer 12
-        "kolmteist" -> integer 13
-        "neliteist" -> integer 14
-        "viisteist" -> integer 15
-        "kuusteist" -> integer 16
-        "seitseteist" -> integer 17
-        "kaheksateist" -> integer 18
-        "üheksateist" -> integer 19
-        _ -> Nothing
-      _ -> Nothing
+    (Token RegexMatch (GroupMatch (match:_)):_) ->
+      HashMap.lookup (Text.toLower match) zeroNineteenMap >>= integer
+    _ -> Nothing
   }
 
 ruleInteger4 :: Rule
@@ -224,24 +231,28 @@ ruleInteger4 = Rule
       _ -> Nothing
   }
 
-ruleInteger2 :: Rule
-ruleInteger2 = Rule
+twentyNinetyMap :: HashMap Text Integer
+twentyNinetyMap = HashMap.fromList
+  [ ("kakskümmend", 20)
+  , ("kolmkümmend", 30)
+  , ("nelikümmend", 40)
+  , ("viiskümmend", 50)
+  , ("kuuskümmend", 60)
+  , ("seitsekümmend", 70)
+  , ("kaheksakümmend", 80)
+  , ("üheksakümmend", 90)
+  ]
+
+ruletwentyNinety :: Rule
+ruletwentyNinety = Rule
   { name = "integer (20..90)"
   , pattern =
     [ regex "((kaks|kolm|neli|viis|kuus|seitse|kaheksa|(ü)heksa)k(ü)mmend)"
     ]
-  , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
-        "kakskümmend" -> integer 20
-        "kolmkümmend" -> integer 30
-        "nelikümmend" -> integer 40
-        "viiskümmend" -> integer 50
-        "kuuskümmend" -> integer 60
-        "seitsekümmend" -> integer 70
-        "kaheksakümmend" -> integer 80
-        "üheksakümmend" -> integer 90
+    , prod = \tokens -> case tokens of
+        (Token RegexMatch (GroupMatch (match:_)):_) ->
+          HashMap.lookup (Text.toLower match) twentyNinetyMap >>= integer
         _ -> Nothing
-      _ -> Nothing
   }
 
 ruleNumeralDotNumeral :: Rule
@@ -279,7 +290,7 @@ rules =
   , ruleDecimalNumeral
   , ruleDecimalWithThousandsSeparator
   , ruleInteger
-  , ruleInteger2
+  , ruletwentyNinety
   , ruleInteger3
   , ruleInteger4
   , ruleIntegerNumeric

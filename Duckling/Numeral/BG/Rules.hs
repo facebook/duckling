@@ -29,19 +29,6 @@ import Duckling.Regex.Types
 import Duckling.Types
 import qualified Duckling.Numeral.Types as TNumeral
 
-ruleIntegers :: Rule
-ruleIntegers = Rule
-  { name = "integer (numeric)"
-  , pattern =
-    [ regex "(\\d{1,18})"
-    ]
-  , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> do
-        v <- parseInt match
-        integer $ toInteger v
-      _ -> Nothing
-  }
-
 zeroNineteenMap :: HashMap Text Integer
 zeroNineteenMap = HashMap.fromList
   [ ( "нула", 0 )
@@ -258,8 +245,7 @@ ruleNegative = Rule
 
 rules :: [Rule]
 rules =
-  [ ruleIntegers
-  , ruleToNineteen
+  [ ruleToNineteen
   , ruleTens
   , rulePowersOfTen
   , ruleCompositeTens

@@ -39,8 +39,8 @@ ruleInteger5 = Rule
       _ -> Nothing
   }
 
-ruleIntegerNumeric :: Rule
-ruleIntegerNumeric = Rule
+ruleInteger09 :: Rule
+ruleInteger09 = Rule
   { name = "integer (0..9) - numeric"
   , pattern =
     [ regex "(၀|၁|၂|၃|၄|၅|၆|၇|၈|၉)"
@@ -177,6 +177,6 @@ rules =
   , ruleInteger6
   , ruleInteger7
   , ruleInteger8
-  , ruleIntegerNumeric
+  , ruleInteger09
   , ruleIntegerPali
   ]

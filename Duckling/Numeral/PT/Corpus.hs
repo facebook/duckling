@@ -134,6 +134,7 @@ allExamples = concat
              , "100000"
              , "100K"
              , "100k"
+             , "100.000,00"
              ]
   , examples (NumeralValue 100)
              [ "100"
@@ -187,5 +188,8 @@ allExamples = concat
              [ "1 ponto cinco"
              , "um ponto cinco"
              , "1,5"
+             ]
+  , examples (NumeralValue 1200000.42)
+             [ "1.200.000,42"
              ]
   ]

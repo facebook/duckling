@@ -30,18 +30,6 @@ import Duckling.Regex.Types
 import Duckling.Types
 import qualified Duckling.Numeral.Types as TNumeral
 
-ruleIntegers :: Rule
-ruleIntegers = Rule
-  { name = "integer (numeric)"
-  , pattern =
-    [ regex "(\\d{1,18})"
-    ]
-  , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) ->
-        toInteger <$> parseInt match >>= integer
-      _ -> Nothing
-  }
-
 ruleDozen :: Rule
 ruleDozen = Rule
   { name = "a dozen of"
@@ -320,8 +308,7 @@ ruleMultiply = Rule
 
 rules :: [Rule]
 rules =
-  [ ruleIntegers
-  , ruleToNineteen
+  [ ruleToNineteen
   , ruleTens
   , rulePowersOfTen
   , ruleCompositeTens

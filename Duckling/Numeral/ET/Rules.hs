@@ -42,20 +42,6 @@ ruleNumeralsPrefixWithNegativeOrMinus = Rule
       _ -> Nothing
   }
 
-ruleIntegerNumeric :: Rule
-ruleIntegerNumeric = Rule
-  { name = "integer (numeric)"
-  , pattern =
-    [ regex "(\\d{1,18})"
-    ]
-  , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):
-       _) -> do
-         v <- parseInt match
-         integer $ toInteger v
-      _ -> Nothing
-  }
-
 ruleACoupleOf :: Rule
 ruleACoupleOf = Rule
   { name = "a couple of"
@@ -293,7 +279,6 @@ rules =
   , ruletwentyNinety
   , ruleInteger3
   , ruleInteger4
-  , ruleIntegerNumeric
   , ruleIntegerWithThousandsSeparator
   , ruleIntersect
   , ruleMultiply

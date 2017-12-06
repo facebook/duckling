@@ -330,6 +330,7 @@ library
                      , Duckling.Numeral.RO.Corpus
                      , Duckling.Numeral.RO.Rules
                      , Duckling.Numeral.Helpers
+                     , Duckling.Numeral.Rules
                      , Duckling.Numeral.Types
 
                      -- Ordinal

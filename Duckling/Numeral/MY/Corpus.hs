@@ -43,6 +43,7 @@ allExamples = concat
              [ "၃"
              , "သုံး"
              , "တတိယ"
+             , "3"
              ]
   , examples (NumeralValue 30)
              [ "သုံးဆယ်"

@@ -40,19 +40,6 @@ ruleNumeralsPrefixWithOrMinus = Rule
       _ -> Nothing
   }
 
-ruleIntegerNumeric :: Rule
-ruleIntegerNumeric = Rule
-  { name = "integer (numeric)"
-  , pattern =
-    [ regex "(\\d{1,18})"
-    ]
-  , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> do
-        v <- toInteger <$> parseInt match
-        integer v
-      _ -> Nothing
-  }
-
 ruleSpecialCompositionForMissingHundredsLikeInOneTwentyTwo :: Rule
 ruleSpecialCompositionForMissingHundredsLikeInOneTwentyTwo = Rule
   { name = "special composition for missing hundreds like in one twenty two"
@@ -304,7 +291,6 @@ rules =
   , ruleInteger2
   , ruleInteger3
   , ruleIntegerCuSeparatorDeMiiDot
-  , ruleIntegerNumeric
   , ruleIntersect
   , ruleIntersectCuI
   , ruleMultiply

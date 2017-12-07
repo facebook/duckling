@@ -45,6 +45,7 @@ data Lang
   | HE
   | HR
   | HU
+  | HI
   | ID
   | IT
   | JA

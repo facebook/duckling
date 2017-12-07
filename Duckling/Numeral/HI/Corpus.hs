@@ -5,8 +5,6 @@
 -- LICENSE file in the root directory of this source tree. An additional grant
 -- of patent rights can be found in the PATENTS file in the same directory.
 
--------------------------WORK IN PROGRESS------------------------
-
 
 {-# LANGUAGE OverloadedStrings #-}
 
@@ -27,12 +25,10 @@ corpus = (testContext {locale = makeLocale HI Nothing}, allExamples)
 allExamples :: [Example]
 allExamples = concat
   [ examples (NumeralValue 0)
-             [ "0"
-             , "शून्य"
+             [ "शून्य"
              ]
   , examples (NumeralValue 1)
-             [ "1"
-             , "एक"
+             [ "एक"
              ]
   , examples (NumeralValue 2)
              [ "दो"
@@ -61,40 +57,28 @@ allExamples = concat
   , examples (NumeralValue 10)
              [ "दस"
              ]
---  , examples (NumeralValue 15)
---             [ "tizenöt"
---             ]
---  , examples (NumeralValue 17)
---             [ "tizenhét"
---             ]
---  , examples (NumeralValue 20)
---             [ "20"
---             , "húsz"
---             ]
---  , examples (NumeralValue 22)
---             [ "huszonkettő"
---             ]
---  , examples (NumeralValue 24)
---             [ "24"
---             , "huszonnégy"
---             ]
---  , examples (NumeralValue 26)
---             [ "huszonhat"
---             ]
---  , examples (NumeralValue 28)
---             [ "huszonnyolc"
---             ]
---  , examples (NumeralValue 10)
---             [ "tíz"
---             ]
---  , examples (NumeralValue 20)
---             [ "húsz"
---             ]
---  , examples (NumeralValue 50)
---             [ "ötven"
---             ]
---  , examples (NumeralValue 34)
---             [ "harmincnégy"
---             ]
+  , examples (NumeralValue 15)
+             [ "पन्द्रह"
+             ]
+  , examples (NumeralValue 17)
+             [ "सत्रह"
+             ]
+  , examples (NumeralValue 20)
+             [ "बीस"
+             ]
+  , examples (NumeralValue 22)
+             [ "बाईस"
+             ]
+  , examples (NumeralValue 24)
+             [ "चौबीस"
+             ]
+  , examples (NumeralValue 26)
+             [ "छब्बीस"
+             ]
+  , examples (NumeralValue 28)
+             [ "अट्ठाईस"
+             ]
+  , examples (NumeralValue 50)
+             [ "पचास"
+             ]
   ]
------------------------------------------------------------------

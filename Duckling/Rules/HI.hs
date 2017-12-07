@@ -5,14 +5,13 @@
 -- LICENSE file in the root directory of this source tree. An additional grant
 -- of patent rights can be found in the PATENTS file in the same directory.
 
--------------------------WORK IN PROGRESS------------------------
 
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Rules.HI
-  ( defaultRules,
-    langRules
+  ( defaultRules
+  , langRules
   ) where
 
 import Duckling.Dimensions.Types
@@ -37,5 +36,3 @@ langRules (This Time) = []
 langRules (This TimeGrain) = []
 langRules (This Url) = []
 langRules (This Volume) = []
-
------------------------------------------------------------------

@@ -43,9 +43,9 @@ data Lang
   | FR
   | GA
   | HE
+  | HI
   | HR
   | HU
-  | HI
   | ID
   | IT
   | JA

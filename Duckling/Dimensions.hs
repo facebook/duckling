@@ -32,9 +32,9 @@ import qualified Duckling.Dimensions.ET as ETDimensions
 import qualified Duckling.Dimensions.FR as FRDimensions
 import qualified Duckling.Dimensions.GA as GADimensions
 import qualified Duckling.Dimensions.HE as HEDimensions
+import qualified Duckling.Dimensions.HI as HIDimensions
 import qualified Duckling.Dimensions.HR as HRDimensions
 import qualified Duckling.Dimensions.HU as HUDimensions
-import qualified Duckling.Dimensions.HI as HIDimensions
 import qualified Duckling.Dimensions.ID as IDDimensions
 import qualified Duckling.Dimensions.IT as ITDimensions
 import qualified Duckling.Dimensions.JA as JADimensions
@@ -94,9 +94,9 @@ langDimensions ET = ETDimensions.allDimensions
 langDimensions FR = FRDimensions.allDimensions
 langDimensions GA = GADimensions.allDimensions
 langDimensions HE = HEDimensions.allDimensions
+langDimensions HI = HIDimensions.allDimensions
 langDimensions HR = HRDimensions.allDimensions
 langDimensions HU = HUDimensions.allDimensions
-langDimensions HI = HIDimensions.allDimensions
 langDimensions ID = IDDimensions.allDimensions
 langDimensions IT = ITDimensions.allDimensions
 langDimensions JA = JADimensions.allDimensions

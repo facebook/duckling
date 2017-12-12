@@ -36,6 +36,7 @@ data Currency
   | AUD
   | BGN
   | BRL
+  | BYN
   | EGP
   | EUR
   | GBP
@@ -51,6 +52,7 @@ data Currency
   | PTS
   | QAR
   | RON
+  | RUB
   | SAR
   | SEK
   | SGD
@@ -67,6 +69,7 @@ instance ToJSON Currency where
   toJSON AUD     = "AUD"
   toJSON BGN     = "BGN"
   toJSON BRL     = "BRL"
+  toJSON BYN     = "BYN"
   toJSON EGP     = "EGP"
   toJSON EUR     = "EUR"
   toJSON GBP     = "GBP"
@@ -82,6 +85,7 @@ instance ToJSON Currency where
   toJSON PTS     = "PTS"
   toJSON QAR     = "QAR"
   toJSON RON     = "RON"
+  toJSON RUB     = "RUB"
   toJSON SAR     = "SAR"
   toJSON SEK     = "SEK"
   toJSON SGD     = "SGD"

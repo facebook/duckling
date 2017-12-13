@@ -52,19 +52,6 @@ ruleInteger5 = Rule
       _ -> Nothing
   }
 
-ruleIntegerNumeric :: Rule
-ruleIntegerNumeric = Rule
-  { name = "integer (numeric)"
-  , pattern =
-    [ regex "(\\d{1,18})"
-    ]
-  , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> do
-        v <- parseInt match
-        integer $ toInteger v
-      _ -> Nothing
-  }
-
 ruleDecimalWithThousandsSeparator :: Rule
 ruleDecimalWithThousandsSeparator = Rule
   { name = "decimal with thousands separator"
@@ -271,7 +258,6 @@ rules =
   , ruleInteger6
   , ruleInteger7
   , ruleInteger8
-  , ruleIntegerNumeric
   , ruleIntegerWithThousandsSeparator
   , ruleNumeralDotNumeral
   , ruleNumeralsPrefixWithMinus

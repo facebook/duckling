@@ -42,19 +42,6 @@ ruleIntegerForOrdinals = Rule
       _ -> Nothing
   }
 
-ruleIntegerNumeric :: Rule
-ruleIntegerNumeric = Rule
-  { name = "integer (numeric)"
-  , pattern =
-    [ regex "(\\d{1,18})"
-    ]
-  , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> do
-        v <- parseInt match
-        integer $ toInteger v
-      _ -> Nothing
-  }
-
 ruleFew :: Rule
 ruleFew = Rule
   { name = "few 몇"
@@ -321,7 +308,6 @@ rules =
   , ruleHalf
   , ruleInteger
   , ruleIntegerForOrdinals
-  , ruleIntegerNumeric
   , ruleIntegerType1
   , ruleIntegerType1PowersOfTen
   , ruleSum

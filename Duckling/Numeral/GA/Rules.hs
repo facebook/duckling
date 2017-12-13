@@ -42,18 +42,23 @@ ruleNumeralsPrefixWithNegativeOrMinus = Rule
       _ -> Nothing
   }
 
-ruleIntegerNumeric :: Rule
-ruleIntegerNumeric = Rule
-  { name = "integer (numeric)"
-  , pattern =
-    [ regex "(\\d{1,18})"
-    ]
-  , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> do
-        v <- toInteger <$> parseInt match
-        integer v
-      _ -> Nothing
-  }
+oneToTenMap :: HashMap Text Integer
+oneToTenMap = HashMap.fromList
+  [ ("aon", 1)
+  , ("dha", 2)
+  , ("dhá", 2)
+  , ("trí", 3)
+  , ("tri", 3)
+  , ("ceithre", 4)
+  , ("cuig", 5)
+  , ("cúig", 5)
+  , ("sé", 6)
+  , ("se", 6)
+  , ("seacht", 7)
+  , ("ocht", 8)
+  , ("naoi", 9)
+  , ("deich", 10)
+  ]
 
 oneToTenMap :: HashMap Text Integer
 oneToTenMap = HashMap.fromList
@@ -256,7 +261,6 @@ rules =
   , ruleDag
   , ruleDecimalNumeral
   , ruleDecimalWithThousandsSeparator
-  , ruleIntegerNumeric
   , ruleIntegerWithThousandsSeparator
   , ruleNumerals
   , ruleNumerals2

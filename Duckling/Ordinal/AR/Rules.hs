@@ -14,12 +14,16 @@ module Duckling.Ordinal.AR.Rules
   ( rules
   ) where
 
+<<<<<<< HEAD
 import Control.Monad (join)
 import Data.HashMap.Strict ( HashMap)
 import qualified Data.HashMap.Strict as HashMap
 import Data.Text (Text)
 import qualified Data.Text as Text
 import Prelude
+=======
+import Data.HashMap.Strict (HashMap)
+>>>>>>> 2274e40369c3230bae36e86fec3a1744a3a66f12
 import Data.String
 import Data.Text (Text)
 import Prelude
@@ -67,19 +71,23 @@ cardinalsMap = HashMap.fromList
 ruleCompositeOrdinals :: Rule
 ruleCompositeOrdinals = Rule
   { name = "ordinals (composite, e.g., eighty-seven)"
-  , pattern = [regex "ال(واحد|حادي?|ثاني?|ثالث|رابع|خامس|سادس|سابع|ثامن|تاسع|عاشر) و ?ال(عشر|ثلاث|اربع|خمس|ست|سبع|ثمان|تسع)(ون|ين)"]
+  , pattern =
+    [ regex "ال(واحد|حادي?|ثاني?|ثالث|رابع|خامس|سادس|سابع|ثامن|تاسع|عاشر) و ?ال(عشر|ثلاث|اربع|خمس|ست|سبع|ثمان|تسع)(ون|ين)"
+    ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (tens:units:_)):_) -> do
         tt <- HashMap.lookup (Text.toLower tens) ordinalsMap
         uu <- HashMap.lookup (Text.toLower units) cardinalsMap
-        Just (ordinal (tt + uu))
+        Just . ordinal $ tt + uu
       _ -> Nothing
   }
 
 ruleOrdinals1To10 :: Rule
 ruleOrdinals1To10 = Rule
   { name = "ordinals (first..tenth)"
-  , pattern = [regex "(?:ال)?([أا]ول|ثاني?|ثالث|رابع|خامس|سادس|سابع|ثامن|تاسع|عاشر)[ةهى]?"]
+  , pattern =
+    [ regex "(?:ال)?([أا]ول|ثاني?|ثالث|رابع|خامس|سادس|سابع|ثامن|تاسع|عاشر)[ةهى]?"
+    ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
         ordinal <$> HashMap.lookup (Text.toLower match) ordinalsMap
@@ -89,32 +97,40 @@ ruleOrdinals1To10 = Rule
 ruleOrdinals11 :: Rule
 ruleOrdinals11 = Rule
   { name = "ordinals (eleventh)"
-  , pattern = [regex "ال([اأإ]حد[يى]?|حاد(ي[ةه]?)?) ?عشر[ةه]?"]
+  , pattern =
+    [ regex "ال([اأإ]حد[يى]?|حاد(ي[ةه]?)?) ?عشر[ةه]?"
+    ]
   , prod = \_ -> Just $ ordinal 11
   }
 
 ruleOrdinals12 :: Rule
 ruleOrdinals12 = Rule
   { name = "ordinals (twelveth)"
-  , pattern = [regex "ال([اأإ]ثن[يى]?|ثان(ي[ةه]?)?) ?عشر[ةه]?"]
+  , pattern =
+    [ regex "ال([اأإ]ثن[يى]?|ثان(ي[ةه]?)?) ?عشر[ةه]?"
+    ]
   , prod = \_ -> Just $ ordinal 12
   }
 
 ruleOrdinals13To19 :: Rule
 ruleOrdinals13To19 = Rule
   { name = "ordinals (thirtieth..nineteenth)"
-  , pattern = [regex "ال(ثالث|رابع|خامس|سادس|سابع|ثامن|تاسع)[ةهى]? ?عشرة?"]
+  , pattern =
+    [ regex "ال(ثالث|رابع|خامس|سادس|سابع|ثامن|تاسع)[ةهى]? ?عشرة?"
+    ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> do
         uu <- HashMap.lookup (Text.toLower match) ordinalsMap
-        Just (ordinal (10 + uu))
+        Just . ordinal $ 10 + uu
       _ -> Nothing
   }
 
 ruleOrdinals3 :: Rule
 ruleOrdinals3 = Rule
   { name = "ordinals (twenty, thirty..ninety)"
-  , pattern = [regex "ال(عشر|ثلاث|اربع|خمس|ست|سبع|ثمان|تسع)(ون|ين)"]
+  , pattern =
+    [ regex "ال(عشر|ثلاث|اربع|خمس|ست|سبع|ثمان|تسع)(ون|ين)"
+    ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
         ordinal <$> HashMap.lookup (Text.toLower match) cardinalsMap

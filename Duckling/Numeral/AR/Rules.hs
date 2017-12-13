@@ -59,19 +59,6 @@ ruleInteger18 = Rule
   , prod = \_ -> integer 12
   }
 
-ruleIntegerNumeric :: Rule
-ruleIntegerNumeric = Rule
-  { name = "integer (numeric)"
-  , pattern =
-    [ regex "(\\d{1,18})"
-    ]
-  , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> do
-        v <- parseInt match
-        integer $ toInteger v
-      _ -> Nothing
-  }
-
 ruleInteger19 :: Rule
 ruleInteger19 = Rule
   { name = "integer (20..90)"
@@ -364,7 +351,6 @@ rules =
   , ruleInteger5
   , ruleInteger7
   , ruleInteger9
-  , ruleIntegerNumeric
   , ruleIntegerWithThousandsSeparator
   , ruleMultiply
   , ruleNumeralDotNumeral

@@ -23,12 +23,12 @@ grains :: [(Text, String, TG.Grain)]
 grains =
   [ ("second (grain) ", "δε[υύ]τερ([οό]λ[εέ]πτ)?(ου?|α|ων)", TG.Second)
   , ("minute (grain)" , "λεπτ(o|όν?|ού|ά|ών)"              , TG.Minute)
-  , ("hour (grain)"   , "[ωώ]ρ(ας?|ες|ών)"                 , TG.Hour)
+  , ("hour (grain)"   , "[ωώ](ρ(ας?|ες|ών))?"              , TG.Hour)
   , ("day (grain)"    , "η?μέρ(ας?|ες|ών)"                 , TG.Day)
-  , ("week (grain)"   , "ε?βδομάδ(α|ες|ων)"                , TG.Week)
+  , ("week (grain)"   , "ε?βδομάδ(ας?ν?|ες|ων)"            , TG.Week)
   , ("month (grain)"  , "μήν(ας?|ες|ών)"                   , TG.Month)
   , ("quarter (grain)", "τρ[ιί]μ[ηή]ν(ου?|α|ων)"           , TG.Quarter)
-  , ("year (grain)"   , "έτ(ου?ς|η|ών)|χρ[οό]ν(ο[ιςυ]|ι([αά]|ές)|ι?ών)"
+  , ("year (grain)"   , "έτ(ου?ς|η|ών)|χρ[οό]ν(ο[ιςυ]?|ι([αά]|ές)|ι?ών)"
                       , TG.Year)
   ]
 

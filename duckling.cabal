@@ -177,6 +177,8 @@ library
                      , Duckling.AmountOfMoney.PT.Rules
                      , Duckling.AmountOfMoney.RO.Corpus
                      , Duckling.AmountOfMoney.RO.Rules
+                     , Duckling.AmountOfMoney.RU.Corpus
+                     , Duckling.AmountOfMoney.RU.Rules
                      , Duckling.AmountOfMoney.SV.Corpus
                      , Duckling.AmountOfMoney.SV.Rules
                      , Duckling.AmountOfMoney.VI.Corpus
@@ -330,6 +332,7 @@ library
                      , Duckling.Numeral.RO.Corpus
                      , Duckling.Numeral.RO.Rules
                      , Duckling.Numeral.Helpers
+                     , Duckling.Numeral.Rules
                      , Duckling.Numeral.Types
 
                      -- Ordinal
@@ -454,6 +457,8 @@ library
                      , Duckling.Time.DA.Rules
                      , Duckling.Time.DE.Corpus
                      , Duckling.Time.DE.Rules
+                     , Duckling.Time.EL.Corpus
+                     , Duckling.Time.EL.Rules
                      , Duckling.Time.EN.Corpus
                      , Duckling.Time.EN.Rules
                      , Duckling.Time.EN.AU.Corpus
@@ -641,6 +646,7 @@ test-suite duckling-test
                      , Duckling.AmountOfMoney.NB.Tests
                      , Duckling.AmountOfMoney.PT.Tests
                      , Duckling.AmountOfMoney.RO.Tests
+                     , Duckling.AmountOfMoney.RU.Tests
                      , Duckling.AmountOfMoney.SV.Tests
                      , Duckling.AmountOfMoney.VI.Tests
                      , Duckling.AmountOfMoney.Tests
@@ -783,6 +789,7 @@ test-suite duckling-test
                      , Duckling.Time.AR.Tests
                      , Duckling.Time.DA.Tests
                      , Duckling.Time.DE.Tests
+                     , Duckling.Time.EL.Tests
                      , Duckling.Time.EN.Tests
                      , Duckling.Time.ES.Tests
                      , Duckling.Time.FR.Tests

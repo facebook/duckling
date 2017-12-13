@@ -10,23 +10,25 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TupleSections #-}
 
-module Duckling.Api.Tests (tests) where
+module Duckling.Api.Tests
+  ( tests
+  ) where
 
-import qualified Data.HashMap.Strict as HashMap
-import qualified Data.HashSet as HashSet
 import Data.List (sortOn)
 import Data.Text (Text)
 import Prelude
 import Test.Tasty
 import Test.Tasty.HUnit
+import qualified Data.HashMap.Strict as HashMap
+import qualified Data.HashSet as HashSet
 
 import Duckling.Api
 import Duckling.Dimensions.Types
 import Duckling.Locale
-import qualified Duckling.Numeral.Types as TNumeral
 import Duckling.Testing.Asserts
 import Duckling.Testing.Types
 import Duckling.Types
+import qualified Duckling.Numeral.Types as TNumeral
 
 tests :: TestTree
 tests = testGroup "API Tests"
@@ -134,4 +136,5 @@ supportedDimensionsTest = testCase "Supported Dimensions Test" $ do
     check (l, expected) = case HashMap.lookup l supportedDimensions of
       Nothing -> assertFailure $ "no dimensions for " ++ show l
       Just actual ->
-        assertEqual ("wrong dimensions for " ++ show l) expected actual
+        assertEqual ("wrong dimensions for " ++ show l)
+        (HashSet.fromList expected) (HashSet.fromList actual)

@@ -30,20 +30,6 @@ import Duckling.Regex.Types
 import Duckling.Types
 import qualified Duckling.Numeral.Types as TNumeral
 
-ruleIntegerNumeric :: Rule
-ruleIntegerNumeric = Rule
-  { name = "integer (numeric)"
-  , pattern =
-    [ regex "(\\d{1,18})"
-    ]
-  , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):
-       _) -> do
-         v <- parseInt match
-         integer $ toInteger v
-      _ -> Nothing
-  }
-
 oneOrTwoDigitsMap :: HashMap Text Integer
 oneOrTwoDigitsMap = HashMap.fromList
   [ ( "μηδέν"       , 0  )
@@ -123,6 +109,15 @@ ruleNumeral = Rule
       , "δεκα(τρία|τέσσερα|πέντε|έξι|ε[πφ]τά|ο[χκ]τώ|ενν(έα|ιά))"    -- [13..19]
       , "είκοσι|(τριά|σαρά|πενή|εξή|εβδομή|ογδό|ενενή)ντα"           -- [2..9]0
       ] ++ ")"
+
+ruleFew :: Rule
+ruleFew = Rule
+  { name = "few"
+  , pattern =
+    [ regex "μερικ(ά|ές|οί)"
+    ]
+  , prod = \_ -> integer 3
+  }
 
 ruleCompositeTens :: Rule
 ruleCompositeTens = Rule
@@ -257,7 +252,7 @@ ruleDots = Rule
 
 rules :: [Rule]
 rules =
-  [ ruleIntegerNumeric
+  [ ruleFew
   , ruleNumeral
   , ruleCompositeTens
   , rulePowersOfTen

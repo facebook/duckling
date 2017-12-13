@@ -12,15 +12,41 @@
 module Duckling.Ordinal.ET.Rules
   ( rules ) where
 
-import qualified Data.Text as Text
-import Prelude
+import Data.HashMap.Strict (HashMap)
 import Data.String
+import Data.Text (Text)
+import Prelude
+import qualified Data.HashMap.Strict as HashMap
+import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
 import Duckling.Numeral.Helpers (parseInt)
 import Duckling.Ordinal.Helpers
 import Duckling.Regex.Types
 import Duckling.Types
+
+ordinalsMap :: HashMap Text Int
+ordinalsMap = HashMap.fromList
+ [ ("esimene", 1)
+ , ("teine", 2)
+ , ("kolmas", 3)
+ , ("neljas", 4)
+ , ("viies", 5)
+ , ("kuues", 6)
+ , ("seitsmes", 7)
+ , ("kaheksas", 8)
+ , ("üheksas", 9)
+ , ("kümnes", 10)
+ , ("üheteistkümnes", 11)
+ , ("kaheteistkümnes", 12)
+ , ("kolmeteistkümnes", 13)
+ , ("neljateistkümnes", 14)
+ , ("viieteistkümnes", 15)
+ , ("kuueteistkümnes", 16)
+ , ("seitsmeteistkümnes", 17)
+ , ("kaheksateistkümnes", 18)
+ , ("üheksateistkümnes", 19)
+ ]
 
 ruleOrdinalsFirstth :: Rule
 ruleOrdinalsFirstth = Rule
@@ -29,27 +55,8 @@ ruleOrdinalsFirstth = Rule
     [ regex "(esimene|teine|kolmas|neljas|viies|kuues|seitsmes|kaheksas|üheksas|kümnes|üheteistkümnes|kaheteistkümnes|kolmeteistkümnes|neljateistkümnes|viieteistkümnes|kuueteistkümnes|seitsmeteistkümnes|kaheksateistkümnes|üheksateistkümnes)"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
-        "esimene" -> Just $ ordinal 1
-        "teine" -> Just $ ordinal 2
-        "kolmas" -> Just $ ordinal 3
-        "neljas" -> Just $ ordinal 4
-        "viies" -> Just $ ordinal 5
-        "kuues" -> Just $ ordinal 6
-        "seitsmes" -> Just $ ordinal 7
-        "kaheksas" -> Just $ ordinal 8
-        "üheksas" -> Just $ ordinal 9
-        "kümnes" -> Just $ ordinal 10
-        "üheteistkümnes" -> Just $ ordinal 11
-        "kaheteistkümnes" -> Just $ ordinal 12
-        "kolmeteistkümnes" -> Just $ ordinal 13
-        "neljateistkümnes" -> Just $ ordinal 14
-        "viieteistkümnes" -> Just $ ordinal 15
-        "kuueteistkümnes" -> Just $ ordinal 16
-        "seitsmeteistkümnes" -> Just $ ordinal 17
-        "kaheksateistkümnes" -> Just $ ordinal 18
-        "üheksateistkümnes" -> Just $ ordinal 19
-        _ -> Nothing
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        ordinal <$> HashMap.lookup (Text.toLower match) ordinalsMap
       _ -> Nothing
   }
 

@@ -184,18 +184,6 @@ ruleThisTime = Rule
       _ -> Nothing
   }
 
--- ruleThisTime2 :: Rule
--- ruleThisTime = Rule
---   { name = "<time> this"
---   , pattern =
---     [ Predicate isNotLatent
---     , regex "هذا|القادم|الحالي"
---     ]
---   , prod = \tokens -> case tokens of
---       (_:Token Time td:_) -> tt $ predNth 0 False td
---       _ -> Nothing
---   }  
-
 ruleNextTime :: Rule
 ruleNextTime = Rule
   { name = "<time> next"
@@ -232,7 +220,9 @@ ruleLastTime2 = Rule
       (Token Time td:_) -> tt $ predNth (- 1) False td
       _ -> Nothing
   }
-  
+
+
+-- TODO: implement ruleLastWeekendOfMonth
 -- ruleLastWeekendOfMonth :: Rule
 -- ruleLastWeekendOfMonth = Rule
 --   { name = "last weekend of <named-month>"
@@ -245,6 +235,7 @@ ruleLastTime2 = Rule
 --       _ -> Nothing
 --   }
 
+-- TODO: implement ruleTimeBeforeLastAfterNext
 -- ruleTimeBeforeLastAfterNext :: Rule
 -- ruleTimeBeforeLastAfterNext = Rule
 --   { name = "<time> before last|after next"
@@ -287,7 +278,6 @@ ruleDOWTheLastOfTime = Rule
       _ -> Nothing
   }
 
---todo add الاخخير
 ruleLastCycleOfTime :: Rule
 ruleLastCycleOfTime = Rule
   { name = "last <cycle> of <time>"
@@ -302,6 +292,8 @@ ruleLastCycleOfTime = Rule
         tt $ cycleLastOf grain td
       _ -> Nothing
   }
+
+-- TODO: implement "the <cycle> the latest of <time>". ex اليوم الاخير من ديسمبر
 
 ruleCycleLastOfTime :: Rule
 ruleCycleLastOfTime = Rule
@@ -1285,19 +1277,6 @@ ruleIntervalBy = Rule
       _ -> Nothing
   }
 
--- ruleIntervalByTheEndOf :: Rule
--- ruleIntervalByTheEndOf = Rule
---   { name = "by the end of <time>"
---   , pattern =
---     [ regex "(مع |ب|حتى )?نهاي[ةه]"
---     , dimension Time
---     ]
---   , prod = \tokens -> case tokens of
---       (_:Token Time td:_) ->
---         Token Time <$> interval TTime.Closed (cycleNth TG.Second 0) td
---       _ -> Nothing
---   }
-
 ruleIntervalUntilTOD :: Rule
 ruleIntervalUntilTOD = Rule
   { name = "until <time-of-day>"
@@ -1444,7 +1423,6 @@ rulePartOfMonth = Rule
       _ -> Nothing
   }
   
--- TODO: Write in a better syntax
 ruleDayOfMonth :: Rule
 ruleDayOfMonth = Rule
   { name = "day of <named-month>"
@@ -1827,7 +1805,6 @@ rules =
   , ruleMonthDOMNumeral
   , ruleDOMMonth
   , ruleDOMOfMonth
-  -- , ruleDOMOfMonthNamed
   , ruleDOMOrdinalMonthYear
   , ruleDOMOrdinalDayMonthYear
   , ruleTODIntegerLatent
@@ -1844,7 +1821,6 @@ rules =
   , ruleHODHalf
   , ruleHODThird
   , ruleHODQuarter
-  -- , ruleNumeralToHOD
   , ruleThirdToHOD
   , ruleQuarterToHOD
   , ruleHODAndNumeralAfter

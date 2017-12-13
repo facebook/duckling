@@ -29,5 +29,16 @@ import qualified Duckling.Url.Tests as Url
 
 tests :: TestTree
 tests = testGroup "Dimensions Tests"
-  [ Time.tests
+  [ AmountOfMoney.tests
+  , Distance.tests
+  , Duration.tests
+  , Email.tests
+  , Numeral.tests
+  , Ordinal.tests
+  , PhoneNumber.tests
+  , Quantity.tests
+  , Temperature.tests
+  , Time.tests
+  , Volume.tests
+  , Url.tests
   ]

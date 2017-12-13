@@ -60,24 +60,6 @@ oneToTenMap = HashMap.fromList
   , ("deich", 10)
   ]
 
-oneToTenMap :: HashMap Text Integer
-oneToTenMap = HashMap.fromList
-  [ ("aon", 1)
-  , ("dha", 2)
-  , ("dhá", 2)
-  , ("trí", 3)
-  , ("tri", 3)
-  , ("ceithre", 4)
-  , ("cuig", 5)
-  , ("cúig", 5)
-  , ("sé", 6)
-  , ("se", 6)
-  , ("seacht", 7)
-  , ("ocht", 8)
-  , ("naoi", 9)
-  , ("deich", 10)
-  ]
-
 ruleNumerals2 :: Rule
 ruleNumerals2 = Rule
   { name = "numbers, 1-10"

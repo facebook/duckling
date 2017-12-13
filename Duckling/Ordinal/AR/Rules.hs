@@ -14,16 +14,7 @@ module Duckling.Ordinal.AR.Rules
   ( rules
   ) where
 
-<<<<<<< HEAD
-import Control.Monad (join)
-import Data.HashMap.Strict ( HashMap)
-import qualified Data.HashMap.Strict as HashMap
-import Data.Text (Text)
-import qualified Data.Text as Text
-import Prelude
-=======
 import Data.HashMap.Strict (HashMap)
->>>>>>> 2274e40369c3230bae36e86fec3a1744a3a66f12
 import Data.String
 import Data.Text (Text)
 import Prelude

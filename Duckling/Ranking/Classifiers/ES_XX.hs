@@ -719,6 +719,13 @@ classifiers
                    koData =
                      ClassData{prior = -infinity, unseen = -1.0986122886681098,
                                likelihoods = HashMap.fromList [], n = 0}}),
+       ("fractional number",
+        Classifier{okData =
+                     ClassData{prior = -infinity, unseen = -0.6931471805599453,
+                               likelihoods = HashMap.fromList [], n = 0},
+                   koData =
+                     ClassData{prior = 0.0, unseen = -2.0794415416798357,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 6}}),
        ("afternoon",
         Classifier{okData =
                      ClassData{prior = -0.3364722366212129,

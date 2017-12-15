@@ -608,6 +608,13 @@ classifiers
                                     ("quarter (grain)integer (numeric)time-of-day (latent)",
                                      -1.0986122886681098)],
                                n = 1}}),
+       ("fractional number",
+        Classifier{okData =
+                     ClassData{prior = -infinity, unseen = -0.6931471805599453,
+                               likelihoods = HashMap.fromList [], n = 0},
+                   koData =
+                     ClassData{prior = 0.0, unseen = -2.4849066497880004,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 10}}),
        ("Sunday",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -1.791759469228055,

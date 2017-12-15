@@ -74,19 +74,19 @@ ruleDecimalNumeral = Rule
       _ -> Nothing
   }
 
-ruleFraction2 :: Rule
-ruleFraction2 = Rule
+ruleFraction :: Rule
+ruleFraction = Rule
   { name = "fraction"
   , pattern =
     [ dimension Numeral
-    , regex "/"
+    , regex "분(의|에)"
     , dimension Numeral
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral (NumeralData {TNumeral.value = v1}):
        _:
        Token Numeral (NumeralData {TNumeral.value = v2}):
-       _) -> double $ v1 / v2
+       _) -> double $ v2 / v1
       _ -> Nothing
   }
 
@@ -229,22 +229,6 @@ ruleIntegerType2 = Rule
       _ -> Nothing
   }
 
-ruleFraction :: Rule
-ruleFraction = Rule
-  { name = "fraction"
-  , pattern =
-    [ dimension Numeral
-    , regex "분(의|에)"
-    , dimension Numeral
-    ]
-  , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = v1}):
-       _:
-       Token Numeral (NumeralData {TNumeral.value = v2}):
-       _) -> double $ v2 / v1
-      _ -> Nothing
-  }
-
 ruleNumeralDotNumeral :: Rule
 ruleNumeralDotNumeral = Rule
   { name = "number dot number - 삼점사"
@@ -304,7 +288,6 @@ rules =
   , ruleDecimalWithThousandsSeparator
   , ruleFew
   , ruleFraction
-  , ruleFraction2
   , ruleHalf
   , ruleInteger
   , ruleIntegerForOrdinals

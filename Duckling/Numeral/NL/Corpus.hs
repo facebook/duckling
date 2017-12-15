@@ -9,10 +9,11 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Numeral.NL.Corpus
-  ( corpus ) where
+  ( corpus
+  ) where
 
-import Prelude
 import Data.String
+import Prelude
 
 import Duckling.Locale
 import Duckling.Numeral.Types
@@ -94,5 +95,11 @@ allExamples = concat
              ]
   , examples (NumeralValue 20000)
              [ "twintig duizend"
+             ]
+  , examples (NumeralValue 0.2)
+             [ "1/5"
+             , "2/10"
+             , "3/15"
+             , "20/100"
              ]
   ]

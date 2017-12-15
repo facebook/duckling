@@ -179,18 +179,6 @@ classifiers
                      ClassData{prior = -0.17062551703076334,
                                unseen = -4.875197323201151,
                                likelihoods = HashMap.fromList [("", 0.0)], n = 129}}),
-       ("fraction",
-        Classifier{okData =
-                     ClassData{prior = -infinity, unseen = -1.3862943611198906,
-                               likelihoods = HashMap.fromList [], n = 0},
-                   koData =
-                     ClassData{prior = 0.0, unseen = -2.890371757896165,
-                               likelihoods =
-                                 HashMap.fromList
-                                   [("integer (numeric)integer (numeric)", -0.6359887667199967),
-                                    ("fractioninteger (numeric)", -1.4469189829363254),
-                                    ("integer (numeric)fraction", -1.4469189829363254)],
-                               n = 14}}),
        ("hour (grain)",
         Classifier{okData =
                      ClassData{prior = -1.241713132308783, unseen = -2.70805020110221,
@@ -607,6 +595,13 @@ classifiers
                                    [("hour (grain)", -0.6931471805599453),
                                     ("hour", -0.6931471805599453)],
                                n = 7}}),
+       ("fractional number",
+        Classifier{okData =
+                     ClassData{prior = -infinity, unseen = -0.6931471805599453,
+                               likelihoods = HashMap.fromList [], n = 0},
+                   koData =
+                     ClassData{prior = 0.0, unseen = -1.9459101490553135,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 5}}),
        ("afternoon",
         Classifier{okData =
                      ClassData{prior = -0.2876820724517809,
@@ -701,24 +696,24 @@ classifiers
                                n = 50}}),
        ("year",
         Classifier{okData =
-                     ClassData{prior = -1.006804739414987, unseen = -3.295836866004329,
+                     ClassData{prior = -0.9873866535578852, unseen = -3.258096538021482,
                                likelihoods =
                                  HashMap.fromList
-                                   [("integer (numeric)", -0.3677247801253174),
-                                    ("intersect 2 numbers", -2.5649493574615367),
-                                    ("integer (21..99) - TYPE 2", -2.5649493574615367)],
+                                   [("integer (numeric)", -0.3285040669720361),
+                                    ("intersect 2 numbers", -2.5257286443082556),
+                                    ("integer (21..99) - TYPE 2", -2.5257286443082556)],
                                n = 19},
                    koData =
-                     ClassData{prior = -0.4547361571149472, unseen = -3.713572066704308,
+                     ClassData{prior = -0.46608972992459924,
+                               unseen = -3.6635616461296463,
                                likelihoods =
                                  HashMap.fromList
-                                   [("integer (numeric)", -0.5533852381847867),
-                                    ("intersect 2 numbers", -2.3025850929940455),
-                                    ("integer - TYPE 1", -2.0794415416798357),
-                                    ("fraction", -2.995732273553991),
-                                    ("integer - TYPE 1: powers of ten", -2.5902671654458267),
-                                    ("compose by multiplication", -2.995732273553991)],
-                               n = 33}}),
+                                   [("integer (numeric)", -0.5020919437972361),
+                                    ("intersect 2 numbers", -2.2512917986064953),
+                                    ("integer - TYPE 1", -2.0281482472922856),
+                                    ("integer - TYPE 1: powers of ten", -2.538973871058276),
+                                    ("compose by multiplication", -2.9444389791664407)],
+                               n = 32}}),
        ("<integer> <unit-of-duration>",
         Classifier{okData =
                      ClassData{prior = -1.5955488002734333,

@@ -155,7 +155,7 @@ ruleTODLatent :: Rule
 ruleTODLatent = Rule
   { name = "time-of-day (latent)"
   , pattern =
-    [ Predicate $ and . sequence [isNumeralSafeToUse, isIntegerBetween 0 23]
+    [ Predicate $ isIntegerBetween 0 23
     ]
   , prod = \tokens -> case tokens of
       (token:_) -> do

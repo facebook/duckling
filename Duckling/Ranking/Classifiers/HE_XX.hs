@@ -553,6 +553,13 @@ classifiers
                      ClassData{prior = -1.3862943611198906, unseen = -1.791759469228055,
                                likelihoods = HashMap.fromList [("ordinal 9", -0.916290731874155)],
                                n = 1}}),
+       ("fractional number",
+        Classifier{okData =
+                     ClassData{prior = -infinity, unseen = -0.6931471805599453,
+                               likelihoods = HashMap.fromList [], n = 0},
+                   koData =
+                     ClassData{prior = 0.0, unseen = -2.0794415416798357,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 6}}),
        ("this <cycle>",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -1.6094379124341003,

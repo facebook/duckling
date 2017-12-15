@@ -192,4 +192,10 @@ allExamples = concat
   , examples (NumeralValue 1200000.42)
              [ "1.200.000,42"
              ]
+  , examples (NumeralValue 0.2)
+             [ "1/5"
+             , "2/10"
+             , "3/15"
+             , "20/100"
+             ]
   ]

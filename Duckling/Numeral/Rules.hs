@@ -33,7 +33,22 @@ ruleIntegerNumeric = Rule
       _ -> Nothing
   }
 
+ruleFractions :: Rule
+ruleFractions = Rule
+  { name = "fractional number"
+  , pattern =
+    [ regex "(\\d+)/(\\d+)"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (numerator:denominator:_)):_) -> do
+        n <- parseDecimal False numerator
+        d <- parseDecimal False denominator
+        divide n d >>= notOkForAnyTime
+      _ -> Nothing
+  }
+
 rules :: [Rule]
 rules =
   [ ruleIntegerNumeric
+  , ruleFractions
   ]

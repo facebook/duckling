@@ -1466,6 +1466,13 @@ classifiers
                                     ("<hour-of-day> <integer> (as relative minutes)",
                                      -2.538973871058276)],
                                n = 13}}),
+       ("fractional number",
+        Classifier{okData =
+                     ClassData{prior = -infinity, unseen = -0.6931471805599453,
+                               likelihoods = HashMap.fromList [], n = 0},
+                   koData =
+                     ClassData{prior = 0.0, unseen = -3.1780538303479458,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 22}}),
        ("d\233but <named-month>(interval)",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -2.3978952727983707,

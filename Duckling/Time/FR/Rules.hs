@@ -11,7 +11,8 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Time.FR.Rules
-  ( rules ) where
+  ( rules
+  ) where
 
 import Data.Text (Text)
 import Prelude

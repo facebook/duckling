@@ -15,7 +15,7 @@ module Duckling.Time.Helpers
     hasNoDirection, isADayOfWeek, isAMonth, isAnHourOfDay, isAPartOfDay
   , isATimeOfDay, isDOMInteger, isDOMOrdinal, isDOMValue, isGrain
   , isGrainFinerThan, isGrainOfTime, isIntegerBetween, isNotLatent
-  , isOrdinalBetween, isMidnightOrNoon, isOkWithThisNext, isNumeralSafeToUse
+  , isOrdinalBetween, isMidnightOrNoon, isOkWithThisNext
     -- Production
   , cycleLastOf, cycleN, cycleNth, cycleNthAfter, dayOfMonth, dayOfWeek
   , durationAfter, durationAgo, durationBefore, mkOkForThisNext, form, hour
@@ -282,8 +282,8 @@ hasNoDirection (Token Time td) = isNothing $ TTime.direction td
 hasNoDirection _ = False
 
 isIntegerBetween :: Int -> Int -> Predicate
-isIntegerBetween low high (Token Numeral nd) =
-  TNumeral.isIntegerBetween (TNumeral.value nd) low high
+isIntegerBetween low high (Token Numeral nd) = TNumeral.okForAnyTime nd
+  && TNumeral.isIntegerBetween (TNumeral.value nd) low high
 isIntegerBetween _ _ _ = False
 
 isOrdinalBetween :: Int -> Int -> Predicate
@@ -299,10 +299,6 @@ isDOMInteger = isIntegerBetween 1 31
 
 isDOMValue :: Predicate
 isDOMValue = or . sequence [isDOMOrdinal, isDOMInteger]
-
-isNumeralSafeToUse :: Predicate
-isNumeralSafeToUse (Token Numeral nd) = TNumeral.okForAnyTime nd
-isNumeralSafeToUse _ = False
 
 isOkWithThisNext :: Predicate
 isOkWithThisNext (Token Time TimeData {TTime.okForThisNext = True}) = True

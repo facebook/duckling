@@ -7,6 +7,7 @@
 
 
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE NamedFieldPuns #-}
 {-# LANGUAGE NoRebindableSyntax #-}
 {-# LANGUAGE OverloadedStrings #-}
 
@@ -21,6 +22,7 @@ import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
 import Duckling.Duration.Helpers (duration)
+import Duckling.Duration.Types (DurationData (..))
 import Duckling.Numeral.Helpers (parseInt)
 import Duckling.Numeral.Types (NumeralData (..))
 import Duckling.Ordinal.Types (OrdinalData (..))
@@ -28,6 +30,7 @@ import Duckling.Regex.Types
 import Duckling.Time.Helpers
 import Duckling.Time.Types (TimeData (..))
 import Duckling.Types
+import qualified Duckling.Duration.Types as TDuration
 import qualified Duckling.Numeral.Types as TNumeral
 import qualified Duckling.Ordinal.Types as TOrdinal
 import qualified Duckling.Time.Types as TTime
@@ -448,7 +451,7 @@ ruleTODLatent :: Rule
 ruleTODLatent = Rule
   { name = "time-of-day (latent)"
   , pattern =
-    [ Predicate $ and . sequence [isNumeralSafeToUse, isIntegerBetween 0 23]
+    [ Predicate $ isIntegerBetween 0 23
     ]
   , prod = \tokens -> case tokens of
       (token:_) -> do
@@ -541,8 +544,8 @@ ruleMilitarySpelledOutAMPM :: Rule
 ruleMilitarySpelledOutAMPM = Rule
   { name = "military spelled out numbers am|pm"
   , pattern =
-    [ Predicate $ and . sequence [isNumeralSafeToUse, isIntegerBetween 10 12]
-    , Predicate $ and . sequence [isNumeralSafeToUse, isIntegerBetween 1 59]
+    [ Predicate $ isIntegerBetween 10 12
+    , Predicate $ isIntegerBetween 1 59
     , regex "(in the )?([ap])(\\s|\\.)?m?\\.?"
     ]
     , prod = \tokens -> case tokens of
@@ -1413,24 +1416,6 @@ ruleCycleAfterBeforeTime = Rule
       _ -> Nothing
   }
 
-ruleCycleLastNextN :: Rule
-ruleCycleLastNextN = Rule
-  { name = "last|next n <cycle>"
-  , pattern =
-    [ regex "((last|past)|(next))"
-    , Predicate $ isIntegerBetween 1 9999
-    , dimension TimeGrain
-    ]
-  , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):
-       token:
-       Token TimeGrain grain:
-       _) -> do
-        n <- getIntValue token
-        tt . cycleN True grain $ if Text.toLower match == "next" then n else - n
-      _ -> Nothing
-  }
-
 ruleCycleOrdinalOfTime :: Rule
 ruleCycleOrdinalOfTime = Rule
   { name = "<ordinal> <cycle> of <time>"
@@ -1574,6 +1559,24 @@ ruleDurationInWithinAfter = Rule
          "after"  -> tt . withDirection TTime.After $ inDuration dd
          "in"     -> tt $ inDuration dd
          _        -> Nothing
+      _ -> Nothing
+  }
+
+ruleDurationLastNext :: Rule
+ruleDurationLastNext = Rule
+  { name = "last|past|next <duration>"
+  , pattern =
+    [ regex "([lp]ast|next)"
+    , dimension Duration
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (match:_)):
+       Token Duration (DurationData {TDuration.grain, TDuration.value}):
+       _) -> case Text.toLower match of
+         "next" -> tt $ cycleN True grain value
+         "last" -> tt $ cycleN True grain (- value)
+         "past" -> tt $ cycleN True grain (- value)
+         _      -> Nothing
       _ -> Nothing
   }
 
@@ -1739,10 +1742,9 @@ rules =
   , ruleMemorialDay
   , ruleMemorialDayWeekend
   , ruleLaborDayWeekend
-  , ruleCycleThisLastNext
   , ruleCycleTheAfterBeforeTime
+  , ruleCycleThisLastNext
   , ruleCycleAfterBeforeTime
-  , ruleCycleLastNextN
   , ruleCycleOrdinalOfTime
   , ruleCycleTheOrdinalOfTime
   , ruleCycleTheOfTime
@@ -1752,6 +1754,7 @@ rules =
   , ruleCycleTheOrdinalQuarter
   , ruleCycleOrdinalQuarterYear
   , ruleDurationInWithinAfter
+  , ruleDurationLastNext
   , ruleDurationHenceAgo
   , ruleDurationAfterBeforeTime
   , ruleIntervalForDurationFrom

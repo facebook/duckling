@@ -13,9 +13,12 @@ module Duckling.Numeral.KO.Rules
   ( rules
   ) where
 
+import Data.HashMap.Strict (HashMap)
 import Data.Maybe
 import Data.String
+import Data.Text (Text)
 import Prelude
+import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
@@ -25,6 +28,15 @@ import Duckling.Regex.Types
 import Duckling.Types
 import qualified Duckling.Numeral.Types as TNumeral
 
+integerForOrdinalsMap :: HashMap Text Integer
+integerForOrdinalsMap = HashMap.fromList
+  [ ( "한", 1 )
+  , ( "첫", 1 )
+  , ( "두", 2 )
+  , ( "세", 3 )
+  , ( "네", 4 )
+  ]
+
 ruleIntegerForOrdinals :: Rule
 ruleIntegerForOrdinals = Rule
   { name = "integer (1..4) - for ordinals"
@@ -32,13 +44,8 @@ ruleIntegerForOrdinals = Rule
     [ regex "(한|첫|두|세|네)"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> case match of
-        "한" -> integer 1
-        "첫" -> integer 1
-        "두" -> integer 2
-        "세" -> integer 3
-        "네" -> integer 4
-        _ -> Nothing
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        HashMap.lookup match integerForOrdinalsMap >>= integer
       _ -> Nothing
   }
 
@@ -120,6 +127,19 @@ ruleInteger = Rule
   , prod = \_ -> integer 0
   }
 
+integerTypeAndOrdinalsMap :: HashMap Text Integer
+integerTypeAndOrdinalsMap = HashMap.fromList
+  [ ( "열", 10 )
+  , ( "스물", 20 )
+  , ( "서른", 30 )
+  , ( "마흔", 40 )
+  , ( "쉰", 50 )
+  , ( "예순", 60 )
+  , ( "일흔", 70 )
+  , ( "여든", 80 )
+  , ( "아흔", 90 )
+  ]
+
 ruleIntegerTypeAndOrdinals :: Rule
 ruleIntegerTypeAndOrdinals = Rule
   { name = "integer (20..90) - TYPE 2 and ordinals"
@@ -127,19 +147,24 @@ ruleIntegerTypeAndOrdinals = Rule
     [ regex "(열|스물|서른|마흔|쉰|예순|일흔|여든|아흔)"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> case match of
-        "열" -> integer 10
-        "스물" -> integer 20
-        "서른" -> integer 30
-        "마흔" -> integer 40
-        "쉰" -> integer 50
-        "예순" -> integer 60
-        "일흔" -> integer 70
-        "여든" -> integer 80
-        "아흔" -> integer 90
-        _ -> Nothing
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        HashMap.lookup match integerTypeAndOrdinalsMap >>= integer
       _ -> Nothing
   }
+
+integerType1Map :: HashMap Text Integer
+integerType1Map = HashMap.fromList
+  [ ( "영", 0 )
+  , ( "일", 1 )
+  , ( "이", 2 )
+  , ( "삼", 3 )
+  , ( "사", 4 )
+  , ( "오", 5 )
+  , ( "육", 6 )
+  , ( "칠", 7 )
+  , ( "팔", 8 )
+  , ( "구", 9 )
+  ]
 
 ruleIntegerType1 :: Rule
 ruleIntegerType1 = Rule
@@ -148,20 +173,20 @@ ruleIntegerType1 = Rule
     [ regex "(영|일|이|삼|사|오|육|칠|팔|구)"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> case match of
-        "영" -> integer 0
-        "일" -> integer 1
-        "이" -> integer 2
-        "삼" -> integer 3
-        "사" -> integer 4
-        "오" -> integer 5
-        "육" -> integer 6
-        "칠" -> integer 7
-        "팔" -> integer 8
-        "구" -> integer 9
-        _ -> Nothing
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        HashMap.lookup match integerType1Map >>= integer
       _ -> Nothing
   }
+
+integerType1PowersOfTenMap :: HashMap Text (Double, Int)
+integerType1PowersOfTenMap = HashMap.fromList
+  [ ( "십", (10, 1) )
+  , ( "백", (1e2, 2) )
+  , ( "천", (1e3, 3) )
+  , ( "만", (1e4, 4) )
+  , ( "억", (1e8, 8) )
+  , ( "조", (1e12, 12) )
+  ]
 
 ruleIntegerType1PowersOfTen :: Rule
 ruleIntegerType1PowersOfTen = Rule
@@ -170,14 +195,10 @@ ruleIntegerType1PowersOfTen = Rule
     [ regex "(십|백|천|만|억|조)"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> case match of
-        "십" -> double 10   >>= withGrain 1  >>= withMultipliable
-        "백" -> double 1e2  >>= withGrain 2  >>= withMultipliable
-        "천" -> double 1e3  >>= withGrain 3  >>= withMultipliable
-        "만" -> double 1e4  >>= withGrain 4  >>= withMultipliable
-        "억" -> double 1e8  >>= withGrain 8  >>= withMultipliable
-        "조" -> double 1e12 >>= withGrain 12 >>= withMultipliable
-        _ -> Nothing
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        do
+          (value, grain) <- HashMap.lookup match integerType1PowersOfTenMap
+          double value >>= withGrain grain >>= withMultipliable
       _ -> Nothing
   }
 
@@ -190,7 +211,8 @@ ruleSum = Rule
     ]
   , prod = \tokens ->
       case tokens of
-        (Token Numeral (NumeralData {TNumeral.value = val1, TNumeral.grain = Just g}):
+        (Token Numeral (NumeralData {TNumeral.value = val1,
+                                     TNumeral.grain = Just g}):
          Token Numeral (NumeralData {TNumeral.value = val2}):
          _) | (10 ** fromIntegral g) > val2 -> double $ val1 + val2
         _ -> Nothing
@@ -208,6 +230,19 @@ ruleMultiply = Rule
       _ -> Nothing
   }
 
+integerType2Map :: HashMap Text Integer
+integerType2Map = HashMap.fromList
+  [ ( "하나", 1 )
+  , ( "둘", 2 )
+  , ( "셋", 3 )
+  , ( "넷", 4 )
+  , ( "다섯", 5 )
+  , ( "여섯", 6 )
+  , ( "일곱", 7 )
+  , ( "여덟", 8 )
+  , ( "아홉", 9 )
+  ]
+
 ruleIntegerType2 :: Rule
 ruleIntegerType2 = Rule
   { name = "integer (1..10) - TYPE 2"
@@ -215,17 +250,8 @@ ruleIntegerType2 = Rule
     [ regex "(하나|둘|셋|넷|다섯|여섯|일곱|여덟|아홉)"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> case match of
-        "하나" -> integer 1
-        "둘" -> integer 2
-        "셋" -> integer 3
-        "넷" -> integer 4
-        "다섯" -> integer 5
-        "여섯" -> integer 6
-        "일곱" -> integer 7
-        "여덟" -> integer 8
-        "아홉" -> integer 9
-        _ -> Nothing
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        HashMap.lookup match integerType2Map >>= integer
       _ -> Nothing
   }
 

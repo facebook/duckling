@@ -201,6 +201,20 @@ ruleGross = Rule
   , prod = \_ -> integer 144 >>= withGrain 1
   }
 
+ruleNumeralFraction :: Rule
+ruleNumeralFraction = Rule
+  { name = "fractional number"
+  , pattern =
+    [ regex "(\\d+)/(\\d+)"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (numerator:denominator:_)):_) -> do
+        n <- parseDecimal False numerator
+        d <- parseDecimal False denominator
+        divide n d
+      _ -> Nothing
+  }
+
 zeroNineteenMap :: HashMap Text Integer
 zeroNineteenMap = HashMap.fromList
   [ ("niks", 0)
@@ -282,4 +296,5 @@ rules =
   , ruleNumeralsSuffixesKMG
   , rulePowersOfTen
   , ruleTen
+  , ruleNumeralFraction
   ]

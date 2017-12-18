@@ -13,15 +13,18 @@ module Duckling.Numeral.MY.Rules
   ( rules
   ) where
 
+import Data.HashMap.Strict       (HashMap)
 import Data.String
-import Prelude
-
+import Data.Text                 (Text)
 import Duckling.Dimensions.Types
 import Duckling.Numeral.Helpers
-import Duckling.Numeral.Types (NumeralData (..))
+import Duckling.Numeral.Types    (NumeralData (..))
 import Duckling.Regex.Types
 import Duckling.Types
-import qualified Duckling.Numeral.Types as TNumeral
+import Prelude
+import qualified Data.HashMap.Strict       as HashMap
+import qualified Data.Text                 as Text
+import qualified Duckling.Numeral.Types    as TNumeral
 
 ruleInteger5 :: Rule
 ruleInteger5 = Rule
@@ -39,6 +42,20 @@ ruleInteger5 = Rule
       _ -> Nothing
   }
 
+integer09Map :: HashMap Text Integer
+integer09Map = HashMap.fromList
+  [ ( "၀", 0 )
+  , ( "၁", 1 )
+  , ( "၂", 2 )
+  , ( "၃", 3 )
+  , ( "၄", 4 )
+  , ( "၅", 5 )
+  , ( "၆", 6 )
+  , ( "၇", 7 )
+  , ( "၈", 8 )
+  , ( "၉", 9 )
+  ]
+
 ruleInteger09 :: Rule
 ruleInteger09 = Rule
   { name = "integer (0..9) - numeric"
@@ -46,18 +63,8 @@ ruleInteger09 = Rule
     [ regex "(၀|၁|၂|၃|၄|၅|၆|၇|၈|၉)"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> case match of
-        "၀" -> integer 0
-        "၁" -> integer 1
-        "၂" -> integer 2
-        "၃" -> integer 3
-        "၄" -> integer 4
-        "၅" -> integer 5
-        "၆" -> integer 6
-        "၇" -> integer 7
-        "၈" -> integer 8
-        "၉" -> integer 9
-        _ -> Nothing
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        HashMap.lookup match integer09Map >>= integer
       _ -> Nothing
   }
 
@@ -73,6 +80,13 @@ ruleInteger3 = Rule
       _ -> Nothing
   }
 
+integerPaliMap :: HashMap Text Integer
+integerPaliMap = HashMap.fromList
+  [ ( "ပထမ", 1 )
+  , ( "ဒုတိယ", 2 )
+  , ( "တတိယ", 3 )
+  ]
+
 ruleIntegerPali :: Rule
 ruleIntegerPali = Rule
   { name = "integer (1..3) - pali"
@@ -80,11 +94,8 @@ ruleIntegerPali = Rule
     [ regex "(ပထမ|ဒုတိယ|တတိယ)"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> case match of
-        "ပထမ" -> integer 1
-        "ဒုတိယ" -> integer 2
-        "တတိယ" -> integer 3
-        _ -> Nothing
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        HashMap.lookup match integerPaliMap >>= integer
       _ -> Nothing
   }
 
@@ -145,6 +156,20 @@ ruleInteger4 = Rule
       _ -> Nothing
   }
 
+integer2Map :: HashMap Text Integer
+integer2Map = HashMap.fromList
+  [ ( "တစ်", 1 )
+  , ( "နှစ်", 2 )
+  , ( "သုံး", 3 )
+  , ( "လေး", 4 )
+  , ( "ငါး", 5 )
+  , ( "ခြေါက်", 6 )
+  , ( "ခုနှစ်", 7 )
+  , ( "ရှစ်", 8 )
+  , ( "ကိုး", 9 )
+  , ( "တစ်ဆယ်", 10 )
+  ]
+
 ruleInteger2 :: Rule
 ruleInteger2 = Rule
   { name = "integer (1..10)"
@@ -152,18 +177,8 @@ ruleInteger2 = Rule
     [ regex "(တစ်|နှစ်|သုံး|လေး|ငါး|ခြေါက်|ခုနှစ်|ရှစ်|ကိုး|တစ်ဆယ်)"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> case match of
-        "တစ်" -> integer 1
-        "နှစ်" -> integer 2
-        "သုံး" -> integer 3
-        "လေး" -> integer 4
-        "ငါး" -> integer 5
-        "ခြေါက်" -> integer 6
-        "ခုနှစ်" -> integer 7
-        "ရှစ်" -> integer 8
-        "ကိုး" -> integer 9
-        "တစ်ဆယ်" -> integer 10
-        _ -> Nothing
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        HashMap.lookup match integer2Map >>= integer
       _ -> Nothing
   }
 

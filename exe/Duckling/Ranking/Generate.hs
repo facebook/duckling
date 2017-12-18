@@ -173,6 +173,7 @@ getCorpusForLang GA = GATime.corpus
 getCorpusForLang HR = HRTime.corpus
 getCorpusForLang HE = HETime.corpus
 getCorpusForLang HU = HUTime.corpus
+getCorpusForLang HI = (testContext, [])
 getCorpusForLang ID = (testContext, [])
 getCorpusForLang IT = ITTime.corpus
 getCorpusForLang JA = (testContext, [])

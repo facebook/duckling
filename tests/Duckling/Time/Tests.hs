@@ -24,6 +24,7 @@ import Duckling.Testing.Asserts
 import Duckling.Testing.Types
 import Duckling.Time.Types
 import Duckling.TimeGrain.Types
+import qualified Duckling.Time.AR.Tests as AR
 import qualified Duckling.Time.DA.Tests as DA
 import qualified Duckling.Time.DE.Tests as DE
 import qualified Duckling.Time.EN.Tests as EN
@@ -47,7 +48,8 @@ import qualified Duckling.Time.ZH.Tests as ZH
 
 tests :: TestTree
 tests = testGroup "Time Tests"
-  [ DA.tests
+  [ AR.tests
+  , DA.tests
   , DE.tests
   , EL.tests
   , EN.tests

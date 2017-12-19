@@ -28,19 +28,24 @@ allExamples = concat
   [ examples (OrdinalData 1)
              [ "الاول"
              , "الأول"
+             , "اول"
              ]
   , examples (OrdinalData 2)
              [ "الثاني"
              , "الثان"
+             , "ثاني"
              ]
   , examples (OrdinalData 3)
              [ "الثالث"
+             , "ثالث"
              ]
   , examples (OrdinalData 4)
              [ "الرابع"
+             , "رابع"
              ]
   , examples (OrdinalData 8)
              [ "الثامن"
+             , "ثامن"
              ]
   , examples (OrdinalData 11)
              [ "الأحد عشر"
@@ -51,6 +56,14 @@ allExamples = concat
              [ "الثاني عشرة"
              , "الثان عشر"
              , "الاثنى عشر"
+             ]
+  , examples (OrdinalData 13)
+             [ "الثالث عشر"
+             , "الثالثة عشرة"
+             ]
+  , examples (OrdinalData 21)
+             [ "الحادي والعشرين"
+             , "الواحد و العشرون"
              ]
   , examples (OrdinalData 25)
              [ "الخامس والعشرين"

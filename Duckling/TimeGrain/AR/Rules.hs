@@ -21,13 +21,14 @@ import Duckling.Types
 import qualified Duckling.TimeGrain.Types as TG
 
 grains :: [(Text, String, TG.Grain)]
-grains = [ ("second (grain) ", "(ثاني(ة|ه)?|ثواني|لحظ(ة|ه|ات))", TG.Second)
-         , ("minute (grain)" , "دق(يق(ة|ه)|ائق)"               , TG.Minute)
-         , ("hour (grain)"   , "ساع(ة|ه|ات)"                   , TG.Hour)
-         , ("day (grain)"    , "يوم|(ا|أ)يام"                  , TG.Day)
-         , ("week (grain)"   , "(ا|أ|إ)س(بوع|ابيع)"            , TG.Week)
-         , ("month (grain)"  , "شهر|(ا|أ|إ)شهر"                , TG.Month)
-         , ("year (grain)"   , "سن(ة|ين)|عام"                  , TG.Year)
+grains = [ ("second (grain) ", "(ثاني(ة|ه)?|ثواني|لحظ(ة|ه|ات))"   , TG.Second)
+         , ("minute (grain)" , "دق(يق(ة|ه)|ائق)"                  , TG.Minute)
+         , ("hour (grain)"   , "ساع(ة|ه|ات)"                      , TG.Hour)
+         , ("day (grain)"    , "يوم|(ا|أ)يام"                     , TG.Day)
+         , ("week (grain)"   , "(ا|أ|إ)س(بوع|ابيع)"               , TG.Week)
+         , ("month (grain)"  , "شهر|(ا|أ|إ)شهر"                   , TG.Month)
+         , ("quarter (grain)", "(ربع(ين|ان)|[أا]رباع)(سنة|عام)?"  , TG.Quarter)
+         , ("year (grain)"   , "سن(ة|ين)|عام"                     , TG.Year)
          ]
 
 rules :: [Rule]

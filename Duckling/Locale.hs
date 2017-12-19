@@ -43,6 +43,7 @@ data Lang
   | FR
   | GA
   | HE
+  | HI
   | HR
   | HU
   | ID

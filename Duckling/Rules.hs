@@ -35,6 +35,7 @@ import qualified Duckling.Rules.ET as ETRules
 import qualified Duckling.Rules.FR as FRRules
 import qualified Duckling.Rules.GA as GARules
 import qualified Duckling.Rules.HE as HERules
+import qualified Duckling.Rules.HI as HIRules
 import qualified Duckling.Rules.HR as HRRules
 import qualified Duckling.Rules.HU as HURules
 import qualified Duckling.Rules.ID as IDRules
@@ -88,6 +89,7 @@ defaultRules ET = ETRules.defaultRules
 defaultRules FR = FRRules.defaultRules
 defaultRules GA = GARules.defaultRules
 defaultRules HE = HERules.defaultRules
+defaultRules HI = HIRules.defaultRules
 defaultRules HR = HRRules.defaultRules
 defaultRules HU = HURules.defaultRules
 defaultRules ID = IDRules.defaultRules
@@ -121,6 +123,7 @@ localeRules ET = ETRules.localeRules
 localeRules FR = FRRules.localeRules
 localeRules GA = GARules.localeRules
 localeRules HE = HERules.localeRules
+localeRules HI = HIRules.localeRules
 localeRules HR = HRRules.localeRules
 localeRules HU = HURules.localeRules
 localeRules ID = IDRules.localeRules
@@ -154,6 +157,7 @@ langRules ET = ETRules.langRules
 langRules FR = FRRules.langRules
 langRules GA = GARules.langRules
 langRules HE = HERules.langRules
+langRules HI = HIRules.langRules
 langRules HR = HRRules.langRules
 langRules HU = HURules.langRules
 langRules ID = IDRules.langRules

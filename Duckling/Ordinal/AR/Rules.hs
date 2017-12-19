@@ -29,39 +29,41 @@ import Duckling.Types
 
 ordinalsMap :: HashMap Text Int
 ordinalsMap = HashMap.fromList
-  [ ( "اول" , 1  )
-  , ( "أول" , 1  )
-  , ( "واحد", 1  )
-  , ( "ثان" , 2  )
-  , ( "ثاني", 2  )
-  , ( "ثالث", 3  )
-  , ( "رابع", 4  )
-  , ( "خامس", 5  )
-  , ( "سادس", 6  )
-  , ( "سابع", 7  )
-  , ( "ثامن", 8  )
-  , ( "تاسع", 9  )
+  [ ( "اول", 1 )
+  , ( "أول", 1 )
+  , ( "حاد", 1 )
+  , ( "حادي", 1 )
+  , ( "واحد", 1 )
+  , ( "ثان", 2 )
+  , ( "ثاني", 2 )
+  , ( "ثالث", 3 )
+  , ( "رابع", 4 )
+  , ( "خامس", 5 )
+  , ( "سادس", 6 )
+  , ( "سابع", 7 )
+  , ( "ثامن", 8 )
+  , ( "تاسع", 9 )
   , ( "عاشر", 10 )
   ]
 
 -- حذفنا ون،ين للتوحيد بين المذكر والمؤنث
 cardinalsMap :: HashMap Text Int
 cardinalsMap = HashMap.fromList
-  [ ( "عشر" , 20 )
-  , ( "ثلاث" , 30 )
+  [ ( "عشر", 20 )
+  , ( "ثلاث", 30 )
   , ( "اربع", 40 )
-  , ( "خمس" , 50 )
-  , ( "ست"  , 60 )
-  , ( "سبع" , 70 )
+  , ( "خمس", 50 )
+  , ( "ست", 60 )
+  , ( "سبع", 70 )
   , ( "ثمان", 80 )
-  , ( "تسع" , 90 )
+  , ( "تسع", 90 )
   ]
 
 ruleCompositeOrdinals :: Rule
 ruleCompositeOrdinals = Rule
   { name = "ordinals (composite, e.g., eighty-seven)"
   , pattern =
-    [ regex "ال(واحد|ثاني?|ثالث|رابع|خامس|ثامن|تاسع|عاشر) و ?ال(عشر|ثلاث|اربع|خمس|ست|سبع|ثمان|تسع)(ون|ين)"
+    [ regex "ال(واحد|حادي?|ثاني?|ثالث|رابع|خامس|سادس|سابع|ثامن|تاسع|عاشر) و ?ال(عشر|ثلاث|اربع|خمس|ست|سبع|ثمان|تسع)(ون|ين)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (tens:units:_)):_) -> do
@@ -75,7 +77,7 @@ ruleOrdinals1To10 :: Rule
 ruleOrdinals1To10 = Rule
   { name = "ordinals (first..tenth)"
   , pattern =
-    [ regex "ال([أا]ول|ثاني?|ثالث|رابع|خامس|ثامن|تاسع|عاشر)[ةهى]?"
+    [ regex "(?:ال)?([أا]ول|ثاني?|ثالث|رابع|خامس|سادس|سابع|ثامن|تاسع|عاشر)[ةهى]?"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
@@ -87,7 +89,7 @@ ruleOrdinals11 :: Rule
 ruleOrdinals11 = Rule
   { name = "ordinals (eleventh)"
   , pattern =
-    [ regex "ال([اأإ]حد[يى]?|حادي?) ?عشرة?"
+    [ regex "ال([اأإ]حد[يى]?|حاد(ي[ةه]?)?) ?عشر[ةه]?"
     ]
   , prod = \_ -> Just $ ordinal 11
   }
@@ -96,7 +98,7 @@ ruleOrdinals12 :: Rule
 ruleOrdinals12 = Rule
   { name = "ordinals (twelveth)"
   , pattern =
-    [ regex "ال([اأإ]ثن[يى]?|ثاني?) ?عشرة?"
+    [ regex "ال([اأإ]ثن[يى]?|ثان(ي[ةه]?)?) ?عشر[ةه]?"
     ]
   , prod = \_ -> Just $ ordinal 12
   }
@@ -105,7 +107,7 @@ ruleOrdinals13To19 :: Rule
 ruleOrdinals13To19 = Rule
   { name = "ordinals (thirtieth..nineteenth)"
   , pattern =
-    [ regex "ال(ثالث|رابع|خامس|ثامن|تاسع) ?عشرة?"
+    [ regex "ال(ثالث|رابع|خامس|سادس|سابع|ثامن|تاسع)[ةهى]? ?عشرة?"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> do

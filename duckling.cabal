@@ -451,6 +451,8 @@ library
                      , Duckling.Temperature.Types
 
                      -- Time
+                     , Duckling.Time.AR.Corpus
+                     , Duckling.Time.AR.Rules
                      , Duckling.Time.DA.Corpus
                      , Duckling.Time.DA.Rules
                      , Duckling.Time.DE.Corpus
@@ -784,6 +786,7 @@ test-suite duckling-test
                      , Duckling.Temperature.Tests
 
                      -- Time
+                     , Duckling.Time.AR.Tests
                      , Duckling.Time.DA.Tests
                      , Duckling.Time.DE.Tests
                      , Duckling.Time.EL.Tests

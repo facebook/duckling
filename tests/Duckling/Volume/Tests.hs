@@ -12,6 +12,7 @@ import Prelude
 import Data.String
 import Test.Tasty
 
+import qualified Duckling.Volume.AR.Tests as AR
 import qualified Duckling.Volume.EN.Tests as EN
 import qualified Duckling.Volume.ES.Tests as ES
 import qualified Duckling.Volume.FR.Tests as FR
@@ -27,7 +28,8 @@ import qualified Duckling.Volume.TR.Tests as TR
 
 tests :: TestTree
 tests = testGroup "Volume Tests"
-  [ EN.tests
+  [ AR.tests
+  , EN.tests
   , ES.tests
   , FR.tests
   , GA.tests

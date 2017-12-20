@@ -23,6 +23,7 @@ import qualified Duckling.Numeral.AR.Rules as Numeral
 import qualified Duckling.Ordinal.AR.Rules as Ordinal
 import qualified Duckling.Time.AR.Rules as Time
 import qualified Duckling.TimeGrain.AR.Rules as TimeGrain
+import qualified Duckling.Volume.AR.Rules as Volume
 
 defaultRules :: Some Dimension -> [Rule]
 defaultRules = langRules
@@ -44,4 +45,4 @@ langRules (This Temperature) = []
 langRules (This Time) = Time.rules
 langRules (This TimeGrain) = TimeGrain.rules
 langRules (This Url) = []
-langRules (This Volume) = []
+langRules (This Volume) = Volume.rules

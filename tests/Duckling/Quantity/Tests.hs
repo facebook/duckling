@@ -12,6 +12,7 @@ import Prelude
 import Data.String
 import Test.Tasty
 
+import qualified Duckling.Quantity.AR.Tests as AR
 import qualified Duckling.Quantity.EN.Tests as EN
 import qualified Duckling.Quantity.FR.Tests as FR
 import qualified Duckling.Quantity.HR.Tests as HR
@@ -22,7 +23,8 @@ import qualified Duckling.Quantity.RU.Tests as RU
 
 tests :: TestTree
 tests = testGroup "Quantity Tests"
-  [ EN.tests
+  [ AR.tests
+  , EN.tests
   , FR.tests
   , HR.tests
   , KO.tests

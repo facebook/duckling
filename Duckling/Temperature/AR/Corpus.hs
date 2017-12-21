@@ -8,44 +8,43 @@
 
 {-# LANGUAGE OverloadedStrings #-}
 
-module Duckling.Temperature.EN.Corpus
+module Duckling.Temperature.AR.Corpus
   ( corpus
   ) where
 
 import Data.String
 import Prelude
 
+import Duckling.Locale
+import Duckling.Resolve
 import Duckling.Temperature.Types
 import Duckling.Testing.Types
 
 corpus :: Corpus
-corpus = (testContext, allExamples)
+corpus = (testContext {locale = makeLocale AR Nothing}, allExamples)
 
 allExamples :: [Example]
 allExamples = concat
   [ examples (TemperatureValue Celsius 37)
-             [ "37°C"
-             , "37 ° celsius"
-             , "37 degrees Celsius"
-             , "thirty seven celsius"
-             , "37 degrees Celsius"
-             , "thirty seven celsius"
+             [ "37° سلزيوس"
+             , "37 ° سلزيوس"
+             , "37 درجة سلزيوس"
+             , "سبع وثلاثون سلزيوس"
              ]
   , examples (TemperatureValue Fahrenheit 70)
-             [ "70°F"
-             , "70 ° Fahrenheit"
-             , "70 degrees F"
-             , "seventy Fahrenheit"
+             [ "70° فهرنهايت"
+             , "70 درجة فهرنهايت"
+             , "سبعون فهرنهايت"
              ]
   , examples (TemperatureValue Degree 45)
              [ "45°"
-             , "45 degrees"
-             , "45 deg."
+             , "45 درجة"
+             , "45 درجه مئوية"
              ]
   , examples (TemperatureValue Degree (-2))
              [ "-2°"
-             , "- 2 degrees"
-             , "2 degrees below zero"
-             , "2 below zero"
+             , "- 2 درجة"
+             , "درجتين تحت الصفر"
+             , "2 تحت الصفر"
              ]
   ]

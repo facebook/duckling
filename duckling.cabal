@@ -427,6 +427,8 @@ library
                      , Duckling.Regex.Types
 
                      -- Temperature
+                     , Duckling.Temperature.AR.Corpus
+                     , Duckling.Temperature.AR.Rules
                      , Duckling.Temperature.EN.Corpus
                      , Duckling.Temperature.EN.Rules
                      , Duckling.Temperature.ES.Corpus
@@ -779,6 +781,7 @@ test-suite duckling-test
                      , Duckling.Quantity.Tests
 
                      -- Temperature
+                     , Duckling.Temperature.AR.Tests
                      , Duckling.Temperature.EN.Tests
                      , Duckling.Temperature.ES.Tests
                      , Duckling.Temperature.FR.Tests

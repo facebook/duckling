@@ -21,6 +21,7 @@ import Duckling.Types
 import qualified Duckling.Duration.AR.Rules as Duration
 import qualified Duckling.Numeral.AR.Rules as Numeral
 import qualified Duckling.Ordinal.AR.Rules as Ordinal
+import qualified Duckling.Temperature.AR.Rules as Temperature
 import qualified Duckling.Time.AR.Rules as Time
 import qualified Duckling.TimeGrain.AR.Rules as TimeGrain
 import qualified Duckling.Volume.AR.Rules as Volume
@@ -41,7 +42,7 @@ langRules (This Ordinal) = Ordinal.rules
 langRules (This PhoneNumber) = []
 langRules (This Quantity) = []
 langRules (This RegexMatch) = []
-langRules (This Temperature) = []
+langRules (This Temperature) = Temperature.rules
 langRules (This Time) = Time.rules
 langRules (This TimeGrain) = TimeGrain.rules
 langRules (This Url) = []

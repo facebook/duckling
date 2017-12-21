@@ -8,7 +8,7 @@
 
 {-# LANGUAGE OverloadedStrings #-}
 
-module Duckling.AmountOfMoney.AR.Corpus
+module Duckling.AmountOfMoney.EN.Corpus
   ( corpus
   ) where
 
@@ -16,110 +16,114 @@ import Data.String
 import Prelude
 
 import Duckling.AmountOfMoney.Types
-import Duckling.Locale
-import Duckling.Resolve
 import Duckling.Testing.Types
 
 corpus :: Corpus
-corpus = (testContext {locale = makeLocale AR Nothing}, allExamples)
+corpus = (testContext, allExamples)
 
 allExamples :: [Example]
 allExamples = concat
   [ examples (simple Dollar 1)
              [ "$1"
-             , "one dollar"
-             , "a dollar"
+             , "دولارامريكي واحد"
+             , "1 دولار"
              ]
   , examples (simple Dollar 10)
              [ "$10"
              , "$ 10"
+			 , "10 $"
+			 , "10$"
              , "10$"
-             , "10 dollars"
-             , "ten dollars"
+             , "10 دولار"
+             , "عشرة دولارات أمريكية"
              ]
   , examples (simple Cent 10)
-             [ "10 cent"
-             , "ten pennies"
-             , "ten cents"
+             [ "10 سنتات"
+             , "10 سنت"
+             , "10 سينت"
+			 , "10 سينتات"
              , "10 c"
              , "10¢"
              ]
   , examples (simple Dollar 1e4)
-             [ "$10K"
-             , "10k$"
+             [ "10000 دولار"
              , "$10,000"
              ]
   , examples (simple USD 3.14)
-             [ "USD3.14"
-             , "3.14US$"
-             , "US$ 3.14"
+             [ "3.14 دولار"
+             , "3 دولارات و14 سنت"
+             , "3 دولار و 14 سينت"
+			 , "3.14 دولارات"
              ]
   , examples (simple EUR 20)
-             [ "20\x20ac"
-             , "20 euros"
-             , "20 Euro"
-             , "20 Euros"
-             , "EUR 20"
-             , "EUR 20.0"
+             [ "20 يورو"
+             , "20 اورو"
+             , "20 أورو"
+             , "20 ايرو"
+			 , "20 أيرو"
              , "20€"
-             , "20 €ur"
+             , "20 €"
              ]
   , examples (simple Pound 10)
-             [ "\x00a3\&10"
-             , "ten pounds"
+             [ "10 جنيه"
+             , "10 جنيهات"
+			 , "10 ليرة"
+			 , "10 ليرات"
              ]
   , examples (simple INR 20)
-             [ "Rs. 20"
-             , "Rs 20"
-             , "20 Rupees"
-             , "20Rs"
-             , "Rs20"
+             [ "20 روبية هندية"
+             , "20 روبيات هندية"
              ]
   , examples (simple INR 20.43)
-             [ "20 Rupees 43"
-             , "twenty rupees 43"
+             [ "20.43 روبية هندية"
+             , "20 روبية هندية و 43 بيزة"
              ]
   , examples (simple Dollar 20.43)
-             [ "$20 and 43c"
+             [ "20$ و 43c"
              , "$20 43"
-             , "20 dollar 43c"
-             , "20 dollars 43 cents"
-             , "twenty dollar 43 cents"
-             , "20 dollar 43"
-             , "twenty dollar and 43"
+             , "20$ 43c"
+             , "20 دولار و43 سنت"
+             , "20.43 $"
              ]
   , examples (simple GBP 3.01)
              [ "GBP3.01"
              , "GBP 3.01"
-             , "3 GBP 1 pence"
+             , "3 جنيهات استرلينية"
+			 , "3 جنيه استرليني"
              ]
   , examples (simple Unnamed 42)
-             [ "42 bucks"
-             , "around 42 bucks"
-             , "exactly 42 bucks"
+             [ "42 قطعة"
+             , "42 قطعة نقدية"
+             , "42"
              ]
   , examples (simple KWD 42)
              [ "42 KWD"
-             , "42 kuwaiti Dinar"
+             , "42 دينار كويتي"
+			 , "42 من الدينارات الكويتية"
              ]
   , examples (simple LBP 42)
              [ "42 LBP"
-             , "42 Lebanese Pounds"
+             , "42 ليرة لبنانية"
+			 , "42 ليرات لبنانية"
              ]
   , examples (simple EGP 42)
              [ "42 EGP"
-             , "42 egyptianpound"
+             , "42 جنيه مصري"
+			 , "42 جنيهات مصريه"
              ]
   , examples (simple QAR 42)
              [ "42 QAR"
-             , "42 qatari riyals"
+             , "42 ريال قطري"
+             , "42 ريالات قطرية"
              ]
   , examples (simple SAR 42)
              [ "42 SAR"
-             , "42 Saudiriyal"
+             , "42 ريال سعودي"
              ]
   , examples (simple BGN 42)
              [ "42 BGN"
+             , "42 ليف بلغاري"
+             , "42 ليفات بلغارية"
              ]
   , examples (simple MYR 42)
              [ "42 MYR"
@@ -130,16 +134,10 @@ allExamples = concat
              , "42RM"
              , "RM42"
              , "MYR42"
-             , "ringgit 42"
-             , "42 ringgit"
-             , "42 malaysia ringgit"
-             , "malaysia ringgit 42"
-             , "42 malaysian ringgit"
-             , "malaysian ringgit 42"
-             , "42 malaysia ringgits"
-             , "malaysia ringgits 42"
-             , "42 malaysian ringgits"
-             , "malaysian ringgits 42"
+             , "42 رينغيت ماليزي"
+             , "42 رينغت ماليزي"
+             , "42 رينغيت"
+             , "42 رينغت"
              ]
   , examples (simple MYR 20.43)
              [ "20 ringgit and 43c"
@@ -149,23 +147,50 @@ allExamples = concat
              , "twenty ringgit and 43"
              ]
   , examples (between Dollar (10, 20))
-             [ "between 10 and 20 dollars"
-             , "from 10 dollars to 20 dollars"
-             , "around 10-20 dollars"
-             , "between 10 dollars and 20 dollars"
-             , "from 10 to 20 dollars"
-             , "about $10-$20"
-             , "10-20 dollars"
+             [ "من 10 الى 20 دولار"
+             , "بين 10 و20 دولار امريكي"
+             , "بحدود 10-20 دولار"
+             , "ما بين العشرة والعشرون دولار أمريكي"
+             , "من عشرة لعشرين دولار"
+             , "حوالي 10$-20$"
+             , "10-20 $"
+             , "10-20 دولار"
              ]
   , examples (under EUR 7)
-             [ "under seven euros"
-             , "less than 7 EUR"
-             , "lower than 7€"
+             [ "تحت السبعة اورو"
+             , "اقل من 7 يورو"
+             , "اقل من 7 ايرو"
              ]
   , examples (above Dollar 1.42)
-             [ "more than 1 dollar and forty-two cents"
-             , "at least $1.42"
-             , "over 1.42 dollars"
-             , "above a dollar and 42 cents"
+             [ "اكثر من دولار و42 سينت"
+             , "1.42$ على الاقل"
+             , "فوق ال1.42 دولار"
+             , "فوق الدولار والاثنان واربعون سنتا امريكيا"
+             ]
+
+
+
+
+
+  , examples (simple JOD 5)
+             [ "5 دينار اردني"
+             , "5 دنانير أردنية"
+             , "5 ليرات اردنية"
+             ]
+  , examples (simple JOD 5.67)
+             [ "5.67 دينار اردني"
+             , "5 دنانير و67 قرش اردني"
+             , "5 ليرات اردنية و 67 وقرش"
+             ]
+  , examples (simple NIS 5)
+             [ "5 شيقل"
+             , "5 شواقل اسرائيلية"
+             , "خمسة شيقل اسرائيلي"
+             ]
+  , examples (simple NIS 5.5)
+             [ "5.5 شيقل"
+             , "5 شيقل و50 اغورة"
+             , "5 شيقل ونص"
+             , "5 شيقل و نصف"
              ]
   ]

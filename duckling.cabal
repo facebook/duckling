@@ -570,6 +570,8 @@ library
                      , Duckling.Url.Types
 
                      -- Volume
+                     , Duckling.Volume.AR.Corpus
+                     , Duckling.Volume.AR.Rules
                      , Duckling.Volume.EN.Corpus
                      , Duckling.Volume.EN.Rules
                      , Duckling.Volume.ES.Corpus
@@ -819,6 +821,7 @@ test-suite duckling-test
                      , Duckling.Url.Tests
 
                      -- Volume
+                     , Duckling.Volume.AR.Tests
                      , Duckling.Volume.EN.Tests
                      , Duckling.Volume.ES.Tests
                      , Duckling.Volume.FR.Tests

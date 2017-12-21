@@ -406,6 +406,8 @@ library
                      , Duckling.PhoneNumber.Types
 
                      -- Quantity
+                     , Duckling.Quantity.AR.Corpus
+                     , Duckling.Quantity.AR.Rules
                      , Duckling.Quantity.EN.Corpus
                      , Duckling.Quantity.EN.Rules
                      , Duckling.Quantity.FR.Corpus
@@ -771,6 +773,7 @@ test-suite duckling-test
                      , Duckling.PhoneNumber.Tests
 
                      -- Quantity
+                     , Duckling.Quantity.AR.Tests
                      , Duckling.Quantity.EN.Tests
                      , Duckling.Quantity.FR.Tests
                      , Duckling.Quantity.HR.Tests

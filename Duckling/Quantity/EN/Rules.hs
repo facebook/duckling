@@ -10,11 +10,14 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Quantity.EN.Rules
-  ( rules ) where
+  ( rules
+  ) where
 
+import Data.HashMap.Strict (HashMap)
 import Data.String
 import Data.Text (Text)
 import Prelude
+import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
@@ -33,17 +36,20 @@ quantities =
   , ("<quantity> oz", "((ounces?)|oz)", TQuantity.Ounce)
   ]
 
+opsMap :: HashMap Text (Double -> Double)
+opsMap = HashMap.fromList
+  [ ( "milligram" , (/ 1000))
+  , ( "milligrams", (/ 1000))
+  , ( "mg"        , (/ 1000))
+  , ( "mgs"       , (/ 1000))
+  , ( "kilogram"  , (* 1000))
+  , ( "kilograms" , (* 1000))
+  , ( "kg"        , (* 1000))
+  , ( "kgs"       , (* 1000))
+  ]
+
 getValue :: Text -> Double -> Double
-getValue match value = case Text.toLower match of
-  "milligram" -> value / 1000
-  "milligrams" -> value / 1000
-  "mg" -> value / 1000
-  "mgs" -> value / 1000
-  "kilogram" -> value * 1000
-  "kilograms" -> value * 1000
-  "kg" -> value * 1000
-  "kgs" -> value * 1000
-  _ -> value
+getValue match = HashMap.lookupDefault id (Text.toLower match) opsMap
 
 ruleNumeralQuantities :: [Rule]
 ruleNumeralQuantities = map go quantities

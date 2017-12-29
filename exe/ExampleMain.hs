@@ -28,11 +28,14 @@ import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
 
+import Data.Time.Clock.POSIX (posixSecondsToUTCTime)
+
 import Snap.Core
 import Snap.Http.Server
 
 import Duckling.Core
 import Duckling.Data.TimeZone
+import Duckling.Resolve (DucklingTime)
 
 createIfMissing :: FilePath -> IO ()
 createIfMissing f = do
@@ -76,17 +79,19 @@ parseHandler tzs = do
   ds <- getPostParam "dims"
   tz <- getPostParam "tz"
   loc <- getPostParam "locale"
+  userRefTimeMillis <- getPostParam "time"
 
   case t of
     Nothing -> do
       modifyResponse $ setResponseStatus 422 "Bad Input"
       writeBS "Need a 'text' parameter to parse"
     Just tx -> do
-      refTime <- liftIO $ currentReftime tzs $
-                   fromMaybe defaultTimeZone $ Text.decodeUtf8 <$> tz
+      let timezone = fromMaybe defaultTimeZone $ Text.decodeUtf8 <$> tz
+      refTime <- liftIO $ currentReftime tzs $ timezone
+      let parserReferenceTime = getReferenceTime refTime userRefTimeMillis tzs timezone
       let
         context = Context
-          { referenceTime = refTime
+          { referenceTime = parserReferenceTime
           , locale = maybe (makeLocale (parseLang l) Nothing) parseLocale loc
           }
 
@@ -113,3 +118,14 @@ parseHandler tzs = do
     parseLang :: Maybe ByteString -> Lang
     parseLang l = fromMaybe defaultLang $ l >>=
       readMaybe . Text.unpack . Text.toUpper . Text.decodeUtf8
+
+
+getReferenceTime :: DucklingTime -> Maybe ByteString -> HashMap Text TimeZoneSeries -> Text -> DucklingTime
+getReferenceTime defaultRefTime Nothing tzs timezone = defaultRefTime
+getReferenceTime _ userRefTimeMillis tzs timezone =
+    let
+        millis_str = fromJust (Text.unpack . Text.decodeUtf8 <$> userRefTimeMillis)
+        millis_int = read millis_str::Integer
+        utc_time = posixSecondsToUTCTime $ (fromInteger millis_int) / 1000
+        newRefTime = makeReftime tzs timezone utc_time
+    in newRefTime

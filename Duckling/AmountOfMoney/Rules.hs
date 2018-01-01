@@ -55,17 +55,21 @@ currencies = HashMap.fromList
   , ("gbp", GBP)
   , ("hrk", HRK)
   , ("idr", IDR)
+  , ("ils", ILS)
   , ("inr", INR)
+  , ("iqd", IQD)
   , ("rs", INR)
   , ("rs.", INR)
   , ("rupee", INR)
   , ("rupees", INR)
+  , ("jod", JOD)
   , ("¥", JPY)
   , ("jpy", JPY)
   , ("yen", JPY)
   , ("krw", KRW)
   , ("kwd", KWD)
   , ("lbp", LBP)
+  , ("mad", MAD)
   , ("myr", MYR)
   , ("rm", MYR)
   , ("nok", NOK)
@@ -90,7 +94,7 @@ ruleCurrencies :: Rule
 ruleCurrencies = Rule
   { name = "currencies"
   , pattern =
-    [ regex "(aed|aud|bgn|brl|byn|¢|c|\\$|dollars?|egp|(e|€)uro?s?|€|gbp|hrk|idr|inr|¥|jpy|krw|kwd|lbp|myr|rm|nok|£|pta?s?|qar|₽|rs\\.?|ron|rub|rupees?|sar|sek|sgb|us(d|\\$)|vnd|yen)"
+    [ regex "(aed|aud|bgn|brl|byn|¢|c|\\$|dollars?|egp|(e|€)uro?s?|€|gbp|hrk|idr|ils|inr|iqd|jod|¥|jpy|krw|kwd|lbp|mad|myr|rm|nok|£|pta?s?|qar|₽|rs\\.?|ron|rub|rupees?|sar|sek|sgb|us(d|\\$)|vnd|yen)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> do

@@ -30,98 +30,140 @@ rulePounds :: Rule
 rulePounds = Rule
   { name = "£"
   , pattern =
-    [ regex "pounds?"
+    [ regex "جنيه(ات)?"
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly Pound
-  }
-
-ruleOtherPounds :: Rule
-ruleOtherPounds = Rule
-  { name = "other pounds"
-  , pattern =
-    [ regex "(egyptian|lebanese) ?pounds?"
-    ]
-  , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
-        "egyptian" -> Just . Token AmountOfMoney $ currencyOnly EGP
-        "lebanese" -> Just . Token AmountOfMoney $ currencyOnly LBP
-        _          -> Nothing
-      _ -> Nothing
-  }
-
-ruleRiyals :: Rule
-ruleRiyals = Rule
-  { name = "riyals"
-  , pattern =
-    [ regex "(qatari|saudi) ?riyals?"
-    ]
-  , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
-        "qatari" -> Just . Token AmountOfMoney $ currencyOnly QAR
-        "saudi"  -> Just . Token AmountOfMoney $ currencyOnly SAR
-        _        -> Nothing
-      _ -> Nothing
   }
 
 ruleDinars :: Rule
 ruleDinars = Rule
   { name = "dinars"
   , pattern =
-    [ regex "(kuwaiti) ?dinars?"
+    [ regex "دينار|دنانير"
+    ]
+    , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly Dinar
+  }
+
+ruleDirhams :: Rule
+ruleDirhams = Rule
+  { name = "Dirhams"
+  , pattern =
+    [ regex "درا?هم"
+    ]
+    , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly Dirham
+  }
+
+ruleRiyals :: Rule
+ruleRiyals = Rule
+  { name = "Riyals"
+  , pattern =
+    [ regex "ريال(ات)?"
+    ]
+    , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly Riyal
+  }
+
+ruleDollars :: Rule
+ruleDollars = Rule
+  { name = "Dollars"
+  , pattern =
+    [ regex "دولار(ات)?"
+    ]
+    , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly Dollar
+  }
+
+ruleShekel :: Rule
+ruleShekel = Rule
+  { name = "Shekel"
+  , pattern =
+    [ regex "شي[كق]ل|شوا[كق]ل"
+    ]
+    , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly ILS
+  }
+
+ruleEuro :: Rule
+ruleEuro = Rule
+  { name = "Euro"
+  , pattern =
+    [ regex "[أاي]ورو"
+    ]
+    , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly EUR
+  }
+
+ruleOtherPounds :: Rule
+ruleOtherPounds = Rule
+  { name = "other pounds"
+  , pattern =
+    [ regex "جنيه(ات)? (مصر|استرلين)ي?[ةه]?"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
-        "kuwaiti" -> Just . Token AmountOfMoney $ currencyOnly KWD
+      (Token RegexMatch (GroupMatch (_:match:_)):_) -> case Text.toLower match of
+        "مصر" -> Just . Token AmountOfMoney $ currencyOnly EGP
+        "استرلين" -> Just . Token AmountOfMoney $ currencyOnly GBP
+        _          -> Nothing
+      _ -> Nothing
+  }
+
+ruleOtherDinars :: Rule
+ruleOtherDinars = Rule
+  { name = "dinars"
+  , pattern =
+    [ regex "(دينار|دنانير) ([أا]ردن|كويت|عراق)ي?[ةه]?"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (_:match:_)):_) -> case Text.toLower match of
+        "كويت" -> Just . Token AmountOfMoney $ currencyOnly KWD
+        "اردن" -> Just . Token AmountOfMoney $ currencyOnly JOD
+        "أردن" -> Just . Token AmountOfMoney $ currencyOnly JOD
+        "عراق" -> Just . Token AmountOfMoney $ currencyOnly IQD
         _        -> Nothing
       _ -> Nothing
   }
 
-ruleDirham :: Rule
-ruleDirham = Rule
+ruleOtherDirhams :: Rule
+ruleOtherDirhams = Rule
   { name = "dirham"
   , pattern =
-    [ regex "dirhams?"
+    [ regex "(درهم|دراهم) (اردن|أردن|مغرب)ي?[ةه]?"
     ]
-  , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly AED
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (_:match:_)):_) -> case Text.toLower match of
+        "إمارات" -> Just . Token AmountOfMoney $ currencyOnly AED
+        "امارات" -> Just . Token AmountOfMoney $ currencyOnly AED
+        "مغرب" -> Just . Token AmountOfMoney $ currencyOnly MAD
+        _        -> Nothing
+      _ -> Nothing
   }
 
-ruleRinggit :: Rule
-ruleRinggit = Rule
-  { name = "ringgit"
+ruleOtherRiyals :: Rule
+ruleOtherRiyals = Rule
+  { name = "riyals"
   , pattern =
-    [ regex "(malaysian? )?ringgits?"
+    [ regex "(ريال|ريالات) (سعود|قطر)ي?[ةه]?"
     ]
-  , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly MYR
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (_:match:_)):_) -> case Text.toLower match of
+        "قطر" -> Just . Token AmountOfMoney $ currencyOnly QAR
+        "سعود"  -> Just . Token AmountOfMoney $ currencyOnly SAR
+        _        -> Nothing
+      _ -> Nothing
   }
 
 ruleCent :: Rule
 ruleCent = Rule
   { name = "cent"
   , pattern =
-    [ regex "cents?|penn(y|ies)|pence|sens?"
+    [ regex "سي?نت(ات)?"
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly Cent
   }
 
-ruleBucks :: Rule
-ruleBucks = Rule
-  { name = "bucks"
+ruleLBP :: Rule
+ruleLBP = Rule
+  { name = "LBP"
   , pattern =
-    [ regex "bucks?"
+    [ regex "لير([ةه]|ات) لبناني[ةه]?"
     ]
-  , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly Unnamed
-  }
-
-ruleACurrency :: Rule
-ruleACurrency = Rule
-  { name = "a <currency>"
-  , pattern =
-    [ regex "an?"
-    , financeWith TAmountOfMoney.value isNothing
-    ]
-  , prod = \tokens -> case tokens of
-      (_:Token AmountOfMoney fd:_) -> Just . Token AmountOfMoney $ fd {TAmountOfMoney.value = Just 1}
-      _ -> Nothing
+    , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly LBP
   }
 
 ruleIntersectAndXCents :: Rule
@@ -129,7 +171,7 @@ ruleIntersectAndXCents = Rule
   { name = "intersect (and X cents)"
   , pattern =
     [ financeWith TAmountOfMoney.value isJust
-    , regex "and"
+    , regex "و"
     , financeWith TAmountOfMoney.currency (== Cent)
     ]
   , prod = \tokens -> case tokens of
@@ -159,7 +201,7 @@ ruleIntersectAndNumeral = Rule
   { name = "intersect (and number)"
   , pattern =
     [ financeWith TAmountOfMoney.value isJust
-    , regex "and"
+    , regex "و"
     , dimension Numeral
     ]
   , prod = \tokens -> case tokens of
@@ -190,7 +232,7 @@ rulePrecision :: Rule
 rulePrecision = Rule
   { name = "about|exactly <amount-of-money>"
   , pattern =
-    [ regex "exactly|precisely|about|approx(\\.|imately)?|close to|near( to)?|around|almost"
+    [ regex "حوال[ي|ى]|تقريبا|بحدود"
     , dimension AmountOfMoney
     ]
   , prod = \tokens -> case tokens of
@@ -202,9 +244,9 @@ ruleIntervalBetweenNumeral :: Rule
 ruleIntervalBetweenNumeral = Rule
   { name = "between|from <numeral> to|and <amount-of-money>"
   , pattern =
-    [ regex "between|from"
+    [ regex "(من|(ما )?بين)( ال)?"
     , dimension Numeral
-    , regex "to|and"
+    , regex "(الى|حتى|و|ل)( ا?ل)?"
     , financeWith TAmountOfMoney.value isJust
     ]
   , prod = \tokens -> case tokens of
@@ -221,9 +263,9 @@ ruleIntervalBetween :: Rule
 ruleIntervalBetween = Rule
   { name = "between|from <amount-of-money> to|and <amount-of-money>"
   , pattern =
-    [ regex "between|from"
+    [ regex "(من|(ما )?بين)( ال)?"
     , financeWith TAmountOfMoney.value isJust
-    , regex "to|and"
+    , regex "(الى|حتى|و|ل)( ا?ل)?"
     , financeWith TAmountOfMoney.value isJust
     ]
   , prod = \tokens -> case tokens of
@@ -274,7 +316,21 @@ ruleIntervalMax :: Rule
 ruleIntervalMax = Rule
   { name = "under/less/lower/no more than <amount-of-money>"
   , pattern =
-    [ regex "under|(less|lower|not? more) than"
+    [ regex "(حتى|[أا]قل من|تحت|(ما )?دون)|على ال[أا]كثر"
+    , financeWith TAmountOfMoney.value isJust
+    ]
+  , prod = \tokens -> case tokens of
+      (_:
+       Token AmountOfMoney (AmountOfMoneyData {TAmountOfMoney.value = Just to, TAmountOfMoney.currency = c}):
+       _) -> Just . Token AmountOfMoney . withMax to $ currencyOnly c
+      _ -> Nothing
+  }
+
+ruleIntervalAtMost :: Rule
+ruleIntervalAtMost = Rule
+  { name = "under/less/lower/no more than <amount-of-money>"
+  , pattern =
+    [ regex "على ال[أا]كثر"
     , financeWith TAmountOfMoney.value isJust
     ]
   , prod = \tokens -> case tokens of
@@ -286,9 +342,9 @@ ruleIntervalMax = Rule
 
 ruleIntervalMin :: Rule
 ruleIntervalMin = Rule
-  { name = "over/above/at least/more than <amount-of-money>"
+  { name = "over/above/more than <amount-of-money>"
   , pattern =
-    [ regex "over|above|at least|more than"
+    [ regex "فوق||[أا]كثر من|على ال[اأ]قل"
     , financeWith TAmountOfMoney.value isJust
     ]
   , prod = \tokens -> case tokens of
@@ -298,13 +354,34 @@ ruleIntervalMin = Rule
       _ -> Nothing
   }
 
+ruleIntervalAtLeast :: Rule
+ruleIntervalAtLeast = Rule
+  { name = "<amount-of-money> at least"
+  , pattern =
+    [ financeWith TAmountOfMoney.value isJust
+    , regex "على ال[اأ]قل"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token AmountOfMoney (AmountOfMoneyData {TAmountOfMoney.value = Just to, TAmountOfMoney.currency = c}):
+       _) -> Just . Token AmountOfMoney . withMin to $ currencyOnly c
+      _ -> Nothing
+  }
+
 rules :: [Rule]
 rules =
-  [ ruleACurrency
-  , ruleBucks
-  , ruleCent
+  [ ruleCent
+  , rulePounds
   , ruleDinars
-  , ruleDirham
+  , ruleDirhams
+  , ruleRiyals
+  , ruleDollars
+  , ruleShekel
+  , ruleEuro
+  , ruleOtherPounds
+  , ruleOtherDinars
+  , ruleOtherDirhams
+  , ruleOtherRiyals
+  , ruleLBP
   , ruleIntersect
   , ruleIntersectAndNumeral
   , ruleIntersectAndXCents
@@ -312,12 +389,10 @@ rules =
   , ruleIntervalBetweenNumeral
   , ruleIntervalBetween
   , ruleIntervalMax
+  , ruleIntervalAtMost
   , ruleIntervalMin
+  , ruleIntervalAtLeast
   , ruleIntervalNumeralDash
   , ruleIntervalDash
-  , ruleOtherPounds
-  , rulePounds
   , rulePrecision
-  , ruleRinggit
-  , ruleRiyals
   ]

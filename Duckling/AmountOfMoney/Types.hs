@@ -30,6 +30,9 @@ data Currency
   = Cent
   | Dollar
   | Pound
+  | Dinar
+  | Dirham
+  | Riyal
   | Unnamed -- e.g. bucks
   -- unambiguous
   | AED
@@ -42,11 +45,15 @@ data Currency
   | GBP
   | HRK
   | IDR
+  | ILS
   | INR
+  | IQD
+  | JOD
   | JPY
   | KRW
   | KWD
   | LBP
+  | MAD
   | MYR
   | NOK
   | PTS
@@ -64,6 +71,9 @@ instance ToJSON Currency where
   toJSON Cent    = "cent"
   toJSON Dollar  = "$"
   toJSON Pound   = "\x00a3"
+  toJSON Dinar   = "dinar"
+  toJSON Dirham  = "dirham"
+  toJSON Riyal   = "Riyal"
   toJSON Unnamed = "unknown"
   toJSON AED     = "AED"
   toJSON AUD     = "AUD"
@@ -75,11 +85,15 @@ instance ToJSON Currency where
   toJSON GBP     = "GBP"
   toJSON HRK     = "HRK"
   toJSON IDR     = "IDR"
+  toJSON ILS     = "ILS"
+  toJSON IQD     = "IQD"  
   toJSON INR     = "INR"
+  toJSON JOD     = "JOD"
   toJSON JPY     = "JPY"
   toJSON KRW     = "KRW"
   toJSON KWD     = "KWD"
   toJSON LBP     = "LBP"
+  toJSON MAD     = "MAD"
   toJSON MYR     = "MYR"
   toJSON NOK     = "NOK"
   toJSON PTS     = "PTS"

@@ -65,4 +65,13 @@ allExamples = concat
              [ "GBP3,01"
              , "GBP 3,01"
              ]
+  , examples (simple ILS 10)
+             [ "dix shekels"
+             ]
+  , examples (simple Rial 10)
+             [ "dix rials"
+             ]
+  , examples (simple Riyal 10)
+             [ "dix riyals"
+             ]
   ]

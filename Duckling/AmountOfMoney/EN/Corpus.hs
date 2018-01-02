@@ -146,6 +146,21 @@ allExamples = concat
              , "20 ringgit 43"
              , "twenty ringgit and 43"
              ]
+  , examples (simple Dinar 10)
+             [ "10 dinars"
+             ]
+  , examples (simple ILS 10)
+             [ "ten shekels"
+             , "10 ILS"
+             ]
+  , examples (simple Riyal 10)
+             [ "ten riyals"
+             , "10 riyals"
+             ]
+  , examples (simple Rial 10)
+             [ "ten rials"
+             , "10 rials"
+             ]
   , examples (between Dollar (10, 20))
              [ "between 10 and 20 dollars"
              , "from 10 dollars to 20 dollars"

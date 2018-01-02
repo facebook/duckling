@@ -158,6 +158,8 @@ library
                      , Duckling.Dimensions.ZH
 
                      -- AmountOfMoney
+                     , Duckling.AmountOfMoney.AR.Corpus
+                     , Duckling.AmountOfMoney.AR.Rules
                      , Duckling.AmountOfMoney.EN.Corpus
                      , Duckling.AmountOfMoney.EN.Rules
                      , Duckling.AmountOfMoney.BG.Corpus
@@ -646,6 +648,7 @@ test-suite duckling-test
                      , Duckling.Dimensions.Tests
 
                      -- AmountOfMoney
+                     , Duckling.AmountOfMoney.AR.Tests
                      , Duckling.AmountOfMoney.EN.Tests
                      , Duckling.AmountOfMoney.BG.Tests
                      , Duckling.AmountOfMoney.ES.Tests

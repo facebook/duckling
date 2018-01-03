@@ -54,7 +54,7 @@ ruleInteger18 :: Rule
 ruleInteger18 = Rule
   { name = "integer 12"
   , pattern =
-    [ regex "(إثن(ت)?[يى] عشر)"
+    [ regex "([إا]ثن(ت)?[يى] عشر[ةه]?)"
     ]
   , prod = \_ -> integer 12
   }
@@ -136,7 +136,7 @@ ruleInteger15 :: Rule
 ruleInteger15 = Rule
   { name = "integer 11"
   , pattern =
-    [ regex "([إاأ]حدى? عشر[ةه]?)"
+    [ regex "([إاأ]حد[يى]? عشر[ةه]?)"
     ]
   , prod = \_ -> integer 11
   }
@@ -157,16 +157,24 @@ rulePowersOfTen :: Rule
 rulePowersOfTen = Rule
   { name = "powers of tens"
   , pattern =
-    [ regex "(مائة|مئات|ألف|الف|آلاف|ملايي(ن)?)"
+    [ regex "(ما?ئ[ةه]|مئات|ألف|الف|[آا]لاف|ملايين)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
+        "مئة" ->
+          double 1e2 >>= withGrain 2 >>= withMultipliable
+        "مئه" ->
+          double 1e2 >>= withGrain 2 >>= withMultipliable
         "مائة" ->
+          double 1e2 >>= withGrain 2 >>= withMultipliable
+        "مائه" ->
           double 1e2 >>= withGrain 2 >>= withMultipliable
         "مئات" ->
           double 1e2 >>= withGrain 2 >>= withMultipliable
         "ألف" -> double 1e3 >>= withGrain 3 >>= withMultipliable
         "الف" -> double 1e3 >>= withGrain 3 >>= withMultipliable
+        "الاف" ->
+          double 1e3 >>= withGrain 3 >>= withMultipliable
         "آلاف" ->
           double 1e3 >>= withGrain 3 >>= withMultipliable
         "ملايي" ->
@@ -181,7 +189,7 @@ ruleInteger3 :: Rule
 ruleInteger3 = Rule
   { name = "integer 2"
   , pattern =
-    [ regex "(اثنان|اثنين)"
+    [ regex "[إا]ثن[اي]ن"
     ]
   , prod = \_ -> integer 2
   }
@@ -190,7 +198,7 @@ ruleInteger13 :: Rule
 ruleInteger13 = Rule
   { name = "integer 9"
   , pattern =
-    [ regex "(تسعة|تسع)"
+    [ regex "تسع[ةه]?"
     ]
   , prod = \_ -> integer 9
   }
@@ -199,7 +207,7 @@ ruleInteger12 :: Rule
 ruleInteger12 = Rule
   { name = "integer 8"
   , pattern =
-    [ regex "(ثمانية|ثمان)"
+    [ regex "ثماني?[ةه]?"
     ]
   , prod = \_ -> integer 8
   }
@@ -221,7 +229,7 @@ ruleInteger7 :: Rule
 ruleInteger7 = Rule
   { name = "integer 5"
   , pattern =
-    [ regex "خمسة?"
+    [ regex "خمس[ةه]?"
     ]
   , prod = \_ -> integer 5
   }
@@ -230,7 +238,7 @@ ruleInteger14 :: Rule
 ruleInteger14 = Rule
   { name = "integer 10"
   , pattern =
-    [ regex "عشرة?"
+    [ regex "عشر[ةه]?"
     ]
   , prod = \_ -> integer 10
   }
@@ -239,7 +247,7 @@ ruleInteger9 :: Rule
 ruleInteger9 = Rule
   { name = "integer 6"
   , pattern =
-    [ regex "ستة?"
+    [ regex "ست[ةه]?"
     ]
   , prod = \_ -> integer 6
   }
@@ -248,7 +256,7 @@ ruleInteger :: Rule
 ruleInteger = Rule
   { name = "integer 0"
   , pattern =
-    [ regex "(صفر)"
+    [ regex "صفر"
     ]
   , prod = \_ -> integer 0
   }
@@ -266,7 +274,7 @@ ruleInteger2 :: Rule
 ruleInteger2 = Rule
   { name = "integer 1"
   , pattern =
-    [ regex "(واحدة|واحده|واحد)"
+    [ regex "واحد[ةه]?"
     ]
   , prod = \_ -> integer 1
   }
@@ -275,7 +283,7 @@ ruleInteger11 :: Rule
 ruleInteger11 = Rule
   { name = "integer 7"
   , pattern =
-    [ regex "(سبعة|سبع)"
+    [ regex "سبع[ةه]?"
     ]
   , prod = \_ -> integer 7
   }
@@ -284,19 +292,19 @@ ruleInteger20 :: Rule
 ruleInteger20 = Rule
   { name = "integer (100..900)"
   , pattern =
-    [ regex "(مائة|مائتان|ثلاثمائة|أربعمائة|خمسمائة|ستمائة|سبعمائة|ثمانمائة|تسعمائة)"
+    [ regex "(ما?ئت[اي]ن|ثلاث|[اأ]ربع|خمس|ست|سبع|ثمان|تسع) ?ما?[يئ]ة"
     ]
   , prod = \tokens -> case tokens of
       Token RegexMatch (GroupMatch (match:_)):_ -> case match of
-        "مائة" -> integer 100
-        "سبعمائة" -> integer 700
-        "خمسمائة" -> integer 500
-        "أربعمائة" -> integer 400
-        "ستمائة" -> integer 600
         "مائتان" -> integer 200
-        "ثلاثمائة" -> integer 300
-        "ثمانمائة" -> integer 800
-        "تسعمائة" -> integer 900
+        "ثلاث" -> integer 300
+        "اربع" -> integer 400
+        "أربع" -> integer 400
+        "خمس" -> integer 500
+        "ست" -> integer 600
+        "سبع" -> integer 700
+        "ثمان" -> integer 800
+        "تسع" -> integer 900
         _ -> Nothing
       _ -> Nothing
   }
@@ -306,7 +314,7 @@ ruleNumeralDotNumeral = Rule
   { name = "number dot number"
   , pattern =
     [ dimension Numeral
-    , regex "فاصلة"
+    , regex "فاصل[ةه]"
     , numberWith TNumeral.grain isNothing
     ]
   , prod = \tokens -> case tokens of

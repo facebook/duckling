@@ -36,11 +36,18 @@ allExamples = concat
              [ "4"
              , "أربعة"
              , "أربع"
+             , "اربعه"
              ]
   , examples (NumeralValue 6)
              [ "6"
              , "ستة"
              , "ست"
+             , "سته"
+             ]
+  , examples (NumeralValue 10)
+             [ "10"
+             , "عشرة"
+             , "عشره"
              ]
   , examples (NumeralValue 33)
              [ "33"
@@ -50,6 +57,7 @@ allExamples = concat
              [ "11"
              , "إحدى عشرة"
              , "إحدى عشر"
+             , "احد عشر"
              ]
   , examples (NumeralValue 12)
              [ "12"
@@ -87,6 +95,10 @@ allExamples = concat
   , examples (NumeralValue 26)
              [ "ستة و عشرون"
              , "26"
+             ]
+  , examples (NumeralValue 20)
+             [ "عشرون"
+             , "عشرين"
              ]
   , examples (NumeralValue 40)
              [ "اربعون"

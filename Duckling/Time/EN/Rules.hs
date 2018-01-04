@@ -1198,6 +1198,18 @@ ruleIntervalSinceTOD = Rule
       _ -> Nothing
   }
 
+ruleIntervalFromTOD :: Rule
+ruleIntervalFromTOD = Rule
+  { name = "from <time-of-day>"
+  , pattern =
+    [ regex "from"
+    , dimension Time
+    ]
+  , prod = \tokens -> case tokens of
+      (_:Token Time td:_) -> tt $ withDirection TTime.After td
+      _ -> Nothing
+  }
+
 daysOfWeek :: [(Text, String)]
 daysOfWeek =
   [ ( "Monday"   , "monday|mon\\.?"         )
@@ -1739,6 +1751,7 @@ rules =
   , ruleIntervalUntilTOD
   , ruleIntervalAfterTOD
   , ruleIntervalSinceTOD
+  , ruleIntervalFromTOD
   , ruleMemorialDay
   , ruleMemorialDayWeekend
   , ruleLaborDayWeekend

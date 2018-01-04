@@ -1190,7 +1190,7 @@ ruleIntervalSinceTOD :: Rule
 ruleIntervalSinceTOD = Rule
   { name = "since <time-of-day>"
   , pattern =
-    [ regex "since"
+    [ regex "(from|since)"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of

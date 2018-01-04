@@ -844,6 +844,7 @@ allExamples = concat
              ]
   , examples (datetimeOpenInterval After (2013, 2, 12, 14, 0, 0) Hour)
              [ "after 2 pm"
+              , "from 2 pm"
              ]
   , examples (datetimeOpenInterval After (2013, 2, 17, 4, 0, 0) Hour)
              [ "after 5 days"

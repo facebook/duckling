@@ -358,6 +358,8 @@ allExamples = concat
              ]
   , examples (datetime (2013, 2, 13, 4, 30, 0) Minute)
              [ "om 24 timmar"
+             , "2013-02-13 kl. 4:30"
+             , "2013-02-13 kl 04:30"
              ]
   , examples (datetime (2013, 2, 13, 4, 0, 0) Hour)
              [ "om en dag"
@@ -563,6 +565,7 @@ allExamples = concat
              , "25/4 klockan 16:00"
              , "25-04 klockan 16:00"
              , "25-4 kl. 16:00"
+             , "2013-04-25 kl 16:00"
              ]
   , examples (datetime (2013, 2, 13, 15, 0, 0) Minute)
              [ "15:00 imorgon"

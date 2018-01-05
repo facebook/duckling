@@ -1174,23 +1174,11 @@ ruleIntervalUntilTOD = Rule
       _ -> Nothing
   }
 
-ruleIntervalAfterTOD :: Rule
-ruleIntervalAfterTOD = Rule
-  { name = "after <time-of-day>"
+ruleIntervalAfterFromSinceTOD :: Rule
+ruleIntervalAfterFromSinceTOD = Rule
+  { name = "from|since|after <time-of-day>"
   , pattern =
-    [ regex "(anytime |sometimes? )?after"
-    , dimension Time
-    ]
-  , prod = \tokens -> case tokens of
-      (_:Token Time td:_) -> tt $ withDirection TTime.After td
-      _ -> Nothing
-  }
-
-ruleIntervalSinceTOD :: Rule
-ruleIntervalSinceTOD = Rule
-  { name = "since <time-of-day>"
-  , pattern =
-    [ regex "since"
+    [ regex "from|since|(anytime |sometimes? )?after"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -1737,8 +1725,7 @@ rules =
   , ruleIntervalBy
   , ruleIntervalByTheEndOf
   , ruleIntervalUntilTOD
-  , ruleIntervalAfterTOD
-  , ruleIntervalSinceTOD
+  , ruleIntervalAfterFromSinceTOD
   , ruleMemorialDay
   , ruleMemorialDayWeekend
   , ruleLaborDayWeekend

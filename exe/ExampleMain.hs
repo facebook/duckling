@@ -28,11 +28,13 @@ import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
 
+import Data.Time.Clock.POSIX (posixSecondsToUTCTime)
 import Snap.Core
 import Snap.Http.Server
 
 import Duckling.Core
 import Duckling.Data.TimeZone
+import Duckling.Resolve (DucklingTime)
 
 createIfMissing :: FilePath -> IO ()
 createIfMissing f = do
@@ -76,17 +78,18 @@ parseHandler tzs = do
   ds <- getPostParam "dims"
   tz <- getPostParam "tz"
   loc <- getPostParam "locale"
+  ref <- getPostParam "reftime"
 
   case t of
     Nothing -> do
       modifyResponse $ setResponseStatus 422 "Bad Input"
       writeBS "Need a 'text' parameter to parse"
     Just tx -> do
-      refTime <- liftIO $ currentReftime tzs $
-                   fromMaybe defaultTimeZone $ Text.decodeUtf8 <$> tz
+      let timezone = parseTimeZone tz
+      now <- liftIO $ currentReftime tzs timezone
       let
         context = Context
-          { referenceTime = refTime
+          { referenceTime = maybe now (parseRefTime timezone) ref
           , locale = maybe (makeLocale (parseLang l) Nothing) parseLocale loc
           }
 
@@ -101,6 +104,9 @@ parseHandler tzs = do
     defaultLocale = makeLocale defaultLang Nothing
     defaultTimeZone = "America/Los_Angeles"
 
+    parseTimeZone :: Maybe ByteString -> Text
+    parseTimeZone = fromMaybe defaultTimeZone . fmap Text.decodeUtf8
+
     parseLocale :: ByteString -> Locale
     parseLocale x = maybe defaultLocale (`makeLocale` mregion) mlang
       where
@@ -113,3 +119,9 @@ parseHandler tzs = do
     parseLang :: Maybe ByteString -> Lang
     parseLang l = fromMaybe defaultLang $ l >>=
       readMaybe . Text.unpack . Text.toUpper . Text.decodeUtf8
+
+    parseRefTime :: Text -> ByteString -> DucklingTime
+    parseRefTime timezone refTime = makeReftime tzs timezone utcTime
+      where
+        msec = read $ Text.unpack $ Text.decodeUtf8 refTime
+        utcTime = posixSecondsToUTCTime $ fromInteger msec / 1000

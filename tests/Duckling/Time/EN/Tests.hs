@@ -145,6 +145,7 @@ valuesTest = testCase "Values Test" $
                         [ "now"
                         , "8 o'clock tonight"
                         , "tonight at 8 o'clock"
+                        , "yesterday"
                         ]
     parseValuesSize :: Value -> Maybe Int
     parseValuesSize x = length <$> parseValues x

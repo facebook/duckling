@@ -29,6 +29,7 @@ import GHC.Generics
 import Prelude
 import TextShow (showt)
 import qualified Data.HashMap.Strict as H
+import qualified Data.List as List
 import qualified Data.Text as Text
 import qualified Data.Time as Time
 import qualified Data.Time.Calendar.WeekDate as Time
@@ -102,16 +103,17 @@ instance Resolve TimeData where
   type ResolvedValue TimeData = TimeValue
   resolve _ TimeData {latent = True} = Nothing
   resolve context TimeData {timePred, notImmediate, direction} = do
-    t <- case ts of
-      (behind, []) -> listToMaybe behind
-      (_, ahead:nextAhead:_)
+    value <- case future of
+      [] -> listToMaybe past
+      ahead:nextAhead:_
         | notImmediate && isJust (timeIntersect ahead refTime) -> Just nextAhead
-      (_, ahead:_) -> Just ahead
+      ahead:_ -> Just ahead
+    values <- Just . take 3 $ if List.null future then past else future
     Just $ case direction of
-      Nothing -> TimeValue (timeValue tzSeries t) .
-        map (timeValue tzSeries) $ take 3 future
-      Just d -> TimeValue (openInterval tzSeries d t) .
-        map (openInterval tzSeries d) $ take 3 future
+      Nothing -> TimeValue (timeValue tzSeries value) $
+        map (timeValue tzSeries) values
+      Just d -> TimeValue (openInterval tzSeries d value) $
+        map (openInterval tzSeries d) values
     where
       DucklingTime (Series.ZoneSeriesTime utcTime tzSeries) = referenceTime context
       refTime = TimeObject
@@ -125,7 +127,7 @@ instance Resolve TimeData where
         , maxTime = timePlus refTime TG.Year 2000
         , minTime = timePlus refTime TG.Year $ - 2000
         }
-      ts@(_, future) = runPredicate timePred refTime tc
+      (past, future) = runPredicate timePred refTime tc
 
 timedata' :: TimeData
 timedata' = TimeData

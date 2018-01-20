@@ -48,6 +48,7 @@ defaultRules :: Some Dimension -> [Rule]
 defaultRules dim@(This Time) =
   [ TimeUS.ruleMMDD
   , TimeUS.ruleMMDDYYYY
+  , TimeUS.ruleMMDDYYYYDot
   , TimeUS.ruleThanksgiving
   ] ++ langRules dim
 defaultRules dim = langRules dim

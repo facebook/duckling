@@ -55,6 +55,22 @@ ruleMMDDYYYY = Rule
       _ -> Nothing
   }
 
+-- Clashes with HHMMSS, hence only 4-digit years
+ruleMMDDYYYYDot :: Rule
+ruleMMDDYYYYDot = Rule
+  { name = "mm.dd.yyyy"
+  , pattern =
+    [ regex "(1[0-2]|0?[1-9])\\.(3[01]|[12]\\d|0?[1-9])\\.(\\d{4})"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (mm:dd:yy:_)):_) -> do
+        y <- parseInt yy
+        m <- parseInt mm
+        d <- parseInt dd
+        tt $ yearMonthDay y m d
+      _ -> Nothing
+  }
+
 -- Second Monday of October
 ruleThanksgiving :: Rule
 ruleThanksgiving = Rule
@@ -69,5 +85,6 @@ rules :: [Rule]
 rules =
   [ ruleMMDD
   , ruleMMDDYYYY
+  , ruleMMDDYYYYDot
   , ruleThanksgiving
   ]

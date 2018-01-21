@@ -14,22 +14,23 @@ module Duckling.Rules.Common
   ) where
 
 import Duckling.Dimensions.Types
+import Duckling.Types
+import qualified Duckling.AmountOfMoney.Rules as AmountOfMoney
 import qualified Duckling.Distance.Rules as Distance
 import qualified Duckling.Duration.Rules as Duration
 import qualified Duckling.Email.Rules as Email
-import qualified Duckling.AmountOfMoney.Rules as AmountOfMoney
+import qualified Duckling.Numeral.Rules as Numeral
 import qualified Duckling.PhoneNumber.Rules as PhoneNumber
 import qualified Duckling.Temperature.Rules as Temperature
-import Duckling.Types
 import qualified Duckling.Url.Rules as Url
 import qualified Duckling.Volume.Rules as Volume
 
 rules :: Some Dimension -> [Rule]
+rules (This AmountOfMoney) = AmountOfMoney.rules
 rules (This Distance) = Distance.rules
 rules (This Duration) = Duration.rules
-rules (This Numeral) = []
 rules (This Email) = Email.rules
-rules (This AmountOfMoney) = AmountOfMoney.rules
+rules (This Numeral) = Numeral.rules
 rules (This Ordinal) = []
 rules (This PhoneNumber) = PhoneNumber.rules
 rules (This Quantity) = []

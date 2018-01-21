@@ -10,24 +10,28 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Numeral.MY.Rules
-  ( rules ) where
+  ( rules
+  ) where
 
-import Prelude
+import Data.HashMap.Strict       (HashMap)
 import Data.String
-
+import Data.Text                 (Text)
 import Duckling.Dimensions.Types
 import Duckling.Numeral.Helpers
-import Duckling.Numeral.Types (NumeralData (..))
-import qualified Duckling.Numeral.Types as TNumeral
+import Duckling.Numeral.Types    (NumeralData (..))
 import Duckling.Regex.Types
 import Duckling.Types
+import Prelude
+import qualified Data.HashMap.Strict       as HashMap
+import qualified Data.Text                 as Text
+import qualified Duckling.Numeral.Types    as TNumeral
 
 ruleInteger5 :: Rule
 ruleInteger5 = Rule
   { name = "integer (11..99) "
   , pattern =
     [ numberBetween 1 10
-    , regex "\x1006\x101a\x103a\x1037"
+    , regex "ဆယ့်"
     , numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
@@ -38,25 +42,29 @@ ruleInteger5 = Rule
       _ -> Nothing
   }
 
-ruleIntegerNumeric :: Rule
-ruleIntegerNumeric = Rule
+integer09Map :: HashMap Text Integer
+integer09Map = HashMap.fromList
+  [ ( "၀", 0 )
+  , ( "၁", 1 )
+  , ( "၂", 2 )
+  , ( "၃", 3 )
+  , ( "၄", 4 )
+  , ( "၅", 5 )
+  , ( "၆", 6 )
+  , ( "၇", 7 )
+  , ( "၈", 8 )
+  , ( "၉", 9 )
+  ]
+
+ruleInteger09 :: Rule
+ruleInteger09 = Rule
   { name = "integer (0..9) - numeric"
   , pattern =
-    [ regex "(\x1040|\x1041|\x1042|\x1043|\x1044|\x1045|\x1046|\x1047|\x1048|\x1049)"
+    [ regex "(၀|၁|၂|၃|၄|၅|၆|၇|၈|၉)"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> case match of
-        "\x1040" -> integer 0
-        "\x1041" -> integer 1
-        "\x1042" -> integer 2
-        "\x1043" -> integer 3
-        "\x1044" -> integer 4
-        "\x1045" -> integer 5
-        "\x1046" -> integer 6
-        "\x1047" -> integer 7
-        "\x1048" -> integer 8
-        "\x1049" -> integer 9
-        _ -> Nothing
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        HashMap.lookup match integer09Map >>= integer
       _ -> Nothing
   }
 
@@ -64,7 +72,7 @@ ruleInteger3 :: Rule
 ruleInteger3 = Rule
   { name = "integer (11..19) "
   , pattern =
-    [ regex "\x1006\x101a\x103a\x1037"
+    [ regex "ဆယ့်"
     , numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
@@ -72,18 +80,22 @@ ruleInteger3 = Rule
       _ -> Nothing
   }
 
+integerPaliMap :: HashMap Text Integer
+integerPaliMap = HashMap.fromList
+  [ ( "ပထမ", 1 )
+  , ( "ဒုတိယ", 2 )
+  , ( "တတိယ", 3 )
+  ]
+
 ruleIntegerPali :: Rule
 ruleIntegerPali = Rule
   { name = "integer (1..3) - pali"
   , pattern =
-    [ regex "(\x1015\x1011\x1019|\x1012\x102f\x1010\x102d\x101a|\x1010\x1010\x102d\x101a)"
+    [ regex "(ပထမ|ဒုတိယ|တတိယ)"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> case match of
-        "\x1015\x1011\x1019" -> integer 1
-        "\x1012\x102f\x1010\x102d\x101a" -> integer 2
-        "\x1010\x1010\x102d\x101a" -> integer 3
-        _ -> Nothing
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        HashMap.lookup match integerPaliMap >>= integer
       _ -> Nothing
   }
 
@@ -92,7 +104,7 @@ ruleInteger6 = Rule
   { name = "integer (100..900)"
   , pattern =
     [ numberBetween 1 10
-    , regex "\x101b\x102c"
+    , regex "ရာ"
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral (NumeralData {TNumeral.value = v}):_) -> double $ v * 100
@@ -104,7 +116,7 @@ ruleInteger7 = Rule
   { name = "integer (1000..9000)"
   , pattern =
     [ numberBetween 1 10
-    , regex "\x1011\x1031\x102c\x1004\x103a"
+    , regex "ထောင်"
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral (NumeralData {TNumeral.value = v}):_) -> double $ v * 1000
@@ -116,7 +128,7 @@ ruleInteger8 = Rule
   { name = "integer (10000..90000)"
   , pattern =
     [ numberBetween 1 10
-    , regex "\x101e\x1031\x102c\x1004\x103a\x1038"
+    , regex "သောင်း"
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral (NumeralData {TNumeral.value = v}):_) -> double $ v * 10000
@@ -127,7 +139,7 @@ ruleInteger :: Rule
 ruleInteger = Rule
   { name = "integer 0"
   , pattern =
-    [ regex "\x101e\x102f\x1036\x100a|\x1019\x101b\x103e\x102d"
+    [ regex "သုံည|မရှိ"
     ]
   , prod = \_ -> integer 0
   }
@@ -137,32 +149,36 @@ ruleInteger4 = Rule
   { name = "integer (10..90)"
   , pattern =
     [ numberBetween 1 10
-    , regex "\x1006\x101a\x103a"
+    , regex "ဆယ်"
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral (NumeralData {TNumeral.value = v}):_) -> double $ v * 10
       _ -> Nothing
   }
 
+integer2Map :: HashMap Text Integer
+integer2Map = HashMap.fromList
+  [ ( "တစ်", 1 )
+  , ( "နှစ်", 2 )
+  , ( "သုံး", 3 )
+  , ( "လေး", 4 )
+  , ( "ငါး", 5 )
+  , ( "ခြေါက်", 6 )
+  , ( "ခုနှစ်", 7 )
+  , ( "ရှစ်", 8 )
+  , ( "ကိုး", 9 )
+  , ( "တစ်ဆယ်", 10 )
+  ]
+
 ruleInteger2 :: Rule
 ruleInteger2 = Rule
   { name = "integer (1..10)"
   , pattern =
-    [ regex "(\x1010\x1005\x103a|\x1014\x103e\x1005\x103a|\x101e\x102f\x1036\x1038|\x101c\x1031\x1038|\x1004\x102b\x1038|\x1001\x103c\x1031\x102b\x1000\x103a|\x1001\x102f\x1014\x103e\x1005\x103a|\x101b\x103e\x1005\x103a|\x1000\x102d\x102f\x1038|\x1010\x1005\x103a\x1006\x101a\x103a)"
+    [ regex "(တစ်|နှစ်|သုံး|လေး|ငါး|ခြေါက်|ခုနှစ်|ရှစ်|ကိုး|တစ်ဆယ်)"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> case match of
-        "\x1010\x1005\x103a" -> integer 1
-        "\x1014\x103e\x1005\x103a" -> integer 2
-        "\x101e\x102f\x1036\x1038" -> integer 3
-        "\x101c\x1031\x1038" -> integer 4
-        "\x1004\x102b\x1038" -> integer 5
-        "\x1001\x103c\x1031\x102b\x1000\x103a" -> integer 6
-        "\x1001\x102f\x1014\x103e\x1005\x103a" -> integer 7
-        "\x101b\x103e\x1005\x103a" -> integer 8
-        "\x1000\x102d\x102f\x1038" -> integer 9
-        "\x1010\x1005\x103a\x1006\x101a\x103a" -> integer 10
-        _ -> Nothing
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        HashMap.lookup match integer2Map >>= integer
       _ -> Nothing
   }
 
@@ -176,6 +192,6 @@ rules =
   , ruleInteger6
   , ruleInteger7
   , ruleInteger8
-  , ruleIntegerNumeric
+  , ruleInteger09
   , ruleIntegerPali
   ]

@@ -10,31 +10,23 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Numeral.ET.Rules
-  ( rules ) where
+  ( rules
+  ) where
 
+import Data.HashMap.Strict (HashMap)
 import Data.Maybe
-import qualified Data.Text as Text
-import Prelude
 import Data.String
+import Data.Text (Text)
+import Prelude
+import qualified Data.HashMap.Strict as HashMap
+import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
 import Duckling.Numeral.Helpers
 import Duckling.Numeral.Types (NumeralData (..))
-import qualified Duckling.Numeral.Types as TNumeral
 import Duckling.Regex.Types
 import Duckling.Types
-
-ruleIntegerWithThousandsSeparatorSpace :: Rule
-ruleIntegerWithThousandsSeparatorSpace = Rule
-  { name = "integer with thousands separator space"
-  , pattern =
-    [ regex "(\\d{1,3}(\\s\\d\\d\\d){1,5})"
-    ]
-  , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) ->
-        parseDouble (Text.replace (Text.singleton ' ') Text.empty match) >>= double
-      _ -> Nothing
-  }
+import qualified Duckling.Numeral.Types as TNumeral
 
 ruleNumeralsPrefixWithNegativeOrMinus :: Rule
 ruleNumeralsPrefixWithNegativeOrMinus = Rule
@@ -47,20 +39,6 @@ ruleNumeralsPrefixWithNegativeOrMinus = Rule
       (_:
        Token Numeral (NumeralData {TNumeral.value = v}):
        _) -> double $ v * (-1)
-      _ -> Nothing
-  }
-
-ruleIntegerNumeric :: Rule
-ruleIntegerNumeric = Rule
-  { name = "integer (numeric)"
-  , pattern =
-    [ regex "(\\d{1,18})"
-    ]
-  , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):
-       _) -> do
-         v <- parseInt match
-         integer $ toInteger v
       _ -> Nothing
   }
 
@@ -77,7 +55,7 @@ ruleTen :: Rule
 ruleTen = Rule
   { name = "ten"
   , pattern =
-    [ regex "k\x00fcmme"
+    [ regex "kümme"
     ]
   , prod = \_ -> integer 10 >>= withGrain 1
   }
@@ -122,7 +100,7 @@ ruleAFew :: Rule
 ruleAFew = Rule
   { name = "(a )?few"
   , pattern =
-    [ regex "m\x00f5ni"
+    [ regex "mõni"
     ]
   , prod = \_ -> integer 3
   }
@@ -158,7 +136,7 @@ ruleNumeralsSuffixesKMG = Rule
   { name = "numbers suffixes (K, M, G)"
   , pattern =
     [ dimension Numeral
-    , regex "([kmg])(?=[\\W\\$\x20ac]|$)"
+    , regex "([kmg])(?=[\\W\\$€]|$)"
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral (NumeralData {TNumeral.value = v}):
@@ -183,43 +161,47 @@ ruleMultiply = Rule
       _ -> Nothing
   }
 
+zeroNineteenMap :: HashMap Text Integer
+zeroNineteenMap = HashMap.fromList
+  [ ("null", 0)
+  , ("üks", 1)
+  , ("kaks", 2)
+  , ("kolm", 3)
+  , ("neli", 4)
+  , ("viis", 5)
+  , ("kuus", 6)
+  , ("seitse", 7)
+  , ("kaheksa", 8)
+  , ("üheksa", 9)
+  , ("kümme", 10)
+  , ("üksteist", 11)
+  , ("kaksteist", 12)
+  , ("kolmteist", 13)
+  , ("neliteist", 14)
+  , ("viisteist", 15)
+  , ("kuusteist", 16)
+  , ("seitseteist", 17)
+  , ("kaheksateist", 18)
+  , ("üheksateist", 19)
+  ]
+
 ruleInteger :: Rule
 ruleInteger = Rule
   { name = "integer (0..19)"
   , pattern =
-    [ regex "(null|\x00fcksteist|\x00fcks|kaksteist|kaks|kolmteist|kolm|neliteist|neli|viisteist|viis|kuusteist|kuus|seitseteist|seitse|kaheksateist|kaheksa|\x00fcheksateist|\x00fcheksa|k\x00fcmme)"
+    [ regex "(null|üksteist|üks|kaksteist|kaks|kolmteist|kolm|neliteist|neli|viisteist|viis|kuusteist|kuus|seitseteist|seitse|kaheksateist|kaheksa|üheksateist|üheksa|kümme)"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
-        "null" -> integer 0
-        "\x00fcks" -> integer 1
-        "kaks" -> integer 2
-        "kolm" -> integer 3
-        "neli" -> integer 4
-        "viis" -> integer 5
-        "kuus" -> integer 6
-        "seitse" -> integer 7
-        "kaheksa" -> integer 8
-        "\x00fcheksa" -> integer 9
-        "k\x00fcmme" -> integer 10
-        "\x00fcksteist" -> integer 11
-        "kaksteist" -> integer 12
-        "kolmteist" -> integer 13
-        "neliteist" -> integer 14
-        "viisteist" -> integer 15
-        "kuusteist" -> integer 16
-        "seitseteist" -> integer 17
-        "kaheksateist" -> integer 18
-        "\x00fcheksateist" -> integer 19
-        _ -> Nothing
-      _ -> Nothing
+    (Token RegexMatch (GroupMatch (match:_)):_) ->
+      HashMap.lookup (Text.toLower match) zeroNineteenMap >>= integer
+    _ -> Nothing
   }
 
 ruleInteger4 :: Rule
 ruleInteger4 = Rule
   { name = "integer (200..900)"
   , pattern =
-    [ regex "(kakssada|kolmsada|nelisada|viissada|kuussada|seitsesada|kaheksasada|\x00fcheksasada)"
+    [ regex "(kakssada|kolmsada|nelisada|viissada|kuussada|seitsesada|kaheksasada|üheksasada)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
@@ -230,29 +212,33 @@ ruleInteger4 = Rule
         "kuussada"        -> integer 600 >>= withGrain 2 >>= withMultipliable
         "seitsesada"      -> integer 700 >>= withGrain 2 >>= withMultipliable
         "kaheksasada"     -> integer 800 >>= withGrain 2 >>= withMultipliable
-        "\x00fcheksasada" -> integer 900 >>= withGrain 2 >>= withMultipliable
+        "üheksasada" -> integer 900 >>= withGrain 2 >>= withMultipliable
         _ -> Nothing
       _ -> Nothing
   }
 
-ruleInteger2 :: Rule
-ruleInteger2 = Rule
+twentyNinetyMap :: HashMap Text Integer
+twentyNinetyMap = HashMap.fromList
+  [ ("kakskümmend", 20)
+  , ("kolmkümmend", 30)
+  , ("nelikümmend", 40)
+  , ("viiskümmend", 50)
+  , ("kuuskümmend", 60)
+  , ("seitsekümmend", 70)
+  , ("kaheksakümmend", 80)
+  , ("üheksakümmend", 90)
+  ]
+
+ruletwentyNinety :: Rule
+ruletwentyNinety = Rule
   { name = "integer (20..90)"
   , pattern =
-    [ regex "((kaks|kolm|neli|viis|kuus|seitse|kaheksa|(\x00fc)heksa)k(\x00fc)mmend)"
+    [ regex "((kaks|kolm|neli|viis|kuus|seitse|kaheksa|(ü)heksa)k(ü)mmend)"
     ]
-  , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
-        "kaksk\x00fcmmend" -> integer 20
-        "kolmk\x00fcmmend" -> integer 30
-        "nelik\x00fcmmend" -> integer 40
-        "viisk\x00fcmmend" -> integer 50
-        "kuusk\x00fcmmend" -> integer 60
-        "seitsek\x00fcmmend" -> integer 70
-        "kaheksak\x00fcmmend" -> integer 80
-        "\x00fcheksak\x00fcmmend" -> integer 90
+    , prod = \tokens -> case tokens of
+        (Token RegexMatch (GroupMatch (match:_)):_) ->
+          HashMap.lookup (Text.toLower match) twentyNinetyMap >>= integer
         _ -> Nothing
-      _ -> Nothing
   }
 
 ruleNumeralDotNumeral :: Rule
@@ -275,11 +261,11 @@ ruleIntegerWithThousandsSeparator :: Rule
 ruleIntegerWithThousandsSeparator = Rule
   { name = "integer with thousands separator ,"
   , pattern =
-    [ regex "(\\d{1,3}(,\\d\\d\\d){1,5})"
+    [ regex "(\\d{1,3}(([, ])\\d\\d\\d){1,5})"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) ->
-        parseDouble (Text.replace (Text.singleton ',') Text.empty match) >>= double
+      (Token RegexMatch (GroupMatch (match:_:sep:_)):_) ->
+        parseDouble (Text.replace sep Text.empty match) >>= double
       _ -> Nothing
   }
 
@@ -290,12 +276,10 @@ rules =
   , ruleDecimalNumeral
   , ruleDecimalWithThousandsSeparator
   , ruleInteger
-  , ruleInteger2
+  , ruletwentyNinety
   , ruleInteger3
   , ruleInteger4
-  , ruleIntegerNumeric
   , ruleIntegerWithThousandsSeparator
-  , ruleIntegerWithThousandsSeparatorSpace
   , ruleIntersect
   , ruleMultiply
   , ruleNumeralDotNumeral

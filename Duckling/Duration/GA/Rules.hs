@@ -17,6 +17,7 @@ import Data.String
 
 import Duckling.Dimensions.Types
 import Duckling.Duration.Helpers
+import Duckling.Numeral.Helpers (numberWith)
 import Duckling.Numeral.Types (NumeralData(..))
 import qualified Duckling.Numeral.Types as TNumeral
 import qualified Duckling.TimeGrain.Types as TG
@@ -26,7 +27,7 @@ ruleCoics :: Rule
 ruleCoics = Rule
   { name = "coicís"
   , pattern =
-    [ regex "coic(\x00ed|i)s(\x00ed|i|e)?"
+    [ regex "coic(í|i)s(í|i|e)?"
     ]
   , prod = \_ -> Just . Token Duration $ duration TG.Day 14
   }
@@ -44,9 +45,9 @@ ruleAonDurationAmhain :: Rule
 ruleAonDurationAmhain = Rule
   { name = "aon X amhain"
   , pattern =
-    [ isNumeralWith TNumeral.value (== 1)
+    [ numberWith TNumeral.value (== 1)
     , dimension TimeGrain
-    , isNumeralWith TNumeral.value (== 1)
+    , numberWith TNumeral.value (== 1)
     ]
   , prod = \tokens -> case tokens of
       (_:Token TimeGrain grain:_) -> Just . Token Duration $ duration grain 1
@@ -57,9 +58,9 @@ ruleIntegerUnitofdurationInteger :: Rule
 ruleIntegerUnitofdurationInteger = Rule
   { name = "<unit-integer> <unit-of-duration> <tens-integer>"
   , pattern =
-    [ isNumeralWith TNumeral.value (< 10)
+    [ numberWith TNumeral.value (< 10)
     , dimension TimeGrain
-    , isNumeralWith TNumeral.value (`elem` [10, 20 .. 50])
+    , numberWith TNumeral.value (`elem` [10, 20 .. 50])
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral (NumeralData {TNumeral.value = v1}):

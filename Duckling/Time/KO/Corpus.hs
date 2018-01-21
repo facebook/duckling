@@ -9,12 +9,13 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Time.KO.Corpus
-  ( corpus ) where
+  ( corpus
+  ) where
 
-import Prelude
 import Data.String
+import Prelude
 
-import Duckling.Lang
+import Duckling.Locale
 import Duckling.Resolve
 import Duckling.Time.Corpus
 import Duckling.Time.Types hiding (Month)
@@ -22,7 +23,7 @@ import Duckling.TimeGrain.Types hiding (add)
 import Duckling.Testing.Types hiding (examples)
 
 corpus :: Corpus
-corpus = (testContext {lang = KO}, allExamples)
+corpus = (testContext {locale = makeLocale KO Nothing}, allExamples)
 
 allExamples :: [Example]
 allExamples = concat
@@ -173,8 +174,8 @@ allExamples = concat
              [ "이번주 수요일"
              ]
   , examples (datetime (2013, 2, 14, 0, 0, 0) Day)
-             [ "내일모래"
-             , "모래"
+             [ "내일모레"
+             , "모레"
              ]
   , examples (datetime (2013, 2, 13, 17, 0, 0) Hour)
              [ "내일 저녁다섯시"

@@ -10,23 +10,25 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TupleSections #-}
 
-module Duckling.Api.Tests (tests) where
+module Duckling.Api.Tests
+  ( tests
+  ) where
 
-import qualified Data.HashMap.Strict as HashMap
-import qualified Data.HashSet as HashSet
 import Data.List (sortOn)
 import Data.Text (Text)
 import Prelude
 import Test.Tasty
 import Test.Tasty.HUnit
+import qualified Data.HashMap.Strict as HashMap
+import qualified Data.HashSet as HashSet
 
 import Duckling.Api
 import Duckling.Dimensions.Types
-import Duckling.Lang
-import qualified Duckling.Numeral.Types as TNumeral
+import Duckling.Locale
 import Duckling.Testing.Asserts
 import Duckling.Testing.Types
 import Duckling.Types
+import qualified Duckling.Numeral.Types as TNumeral
 
 tests :: TestTree
 tests = testGroup "API Tests"
@@ -43,7 +45,7 @@ parseTest = testCase "Parse Test" $
     (Entity dim body value start end:_) -> do
       assertEqual "dim" "number" dim
       assertEqual "body" "42" body
-      assertEqual "value" val value
+      assertEqual "value" val (toJText value)
       assertEqual "start" 4 start
       assertEqual "end" 6 end
   where
@@ -120,7 +122,8 @@ supportedDimensionsTest = testCase "Supported Dimensions Test" $ do
   mapM_ check
     [ ( AR
       , [ This Email, This AmountOfMoney, This PhoneNumber, This Url
-        , This Numeral, This Ordinal
+        , This Duration, This Numeral, This Ordinal, This Time, This Volume
+        , This Temperature, This Quantity
         ]
       )
     , ( PL
@@ -134,4 +137,5 @@ supportedDimensionsTest = testCase "Supported Dimensions Test" $ do
     check (l, expected) = case HashMap.lookup l supportedDimensions of
       Nothing -> assertFailure $ "no dimensions for " ++ show l
       Just actual ->
-        assertEqual ("wrong dimensions for " ++ show l) expected actual
+        assertEqual ("wrong dimensions for " ++ show l)
+        (HashSet.fromList expected) (HashSet.fromList actual)

@@ -21,13 +21,13 @@ import qualified Duckling.TimeGrain.Types as TG
 import Duckling.Types
 
 grains :: [(Text, String, TG.Grain)]
-grains = [ ("soicind (grain)", "t?sh?oicind(\x00ed|i)?", TG.Second)
-         , ("nóiméad (grain)", "n[\x00f3o]im(\x00e9|e)[ai]da?", TG.Minute)
+grains = [ ("soicind (grain)", "t?sh?oicind(í|i)?", TG.Second)
+         , ("nóiméad (grain)", "n[óo]im(é|e)[ai]da?", TG.Minute)
          , ("uair (grain)", "([thn]-?)?uair(e|eanta)?", TG.Hour)
-         , ("lá (grain)", "l(ae(thanta)?|(\x00e1|a))", TG.Day)
-         , ("seachtain (grain)", "t?sh?eachtain(e|(\x00ed|i))?", TG.Week)
-         , ("mí (grain)", "mh?(\x00ed|i)(sa|nna)", TG.Month)
-         , ("ráithe (grain)", "r(\x00e1|a)ith(e|(\x00ed|i))", TG.Quarter)
+         , ("lá (grain)", "l(ae(thanta)?|(á|a))", TG.Day)
+         , ("seachtain (grain)", "t?sh?eachtain(e|(í|i))?", TG.Week)
+         , ("mí (grain)", "mh?(í|i)(sa|nna)", TG.Month)
+         , ("ráithe (grain)", "r(á|a)ith(e|(í|i))", TG.Quarter)
          , ("bliain (grain)", "m?bh?lia(in|na|nta)", TG.Year)
          ]
 

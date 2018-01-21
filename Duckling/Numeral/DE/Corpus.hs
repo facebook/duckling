@@ -9,24 +9,27 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Numeral.DE.Corpus
-  ( corpus ) where
+  ( corpus
+  ) where
 
-import Prelude
 import Data.String
+import Prelude
 
-import Duckling.Lang
+import Duckling.Locale
 import Duckling.Numeral.Types
 import Duckling.Resolve
 import Duckling.Testing.Types
 
 corpus :: Corpus
-corpus = (testContext {lang = DE}, allExamples)
+corpus = (testContext {locale = makeLocale DE Nothing}, allExamples)
 
 allExamples :: [Example]
 allExamples = concat
   [ examples (NumeralValue 0)
              [ "0"
              , "null"
+             , "keiner"
+             , "keinen"
              ]
   , examples (NumeralValue 1)
              [ "1"
@@ -35,6 +38,12 @@ allExamples = concat
   , examples (NumeralValue 3)
              [ "3"
              , "Drei"
+             ]
+  , examples (NumeralValue 8)
+             [ "acht"
+             ]
+  , examples (NumeralValue 18)
+             [ "achtzehn"
              ]
   , examples (NumeralValue 30)
              [ "30"

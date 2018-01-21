@@ -19,7 +19,7 @@ import Data.String
 
 import Duckling.Dimensions.Types
 import Duckling.Duration.Helpers
-import Duckling.Numeral.Helpers (parseInt)
+import Duckling.Numeral.Helpers (parseInteger)
 import Duckling.Numeral.Types (NumeralData (..))
 import qualified Duckling.Numeral.Types as TNumeral
 import Duckling.Regex.Types
@@ -31,7 +31,7 @@ ruleHalfAnHour = Rule
   { name = "half an hour"
   , pattern =
     [ Predicate $ isGrain TG.Hour
-    , regex "\xbc18"
+    , regex "반"
     ]
   , prod = \_ -> Just . Token Duration $ duration TG.Minute 30
   }
@@ -40,7 +40,7 @@ ruleADay :: Rule
 ruleADay = Rule
   { name = "a day - 하루"
   , pattern =
-    [ regex "\xd558\xb8e8"
+    [ regex "하루"
     ]
   , prod = \_ -> Just . Token Duration $ duration TG.Day 1
   }
@@ -50,17 +50,14 @@ ruleNumeralnumberHours = Rule
   { name = "number.number hours"
   , pattern =
     [ regex "(\\d+)\\.(\\d+)"
-    , regex "\xc2dc\xac04"
+    , regex "시간"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (m1:m2:_)):_) -> do
-        hh <- parseInt m1
-        dec <- parseInt m2
-        let divisor = floor $ (fromIntegral (10 :: Integer) :: Float) **
-                        fromIntegral (Text.length m2 - 1)
-            numerator = fromIntegral $ 6 * dec
-        Just . Token Duration . duration TG.Minute $
-          60 * hh + quot numerator divisor
+      (Token RegexMatch (GroupMatch (h:m:_)):_) -> do
+        hh <- parseInteger h
+        mnum <- parseInteger m
+        let mden = 10 ^ Text.length m
+        Just . Token Duration $ minutesFromHourMixedFraction hh mnum mden
       _ -> Nothing
   }
 
@@ -69,7 +66,7 @@ ruleIntegerAndAnHalfHours = Rule
   { name = "<integer> and an half hours"
   , pattern =
     [ Predicate isNatural
-    , regex "\xc2dc\xac04\xbc18"
+    , regex "시간반"
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral (NumeralData {TNumeral.value = v}):_) ->
@@ -81,7 +78,7 @@ ruleAboutDuration :: Rule
 ruleAboutDuration = Rule
   { name = "about <duration>"
   , pattern =
-    [ regex "\xb300\xcda9|\xc57d"
+    [ regex "대충|약"
     , dimension Duration
     ]
   , prod = \tokens -> case tokens of
@@ -93,7 +90,7 @@ ruleExactlyDuration :: Rule
 ruleExactlyDuration = Rule
   { name = "exactly <duration>"
   , pattern =
-    [ regex "\xc815\xd655\xd788"
+    [ regex "정확히"
     , dimension Duration
     ]
   , prod = \tokens -> case tokens of

@@ -38,7 +38,8 @@ instance Resolve DurationData where
 
 instance ToJSON DurationData where
   toJSON DurationData {value, grain} = object
-    [ "value"      .= value
+    [ "type"       .= ("value" :: Text)
+    , "value"      .= value
     , "unit"       .= grain
     , showt grain  .= value
     , "normalized" .= object

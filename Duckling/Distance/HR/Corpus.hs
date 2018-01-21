@@ -14,12 +14,12 @@ import Prelude
 import Data.String
 
 import Duckling.Distance.Types
-import Duckling.Lang
+import Duckling.Locale
 import Duckling.Resolve
 import Duckling.Testing.Types
 
 corpus :: Corpus
-corpus = (testContext {lang = HR}, allExamples)
+corpus = (testContext {locale = makeLocale HR Nothing}, allExamples)
 
 allExamples :: [Example]
 allExamples = concat

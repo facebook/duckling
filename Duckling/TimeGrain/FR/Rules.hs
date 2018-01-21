@@ -23,11 +23,11 @@ grains :: [(Text, String, TG.Grain)]
 grains = [ ("seconde (grain)", "sec(onde)?s?", TG.Second)
          , ("minute (grain)", "min(ute)?s?", TG.Minute)
          , ("heure (grain)", "heures?", TG.Hour)
-         , ("jour (grain)", "jour(n(e|\x00e9)e?)?s?", TG.Day)
+         , ("jour (grain)", "jour(n(e|é)e?)?s?", TG.Day)
          , ("semaine (grain)", "semaines?", TG.Week)
          , ("mois (grain)", "mois", TG.Month)
          , ("trimestre (grain)", "trimestres?", TG.Quarter)
-         , ("année (grain)", "an(n(e|\x00e9)e?)?s?", TG.Year)
+         , ("année (grain)", "an(n(e|é)e?)?s?", TG.Year)
          ]
 
 rules :: [Rule]

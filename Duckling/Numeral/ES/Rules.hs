@@ -10,20 +10,21 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Numeral.ES.Rules
-  ( rules ) where
+  ( rules
+  ) where
 
-import qualified Data.HashMap.Strict as HashMap
 import Data.Maybe
-import qualified Data.Text as Text
-import Prelude
 import Data.String
+import Prelude
+import qualified Data.HashMap.Strict as HashMap
+import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
 import Duckling.Numeral.Helpers
 import Duckling.Numeral.Types (NumeralData (..))
-import qualified Duckling.Numeral.Types as TNumeral
 import Duckling.Regex.Types
 import Duckling.Types
+import qualified Duckling.Numeral.Types as TNumeral
 
 ruleNumeralsPrefixWithNegativeOrMinus :: Rule
 ruleNumeralsPrefixWithNegativeOrMinus = Rule
@@ -38,19 +39,6 @@ ruleNumeralsPrefixWithNegativeOrMinus = Rule
       _ -> Nothing
   }
 
-ruleIntegerNumeric :: Rule
-ruleIntegerNumeric = Rule
-  { name = "integer (numeric)"
-  , pattern =
-    [ regex "(\\d{1,18})"
-    ]
-  , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> do
-        v <- parseInt match
-        integer $ toInteger v
-      _ -> Nothing
-  }
-
 ruleDecimalWithThousandsSeparator :: Rule
 ruleDecimalWithThousandsSeparator = Rule
   { name = "decimal with thousands separator"
@@ -58,10 +46,8 @@ ruleDecimalWithThousandsSeparator = Rule
     [ regex "(\\d+(\\.\\d\\d\\d)+,\\d+)"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) ->
-        let dot = Text.singleton '.'
-            comma = Text.singleton ','
-            fmt = Text.replace comma dot $ Text.replace dot Text.empty match
+      (Token RegexMatch (GroupMatch (match:_)):
+       _) -> let fmt = Text.replace "," "." $ Text.replace "." Text.empty match
         in parseDouble fmt >>= double
       _ -> Nothing
   }
@@ -110,12 +96,12 @@ zeroToFifteenMap = HashMap.fromList
   , ( "una" , 1 )
   , ( "uno" , 1 )
   , ( "dos" , 2 )
-  , ( "tr\x00e9s" , 3 )
+  , ( "trés" , 3 )
   , ( "tres" , 3 )
   , ( "cuatro" , 4 )
   , ( "cinco" , 5 )
   , ( "seis" , 6 )
-  , ( "s\x00e9is" , 6 )
+  , ( "séis" , 6 )
   , ( "siete" , 7 )
   , ( "ocho" , 8 )
   , ( "nueve" , 9 )
@@ -132,7 +118,7 @@ ruleNumeral :: Rule
 ruleNumeral = Rule
   { name = "number (0..15)"
   , pattern =
-    [ regex "((c|z)ero|un(o|a)?|dos|tr(\x00e9|e)s|cuatro|cinco|s(e|\x00e9)is|siete|ocho|nueve|die(z|s)|once|doce|trece|catorce|quince)"
+    [ regex "((c|z)ero|un(o|a)?|dos|tr(é|e)s|cuatro|cinco|s(e|é)is|siete|ocho|nueve|die(z|s)|once|doce|trece|catorce|quince)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
@@ -143,20 +129,20 @@ ruleNumeral = Rule
 sixteenToTwentyNineMap :: HashMap.HashMap Text.Text Integer
 sixteenToTwentyNineMap = HashMap.fromList
   [ ( "dieciseis" , 16 )
-  , ( "diesis\x00e9is" , 16 )
+  , ( "diesiséis" , 16 )
   , ( "diesiseis" , 16 )
-  , ( "diecis\x00e9is" , 16 )
+  , ( "dieciséis" , 16 )
   , ( "diecisiete" , 17 )
   , ( "dieciocho" , 18 )
   , ( "diecinueve" , 19 )
   , ( "veintiuno" , 21 )
   , ( "veintiuna" , 21 )
   , ( "veintidos" , 22 )
-  , ( "veintitr\x00e9s" , 23 )
+  , ( "veintitrés" , 23 )
   , ( "veintitres" , 23 )
   , ( "veinticuatro" , 24 )
   , ( "veinticinco" , 25 )
-  , ( "veintis\x00e9is" , 26 )
+  , ( "veintiséis" , 26 )
   , ( "veintiseis" , 26 )
   , ( "veintisiete" , 27 )
   , ( "veintiocho" , 28 )
@@ -167,7 +153,7 @@ ruleNumeral5 :: Rule
 ruleNumeral5 = Rule
   { name = "number (16..19 21..29)"
   , pattern =
-    [ regex "(die(c|s)is(\x00e9|e)is|diecisiete|dieciocho|diecinueve|veintiun(o|a)|veintidos|veintitr(\x00e9|e)s|veinticuatro|veinticinco|veintis(\x00e9|e)is|veintisiete|veintiocho|veintinueve)"
+    [ regex "(die(c|s)is(é|e)is|diecisiete|dieciocho|diecinueve|veintiun(o|a)|veintidos|veintitr(é|e)s|veinticuatro|veinticinco|veintis(é|e)is|veintisiete|veintiocho|veintinueve)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
@@ -194,7 +180,7 @@ ruleNumeralsSuffixesKMG = Rule
   { name = "numbers suffixes (K, M, G)"
   , pattern =
     [ dimension Numeral
-    , regex "([kmg])(?=[\\W\\$\x20ac]|$)"
+    , regex "([kmg])(?=[\\W\\$€]|$)"
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral (NumeralData {TNumeral.value = v}):
@@ -292,7 +278,7 @@ ruleIntegerWithThousandsSeparator = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
-        parseDouble (Text.replace (Text.singleton '.') Text.empty match) >>= double
+        parseDouble (Text.replace "." Text.empty match) >>= double
       _ -> Nothing
   }
 
@@ -300,7 +286,6 @@ rules :: [Rule]
 rules =
   [ ruleDecimalNumeral
   , ruleDecimalWithThousandsSeparator
-  , ruleIntegerNumeric
   , ruleIntegerWithThousandsSeparator
   , ruleNumeral
   , ruleNumeral2

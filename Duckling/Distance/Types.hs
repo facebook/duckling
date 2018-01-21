@@ -19,9 +19,9 @@ import Control.DeepSeq
 import Data.Aeson
 import Data.Hashable
 import Data.Text (Text)
-import qualified Data.Text as Text
 import GHC.Generics
 import Prelude
+import qualified Data.Text as Text
 
 import Duckling.Resolve (Resolve(..))
 
@@ -33,6 +33,7 @@ data Unit
   | M -- ambiguous between Mile and Metre
   | Metre
   | Mile
+  | Millimetre
   | Yard
   deriving (Eq, Generic, Hashable, Ord, Show, NFData)
 

@@ -26,18 +26,18 @@ ruleOrdinalsFirstst :: Rule
 ruleOrdinalsFirstst = Rule
   { name = "ordinals (first..31st)"
   , pattern =
-    [ regex "(f\x00f8rste|andre|tredje|fjerde|femtende|femte|sjette|syvende|\x00e5ttende|niende|tiende|ellevte|tolvte|trettende|fjortende|sekstende|syttende|attende|nittende|tyvende|tjuende|enogtyvende|toogtyvende|treogtyvende|fireogtyvende|femogtyvende|seksogtyvende|syvogtyvende|\x00e5tteogtyvende|niogtyvende|enogtjuende|toogtjuende|treogtjuende|fireogtjuende|femogtjuende|seksogtjuende|syvogtjuende|\x00e5tteogtyvend|niogtjuende|tredefte|enogtredefte)"
+    [ regex "(første|andre|tredje|fjerde|femtende|femte|sjette|syvende|åttende|niende|tiende|ellevte|tolvte|trettende|fjortende|sekstende|syttende|attende|nittende|tyvende|tjuende|enogtyvende|toogtyvende|treogtyvende|fireogtyvende|femogtyvende|seksogtyvende|syvogtyvende|åtteogtyvende|niogtyvende|enogtjuende|toogtjuende|treogtjuende|fireogtjuende|femogtjuende|seksogtjuende|syvogtjuende|åtteogtyvend|niogtjuende|tredefte|enogtredefte)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
-        "f\x00f8rste" -> Just $ ordinal 1
+        "første" -> Just $ ordinal 1
         "andre" -> Just $ ordinal 2
         "tredje" -> Just $ ordinal 3
         "fjerde" -> Just $ ordinal 4
         "femte" -> Just $ ordinal 5
         "sjette" -> Just $ ordinal 6
         "syvende" -> Just $ ordinal 7
-        "\x00e5ttende" -> Just $ ordinal 8
+        "åttende" -> Just $ ordinal 8
         "niende" -> Just $ ordinal 9
         "tiende" -> Just $ ordinal 10
         "ellevte" -> Just $ ordinal 11
@@ -65,8 +65,8 @@ ruleOrdinalsFirstst = Rule
         "seksogtyvende" -> Just $ ordinal 26
         "syvogtyvende" -> Just $ ordinal 27
         "syvogtjuende" -> Just $ ordinal 27
-        "\x00e5tteogtyvende" -> Just $ ordinal 28
-        "\x00e5tteogtjuende" -> Just $ ordinal 28
+        "åtteogtyvende" -> Just $ ordinal 28
+        "åtteogtjuende" -> Just $ ordinal 28
         "niogtyvende" -> Just $ ordinal 29
         "niogtjuende" -> Just $ ordinal 29
         "tredefte" -> Just $ ordinal 30

@@ -9,18 +9,19 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Numeral.PT.Corpus
-  ( corpus ) where
+  ( corpus
+  ) where
 
-import Prelude
 import Data.String
+import Prelude
 
-import Duckling.Lang
+import Duckling.Locale
 import Duckling.Numeral.Types
 import Duckling.Resolve
 import Duckling.Testing.Types
 
 corpus :: Corpus
-corpus = (testContext {lang = PT}, allExamples)
+corpus = (testContext {locale = makeLocale PT Nothing}, allExamples)
 
 allExamples :: [Example]
 allExamples = concat
@@ -33,6 +34,8 @@ allExamples = concat
              [ "2"
              , "dois"
              , "duas"
+             , "pares de"
+             , "um par de"
              ]
   , examples (NumeralValue 3)
              [ "3"
@@ -52,6 +55,7 @@ allExamples = concat
              , "doze"
              , "uma dúzia"
              , "uma duzia"
+             , "uma duzias de"
              ]
   , examples (NumeralValue 14)
              [ "14"
@@ -120,22 +124,43 @@ allExamples = concat
   , examples (NumeralValue 0.77)
              [ "0,77"
              , ",77"
+             , "ponto setenta e sete"
+             ]
+  , examples (NumeralValue 1000)
+             [ "mil"
              ]
   , examples (NumeralValue 100000)
              [ "100.000"
              , "100000"
              , "100K"
              , "100k"
+             , "100.000,00"
              ]
   , examples (NumeralValue 100)
              [ "100"
              , "Cem"
              ]
+  , examples (NumeralValue 104)
+             [ "104"
+             , "cento e quatro"
+             ]
   , examples (NumeralValue 243)
              [ "243"
+             ,"duzentos e quarenta e tres"
              ]
   , examples (NumeralValue 300)
              [ "trezentos"
+             ]
+  , examples (NumeralValue 343)
+             [ "trezentos e quarenta e tres"
+             , "343"
+             ]
+  , examples (NumeralValue 891)
+             [ "oitocentos e noventa e um"
+             , "891"
+             ]
+  , examples (NumeralValue 2200)
+             [ "dois mil e duzentos"
              ]
   , examples (NumeralValue 3000000)
              [ "3M"
@@ -157,10 +182,20 @@ allExamples = concat
              , "-1,2M"
              , "-1200K"
              , "-,0012G"
+             , "negativo 1,2M"
              ]
   , examples (NumeralValue 1.5)
              [ "1 ponto cinco"
              , "um ponto cinco"
              , "1,5"
+             ]
+  , examples (NumeralValue 1200000.42)
+             [ "1.200.000,42"
+             ]
+  , examples (NumeralValue 0.2)
+             [ "1/5"
+             , "2/10"
+             , "3/15"
+             , "20/100"
              ]
   ]

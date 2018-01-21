@@ -31,7 +31,7 @@ ruleIntersectAndNumeral = Rule
   { name = "intersect (and number)"
   , pattern =
     [ financeWith TAmountOfMoney.value isJust
-    , regex "(s|\x0219)i"
+    , regex "(s|ș)i"
     , dimension Numeral
     ]
   , prod = \tokens -> case tokens of
@@ -71,7 +71,7 @@ rulePrecisionAmountofmoney :: Rule
 rulePrecisionAmountofmoney = Rule
   { name = "about/exactly <amount-of-money>"
   , pattern =
-    [ regex "exact|cam|aprox(\\.|imativ)?|aproape|(i|\x00ee)n jur (de)?"
+    [ regex "exact|cam|aprox(\\.|imativ)?|aproape|(i|î)n jur (de)?"
     , financeWith TAmountOfMoney.value isJust
     ]
   , prod = \tokens -> case tokens of
@@ -83,7 +83,7 @@ ruleCent :: Rule
 ruleCent = Rule
   { name = "cent|bani"
   , pattern =
-    [ regex "bani?|cen(t|\x021b)i?|c|\x00a2"
+    [ regex "bani?|cen(t|ț)i?|c|¢"
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly Cent
   }
@@ -102,7 +102,7 @@ ruleIntersectAndXCents = Rule
   { name = "intersect (and X cents)"
   , pattern =
     [ financeWith TAmountOfMoney.value isJust
-    , regex "(s|\x0219)i"
+    , regex "(s|ș)i"
     , financeWith TAmountOfMoney.currency (== Cent)
     ]
   , prod = \tokens -> case tokens of
@@ -140,7 +140,7 @@ ruleOtherPounds :: Rule
 ruleOtherPounds = Rule
   { name = "other pounds"
   , pattern =
-    [ regex "lir(a|\x0103) (egiptian|libanez)(a|\x0103)"
+    [ regex "lir(a|ă) (egiptian|libanez)(a|ă)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (_:match:_)):_) -> case Text.toLower match of

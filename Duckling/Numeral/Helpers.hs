@@ -14,26 +14,33 @@ module Duckling.Numeral.Helpers
   , double
   , integer
   , multiply
+  , isNatural
   , divide
+  , notOkForAnyTime
   , numberBetween
   , numberWith
+  , numeralMapEL
   , oneOf
   , parseDouble
   , parseInt
+  , parseInteger
   , withGrain
   , withMultipliable
-  , parseDecimal,
+  , parseDecimal
   ) where
 
-import qualified Data.Attoparsec.Text as Atto
+import Data.HashMap.Strict (HashMap)
 import Data.Maybe
+import Data.String
 import Data.Text (Text)
-import qualified Data.Text as Text
 import Prelude
+import qualified Data.Attoparsec.Text as Atto
+import qualified Data.HashMap.Strict as HashMap
+import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
 import Duckling.Numeral.Types
-import Duckling.Types hiding (value)
+import Duckling.Types hiding (Entity(value))
 
 zeroT :: Text
 zeroT = Text.singleton '0'
@@ -45,7 +52,10 @@ comma :: Text
 comma = Text.singleton ','
 
 parseInt :: Text -> Maybe Int
-parseInt =
+parseInt = (fromIntegral <$>) . parseInteger
+
+parseInteger :: Text -> Maybe Integer
+parseInteger =
   either (const Nothing) Just . Atto.parseOnly (Atto.signed Atto.decimal)
 
 -- | Add leading 0 when leading . for double parsing to succeed
@@ -83,6 +93,11 @@ numberBetween low up = Predicate $ \x ->
       low <= v && v < up
     _ -> False
 
+isNatural :: Predicate
+isNatural (Token Numeral NumeralData {value = v}) =
+  isInteger v && v > 0
+isNatural _ = False
+
 oneOf :: [Double] -> PatternItem
 oneOf vs = Predicate $ \x ->
   case x of
@@ -102,11 +117,17 @@ withGrain g (Token Numeral x@NumeralData{}) =
   Just . Token Numeral $ x {grain = Just g}
 withGrain _ _ = Nothing
 
+notOkForAnyTime :: Token -> Maybe Token
+notOkForAnyTime (Token Numeral x) =
+  Just . Token Numeral $ x {okForAnyTime = False}
+notOkForAnyTime _ = Nothing
+
 double :: Double -> Maybe Token
 double x = Just . Token Numeral $ NumeralData
   { value = x
   , grain = Nothing
   , multipliable = False
+  , okForAnyTime = True
   }
 
 integer :: Integer -> Maybe Token
@@ -135,3 +156,55 @@ parseDecimal isDot match
   | otherwise =
     parseDouble (Text.replace comma dot match)
     >>= double
+
+-- TODO: Single-word composition (#110)
+numeralMapEL :: HashMap Text Int
+numeralMapEL = HashMap.fromList
+  [ ( "δι"          , 2  )
+  , ( "δί"          , 2  )
+  , ( "τρι"         , 3  )
+  , ( "τρί"         , 3  )
+  , ( "τετρ"        , 4  )
+  , ( "πεντ"        , 5  )
+  , ( "πενθ"        , 5  )
+  , ( "εξ"          , 6  )
+  , ( "επτ"         , 7  )
+  , ( "εφτ"         , 7  )
+  , ( "οκτ"         , 8  )
+  , ( "οχτ"         , 8  )
+  , ( "εννι"        , 9  )
+  , ( "δεκ"         , 10 )
+  , ( "δεκαπεντ"    , 15 )
+  , ( "δεκαπενθ"    , 15 )
+  , ( "εικοσ"       , 20 )
+  , ( "εικοσιπεντ"  , 25 )
+  , ( "εικοσιπενθ"  , 25 )
+  , ( "τριαντ"      , 30 )
+  , ( "τριανταπεντ" , 35 )
+  , ( "τριανταπενθ" , 35 )
+  , ( "σαραντ"      , 40 )
+  , ( "σαρανταπεντ" , 45 )
+  , ( "σαρανταπενθ" , 45 )
+  , ( "πενηντ"      , 50 )
+  , ( "πενηνταπετν" , 55 )
+  , ( "πενηνταπετθ" , 55 )
+  , ( "εξηντ"       , 60 )
+  , ( "ενενηντ"     , 90 )
+  -- The following are used as prefixes
+  , ( "μιά"         , 1  )
+  , ( "ενά"         , 1  )
+  , ( "δυό"         , 2  )
+  , ( "τρεισή"      , 3  )
+  , ( "τεσσερισή"   , 4  )
+  , ( "τεσσερσή"    , 4  )
+  , ( "πεντέ"       , 5  )
+  , ( "εξί"         , 6  )
+  , ( "επτά"        , 7  )
+  , ( "εφτά"        , 7  )
+  , ( "οκτώ"        , 8  )
+  , ( "οχτώ"        , 8  )
+  , ( "εννιά"       , 9  )
+  , ( "δεκά"        , 10 )
+  , ( "εντεκά"      , 11 )
+  , ( "δωδεκά"      , 12 )
+  ]

@@ -12,17 +12,17 @@ module Duckling.Duration.GA.Corpus
   ( corpus
   ) where
 
-import Prelude
 import Data.String
+import Prelude
 
 import Duckling.Duration.Types
-import Duckling.Lang
+import Duckling.Locale
 import Duckling.Resolve
 import Duckling.Testing.Types
 import Duckling.TimeGrain.Types (Grain(..))
 
 corpus :: Corpus
-corpus = (testContext {lang = GA}, allExamples)
+corpus = (testContext {locale = makeLocale GA Nothing}, allExamples)
 
 allExamples :: [Example]
 allExamples = concat
@@ -35,6 +35,9 @@ allExamples = concat
   , examples (DurationData 30 Minute)
              [ "leathuair"
              , "30 noimead"
+             ]
+  , examples (DurationData 27 Minute)
+             [ "7 noimead 20"
              ]
   , examples (DurationData 14 Day)
              [ "coicís"

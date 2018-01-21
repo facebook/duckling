@@ -29,7 +29,7 @@ ruleOrdinal4 :: Rule
 ruleOrdinal4 = Rule
   { name = "ordinal 4"
   , pattern =
-    [ regex "(\x05d0\x05e8\x05d1\x05e2\x05d4|\x05e8\x05d1\x05d9\x05e2\x05d9)"
+    [ regex "(ארבעה|רביעי)"
     ]
   , prod = \_ -> Just $ ordinal 4
   }
@@ -38,7 +38,7 @@ ruleOrdinal9 :: Rule
 ruleOrdinal9 = Rule
   { name = "ordinal 9"
   , pattern =
-    [ regex "(\x05ea\x05e9\x05e2\x05d4|\x05ea\x05e9\x05d9\x05e2\x05d9)"
+    [ regex "(תשעה|תשיעי)"
     ]
   , prod = \_ -> Just $ ordinal 9
   }
@@ -47,7 +47,7 @@ ruleOrdinal10 :: Rule
 ruleOrdinal10 = Rule
   { name = "ordinal 10"
   , pattern =
-    [ regex "(\x05e2\x05e9\x05e8\x05d4|\x05e2\x05e9\x05d9\x05e8\x05d9)"
+    [ regex "(עשרה|עשירי)"
     ]
   , prod = \_ -> Just $ ordinal 10
   }
@@ -56,7 +56,7 @@ ruleOrdinal12 :: Rule
 ruleOrdinal12 = Rule
   { name = "ordinal 12"
   , pattern =
-    [ regex "(\x05e9\x05e0\x05d9\x05d9\x05dd \x05e2\x05e9\x05e8|\x05ea\x05e8\x05d9 \x05e2\x05e9\x05e8)"
+    [ regex "(שניים עשר|תרי עשר)"
     ]
   , prod = \_ -> Just $ ordinal 12
   }
@@ -65,7 +65,7 @@ ruleOrdinal17 :: Rule
 ruleOrdinal17 = Rule
   { name = "ordinal 17"
   , pattern =
-    [ regex "(\x05e9\x05d1\x05e2(\x05d4)? \x05e2\x05e9\x05e8(\x05d4)?)"
+    [ regex "(שבע(ה)? עשר(ה)?)"
     ]
   , prod = \_ -> Just $ ordinal 17
   }
@@ -74,7 +74,7 @@ ruleOrdinal18 :: Rule
 ruleOrdinal18 = Rule
   { name = "ordinal 18"
   , pattern =
-    [ regex "(\x05e9\x05de\x05d5\x05e0\x05d4 \x05e2\x05e9\x05e8(\x05d4)?)"
+    [ regex "(שמונה עשר(ה)?)"
     ]
   , prod = \_ -> Just $ ordinal 18
   }
@@ -94,7 +94,7 @@ ruleOrdinal15 :: Rule
 ruleOrdinal15 = Rule
   { name = "ordinal 15"
   , pattern =
-    [ regex "(\x05d7\x05de\x05d9\x05e9\x05d4 \x05e2\x05e9\x05e8|\x05d7\x05de\x05e9 \x05e2\x05e9\x05e8\x05d4?)"
+    [ regex "(חמישה עשר|חמש עשרה?)"
     ]
   , prod = \_ -> Just $ ordinal 15
   }
@@ -103,7 +103,7 @@ ruleOrdinal5 :: Rule
 ruleOrdinal5 = Rule
   { name = "ordinal 5"
   , pattern =
-    [ regex "(\x05d7\x05de\x05d9\x05e9\x05d9|\x05d7\x05de\x05d9\x05e9\x05d4)"
+    [ regex "(חמישי|חמישה)"
     ]
   , prod = \_ -> Just $ ordinal 5
   }
@@ -112,7 +112,7 @@ ruleOrdinal16 :: Rule
 ruleOrdinal16 = Rule
   { name = "ordinal 16"
   , pattern =
-    [ regex "(\x05e9\x05e9(\x05d4)? \x05e2\x05e9\x05e8(\x05d4)?)"
+    [ regex "(שש(ה)? עשר(ה)?)"
     ]
   , prod = \_ -> Just $ ordinal 16
   }
@@ -121,7 +121,7 @@ ruleOrdinal14 :: Rule
 ruleOrdinal14 = Rule
   { name = "ordinal 14"
   , pattern =
-    [ regex "(\x05d0\x05e8\x05d1\x05e2(\x05d4)? \x05e2\x05e9\x05e8(\x05d4)?)"
+    [ regex "(ארבע(ה)? עשר(ה)?)"
     ]
   , prod = \_ -> Just $ ordinal 14
   }
@@ -130,18 +130,18 @@ ruleOrdinal20 :: Rule
 ruleOrdinal20 = Rule
   { name = "ordinal 20..90"
   , pattern =
-    [ regex "(\x05e2\x05e9\x05e8\x05d9\x05dd|\x05e9\x05dc\x05d5\x05e9\x05d9\x05dd|\x05d0\x05e8\x05d1\x05e2\x05d9\x05dd|\x05d7\x05de\x05d9\x05e9\x05d9\x05dd|\x05e9\x05d9\x05e9\x05d9\x05dd|\x05e9\x05d1\x05e2\x05d9\x05dd|\x05e9\x05de\x05d5\x05e0\x05d9\x05dd|\x05ea\x05e9\x05e2\x05d9\x05dd)"
+    [ regex "(עשרים|שלושים|ארבעים|חמישים|שישים|שבעים|שמונים|תשעים)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> case match of
-        "\x05e2\x05e9\x05e8\x05d9\x05dd" -> Just $ ordinal 20
-        "\x05e9\x05dc\x05d5\x05e9\x05d9\x05dd" -> Just $ ordinal 30
-        "\x05d0\x05e8\x05d1\x05e2\x05d9\x05dd" -> Just $ ordinal 40
-        "\x05d7\x05de\x05d9\x05e9\x05d9\x05dd" -> Just $ ordinal 50
-        "\x05e9\x05d9\x05e9\x05d9\x05dd" -> Just $ ordinal 60
-        "\x05e9\x05d1\x05e2\x05d9\x05dd" -> Just $ ordinal 70
-        "\x05e9\x05de\x05d5\x05e0\x05d9\x05dd" -> Just $ ordinal 80
-        "\x05ea\x05e9\x05e2\x05d9\x05dd" -> Just $ ordinal 90
+        "עשרים" -> Just $ ordinal 20
+        "שלושים" -> Just $ ordinal 30
+        "ארבעים" -> Just $ ordinal 40
+        "חמישים" -> Just $ ordinal 50
+        "שישים" -> Just $ ordinal 60
+        "שבעים" -> Just $ ordinal 70
+        "שמונים" -> Just $ ordinal 80
+        "תשעים" -> Just $ ordinal 90
         _ -> Nothing
       _ -> Nothing
   }
@@ -150,7 +150,7 @@ ruleOrdinal :: Rule
 ruleOrdinal = Rule
   { name = "ordinal 1"
   , pattern =
-    [ regex "(\x05d0\x05d7\x05d3|\x05e8\x05d0\x05e9\x05d5\x05df)"
+    [ regex "(אחד|ראשון)"
     ]
   , prod = \_ -> Just $ ordinal 1
   }
@@ -159,7 +159,7 @@ ruleOrdinal13 :: Rule
 ruleOrdinal13 = Rule
   { name = "ordinal 13"
   , pattern =
-    [ regex "(\x05e9\x05dc\x05d5\x05e9(\x05d4)? \x05e2\x05e9\x05e8(\x05d4)?)"
+    [ regex "(שלוש(ה)? עשר(ה)?)"
     ]
   , prod = \_ -> Just $ ordinal 13
   }
@@ -168,7 +168,7 @@ ruleOrdinal7 :: Rule
 ruleOrdinal7 = Rule
   { name = "ordinal 7"
   , pattern =
-    [ regex "(\x05e9\x05d1\x05e2\x05d4|\x05e9\x05d1\x05d9\x05e2\x05d9)"
+    [ regex "(שבעה|שביעי)"
     ]
   , prod = \_ -> Just $ ordinal 7
   }
@@ -177,7 +177,7 @@ ruleOrdinal8 :: Rule
 ruleOrdinal8 = Rule
   { name = "ordinal 8"
   , pattern =
-    [ regex "(\x05e9\x05de\x05d5\x05e0\x05d4|\x05e9\x05de\x05d9\x05e0\x05d9)"
+    [ regex "(שמונה|שמיני)"
     ]
   , prod = \_ -> Just $ ordinal 8
   }
@@ -186,7 +186,7 @@ ruleOrdinal2 :: Rule
 ruleOrdinal2 = Rule
   { name = "ordinal 2"
   , pattern =
-    [ regex "(\x05e9\x05ea\x05d9\x05d9\x05dd|\x05e9\x05e0\x05d9\x05d9\x05dd|\x05e9\x05e0\x05d9)"
+    [ regex "(שתיים|שניים|שני)"
     ]
   , prod = \_ -> Just $ ordinal 2
   }
@@ -195,7 +195,7 @@ ruleOrdinal11 :: Rule
 ruleOrdinal11 = Rule
   { name = "ordinal 11"
   , pattern =
-    [ regex "(\x05d0\x05d7\x05d3 \x05e2\x05e9\x05e8(\x05d4)?)"
+    [ regex "(אחד עשר(ה)?)"
     ]
   , prod = \_ -> Just $ ordinal 11
   }
@@ -204,7 +204,7 @@ ruleOrdinal3 :: Rule
 ruleOrdinal3 = Rule
   { name = "ordinal 3"
   , pattern =
-    [ regex "(\x05e9\x05dc\x05d5\x05e9\x05d4|\x05e9\x05dc\x05d9\x05e9\x05d9)"
+    [ regex "(שלושה|שלישי)"
     ]
   , prod = \_ -> Just $ ordinal 3
   }
@@ -213,7 +213,7 @@ ruleOrdinal6 :: Rule
 ruleOrdinal6 = Rule
   { name = "ordinal 6"
   , pattern =
-    [ regex "(\x05e9\x05e9\x05d4|\x05e9\x05d9\x05e9\x05d9)"
+    [ regex "(ששה|שישי)"
     ]
   , prod = \_ -> Just $ ordinal 6
   }
@@ -222,7 +222,7 @@ ruleOrdinal19 :: Rule
 ruleOrdinal19 = Rule
   { name = "ordinal 19"
   , pattern =
-    [ regex "(\x05ea\x05e9\x05e2(\x05d4)? \x05e2\x05e9\x05e8(\x05d4)?)"
+    [ regex "(תשע(ה)? עשר(ה)?)"
     ]
   , prod = \_ -> Just $ ordinal 19
   }
@@ -232,7 +232,7 @@ ruleCompositeWithAnd = Rule
   { name = "ordinal composition (with and)"
   , pattern =
     [ dimension Ordinal
-    , regex "\x05d5"
+    , regex "ו"
     , dimension Ordinal
     ]
   , prod = \tokens -> case tokens of

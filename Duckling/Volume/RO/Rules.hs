@@ -63,7 +63,7 @@ ruleHalfLiter :: Rule
 ruleHalfLiter = Rule
   { name = "half liter"
   , pattern =
-    [ regex "jum(a|\x0103)tate de litr[ui]"
+    [ regex "jum(a|ă)tate de litr[ui]"
     ]
   , prod = \_ -> Just . Token Volume . withUnit TVolume.Litre $ volume 0.5
   }

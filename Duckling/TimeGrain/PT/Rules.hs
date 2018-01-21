@@ -24,9 +24,9 @@ grains :: [(Text, String, TG.Grain)]
 grains = [ ("segundo (grain)", "seg(undo)?s?", TG.Second)
          , ("minutos (grain)", "min(uto)?s?", TG.Minute)
          , ("hora (grain)", "h(ora)?s?", TG.Hour)
-         , ("dia (grain)", "d(\x00ed|i)as?", TG.Day)
+         , ("dia (grain)", "d(í|i)as?", TG.Day)
          , ("semana (grain)", "semanas?", TG.Week)
-         , ("mes (grain)", "m(e|\x00ea)s(es)?", TG.Month)
+         , ("mes (grain)", "m(e|ê)s(es)?", TG.Month)
          , ("ano (grain)", "anos?", TG.Year)
          ]
 

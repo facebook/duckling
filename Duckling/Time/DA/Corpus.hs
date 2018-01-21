@@ -9,12 +9,13 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Time.DA.Corpus
-  ( corpus ) where
+  ( corpus
+  ) where
 
-import Prelude
 import Data.String
+import Prelude
 
-import Duckling.Lang
+import Duckling.Locale
 import Duckling.Resolve
 import Duckling.Time.Corpus
 import Duckling.Time.Types hiding (Month)
@@ -22,7 +23,7 @@ import Duckling.TimeGrain.Types hiding (add)
 import Duckling.Testing.Types hiding (examples)
 
 corpus :: Corpus
-corpus = (testContext {lang = DA}, allExamples)
+corpus = (testContext {locale = makeLocale DA Nothing}, allExamples)
 
 allExamples :: [Example]
 allExamples = concat
@@ -403,7 +404,7 @@ allExamples = concat
   , examples (datetime (1954, 0, 0, 0, 0, 0) Year)
              [ "1954"
              ]
-  , examples (datetime (2013, 12, 0, 0, 0, 0) Month)
+  , examples (datetime (2013, 12, 24, 0, 0, 0) Day)
              [ "et år efter juleaften"
              , "ét år efter juleaften"
              ]

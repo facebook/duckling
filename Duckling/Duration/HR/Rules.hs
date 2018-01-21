@@ -21,7 +21,7 @@ import qualified Data.Text as Text
 import Duckling.Dimensions.Types
 import Duckling.Duration.Helpers
 import Duckling.Duration.Types (DurationData (..))
-import Duckling.Numeral.Helpers (parseInt)
+import Duckling.Numeral.Helpers (parseInteger)
 import Duckling.Numeral.Types (NumeralData(..))
 import Duckling.Regex.Types
 import Duckling.Types
@@ -33,7 +33,7 @@ ruleExactlyDuration :: Rule
 ruleExactlyDuration = Rule
   { name = "exactly <duration>"
   , pattern =
-    [ regex "to(c|\x010d)no"
+    [ regex "to(c|č)no"
     , dimension Duration
     ]
   , prod = \tokens -> case tokens of
@@ -59,7 +59,7 @@ ruleIntegerMoreUnitofduration = Rule
   { name = "<integer> more <unit-of-duration>"
   , pattern =
     [ Predicate isNatural
-    , regex "vi(s|\x0161)e|manje"
+    , regex "vi(s|š)e|manje"
     , dimension TimeGrain
     ]
   , prod = \tokens -> case tokens of
@@ -74,7 +74,7 @@ ruleQuarterOfAnHour :: Rule
 ruleQuarterOfAnHour = Rule
   { name = "quarter of an hour"
   , pattern =
-    [ regex "((1/4|frtalj|kvarat|(c|\x010d)etvrt)\\s?(h|sata)?)"
+    [ regex "((1/4|frtalj|kvarat|(c|č)etvrt)\\s?(h|sata)?)"
     ]
   , prod = \_ -> Just . Token Duration $ duration TG.Minute 15
   }
@@ -99,14 +99,11 @@ ruleNumbernumberHours = Rule
     , regex "sat(i|a)?"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (h:d:_)):_) -> do
-        hh <- parseInt h
-        dec <- parseInt d
-        let divisor = floor $ (fromIntegral (10 :: Integer) :: Float) **
-                        fromIntegral (Text.length d - 1)
-            numerator = fromIntegral $ 6 * dec
-        Just . Token Duration . duration TG.Minute $
-          60 * hh + quot numerator divisor
+      (Token RegexMatch (GroupMatch (h:m:_)):_) -> do
+        hh <- parseInteger h
+        mnum <- parseInteger m
+        let mden = 10 ^ Text.length m
+        Just . Token Duration $ minutesFromHourMixedFraction hh mnum mden
       _ -> Nothing
   }
 
@@ -114,7 +111,7 @@ ruleThreequartersOfAnHour :: Rule
 ruleThreequartersOfAnHour = Rule
   { name = "three-quarters of an hour"
   , pattern =
-    [ regex "((3/4|tri-?frtalja|tri-?kvarat|tri-?(c|\x010d)etvrt(ine)?)\\s?(h|sata)?)"
+    [ regex "((3/4|tri-?frtalja|tri-?kvarat|tri-?(c|č)etvrt(ine)?)\\s?(h|sata)?)"
     ]
   , prod = \_ -> Just . Token Duration $ duration TG.Minute 45
   }

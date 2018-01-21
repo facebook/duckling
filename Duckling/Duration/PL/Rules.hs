@@ -19,7 +19,7 @@ import Data.String
 
 import Duckling.Dimensions.Types
 import Duckling.Duration.Helpers
-import Duckling.Numeral.Helpers (parseInt)
+import Duckling.Numeral.Helpers (parseInteger)
 import Duckling.Numeral.Types (NumeralData (..))
 import qualified Duckling.Numeral.Types as TNumeral
 import Duckling.Regex.Types
@@ -30,7 +30,7 @@ ruleHalfAnHour :: Rule
 ruleHalfAnHour = Rule
   { name = "half an hour"
   , pattern =
-    [ regex "p(o|\x00f3)(l|\x0142) godziny"
+    [ regex "p(o|ó)(l|ł) godziny"
     ]
   , prod = \_ -> Just . Token Duration $ duration TG.Minute 30
   }
@@ -59,14 +59,11 @@ ruleNumeralnumberHours = Rule
     , regex "godzin(y)?"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (h:d:_)):_) -> do
-        hh <- parseInt h
-        dec <- parseInt d
-        let divisor = floor $ (fromIntegral (10 :: Integer) :: Float) **
-                        fromIntegral (Text.length d - 1)
-            numerator = fromIntegral $ 6 * dec
-        Just . Token Duration . duration TG.Minute $
-          60 * hh + quot numerator divisor
+      (Token RegexMatch (GroupMatch (h:m:_)):_) -> do
+        hh <- parseInteger h
+        mnum <- parseInteger m
+        let mden = 10 ^ Text.length m
+        Just . Token Duration $ minutesFromHourMixedFraction hh mnum mden
       _ -> Nothing
   }
 
@@ -75,7 +72,7 @@ ruleIntegerAndAnHalfHours = Rule
   { name = "<integer> and an half hours"
   , pattern =
     [ Predicate isNatural
-    , regex "i (p(o|\x00f3)(l|\x0142)) godziny"
+    , regex "i (p(o|ó)(l|ł)) godziny"
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral (NumeralData {TNumeral.value = v}):_) ->
@@ -99,7 +96,7 @@ ruleAboutDuration :: Rule
 ruleAboutDuration = Rule
   { name = "about <duration>"
   , pattern =
-    [ regex "(oko(l|\x0142)o|miej wi(\x0119|e)cej|jakie(s|\x015b))"
+    [ regex "(oko(l|ł)o|miej wi(ę|e)cej|jakie(s|ś))"
     , dimension Duration
     ]
   , prod = \tokens -> case tokens of
@@ -111,7 +108,7 @@ ruleExactlyDuration :: Rule
 ruleExactlyDuration = Rule
   { name = "exactly <duration>"
   , pattern =
-    [ regex "r(o|\x00f3)wno|dok(l|\x0142)adnie"
+    [ regex "r(o|ó)wno|dok(l|ł)adnie"
     , dimension Duration
     ]
   , prod = \tokens -> case tokens of

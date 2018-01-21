@@ -111,7 +111,7 @@ ruleInr :: Rule
 ruleInr = Rule
   { name = "INR"
   , pattern =
-    [ regex "r(\x00fa|u)pa(\x00ed|i)"
+    [ regex "r(ú|u)pa(í|i)"
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly INR
   }
@@ -137,7 +137,7 @@ ruleAmountofmoneyGlan = Rule
   { name = "<amount-of-money> glan"
   , pattern =
     [ financeWith TAmountOfMoney.value isJust
-    , regex "glan|baileach|(go )?d(\x00ed|i)reach"
+    , regex "glan|baileach|(go )?d(í|i)reach"
     ]
   , prod = \tokens -> case tokens of
       (token:_) -> Just token

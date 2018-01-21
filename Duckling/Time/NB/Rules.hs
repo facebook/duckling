@@ -13,28 +13,19 @@
 module Duckling.Time.NB.Rules
   ( rules ) where
 
-import Control.Monad (liftM2)
+import Data.Text (Text)
 import Prelude
 
 import Duckling.Dimensions.Types
 import Duckling.Numeral.Helpers (parseInt)
 import Duckling.Ordinal.Types (OrdinalData (..))
-import qualified Duckling.Ordinal.Types as TOrdinal
 import Duckling.Regex.Types
 import Duckling.Time.Helpers
 import Duckling.Time.Types (TimeData (..))
+import Duckling.Types
+import qualified Duckling.Ordinal.Types as TOrdinal
 import qualified Duckling.Time.Types as TTime
 import qualified Duckling.TimeGrain.Types as TG
-import Duckling.Types
-
-ruleNamedday :: Rule
-ruleNamedday = Rule
-  { name = "named-day"
-  , pattern =
-    [ regex "mandag|man\\.?"
-    ]
-  , prod = \_ -> tt $ dayOfWeek 1
-  }
 
 ruleTheDayAfterTomorrow :: Rule
 ruleTheDayAfterTomorrow = Rule
@@ -45,21 +36,12 @@ ruleTheDayAfterTomorrow = Rule
   , prod = \_ -> tt $ cycleNth TG.Day 2
   }
 
-ruleNamedmonth12 :: Rule
-ruleNamedmonth12 = Rule
-  { name = "named-month"
-  , pattern =
-    [ regex "desember|des\\.?"
-    ]
-  , prod = \_ -> tt $ month 12
-  }
-
 ruleRelativeMinutesTotillbeforeIntegerHourofday :: Rule
 ruleRelativeMinutesTotillbeforeIntegerHourofday = Rule
   { name = "relative minutes to|till|before <integer> (hour-of-day)"
   , pattern =
     [ Predicate $ isIntegerBetween 1 59
-    , regex "p\x00e5"
+    , regex "på"
     , Predicate isAnHourOfDay
     ]
   , prod = \tokens -> case tokens of
@@ -92,7 +74,7 @@ ruleHourofdayIntegerAsRelativeMinutes :: Rule
 ruleHourofdayIntegerAsRelativeMinutes = Rule
   { name = "<hour-of-day> <integer> (as relative minutes)"
   , pattern =
-    [ Predicate isAnHourOfDay
+    [ Predicate $ and . sequence [isNotLatent, isAnHourOfDay]
     , Predicate $ isIntegerBetween 1 59
     ]
   , prod = \tokens -> case tokens of
@@ -108,7 +90,7 @@ ruleQuarterTotillbeforeIntegerHourofday :: Rule
 ruleQuarterTotillbeforeIntegerHourofday = Rule
   { name = "quarter to|till|before <integer> (hour-of-day)"
   , pattern =
-    [ regex "(et)? ?(kvart)(er)? *p\x00e5"
+    [ regex "(et)? ?(kvart)(er)? *på"
     , Predicate isAnHourOfDay
     ]
   , prod = \tokens -> case tokens of
@@ -147,7 +129,7 @@ ruleHalfTotillbeforeIntegerHourofday :: Rule
 ruleHalfTotillbeforeIntegerHourofday = Rule
   { name = "half to|till|before <integer> (hour-of-day)"
   , pattern =
-    [ regex "halv time *p\x00e5"
+    [ regex "halv time *på"
     , Predicate isAnHourOfDay
     ]
   , prod = \tokens -> case tokens of
@@ -189,15 +171,6 @@ ruleConstitutionDay = Rule
     [ regex "grunnlovsdag(en)"
     ]
   , prod = \_ -> tt $ monthDay 5 17
-  }
-
-ruleNamedday2 :: Rule
-ruleNamedday2 = Rule
-  { name = "named-day"
-  , pattern =
-    [ regex "tirsdag|tirs?\\.?"
-    ]
-  , prod = \_ -> tt $ dayOfWeek 2
   }
 
 ruleValentinesDay :: Rule
@@ -245,7 +218,7 @@ ruleNewYearsDay :: Rule
 ruleNewYearsDay = Rule
   { name = "new year's day"
   , pattern =
-    [ regex "nytt\x00e5rsdag"
+    [ regex "nyttårsdag"
     ]
   , prod = \_ -> tt $ monthDay 1 1
   }
@@ -263,15 +236,6 @@ ruleLastTime = Rule
       _ -> Nothing
   }
 
-ruleNamedday6 :: Rule
-ruleNamedday6 = Rule
-  { name = "named-day"
-  , pattern =
-    [ regex "l\x00f8rdag|l\x00f8r\\.?"
-    ]
-  , prod = \_ -> tt $ dayOfWeek 6
-  }
-
 ruleDatetimeDatetimeInterval :: Rule
 ruleDatetimeDatetimeInterval = Rule
   { name = "<datetime> - <datetime> (interval)"
@@ -284,15 +248,6 @@ ruleDatetimeDatetimeInterval = Rule
       (Token Time td1:_:Token Time td2:_) ->
         Token Time <$> interval TTime.Closed td1 td2
       _ -> Nothing
-  }
-
-ruleNamedmonth7 :: Rule
-ruleNamedmonth7 = Rule
-  { name = "named-month"
-  , pattern =
-    [ regex "juli|jul\\.?"
-    ]
-  , prod = \_ -> tt $ month 7
   }
 
 ruleEvening :: Rule
@@ -353,7 +308,7 @@ ruleNow :: Rule
 ruleNow = Rule
   { name = "now"
   , pattern =
-    [ regex "akkurat n\x00e5|n\x00e5|(i )?dette \x00f8yeblikk"
+    [ regex "akkurat nå|nå|(i )?dette øyeblikk"
     ]
   , prod = \_ -> tt $ cycleNth TG.Second 0
   }
@@ -411,15 +366,6 @@ ruleMonthDdddInterval = Rule
       _ -> Nothing
   }
 
-ruleNamedday4 :: Rule
-ruleNamedday4 = Rule
-  { name = "named-day"
-  , pattern =
-    [ regex "torsdag|tors?\\.?"
-    ]
-  , prod = \_ -> tt $ dayOfWeek 4
-  }
-
 ruleTheCycleAfterTime :: Rule
 ruleTheCycleAfterTime = Rule
   { name = "the <cycle> after <time>"
@@ -439,7 +385,7 @@ ruleTheCycleBeforeTime = Rule
   { name = "the <cycle> before <time>"
   , pattern =
     [ dimension TimeGrain
-    , regex "(en|tet|et)? f\x00f8r"
+    , regex "(en|tet|et)? før"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -524,7 +470,7 @@ ruleTheDayBeforeYesterday :: Rule
 ruleTheDayBeforeYesterday = Rule
   { name = "the day before yesterday"
   , pattern =
-    [ regex "i forig\x00e5rs"
+    [ regex "i forigårs"
     ]
   , prod = \_ -> tt . cycleNth TG.Day $ - 2
   }
@@ -557,14 +503,32 @@ ruleNextCycle = Rule
       _ -> Nothing
   }
 
-ruleNamedmonth :: Rule
-ruleNamedmonth = Rule
-  { name = "named-month"
-  , pattern =
-    [ regex "januar|jan\\.?"
-    ]
-  , prod = \_ -> tt $ month 1
-  }
+ruleDaysOfWeek :: [Rule]
+ruleDaysOfWeek = mkRuleDaysOfWeek
+  [ ( "Mandag"  , "mandag|man\\.?"    )
+  , ( "Tirsdag" , "tirsdag|tirs?\\.?" )
+  , ( "Onsdag"  , "onsdag|ons\\.?"    )
+  , ( "Torsdag" , "torsdag|tors?\\.?" )
+  , ( "Fredag"  , "fredag|fre\\.?"    )
+  , ( "Lørdag"  , "lørdag|lør\\.?"    )
+  , ( "Søndag"  , "søndag|søn\\.?"    )
+  ]
+
+ruleMonths :: [Rule]
+ruleMonths = mkRuleMonths
+  [ ( "Januar"   , "januar|jan\\.?"      )
+  , ( "Februar"  , "februar|feb\\.?"     )
+  , ( "Mars"     , "mars|mar\\.?"        )
+  , ( "April"    , "april|apr\\.?"       )
+  , ( "Mai"      , "mai"                 )
+  , ( "Juni"     , "juni|jun\\.?"        )
+  , ( "Juli"     , "juli|jul\\.?"        )
+  , ( "August"   , "august|aug\\.?"      )
+  , ( "September", "september|sept?\\.?" )
+  , ( "Oktober"  , "oktober|okt\\.?"     )
+  , ( "November" , "november|nov\\.?"    )
+  , ( "Desember" , "desember|des\\.?"    )
+  ]
 
 ruleTheCycleOfTime :: Rule
 ruleTheCycleOfTime = Rule
@@ -596,7 +560,7 @@ ruleOnDate :: Rule
 ruleOnDate = Rule
   { name = "on <date>"
   , pattern =
-    [ regex "den|p\x00e5"
+    [ regex "den|på"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -604,21 +568,12 @@ ruleOnDate = Rule
       _ -> Nothing
   }
 
-ruleNamedmonth3 :: Rule
-ruleNamedmonth3 = Rule
-  { name = "named-month"
-  , pattern =
-    [ regex "mars|mar\\.?"
-    ]
-  , prod = \_ -> tt $ month 3
-  }
-
 ruleDurationFromNow :: Rule
 ruleDurationFromNow = Rule
   { name = "<duration> from now"
   , pattern =
     [ dimension Duration
-    , regex "fra (i dag|idag|n\x00e5)"
+    , regex "fra (i dag|idag|nå)"
     ]
   , prod = \tokens -> case tokens of
       (Token Duration dd:_) ->
@@ -679,15 +634,6 @@ ruleAfternoon = Rule
            interval TTime.Open from to
   }
 
-ruleNamedmonth4 :: Rule
-ruleNamedmonth4 = Rule
-  { name = "named-month"
-  , pattern =
-    [ regex "april|apr\\.?"
-    ]
-  , prod = \_ -> tt $ month 4
-  }
-
 ruleTimeBeforeLast :: Rule
 ruleTimeBeforeLast = Rule
   { name = "<time> before last"
@@ -734,15 +680,6 @@ ruleInduringThePartofday = Rule
       (_:Token Time td:_) ->
         tt $ notLatent td
       _ -> Nothing
-  }
-
-ruleNamedday5 :: Rule
-ruleNamedday5 = Rule
-  { name = "named-day"
-  , pattern =
-    [ regex "fredag|fre\\.?"
-    ]
-  , prod = \_ -> tt $ dayOfWeek 5
   }
 
 ruleDayofmonthordinalNamedmonth :: Rule
@@ -831,22 +768,13 @@ ruleFromTimeofdayTimeofdayInterval = Rule
   , pattern =
     [ regex "(etter|fra)"
     , Predicate isATimeOfDay
-    , regex "((men )?f\x00f8r)|\\-|tilogmed|til"
+    , regex "((men )?før)|\\-|tilogmed|til"
     , Predicate isATimeOfDay
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td1:_:Token Time td2:_) ->
         Token Time <$> interval TTime.Closed td1 td2
       _ -> Nothing
-  }
-
-ruleNamedmonth2 :: Rule
-ruleNamedmonth2 = Rule
-  { name = "named-month"
-  , pattern =
-    [ regex "februar|feb\\.?"
-    ]
-  , prod = \_ -> tt $ month 2
   }
 
 ruleExactlyTimeofday :: Rule
@@ -906,7 +834,7 @@ ruleNewYearsEve :: Rule
 ruleNewYearsEve = Rule
   { name = "new year's eve"
   , pattern =
-    [ regex "nytt\x00e5rsaften?"
+    [ regex "nyttårsaften?"
     ]
   , prod = \_ -> tt $ monthDay 12 31
   }
@@ -1051,7 +979,7 @@ ruleUntilTimeofday :: Rule
 ruleUntilTimeofday = Rule
   { name = "until <time-of-day>"
   , pattern =
-    [ regex "(engang )?innen|f\x00f8r|opptil"
+    [ regex "(engang )?innen|før|opptil"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -1073,15 +1001,6 @@ ruleAtTimeofday = Rule
       _ -> Nothing
   }
 
-ruleNamedmonth6 :: Rule
-ruleNamedmonth6 = Rule
-  { name = "named-month"
-  , pattern =
-    [ regex "juni|jun\\.?"
-    ]
-  , prod = \_ -> tt $ month 6
-  }
-
 ruleNthTimeOfTime :: Rule
 ruleNthTimeOfTime = Rule
   { name = "nth <time> of <time>"
@@ -1095,15 +1014,6 @@ ruleNthTimeOfTime = Rule
       (Token Ordinal od:Token Time td1:_:Token Time td2:_) -> Token Time .
         predNth (TOrdinal.value od - 1) False <$> intersect td2 td1
       _ -> Nothing
-  }
-
-ruleNamedmonth8 :: Rule
-ruleNamedmonth8 = Rule
-  { name = "named-month"
-  , pattern =
-    [ regex "august|aug\\.?"
-    ]
-  , prod = \_ -> tt $ month 8
   }
 
 ruleTimePartofday :: Rule
@@ -1125,10 +1035,7 @@ ruleWeekend = Rule
   , pattern =
     [ regex "((week(\\s|-)?end)|helg)(en|a)?"
     ]
-  , prod = \_ -> do
-      from <- intersect (dayOfWeek 5) (hour False 18)
-      to <- intersect (dayOfWeek 1) (hour False 0)
-      Token Time <$> interval TTime.Open from to
+  , prod = \_ -> tt weekend
   }
 
 ruleEomendOfMonth :: Rule
@@ -1256,7 +1163,7 @@ ruleADuration :: Rule
 ruleADuration = Rule
   { name = "a <duration>"
   , pattern =
-    [ regex "(om )?en|ett|\x00e9n|et"
+    [ regex "(om )?en|ett|én|et"
     , dimension Duration
     ]
   , prod = \tokens -> case tokens of
@@ -1295,7 +1202,7 @@ ruleThisCycle :: Rule
 ruleThisCycle = Rule
   { name = "this <cycle>"
   , pattern =
-    [ regex "denne|dette|i|n\x00e5v\x00e6rende"
+    [ regex "denne|dette|i|nåværende"
     , dimension TimeGrain
     ]
   , prod = \tokens -> case tokens of
@@ -1346,7 +1253,7 @@ ruleOnANamedday :: Rule
 ruleOnANamedday = Rule
   { name = "on a named-day"
   , pattern =
-    [ regex "p\x00e5 en"
+    [ regex "på en"
     , Predicate isADayOfWeek
     ]
   , prod = \tokens -> case tokens of
@@ -1359,7 +1266,7 @@ ruleYearLatent = Rule
   { name = "year (latent)"
   , pattern =
     [ Predicate $
-       liftM2 (||) (isIntegerBetween (- 10000) 0) (isIntegerBetween 25 999)
+       or . sequence [isIntegerBetween (- 10000) 0, isIntegerBetween 25 999]
     ]
   , prod = \tokens -> case tokens of
       (token:_) -> do
@@ -1372,7 +1279,7 @@ ruleYesterday :: Rule
 ruleYesterday = Rule
   { name = "yesterday"
   , pattern =
-    [ regex "i g\x00e5r|ig\x00e5r"
+    [ regex "i går|igår"
     ]
   , prod = \_ -> tt . cycleNth TG.Day $ - 1
   }
@@ -1406,7 +1313,7 @@ ruleChristmas :: Rule
 ruleChristmas = Rule
   { name = "christmas"
   , pattern =
-    [ regex "((1\\.?)|f\x00f8rste)? ?juledag"
+    [ regex "((1\\.?)|første)? ?juledag"
     ]
   , prod = \_ -> tt $ monthDay 12 25
   }
@@ -1466,24 +1373,6 @@ ruleOrdinalCycleOfTime = Rule
       _ -> Nothing
   }
 
-ruleNamedmonth5 :: Rule
-ruleNamedmonth5 = Rule
-  { name = "named-month"
-  , pattern =
-    [ regex "mai"
-    ]
-  , prod = \_ -> tt $ month 5
-  }
-
-ruleNamedday7 :: Rule
-ruleNamedday7 = Rule
-  { name = "named-day"
-  , pattern =
-    [ regex "s\x00f8ndag|s\x00f8n\\.?"
-    ]
-  , prod = \_ -> tt $ dayOfWeek 7
-  }
-
 ruleHhmm :: Rule
 ruleHhmm = Rule
   { name = "hh:mm"
@@ -1521,15 +1410,6 @@ ruleYear = Rule
         n <- getIntValue token
         tt $ year n
       _ -> Nothing
-  }
-
-ruleNamedmonth10 :: Rule
-ruleNamedmonth10 = Rule
-  { name = "named-month"
-  , pattern =
-    [ regex "oktober|okt\\.?"
-    ]
-  , prod = \_ -> tt $ month 10
   }
 
 ruleHalloweenDay :: Rule
@@ -1586,7 +1466,7 @@ ruleFathersDay = Rule
   , pattern =
     [ regex "farsdag"
     ]
-  , prod = \_ -> tt $ nthDOWOfMonth 1 7 11
+  , prod = \_ -> tt $ nthDOWOfMonth 2 7 11
   }
 
 ruleCycleBeforeTime :: Rule
@@ -1594,7 +1474,7 @@ ruleCycleBeforeTime = Rule
   { name = "<cycle> before <time>"
   , pattern =
     [ dimension TimeGrain
-    , regex "f\x00f8r"
+    , regex "før"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -1622,7 +1502,7 @@ ruleTimeofdayTimeofdayInterval :: Rule
 ruleTimeofdayTimeofdayInterval = Rule
   { name = "<time-of-day> - <time-of-day> (interval)"
   , pattern =
-    [ Predicate $ liftM2 (&&) isATimeOfDay isNotLatent
+    [ Predicate $ and . sequence [isNotLatent, isATimeOfDay]
     , regex "\\-|tilogmed|til"
     , Predicate isATimeOfDay
     ]
@@ -1630,15 +1510,6 @@ ruleTimeofdayTimeofdayInterval = Rule
       (Token Time td1:_:Token Time td2:_) ->
         Token Time <$> interval TTime.Closed td1 td2
       _ -> Nothing
-  }
-
-ruleNamedmonth11 :: Rule
-ruleNamedmonth11 = Rule
-  { name = "named-month"
-  , pattern =
-    [ regex "november|nov\\.?"
-    ]
-  , prod = \_ -> tt $ month 11
   }
 
 ruleDurationAfterTime :: Rule
@@ -1670,15 +1541,6 @@ ruleOrdinalQuarter = Rule
       _ -> Nothing
   }
 
-ruleNamedday3 :: Rule
-ruleNamedday3 = Rule
-  { name = "named-day"
-  , pattern =
-    [ regex "onsdag|ons\\.?"
-    ]
-  , prod = \_ -> tt $ dayOfWeek 3
-  }
-
 ruleTheDayofmonthOrdinal :: Rule
 ruleTheDayofmonthOrdinal = Rule
   { name = "the <day-of-month> (ordinal)"
@@ -1697,7 +1559,7 @@ ruleDurationBeforeTime = Rule
   { name = "<duration> before <time>"
   , pattern =
     [ dimension Duration
-    , regex "f\x00f8r"
+    , regex "før"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -1744,7 +1606,7 @@ ruleMothersDay = Rule
   , pattern =
     [ regex "morsdag"
     ]
-  , prod = \_ -> tt $ nthDOWOfMonth 1 7 2
+  , prod = \_ -> tt $ nthDOWOfMonth 2 7 2
   }
 
 ruleTimeofdayOclock :: Rule
@@ -1758,15 +1620,6 @@ ruleTimeofdayOclock = Rule
       (Token Time td:_) ->
         tt $ notLatent td
       _ -> Nothing
-  }
-
-ruleNamedmonth9 :: Rule
-ruleNamedmonth9 = Rule
-  { name = "named-month"
-  , pattern =
-    [ regex "september|sept?\\.?"
-    ]
-  , prod = \_ -> tt $ month 9
   }
 
 ruleDayofmonthordinalNamedmonthYear :: Rule
@@ -1807,7 +1660,7 @@ ruleTimezone :: Rule
 ruleTimezone = Rule
   { name = "<time> timezone"
   , pattern =
-    [ Predicate $ liftM2 (&&) isATimeOfDay isNotLatent
+    [ Predicate $ and . sequence [isNotLatent, isATimeOfDay]
     , regex "\\b(YEKT|YEKST|YAKT|YAKST|WITA|WIT|WIB|WGT|WGST|WFT|WET|WEST|WAT|WAST|VUT|VLAT|VLAST|VET|UZT|UYT|UYST|UTC|ULAT|TVT|TMT|TLT|TKT|TJT|TFT|TAHT|SST|SRT|SGT|SCT|SBT|SAST|SAMT|RET|PYT|PYST|PWT|PST|PONT|PMST|PMDT|PKT|PHT|PHOT|PGT|PETT|PETST|PET|PDT|OMST|OMSST|NZST|NZDT|NUT|NST|NPT|NOVT|NOVST|NFT|NDT|NCT|MYT|MVT|MUT|MST|MSK|MSD|MMT|MHT|MDT|MAWT|MART|MAGT|MAGST|LINT|LHST|LHDT|KUYT|KST|KRAT|KRAST|KGT|JST|IST|IRST|IRKT|IRKST|IRDT|IOT|IDT|ICT|HOVT|HKT|GYT|GST|GMT|GILT|GFT|GET|GAMT|GALT|FNT|FKT|FKST|FJT|FJST|EST|EGT|EGST|EET|EEST|EDT|ECT|EAT|EAST|EASST|DAVT|ChST|CXT|CVT|CST|COT|CLT|CLST|CKT|CHAST|CHADT|CET|CEST|CDT|CCT|CAT|CAST|BTT|BST|BRT|BRST|BOT|BNT|AZT|AZST|AZOT|AZOST|AWST|AWDT|AST|ART|AQTT|ANAT|ANAST|AMT|AMST|ALMT|AKST|AKDT|AFT|AEST|AEDT|ADT|ACST|ACDT)\\b"
     ]
   , prod = \tokens -> case tokens of
@@ -1880,25 +1733,6 @@ rules =
   , ruleMonthDdddInterval
   , ruleMorning
   , ruleMothersDay
-  , ruleNamedday
-  , ruleNamedday2
-  , ruleNamedday3
-  , ruleNamedday4
-  , ruleNamedday5
-  , ruleNamedday6
-  , ruleNamedday7
-  , ruleNamedmonth
-  , ruleNamedmonth10
-  , ruleNamedmonth11
-  , ruleNamedmonth12
-  , ruleNamedmonth2
-  , ruleNamedmonth3
-  , ruleNamedmonth4
-  , ruleNamedmonth5
-  , ruleNamedmonth6
-  , ruleNamedmonth7
-  , ruleNamedmonth8
-  , ruleNamedmonth9
   , ruleNamedmonthDayofmonthNonOrdinal
   , ruleNamedmonthDayofmonthOrdinal
   , ruleNewYearsDay
@@ -1964,3 +1798,5 @@ rules =
   , ruleYyyymmdd
   , ruleTimezone
   ]
+  ++ ruleDaysOfWeek
+  ++ ruleMonths

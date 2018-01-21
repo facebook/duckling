@@ -25,7 +25,7 @@ ruleLatentVolMl = Rule
   { name = "<latent vol> ml"
   , pattern =
     [ dimension Volume
-    , regex "m(l\\.?|h?illil(\x00ed|i)t(ea|i)r)"
+    , regex "m(l\\.?|h?illil(í|i)t(ea|i)r)"
     ]
   , prod = \tokens -> case tokens of
       (Token Volume vd:_) ->
@@ -38,7 +38,7 @@ ruleLatentVolKl = Rule
   { name = "<latent vol> kl"
   , pattern =
     [ dimension Volume
-    , regex "(kl\\.?|g?ch?illil(\x00ed|i)t(ea|i)r)"
+    , regex "(kl\\.?|g?ch?illil(í|i)t(ea|i)r)"
     ]
   , prod = \tokens -> case tokens of
       (Token Volume vd:_) ->
@@ -51,7 +51,7 @@ ruleVolHeictiltir = Rule
   { name = "<vol> heictilítir"
   , pattern =
     [ dimension Volume
-    , regex "heictil(\x00ed|i)t(ea|i)r"
+    , regex "heictil(í|i)t(ea|i)r"
     ]
   , prod = \tokens -> case tokens of
       (Token Volume vd:_) ->
@@ -64,7 +64,7 @@ ruleVolLtear = Rule
   { name = "<vol> lítear"
   , pattern =
     [ dimension Volume
-    , regex "(l(\x00ed|i)t(ea|i)r|l\\.?)"
+    , regex "(l(í|i)t(ea|i)r|l\\.?)"
     ]
   , prod = \tokens -> case tokens of
       (Token Volume vd:_) ->
@@ -77,7 +77,7 @@ ruleLatentVolGaln = Rule
   { name = "<latent vol> galún"
   , pattern =
     [ dimension Volume
-    , regex "n?gh?al(\x00fa|u)i?n"
+    , regex "n?gh?al(ú|u)i?n"
     ]
   , prod = \tokens -> case tokens of
       (Token Volume vd:_) ->

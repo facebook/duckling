@@ -9,10 +9,11 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Temperature.EN.Corpus
-  ( corpus ) where
+  ( corpus
+  ) where
 
-import Prelude
 import Data.String
+import Prelude
 
 import Duckling.Temperature.Types
 import Duckling.Testing.Types

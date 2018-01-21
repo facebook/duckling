@@ -70,14 +70,14 @@ ordinalMap = HashMap.fromList
   , ("\537apte", 7)
   , ("opt", 8)
   , ("noua", 9)
-  , ("nou\x0103", 9)
+  , ("nouă", 9)
   ]
 
 ruleSpelledOutOrdinals :: Rule
 ruleSpelledOutOrdinals = Rule
   { name = "spelled out ordinals"
   , pattern =
-    [ regex "al?\\s(doi|trei|patru|cinci|(s|\x0219)a(s|pt)e|opt|nou(a|\x0103))[ -]?(le)?a"
+    [ regex "al?\\s(doi|trei|patru|cinci|(s|ș)a(s|pt)e|opt|nou(a|ă))[ -]?(le)?a"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->

@@ -50,13 +50,13 @@ ordinalsMap = HashMap.fromList
   , ( "sexto" , 6 )
   , ( "sexta" , 6 )
   , ( "sextas" , 6 )
-  , ( "s\x00e9ptimas" , 7 )
+  , ( "séptimas" , 7 )
   , ( "septimas" , 7 )
-  , ( "s\x00e9ptima" , 7 )
+  , ( "séptima" , 7 )
   , ( "septimos" , 7 )
   , ( "septima" , 7 )
-  , ( "s\x00e9ptimo" , 7 )
-  , ( "s\x00e9ptimos" , 7 )
+  , ( "séptimo" , 7 )
+  , ( "séptimos" , 7 )
   , ( "septimo" , 7 )
   , ( "octavas" , 8 )
   , ( "octavo" , 8 )
@@ -66,21 +66,21 @@ ordinalsMap = HashMap.fromList
   , ( "novena" , 9 )
   , ( "noveno" , 9 )
   , ( "novenas" , 9 )
-  , ( "d\x00e9cimos" , 10 )
+  , ( "décimos" , 10 )
   , ( "decimo" , 10 )
   , ( "decimos" , 10 )
-  , ( "d\x00e9cimo" , 10 )
+  , ( "décimo" , 10 )
   , ( "decimas" , 10 )
-  , ( "d\x00e9cima" , 10 )
+  , ( "décima" , 10 )
   , ( "decima" , 10 )
-  , ( "d\x00e9cimas" , 10 )
+  , ( "décimas" , 10 )
   ]
 
 ruleOrdinalsPrimero :: Rule
 ruleOrdinalsPrimero = Rule
   { name = "ordinals (primero..10)"
   , pattern =
-    [ regex "(primer|tercer(os?|as?)?|(primer|segund|cuart|quint|sext|s[e\x00e9]ptim|octav|noven|d[e\x00e9]cim)(os?|as?))"
+    [ regex "((primer|segund|cuart|quint|sext|s[eé]ptim|octav|noven|d[eé]cim)(os?|as?)|(prim|terc)er)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->

@@ -29,7 +29,7 @@ ruleNumeralUnits = Rule
   { name = "<number> <units>"
   , pattern =
     [ dimension Numeral
-    , regex "(tasses?|cuill?(e|\x00e8)res? (a|\x00e0) soupe?)"
+    , regex "(tasses?|cuill?(e|è)res? (a|à) soupe?)"
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData {TNumeral.value = v}:
@@ -46,7 +46,7 @@ ruleQuantityOfProduct = Rule
   { name = "<quantity> of product"
   , pattern =
     [ dimension Quantity
-    , regex "de (caf(e|\x00e9)|sucre)"
+    , regex "de (caf(e|é)|sucre)"
     ]
   , prod = \tokens -> case tokens of
       (Token Quantity qd:

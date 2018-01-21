@@ -12,36 +12,35 @@
 
 module Duckling.Time.Helpers
   ( -- Patterns
-    isADayOfWeek, isAMonth, isAnHourOfDay, isAPartOfDay, isATimeOfDay
-  , isDOMInteger, isDOMOrdinal, isDOMValue, isGrain, isGrainFinerThan
-  , isGrainOfTime, isIntegerBetween, isNotLatent, isOrdinalBetween
-  , isMidnightOrNoon
+    hasNoDirection, isADayOfWeek, isAMonth, isAnHourOfDay, isAPartOfDay
+  , isATimeOfDay, isDOMInteger, isDOMOrdinal, isDOMValue, isGrain
+  , isGrainFinerThan, isGrainOfTime, isIntegerBetween, isNotLatent
+  , isOrdinalBetween, isMidnightOrNoon, isOkWithThisNext
     -- Production
   , cycleLastOf, cycleN, cycleNth, cycleNthAfter, dayOfMonth, dayOfWeek
-  , daysOfWeekOfMonth, durationAfter, durationAgo, durationBefore, form, hour
+  , durationAfter, durationAgo, durationBefore, mkOkForThisNext, form, hour
   , hourMinute, hourMinuteSecond, inDuration, intersect, intersectDOM, interval
   , inTimezone, longWEBefore, minute, minutesAfter, minutesBefore, mkLatent
-  , month, monthDay, notLatent, nthDOWOfMonth, partOfDay, predLastOf, predNth
-  , predNthAfter, second, timeOfDayAMPM, withDirection, year, yearMonthDay
-  , tt
+  , month, monthDay, notLatent, now, nthDOWOfMonth, partOfDay, predLastOf
+  , predNth, predNthAfter, second, timeOfDayAMPM, weekend, withDirection, year
+  , yearMonthDay, tt
     -- Other
   , getIntValue
+  -- Rule constructors
+  , mkRuleInstants, mkRuleDaysOfWeek, mkRuleMonths, mkRuleSeasons
+  , mkRuleHolidays
   ) where
 
-import Control.Monad (liftM2)
 import Data.Maybe
-import Prelude
 import Data.Text (Text)
+import Prelude
 import qualified Data.Time as Time
 import qualified Data.Time.Calendar.WeekDate as Time
 import qualified Data.Time.LocalTime.TimeZone.Series as Series
 
 import Duckling.Dimensions.Types
 import Duckling.Duration.Types (DurationData (DurationData))
-import qualified Duckling.Duration.Types as TDuration
-import qualified Duckling.Numeral.Types as TNumeral
 import Duckling.Ordinal.Types (OrdinalData (OrdinalData))
-import qualified Duckling.Ordinal.Types as TOrdinal
 import Duckling.Time.TimeZone.Parse (parseTimezone)
 import Duckling.Time.Types
   ( TimeData(TimeData)
@@ -59,9 +58,12 @@ import Duckling.Time.Types
   , runPredicate
   , AMPM(..)
   )
+import Duckling.Types
+import qualified Duckling.Duration.Types as TDuration
+import qualified Duckling.Numeral.Types as TNumeral
+import qualified Duckling.Ordinal.Types as TOrdinal
 import qualified Duckling.Time.Types as TTime
 import qualified Duckling.TimeGrain.Types as TG
-import Duckling.Types
 
 getIntValue :: Token -> Maybe Int
 getIntValue (Token Numeral nd) = TNumeral.getIntValue $ TNumeral.value nd
@@ -189,16 +191,23 @@ takeLastOf cyclicPred basePred =
 timeCompose :: TTime.Predicate -> TTime.Predicate -> TTime.Predicate
 timeCompose pred1 pred2 = mkIntersectPredicate pred1 pred2
 
-shiftDuration :: TTime.Predicate -> DurationData -> TTime.Predicate
-shiftDuration pred1 (DurationData n g) =
+addDuration :: DurationData -> TTime.TimeObject -> TTime.TimeObject
+addDuration (DurationData n g) t = TTime.timePlus t g $ toInteger n
+
+mergeDuration :: TTime.Predicate -> DurationData -> TTime.Predicate
+mergeDuration pred1 dd@(DurationData _ g) =
   mkSeriesPredicate $! TTime.timeSeqMap False f pred1
   where
-    grain = case g of
-      TG.Second -> TG.Second
-      TG.Year -> TG.Month
-      TG.Month -> TG.Day
-      _ -> pred g
-    f x _ = Just $ TTime.timePlus (TTime.timeRound x grain) g $ toInteger n
+    f x@TTime.TimeObject{TTime.grain = tg} _ = Just $ addDuration dd t'
+      where
+        g' = min tg g
+        t' = if g' == tg then x else TTime.timeRound x g'
+
+shiftDuration :: TTime.Predicate -> DurationData -> TTime.Predicate
+shiftDuration pred1 dd@(DurationData _ g) =
+  mkSeriesPredicate $! TTime.timeSeqMap False f pred1
+  where
+    f x _ = Just . addDuration dd . TTime.timeRound x $ TG.lower g
 
 shiftTimezone :: Series.TimeZoneSeries -> TTime.Predicate -> TTime.Predicate
 shiftTimezone providedSeries pred1 =
@@ -268,9 +277,13 @@ isNotLatent :: Predicate
 isNotLatent (Token Time td) = not $ TTime.latent td
 isNotLatent _ = False
 
+hasNoDirection :: Predicate
+hasNoDirection (Token Time td) = isNothing $ TTime.direction td
+hasNoDirection _ = False
+
 isIntegerBetween :: Int -> Int -> Predicate
-isIntegerBetween low high (Token Numeral nd) =
-  TNumeral.isIntegerBetween (TNumeral.value nd) low high
+isIntegerBetween low high (Token Numeral nd) = TNumeral.okForAnyTime nd
+  && TNumeral.isIntegerBetween (TNumeral.value nd) low high
 isIntegerBetween _ _ _ = False
 
 isOrdinalBetween :: Int -> Int -> Predicate
@@ -285,7 +298,11 @@ isDOMInteger :: Predicate
 isDOMInteger = isIntegerBetween 1 31
 
 isDOMValue :: Predicate
-isDOMValue = liftM2 (||) isDOMOrdinal isDOMInteger
+isDOMValue = or . sequence [isDOMOrdinal, isDOMInteger]
+
+isOkWithThisNext :: Predicate
+isOkWithThisNext (Token Time TimeData {TTime.okForThisNext = True}) = True
+isOkWithThisNext _ = False
 
 -- -----------------------------------------------------------------
 -- Production
@@ -299,7 +316,7 @@ intersect td1 td2 =
     res -> Just res
 
 intersect' :: (TimeData, TimeData) -> TimeData
-intersect' (TimeData pred1 _ g1 _ _ d1, TimeData pred2 _ g2 _ _ d2)
+intersect' (TimeData pred1 _ g1 _ _ d1 _, TimeData pred2 _ g2 _ _ d2 _)
   | g1 < g2 = TTime.timedata'
     { TTime.timePred = timeCompose pred1 pred2
     , TTime.timeGrain = g1
@@ -315,6 +332,10 @@ intersect' (TimeData pred1 _ g1 _ _ d1, TimeData pred2 _ g2 _ _ d2)
       [] -> Nothing
       (x:_) -> Just x
 
+now :: TimeData
+now = td {TTime.timeGrain = TG.NoGrain}
+  where
+    td = cycleNth TG.Second 0
 
 hour :: Bool -> Int -> TimeData
 hour is12H n = timeOfDay (Just n) is12H $ TTime.timedata'
@@ -406,7 +427,7 @@ predNthAfter n TimeData {TTime.timePred = p, TTime.timeGrain = g} base =
     }
 
 interval' :: TTime.TimeIntervalType -> (TimeData, TimeData) -> TimeData
-interval' intervalType (TimeData p1 _ g1 _ _ _, TimeData p2 _ g2 _ _ _) =
+interval' intervalType (TimeData p1 _ g1 _ _ _ _, TimeData p2 _ g2 _ _ _ _) =
   TTime.timedata'
     { TTime.timePred = mkTimeIntervalsPredicate intervalType' p1 p2
     , TTime.timeGrain = min g1 g2
@@ -423,22 +444,31 @@ interval intervalType td1 td2 =
       | TTime.isEmptyPredicate pred -> Nothing
     res -> Just res
 
+mkOkForThisNext :: TimeData -> TimeData
+mkOkForThisNext td = td {TTime.okForThisNext = True}
+
 durationAgo :: DurationData -> TimeData
 durationAgo dd = inDuration $ timeNegPeriod dd
 
 durationAfter :: DurationData -> TimeData -> TimeData
-durationAfter dd TimeData {TTime.timePred = pred1} = TTime.timedata'
-  { TTime.timePred = shiftDuration pred1 dd
-  , TTime.timeGrain = TDuration.grain dd}
+durationAfter dd TimeData {TTime.timePred = pred1, TTime.timeGrain = g} =
+  TTime.timedata'
+    { TTime.timePred = if g == TG.NoGrain
+      then shiftDuration pred1 dd
+      else mergeDuration pred1 dd
+    , TTime.timeGrain = TDuration.grain dd
+    }
 
 durationBefore :: DurationData -> TimeData -> TimeData
 durationBefore dd pred1 = durationAfter (timeNegPeriod dd) pred1
 
 inDuration :: DurationData -> TimeData
 inDuration dd = TTime.timedata'
-  { TTime.timePred = shiftDuration (takeNth 0 False $ timeCycle TG.Second) dd
+  { TTime.timePred = shiftDuration t dd
   , TTime.timeGrain = TDuration.grain dd
   }
+  where
+    t = takeNth 0 False $ timeCycle TG.Second
 
 inTimezone :: Text -> TimeData -> Maybe TimeData
 inTimezone input td@TimeData {TTime.timePred = p} = do
@@ -460,8 +490,8 @@ partOfDay td = form TTime.PartOfDay td
 timeOfDay :: Maybe Int -> Bool -> TimeData -> TimeData
 timeOfDay h is12H = form TTime.TimeOfDay {TTime.hours = h, TTime.is12H = is12H}
 
-timeOfDayAMPM :: TimeData -> Bool -> TimeData
-timeOfDayAMPM tod isAM = timeOfDay Nothing False $ intersect' (tod, ampm)
+timeOfDayAMPM :: Bool -> TimeData -> TimeData
+timeOfDayAMPM isAM tod = timeOfDay Nothing False $ intersect' (tod, ampm)
   where
     ampm = TTime.timedata'
            { TTime.timePred = ampmPred
@@ -480,16 +510,19 @@ longWEBefore monday = interval' TTime.Open (start, end)
     fri = cycleNthAfter False TG.Day (- 3) monday
     tue = cycleNthAfter False TG.Day 1 monday
 
-daysOfWeekOfMonth :: Int -> Int -> TimeData
-daysOfWeekOfMonth dow m = intersect' (dayOfWeek dow, month m)
+weekend :: TimeData
+weekend = interval' TTime.Open (fri, mon)
+  where
+    fri = intersect' (dayOfWeek 5, hour False 18)
+    mon = intersect' (dayOfWeek 1, hour False 0)
 
 -- Zero-indexed weeks, Monday is 1
 -- Use `predLastOf` for last day of week of month
 nthDOWOfMonth :: Int -> Int -> Int -> TimeData
-nthDOWOfMonth n dow m = intersect' (dowsM, week)
+nthDOWOfMonth n dow m = predNthAfter (n - 1) dow_ month_
   where
-    dowsM = daysOfWeekOfMonth dow m
-    week = cycleNthAfter False TG.Week n $ monthDay m 1
+    dow_ = dayOfWeek dow
+    month_ = month m
 
 intersectDOM :: TimeData -> Token -> Maybe TimeData
 intersectDOM td token = do
@@ -513,3 +546,38 @@ minutesAfter _ _ = Nothing
 -- | Convenience helper to return a time token from a rule
 tt :: TimeData -> Maybe Token
 tt = Just . Token Time
+
+-- | Rule constructors
+mkSingleRegexRule :: Text -> String -> Maybe Token -> Rule
+mkSingleRegexRule name pattern token = Rule
+  { name = name
+  , pattern = [regex pattern]
+  , prod = const token
+  }
+
+mkRuleInstants :: [(Text, TG.Grain, Int, String)] -> [Rule]
+mkRuleInstants = map go
+  where
+    go (name, grain, n, ptn) = mkSingleRegexRule name ptn $ tt $
+      cycleNth grain n
+
+mkRuleDaysOfWeek :: [(Text, String)] -> [Rule]
+mkRuleDaysOfWeek daysOfWeek = zipWith go daysOfWeek [1..7]
+  where
+    go (name, ptn) i = mkSingleRegexRule name ptn $ tt $ dayOfWeek i
+
+mkRuleMonths :: [(Text, String)] -> [Rule]
+mkRuleMonths months  = zipWith go months [1..12]
+  where
+    go (name, ptn) i = mkSingleRegexRule name ptn $ tt $ month i
+
+mkRuleSeasons :: [(Text, String, TimeData, TimeData)] -> [Rule]
+mkRuleSeasons = map go
+  where
+    go (name, ptn, start, end) =
+      mkSingleRegexRule name ptn $ Token Time <$> interval TTime.Open start end
+
+mkRuleHolidays :: [(Text, TimeData, String)] -> [Rule]
+mkRuleHolidays = map go
+  where
+    go (name, date, ptn) = mkSingleRegexRule name ptn $ tt date

@@ -26,7 +26,7 @@ ruleLatentTempCim = Rule
   { name = "<latent temp> céim"
   , pattern =
     [ dimension Temperature
-    , regex "g?ch?(\x00e9|e)im(e(anna)?)?|\x00b0"
+    , regex "g?ch?(é|e)im(e(anna)?)?|°"
     ]
   , prod = \tokens -> case tokens of
       (Token Temperature td:_) -> Just . Token Temperature $
@@ -39,7 +39,7 @@ ruleTempCelsius = Rule
   { name = "<temp> Celsius"
   , pattern =
     [ dimension Temperature
-    , regex "ceinteagr(\x00e1|a)d|c(el[cs]?(ius)?)?\\.?"
+    , regex "ceinteagr(á|a)d|c(el[cs]?(ius)?)?\\.?"
     ]
   , prod = \tokens -> case tokens of
       (Token Temperature td:_) -> Just . Token Temperature $
@@ -65,7 +65,7 @@ ruleLatentTempFaoiBhunNid = Rule
   { name = "<latent temp> faoi bhun náid"
   , pattern =
     [ dimension Temperature
-    , regex "faoi bhun (0|n(a|\x00e1)id)"
+    , regex "faoi bhun (0|n(a|á)id)"
     ]
   , prod = \tokens -> case tokens of
       (Token Temperature td@(TemperatureData {TTemperature.value = v}):_) ->

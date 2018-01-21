@@ -12,33 +12,38 @@
 
 module Duckling.Core
   ( Context(..)
+  , Region(..)
   , Dimension(..)
-  , fromName
   , Entity(..)
   , Lang(..)
+  , Locale
   , Some(..)
+  , fromName
+  , makeLocale
   , toName
 
   -- Duckling API
   , parse
   , supportedDimensions
+  , allLocales
 
   -- Reference time builders
   , currentReftime
+  , fromZonedTime
   , makeReftime
   ) where
 
 import Data.HashMap.Strict (HashMap)
-import qualified Data.HashMap.Strict as HashMap
 import Data.Maybe
 import Data.Text (Text)
 import Data.Time
 import Data.Time.LocalTime.TimeZone.Series
 import Prelude
+import qualified Data.HashMap.Strict as HashMap
 
 import Duckling.Api
 import Duckling.Dimensions.Types
-import Duckling.Lang
+import Duckling.Locale
 import Duckling.Resolve
 import Duckling.Types
 
@@ -56,3 +61,8 @@ currentReftime :: HashMap Text TimeZoneSeries -> Text -> IO DucklingTime
 currentReftime series tz = do
   utcNow <- getCurrentTime
   return $ makeReftime series tz utcNow
+
+-- | Builds a `DucklingTime` from a `ZonedTime`.
+fromZonedTime :: ZonedTime -> DucklingTime
+fromZonedTime (ZonedTime localTime timeZone) = DucklingTime $
+  ZoneSeriesTime (toUTC localTime) (TimeZoneSeries timeZone [])

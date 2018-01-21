@@ -26,9 +26,9 @@ grains = [ ("second (grain)", "sekund(er)?", TG.Second)
          , ("hour (grain)", "t(imer?)?", TG.Hour)
          , ("day (grain)", "dag(e)?", TG.Day)
          , ("week (grain)", "uger?", TG.Week)
-         , ("month (grain)", "m\x00e5ned(er)?", TG.Month)
+         , ("month (grain)", "måned(er)?", TG.Month)
          , ("quarter (grain)", "kvartal(er)?", TG.Quarter)
-         , ("year (grain)", "\x00e5r", TG.Year)
+         , ("year (grain)", "år", TG.Year)
          ]
 
 rules :: [Rule]

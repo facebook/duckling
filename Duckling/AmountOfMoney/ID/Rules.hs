@@ -69,7 +69,7 @@ ruleJpy :: Rule
 ruleJpy = Rule
   { name = "JPY"
   , pattern =
-    [ regex "\x00a5\\."
+    [ regex "¥\\."
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly JPY
   }

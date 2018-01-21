@@ -13,10 +13,10 @@ module Duckling.Time.IT.Corpus
   , negativeCorpus
   ) where
 
-import Prelude
 import Data.String
+import Prelude
 
-import Duckling.Lang
+import Duckling.Locale
 import Duckling.Resolve
 import Duckling.Time.Corpus
 import Duckling.Time.Types hiding (Month)
@@ -24,13 +24,14 @@ import Duckling.TimeGrain.Types hiding (add)
 import Duckling.Testing.Types hiding (examples)
 
 corpus :: Corpus
-corpus = (testContext {lang = IT}, allExamples)
+corpus = (testContext {locale = makeLocale IT Nothing}, allExamples)
 
 negativeCorpus :: NegativeCorpus
-negativeCorpus = (testContext {lang = IT}, examples)
+negativeCorpus = (testContext {locale = makeLocale IT Nothing}, examples)
   where
     examples =
       [ "ma"
+      , "3 20"
       ]
 
 allExamples :: [Example]
@@ -79,6 +80,8 @@ allExamples = concat
              ]
   , examples (datetime (2013, 2, 19, 0, 0, 0) Day)
              [ "Martedì"
+             , "Martedi"
+             , "mar"
              ]
   , examples (datetime (2013, 2, 13, 0, 0, 0) Day)
              [ "Mercoledì"
@@ -94,6 +97,7 @@ allExamples = concat
              ]
   , examples (datetime (2013, 2, 14, 0, 0, 0) Day)
              [ "giovedi"
+             , "giovedì"
              , "gio"
              ]
   , examples (datetime (2013, 2, 15, 0, 0, 0) Day)
@@ -111,6 +115,16 @@ allExamples = concat
              , "dom"
              , "dom."
              ]
+   , examples (datetime (2013, 1, 1, 0, 0, 0) Month)
+              [ "gennaio 2013"
+              , "genn 2013"
+              , "genn. 2013"
+              ]
+  , examples (datetime (2013, 12, 1, 0, 0, 0) Month)
+              [ "dicembre 2013"
+              , "dic 2013"
+              , "dic. 2013"
+              ]
   , examples (datetime (2013, 2, 10, 0, 0, 0) Day)
              [ "domenica 10 febbraio"
              ]
@@ -329,7 +343,7 @@ allExamples = concat
              , "tre e 20"
              , "3 e 20"
              , "3:20"
-             , "3 20"
+             , "alle 3 20"
              ]
   , examples (datetime (2013, 2, 12, 15, 30, 0) Minute)
              [ "15:30"

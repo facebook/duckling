@@ -19,16 +19,16 @@ module Duckling.Types where
 
 import Control.DeepSeq
 import Data.Aeson
-import qualified Data.ByteString.Lazy as LB
 import Data.GADT.Compare
 import Data.Hashable
 import Data.Maybe
 import Data.String
 import Data.Text (Text)
-import qualified Data.Text.Encoding as Text
 import Data.Typeable ((:~:)(Refl), Typeable)
 import GHC.Generics
 import Prelude
+import qualified Data.ByteString.Lazy as LB
+import qualified Data.Text.Encoding as Text
 import qualified Text.Regex.Base as R
 import qualified Text.Regex.PCRE as PCRE
 
@@ -129,7 +129,7 @@ instance Show Rule where
 data Entity = Entity
   { dim   :: Text
   , body  :: Text
-  , value :: Text
+  , value :: Value
   , start :: Int
   , end   :: Int
   } deriving (Eq, Generic, Show, NFData)
@@ -138,7 +138,7 @@ instance ToJSON Entity where
   toEncoding = genericToEncoding defaultOptions
 
 toJText :: ToJSON x => x -> Text
-toJText j = Text.decodeUtf8 $ LB.toStrict $ encode j
+toJText = Text.decodeUtf8 . LB.toStrict . encode
 
 -- -----------------------------------------------------------------
 -- Predicates helpers
@@ -146,7 +146,7 @@ toJText j = Text.decodeUtf8 $ LB.toStrict $ encode j
 regex :: String -> PatternItem
 regex = Regex . R.makeRegexOpts compOpts execOpts
   where
-    compOpts = PCRE.defaultCompOpt + PCRE.compCaseless
+    compOpts = PCRE.defaultCompOpt + PCRE.compCaseless + PCRE.compUTF8
     execOpts = PCRE.defaultExecOpt
 
 dimension :: Typeable a => Dimension a -> PatternItem

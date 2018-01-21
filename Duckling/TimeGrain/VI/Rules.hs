@@ -20,14 +20,14 @@ import Duckling.Types
 import qualified Duckling.TimeGrain.Types as TG
 
 grains :: [(Text, String, TG.Grain)]
-grains = [ ("second (grain)", "(gi\x00e2y|s|sec)", TG.Second)
-         , ("minute (grain)", "(ph\x00fat|m|min)", TG.Minute)
-         , ("hour (grain)", "(gi\x1edd|h|ti\x1ebfng)", TG.Hour)
-         , ("day (grain)", "ng\x00e0y", TG.Day)
-         , ("week (grain)", "tu\x1ea7n", TG.Week)
-         , ("month (grain)", "th\x00e1ng", TG.Month)
-         , ("quarter (grain)", "qu\x00fd", TG.Quarter)
-         , ("year (grain)", "n\x0103m", TG.Year)
+grains = [ ("second (grain)", "(giây|s|sec)", TG.Second)
+         , ("minute (grain)", "(phút|m|min)", TG.Minute)
+         , ("hour (grain)", "(giờ|h|tiếng)", TG.Hour)
+         , ("day (grain)", "ngày", TG.Day)
+         , ("week (grain)", "tuần", TG.Week)
+         , ("month (grain)", "tháng", TG.Month)
+         , ("quarter (grain)", "quý", TG.Quarter)
+         , ("year (grain)", "năm", TG.Year)
          ]
 
 rules :: [Rule]

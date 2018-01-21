@@ -73,7 +73,7 @@ ruleLatentVolGallon = Rule
   { name = "<latent vol> gallon"
   , pattern =
     [ dimension Volume
-    , regex "gal(a|\x00e3|o|\x00f5)o?e?s?"
+    , regex "gal(a|ã|o|õ)o?e?s?"
     ]
   , prod = \tokens -> case tokens of
       (Token Volume vd:_) ->

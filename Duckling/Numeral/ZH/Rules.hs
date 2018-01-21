@@ -10,26 +10,27 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Numeral.ZH.Rules
-  ( rules ) where
+  ( rules
+  ) where
 
-import qualified Data.HashMap.Strict as HashMap
 import Data.Maybe
-import qualified Data.Text as Text
-import Prelude
 import Data.String
+import Prelude
+import qualified Data.HashMap.Strict as HashMap
+import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
 import Duckling.Numeral.Helpers
 import Duckling.Numeral.Types (NumeralData (..))
-import qualified Duckling.Numeral.Types as TNumeral
 import Duckling.Regex.Types
 import Duckling.Types
+import qualified Duckling.Numeral.Types as TNumeral
 
 ruleInteger5 :: Rule
 ruleInteger5 = Rule
   { name = "integer (0..10)"
   , pattern =
-    [ regex "(\x3007|\x96f6|\x4e00|\x4e8c|\x4e24|\x5169|\x4e09|\x56db|\x4e94|\x516d|\x4e03|\x516b|\x4e5d|\x5341)(\x4e2a|\x500b)?"
+    [ regex "(〇|零|一|二|两|兩|三|四|五|六|七|八|九|十)(个|個)?"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
@@ -39,20 +40,20 @@ ruleInteger5 = Rule
 
 integerMap :: HashMap.HashMap Text.Text Integer
 integerMap = HashMap.fromList
-  [ ( "\x3007", 0 )
-  , ( "\x96f6", 0 )
-  , ( "\x4e00", 1 )
-  , ( "\x5169", 2 )
-  , ( "\x4e24", 2 )
-  , ( "\x4e8c", 2 )
-  , ( "\x4e09", 3 )
-  , ( "\x56db", 4 )
-  , ( "\x4e94", 5 )
-  , ( "\x516d", 6 )
-  , ( "\x4e03", 7 )
-  , ( "\x516b", 8 )
-  , ( "\x4e5d", 9 )
-  , ( "\x5341", 10 )
+  [ ( "〇", 0 )
+  , ( "零", 0 )
+  , ( "一", 1 )
+  , ( "兩", 2 )
+  , ( "两", 2 )
+  , ( "二", 2 )
+  , ( "三", 3 )
+  , ( "四", 4 )
+  , ( "五", 5 )
+  , ( "六", 6 )
+  , ( "七", 7 )
+  , ( "八", 8 )
+  , ( "九", 9 )
+  , ( "十", 10 )
   ]
 
 
@@ -60,24 +61,11 @@ ruleNumeralsPrefixWithNegativeOrMinus :: Rule
 ruleNumeralsPrefixWithNegativeOrMinus = Rule
   { name = "numbers prefix with -, negative or minus"
   , pattern =
-    [ regex "-|\x8d1f\\s?|\x8ca0\\s?"
+    [ regex "-|负\\s?|負\\s?"
     , dimension Numeral
     ]
   , prod = \tokens -> case tokens of
       (_:Token Numeral nd:_) -> double (TNumeral.value nd * (-1))
-      _ -> Nothing
-  }
-
-ruleIntegerNumeric :: Rule
-ruleIntegerNumeric = Rule
-  { name = "integer (numeric)"
-  , pattern =
-    [ regex "(\\d{1,18})"
-    ]
-  , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> do
-        v <- parseInt match
-        integer $ toInteger v
       _ -> Nothing
   }
 
@@ -89,7 +77,7 @@ ruleDecimalWithThousandsSeparator = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
-        parseDouble (Text.replace (Text.singleton ',') Text.empty match) >>= double
+        parseDouble (Text.replace "," Text.empty match) >>= double
       _ -> Nothing
   }
 
@@ -109,7 +97,7 @@ ruleNumeral = Rule
   { name = "<number>个"
   , pattern =
     [ dimension Numeral
-    , regex "\x4e2a"
+    , regex "个"
     ]
   , prod = \tokens -> case tokens of
       (token:_) -> Just token
@@ -121,7 +109,7 @@ ruleInteger3 = Rule
   { name = "integer (20..90)"
   , pattern =
     [ numberBetween 2 10
-    , regex "\x5341"
+    , regex "十"
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral (NumeralData {TNumeral.value = v}):_) -> double $ v * 10
@@ -164,7 +152,7 @@ ruleInteger2 :: Rule
 ruleInteger2 = Rule
   { name = "integer (11..19)"
   , pattern =
-    [ regex "\x5341"
+    [ regex "十"
     , numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
@@ -180,7 +168,7 @@ ruleIntegerWithThousandsSeparator = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):
-       _) -> let fmt = Text.replace (Text.singleton ',') Text.empty match
+       _) -> let fmt = Text.replace "," Text.empty match
         in parseDouble fmt >>= double
       _ -> Nothing
   }
@@ -193,7 +181,6 @@ rules =
   , ruleInteger3
   , ruleInteger4
   , ruleInteger5
-  , ruleIntegerNumeric
   , ruleIntegerWithThousandsSeparator
   , ruleNumeral
   , ruleNumeralsPrefixWithNegativeOrMinus

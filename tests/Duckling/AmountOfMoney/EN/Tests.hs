@@ -7,14 +7,15 @@
 
 
 module Duckling.AmountOfMoney.EN.Tests
-  ( tests ) where
+  ( tests
+  ) where
 
-import Prelude
 import Data.String
+import Prelude
 import Test.Tasty
 
-import Duckling.Dimensions.Types
 import Duckling.AmountOfMoney.EN.Corpus
+import Duckling.Dimensions.Types
 import Duckling.Testing.Asserts
 
 tests :: TestTree

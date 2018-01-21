@@ -10,58 +10,81 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Quantity.EN.Rules
-  ( rules ) where
+  ( rules
+  ) where
 
-import qualified Data.Text as Text
-import Prelude
+import Data.HashMap.Strict (HashMap)
 import Data.String
+import Data.Text (Text)
+import Prelude
+import qualified Data.HashMap.Strict as HashMap
+import qualified Data.Text as Text
 
-import qualified Duckling.Numeral.Types as TNumeral
-import Duckling.Quantity.Helpers
-import qualified Duckling.Quantity.Types as TQuantity
-import Duckling.Regex.Types
 import Duckling.Dimensions.Types
+import Duckling.Numeral.Helpers
+import Duckling.Quantity.Helpers
+import Duckling.Regex.Types
 import Duckling.Types
+import qualified Duckling.Numeral.Types as TNumeral
+import qualified Duckling.Quantity.Types as TQuantity
 
-ruleNumeralQuantity :: Rule
-ruleNumeralQuantity = Rule
-  { name = "<number> <quantity>"
-  , pattern =
-    [ dimension Numeral
-    , regex "(pound|cup)s?"
-    ]
-  , prod = \tokens -> case tokens of
-    (Token Numeral nd:
-     Token RegexMatch (GroupMatch (match:_)):
-     _) -> case Text.toLower match of
-      "cup"    -> Just . Token Quantity . quantity TQuantity.Cup $ TNumeral.value nd
-      "cups"   -> Just . Token Quantity . quantity TQuantity.Cup $ TNumeral.value nd
-      "pound"  -> Just . Token Quantity . quantity TQuantity.Pound $ TNumeral.value nd
-      "pounds" -> Just . Token Quantity . quantity TQuantity.Pound $ TNumeral.value nd
-      _ -> Nothing
-    _ -> Nothing
-  }
+quantities :: [(Text, String, TQuantity.Unit)]
+quantities =
+  [ ("<quantity> cups", "(cups?)", TQuantity.Cup)
+  , ("<quantity> grams", "(((m(illi)?)|(k(ilo)?))?g(ram)?s?)", TQuantity.Gram)
+  , ("<quantity> lb", "((lb|pound)s?)", TQuantity.Pound)
+  , ("<quantity> oz", "((ounces?)|oz)", TQuantity.Ounce)
+  ]
 
-ruleAQuantity :: Rule
-ruleAQuantity = Rule
-  { name = "a quantity"
-  , pattern = [ regex "a (pound|cup)s?"]
-  , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
-        "cup"    -> Just . Token Quantity $ quantity TQuantity.Cup 1
-        "cups"   -> Just . Token Quantity $ quantity TQuantity.Cup 1
-        "pound"  -> Just . Token Quantity $ quantity TQuantity.Pound 1
-        "pounds" -> Just . Token Quantity $ quantity TQuantity.Pound 1
-        _        -> Nothing
-      _ -> Nothing
-  }
+opsMap :: HashMap Text (Double -> Double)
+opsMap = HashMap.fromList
+  [ ( "milligram" , (/ 1000))
+  , ( "milligrams", (/ 1000))
+  , ( "mg"        , (/ 1000))
+  , ( "mgs"       , (/ 1000))
+  , ( "kilogram"  , (* 1000))
+  , ( "kilograms" , (* 1000))
+  , ( "kg"        , (* 1000))
+  , ( "kgs"       , (* 1000))
+  ]
+
+getValue :: Text -> Double -> Double
+getValue match = HashMap.lookupDefault id (Text.toLower match) opsMap
+
+ruleNumeralQuantities :: [Rule]
+ruleNumeralQuantities = map go quantities
+  where
+    go :: (Text, String, TQuantity.Unit) -> Rule
+    go (name, regexPattern, u) = Rule
+      { name = name
+      , pattern = [ numberWith TNumeral.value (> 0), regex regexPattern ]
+      , prod = \tokens -> case tokens of
+        (Token Numeral nd:
+         Token RegexMatch (GroupMatch (match:_)):
+         _) -> Just . Token Quantity $ quantity u value
+          where value = getValue match $ TNumeral.value nd
+        _ -> Nothing
+      }
+
+ruleAQuantity :: [Rule]
+ruleAQuantity = map go quantities
+  where
+    go :: (Text, String, TQuantity.Unit) -> Rule
+    go (name, regexPattern, u) = Rule
+      { name = name
+      , pattern = [ regex ("an? " ++ regexPattern) ]
+      , prod = \tokens -> case tokens of
+        (Token RegexMatch (GroupMatch (match:_)):
+         _) -> Just . Token Quantity $ quantity u $ getValue match 1
+        _ -> Nothing
+      }
 
 ruleQuantityOfProduct :: Rule
 ruleQuantityOfProduct = Rule
   { name = "<quantity> of product"
   , pattern =
     [ dimension Quantity
-    , regex "of (meat|sugar)"
+    , regex "of (\\w+)"
     ]
   , prod = \tokens -> case tokens of
     (Token Quantity qd:Token RegexMatch (GroupMatch (product:_)):_) ->
@@ -71,7 +94,7 @@ ruleQuantityOfProduct = Rule
 
 rules :: [Rule]
 rules =
-  [ ruleNumeralQuantity
-  , ruleAQuantity
-  , ruleQuantityOfProduct
+  [ ruleQuantityOfProduct
   ]
+  ++ ruleNumeralQuantities
+  ++ ruleAQuantity

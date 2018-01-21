@@ -29,6 +29,11 @@ data NumeralData = NumeralData
   { value        :: Double
   , grain        :: Maybe Int
   , multipliable :: Bool
+  -- Hack until other use cases pop up,
+  -- at which point we'll craft a generic solution.
+  -- This allows to explicitly flag Numerals that don't work well with Time.
+  -- See `ruleTODLatent`. Prevents things like "at single", "dozens o'clock".
+  , okForAnyTime :: Bool
   }
   deriving (Eq, Generic, Hashable, Ord, Show, NFData)
 
@@ -52,9 +57,6 @@ getIntValue x = if rest == 0 then Just int else Nothing
 
 isInteger :: Double -> Bool
 isInteger = isJust . getIntValue
-
-isNatural :: Double -> Bool
-isNatural x = isInteger x && x > 0
 
 isIntegerBetween :: Double -> Int -> Int -> Bool
 isIntegerBetween x low high = case getIntValue x of

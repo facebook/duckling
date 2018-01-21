@@ -28,7 +28,7 @@ ruleQuantityOfProduct = Rule
   { name = "<quantity> of product"
   , pattern =
     [ dimension Quantity
-    , regex "\xc758 (\xc0bc\xacb9\xc0b4|\xcf5c\xb77c)"
+    , regex "의 (삼겹살|콜라)"
     ]
   , prod = \tokens -> case tokens of
       (Token Quantity qd:
@@ -41,7 +41,7 @@ ruleQuantityOfProduct2 :: Rule
 ruleQuantityOfProduct2 = Rule
   { name = "<quantity> of product"
   , pattern =
-    [ regex "(\xc0bc\xacb9\xc0b4|\xcf5c\xb77c)"
+    [ regex "(삼겹살|콜라)"
     , dimension Quantity
     ]
   , prod = \tokens -> case tokens of
@@ -56,22 +56,22 @@ ruleNumeralUnits = Rule
   { name = "<number> <units>"
   , pattern =
     [ dimension Numeral
-    , regex "(\xac1c|\xd310|\xadf8(\xb7a8|\xb78c)|\xadfc|\xd30c\xc6b4(\xb4dc|\xc988)|\xc8111\xc2dc|\xadf8\xb987|\xcef5)"
+    , regex "(개|판|그(램|람)|근|파운(드|즈)|접1시|그릇|컵)"
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData {TNumeral.value = v}:
        Token RegexMatch (GroupMatch (match:_)):
        _) -> case match of
-         "\xac1c"             -> Just . Token Quantity $ quantity TQuantity.Unnamed v
-         "\xd310"             -> Just . Token Quantity $ quantity (TQuantity.Custom "판") v
-         "\xadfc"             -> Just . Token Quantity $ quantity (TQuantity.Custom "근") v
-         "\xadf8\xb7a8"       -> Just . Token Quantity $ quantity TQuantity.Gram v
-         "\xadf8\xb78c"       -> Just . Token Quantity $ quantity TQuantity.Gram v
-         "\xd30c\xc6b4\xb4dc" -> Just . Token Quantity $ quantity TQuantity.Pound v
-         "\xd30c\xc6b4\xc988" -> Just . Token Quantity $ quantity TQuantity.Pound v
-         "\xc8111\xc2dc"      -> Just . Token Quantity $ quantity TQuantity.Dish v
-         "\xadf8\xb987"       -> Just . Token Quantity $ quantity TQuantity.Bowl v
-         "\xcef5"             -> Just . Token Quantity $ quantity TQuantity.Cup v
+         "개"             -> Just . Token Quantity $ quantity TQuantity.Unnamed v
+         "판"             -> Just . Token Quantity $ quantity (TQuantity.Custom "판") v
+         "근"             -> Just . Token Quantity $ quantity (TQuantity.Custom "근") v
+         "그램"       -> Just . Token Quantity $ quantity TQuantity.Gram v
+         "그람"       -> Just . Token Quantity $ quantity TQuantity.Gram v
+         "파운드" -> Just . Token Quantity $ quantity TQuantity.Pound v
+         "파운즈" -> Just . Token Quantity $ quantity TQuantity.Pound v
+         "접1시"      -> Just . Token Quantity $ quantity TQuantity.Dish v
+         "그릇"       -> Just . Token Quantity $ quantity TQuantity.Bowl v
+         "컵"             -> Just . Token Quantity $ quantity TQuantity.Cup v
          _                    -> Nothing
       _ -> Nothing
   }

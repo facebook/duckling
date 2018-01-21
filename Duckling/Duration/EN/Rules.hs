@@ -7,50 +7,59 @@
 
 
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE NoRebindableSyntax #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Duration.EN.Rules
-  ( rules ) where
+  ( rules
+  ) where
 
-import Control.Monad (join)
-import qualified Data.Text as Text
-import Prelude
 import Data.String
+import Prelude
+import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
 import Duckling.Duration.Helpers
-import Duckling.Numeral.Helpers (parseInt)
+import Duckling.Numeral.Helpers (parseInt, parseInteger)
 import Duckling.Numeral.Types (NumeralData(..))
-import qualified Duckling.Numeral.Types as TNumeral
 import Duckling.Regex.Types
-import qualified Duckling.TimeGrain.Types as TG
 import Duckling.Types
+import qualified Duckling.Numeral.Types as TNumeral
+import qualified Duckling.TimeGrain.Types as TG
 
 ruleDurationQuarterOfAnHour :: Rule
 ruleDurationQuarterOfAnHour = Rule
   { name = "quarter of an hour"
-  , pattern = [ regex "(1/4\\s?h(our)?|(a\\s)?quarter of an hour)" ]
+  , pattern =
+    [ regex "(1/4\\s?h(our)?|(a\\s)?quarter of an hour)"
+    ]
   , prod = \_ -> Just . Token Duration $ duration TG.Minute 15
   }
 
 ruleDurationHalfAnHour :: Rule
 ruleDurationHalfAnHour = Rule
   { name = "half an hour"
-  , pattern = [regex "(1/2\\s?h(our)?|half an? hour)"]
+  , pattern =
+    [ regex "(1/2\\s?h(our)?|half an? hour)"
+    ]
   , prod = \_ -> Just . Token Duration $ duration TG.Minute 30
   }
 
 ruleDurationThreeQuartersOfAnHour :: Rule
 ruleDurationThreeQuartersOfAnHour = Rule
   { name = "three-quarters of an hour"
-  , pattern = [regex "(3/4\\s?h(our)?|three(\\s|-)quarters of an hour)"]
+  , pattern =
+    [ regex "(3/4\\s?h(our)?|three(\\s|-)quarters of an hour)"
+    ]
   , prod = \_ -> Just . Token Duration $ duration TG.Minute 45
   }
 
 ruleDurationFortnight :: Rule
 ruleDurationFortnight = Rule
   { name = "fortnight"
-  , pattern = [regex "(a|one)? fortnight"]
+  , pattern =
+    [ regex "(a|one)? fortnight"
+    ]
   , prod = \_ -> Just . Token Duration $ duration TG.Day 14
   }
 
@@ -88,16 +97,15 @@ ruleDurationNumeralMore = Rule
 ruleDurationDotNumeralHours :: Rule
 ruleDurationDotNumeralHours = Rule
   { name = "number.number hours"
-  , pattern = [regex "(\\d+)\\.(\\d+) *hours?"]
+  , pattern =
+    [ regex "(\\d+)\\.(\\d+) *hours?"
+    ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (h:d:_)):_) -> do
-        hh <- parseInt h
-        dec <- parseInt d
-        let divisor = floor $ (fromIntegral (10 :: Integer) :: Float) **
-                        fromIntegral (Text.length d - 1)
-            numerator = fromIntegral $ 6 * dec
-        Just . Token Duration . duration TG.Minute $
-          60 * hh + quot numerator divisor
+      (Token RegexMatch (GroupMatch (h:m:_)):_) -> do
+        hh <- parseInteger h
+        mnum <- parseInteger m
+        let mden = 10 ^ Text.length m
+        Just . Token Duration $ minutesFromHourMixedFraction hh mnum mden
       _ -> Nothing
   }
 

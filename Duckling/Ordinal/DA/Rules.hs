@@ -26,11 +26,11 @@ ruleOrdinalsFirstst :: Rule
 ruleOrdinalsFirstst = Rule
   { name = "ordinals (first..31st)"
   , pattern =
-    [ regex "(f\x00f8rste|anden|tredje|fjerde|femte|sjette|syvende|ottende|niende|tiende|elfte|tolvte|trettende|fjortende|femtende|sekstende|syttende|attende|nittende|tyvende|tenogtyvende|toogtyvende|treogtyvende|fireogtyvende|femogtyvende|seksogtyvende|syvogtyvende|otteogtyvende|niogtyvende|tredivte|enogtredivte)"
+    [ regex "(første|anden|tredje|fjerde|femte|sjette|syvende|ottende|niende|tiende|elfte|tolvte|trettende|fjortende|femtende|sekstende|syttende|attende|nittende|tyvende|tenogtyvende|toogtyvende|treogtyvende|fireogtyvende|femogtyvende|seksogtyvende|syvogtyvende|otteogtyvende|niogtyvende|tredivte|enogtredivte)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
-        "f\x00f8rste" -> Just $ ordinal 1
+        "første" -> Just $ ordinal 1
         "anden" -> Just $ ordinal 2
         "tredje" -> Just $ ordinal 3
         "fjerde" -> Just $ ordinal 4

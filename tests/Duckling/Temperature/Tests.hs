@@ -12,6 +12,7 @@ import Prelude
 import Data.String
 import Test.Tasty
 
+import qualified Duckling.Temperature.AR.Tests as AR
 import qualified Duckling.Temperature.EN.Tests as EN
 import qualified Duckling.Temperature.ES.Tests as ES
 import qualified Duckling.Temperature.FR.Tests as FR
@@ -22,11 +23,13 @@ import qualified Duckling.Temperature.JA.Tests as JA
 import qualified Duckling.Temperature.KO.Tests as KO
 import qualified Duckling.Temperature.PT.Tests as PT
 import qualified Duckling.Temperature.RO.Tests as RO
+import qualified Duckling.Temperature.TR.Tests as TR
 import qualified Duckling.Temperature.ZH.Tests as ZH
 
 tests :: TestTree
 tests = testGroup "Temperature Tests"
-  [ EN.tests
+  [ AR.tests
+  , EN.tests
   , ES.tests
   , FR.tests
   , GA.tests
@@ -36,5 +39,6 @@ tests = testGroup "Temperature Tests"
   , KO.tests
   , PT.tests
   , RO.tests
+  , TR.tests
   , ZH.tests
   ]

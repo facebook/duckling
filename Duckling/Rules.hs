@@ -20,22 +20,28 @@ import qualified Data.HashSet as HashSet
 
 import Duckling.Dimensions
 import Duckling.Dimensions.Types
-import Duckling.Lang
+import Duckling.Locale
+import Duckling.Types
 import qualified Duckling.Rules.AR as ARRules
 import qualified Duckling.Rules.Common as CommonRules
+import qualified Duckling.Rules.BG as BGRules
 import qualified Duckling.Rules.CS as CSRules
 import qualified Duckling.Rules.DA as DARules
 import qualified Duckling.Rules.DE as DERules
+import qualified Duckling.Rules.EL as ELRules
 import qualified Duckling.Rules.EN as ENRules
 import qualified Duckling.Rules.ES as ESRules
 import qualified Duckling.Rules.ET as ETRules
 import qualified Duckling.Rules.FR as FRRules
 import qualified Duckling.Rules.GA as GARules
 import qualified Duckling.Rules.HE as HERules
+import qualified Duckling.Rules.HI as HIRules
 import qualified Duckling.Rules.HR as HRRules
+import qualified Duckling.Rules.HU as HURules
 import qualified Duckling.Rules.ID as IDRules
 import qualified Duckling.Rules.IT as ITRules
 import qualified Duckling.Rules.JA as JARules
+import qualified Duckling.Rules.KA as KARules
 import qualified Duckling.Rules.KO as KORules
 import qualified Duckling.Rules.MY as MYRules
 import qualified Duckling.Rules.NB as NBRules
@@ -49,49 +55,125 @@ import qualified Duckling.Rules.TR as TRRules
 import qualified Duckling.Rules.UK as UKRules
 import qualified Duckling.Rules.VI as VIRules
 import qualified Duckling.Rules.ZH as ZHRules
-import Duckling.Types
 
 -- | Returns the minimal set of rules required for `targets`.
-rulesFor :: Lang -> HashSet (Some Dimension) -> [Rule]
-rulesFor lang targets
-  | HashSet.null targets = allRules lang
+rulesFor :: Locale -> HashSet (Some Dimension) -> [Rule]
+rulesFor locale targets
+  | HashSet.null targets = allRules locale
   | otherwise = [ rules | dims <- HashSet.toList $ explicitDimensions targets
-                        , rules <- rulesFor' lang dims ]
+                        , rules <- rulesFor' locale dims ]
 
--- | Returns all the rules for `lang`.
+-- | Returns all the rules for the provided locale.
 -- We can't really use `allDimensions` as-is, since `TimeGrain` is not present.
-allRules :: Lang -> [Rule]
-allRules lang = concatMap (rulesFor' lang) . HashSet.toList .
-  explicitDimensions . HashSet.fromList $ allDimensions lang
+allRules :: Locale -> [Rule]
+allRules locale@(Locale lang _) = concatMap (rulesFor' locale) . HashSet.toList
+  . explicitDimensions . HashSet.fromList $ allDimensions lang
 
-rulesFor' :: Lang -> Some Dimension -> [Rule]
-rulesFor' lang dim = CommonRules.rules dim ++ langRules lang dim
+rulesFor' :: Locale -> Some Dimension -> [Rule]
+rulesFor' (Locale lang (Just region)) dim =
+  CommonRules.rules dim ++ langRules lang dim ++ localeRules lang region dim
+rulesFor' (Locale lang Nothing) dim =
+  CommonRules.rules dim ++ defaultRules lang dim
+
+-- | Default rules when no locale, for backward compatibility.
+defaultRules :: Lang -> Some Dimension -> [Rule]
+defaultRules AR = ARRules.defaultRules
+defaultRules BG = BGRules.defaultRules
+defaultRules CS = CSRules.defaultRules
+defaultRules DA = DARules.defaultRules
+defaultRules DE = DERules.defaultRules
+defaultRules EL = ELRules.defaultRules
+defaultRules EN = ENRules.defaultRules
+defaultRules ES = ESRules.defaultRules
+defaultRules ET = ETRules.defaultRules
+defaultRules FR = FRRules.defaultRules
+defaultRules GA = GARules.defaultRules
+defaultRules HE = HERules.defaultRules
+defaultRules HI = HIRules.defaultRules
+defaultRules HR = HRRules.defaultRules
+defaultRules HU = HURules.defaultRules
+defaultRules ID = IDRules.defaultRules
+defaultRules IT = ITRules.defaultRules
+defaultRules JA = JARules.defaultRules
+defaultRules KA = KARules.defaultRules
+defaultRules KO = KORules.defaultRules
+defaultRules MY = MYRules.defaultRules
+defaultRules NB = NBRules.defaultRules
+defaultRules NL = NLRules.defaultRules
+defaultRules PL = PLRules.defaultRules
+defaultRules PT = PTRules.defaultRules
+defaultRules RO = RORules.defaultRules
+defaultRules RU = RURules.defaultRules
+defaultRules SV = SVRules.defaultRules
+defaultRules TR = TRRules.defaultRules
+defaultRules UK = UKRules.defaultRules
+defaultRules VI = VIRules.defaultRules
+defaultRules ZH = ZHRules.defaultRules
+
+localeRules :: Lang -> Region -> Some Dimension -> [Rule]
+localeRules AR = ARRules.localeRules
+localeRules BG = BGRules.localeRules
+localeRules CS = CSRules.localeRules
+localeRules DA = DARules.localeRules
+localeRules DE = DERules.localeRules
+localeRules EL = ELRules.localeRules
+localeRules EN = ENRules.localeRules
+localeRules ES = ESRules.localeRules
+localeRules ET = ETRules.localeRules
+localeRules FR = FRRules.localeRules
+localeRules GA = GARules.localeRules
+localeRules HE = HERules.localeRules
+localeRules HI = HIRules.localeRules
+localeRules HR = HRRules.localeRules
+localeRules HU = HURules.localeRules
+localeRules ID = IDRules.localeRules
+localeRules IT = ITRules.localeRules
+localeRules JA = JARules.localeRules
+localeRules KA = KARules.localeRules
+localeRules KO = KORules.localeRules
+localeRules MY = MYRules.localeRules
+localeRules NB = NBRules.localeRules
+localeRules NL = NLRules.localeRules
+localeRules PL = PLRules.localeRules
+localeRules PT = PTRules.localeRules
+localeRules RO = RORules.localeRules
+localeRules RU = RURules.localeRules
+localeRules SV = SVRules.localeRules
+localeRules TR = TRRules.localeRules
+localeRules UK = UKRules.localeRules
+localeRules VI = VIRules.localeRules
+localeRules ZH = ZHRules.localeRules
 
 langRules :: Lang -> Some Dimension -> [Rule]
-langRules AR = ARRules.rules
-langRules CS = CSRules.rules
-langRules DA = DARules.rules
-langRules DE = DERules.rules
-langRules EN = ENRules.rules
-langRules ES = ESRules.rules
-langRules ET = ETRules.rules
-langRules FR = FRRules.rules
-langRules GA = GARules.rules
-langRules HE = HERules.rules
-langRules HR = HRRules.rules
-langRules ID = IDRules.rules
-langRules IT = ITRules.rules
-langRules JA = JARules.rules
-langRules KO = KORules.rules
-langRules MY = MYRules.rules
-langRules NB = NBRules.rules
-langRules NL = NLRules.rules
-langRules PL = PLRules.rules
-langRules PT = PTRules.rules
-langRules RO = RORules.rules
-langRules RU = RURules.rules
-langRules SV = SVRules.rules
-langRules TR = TRRules.rules
-langRules UK = UKRules.rules
-langRules VI = VIRules.rules
-langRules ZH = ZHRules.rules
+langRules AR = ARRules.langRules
+langRules BG = BGRules.langRules
+langRules CS = CSRules.langRules
+langRules DA = DARules.langRules
+langRules DE = DERules.langRules
+langRules EL = ELRules.langRules
+langRules EN = ENRules.langRules
+langRules ES = ESRules.langRules
+langRules ET = ETRules.langRules
+langRules FR = FRRules.langRules
+langRules GA = GARules.langRules
+langRules HE = HERules.langRules
+langRules HI = HIRules.langRules
+langRules HR = HRRules.langRules
+langRules HU = HURules.langRules
+langRules ID = IDRules.langRules
+langRules IT = ITRules.langRules
+langRules JA = JARules.langRules
+langRules KA = KARules.langRules
+langRules KO = KORules.langRules
+langRules MY = MYRules.langRules
+langRules NB = NBRules.langRules
+langRules NL = NLRules.langRules
+langRules PL = PLRules.langRules
+langRules PT = PTRules.langRules
+langRules RO = RORules.langRules
+langRules RU = RURules.langRules
+langRules SV = SVRules.langRules
+langRules TR = TRRules.langRules
+langRules UK = UKRules.langRules
+langRules VI = VIRules.langRules
+langRules ZH = ZHRules.langRules

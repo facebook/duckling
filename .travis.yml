@@ -21,10 +21,9 @@ matrix:
     - env: CABALVER=1.24 GHCVER=8.0.2
       compiler: ": #GHC 8.0.2"
       addons: {apt: {packages: [cabal-install-1.24,ghc-8.0.2,happy-1.19.5], sources: [hvr-ghc]}}
-    # blocked on https://github.com/ygale/timezone-olson/pull/4
-    # - env: CABALVER=1.24 GHCVER=8.2.1
-    #   compiler: ": #GHC 8.2.1"
-    #   addons: {apt: {packages: [cabal-install-1.24,ghc-8.2.1,happy-1.19.5], sources: [hvr-ghc]}}
+    - env: CABALVER=2.0 GHCVER=8.2.1
+      compiler: ": #GHC 8.2.1"
+      addons: {apt: {packages: [cabal-install-2.0,ghc-8.2.1,happy-1.19.5], sources: [hvr-ghc]}}
 
 before_install:
  - unset CC
@@ -56,7 +55,7 @@ install:
      echo "cabal build-cache MISS";
      rm -rf $HOME/.cabsnap;
      mkdir -p $HOME/.ghc $HOME/.cabal/lib $HOME/.cabal/share $HOME/.cabal/bin;
-     cabal install -j --only-dependencies --enable-tests --enable-benchmarks;
+     cabal install -j1 --only-dependencies --enable-tests --enable-benchmarks;
    fi
 
 # snapshot package-db on cache miss
@@ -73,15 +72,18 @@ install:
 script:
  - if [ -f configure.ac ]; then autoreconf -i; fi
  - cabal configure --enable-tests -v2  # -v2 provides useful information for debugging
- - cabal build -j # this builds all libraries and executables (including tests/benchmarks)
- - cabal test -j --show-details=always
+ - cabal build -j1 # this builds all libraries and executables (including tests/benchmarks)
+ - cabal test -j1 --show-details=always
  - cabal check
  - cabal sdist   # tests that a source-distribution can be generated
 
 # Check that the resulting source distribution can be built & installed.
 # If there are no other `.tar.gz` files in `dist`, this can be even simpler:
 # `cabal install --force-reinstalls dist/*-*.tar.gz`
- - SRC_TGZ=$(cabal info . | awk '{print $2;exit}').tar.gz &&
-   (cd dist && cabal install --force-reinstalls "$SRC_TGZ")
+
+# Building it again doubles the time and it's currently timing out on Travis.
+# It's also not that useful at the moment.
+#- SRC_TGZ=$(cabal info . | awk '{print $2;exit}').tar.gz &&
+#   (cd dist && cabal install --force-reinstalls "$SRC_TGZ")
 
 # EOF

@@ -14,18 +14,23 @@ module Duckling.Ordinal.GA.Corpus
 import Prelude
 import Data.String
 
-import Duckling.Lang
+import Duckling.Locale
 import Duckling.Ordinal.Types
 import Duckling.Resolve
 import Duckling.Testing.Types
 
 corpus :: Corpus
-corpus = (testContext {lang = GA}, allExamples)
+corpus = (testContext {locale = makeLocale GA Nothing}, allExamples)
 
 allExamples :: [Example]
 allExamples = concat
   [ examples (OrdinalData 6)
              [ "séu"
+             , "6a"
+             , "6d"
+             , "06u"
+             , "6 ú"
+             , "0006 adh"
              ]
   , examples (OrdinalData 1)
              [ "chead"

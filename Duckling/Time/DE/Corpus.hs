@@ -13,25 +13,26 @@ module Duckling.Time.DE.Corpus
   , negativeCorpus
   ) where
 
-import Prelude
 import Data.String
+import Prelude
 
-import Duckling.Lang
+import Duckling.Locale
 import Duckling.Resolve
+import Duckling.Testing.Types hiding (examples)
 import Duckling.Time.Corpus
 import Duckling.Time.Types hiding (Month)
 import Duckling.TimeGrain.Types hiding (add)
-import Duckling.Testing.Types hiding (examples)
 
 corpus :: Corpus
-corpus = (testContext {lang = DE}, allExamples)
+corpus = (testContext {locale = makeLocale DE Nothing}, allExamples)
 
 negativeCorpus :: NegativeCorpus
-negativeCorpus = (testContext {lang = DE}, examples)
+negativeCorpus = (testContext {locale = makeLocale DE Nothing}, examples)
   where
     examples =
       [ "ein Hotel"
       , "ein Angebot"
+      , "nächsten 5"
       ]
 
 allExamples :: [Example]
@@ -306,7 +307,7 @@ allExamples = concat
              [ "viertel vor 12"
              , "11:45"
              ]
-  , examples (datetime (2013, 2, 12, 11, 45, 0) Second)
+  , examples (datetime (2013, 2, 12, 11, 45, 0) Minute)
              [ "15 minuten vor 12"
              ]
   , examples (datetime (2013, 2, 12, 20, 0, 0) Hour)
@@ -403,7 +404,7 @@ allExamples = concat
   , examples (datetime (2013, 2, 19, 4, 0, 0) Hour)
              [ "in 7 tagen"
              ]
-  , examples (datetime (2013, 12, 0, 0, 0, 0) Month)
+  , examples (datetime (2013, 12, 25, 0, 0, 0) Day)
              [ "ein jahr nach weihnachten"
              ]
   , examples (datetimeInterval ((2013, 6, 21, 0, 0, 0), (2013, 9, 24, 0, 0, 0)) Day)
@@ -630,7 +631,39 @@ allExamples = concat
   , examples (datetime (2013, 12, 10, 0, 0, 0) Day)
              [ "10.12."
              ]
-  , examples (datetimeInterval ((2013, 2, 12, 18, 30, 0), (2013, 2, 12, 19, 1, 0)) Minute)
+  , examples (datetimeInterval ((2013, 2, 12, 18, 30, 0), (2013, 2, 12, 19, 1, 0)) Minute)
              [ "18:30h - 19:00h"
+             , "18:30h/19:00h"
+             ]
+  , examples (datetimeInterval ((2013, 10, 14, 0, 0, 0), (2013, 10, 16, 0, 0, 0)) Day)
+             [ "14. - 15.10."
+             , "14 - 15.10."
+             , "14. - 15.10"
+             , "14 - 15.10"
+             , "14.10. - 15.10."
+             , "14. - 15.10.2013"
+             , "14.10. - 15.10.2013"
+             , "14./15.10."
+             ]
+  , examples (datetimeInterval ((2018, 10, 14, 0, 0, 0), (2018, 10, 16, 0, 0, 0)) Day)
+             [ "14. - 15.10.18"
+             , "14 - 15.10.18"
+             , "14.10. - 15.10.2018"
+             , "14./15.10.2018"
+             , "vom 14.10. - 15.10.2018"
+             , "14.10. bis 15.10.2018"
+             , "vom 14.10. auf den 15.10.2018"
+             , "vom 14.10. bis zum 15.10.2018"
+             ]
+  , examples (datetime (2013, 10, 10, 0, 0, 0) Day)
+             [ "am 10.10."
+             , "am 10.10"
+             , "10.10"
+             ]
+  , examples (datetime (2013, 2, 12, 10, 10, 0) Minute)
+             [ "um 10.10"
+             ]
+  , examples (datetime (2013, 2, 12, 17, 10, 0) Minute)
+             [ "17h10"
              ]
   ]

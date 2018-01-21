@@ -25,7 +25,7 @@ ruleOrdinalsPrimeiro :: Rule
 ruleOrdinalsPrimeiro = Rule
   { name = "ordinals (primeiro..10)"
   , pattern =
-    [ regex "((primeir|segund|quart|quint|sext|s(e|\x00e9)tim|oitav|non|d(e|\x00e9)cim)(os?|as?))"
+    [ regex "((primeir|segund|quart|quint|sext|s(e|é)tim|oitav|non|d(e|é)cim)(os?|as?))"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
@@ -54,13 +54,13 @@ ruleOrdinalsPrimeiro = Rule
         "sexta" -> Just $ ordinal 6
         "sextas" -> Just $ ordinal 6
         "setimas" -> Just $ ordinal 7
-        "s\x00e9tima" -> Just $ ordinal 7
+        "sétima" -> Just $ ordinal 7
         "setimo" -> Just $ ordinal 7
         "setimos" -> Just $ ordinal 7
         "setima" -> Just $ ordinal 7
-        "s\x00e9timos" -> Just $ ordinal 7
-        "s\x00e9timo" -> Just $ ordinal 7
-        "s\x00e9timas" -> Just $ ordinal 7
+        "sétimos" -> Just $ ordinal 7
+        "sétimo" -> Just $ ordinal 7
+        "sétimas" -> Just $ ordinal 7
         "oitavas" -> Just $ ordinal 8
         "oitava" -> Just $ ordinal 8
         "oitavo" -> Just $ ordinal 8
@@ -69,14 +69,14 @@ ruleOrdinalsPrimeiro = Rule
         "nona" -> Just $ ordinal 9
         "nono" -> Just $ ordinal 9
         "nonas" -> Just $ ordinal 9
-        "d\x00e9cimos" -> Just $ ordinal 10
+        "décimos" -> Just $ ordinal 10
         "decimo" -> Just $ ordinal 10
         "decimos" -> Just $ ordinal 10
-        "d\x00e9cimo" -> Just $ ordinal 10
+        "décimo" -> Just $ ordinal 10
         "decimas" -> Just $ ordinal 10
-        "d\x00e9cima" -> Just $ ordinal 10
+        "décima" -> Just $ ordinal 10
         "decima" -> Just $ ordinal 10
-        "d\x00e9cimas" -> Just $ ordinal 10
+        "décimas" -> Just $ ordinal 10
         _ -> Nothing
       _ -> Nothing
   }

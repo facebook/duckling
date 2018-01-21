@@ -9,18 +9,19 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Numeral.FR.Corpus
-  ( corpus ) where
+  ( corpus
+  ) where
 
-import Prelude
 import Data.String
+import Prelude
 
-import Duckling.Lang
+import Duckling.Locale
 import Duckling.Numeral.Types
 import Duckling.Resolve
 import Duckling.Testing.Types
 
 corpus :: Corpus
-corpus = (testContext {lang = FR}, allExamples)
+corpus = (testContext {locale = makeLocale FR Nothing}, allExamples)
 
 allExamples :: [Example]
 allExamples = concat
@@ -100,6 +101,7 @@ allExamples = concat
              , "100K"
              , "100k"
              , "cent mille"
+             , "100 000"
              ]
   , examples (NumeralValue 3000000)
              [ "3M"

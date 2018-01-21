@@ -8,23 +8,24 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Time.VI.Corpus
-  ( corpus ) where
+  ( corpus
+  ) where
 
-import Prelude
 import Data.String
+import Prelude
 
-import Duckling.Lang
+import Duckling.Locale
 import Duckling.Resolve
+import Duckling.Testing.Types hiding (examples)
 import Duckling.Time.Corpus
 import Duckling.Time.Types hiding (Month, refTime)
 import Duckling.TimeGrain.Types hiding (add)
-import Duckling.Testing.Types hiding (examples)
 
 corpus :: Corpus
 corpus = (context, allExamples)
   where
     context = testContext
-      { lang = VI
+      { locale = makeLocale VI Nothing
       , referenceTime = refTime (2017, 2, 2, 3, 55, 0) (-2)
       }
 

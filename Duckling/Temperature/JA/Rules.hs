@@ -25,7 +25,7 @@ ruleLatentTempDegrees = Rule
   { name = "<latent temp> degrees"
   , pattern =
     [ dimension Temperature
-    , regex "\x5ea6|\x00b0"
+    , regex "度|°"
     ]
   , prod = \tokens -> case tokens of
       (Token Temperature td:_) -> Just . Token Temperature $
@@ -38,7 +38,7 @@ ruleTempCelcius = Rule
   { name = "<temp> Celcius"
   , pattern =
     [ dimension Temperature
-    , regex "\x6442\x6c0f(\x00b0|\x5ea6)|(\x00b0)C"
+    , regex "摂氏(°|度)|(°)C"
     ]
   , prod = \tokens -> case tokens of
       (Token Temperature td:_) -> Just . Token Temperature $
@@ -50,9 +50,9 @@ ruleCelciusTemp :: Rule
 ruleCelciusTemp = Rule
   { name = "Celcius <temp>"
   , pattern =
-    [ regex "\x6442\x6c0f"
+    [ regex "摂氏"
     , dimension Temperature
-    , regex "\x5ea6|\x00b0"
+    , regex "度|°"
     ]
   , prod = \tokens -> case tokens of
       (_:Token Temperature td:_) -> Just . Token Temperature $
@@ -65,7 +65,7 @@ ruleTempFahrenheit = Rule
   { name = "<temp> Fahrenheit"
   , pattern =
     [ dimension Temperature
-    , regex "\x83ef\x6c0f(\x00b0|\x5ea6)|(\x00b0)F"
+    , regex "華氏(°|度)|(°)F"
     ]
   , prod = \tokens -> case tokens of
       (Token Temperature td:_) -> Just . Token Temperature $
@@ -77,9 +77,9 @@ ruleFahrenheitTemp :: Rule
 ruleFahrenheitTemp = Rule
   { name = "Fahrenheit <temp>"
   , pattern =
-    [ regex "\x83ef\x6c0f"
+    [ regex "華氏"
     , dimension Temperature
-    , regex "\x5ea6|\x00b0"
+    , regex "度|°"
     ]
   , prod = \tokens -> case tokens of
       (_:Token Temperature td:_) -> Just . Token Temperature $

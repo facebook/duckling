@@ -13,8 +13,8 @@ module Duckling.Email.Corpus
   , negativeCorpus
   ) where
 
-import Prelude
 import Data.String
+import Prelude
 
 import Duckling.Email.Types
 import Duckling.Testing.Types

@@ -20,25 +20,25 @@ module Duckling.Engine
 import Control.DeepSeq
 import Control.Monad.Extra
 import Data.Aeson
-import qualified Data.Array as Array
 import Data.ByteString (ByteString)
 import Data.Functor.Identity
-import qualified Data.Foldable as Foldable
 import Data.Maybe
 import Data.Text (Text)
-import qualified Data.List as L
 import Prelude
+import qualified Data.Array as Array
+import qualified Data.Foldable as Foldable
+import qualified Data.List as L
 import qualified Text.Regex.PCRE as PCRE
 
 import Duckling.Dimensions.Types
-import qualified Duckling.Engine.Regex as Regex
 import Duckling.Regex.Types
 import Duckling.Resolve
 import Duckling.Types
-import qualified Duckling.Types.Document as Document
 import Duckling.Types.Document (Document)
-import qualified Duckling.Types.Stash as Stash
 import Duckling.Types.Stash (Stash)
+import qualified Duckling.Engine.Regex as Regex
+import qualified Duckling.Types.Document as Document
+import qualified Duckling.Types.Stash as Stash
 
 -- -----------------------------------------------------------------
 -- Engine

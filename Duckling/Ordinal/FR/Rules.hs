@@ -27,48 +27,48 @@ import Duckling.Types
 
 ruleOrdinalsPremierseiziemeMap :: HashMap Text Int
 ruleOrdinalsPremierseiziemeMap = HashMap.fromList
-  [ ( "premi\x00e8re"   , 1 )
+  [ ( "première"   , 1 )
   , ( "premiere"        , 1 )
   , ( "premier"         , 1 )
-  , ( "deuxi\x00e8me"   , 2 )
+  , ( "deuxième"   , 2 )
   , ( "deuxieme"        , 2 )
   , ( "second"          , 2 )
   , ( "seconde"         , 2 )
-  , ( "troisi\x00e8me"  , 3 )
+  , ( "troisième"  , 3 )
   , ( "troisieme"       , 3 )
   , ( "quatrieme"       , 4 )
-  , ( "quatri\x00e8me"  , 4 )
+  , ( "quatrième"  , 4 )
   , ( "cinquieme"       , 5 )
-  , ( "cinqui\x00e8me"  , 5 )
-  , ( "sixi\x00e8me"    , 6 )
+  , ( "cinquième"  , 5 )
+  , ( "sixième"    , 6 )
   , ( "sixieme"         , 6 )
   , ( "septieme"        , 7 )
-  , ( "septi\x00e8me"   , 7 )
-  , ( "huiti\x00e8me"   , 8 )
+  , ( "septième"   , 7 )
+  , ( "huitième"   , 8 )
   , ( "huitieme"        , 8 )
   , ( "neuvieme"        , 9 )
-  , ( "neuvi\x00e8me"   , 9 )
-  , ( "dixi\x00e8me"    , 10 )
+  , ( "neuvième"   , 9 )
+  , ( "dixième"    , 10 )
   , ( "dixieme"         , 10 )
-  , ( "onzi\x00e8me"    , 11 )
+  , ( "onzième"    , 11 )
   , ( "onzieme"         , 11 )
   , ( "douzieme"        , 12 )
-  , ( "douzi\x00e8me"   , 12 )
+  , ( "douzième"   , 12 )
   , ( "treizieme"       , 13 )
-  , ( "treizi\x00e8me"  , 13 )
-  , ( "quatorzi\x00e8me", 14 )
+  , ( "treizième"  , 13 )
+  , ( "quatorzième", 14 )
   , ( "quatorzieme"     , 14 )
-  , ( "quinzi\x00e8me"  , 15 )
+  , ( "quinzième"  , 15 )
   , ( "quinzieme"       , 15 )
   , ( "seizieme"        , 16 )
-  , ( "seizi\x00e8me"   , 16 )
+  , ( "seizième"   , 16 )
   ]
 
 ruleOrdinalsPremierseizieme :: Rule
 ruleOrdinalsPremierseizieme = Rule
   { name = "ordinals (premier..seizieme)"
   , pattern =
-    [ regex "(premi(ere?|\x00e8re)|(deux|trois|quatr|cinqu|six|sept|huit|neuv|dix|onz|douz|treiz|quatorz|quinz|seiz)i(e|\x00e8)me|seconde?)"
+    [ regex "(premi(ere?|ère)|(deux|trois|quatr|cinqu|six|sept|huit|neuv|dix|onz|douz|treiz|quatorz|quinz|seiz)i(e|è)me|seconde?)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
@@ -80,7 +80,7 @@ ruleOrdinalDigits :: Rule
 ruleOrdinalDigits = Rule
   { name = "ordinal (digits)"
   , pattern =
-    [ regex "0*(\\d+) ?(ere?|\x00e8re|\x00e8me|eme|e)"
+    [ regex "0*(\\d+) ?(ere?|ère|ème|eme|e)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> do

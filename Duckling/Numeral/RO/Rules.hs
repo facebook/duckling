@@ -10,22 +10,23 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Numeral.RO.Rules
-  ( rules ) where
+  ( rules
+  ) where
 
 import Data.HashMap.Strict (HashMap)
-import qualified Data.HashMap.Strict as HashMap
 import Data.Maybe
-import Data.Text (Text)
-import qualified Data.Text as Text
-import Prelude
 import Data.String
+import Data.Text (Text)
+import Prelude
+import qualified Data.HashMap.Strict as HashMap
+import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
 import Duckling.Numeral.Helpers
 import Duckling.Numeral.Types (NumeralData (..))
-import qualified Duckling.Numeral.Types as TNumeral
 import Duckling.Regex.Types
 import Duckling.Types
+import qualified Duckling.Numeral.Types as TNumeral
 
 ruleNumeralsPrefixWithOrMinus :: Rule
 ruleNumeralsPrefixWithOrMinus = Rule
@@ -36,19 +37,6 @@ ruleNumeralsPrefixWithOrMinus = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Numeral nd:_) -> double (TNumeral.value nd * (-1))
-      _ -> Nothing
-  }
-
-ruleIntegerNumeric :: Rule
-ruleIntegerNumeric = Rule
-  { name = "integer (numeric)"
-  , pattern =
-    [ regex "(\\d{1,18})"
-    ]
-  , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> do
-        v <- toInteger <$> parseInt match
-        integer v
       _ -> Nothing
   }
 
@@ -74,9 +62,7 @@ ruleDecimalWithThousandsSeparator = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):
-       _) -> let dot = Text.singleton '.'
-                 comma = Text.singleton ','
-                 fmt = Text.replace comma dot $ Text.replace dot Text.empty match
+       _) -> let fmt = Text.replace "," "." $ Text.replace "." Text.empty match
         in parseDouble fmt >>= double
       _ -> Nothing
   }
@@ -138,7 +124,7 @@ ruleIntersectCuI = Rule
   { name = "intersect (cu și)"
   , pattern =
     [ numberWith (fromMaybe 0 . TNumeral.grain) (>1)
-    , regex "(s|\x0219)i"
+    , regex "(s|ș)i"
     , numberWith TNumeral.multipliable not
     ]
   , prod = \tokens -> case tokens of
@@ -166,13 +152,13 @@ rulePowersOfTen :: Rule
 rulePowersOfTen = Rule
   { name = "powers of tens"
   , pattern =
-    [ regex "(sut(a|e|\x0103)?|milio(n|ane)?|miliar(de?)?|mi[ei]?)"
+    [ regex "(sut(a|e|ă)?|milio(n|ane)?|miliar(de?)?|mi[ei]?)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
         "suta"      -> double 1e2 >>= withGrain 2 >>= withMultipliable
         "sute"      -> double 1e2 >>= withGrain 2 >>= withMultipliable
-        "sut\x0103" -> double 1e2 >>= withGrain 2 >>= withMultipliable
+        "sută" -> double 1e2 >>= withGrain 2 >>= withMultipliable
         "mi"        -> double 1e3 >>= withGrain 3 >>= withMultipliable
         "mie"       -> double 1e3 >>= withGrain 3 >>= withMultipliable
         "mii"       -> double 1e3 >>= withGrain 3 >>= withMultipliable
@@ -200,13 +186,13 @@ zeroTenMap = HashMap.fromList
   , ("unu", 1)
   , ("unul", 1)
   , ("intai", 1)
-  , ("\x00eentai", 1)
-  , ("int\x00e2i", 1)
-  , ("\x00eent\x00e2i", 1)
+  , ("întai", 1)
+  , ("intâi", 1)
+  , ("întâi", 1)
   , ("o", 1)
   , ("doi", 2)
   , ("doua", 2)
-  , ("dou\x0103", 2)
+  , ("două", 2)
   , ("trei", 3)
   , ("patru", 4)
   , ("cinci", 5)
@@ -216,7 +202,7 @@ zeroTenMap = HashMap.fromList
   , ("\537apte", 7)
   , ("opt", 8)
   , ("noua", 9)
-  , ("nou\x0103", 9)
+  , ("nouă", 9)
   , ("zece", 10)
   , ("zeci", 10)
   ]
@@ -225,7 +211,7 @@ ruleIntegerZeroTen :: Rule
 ruleIntegerZeroTen = Rule
   { name = "integer (0..10)"
   , pattern =
-    [ regex "(zero|nimic|nici(\\s?o|\\sun(a|ul?))|una|unul?|doi|dou(a|\x0103)|trei|patru|cinci|(s|\x0219)ase|(s|\x0219)apte|opt|nou(a|\x0103)|zec[ei]|(i|\x00ee)nt(a|\x00e2)i|un|o)"
+    [ regex "(zero|nimic|nici(\\s?o|\\sun(a|ul?))|una|unul?|doi|dou(a|ă)|trei|patru|cinci|(s|ș)ase|(s|ș)apte|opt|nou(a|ă)|zec[ei]|(i|î)nt(a|â)i|un|o)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
@@ -250,14 +236,14 @@ elevenNineteenMap = HashMap.fromList
   , ("opti", 18)
   , ("opt", 18)
   , ("noua", 19)
-  , ("nou\x0103", 19)
+  , ("nouă", 19)
   ]
 
 ruleInteger :: Rule
 ruleInteger = Rule
   { name = "integer (11..19)"
   , pattern =
-    [ regex "(cin|sapti|opti)(s|\x0219)pe|(cinci|(s|\x0219)apte|opt)sprezece|(un|doi|trei|pai|(s|\x0219)ai|nou(a|\x0103))((s|\x0219)pe|sprezece)"
+    [ regex "(cin|sapti|opti)(s|ș)pe|(cinci|(s|ș)apte|opt)sprezece|(un|doi|trei|pai|(s|ș)ai|nou(a|ă))((s|ș)pe|sprezece)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (e1:_:e2:_:r:_)):_) -> do
@@ -274,7 +260,7 @@ ruleInteger2 :: Rule
 ruleInteger2 = Rule
   { name = "integer (20..90)"
   , pattern =
-    [ regex "(dou(a|\x0103)|trei|patru|cinci|(s|\x0219)ai|(s|\x0219)apte|opt|nou(a|\x0103))\\s?zeci"
+    [ regex "(dou(a|ă)|trei|patru|cinci|(s|ș)ai|(s|ș)apte|opt|nou(a|ă))\\s?zeci"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> do
@@ -291,7 +277,7 @@ ruleIntegerCuSeparatorDeMiiDot = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):
-       _) -> let fmt = Text.replace (Text.singleton '.') Text.empty match
+       _) -> let fmt = Text.replace "." Text.empty match
         in parseDouble fmt >>= double
       _ -> Nothing
   }
@@ -305,7 +291,6 @@ rules =
   , ruleInteger2
   , ruleInteger3
   , ruleIntegerCuSeparatorDeMiiDot
-  , ruleIntegerNumeric
   , ruleIntersect
   , ruleIntersectCuI
   , ruleMultiply

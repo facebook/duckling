@@ -26,7 +26,7 @@ grains = [ ("second (grain)", "sek(und)?(a|e|u)?", TG.Second)
          , ("day (grain)", "dan(i|a|e)?", TG.Day)
          , ("week (grain)", "tjeda?n(a|e|u|i)?", TG.Week)
          , ("month (grain)", "mjesec(a|e|u|i)?", TG.Month)
-         , ("quarter (grain)", "kvartalu?|tromjese(c|\x010d)j(e|u)", TG.Quarter)
+         , ("quarter (grain)", "kvartalu?|tromjese(c|č)j(e|u)", TG.Quarter)
          , ("year (grain)", "godin(a|e|u)", TG.Year)
          ]
 

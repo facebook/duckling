@@ -9,20 +9,37 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Time.PL.Corpus
-  ( corpus ) where
+  ( corpus
+  , negativeCorpus
+  ) where
 
-import Prelude
 import Data.String
+import Prelude
 
-import Duckling.Lang
+import Duckling.Locale
 import Duckling.Resolve
+import Duckling.Testing.Types hiding (examples)
 import Duckling.Time.Corpus
 import Duckling.Time.Types hiding (Month)
 import Duckling.TimeGrain.Types hiding (add)
-import Duckling.Testing.Types hiding (examples)
 
 corpus :: Corpus
-corpus = (testContext {lang = PL}, allExamples)
+corpus = (testContext {locale = makeLocale PL Nothing}, allExamples)
+
+negativeCorpus :: NegativeCorpus
+negativeCorpus = (testContext {locale = makeLocale PL Nothing}, examples)
+  where
+    examples =
+      [ "nie"
+      , "niez"
+      , "Za Herbatke"
+      , "za herbatke"
+      , "No nic"
+      , "no nic"
+      , "pierwszy"
+      , "drugiej"
+      , "trzecia piętnaście"
+      ]
 
 allExamples :: [Example]
 allExamples = concat
@@ -94,6 +111,8 @@ allExamples = concat
              , "ta niedziela"
              , "niedz"
              , "niedz."
+             , "nd"
+             , "ndz"
              ]
   , examples (datetime (2013, 3, 1, 0, 0, 0) Day)
              [ "pierwszy marca"
@@ -339,6 +358,12 @@ allExamples = concat
              , "o trzeciej rano"
              , "o trzeciej z rana"
              ]
+  , examples (datetime (2013, 2, 12, 13, 0, 0) Hour)
+             [ "o pierwszy"
+             ]
+  , examples (datetime (2013, 2, 12, 14, 0, 0) Hour)
+             [ "o drugiej"
+             ]
   , examples (datetime (2013, 2, 13, 3, 18, 0) Minute)
              [ "3:18 rano"
              ]
@@ -435,14 +460,14 @@ allExamples = concat
              [ "piętnaście po trzeciej"
              , "15 po trzeciej"
              , "kwadrans po 3"
-             , "trzecia piętnaście"
+             , "o trzecia piętnaście"
              , "15:15"
              ]
   , examples (datetime (2013, 2, 12, 15, 20, 0) Minute)
              [ "20 po 3"
              , "3:20"
              , "3:20 w poludnie"
-             , "trzecia dwadzieścia"
+             , "o trzecia dwadzieścia"
              ]
   , examples (datetime (2013, 2, 12, 15, 30, 0) Minute)
              [ "w pół do szesnastej"

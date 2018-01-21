@@ -18,9 +18,9 @@ import Prelude
 
 import Duckling.Dimensions.Types
 import Duckling.Numeral.Types (NumeralData(..))
-import qualified Duckling.Numeral.Types as TNumeral
 import Duckling.Types
 import Duckling.Volume.Helpers
+import qualified Duckling.Numeral.Types as TNumeral
 
 ruleNumeralAsVolume :: Rule
 ruleNumeralAsVolume = Rule

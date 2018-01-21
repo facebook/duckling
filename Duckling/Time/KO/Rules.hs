@@ -13,27 +13,26 @@
 module Duckling.Time.KO.Rules
   ( rules ) where
 
-import Control.Monad (liftM2)
-import qualified Data.Text as Text
 import Prelude
+import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
 import Duckling.Numeral.Helpers (parseInt)
 import Duckling.Ordinal.Types (OrdinalData (..))
-import qualified Duckling.Ordinal.Types as TOrdinal
 import Duckling.Regex.Types
 import Duckling.Time.Helpers
 import Duckling.Time.Types (TimeData (..))
+import Duckling.Types
+import qualified Duckling.Ordinal.Types as TOrdinal
 import qualified Duckling.Time.Types as TTime
 import qualified Duckling.TimeGrain.Types as TG
-import Duckling.Types
 
 ruleNamedday :: Rule
 ruleNamedday = Rule
   { name = "<named-day>에"
   , pattern =
     [ Predicate isADayOfWeek
-    , regex "\xc5d0"
+    , regex "에"
     ]
   , prod = \tokens -> case tokens of
       (x:_) -> Just x
@@ -44,16 +43,16 @@ ruleLiberationDay :: Rule
 ruleLiberationDay = Rule
   { name = "Liberation Day"
   , pattern =
-    [ regex "\xad11\xbcf5\xc808"
+    [ regex "광복절"
     ]
   , prod = \_ -> tt $ monthDay 8 15
   }
 
 ruleTheDayAfterTomorrow :: Rule
 ruleTheDayAfterTomorrow = Rule
-  { name = "the day after tomorrow - 내일모래"
+  { name = "the day after tomorrow - 내일모레"
   , pattern =
-    [ regex "(\xb0b4\xc77c)?\xbaa8\xb798"
+    [ regex "(내일)?모\xb808"
     ]
   , prod = \_ ->
       tt . cycleNthAfter False TG.Day 1 $ cycleNth TG.Day 1
@@ -63,7 +62,7 @@ ruleConstitutionDay :: Rule
 ruleConstitutionDay = Rule
   { name = "Constitution Day"
   , pattern =
-    [ regex "\xc81c\xd5cc\xc808"
+    [ regex "제헌절"
     ]
   , prod = \_ -> tt $ monthDay 6 17
   }
@@ -73,7 +72,7 @@ ruleTimeofday4 = Rule
   { name = "<time-of-day>이전"
   , pattern =
     [ Predicate isATimeOfDay
-    , regex "(\xc774)?\xc804"
+    , regex "(이)?전"
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_) ->
@@ -86,7 +85,7 @@ ruleDay = Rule
   { name = "day"
   , pattern =
     [ Predicate isDOMInteger
-    , regex "\xc77c"
+    , regex "일"
     ]
   , prod = \tokens -> case tokens of
       (token:_) -> do
@@ -100,7 +99,7 @@ ruleSinceTimeofday = Rule
   { name = "since <time-of-day>"
   , pattern =
     [ Predicate isATimeOfDay
-    , regex "\xc774\xb798\xb85c"
+    , regex "이래로"
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_) ->
@@ -112,7 +111,7 @@ ruleThisDayofweek :: Rule
 ruleThisDayofweek = Rule
   { name = "this <day-of-week>"
   , pattern =
-    [ regex "\xc774\xbc88(\xc8fc)?|\xae08\xc8fc"
+    [ regex "이번(주)?|금주"
     , Predicate isADayOfWeek
     ]
   , prod = \tokens -> case tokens of
@@ -125,7 +124,7 @@ ruleNewYearsDay :: Rule
 ruleNewYearsDay = Rule
   { name = "New Year's Day"
   , pattern =
-    [ regex "\xc2e0\xc815|\xc124\xb0a0"
+    [ regex "신정|설날"
     ]
   , prod = \_ -> tt $ monthDay 1 1
   }
@@ -134,7 +133,7 @@ ruleLastTime :: Rule
 ruleLastTime = Rule
   { name = "last <time>"
   , pattern =
-    [ regex "\xc804|\xc800\xbc88|\xc9c0\xb09c"
+    [ regex "전|저번|지난"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -148,7 +147,7 @@ ruleDatetimeDatetimeInterval = Rule
   { name = "<datetime> - <datetime> (interval)"
   , pattern =
     [ Predicate isNotLatent
-    , regex "\\-|\\~|\xbd80\xd130"
+    , regex "\\-|\\~|부터"
     , Predicate isNotLatent
     ]
   , prod = \tokens -> case tokens of
@@ -162,7 +161,7 @@ ruleInDuration = Rule
   { name = "in <duration>"
   , pattern =
     [ dimension Duration
-    , regex "(\xc548|\xb0b4)(\xc5d0)?"
+    , regex "(안|내)(에)?"
     ]
   , prod = \tokens -> case tokens of
       (Token Duration dd:_) ->
@@ -174,7 +173,7 @@ ruleNow :: Rule
 ruleNow = Rule
   { name = "now"
   , pattern =
-    [ regex "\xbc29\xae08|\xc9c0\xae08|\xbc29\xae08|\xb9c9"
+    [ regex "방금|지금|방금|막"
     ]
   , prod = \_ -> tt $ cycleNth TG.Second 0
   }
@@ -184,7 +183,7 @@ ruleMonth = Rule
   { name = "month"
   , pattern =
     [ Predicate $ isIntegerBetween 1 12
-    , regex "\xc6d4"
+    , regex "월"
     ]
   , prod = \tokens -> case tokens of
       (token:_) -> do
@@ -197,7 +196,7 @@ ruleSeason4 :: Rule
 ruleSeason4 = Rule
   { name = "season"
   , pattern =
-    [ regex "\xbd04"
+    [ regex "봄"
     ]
   , prod = \_ ->
       let from = monthDay 3 20
@@ -235,7 +234,7 @@ ruleNoon :: Rule
 ruleNoon = Rule
   { name = "noon"
   , pattern =
-    [ regex "\xc815\xc624"
+    [ regex "정오"
     ]
   , prod = \_ -> tt $ hour False 12
   }
@@ -244,7 +243,7 @@ ruleToday :: Rule
 ruleToday = Rule
   { name = "today"
   , pattern =
-    [ regex "\xc624\xb298|\xb2f9\xc77c|\xae08\xc77c"
+    [ regex "오늘|당일|금일"
     ]
   , prod = \_ -> tt $ cycleNth TG.Day 0
   }
@@ -253,9 +252,9 @@ ruleIntegerHourofdayRelativeMinutes :: Rule
 ruleIntegerHourofdayRelativeMinutes = Rule
   { name = "<integer> (hour-of-day) relative minutes 전"
   , pattern =
-    [ Predicate isAnHourOfDay
+    [ Predicate $ and . sequence [isNotLatent, isAnHourOfDay]
     , Predicate $ isIntegerBetween 1 59
-    , regex "\xbd84\xc804"
+    , regex "분전"
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:token:_) -> do
@@ -269,9 +268,9 @@ ruleHourofdayIntegerAsRelativeMinutes :: Rule
 ruleHourofdayIntegerAsRelativeMinutes = Rule
   { name = "<hour-of-day> <integer> (as relative minutes)"
   , pattern =
-    [ Predicate isAnHourOfDay
+    [ Predicate $ and . sequence [isNotLatent, isAnHourOfDay]
     , Predicate $ isIntegerBetween 1 59
-    , regex "\xbd84"
+    , regex "분"
     ]
   , prod = \tokens -> case tokens of
       (Token Time TimeData {TTime.form = Just (TTime.TimeOfDay (Just hours) _)}:
@@ -287,7 +286,7 @@ ruleHalfHourofdayRelativeMinutes = Rule
   { name = "half (hour-of-day) relative minutes 전"
   , pattern =
     [ Predicate isAnHourOfDay
-    , regex "\xbc18\xc804"
+    , regex "반전"
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_) -> Token Time <$> minutesBefore 30 td
@@ -299,7 +298,7 @@ ruleHourofdayHalfAsRelativeMinutes = Rule
   { name = "<hour-of-day> half (as relative minutes)"
   , pattern =
     [ Predicate isAnHourOfDay
-    , regex "\xbc18"
+    , regex "반"
     ]
   , prod = \tokens -> case tokens of
       (Token Time TimeData {TTime.form = Just (TTime.TimeOfDay (Just hours) _)}:
@@ -312,7 +311,7 @@ ruleSeconds = Rule
   { name = "seconds"
   , pattern =
     [ Predicate $ isIntegerBetween 0 59
-    , regex "\xcd08"
+    , regex "초"
     ]
   , prod = \tokens -> case tokens of
       (token:_) -> do
@@ -339,7 +338,7 @@ ruleTheDayBeforeYesterday :: Rule
 ruleTheDayBeforeYesterday = Rule
   { name = "the day before yesterday - 엊그제"
   , pattern =
-    [ regex "(\xc5ca)?\xadf8(\xc81c|\xc7ac)"
+    [ regex "(엊)?그(제|재)"
     ]
   , prod = \_ ->
       tt . cycleNthAfter False TG.Day (-1) $ cycleNth TG.Day (-1)
@@ -349,17 +348,17 @@ ruleDayofweek :: Rule
 ruleDayofweek = Rule
   { name = "day-of-week"
   , pattern =
-    [ regex "(\xc6d4|\xd654|\xc218|\xbaa9|\xae08|\xd1a0|\xc77c)(\xc694\xc77c|\xc69c)"
+    [ regex "(월|화|수|목|금|토|일)(요일|욜)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> case match of
-        "\xc6d4" -> tt $ dayOfWeek 1
-        "\xd654" -> tt $ dayOfWeek 2
-        "\xc218" -> tt $ dayOfWeek 3
-        "\xbaa9" -> tt $ dayOfWeek 4
-        "\xae08" -> tt $ dayOfWeek 5
-        "\xd1a0" -> tt $ dayOfWeek 6
-        "\xc77c" -> tt $ dayOfWeek 7
+        "월" -> tt $ dayOfWeek 1
+        "화" -> tt $ dayOfWeek 2
+        "수" -> tt $ dayOfWeek 3
+        "목" -> tt $ dayOfWeek 4
+        "금" -> tt $ dayOfWeek 5
+        "토" -> tt $ dayOfWeek 6
+        "일" -> tt $ dayOfWeek 7
         _ -> Nothing
       _ -> Nothing
   }
@@ -368,7 +367,7 @@ ruleNextCycle :: Rule
 ruleNextCycle = Rule
   { name = "next <cycle>"
   , pattern =
-    [ regex "\xb2e4\xc74c|\xc624\xb294|\xcc28|\xb0b4"
+    [ regex "다음|오는|차|내"
     , dimension TimeGrain
     ]
   , prod = \tokens -> case tokens of
@@ -382,7 +381,7 @@ ruleNamedmonth = Rule
   { name = "<named-month>에"
   , pattern =
     [ Predicate isAMonth
-    , regex "\xc5d0"
+    , regex "에"
     ]
   , prod = \tokens -> case tokens of
       (x:_) -> Just x
@@ -394,7 +393,7 @@ ruleTimeofdayApproximately = Rule
   { name = "<time-of-day> approximately"
   , pattern =
     [ Predicate isATimeOfDay
-    , regex "\xc815\xb3c4|\xcbe4"
+    , regex "정도|쯤"
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_) -> tt $ notLatent td
@@ -405,7 +404,7 @@ ruleDurationFromNow :: Rule
 ruleDurationFromNow = Rule
   { name = "<duration> from now"
   , pattern =
-    [ regex "\xc9c0\xae08\xbd80\xd130"
+    [ regex "지금부터"
     , dimension Duration
     ]
   , prod = \tokens -> case tokens of
@@ -418,7 +417,7 @@ ruleLunch :: Rule
 ruleLunch = Rule
   { name = "lunch"
   , pattern =
-    [ regex "\xc810\xc2ec"
+    [ regex "점심"
     ]
   , prod = \_ ->
       let from = hour False 12
@@ -431,7 +430,7 @@ ruleLastCycle :: Rule
 ruleLastCycle = Rule
   { name = "last <cycle>"
   , pattern =
-    [ regex "\xc9c0\xb09c|\xc791|\xc804|\xc800\xbc88"
+    [ regex "지난|작|전|저번"
     , dimension TimeGrain
     ]
   , prod = \tokens -> case tokens of
@@ -444,7 +443,7 @@ ruleAfternoon :: Rule
 ruleAfternoon = Rule
   { name = "afternoon"
   , pattern =
-    [ regex "\xc624\xd6c4"
+    [ regex "오후"
     ]
   , prod = \_ ->
       let from = hour False 12
@@ -457,7 +456,7 @@ ruleChristmasEve :: Rule
 ruleChristmasEve = Rule
   { name = "christmas eve"
   , pattern =
-    [ regex "(\xd06c\xb9ac\xc2a4\xb9c8\xc2a4)?\xc774\xbe0c"
+    [ regex "(크리스마스)?이브"
     ]
   , prod = \_ -> tt $ monthDay 12 24
   }
@@ -467,7 +466,7 @@ ruleInduringThePartofday = Rule
   { name = "in|during the <part-of-day>"
   , pattern =
     [ Predicate isAPartOfDay
-    , regex "\xc5d0|\xb3d9\xc548"
+    , regex "에|동안"
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_) ->
@@ -508,7 +507,7 @@ ruleAfterDuration = Rule
   { name = "after <duration>"
   , pattern =
     [ dimension Duration
-    , regex "(\xc774)?\xd6c4"
+    , regex "(이)?후"
     ]
   , prod = \tokens -> case tokens of
       (Token Duration dd:_) ->
@@ -534,7 +533,7 @@ ruleExactlyTimeofday = Rule
   { name = "exactly <time-of-day>"
   , pattern =
     [ Predicate isATimeOfDay
-    , regex "\xc815\xac01"
+    , regex "정각"
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_) -> tt $ notLatent td
@@ -545,7 +544,7 @@ ruleSeason3 :: Rule
 ruleSeason3 = Rule
   { name = "season"
   , pattern =
-    [ regex "\xaca8\xc6b8"
+    [ regex "겨울"
     ]
   , prod = \_ ->
       let from = monthDay 12 21
@@ -557,7 +556,7 @@ ruleSeason :: Rule
 ruleSeason = Rule
   { name = "season"
   , pattern =
-    [ regex "\xc5ec\xb984"
+    [ regex "여름"
     ]
   , prod = \_ ->
       let from = monthDay 6 21
@@ -569,24 +568,24 @@ ruleDayWithKoreanNumeral :: Rule
 ruleDayWithKoreanNumeral = Rule
   { name = "day with korean number - 십일..삼십일일"
   , pattern =
-    [ regex "((\xc774|\xc0bc)?\xc2ed(\xc77c|\xc774|\xc0bc|\xc0ac|\xc624|\xc721|\xce60|\xd314|\xad6c)?)\xc77c"
+    [ regex "((이|삼)?십(일|이|삼|사|오|육|칠|팔|구)?)일"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (_:m1:m2:_)):_) ->
         let dozens = case m1 of
-              "\xc774" -> 2
-              "\xc0bc" -> 3
+              "이" -> 2
+              "삼" -> 3
               _        -> 1
             units = case m2 of
-              "\xc77c" -> 1
-              "\xc774" -> 2
-              "\xc0bc" -> 3
-              "\xc0ac" -> 4
-              "\xc624" -> 5
-              "\xc721" -> 6
-              "\xce60" -> 7
-              "\xd314" -> 8
-              "\xad6c" -> 9
+              "일" -> 1
+              "이" -> 2
+              "삼" -> 3
+              "사" -> 4
+              "오" -> 5
+              "육" -> 6
+              "칠" -> 7
+              "팔" -> 8
+              "구" -> 9
               _        -> 1
         in tt . dayOfMonth $ 10 * dozens + units
       _ -> Nothing
@@ -596,19 +595,19 @@ ruleDayWithKoreanNumeral2 :: Rule
 ruleDayWithKoreanNumeral2 = Rule
   { name = "day with korean number - 일일..구일"
   , pattern =
-    [ regex "(\xc77c|\xc774|\xc0bc|\xc0ac|\xc624|\xc721|\xce60|\xd314|\xad6c)\xc77c"
+    [ regex "(일|이|삼|사|오|육|칠|팔|구)일"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> case match of
-        "\xc77c" -> tt $ dayOfMonth 1
-        "\xc774" -> tt $ dayOfMonth 2
-        "\xc0bc" -> tt $ dayOfMonth 3
-        "\xc0ac" -> tt $ dayOfMonth 4
-        "\xc624" -> tt $ dayOfMonth 5
-        "\xc721" -> tt $ dayOfMonth 6
-        "\xce60" -> tt $ dayOfMonth 7
-        "\xd314" -> tt $ dayOfMonth 8
-        "\xad6c" -> tt $ dayOfMonth 9
+        "일" -> tt $ dayOfMonth 1
+        "이" -> tt $ dayOfMonth 2
+        "삼" -> tt $ dayOfMonth 3
+        "사" -> tt $ dayOfMonth 4
+        "오" -> tt $ dayOfMonth 5
+        "육" -> tt $ dayOfMonth 6
+        "칠" -> tt $ dayOfMonth 7
+        "팔" -> tt $ dayOfMonth 8
+        "구" -> tt $ dayOfMonth 9
         _ -> Nothing
       _ -> Nothing
   }
@@ -618,7 +617,7 @@ ruleTimeofday2 = Rule
   { name = "<time-of-day>에"
   , pattern =
     [ Predicate isATimeOfDay
-    , regex "\xc5d0"
+    , regex "에"
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td:_) ->
@@ -631,7 +630,7 @@ ruleDurationAgo = Rule
   { name = "<duration> ago"
   , pattern =
     [ dimension Duration
-    , regex "(\xc774)?\xc804"
+    , regex "(이)?전"
     ]
   , prod = \tokens -> case tokens of
       (Token Duration dd:_) ->
@@ -643,7 +642,7 @@ ruleLastNCycle :: Rule
 ruleLastNCycle = Rule
   { name = "last n <cycle>"
   , pattern =
-    [ regex "\xc9c0\xb09c"
+    [ regex "지난"
     , Predicate $ isIntegerBetween 1 9999
     , dimension TimeGrain
     ]
@@ -675,7 +674,7 @@ ruleWithinDuration = Rule
   { name = "within <duration>"
   , pattern =
     [ dimension Duration
-    , regex "\xc774\xb0b4(\xc5d0)?"
+    , regex "이내(에)?"
     ]
   , prod = \tokens -> case tokens of
       (Token Duration dd:_) ->
@@ -689,7 +688,7 @@ ruleMidnighteodendOfDay :: Rule
 ruleMidnighteodendOfDay = Rule
   { name = "midnight|EOD|end of day"
   , pattern =
-    [ regex "\xc790\xc815"
+    [ regex "자정"
     ]
   , prod = \_ -> tt $ hour False 0
   }
@@ -711,7 +710,7 @@ ruleAboutTimeofday :: Rule
 ruleAboutTimeofday = Rule
   { name = "about <time-of-day>"
   , pattern =
-    [ regex "\xb300\xcda9|\xc57d"
+    [ regex "대충|약"
     , Predicate isATimeOfDay
     ]
   , prod = \tokens -> case tokens of
@@ -724,7 +723,7 @@ ruleEndOfTime = Rule
   { name = "end of <time>"
   , pattern =
     [ dimension Time
-    , regex "\xb9d0"
+    , regex "말"
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_) ->
@@ -749,12 +748,9 @@ ruleWeekend :: Rule
 ruleWeekend = Rule
   { name = "week-end"
   , pattern =
-    [ regex "\xc8fc\xb9d0"
+    [ regex "주말"
     ]
-  , prod = \_ -> do
-      from <- intersect (dayOfWeek 5) (hour False 18)
-      to <- intersect (dayOfWeek 1) (hour False 0)
-      Token Time <$> interval TTime.Open from to
+  , prod = \_ -> tt weekend
   }
 
 ruleTimeDayofweek :: Rule
@@ -762,7 +758,7 @@ ruleTimeDayofweek = Rule
   { name = "<time> 마지막 <day-of-week>"
   , pattern =
     [ dimension Time
-    , regex "\xb9c8\xc9c0\xb9c9"
+    , regex "마지막"
     , Predicate isADayOfWeek
     ]
   , prod = \tokens -> case tokens of
@@ -776,7 +772,7 @@ ruleDate = Rule
   { name = "<date>에"
   , pattern =
     [ dimension Time
-    , regex "\xc5d0"
+    , regex "에"
     ]
   , prod = \tokens -> case tokens of
       (x:_) -> Just x
@@ -787,7 +783,7 @@ ruleNextTime :: Rule
 ruleNextTime = Rule
   { name = "next <time>"
   , pattern =
-    [ regex "\xb2e4\xc74c|\xc624\xb294"
+    [ regex "다음|오는"
     , Predicate isNotLatent
     ]
   , prod = \tokens -> case tokens of
@@ -801,7 +797,7 @@ ruleTimeCycle2 = Rule
   { name = "<time> 마지막 <cycle>"
   , pattern =
     [ dimension Time
-    , regex "\xb9c8\xc9c0\xb9c9"
+    , regex "마지막"
     , dimension TimeGrain
     ]
   , prod = \tokens -> case tokens of
@@ -829,7 +825,7 @@ ruleNextNCycle :: Rule
 ruleNextNCycle = Rule
   { name = "next n <cycle>"
   , pattern =
-    [ regex "\xb2e4\xc74c"
+    [ regex "다음"
     , Predicate $ isIntegerBetween 1 9999
     , dimension TimeGrain
     ]
@@ -844,7 +840,7 @@ ruleMorning :: Rule
 ruleMorning = Rule
   { name = "morning"
   , pattern =
-    [ regex "\xc544\xce68"
+    [ regex "아침"
     ]
   , prod = \_ ->
       let from = hour False 4
@@ -857,7 +853,7 @@ ruleThisCycle :: Rule
 ruleThisCycle = Rule
   { name = "this <cycle>"
   , pattern =
-    [ regex "\xc774\xbc88|\xae08|\xc62c"
+    [ regex "이번|금|올"
     , dimension TimeGrain
     ]
   , prod = \tokens -> case tokens of
@@ -870,7 +866,7 @@ ruleThisTime :: Rule
 ruleThisTime = Rule
   { name = "this <time>"
   , pattern =
-    [ regex "\xc774\xbc88"
+    [ regex "이번"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -884,7 +880,7 @@ ruleTimeofday3 = Rule
   { name = "<time-of-day> 정각"
   , pattern =
     [ Predicate isATimeOfDay
-    , regex "\xc815\xac01"
+    , regex "정각"
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_) ->
@@ -896,7 +892,7 @@ ruleMemorialDay :: Rule
 ruleMemorialDay = Rule
   { name = "Memorial Day"
   , pattern =
-    [ regex "\xd604\xcda9\xc77c"
+    [ regex "현충일"
     ]
   , prod = \_ -> tt $ monthDay 6 6
   }
@@ -918,7 +914,7 @@ ruleYesterday :: Rule
 ruleYesterday = Rule
   { name = "yesterday"
   , pattern =
-    [ regex "\xc5b4\xc81c"
+    [ regex "어제"
     ]
   , prod = \_ -> tt . cycleNth TG.Day $ - 1
   }
@@ -927,7 +923,7 @@ ruleSeason2 :: Rule
 ruleSeason2 = Rule
   { name = "season"
   , pattern =
-    [ regex "\xac00\xc744"
+    [ regex "가을"
     ]
   , prod = \_ ->
       let from = monthDay 9 23
@@ -939,8 +935,8 @@ ruleAfterTimeofday :: Rule
 ruleAfterTimeofday = Rule
   { name = "after <time-of-day>"
   , pattern =
-    [ Predicate $ liftM2 (||) isATimeOfDay isAPartOfDay
-    , regex "\xc9c0\xb098\xc11c|(\xc774)?\xd6c4(\xc5d0)?"
+    [ Predicate $ or . sequence [isATimeOfDay, isAPartOfDay]
+    , regex "지나서|(이)?후(에)?"
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_) ->
@@ -952,7 +948,7 @@ ruleChristmas :: Rule
 ruleChristmas = Rule
   { name = "christmas"
   , pattern =
-    [ regex "\xd06c\xb9ac\xc2a4\xb9c8\xc2a4"
+    [ regex "크리스마스"
     ]
   , prod = \_ -> tt $ monthDay 12 25
   }
@@ -966,7 +962,7 @@ ruleTimeofdayAmpm = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:Token RegexMatch (GroupMatch (_:ap:_)):_) ->
-        tt . timeOfDayAMPM td $ Text.toLower ap == "a"
+        tt $ timeOfDayAMPM (Text.toLower ap == "a") td
       _ -> Nothing
   }
 
@@ -975,7 +971,7 @@ ruleTimeCycle = Rule
   { name = "<time> 마지막 <cycle> "
   , pattern =
     [ dimension Time
-    , regex "\xb9c8\xc9c0\xb9c9"
+    , regex "마지막"
     , dimension TimeGrain
     ]
   , prod = \tokens -> case tokens of
@@ -993,7 +989,7 @@ ruleAfterPartofday = Rule
   { name = "after <part-of-day>"
   , pattern =
     [ Predicate isAPartOfDay
-    , regex "\xc9c0\xb098\xc11c|\xd6c4\xc5d0"
+    , regex "지나서|후에"
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_) ->
@@ -1006,7 +1002,7 @@ ruleTimeofday = Rule
   { name = "time-of-day"
   , pattern =
     [ Predicate $ isIntegerBetween 0 24
-    , regex "\xc2dc"
+    , regex "시"
     ]
   , prod = \tokens -> case tokens of
       (token:_) -> do
@@ -1019,7 +1015,7 @@ ruleHangulDay :: Rule
 ruleHangulDay = Rule
   { name = "Hangul Day"
   , pattern =
-    [ regex "\xd55c\xae00\xb0a0"
+    [ regex "한글날"
     ]
   , prod = \_ -> tt $ monthDay 10 9
   }
@@ -1070,7 +1066,7 @@ ruleChildrensDay :: Rule
 ruleChildrensDay = Rule
   { name = "Children's Day"
   , pattern =
-    [ regex "\xc5b4\xb9b0\xc774\xb0a0"
+    [ regex "어린이날"
     ]
   , prod = \_ -> tt $ monthDay 5 5
   }
@@ -1092,7 +1088,7 @@ ruleByTime = Rule
   { name = "by <time> - 까지"
   , pattern =
     [ dimension Time
-    , regex "\xae4c\xc9c0"
+    , regex "까지"
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_) -> Token Time <$>
@@ -1108,11 +1104,12 @@ ruleHhmmMilitaryAmpm = Rule
     , regex "([ap])\\.?m?\\.?"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (hh:mm:_)):Token RegexMatch (GroupMatch (ap:_)):_) -> do
+      (Token RegexMatch (GroupMatch (hh:mm:_)):
+       Token RegexMatch (GroupMatch (ap:_)):
+       _) -> do
         h <- parseInt hh
         m <- parseInt mm
-        tt . timeOfDayAMPM (hourMinute True h m) $
-          Text.toLower ap == "a"
+        tt . timeOfDayAMPM (Text.toLower ap == "a") $ hourMinute True h m
       _ -> Nothing
   }
 
@@ -1135,8 +1132,8 @@ ruleTimeofdayTimeofdayInterval :: Rule
 ruleTimeofdayTimeofdayInterval = Rule
   { name = "<time-of-day> - <time-of-day> (interval)"
   , pattern =
-    [ Predicate $ liftM2 (&&) isATimeOfDay isNotLatent
-    , regex "\\-|\\~|\xbd80\xd130"
+    [ Predicate $ and . sequence [isNotLatent, isATimeOfDay]
+    , regex "\\-|\\~|부터"
     , Predicate isATimeOfDay
     ]
   , prod = \tokens -> case tokens of
@@ -1149,7 +1146,7 @@ ruleNationalFoundationDay :: Rule
 ruleNationalFoundationDay = Rule
   { name = "National Foundation Day"
   , pattern =
-    [ regex "\xac1c\xcc9c\xc808"
+    [ regex "개천절"
     ]
   , prod = \_ -> tt $ monthDay 10 3
   }
@@ -1158,7 +1155,7 @@ ruleEveningnight :: Rule
 ruleEveningnight = Rule
   { name = "evening|night"
   , pattern =
-    [ regex "\xc800\xb141|\xbc24"
+    [ regex "저녁|밤"
     ]
   , prod = \_ ->
       let from = hour False 18
@@ -1171,7 +1168,7 @@ ruleIndependenceMovementDay :: Rule
 ruleIndependenceMovementDay = Rule
   { name = "Independence Movement Day"
   , pattern =
-    [ regex "\xc0bc\xc77c\xc808"
+    [ regex "삼일절"
     ]
   , prod = \_ -> tt $ monthDay 3 1
   }
@@ -1195,7 +1192,7 @@ ruleTomorrow :: Rule
 ruleTomorrow = Rule
   { name = "tomorrow"
   , pattern =
-    [ regex "\xb0b4\xc77c|\xba85\xc77c|\xb0bc"
+    [ regex "내일|명일|낼"
     ]
   , prod = \_ -> tt $ cycleNth TG.Day 1
   }
@@ -1204,14 +1201,13 @@ ruleAmpmTimeofday :: Rule
 ruleAmpmTimeofday = Rule
   { name = "am|pm <time-of-day>"
   , pattern =
-    [ regex "(\xc624\xc804|\xc544\xce68|\xc624\xd6c4|\xc800\xb141)"
+    [ regex "(오전|아침|오후|저녁)"
     , Predicate isATimeOfDay
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):
        Token Time td:
-       _) -> tt . timeOfDayAMPM td $
-         elem match ["\xc624\xc804", "\xc544\xce68"]
+       _) -> tt $ timeOfDayAMPM (elem match ["오전", "아침"]) td
       _ -> Nothing
   }
 
@@ -1220,7 +1216,7 @@ ruleYear2 = Rule
   { name = "year"
   , pattern =
     [ Predicate $ isIntegerBetween 1 2100
-    , regex "\xb144"
+    , regex "년"
     ]
   , prod = \tokens -> case tokens of
       (token:_) -> do
@@ -1248,7 +1244,7 @@ ruleTimezone :: Rule
 ruleTimezone = Rule
   { name = "<time> timezone"
   , pattern =
-    [ Predicate $ liftM2 (&&) isATimeOfDay isNotLatent
+    [ Predicate $ and . sequence [isNotLatent, isATimeOfDay]
     , regex "\\b(YEKT|YEKST|YAKT|YAKST|WITA|WIT|WIB|WGT|WGST|WFT|WET|WEST|WAT|WAST|VUT|VLAT|VLAST|VET|UZT|UYT|UYST|UTC|ULAT|TVT|TMT|TLT|TKT|TJT|TFT|TAHT|SST|SRT|SGT|SCT|SBT|SAST|SAMT|RET|PYT|PYST|PWT|PST|PONT|PMST|PMDT|PKT|PHT|PHOT|PGT|PETT|PETST|PET|PDT|OMST|OMSST|NZST|NZDT|NUT|NST|NPT|NOVT|NOVST|NFT|NDT|NCT|MYT|MVT|MUT|MST|MSK|MSD|MMT|MHT|MDT|MAWT|MART|MAGT|MAGST|LINT|LHST|LHDT|KUYT|KST|KRAT|KRAST|KGT|JST|IST|IRST|IRKT|IRKST|IRDT|IOT|IDT|ICT|HOVT|HKT|GYT|GST|GMT|GILT|GFT|GET|GAMT|GALT|FNT|FKT|FKST|FJT|FJST|EST|EGT|EGST|EET|EEST|EDT|ECT|EAT|EAST|EASST|DAVT|ChST|CXT|CVT|CST|COT|CLT|CLST|CKT|CHAST|CHADT|CET|CEST|CDT|CCT|CAT|CAST|BTT|BST|BRT|BRST|BOT|BNT|AZT|AZST|AZOT|AZOST|AWST|AWDT|AST|ART|AQTT|ANAT|ANAST|AMT|AMST|ALMT|AKST|AKDT|AFT|AEST|AEDT|ADT|ACST|ACDT)\\b"
     ]
   , prod = \tokens -> case tokens of

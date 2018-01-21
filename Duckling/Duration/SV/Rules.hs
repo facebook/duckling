@@ -99,7 +99,7 @@ ruleAboutDuration :: Rule
 ruleAboutDuration = Rule
   { name = "about <duration>"
   , pattern =
-    [ regex "(omkring|cirka|ca.|ca|runt)"
+    [ regex "(omkring|cirka|ca.|ca|c:a|runt|ungefär)"
     , dimension Duration
     ]
   , prod = \tokens -> case tokens of

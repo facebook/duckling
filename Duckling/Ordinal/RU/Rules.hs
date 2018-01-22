@@ -27,10 +27,10 @@ ruleOrdinalsFirstth :: Rule
 ruleOrdinalsFirstth = Rule
   { name = "ordinals (first..19th)"
   , pattern =
-    [ regex "(перв|втор|трет|четверт|пят|шест|седьм|восьм|девят|десят|одинадцат|двенадцат|тринадцат|четырнадцат|пятнадцат|шестнадцат|семнадцат|восемнадцат|девятнадцат|двадцат)(ый|ой|ий|ая|ое)"
+    [ regex "(перв|втор|трет|четверт|пят|шест|седьм|восьм|девят|десят|одинадцат|двенадцат|тринадцат|четырнадцат|пятнадцат|шестнадцат|семнадцат|восемнадцат|девятнадцат|двадцат)(ье(го|й)?|ого|ый|ой|ий|ая|ое|ья)"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> case match of
+      (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
         "перв" -> Just $ ordinal 1
         "втор" -> Just $ ordinal 2
         "трет" -> Just $ ordinal 3
@@ -60,7 +60,7 @@ ruleOrdinal = Rule
   { name = "ordinal 21..99"
   , pattern =
     [ regex "(двадцать|тридцать|сорок|пятьдесят|шестьдесят|семьдесят|восемьдесят|девяносто)"
-    , regex "(перв|втор|трет|четверт|пят|шест|седьм|восьм|девят)(ый|ой|ий|ая|ое)"
+    , regex "(перв|втор|трет|четверт|пят|шест|седьм|восьм|девят)(ье(го|й)?|ого|ый|ой|ий|ая|ое|ья)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (m1:_)):
@@ -95,7 +95,7 @@ ruleOrdinalDigits :: Rule
 ruleOrdinalDigits = Rule
   { name = "ordinal (digits)"
   , pattern =
-    [ regex "0*(\\d+)-?((ы|о|и)?й|ая|ое)"
+    [ regex "0*(\\d+)-?((ы|о|и|а|e|ь)?(ее|й|я|е|го))"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> ordinal <$> parseInt match

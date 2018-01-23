@@ -44,5 +44,12 @@ allExamples = concat
   , examples (DurationData 5 Year)
              [ "5 år"
              , "fem år"
+             , "omkring fem år"
+             , "ungefär fem år"
+             , "runt fem år"
+             , "cirka fem år"
+             , "ca fem år"
+             , "ca. fem år"
+             , "c:a fem år"
              ]
   ]

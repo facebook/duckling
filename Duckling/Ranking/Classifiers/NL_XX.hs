@@ -420,6 +420,8 @@ classifiers
                                     ("next <cycle>monday", -5.482720089545816),
                                     ("on a named-daybetween <time-of-day> and <time-of-day> (interval)",
                                      -5.482720089545816),
+                                    ("afternoon<hour-of-day> <integer> (as relative minutes)",
+                                     -5.077254981437651),
                                     ("exactly <time-of-day>tomorrow", -5.482720089545816),
                                     ("on a named-day<time> <part-of-day>", -5.077254981437651),
                                     ("monthhour", -4.566429357671661),
@@ -474,7 +476,6 @@ classifiers
                                      -4.78957290898587),
                                     ("absorption of , after named day<day-of-month> (non ordinal) <named-month>",
                                      -4.566429357671661),
-                                    ("afternoon todayat <time-of-day>", -5.482720089545816),
                                     ("fridayintersect", -4.78957290898587),
                                     ("on <date><time-of-day> - <time-of-day> (interval)",
                                      -5.482720089545816),
@@ -499,8 +500,6 @@ classifiers
                                     ("<time> <part-of-day>from <datetime> - <datetime> (interval)",
                                      -5.482720089545816),
                                     ("intersectyear", -4.78957290898587),
-                                    ("afternoon today<hour-of-day> <integer> (as relative minutes)",
-                                     -5.077254981437651),
                                     ("<time-of-day> am|pmsaturday", -5.482720089545816),
                                     ("<ordinal> <cycle> of <time>year", -5.482720089545816),
                                     ("minuteday", -3.2854955122095966),
@@ -521,6 +520,7 @@ classifiers
                                     ("hh:mmon a named-day", -5.482720089545816),
                                     ("weekday", -4.096425728425925), ("dayweek", -4.78957290898587),
                                     ("weekyear", -5.077254981437651),
+                                    ("afternoonat <time-of-day>", -5.482720089545816),
                                     ("on <date>February", -5.482720089545816),
                                     ("<month> dd-dd (interval)year", -5.482720089545816),
                                     ("Dutch King dayyear", -5.482720089545816),
@@ -587,6 +587,7 @@ classifiers
                                      -4.886582645426277),
                                     ("thursdaybetween <datetime> and <datetime> (interval)",
                                      -4.886582645426277),
+                                    ("afternoon<time-of-day>  o'clock", -4.886582645426277),
                                     ("<day-of-month> (ordinal)tuesday", -4.481117537318113),
                                     ("thursdayhh:mm", -4.886582645426277),
                                     ("Aprilabout <time-of-day>", -4.886582645426277),
@@ -596,7 +597,6 @@ classifiers
                                     ("<day-of-month> (ordinal)sunday", -4.481117537318113),
                                     ("thursdayfrom <time-of-day> - <time-of-day> (interval)",
                                      -4.193435464866331),
-                                    ("afternoon todayat <time-of-day>", -4.481117537318113),
                                     ("mondayFebruary", -4.886582645426277),
                                     ("on <date><time-of-day> - <time-of-day> (interval)",
                                      -4.886582645426277),
@@ -615,6 +615,7 @@ classifiers
                                     ("Octoberyear", -4.886582645426277),
                                     ("year<time> <part-of-day>", -4.886582645426277),
                                     ("yearday", -4.481117537318113),
+                                    ("afternoonat <time-of-day>", -4.481117537318113),
                                     ("absorption of , after named dayFebruary", -4.886582645426277),
                                     ("<day-of-month> (non ordinal) <named-month>about <time-of-day>",
                                      -4.886582645426277),
@@ -622,7 +623,6 @@ classifiers
                                     ("on a named-day<time-of-day> - <time-of-day> (interval)",
                                      -4.886582645426277),
                                     ("on <date>after <time-of-day>", -4.886582645426277),
-                                    ("afternoon today<time-of-day>  o'clock", -4.886582645426277),
                                     ("<day-of-month> (non ordinal) <named-month>year",
                                      -4.886582645426277)],
                                n = 60}}),
@@ -723,6 +723,13 @@ classifiers
                                    [("hh:mmtime-of-day (latent)", -1.0986122886681098),
                                     ("minutehour", -1.0986122886681098)],
                                n = 3}}),
+       ("tomorrowafternoon",
+        Classifier{okData =
+                     ClassData{prior = 0.0, unseen = -1.0986122886681098,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 1},
+                   koData =
+                     ClassData{prior = -infinity, unseen = -0.6931471805599453,
+                               likelihoods = HashMap.fromList [], n = 0}}),
        ("yyyy-mm-dd",
         Classifier{okData =
                      ClassData{prior = -infinity, unseen = -0.6931471805599453,
@@ -998,8 +1005,8 @@ classifiers
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("afternoon",
         Classifier{okData =
-                     ClassData{prior = 0.0, unseen = -2.3025850929940455,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 8},
+                     ClassData{prior = 0.0, unseen = -2.4849066497880004,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 10},
                    koData =
                      ClassData{prior = -infinity, unseen = -0.6931471805599453,
                                likelihoods = HashMap.fromList [], n = 0}}),
@@ -1025,6 +1032,13 @@ classifiers
                                n = 7},
                    koData =
                      ClassData{prior = -infinity, unseen = -2.1972245773362196,
+                               likelihoods = HashMap.fromList [], n = 0}}),
+       ("yesterdayafternoon",
+        Classifier{okData =
+                     ClassData{prior = 0.0, unseen = -1.3862943611198906,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 2},
+                   koData =
+                     ClassData{prior = -infinity, unseen = -0.6931471805599453,
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("minute (grain)",
         Classifier{okData =
@@ -1266,13 +1280,6 @@ classifiers
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -1.791759469228055,
                                likelihoods = HashMap.fromList [("", 0.0)], n = 4},
-                   koData =
-                     ClassData{prior = -infinity, unseen = -0.6931471805599453,
-                               likelihoods = HashMap.fromList [], n = 0}}),
-       ("afternoon tomorrow",
-        Classifier{okData =
-                     ClassData{prior = 0.0, unseen = -1.0986122886681098,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 1},
                    koData =
                      ClassData{prior = -infinity, unseen = -0.6931471805599453,
                                likelihoods = HashMap.fromList [], n = 0}}),
@@ -1563,13 +1570,6 @@ classifiers
                                     ("<named-month> <day-of-month> (non ordinal)August",
                                      -2.1400661634962708)],
                                n = 3}}),
-       ("afternoon today",
-        Classifier{okData =
-                     ClassData{prior = 0.0, unseen = -1.3862943611198906,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 2},
-                   koData =
-                     ClassData{prior = -infinity, unseen = -0.6931471805599453,
-                               likelihoods = HashMap.fromList [], n = 0}}),
        ("<integer> and an half hour",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -1.0986122886681098,

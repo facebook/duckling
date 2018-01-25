@@ -214,13 +214,49 @@ ruleEvening :: Rule
 ruleEvening = Rule
   { name = "evening"
   , pattern =
-    [ regex "\\'s avonds|vanavond"
+    [ regex "avond|\\'s avonds|vanavond"
     ]
   , prod = \_ ->
       let from = hour False 18
           to = hour False 0
       in Token Time . mkLatent . partOfDay <$>
            interval TTime.Open from to
+  }
+
+ruleTodayEvening :: Rule
+ruleTodayEvening = Rule
+  { name = "today evening"
+  , pattern =
+    [ regex "vanavond"
+    ]
+  , prod = \_ -> do
+      let td1 = cycleNth TG.Day 0
+      td2 <- interval TTime.Open (hour False 18) (hour False 0)
+      Token Time . partOfDay <$> intersect td1 td2
+  }
+
+ruleTomorrowEvening :: Rule
+ruleTomorrowEvening = Rule
+  { name = "tomorrowevening"
+  , pattern =
+    [ regex "morgenavond"
+    ]
+  , prod = \_ -> do
+      let td1 = cycleNth TG.Day 1
+      td2 <- interval TTime.Open (hour False 18) (hour False 0)
+      Token Time . partOfDay <$> intersect td1 td2
+  }
+
+ruleLastEvening :: Rule
+ruleLastEvening = Rule
+  { name = "lastevening"
+  , pattern =
+    [ regex "gisteravond|gisterenavond"
+    ]
+  , prod = \_ -> do
+      let td1 = cycleNth TG.Day $ - 1
+      td2 <- interval TTime.Open (hour False 18) (hour False 0)
+      Token Time . partOfDay <$> intersect td1 td2
   }
 
 ruleTheDayofmonthNonOrdinal :: Rule
@@ -1217,42 +1253,6 @@ ruleHhmm = Rule
       _ -> Nothing
   }
 
-ruleTonight :: Rule
-ruleTonight = Rule
-  { name = "tonight"
-  , pattern =
-    [ regex "vanavond"
-    ]
-  , prod = \_ -> do
-      let td1 = cycleNth TG.Day 0
-      td2 <- interval TTime.Open (hour False 18) (hour False 0)
-      Token Time . partOfDay <$> intersect td1 td2
-  }
-
-ruleTomorrowNight :: Rule
-ruleTomorrowNight = Rule
-  { name = "tomorrownight"
-  , pattern =
-    [ regex "morgenavond"
-    ]
-  , prod = \_ -> do
-      let td1 = cycleNth TG.Day 1
-      td2 <- interval TTime.Open (hour False 18) (hour False 0)
-      Token Time . partOfDay <$> intersect td1 td2
-  }
-
-ruleLastNight :: Rule
-ruleLastNight = Rule
-  { name = "lastnight"
-  , pattern =
-    [ regex "gisteravond"
-    ]
-  , prod = \_ -> do
-      let td1 = cycleNth TG.Day $ - 1
-      td2 <- interval TTime.Open (hour False 18) (hour False 0)
-      Token Time . partOfDay <$> intersect td1 td2
-  }
-
 ruleYear :: Rule
 ruleYear = Rule
   { name = "year"
@@ -1517,6 +1517,9 @@ rules =
   , ruleDurationBeforeTime
   , ruleDurationFromNow
   , ruleEvening
+  , ruleTodayEvening
+  , ruleTomorrowEvening
+  , ruleLastEvening
   , ruleExactlyTimeofday
   , ruleFromDatetimeDatetimeInterval
   , ruleFromTimeofdayTimeofdayInterval
@@ -1577,9 +1580,6 @@ rules =
   , ruleTimeofdaySharp
   , ruleTimeofdayTimeofdayInterval
   , ruleTimeofdayTimeofdayInterval2
-  , ruleTonight
-  , ruleTomorrowNight
-  , ruleLastNight
   , ruleUntilTimeofday
   , ruleUntilTimeofdayPostfix
   , ruleWeekend

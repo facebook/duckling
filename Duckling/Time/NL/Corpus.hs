@@ -459,16 +459,45 @@ allExamples = concat
              ]
   , examples (datetimeInterval ((2013, 2, 12, 18, 0, 0), (2013, 2, 13, 0, 0, 0)) Hour)
              [ "vanavond"
+             , "deze avond"
+             , "vandaag avond"
              ]
   , examples (datetimeInterval ((2013, 2, 13, 18, 0, 0), (2013, 2, 14, 0, 0, 0)) Hour)
              [ "morgenavond"
              ]
+  , examples (datetimeInterval ((2013, 2, 11, 18, 0, 0), (2013, 2, 12, 0, 0, 0)) Hour)
+             [ "gisteravond"
+             , "gisterenavond"
+             ]
+  , examples (datetimeInterval ((2013, 2, 12, 0, 0, 0), (2013, 2, 12, 12, 0, 0)) Hour)
+             [ "vanmorgen"
+             ]
+  , examples (datetimeInterval ((2013, 2, 13, 0, 0, 0), (2013, 2, 13, 12, 0, 0)) Hour)
+             [ "morgenochtend"
+             ]
+  , examples (datetimeInterval ((2013, 2, 11, 0, 0, 0), (2013, 2, 11, 12, 0, 0)) Hour)
+             [ "gisterenochtend"
+             ]
+  , examples (datetimeInterval ((2013, 2, 13, 18, 0, 0), (2013, 2, 14, 0, 0, 0)) Hour)
+             [ "morgennacht"
+             ]
+  , examples (datetimeInterval ((2013, 2, 11, 18, 0, 0), (2013, 2, 12, 0, 0, 0)) Hour)
+             [ "gisterennacht"
+             ]
+  , examples (datetimeInterval ((2013, 2, 12, 12, 0, 0), (2013, 2, 12, 18, 0, 0)) Hour)
+             [ "vanmiddag"
+             , "deze namiddag"
+             , "vandaag namiddag"
+             ]
   , examples (datetimeInterval ((2013, 2, 13, 12, 0, 0), (2013, 2, 13, 18, 0, 0)) Hour)
              [ "morgenmiddag"
              , "morgen 's middags"
+             , "morgen namiddag"
              ]
-  , examples (datetimeInterval ((2013, 2, 11, 18, 0, 0), (2013, 2, 12, 0, 0, 0)) Hour)
-             [ "gisteravond"
+  , examples (datetimeInterval ((2013, 2, 11, 12, 0, 0), (2013, 2, 11, 18, 0, 0)) Hour)
+             [ "gisterenmiddag"
+             , "gistermiddag"
+             , "gisterennamiddag"
              ]
   , examples (datetimeInterval ((2013, 2, 15, 18, 0, 0), (2013, 2, 18, 0, 0, 0)) Hour)
              [ "dit weekend"
@@ -593,9 +622,6 @@ allExamples = concat
              , "tot 11 am in de ochtend"
              , "op zijn laatst om 11 uur"
              , "11 uur op zijn laatst"
-             ]
-  , examples (datetimeInterval ((2013, 2, 12, 12, 0, 0), (2013, 2, 12, 18, 0, 0)) Hour)
-             [ "vanmiddag"
              ]
   , examples (datetime (2013, 2, 12, 13, 30, 0) Minute)
              [ "om 13:30 in de middag"

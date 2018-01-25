@@ -214,13 +214,49 @@ ruleEvening :: Rule
 ruleEvening = Rule
   { name = "evening"
   , pattern =
-    [ regex "\\'s avonds|vanavond"
+    [ regex "avond|\\'s avonds|vanavond"
     ]
   , prod = \_ ->
       let from = hour False 18
           to = hour False 0
       in Token Time . mkLatent . partOfDay <$>
            interval TTime.Open from to
+  }
+
+ruleTodayEvening :: Rule
+ruleTodayEvening = Rule
+  { name = "today evening"
+  , pattern =
+    [ regex "vanavond"
+    ]
+  , prod = \_ -> do
+      let td1 = cycleNth TG.Day 0
+      td2 <- interval TTime.Open (hour False 18) (hour False 0)
+      Token Time . partOfDay <$> intersect td1 td2
+  }
+
+ruleTomorrowEvening :: Rule
+ruleTomorrowEvening = Rule
+  { name = "tomorrowevening"
+  , pattern =
+    [ regex "morgenavond"
+    ]
+  , prod = \_ -> do
+      let td1 = cycleNth TG.Day 1
+      td2 <- interval TTime.Open (hour False 18) (hour False 0)
+      Token Time . partOfDay <$> intersect td1 td2
+  }
+
+ruleYesterdayEvening :: Rule
+ruleYesterdayEvening = Rule
+  { name = "yesterdayevening"
+  , pattern =
+    [ regex "gisteravond|gisterenavond"
+    ]
+  , prod = \_ -> do
+      let td1 = cycleNth TG.Day $ - 1
+      td2 <- interval TTime.Open (hour False 18) (hour False 0)
+      Token Time . partOfDay <$> intersect td1 td2
   }
 
 ruleTheDayofmonthNonOrdinal :: Rule
@@ -477,7 +513,7 @@ ruleAfternoon :: Rule
 ruleAfternoon = Rule
   { name = "afternoon"
   , pattern =
-    [ regex "('s )?middags?|(in de )?middag"
+    [ regex "('s )?middags?|(in de )?middag|namiddag"
     ]
   , prod = \_ ->
       let from = hour False 12
@@ -486,9 +522,9 @@ ruleAfternoon = Rule
            interval TTime.Open from to
   }
 
-ruleAfternoonToday :: Rule
-ruleAfternoonToday = Rule
-  { name = "afternoon today"
+ruleTodayAfternoon :: Rule
+ruleTodayAfternoon = Rule
+  { name = "afternoon"
   , pattern =
     [ regex "vanmiddag"
     ]
@@ -498,14 +534,26 @@ ruleAfternoonToday = Rule
       Token Time . partOfDay <$> intersect td1 td2
   }
 
-ruleAfternoonTomorrow :: Rule
-ruleAfternoonTomorrow = Rule
-  { name = "afternoon tomorrow"
+ruleTomorrowAfternoon :: Rule
+ruleTomorrowAfternoon = Rule
+  { name = "tomorrowafternoon"
   , pattern =
     [ regex "morgenmiddags?"
     ]
   , prod = \_ -> do
       let td1 = cycleNth TG.Day 1
+      td2 <- interval TTime.Open (hour False 12) (hour False 18)
+      Token Time . partOfDay <$> intersect td1 td2
+  }
+
+ruleYesterdayAfternoon :: Rule
+ruleYesterdayAfternoon = Rule
+  { name = "yesterdayafternoon"
+  , pattern =
+    [ regex "gistermiddag|gisterenmiddag|gisterennamiddag"
+    ]
+  , prod = \_ -> do
+      let td1 = cycleNth TG.Day $ - 1
       td2 <- interval TTime.Open (hour False 12) (hour False 18)
       Token Time . partOfDay <$> intersect td1 td2
   }
@@ -1012,6 +1060,42 @@ ruleMorning = Rule
            interval TTime.Open from to
   }
 
+ruleTodayMorning :: Rule
+ruleTodayMorning = Rule
+  { name = "today morning"
+  , pattern =
+    [ regex "vanmorgen"
+    ]
+  , prod = \_ -> do
+      let td1 = cycleNth TG.Day 0
+      td2 <- interval TTime.Open (hour False 0) (hour False 12)
+      Token Time . partOfDay <$> intersect td1 td2
+  }
+
+ruleTomorrowMorning :: Rule
+ruleTomorrowMorning = Rule
+  { name = "tomorrowmorning"
+  , pattern =
+    [ regex "morgenochtend"
+    ]
+  , prod = \_ -> do
+      let td1 = cycleNth TG.Day 1
+      td2 <- interval TTime.Open (hour False 0) (hour False 12)
+      Token Time . partOfDay <$> intersect td1 td2
+  }
+
+ruleYesterdayMorning :: Rule
+ruleYesterdayMorning = Rule
+  { name = "yesterdaymorning"
+  , pattern =
+    [ regex "gisterenochtend"
+    ]
+  , prod = \_ -> do
+      let td1 = cycleNth TG.Day $ - 1
+      td2 <- interval TTime.Open (hour False 0) (hour False 12)
+      Token Time . partOfDay <$> intersect td1 td2
+  }
+
 ruleThisPartofday :: Rule
 ruleThisPartofday = Rule
   { name = "this <part-of-day>"
@@ -1137,6 +1221,30 @@ ruleNight = Rule
            interval TTime.Open from to
   }
 
+ruleTomorrowNight :: Rule
+ruleTomorrowNight = Rule
+  { name = "tomorrownight"
+  , pattern =
+    [ regex "morgennacht"
+    ]
+  , prod = \_ -> do
+      let td1 = cycleNth TG.Day 1
+      td2 <- interval TTime.Open (hour False 18) (hour False 0)
+      Token Time . partOfDay <$> intersect td1 td2
+  }
+
+ruleYesterdayNight :: Rule
+ruleYesterdayNight = Rule
+  { name = "yesterdaynight"
+  , pattern =
+    [ regex "gisterennacht"
+    ]
+  , prod = \_ -> do
+      let td1 = cycleNth TG.Day $ - 1
+      td2 <- interval TTime.Open (hour False 18) (hour False 0)
+      Token Time . partOfDay <$> intersect td1 td2
+  }
+
 ruleDayofmonthOrdinal :: Rule
 ruleDayofmonthOrdinal = Rule
   { name = "<day-of-month> (ordinal)"
@@ -1215,42 +1323,6 @@ ruleHhmm = Rule
         m <- parseInt m2
         tt $ hourMinute False h m
       _ -> Nothing
-  }
-
-ruleTonight :: Rule
-ruleTonight = Rule
-  { name = "tonight"
-  , pattern =
-    [ regex "vanavond"
-    ]
-  , prod = \_ -> do
-      let td1 = cycleNth TG.Day 0
-      td2 <- interval TTime.Open (hour False 18) (hour False 0)
-      Token Time . partOfDay <$> intersect td1 td2
-  }
-
-ruleTomorrowNight :: Rule
-ruleTomorrowNight = Rule
-  { name = "tomorrownight"
-  , pattern =
-    [ regex "morgenavond"
-    ]
-  , prod = \_ -> do
-      let td1 = cycleNth TG.Day 1
-      td2 <- interval TTime.Open (hour False 18) (hour False 0)
-      Token Time . partOfDay <$> intersect td1 td2
-  }
-
-ruleLastNight :: Rule
-ruleLastNight = Rule
-  { name = "lastnight"
-  , pattern =
-    [ regex "gisteravond"
-    ]
-  , prod = \_ -> do
-      let td1 = cycleNth TG.Day $ - 1
-      td2 <- interval TTime.Open (hour False 18) (hour False 0)
-      Token Time . partOfDay <$> intersect td1 td2
   }
 
 ruleYear :: Rule
@@ -1500,8 +1572,9 @@ rules =
   , ruleAfterTimeofdayPostfix
   , ruleAfterWork
   , ruleAfternoon
-  , ruleAfternoonToday
-  , ruleAfternoonTomorrow
+  , ruleTodayAfternoon
+  , ruleTomorrowAfternoon
+  , ruleYesterdayAfternoon
   , ruleAtTimeofday
   , ruleBetweenDatetimeAndDatetimeInterval
   , ruleBetweenTimeofdayAndTimeofdayInterval
@@ -1517,6 +1590,9 @@ rules =
   , ruleDurationBeforeTime
   , ruleDurationFromNow
   , ruleEvening
+  , ruleTodayEvening
+  , ruleTomorrowEvening
+  , ruleYesterdayEvening
   , ruleExactlyTimeofday
   , ruleFromDatetimeDatetimeInterval
   , ruleFromTimeofdayTimeofdayInterval
@@ -1540,12 +1616,17 @@ rules =
   , ruleMmddyyyy
   , ruleMonthDdddInterval
   , ruleMorning
+  , ruleTodayMorning
+  , ruleTomorrowMorning
+  , ruleYesterdayMorning
   , ruleNamedmonthDayofmonthNonOrdinal
   , ruleNamedmonthDayofmonthOrdinal
   , ruleNextCycle
   , ruleNextNCycle
   , ruleNextTime
   , ruleNight
+  , ruleTomorrowNight
+  , ruleYesterdayNight
   , ruleNthTimeAfterTime
   , ruleNthTimeAfterTime2
   , ruleNthTimeOfTime
@@ -1577,9 +1658,6 @@ rules =
   , ruleTimeofdaySharp
   , ruleTimeofdayTimeofdayInterval
   , ruleTimeofdayTimeofdayInterval2
-  , ruleTonight
-  , ruleTomorrowNight
-  , ruleLastNight
   , ruleUntilTimeofday
   , ruleUntilTimeofdayPostfix
   , ruleWeekend

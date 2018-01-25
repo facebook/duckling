@@ -474,6 +474,12 @@ allExamples = concat
   , examples (datetimeInterval ((2013, 2, 11, 0, 0, 0), (2013, 2, 11, 12, 0, 0)) Hour)
              [ "gisterenochtend"
              ]
+  , examples (datetimeInterval ((2013, 2, 13, 18, 0, 0), (2013, 2, 14, 0, 0, 0)) Hour)
+             [ "morgennacht"
+             ]
+  , examples (datetimeInterval ((2013, 2, 11, 18, 0, 0), (2013, 2, 12, 0, 0, 0)) Hour)
+             [ "gisterennacht"
+             ]
   , examples (datetimeInterval ((2013, 2, 13, 12, 0, 0), (2013, 2, 13, 18, 0, 0)) Hour)
              [ "morgenmiddag"
              , "morgen 's middags"

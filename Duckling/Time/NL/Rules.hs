@@ -1209,6 +1209,30 @@ ruleNight = Rule
            interval TTime.Open from to
   }
 
+ruleTomorrowNight :: Rule
+ruleTomorrowNight = Rule
+  { name = "tomorrownight"
+  , pattern =
+    [ regex "morgennacht"
+    ]
+  , prod = \_ -> do
+      let td1 = cycleNth TG.Day 1
+      td2 <- interval TTime.Open (hour False 18) (hour False 0)
+      Token Time . partOfDay <$> intersect td1 td2
+  }
+
+ruleYesterdayNight :: Rule
+ruleYesterdayNight = Rule
+  { name = "yesterdaynight"
+  , pattern =
+    [ regex "gisterennacht"
+    ]
+  , prod = \_ -> do
+      let td1 = cycleNth TG.Day $ - 1
+      td2 <- interval TTime.Open (hour False 18) (hour False 0)
+      Token Time . partOfDay <$> intersect td1 td2
+  }
+
 ruleDayofmonthOrdinal :: Rule
 ruleDayofmonthOrdinal = Rule
   { name = "<day-of-month> (ordinal)"
@@ -1588,6 +1612,8 @@ rules =
   , ruleNextNCycle
   , ruleNextTime
   , ruleNight
+  , ruleTomorrowNight
+  , ruleYesterdayNight
   , ruleNthTimeAfterTime
   , ruleNthTimeAfterTime2
   , ruleNthTimeOfTime

@@ -513,7 +513,7 @@ ruleAfternoon :: Rule
 ruleAfternoon = Rule
   { name = "afternoon"
   , pattern =
-    [ regex "('s )?middags?|(in de )?middag"
+    [ regex "('s )?middags?|(in de )?middag|namiddag"
     ]
   , prod = \_ ->
       let from = hour False 12
@@ -550,7 +550,7 @@ ruleYesterdayAfternoon :: Rule
 ruleYesterdayAfternoon = Rule
   { name = "yesterdayafternoon"
   , pattern =
-    [ regex "gistermiddag|gisterenmiddag"
+    [ regex "gistermiddag|gisterenmiddag|gisterennamiddag"
     ]
   , prod = \_ -> do
       let td1 = cycleNth TG.Day $ - 1

@@ -529,7 +529,7 @@ ruleHODAndInteger = Rule
     , Predicate $ isIntegerBetween 0 60
     ]
   , prod = \tokens -> case tokens of
-      (Token Time TimeData {TTime.form = Just (TTime.TimeOfDay (Just hours) is12H)}:_:Token Numeral (NumeralData {TNumeral.value = v}):_) ->
+      (Token Time TimeData {TTime.form = Just (TTime.TimeOfDay (Just hours) is12H)}:_:Token Numeral NumeralData{TNumeral.value = v}:_) ->
         tt $ hourMinute is12H hours (floor v)
       _ -> Nothing
   }
@@ -544,7 +544,7 @@ ruleHODAndIntegerMinutes = Rule
     , regex "دقيق[ةه]|دقا[ئي]ق"
     ]
   , prod = \tokens -> case tokens of
-      (Token Time TimeData {TTime.form = Just (TTime.TimeOfDay (Just hours) is12H)}:_:Token Numeral (NumeralData {TNumeral.value = v}):_) ->
+      (Token Time TimeData {TTime.form = Just (TTime.TimeOfDay (Just hours) is12H)}:_:Token Numeral NumeralData{TNumeral.value = v}:_) ->
         tt $ hourMinute is12H hours (floor v)
       _ -> Nothing
   }
@@ -1652,7 +1652,7 @@ ruleInNumeral = Rule
     , Predicate $ isIntegerBetween 0 60
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Numeral (NumeralData {TNumeral.value = v}):_) ->
+      (_:Token Numeral NumeralData{TNumeral.value = v}:_) ->
         tt . inDuration . duration TG.Minute $ floor v
       _ -> Nothing
   }

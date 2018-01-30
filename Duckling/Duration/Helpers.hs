@@ -7,7 +7,6 @@
 
 
 {-# LANGUAGE GADTs #-}
-{-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Duration.Helpers
   ( duration

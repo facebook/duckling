@@ -7,7 +7,7 @@
 
 
 {-# LANGUAGE NoRebindableSyntax #-}
-{-# LANGUAGE OverloadedStrings #-}
+
 
 module Duckling.Ranking.Types
   ( Feature

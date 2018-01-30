@@ -119,8 +119,8 @@ ruleAmountUnit = Rule
     , financeWith TAmountOfMoney.value isNothing
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = v}):
-       Token AmountOfMoney (AmountOfMoneyData {TAmountOfMoney.currency = c}):
+      (Token Numeral NumeralData{TNumeral.value = v}:
+       Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.currency = c}:
        _) -> Just . Token AmountOfMoney . withValue v $ currencyOnly c
       _ -> Nothing
   }
@@ -133,8 +133,8 @@ ruleUnitAmount = Rule
     , dimension Numeral
     ]
   , prod = \tokens -> case tokens of
-      (Token AmountOfMoney (AmountOfMoneyData {TAmountOfMoney.currency = c}):
-       Token Numeral (NumeralData {TNumeral.value = v}):
+      (Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.currency = c}:
+       Token Numeral NumeralData{TNumeral.value = v}:
        _) -> Just . Token AmountOfMoney . withValue v $ currencyOnly c
       _ -> Nothing
   }

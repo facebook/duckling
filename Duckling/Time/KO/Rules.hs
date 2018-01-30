@@ -663,7 +663,7 @@ ruleTimeNthTime = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td1:
-       Token Ordinal (OrdinalData {TOrdinal.value = v}):
+       Token Ordinal OrdinalData{TOrdinal.value = v}:
        Token Time td2:
        _) -> Token Time . predNth (v - 1) False <$> intersect td1 td2
       _ -> Nothing

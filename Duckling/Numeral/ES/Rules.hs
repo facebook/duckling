@@ -34,7 +34,7 @@ ruleNumeralsPrefixWithNegativeOrMinus = Rule
     , dimension Numeral
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Numeral (NumeralData {TNumeral.value = v}):_) ->
+      (_:Token Numeral NumeralData{TNumeral.value = v}:_) ->
         double $ v * (- 1)
       _ -> Nothing
   }
@@ -170,7 +170,7 @@ ruleNumeral3 = Rule
     , numberBetween 6 10
     ]
   , prod = \tokens -> case tokens of
-      (_:_:Token Numeral (NumeralData {TNumeral.value = v}):_) ->
+      (_:_:Token Numeral NumeralData{TNumeral.value = v}:_) ->
         double $ 10 + v
       _ -> Nothing
   }
@@ -183,7 +183,7 @@ ruleNumeralsSuffixesKMG = Rule
     , regex "([kmg])(?=[\\W\\$€]|$)"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = v}):
+      (Token Numeral NumeralData{TNumeral.value = v}:
        Token RegexMatch (GroupMatch (match:_)):
        _) -> case Text.toLower match of
           "k" -> double $ v * 1e3
@@ -231,9 +231,9 @@ ruleNumeral4 = Rule
     , numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = v1}):
+      (Token Numeral NumeralData{TNumeral.value = v1}:
        _:
-       Token Numeral (NumeralData {TNumeral.value = v2}):
+       Token Numeral NumeralData{TNumeral.value = v2}:
        _) -> double $ v1 + v2
       _ -> Nothing
   }
@@ -247,9 +247,9 @@ ruleNumerals = Rule
     , numberBetween 0 100
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = v1}):
+      (Token Numeral NumeralData{TNumeral.value = v1}:
        _:
-       Token Numeral (NumeralData {TNumeral.value = v2}):
+       Token Numeral NumeralData{TNumeral.value = v2}:
        _) -> double $ 100 * v1 + v2
       _ -> Nothing
   }
@@ -263,9 +263,9 @@ ruleNumeralDotNumeral = Rule
     , numberWith TNumeral.grain isNothing
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = v1}):
+      (Token Numeral NumeralData{TNumeral.value = v1}:
        _:
-       Token Numeral (NumeralData {TNumeral.value = v2}):
+       Token Numeral NumeralData{TNumeral.value = v2}:
        _) -> double $ v1 + decimalsToDouble v2
       _ -> Nothing
   }

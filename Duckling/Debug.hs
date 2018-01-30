@@ -45,7 +45,7 @@ allParses l sentence targets = debugTokens sentence $ parses l sentence targets
 
 fullParses :: Locale -> Text -> [Some Dimension] -> IO [Entity]
 fullParses l sentence targets = debugTokens sentence .
-  filter (\(Resolved {range = Range start end}) -> start == 0 && end == n) $
+  filter (\Resolved{range = Range start end} -> start == 0 && end == n) $
   parses l sentence targets
   where
     n = Text.length sentence
@@ -58,7 +58,7 @@ ptree sentence Resolved {node} = pnode sentence 0 node
 
 parses :: Locale -> Text -> [Some Dimension] -> [ResolvedToken]
 parses l sentence targets = flip filter tokens $
-  \(Resolved {node = Node{token = (Token d _)}}) ->
+  \Resolved{node = Node{token = (Token d _)}} ->
     case targets of
       [] -> True
       _ -> elem (This d) targets

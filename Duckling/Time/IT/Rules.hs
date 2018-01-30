@@ -1265,7 +1265,7 @@ ruleNthTimeAfterTime = Rule
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
-      (Token Ordinal (OrdinalData {TOrdinal.value = v}):
+      (Token Ordinal OrdinalData{TOrdinal.value = v}:
        Token Time td1:
        _:
        Token Time td2:
@@ -1980,7 +1980,7 @@ ruleIntegerDelPartOfDay = Rule
     , regex "d(i|el(la)?) (pomeriggio|(sta)?(sera|notte))"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = v}):_) ->
+      (Token Numeral NumeralData{TNumeral.value = v}:_) ->
         tt $ hour False (12 + floor v)
       _ -> Nothing
   }

@@ -1225,7 +1225,7 @@ ruleTheDayofmonthOrdinal = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:
-       Token Ordinal (OrdinalData {TOrdinal.value = v}):
+       Token Ordinal OrdinalData{TOrdinal.value = v}:
        _) -> tt $ dayOfMonth v
       _ -> Nothing
   }

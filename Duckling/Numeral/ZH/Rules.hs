@@ -112,7 +112,7 @@ ruleInteger3 = Rule
     , regex "十"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = v}):_) -> double $ v * 10
+      (Token Numeral NumeralData{TNumeral.value = v}:_) -> double $ v * 10
       _ -> Nothing
   }
 
@@ -124,7 +124,7 @@ ruleNumeralsSuffixesKMG = Rule
     , regex "([kmg])"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = v}):
+      (Token Numeral NumeralData{TNumeral.value = v}:
        Token RegexMatch (GroupMatch (match:_)):
        _) -> case Text.toLower match of
          "k" -> double $ v * 1e3
@@ -142,8 +142,8 @@ ruleInteger4 = Rule
     , numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = v1}):
-       Token Numeral (NumeralData {TNumeral.value = v2}):
+      (Token Numeral NumeralData{TNumeral.value = v1}:
+       Token Numeral NumeralData{TNumeral.value = v2}:
        _) -> double $ v1 + v2
       _ -> Nothing
   }
@@ -156,7 +156,7 @@ ruleInteger2 = Rule
     , numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Numeral (NumeralData {TNumeral.value = v}):_) -> double $ 10 + v
+      (_:Token Numeral NumeralData{TNumeral.value = v}:_) -> double $ 10 + v
       _ -> Nothing
   }
 

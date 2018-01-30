@@ -48,14 +48,14 @@ supportedDimensions =
 analyze :: Text -> Context -> HashSet (Some Dimension) -> [ResolvedToken]
 analyze input context@Context{..} targets =
   rank (classifiers locale) targets
-  . filter (\(Resolved{node = Node{token = (Token d _)}}) ->
+  . filter (\Resolved{node = Node{token = (Token d _)}} ->
       HashSet.null targets || HashSet.member (This d) targets
     )
   $ parseAndResolve (rulesFor locale targets) input context
 
 -- | Converts the resolved token to the API format
 formatToken :: Text -> ResolvedToken -> Entity
-formatToken sentence (Resolved (Range start end) (Node{token=Token dimension _}) value) =
+formatToken sentence (Resolved (Range start end) Node{token = Token dimension _} value) =
   Entity (toName dimension) body value start end
   where
     body = Text.drop start $ Text.take end sentence

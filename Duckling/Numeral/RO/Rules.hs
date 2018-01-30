@@ -48,8 +48,8 @@ ruleSpecialCompositionForMissingHundredsLikeInOneTwentyTwo = Rule
     , numberBetween 11 100
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = hundreds}):
-       Token Numeral (NumeralData {TNumeral.value = rest}):
+      (Token Numeral NumeralData{TNumeral.value = hundreds}:
+       Token Numeral NumeralData{TNumeral.value = rest}:
        _) -> double $ hundreds * 100 + rest
       _ -> Nothing
   }
@@ -87,8 +87,8 @@ ruleInteger3 = Rule
     , numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = v1}):
-       Token Numeral (NumeralData {TNumeral.value = v2}):
+      (Token Numeral NumeralData{TNumeral.value = v1}:
+       Token Numeral NumeralData{TNumeral.value = v2}:
        _) -> double $ v1 + v2
       _ -> Nothing
   }
@@ -113,8 +113,8 @@ ruleIntersect = Rule
     , dimension Numeral
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = val1, TNumeral.grain = Just g}):
-       Token Numeral (NumeralData {TNumeral.value = val2}):
+      (Token Numeral NumeralData{TNumeral.value = val1, TNumeral.grain = Just g}:
+       Token Numeral NumeralData{TNumeral.value = val2}:
        _) | (10 ** fromIntegral g) > val2 -> double $ val1 + val2
       _ -> Nothing
   }
@@ -128,9 +128,9 @@ ruleIntersectCuI = Rule
     , numberWith TNumeral.multipliable not
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = val1, TNumeral.grain = Just g}):
+      (Token Numeral NumeralData{TNumeral.value = val1, TNumeral.grain = Just g}:
        _:
-       Token Numeral (NumeralData {TNumeral.value = val2}):
+       Token Numeral NumeralData{TNumeral.value = val2}:
        _) | (10 ** fromIntegral g) > val2 -> double $ val1 + val2
       _ -> Nothing
   }
@@ -143,7 +143,7 @@ ruleNumeralsSuffixesWithNegativ = Rule
     , regex "(negativ|neg)"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = v}):
+      (Token Numeral NumeralData{TNumeral.value = v}:
        _) -> double $ v * (-1)
       _ -> Nothing
   }

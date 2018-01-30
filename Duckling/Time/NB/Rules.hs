@@ -1338,7 +1338,7 @@ ruleDayofmonthOrdinal = Rule
     [ Predicate isDOMOrdinal
     ]
   , prod = \tokens -> case tokens of
-      (Token Ordinal (OrdinalData {TOrdinal.value = v}):_) ->
+      (Token Ordinal OrdinalData{TOrdinal.value = v}:_) ->
         tt . mkLatent $ dayOfMonth v
       _ -> Nothing
   }
@@ -1549,7 +1549,7 @@ ruleTheDayofmonthOrdinal = Rule
     , Predicate isDOMOrdinal
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Ordinal (OrdinalData {TOrdinal.value = v}):_) ->
+      (_:Token Ordinal OrdinalData{TOrdinal.value = v}:_) ->
         tt $ dayOfMonth v
       _ -> Nothing
   }

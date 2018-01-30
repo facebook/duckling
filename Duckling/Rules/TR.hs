@@ -7,7 +7,7 @@
 
 
 {-# LANGUAGE GADTs #-}
-{-# LANGUAGE OverloadedStrings #-}
+
 
 module Duckling.Rules.TR
   ( defaultRules

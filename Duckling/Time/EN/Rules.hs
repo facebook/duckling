@@ -363,7 +363,7 @@ ruleTheDOMOrdinal = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:
-       Token Ordinal (OrdinalData {TOrdinal.value = v}):
+       Token Ordinal OrdinalData{TOrdinal.value = v}:
        _) -> tt $ dayOfMonth v
       _ -> Nothing
   }
@@ -1559,7 +1559,7 @@ ruleDurationLastNext = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):
-       Token Duration (DurationData {TDuration.grain, TDuration.value}):
+       Token Duration DurationData{TDuration.grain, TDuration.value}:
        _) -> case Text.toLower match of
          "next" -> tt $ cycleN True grain value
          "last" -> tt $ cycleN True grain (- value)
@@ -1592,7 +1592,7 @@ ruleInNumeral = Rule
     , Predicate $ isIntegerBetween 0 60
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Numeral (NumeralData {TNumeral.value = v}):_) ->
+      (_:Token Numeral NumeralData{TNumeral.value = v}:_) ->
         tt . inDuration . duration TG.Minute $ floor v
       _ -> Nothing
   }

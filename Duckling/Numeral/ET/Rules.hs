@@ -37,7 +37,7 @@ ruleNumeralsPrefixWithNegativeOrMinus = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:
-       Token Numeral (NumeralData {TNumeral.value = v}):
+       Token Numeral NumeralData{TNumeral.value = v}:
        _) -> double $ v * (-1)
       _ -> Nothing
   }
@@ -91,8 +91,8 @@ ruleInteger3 = Rule
     , numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = v1}):
-       Token Numeral (NumeralData {TNumeral.value = v2}):_) -> double $ v1 + v2
+      (Token Numeral NumeralData{TNumeral.value = v1}:
+       Token Numeral NumeralData{TNumeral.value = v2}:_) -> double $ v1 + v2
       _ -> Nothing
   }
 
@@ -125,8 +125,8 @@ ruleIntersect = Rule
     , numberWith TNumeral.multipliable not
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = val1, TNumeral.grain = Just g}):
-       Token Numeral (NumeralData {TNumeral.value = val2}):
+      (Token Numeral NumeralData{TNumeral.value = val1, TNumeral.grain = Just g}:
+       Token Numeral NumeralData{TNumeral.value = val2}:
        _) | (10 ** fromIntegral g) > val2 -> double $ val1 + val2
       _ -> Nothing
   }
@@ -139,7 +139,7 @@ ruleNumeralsSuffixesKMG = Rule
     , regex "([kmg])(?=[\\W\\$€]|$)"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = v}):
+      (Token Numeral NumeralData{TNumeral.value = v}:
        Token RegexMatch (GroupMatch (match:_)):
        _) -> case Text.toLower match of
           "k" -> double $ v * 1e3
@@ -250,9 +250,9 @@ ruleNumeralDotNumeral = Rule
     , numberWith TNumeral.grain isNothing
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = v1}):
+      (Token Numeral NumeralData{TNumeral.value = v1}:
        _:
-       Token Numeral (NumeralData {TNumeral.value = v2}):
+       Token Numeral NumeralData{TNumeral.value = v2}:
        _) -> double $ v1 + decimalsToDouble v2
       _ -> Nothing
   }

@@ -135,8 +135,8 @@ integer = double . fromIntegral
 
 multiply :: Token -> Token -> Maybe Token
 multiply
-  (Token Numeral (NumeralData {value = v1}))
-  (Token Numeral (NumeralData {value = v2, grain = g})) = case g of
+  (Token Numeral NumeralData{value = v1})
+  (Token Numeral NumeralData{value = v2, grain = g}) = case g of
   Nothing -> double $ v1 * v2
   Just grain | v2 > v1 -> double (v1 * v2) >>= withGrain grain
              | otherwise -> Nothing
@@ -144,8 +144,8 @@ multiply _ _ = Nothing
 
 divide :: Token -> Token -> Maybe Token
 divide
-  (Token Numeral (NumeralData {value = v1}))
-  (Token Numeral (NumeralData {value = v2})) = case v1 / v2 of
+  (Token Numeral NumeralData{value = v1})
+  (Token Numeral NumeralData{value = v2}) = case v1 / v2 of
     x | isInfinite x || isNaN x -> Nothing
     x -> double x
 divide _ _ = Nothing

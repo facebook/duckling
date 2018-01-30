@@ -85,8 +85,8 @@ ruleCompositeOrdinals = Rule
       , oneOf [1..9]
       ]
   , prod = \tokens -> case tokens of
-      ( Token Ordinal (OrdinalData {TOrdinal.value = t}) :
-        Token Ordinal (OrdinalData {TOrdinal.value = u}) : _ )
+      ( Token Ordinal OrdinalData{TOrdinal.value = t} :
+        Token Ordinal OrdinalData{TOrdinal.value = u} : _ )
         -> Just $ ordinal $ t + u
       _ -> Nothing
   }

@@ -37,8 +37,8 @@ extractFeatures node =
     featRules = Text.concat $ mapMaybe rule (children node)
     grains = mapMaybe (\x ->
       case token x of
-        Token Duration (DurationData {TDuration.grain = g}) -> Just $ showt g
-        Token Time (TimeData {TTime.timeGrain = g}) -> Just $ showt g
+        Token Duration DurationData{TDuration.grain = g} -> Just $ showt g
+        Token Time TimeData{TTime.timeGrain = g} -> Just $ showt g
         Token TimeGrain g -> Just $ showt g
         _ -> Nothing
       ) $ children node

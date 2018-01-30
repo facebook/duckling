@@ -8,7 +8,7 @@
 
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE NoRebindableSyntax #-}
-{-# LANGUAGE OverloadedStrings #-}
+
 
 module Duckling.Time.Helpers
   ( -- Patterns
@@ -230,11 +230,11 @@ isGrain value (Token TimeGrain grain) = grain == value
 isGrain _ _ = False
 
 isGrainFinerThan :: TG.Grain -> Predicate
-isGrainFinerThan value (Token Time (TimeData {TTime.timeGrain = g})) = g < value
+isGrainFinerThan value (Token Time TimeData{TTime.timeGrain = g}) = g < value
 isGrainFinerThan _ _ = False
 
 isGrainOfTime :: TG.Grain -> Predicate
-isGrainOfTime value (Token Time (TimeData {TTime.timeGrain = g})) = g == value
+isGrainOfTime value (Token Time TimeData{TTime.timeGrain = g}) = g == value
 isGrainOfTime _ _ = False
 
 isADayOfWeek :: Predicate

@@ -91,7 +91,7 @@ ruleIntersectAndXCents = Rule
   , prod = \tokens -> case tokens of
       (Token AmountOfMoney fd:
        _:
-       Token AmountOfMoney (AmountOfMoneyData {TAmountOfMoney.value = Just c}):
+       Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just c}:
        _) -> Just . Token AmountOfMoney $ withCents c fd
       _ -> Nothing
   }
@@ -105,7 +105,7 @@ ruleIntersect = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token AmountOfMoney fd:
-       Token Numeral (NumeralData {TNumeral.value = c}):
+       Token Numeral NumeralData{TNumeral.value = c}:
        _) -> Just . Token AmountOfMoney $ withCents c fd
       _ -> Nothing
   }
@@ -121,7 +121,7 @@ ruleIntersectAndNumeral = Rule
   , prod = \tokens -> case tokens of
       (Token AmountOfMoney fd:
        _:
-       Token Numeral (NumeralData {TNumeral.value = c}):
+       Token Numeral NumeralData{TNumeral.value = c}:
        _) -> Just . Token AmountOfMoney $ withCents c fd
       _ -> Nothing
   }
@@ -137,7 +137,7 @@ ruleIntersectXCents = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token AmountOfMoney fd:
-       Token AmountOfMoney (AmountOfMoneyData {TAmountOfMoney.value = Just c}):
+       Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just c}:
        _) -> Just . Token AmountOfMoney $ withCents c fd
       _ -> Nothing
   }
@@ -165,9 +165,10 @@ ruleIntervalBetweenNumeral = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:
-       Token Numeral (NumeralData {TNumeral.value = from}):
+       Token Numeral NumeralData{TNumeral.value = from}:
        _:
-       Token AmountOfMoney (AmountOfMoneyData {TAmountOfMoney.value = Just to, TAmountOfMoney.currency = c}):
+       Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just to,
+                  TAmountOfMoney.currency = c}:
        _) ->
         Just . Token AmountOfMoney . withInterval (from, to) $ currencyOnly c
       _ -> Nothing
@@ -184,9 +185,10 @@ ruleIntervalBetweenNumeral2 = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:
-       Token AmountOfMoney (AmountOfMoneyData {TAmountOfMoney.value = Just from, TAmountOfMoney.currency = c}):
+       Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just from,
+                  TAmountOfMoney.currency = c}:
        _:
-       Token Numeral (NumeralData {TNumeral.value = to}):
+       Token Numeral NumeralData{TNumeral.value = to}:
        _) ->
         Just . Token AmountOfMoney . withInterval (from, to) $ currencyOnly c
       _ -> Nothing
@@ -203,9 +205,11 @@ ruleIntervalBetween = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:
-       Token AmountOfMoney (AmountOfMoneyData {TAmountOfMoney.value = Just from, TAmountOfMoney.currency = c1}):
+       Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just from,
+                  TAmountOfMoney.currency = c1}:
        _:
-       Token AmountOfMoney (AmountOfMoneyData {TAmountOfMoney.value = Just to, TAmountOfMoney.currency = c2}):
+       Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just to,
+                  TAmountOfMoney.currency = c2}:
        _) | c1 == c2 ->
         Just . Token AmountOfMoney . withInterval (from, to) $ currencyOnly c1
       _ -> Nothing
@@ -220,9 +224,10 @@ ruleIntervalNumeralDash = Rule
     , financeWith TAmountOfMoney.value isJust
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = from}):
+      (Token Numeral NumeralData{TNumeral.value = from}:
        _:
-       Token AmountOfMoney (AmountOfMoneyData {TAmountOfMoney.value = Just to, TAmountOfMoney.currency = c}):
+       Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just to,
+                  TAmountOfMoney.currency = c}:
        _) ->
          Just . Token AmountOfMoney . withInterval (from, to) $ currencyOnly c
       _ -> Nothing
@@ -237,9 +242,11 @@ ruleIntervalDash = Rule
     , financeWith TAmountOfMoney.value isJust
     ]
   , prod = \tokens -> case tokens of
-      (Token AmountOfMoney (AmountOfMoneyData {TAmountOfMoney.value = Just from, TAmountOfMoney.currency = c1}):
+      (Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just from,
+                  TAmountOfMoney.currency = c1}:
        _:
-       Token AmountOfMoney (AmountOfMoneyData {TAmountOfMoney.value = Just to, TAmountOfMoney.currency = c2}):
+       Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just to,
+                  TAmountOfMoney.currency = c2}:
        _) | c1 == c2 ->
         Just . Token AmountOfMoney . withInterval (from, to) $ currencyOnly c1
       _ -> Nothing
@@ -254,7 +261,8 @@ ruleIntervalMax = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:
-       Token AmountOfMoney (AmountOfMoneyData {TAmountOfMoney.value = Just to, TAmountOfMoney.currency = c}):
+       Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just to,
+                  TAmountOfMoney.currency = c}:
        _) -> Just . Token AmountOfMoney . withMax to $ currencyOnly c
       _ -> Nothing
   }
@@ -268,7 +276,8 @@ ruleIntervalMin = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:
-       Token AmountOfMoney (AmountOfMoneyData {TAmountOfMoney.value = Just to, TAmountOfMoney.currency = c}):
+       Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just to,
+                  TAmountOfMoney.currency = c}:
        _) -> Just . Token AmountOfMoney . withMin to $ currencyOnly c
       _ -> Nothing
   }

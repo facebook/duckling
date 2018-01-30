@@ -79,8 +79,8 @@ data Candidate = Candidate ResolvedToken Double Bool
   deriving (Eq, Show)
 
 instance Ord Candidate where
-  compare (Candidate (Resolved{range = Range s1 e1, node = Node{token = Token d1 _}}) score1 t1)
-          (Candidate (Resolved{range = Range s2 e2, node = Node{token = tok2}}) score2 t2)
+  compare (Candidate Resolved{range = Range s1 e1, node = Node{token = Token d1 _}} score1 t1)
+          (Candidate Resolved{range = Range s2 e2, node = Node{token = tok2}} score2 t2)
     | isDimension d1 tok2 = case starts of
         EQ -> case ends of
           EQ -> compare score1 score2

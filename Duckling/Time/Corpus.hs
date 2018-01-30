@@ -49,7 +49,7 @@ datetimeOpenInterval dir d g ctx = openInterval tzSeries dir TimeObject
     DucklingTime (Series.ZoneSeriesTime _ tzSeries) = referenceTime ctx
 
 check :: ToJSON a => (Context -> a) -> TestPredicate
-check f context (Resolved {jsonValue}) = case jsonValue of
+check f context Resolved{jsonValue} = case jsonValue of
   Object o -> toJSON (f context) == (Object $ H.delete "values" o)
   _ -> False
 

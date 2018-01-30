@@ -21,6 +21,7 @@ import qualified Data.Text as Text
 import Duckling.AmountOfMoney.Helpers
 import Duckling.AmountOfMoney.Types (Currency(..), AmountOfMoneyData (..))
 import Duckling.Dimensions.Types
+import Duckling.Numeral.Helpers (isNatural, isPositive)
 import Duckling.Numeral.Types (NumeralData (..))
 import Duckling.Regex.Types
 import Duckling.Types
@@ -76,9 +77,9 @@ ruleIntersectAndXCents :: Rule
 ruleIntersectAndXCents = Rule
   { name = "intersect (and X cents)"
   , pattern =
-    [ financeWith TAmountOfMoney.value isJust
+    [ Predicate isWithoutCents
     , regex "и"
-    , financeWith TAmountOfMoney.currency (== Cent)
+    , Predicate isCents
     ]
   , prod = \tokens -> case tokens of
       (Token AmountOfMoney fd:
@@ -92,8 +93,8 @@ ruleIntersect :: Rule
 ruleIntersect = Rule
   { name = "intersect"
   , pattern =
-    [ financeWith TAmountOfMoney.value isJust
-    , dimension Numeral
+    [ Predicate isWithoutCents
+    , Predicate isNatural
     ]
   , prod = \tokens -> case tokens of
       (Token AmountOfMoney fd:
@@ -106,9 +107,9 @@ ruleIntersectAndNumeral :: Rule
 ruleIntersectAndNumeral = Rule
   { name = "intersect (and number)"
   , pattern =
-    [ financeWith TAmountOfMoney.value isJust
+    [ Predicate isWithoutCents
     , regex "и"
-    , dimension Numeral
+    , Predicate isNatural
     ]
   , prod = \tokens -> case tokens of
       (Token AmountOfMoney fd:
@@ -122,10 +123,8 @@ ruleIntersectXCents :: Rule
 ruleIntersectXCents = Rule
   { name = "intersect (X cents)"
   , pattern =
-    [ financeWith TAmountOfMoney.value isJust
-    , financeWith id $ \x -> case TAmountOfMoney.value x of
-        Just v | v > 0 -> TAmountOfMoney.currency x == Cent
-        _              -> False
+    [ Predicate isWithoutCents
+    , Predicate isCents
     ]
   , prod = \tokens -> case tokens of
       (Token AmountOfMoney fd:
@@ -139,7 +138,7 @@ rulePrecision = Rule
   { name = "about|exactly <amount-of-money>"
   , pattern =
     [ regex "точно|около|приблизително|близо (до)?|почти"
-    , dimension AmountOfMoney
+    , Predicate isMoneyWithValue
     ]
   , prod = \tokens -> case tokens of
       (_:token:_) -> Just token
@@ -151,7 +150,7 @@ ruleIntervalBetweenNumeral = Rule
   { name = "between|from <numeral> to|and <amount-of-money>"
   , pattern =
     [ regex "между|от"
-    , dimension Numeral
+    , Predicate isPositive
     , regex "до|и"
     , financeWith TAmountOfMoney.value isJust
     ]
@@ -161,7 +160,7 @@ ruleIntervalBetweenNumeral = Rule
        _:
        Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just to,
                   TAmountOfMoney.currency = c}:
-       _) ->
+       _) | from < to ->
         Just . Token AmountOfMoney . withInterval (from, to) $ currencyOnly c
       _ -> Nothing
   }
@@ -182,7 +181,7 @@ ruleIntervalBetween = Rule
        _:
        Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just to,
                   TAmountOfMoney.currency = c2}:
-       _) | c1 == c2 ->
+       _) | from < to && c1 == c2 ->
         Just . Token AmountOfMoney . withInterval (from, to) $ currencyOnly c1
       _ -> Nothing
   }
@@ -191,7 +190,7 @@ ruleIntervalNumeralDash :: Rule
 ruleIntervalNumeralDash = Rule
   { name = "<numeral> - <amount-of-money>"
   , pattern =
-    [ dimension Numeral
+    [ Predicate isPositive
     , regex "-"
     , financeWith TAmountOfMoney.value isJust
     ]
@@ -200,7 +199,7 @@ ruleIntervalNumeralDash = Rule
        _:
        Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just to,
                   TAmountOfMoney.currency = c}:
-       _) ->
+       _) | from < to ->
          Just . Token AmountOfMoney . withInterval (from, to) $ currencyOnly c
       _ -> Nothing
   }
@@ -219,7 +218,7 @@ ruleIntervalDash = Rule
        _:
        Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just to,
                   TAmountOfMoney.currency = c2}:
-       _) | c1 == c2 ->
+       _) | from < to && c1 == c2 ->
         Just . Token AmountOfMoney . withInterval (from, to) $ currencyOnly c1
       _ -> Nothing
   }

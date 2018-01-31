@@ -129,7 +129,7 @@ rules :: [Rule]
 rules =
   [ ruleCent
   , ruleIntersect
-  , ruleIntersectAndNumeral
+ -- , ruleIntersectAndNumeral
   , ruleIntersectAndXCents
   , ruleIntersectXCents
   , rulePounds

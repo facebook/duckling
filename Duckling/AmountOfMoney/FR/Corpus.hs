@@ -74,4 +74,20 @@ allExamples = concat
   , examples (simple Riyal 10)
              [ "dix riyals"
              ]
+  , examples (between EUR (10, 20))
+             [ "entre 10 et 20 euro"
+             , "entre 10 euro et 20 euro"
+             , "10 - 20 euro"
+             , "10 euro - 20 euro"
+             ]
+  , examples (above EUR 10)
+             [ "au moins 10 euro"
+             , "plus que 10 euros"
+             , "plus de 10 euros"
+             ]
+  , examples (under Dollar 10)
+             [ "en-dessous de 10 dollars"
+             , "moins de 10 dollars"
+             , "pas plus de 10 dollars"
+             ]
   ]

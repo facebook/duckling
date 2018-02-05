@@ -20,4 +20,5 @@ import Duckling.Time.AR.Corpus
 tests :: TestTree
 tests = testGroup "AR Tests"
   [ makeCorpusTest [This Time] corpus
+  , makeNegativeCorpusTest [This Time] negativeCorpus
   ]

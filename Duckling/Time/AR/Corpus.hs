@@ -10,6 +10,7 @@
 
 module Duckling.Time.AR.Corpus
   ( corpus
+  , negativeCorpus
   ) where
 
 import Data.String
@@ -24,6 +25,13 @@ import Duckling.Testing.Types hiding (examples)
 
 corpus :: Corpus
 corpus = (testContext {locale = makeLocale AR Nothing}, allExamples)
+
+negativeCorpus :: NegativeCorpus
+negativeCorpus = (testContext {locale = makeLocale AR Nothing}, examples)
+  where
+    examples =
+      [ "حب"
+      ]
 
 allExamples :: [Example]
 allExamples = concat

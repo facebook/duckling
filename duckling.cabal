@@ -363,6 +363,8 @@ library
                      , Duckling.Ordinal.GA.Rules
                      , Duckling.Ordinal.HE.Corpus
                      , Duckling.Ordinal.HE.Rules
+                     , Duckling.Ordinal.HI.Corpus
+                     , Duckling.Ordinal.HI.Rules
                      , Duckling.Ordinal.HR.Corpus
                      , Duckling.Ordinal.HR.Rules
                      , Duckling.Ordinal.HU.Corpus
@@ -752,6 +754,7 @@ test-suite duckling-test
                      , Duckling.Ordinal.FR.Tests
                      , Duckling.Ordinal.GA.Tests
                      , Duckling.Ordinal.HE.Tests
+                     , Duckling.Ordinal.HI.Tests
                      , Duckling.Ordinal.HR.Tests
                      , Duckling.Ordinal.HU.Tests
                      , Duckling.Ordinal.ID.Tests

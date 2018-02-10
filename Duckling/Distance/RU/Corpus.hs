@@ -25,41 +25,41 @@ corpus = (testContext {locale = makeLocale RU Nothing}, allExamples)
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (DistanceValue Kilometre 3)
+  [ examples (simple Kilometre 3)
              [ "3 километра"
              , "3 км"
              , "3км"
              , "3.0 км"
              ]
-  , examples (DistanceValue Mile 8)
+  , examples (simple Mile 8)
              [ "8 миль"
              , "восемь миль"
              ]
-  , examples (DistanceValue Metre 1)
+  , examples (simple Metre 1)
              [ "1 м",
                "1 метр",
                "один метр"
              ]
-  , examples (DistanceValue Centimetre 2)
+  , examples (simple Centimetre 2)
              [ "2см"
              , "2 сантиметра"
              ]
-  , examples (DistanceValue Millimetre 4)
+  , examples (simple Millimetre 4)
              [ "4мм"
              , "4 миллиметра"
              ]
-  , examples (DistanceValue Inch 5)
+  , examples (simple Inch 5)
              [ "5 дюймов"
              , "5''"
              , "пять дюймов"
              , "5\""
              ]
-  , examples (DistanceValue Foot 35)
+  , examples (simple Foot 35)
              [ "35 футов"
              , "35'"
              , "тридцать пять футов"
              ]
-  , examples (DistanceValue Yard 47)
+  , examples (simple Yard 47)
              [ "47 ярдов"
              , "сорок семь ярдов"
              ]

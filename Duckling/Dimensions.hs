@@ -42,6 +42,7 @@ import qualified Duckling.Dimensions.KA as KADimensions
 import qualified Duckling.Dimensions.KO as KODimensions
 import qualified Duckling.Dimensions.MY as MYDimensions
 import qualified Duckling.Dimensions.NB as NBDimensions
+import qualified Duckling.Dimensions.NE as NEDimensions
 import qualified Duckling.Dimensions.NL as NLDimensions
 import qualified Duckling.Dimensions.PL as PLDimensions
 import qualified Duckling.Dimensions.PT as PTDimensions
@@ -104,6 +105,7 @@ langDimensions KA = KADimensions.allDimensions
 langDimensions KO = KODimensions.allDimensions
 langDimensions MY = MYDimensions.allDimensions
 langDimensions NB = NBDimensions.allDimensions
+langDimensions NE = NEDimensions.allDimensions
 langDimensions NL = NLDimensions.allDimensions
 langDimensions PL = PLDimensions.allDimensions
 langDimensions PT = PTDimensions.allDimensions

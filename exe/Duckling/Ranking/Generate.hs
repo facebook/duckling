@@ -182,6 +182,7 @@ getCorpusForLang KA = (testContext, [])
 getCorpusForLang KO = KOTime.corpus
 getCorpusForLang MY = (testContext, [])
 getCorpusForLang NB = NBTime.corpus
+getCorpusForLang NE = (testContext, [])
 getCorpusForLang NL = NLTime.corpus
 getCorpusForLang PL = PLTime.corpus
 getCorpusForLang PT = PTTime.corpus

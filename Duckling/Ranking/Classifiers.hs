@@ -38,6 +38,7 @@ import qualified Duckling.Ranking.Classifiers.KA_XX as KA_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.KO_XX as KO_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.MY_XX as MY_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.NB_XX as NB_XXClassifiers
+import qualified Duckling.Ranking.Classifiers.NE_XX as NE_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.NL_XX as NL_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.PL_XX as PL_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.PT_XX as PT_XXClassifiers
@@ -74,6 +75,7 @@ classifiers (Locale KA _) = KA_XXClassifiers.classifiers
 classifiers (Locale KO _) = KO_XXClassifiers.classifiers
 classifiers (Locale MY _) = MY_XXClassifiers.classifiers
 classifiers (Locale NB _) = NB_XXClassifiers.classifiers
+classifiers (Locale NE _) = NE_XXClassifiers.classifiers
 classifiers (Locale NL _) = NL_XXClassifiers.classifiers
 classifiers (Locale PL _) = PL_XXClassifiers.classifiers
 classifiers (Locale PT _) = PT_XXClassifiers.classifiers

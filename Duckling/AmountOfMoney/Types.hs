@@ -118,14 +118,18 @@ data AmountOfMoneyData = AmountOfMoneyData
 
 instance Resolve AmountOfMoneyData where
   type ResolvedValue AmountOfMoneyData = AmountOfMoneyValue
-  resolve _ AmountOfMoneyData {value = Nothing, minValue = Nothing, maxValue = Nothing} = Nothing
+  resolve _ AmountOfMoneyData {value = Nothing, minValue = Nothing
+                              , maxValue = Nothing} = Nothing
   resolve _ AmountOfMoneyData {value = Just value, currency} =
     Just $ simple currency value
-  resolve _ AmountOfMoneyData {value = Nothing, currency = c, minValue = Just from, maxValue = Just to} =
+  resolve _ AmountOfMoneyData {value = Nothing, currency = c
+                              , minValue = Just from, maxValue = Just to} =
     Just $ between c (from, to)
-  resolve _ AmountOfMoneyData {value = Nothing, currency = c, minValue = Just v, maxValue = Nothing} =
+  resolve _ AmountOfMoneyData {value = Nothing, currency = c
+                              , minValue = Just v, maxValue = Nothing} =
     Just $ above c v
-  resolve _ AmountOfMoneyData {value = Nothing, currency = c, minValue = Nothing, maxValue = Just v} =
+  resolve _ AmountOfMoneyData {value = Nothing, currency = c
+                              , minValue = Nothing, maxValue = Just v} =
     Just $ under c v
 
 data IntervalDirection = Above | Under

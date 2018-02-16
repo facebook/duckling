@@ -75,9 +75,8 @@ data SingleValue = SingleValue
 
 instance ToJSON SingleValue where
   toJSON (SingleValue unit value) = object
-    [ "type" .= ("value" :: Text)
-    , "value" .= value
-    , "unit" .= unit
+    [ "value" .= value
+    , "unit"  .= unit
     ]
 
 data DistanceValue

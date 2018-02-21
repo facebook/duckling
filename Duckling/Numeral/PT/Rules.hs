@@ -314,8 +314,8 @@ ruleNegative :: Rule
 ruleNegative = Rule
   { name = "negative numbers"
   , pattern =
-    [ regex "(-|menos|negativo)(?!\\s*-)"
-    , numberWith TNumeral.value (>0)
+    [ regex "(-|menos|negativo)(?!\\s*\\-)"
+    , Predicate isPositive
     ]
   , prod = \tokens -> case tokens of
       (_:Token Numeral nd:_) -> double $ TNumeral.value nd * (-1)
@@ -327,7 +327,7 @@ ruleSum = Rule
   { name = "intersect 2 numbers"
   , pattern =
     [ numberWith (fromMaybe 0 . TNumeral.grain) (>1)
-    , numberWith TNumeral.multipliable not
+    , Predicate $ and . sequence [not . isMultipliable, isPositive]
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData{TNumeral.value = val1, TNumeral.grain = Just g}:
@@ -342,7 +342,7 @@ ruleSumAnd = Rule
   , pattern =
     [ numberWith (fromMaybe 0 . TNumeral.grain) (>1)
     , regex "e"
-    , numberWith TNumeral.multipliable not
+    , Predicate $ and . sequence [not . isMultipliable, isPositive]
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData{TNumeral.value = val1, TNumeral.grain = Just g}:
@@ -357,7 +357,7 @@ ruleMultiply = Rule
   { name = "compose by multiplication"
   , pattern =
     [ dimension Numeral
-    , numberWith TNumeral.multipliable id
+    , Predicate isMultipliable
     ]
   , prod = \tokens -> case tokens of
       (token1:token2:_) -> multiply token1 token2

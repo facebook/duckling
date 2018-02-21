@@ -134,8 +134,8 @@ ruleNumeralsPrefixWithMinus :: Rule
 ruleNumeralsPrefixWithMinus = Rule
   { name = "numbers prefix with -, minus"
   , pattern =
-    [ regex "-|минус\\s?"
-    , dimension Numeral
+    [ regex "-|минус"
+    , Predicate isPositive
     ]
   , prod = \tokens -> case tokens of
       (_:Token Numeral nd:_) -> double (TNumeral.value nd * (-1))

@@ -34,7 +34,7 @@ ruleIntersectWithAnd = Rule
   , pattern =
     [ numberWith (fromMaybe 0 . TNumeral.grain) (>1)
     , regex "och"
-    , numberWith TNumeral.multipliable not
+    , Predicate $ and . sequence [not . isMultipliable, isPositive]
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData{TNumeral.value = val1, TNumeral.grain = Just g}:
@@ -48,8 +48,8 @@ ruleNumeralsPrefixWithNegativeOrMinus :: Rule
 ruleNumeralsPrefixWithNegativeOrMinus = Rule
   { name = "numbers prefix with -, negative or minus"
   , pattern =
-    [ regex "-|minus\\s?|negativ\\s?"
-    , dimension Numeral
+    [ regex "-|minus|negativ"
+    , Predicate isPositive
     ]
   , prod = \tokens -> case tokens of
       (_:
@@ -120,7 +120,7 @@ ruleIntersect = Rule
   { name = "intersect"
   , pattern =
     [ numberWith (fromMaybe 0 . TNumeral.grain) (>1)
-    , numberWith TNumeral.multipliable not
+    , Predicate $ and . sequence [not . isMultipliable, isPositive]
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData{TNumeral.value = val1, TNumeral.grain = Just g}:
@@ -134,7 +134,7 @@ ruleMultiply = Rule
   { name = "compose by multiplication"
   , pattern =
     [ dimension Numeral
-    , numberWith TNumeral.multipliable id
+    , Predicate isMultipliable
     ]
   , prod = \tokens -> case tokens of
       (token1:token2:_) -> multiply token1 token2

@@ -32,8 +32,8 @@ ruleNumeralsPrefixWithNegativeOrMinus :: Rule
 ruleNumeralsPrefixWithNegativeOrMinus = Rule
   { name = "numbers prefix with -, negative or minus"
   , pattern =
-    [ regex "-|m(í|i)neas(\\sa)?\\s?"
-    , dimension Numeral
+    [ regex "-|m(í|i)neas(\\sa)?"
+    , Predicate isPositive
     ]
   , prod = \tokens -> case tokens of
       (_:

@@ -160,4 +160,8 @@ allExamples = concat
   , examples (NumeralValue 2200000)
              [ "two point two million"
              ]
+  , examples (NumeralValue 3000000000)
+             [ "three billions"
+             , "three thousand millions"
+             ]
   ]

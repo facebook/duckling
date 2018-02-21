@@ -32,8 +32,8 @@ ruleNumeralsPrefixWithOrMinus :: Rule
 ruleNumeralsPrefixWithOrMinus = Rule
   { name = "numbers prefix with - or minus"
   , pattern =
-    [ regex "-|minus\\s?"
-    , dimension Numeral
+    [ regex "-|minus"
+    , Predicate isPositive
     ]
   , prod = \tokens -> case tokens of
       (_:Token Numeral nd:_) -> double (TNumeral.value nd * (-1))
@@ -98,7 +98,7 @@ ruleMultiply = Rule
   { name = "compose by multiplication"
   , pattern =
     [ dimension Numeral
-    , numberWith TNumeral.multipliable id
+    , Predicate isMultipliable
     ]
   , prod = \tokens -> case tokens of
       (token1:token2:_) -> multiply token1 token2
@@ -110,7 +110,7 @@ ruleIntersect = Rule
   { name = "intersect"
   , pattern =
     [ numberWith (fromMaybe 0 . TNumeral.grain) (>1)
-    , dimension Numeral
+    , Predicate $ and . sequence [not . isMultipliable, isPositive]
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData{TNumeral.value = val1, TNumeral.grain = Just g}:
@@ -125,7 +125,7 @@ ruleIntersectCuI = Rule
   , pattern =
     [ numberWith (fromMaybe 0 . TNumeral.grain) (>1)
     , regex "(s|ș)i"
-    , numberWith TNumeral.multipliable not
+    , Predicate $ and . sequence [not . isMultipliable, isPositive]
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData{TNumeral.value = val1, TNumeral.grain = Just g}:
@@ -139,8 +139,8 @@ ruleNumeralsSuffixesWithNegativ :: Rule
 ruleNumeralsSuffixesWithNegativ = Rule
   { name = "numbers suffixes with (negativ)"
   , pattern =
-    [ dimension Numeral
-    , regex "(negativ|neg)"
+    [ Predicate isPositive
+    , regex "neg(ativ)?"
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData{TNumeral.value = v}:

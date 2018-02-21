@@ -31,7 +31,7 @@ ruleNumeralsPrefixWithNegativeOrMinus = Rule
   { name = "numbers prefix with -, negative or minus"
   , pattern =
     [ regex "-|menos"
-    , dimension Numeral
+    , Predicate isPositive
     ]
   , prod = \tokens -> case tokens of
       (_:Token Numeral NumeralData{TNumeral.value = v}:_) ->

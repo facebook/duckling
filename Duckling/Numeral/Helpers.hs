@@ -14,6 +14,7 @@ module Duckling.Numeral.Helpers
   , double
   , integer
   , multiply
+  , isMultipliable
   , isNatural
   , isPositive
   , divide
@@ -102,6 +103,10 @@ isNatural _ = False
 isPositive :: Predicate
 isPositive (Token Numeral NumeralData{value = v}) = v >= 0
 isPositive _ = False
+
+isMultipliable :: Predicate
+isMultipliable (Token Numeral nd) = multipliable nd
+isMultipliable _ = False
 
 oneOf :: [Double] -> PatternItem
 oneOf vs = Predicate $ \x ->

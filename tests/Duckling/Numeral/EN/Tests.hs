@@ -28,6 +28,7 @@ tests :: TestTree
 tests = testGroup "EN Tests"
   [ makeCorpusTest [This Numeral] corpus
   , surroundTests
+  , intersectTests
   , rangeTests
   ]
 
@@ -47,6 +48,13 @@ surroundTests = testCase "Surround Tests" $
                  [ "10.99$"
                  ]
       ]
+
+intersectTests :: TestTree
+intersectTests = testCase "Intersect Test" $
+  mapM_ (analyzedNTest testContext . withTargets [This Numeral]) xs
+  where
+    xs = [ ("10 millions minus 10", 2)
+         ]
 
 rangeTests :: TestTree
 rangeTests = testCase "Range Test" $

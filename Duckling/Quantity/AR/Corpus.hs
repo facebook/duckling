@@ -25,10 +25,10 @@ corpus = (testContext {locale = makeLocale AR Nothing}, allExamples)
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (QuantityData Ounce 3 (Just "الذهب"))
+  [ examples (simple Ounce 3 (Just "الذهب"))
              [ "ثلاثة اونصات من الذهب"
              ]
-  , examples (QuantityData Gram 2 Nothing)
+  , examples (simple Gram 2 Nothing)
              [ "2 غرام"
              , "2 جرام"
              , "0.002 كيلوغرام"
@@ -37,25 +37,25 @@ allExamples = concat
              , "2000 ملغ"
              , "2000 ملج"
              ]
-  , examples (QuantityData Gram 1000 Nothing)
+  , examples (simple Gram 1000 Nothing)
              [ "كغ"
              , "كيلوغرام"
              , "كيلوجرام"
              ]
-  , examples (QuantityData Ounce 2 Nothing)
+  , examples (simple Ounce 2 Nothing)
              [ "2 اونصة"
              , "أونصتان"
              , "اونصتين"
              ]
-  , examples (QuantityData Cup 3 (Just "السكر"))
+  , examples (simple Cup 3 (Just "السكر"))
              [ "3 اكواب من السكر"
              ]
-  , examples (QuantityData Cup 0.75 Nothing)
+  , examples (simple Cup 0.75 Nothing)
              [ "3/4 كوب"
              , "0.75 كوب"
              , ".75 كوب"
              ]
-  , examples (QuantityData Gram 500 (Just "الفراولة"))
+  , examples (simple Gram 500 (Just "الفراولة"))
              [ "500 غرام من الفراولة"
              , "500 غم من الفراولة"
              , "500 جرام من الفراولة"

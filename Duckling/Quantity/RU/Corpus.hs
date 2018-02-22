@@ -25,32 +25,32 @@ corpus = (testContext {locale = makeLocale RU Nothing}, allExamples)
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (QuantityData Pound 2 Nothing)
+  [ examples (simple Pound 2 Nothing)
              [ "2 фунта"
              ]
-  , examples (QuantityData Gram 2 Nothing)
+  , examples (simple Gram 2 Nothing)
              [ "2 грамма"
              , "два грамма"
              , "0.002 кг"
              , "2000 миллиграмм"
              , "2000 мг"
              ]
-  , examples (QuantityData Gram 1000 Nothing)
+  , examples (simple Gram 1000 Nothing)
              [ "килограмм"
              , "кг"
              ]
-  , examples (QuantityData Gram 2000 Nothing)
+  , examples (simple Gram 2000 Nothing)
              [ "2 килограмма"
              , "2 кг"
              ]
-  , examples (QuantityData Pound 1 Nothing)
+  , examples (simple Pound 1 Nothing)
              [ "фунт"
              , "1 фунт"
              ]
-  , examples (QuantityData Ounce 2 Nothing)
+  , examples (simple Ounce 2 Nothing)
              [ "2 унции"
              ]
-  , examples (QuantityData Gram 500 Nothing)
+  , examples (simple Gram 500 Nothing)
              [ "500 грамм"
              , "500г"
              , "500 г"

@@ -23,11 +23,11 @@ corpus = (testContext {locale = makeLocale HR Nothing}, allExamples)
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (QuantityData Gram 2000 (Just "meso"))
+  [ examples (simple Gram 2000 (Just "meso"))
              [ "dvije kile mesa"
              , "dva kilograma mesa"
              ]
-  , examples (QuantityData Gram 1000 Nothing)
+  , examples (simple Gram 1000 Nothing)
              [ "1 kilograma"
              ]
   ]

@@ -24,16 +24,16 @@ corpus = (testContext {locale = makeLocale KO Nothing}, allExamples)
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (QuantityData (Custom "근") 2 (Just "삼겹살"))
+  [ examples (simple (Custom "근") 2 (Just "삼겹살"))
              [ "삼겹살 두근"
              ]
-  , examples (QuantityData (Custom "근") 1 Nothing)
+  , examples (simple (Custom "근") 1 Nothing)
              [ "한근"
              ]
-  , examples (QuantityData Gram 600 Nothing)
+  , examples (simple Gram 600 Nothing)
              [ "육백그람"
              ]
-  , examples (QuantityData Cup 3 (Just "콜라"))
+  , examples (simple Cup 3 (Just "콜라"))
              [ "콜라 세컵"
              ]
   ]

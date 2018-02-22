@@ -24,13 +24,13 @@ corpus = (testContext {locale = makeLocale PT Nothing}, allExamples)
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (QuantityData Cup 2 (Just "café"))
+  [ examples (simple Cup 2 (Just "café"))
              [ "2 copos de café"
              ]
-  , examples (QuantityData Cup 1 Nothing)
+  , examples (simple Cup 1 Nothing)
              [ "um Copo"
              ]
-  , examples (QuantityData Pound 100 (Just "acucar"))
+  , examples (simple Pound 100 (Just "acucar"))
              [ "100 Libras de acucar"
              ]
   ]

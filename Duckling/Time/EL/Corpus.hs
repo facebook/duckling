@@ -873,7 +873,9 @@ allExamples = concat
              ]
   , examples (datetime (2013, 2, 14, 6, 0, 0) Minute)
              [ "Πέμπτη 8:00 GMT"
+             , "Πέμπτη 8:00 gmt"
              , "Πεμ στις 8 GMT"
+             , "Πεμ στις 8 gmt"
              ]
   , examples (datetime (2013, 2, 12, 14, 0, 0) Hour)
              [ "σήμερα στις 2μμ"

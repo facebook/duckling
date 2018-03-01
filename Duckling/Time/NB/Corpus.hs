@@ -567,8 +567,11 @@ allExamples = concat
              ]
   , examples (datetime (2013, 2, 14, 6, 0, 0) Minute)
              [ "torsdag kl. 8:00 GMT"
+             , "torsdag kl. 8:00 gmt"
              , "torsdag klokken 8:00 GMT"
+             , "torsdag klokken 8:00 gmt"
              , "torsdag 08:00 GMT"
+             , "torsdag 08:00 gmt"
              ]
   , examples (datetime (2013, 2, 12, 14, 0, 0) Hour)
              [ "idag kl. 14"

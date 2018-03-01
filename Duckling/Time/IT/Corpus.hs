@@ -736,6 +736,7 @@ allExamples = concat
              ]
   , examples (datetime (2013, 2, 14, 6, 0, 0) Minute)
              [ "giovedì alle 8:00 GMT"
+             , "giovedì alle 8:00 gmt"
              ]
   , examples (datetime (2013, 2, 13, 14, 0, 0) Hour)
              [ "domani alle 14"

@@ -274,6 +274,7 @@ allExamples = concat
              ]
   , examples (datetime (2013, 2, 14, 6, 0, 0) Minute)
              [ "الخميس الساعة 8 بتوقيت GMT"
+             , "الخميس الساعة 8 بتوقيت gmt"
              ]
   , examples (datetime (2013, 9, 21, 13, 30, 0) Minute)
              [ "يوم السبت 21/09 الساعة 1:30 بعد الظهر"

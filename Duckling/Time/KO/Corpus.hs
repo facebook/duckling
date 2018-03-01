@@ -498,6 +498,7 @@ allExamples = concat
              ]
   , examples (datetime (2013, 2, 14, 6, 0, 0) Minute)
              [ "목요일 8:00 GMT"
+             , "목요일 8:00 gmt"
              ]
   , examples (datetime (2013, 2, 12, 14, 0, 0) Hour)
              [ "오늘 오후두시에"

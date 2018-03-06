@@ -8,7 +8,7 @@ Duckling is a Haskell library that parses text into structured data.
 => {"value":"2017-10-03T00:00:00.000-07:00","grain":"day"}
 ```
 
-## Requirements
+## Requirements 
 A Haskell environment is required. We recommend using
 [stack](https://haskell-lang.org/get-started).
 

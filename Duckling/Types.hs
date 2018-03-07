@@ -132,10 +132,17 @@ data Entity = Entity
   , value :: Value
   , start :: Int
   , end   :: Int
+  , enode :: Node
   } deriving (Eq, Generic, Show, NFData)
 
 instance ToJSON Entity where
-  toEncoding = genericToEncoding defaultOptions
+  toJSON ent = object
+    [ "dim"   .= dim ent
+    , "body"  .= body ent
+    , "value" .= value ent
+    , "start" .= start ent
+    , "end"   .= end ent
+    ]
 
 toJText :: ToJSON x => x -> Text
 toJText = Text.decodeUtf8 . LB.toStrict . encode

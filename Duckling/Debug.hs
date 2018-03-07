@@ -50,9 +50,8 @@ fullParses l sentence targets = debugTokens sentence .
   where
     n = Text.length sentence
 
-ptree :: Text -> ResolvedToken -> IO ()
-ptree sentence Resolved {node} = pnode sentence 0 node
-
+ptree :: Text -> Entity -> IO ()
+ptree sentence Entity {enode} = pnode sentence 0 enode
 -- -----------------------------------------------------------------
 -- Internals
 
@@ -72,8 +71,9 @@ debugContext context sentence targets =
 
 debugTokens :: Text -> [ResolvedToken] -> IO [Entity]
 debugTokens sentence tokens = do
-  mapM_ (ptree sentence) tokens
-  return $ map (formatToken sentence) tokens
+  mapM_ (ptree sentence) entities
+  return entities
+  where entities = map (formatToken sentence) tokens
 
 pnode :: Text -> Int -> Node -> IO ()
 pnode sentence depth Node {children, rule, nodeRange = Range start end} = do

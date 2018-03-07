@@ -42,7 +42,7 @@ parseTest :: TestTree
 parseTest = testCase "Parse Test" $
   case parse sentence testContext [This Numeral] of
     [] -> assertFailure "empty result"
-    (Entity dim body value start end:_) -> do
+    (Entity dim body value start end _:_) -> do
       assertEqual "dim" "number" dim
       assertEqual "body" "42" body
       assertEqual "value" val (toJText value)

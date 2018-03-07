@@ -15,6 +15,8 @@ module Duckling.Core
   , Region(..)
   , Dimension(..)
   , Entity(..)
+  , Node(..)
+  , Range(..)
   , Lang(..)
   , Locale
   , Some(..)

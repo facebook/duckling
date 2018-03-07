@@ -50,4 +50,5 @@ rangeTests = testCase "Range Test" $
     xs = [ ("between 3 and 1 dollars", Range 14 23)
          , ("between 1 and between 2 and 3 dollars", Range 14 37)
          , ("10 cents and 0.1", Range 0 8)
+         , ("Pay Kiran1 10eur", Range 11 16)
          ]

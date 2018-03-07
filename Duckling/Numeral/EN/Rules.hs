@@ -157,17 +157,45 @@ ruleCompositeTens = Rule
       _ -> Nothing
   }
 
-ruleSkipHundreds :: Rule
-ruleSkipHundreds = Rule
-  { name = "one twenty two"
+ruleSkipHundreds1 :: Rule
+ruleSkipHundreds1 = Rule
+  { name = "one eleven"
   , pattern =
-    [ numberBetween 1 10
-    , numberBetween 10 100
+    [ regex "(one|two|three|four|five|six|seven|eight|nine)"
+    , regex "(ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|fou?rty|fifty|sixty|seventy|eighty|ninety)"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = hundreds}:
-       Token Numeral NumeralData{TNumeral.value = rest}:
-       _) -> double $ hundreds*100 + rest
+      (Token RegexMatch (GroupMatch (m1:_)):
+       Token RegexMatch (GroupMatch (m2:_)):
+       _) -> do
+       let x1 = Text.toLower m1
+       let x2 = Text.toLower m2
+       hundreds <- HashMap.lookup x1 zeroNineteenMap
+       rest <- HashMap.lookup x2 zeroNineteenMap <|> HashMap.lookup x2 tensMap
+       integer (hundreds * 100 + rest)
+      _ -> Nothing
+  }
+
+ruleSkipHundreds2 :: Rule
+ruleSkipHundreds2 = Rule
+  { name = "one twenty two"
+  , pattern =
+    [ regex "(one|two|three|four|five|six|seven|eight|nine)"
+    , regex "(twenty|thirty|fou?rty|fifty|sixty|seventy|eighty|ninety)"
+    , regex "(one|two|three|four|five|six|seven|eight|nine)"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (m1:_)):
+       Token RegexMatch (GroupMatch (m2:_)):
+       Token RegexMatch (GroupMatch (m3:_)):
+       _) -> do
+       let x1 = Text.toLower m1
+       let x2 = Text.toLower m2
+       let x3 = Text.toLower m3
+       hundreds <- HashMap.lookup x1 zeroNineteenMap
+       tens <- HashMap.lookup x2 tensMap
+       rest <- HashMap.lookup x3 zeroNineteenMap
+       integer (hundreds * 100 + tens + rest)
       _ -> Nothing
   }
 
@@ -298,7 +326,8 @@ rules =
   , ruleTens
   , rulePowersOfTen
   , ruleCompositeTens
-  , ruleSkipHundreds
+  , ruleSkipHundreds1
+  , ruleSkipHundreds2
   , ruleDotSpelledOut
   , ruleLeadingDotSpelledOut
   , ruleDecimals

@@ -156,6 +156,14 @@ allExamples = concat
              , "Ósmy Sie."
              , "Osmego Sie."
              ]
+  , examples (datetime (2013, 11, 20, 0, 0, 0) Day)
+             [ "20 listopada"
+             , "20 listopad"
+             ]
+  , examples (datetime (2013, 5, 20, 0, 0, 0) Day)
+             [ "20 maja"
+             , "20 maj"
+             ]
   , examples (datetime (2014, 10, 0, 0, 0, 0) Month)
              [ "Październik 2014"
              , "Pazdziernika 2014"

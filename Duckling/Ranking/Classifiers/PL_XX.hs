@@ -37,11 +37,11 @@ classifiers
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("integer (numeric)",
         Classifier{okData =
-                     ClassData{prior = -0.6012662287303591, unseen = -4.890349128221754,
+                     ClassData{prior = -0.6137404029555349, unseen = -4.890349128221754,
                                likelihoods = HashMap.fromList [("", 0.0)], n = 131},
                    koData =
-                     ClassData{prior = -0.794332324807291, unseen = -4.700480365792417,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 108}}),
+                     ClassData{prior = -0.7794075248443522, unseen = -4.727387818712341,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 111}}),
        ("exactly <time-of-day>",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -2.5649493574615367,

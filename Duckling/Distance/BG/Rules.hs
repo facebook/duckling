@@ -24,13 +24,13 @@ import Duckling.Types
 import qualified Duckling.Distance.Types as TDistance
 
 distances :: [(Text, String, TDistance.Unit)]
-distances = [ ("<latent dist> km", "км|километ(ра|ри)", TDistance.Kilometre)
+distances = [ ("<latent dist> km", "км|километ(ра|ри|ър)", TDistance.Kilometre)
             , ("<latent dist> feet", "('|фут(а|ове)?)", TDistance.Foot)
             , ("<latent dist> inch", "(\"|''|инч(а|ове)?)", TDistance.Inch)
             , ("<latent dist> yard", "ярд(а|ове)?", TDistance.Yard)
-            , ("<dist> meters", "м(ет(ъ)?р(а|и)?)?", TDistance.Metre)
-            , ("<dist> centimeters", "см|сантимет(ри|ра)|сантиметър", TDistance.Centimetre)
-            , ("<dist> millimeters", "мм|милиметър|милимет(ра|ри)", TDistance.Millimetre)
+            , ("<dist> meters", "м(етър|етр(а|и))?", TDistance.Metre)
+            , ("<dist> centimeters", "см|сантимет(ри|ра|ър)", TDistance.Centimetre)
+            , ("<dist> millimeters", "мм|милимет(ра|ри|ър)", TDistance.Millimetre)
             , ("<dist> miles", "мил(я|и)", TDistance.Mile)
             ]
 

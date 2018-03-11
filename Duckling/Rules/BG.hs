@@ -20,6 +20,7 @@ import Duckling.Locale
 import Duckling.Types
 import qualified Duckling.Numeral.BG.Rules as Numeral
 import qualified Duckling.AmountOfMoney.BG.Rules as AmountOfMoney
+import qualified Duckling.Distance.BG.Rules as Distance
 
 defaultRules :: Some Dimension -> [Rule]
 defaultRules = langRules
@@ -29,7 +30,7 @@ localeRules _ _ = []
 
 langRules :: Some Dimension -> [Rule]
 langRules (This AmountOfMoney) = AmountOfMoney.rules
-langRules (This Distance) = []
+langRules (This Distance) = Distance.rules
 langRules (This Duration) = []
 langRules (This Email) = []
 langRules (This Numeral) = Numeral.rules

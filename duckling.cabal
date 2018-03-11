@@ -200,6 +200,8 @@ library
                      , Duckling.Distance.CS.Rules
                      , Duckling.Distance.EN.Corpus
                      , Duckling.Distance.EN.Rules
+                     , Duckling.Distance.BG.Corpus
+                     , Duckling.Distance.BG.Rules
                      , Duckling.Distance.ES.Corpus
                      , Duckling.Distance.ES.Rules
                      , Duckling.Distance.FR.Corpus
@@ -675,6 +677,7 @@ test-suite duckling-test
                      -- Distance
                      , Duckling.Distance.CS.Tests
                      , Duckling.Distance.EN.Tests
+                     , Duckling.Distance.BG.Tests
                      , Duckling.Distance.ES.Tests
                      , Duckling.Distance.FR.Tests
                      , Duckling.Distance.GA.Tests

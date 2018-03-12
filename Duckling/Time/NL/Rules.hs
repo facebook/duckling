@@ -81,30 +81,30 @@ ruleSeasons = mkRuleSeasons
 
 ruleHolidays :: [Rule]
 ruleHolidays = mkRuleHolidays
-  [ ( "new year's day"                    , monthDay  1  1,
-        "nieuwjaars?(dag)?" )
-  , ( "valentine's day"                   , monthDay  2 14,
-        "valentijns?(dag)?" )
-  , ( "halloween day"                     , monthDay 10 31,
-        "hall?oween?" )
-  , ( "Dutch King day"                    , monthDay  4 27,
-       "konings?dag" )
-  , ( "Allerheiligen"                     , monthDay 11  1,
-        "allerheiligen?|aller heiligen?" )
-  , ( "Sinterklaas"                       , monthDay 12  5,
-        "sinterklaas(avond)?|pakjesavond" )
-  , ( "christmas eve"                     , monthDay 12 24,
-        "kerstavond" )
-  , ( "boxing day christmas"              , monthDay 12 26,
-        "tweede kerstdag" )
-  , ( "christmas"                         , monthDay 12 25,
-        "kerstmis|(eerste )?kerstdag|kerst" )
-  , ( "new year's eve"                    , monthDay 12 31,
-        "oudjaar|oudejaars?avond" )
-  , ( "Mother's Day"                      , nthDOWOfMonth 2 7 5,
-        "moederdag" )
-  , ( "Father's Day"                      , nthDOWOfMonth 3 7 6,
-        "vaderdag" )
+  [ ( "new year's day"      , "nieuwjaars?(dag)?"
+    , monthDay  1  1 )
+  , ( "valentine's day"     , "valentijns?(dag)?"
+    , monthDay  2 14 )
+  , ( "halloween day"       , "hall?oween?"
+    , monthDay 10 31 )
+  , ( "Dutch King day"      , "konings?dag"
+    , monthDay  4 27 )
+  , ( "Allerheiligen"       , "allerheiligen?|aller heiligen?"
+    , monthDay 11  1 )
+  , ( "Sinterklaas"         , "sinterklaas(avond)?|pakjesavond"
+    , monthDay 12  5 )
+  , ( "christmas eve"       , "kerstavond"
+    , monthDay 12 24 )
+  , ( "boxing day christmas", "tweede kerstdag"
+    , monthDay 12 26 )
+  , ( "christmas"           , "kerstmis|(eerste )?kerstdag|kerst"
+    , monthDay 12 25 )
+  , ( "new year's eve"      , "oudjaar|oudejaars?avond"
+    , monthDay 12 31 )
+  , ( "Mother's Day"        , "moederdag"
+    , nthDOWOfMonth 2 7 5 )
+  , ( "Father's Day"        , "vaderdag"
+    , nthDOWOfMonth 3 7 6 )
   ]
 
 ruleRelativeMinutesToOrAfterIntegerPartOfDay :: Rule
@@ -190,7 +190,7 @@ ruleLastTime = Rule
   { name = "last <time>"
   , pattern =
     [ regex "afgelopen|vorige?"
-    , dimension Time
+    , Predicate isOkWithThisNext
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td:_) -> tt $ predNth (-1) False td
@@ -891,7 +891,7 @@ ruleWeekend = Rule
   , pattern =
     [ regex "week(\\s|-)?ei?nde?"
     ]
-  , prod = \_ -> tt weekend
+  , prod = \_ -> tt $ mkOkForThisNext weekend
   }
 
 ruleNthTimeAfterTime2 :: Rule
@@ -919,11 +919,10 @@ ruleNextTime = Rule
   { name = "next <time>"
   , pattern =
     [ regex "(volgende?|komende?)"
-    , Predicate $ not . isATimeOfDay
+    , Predicate $ and . sequence [isOkWithThisNext, not . isATimeOfDay]
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td:_) ->
-        tt $ predNth 0 True td
+      (_:Token Time td:_) -> tt $ predNth 0 True td
       _ -> Nothing
   }
 
@@ -1074,7 +1073,7 @@ ruleThisTime = Rule
   { name = "this <time>"
   , pattern =
     [ regex "dit|deze|huidige?"
-    , dimension Time
+    , Predicate isOkWithThisNext
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td:_) -> tt $ predNth 0 False td

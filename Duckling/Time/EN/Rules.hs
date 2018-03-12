@@ -750,6 +750,36 @@ ruleYYYYMMDD = Rule
       _ -> Nothing
   }
 
+ruleMMDDYYYY :: Rule
+ruleMMDDYYYY = Rule
+  { name = "mm dd yyyy"
+  , pattern =
+    [ regex "(0?[1-9]|1[0-2]) (3[01]|[12]\\d|0?[1-9]) (\\d{2,4})"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (mm:dd:yy:_)):_) -> do
+        y <- parseInt yy
+        m <- parseInt mm
+        d <- parseInt dd
+        tt $ yearMonthDay y m d
+      _ -> Nothing
+  }
+
+ruleDDMMYYYY :: Rule
+ruleDDMMYYYY = Rule
+  { name = "dd mm yyyy"
+  , pattern =
+    [ regex "(3[01]|[12]\\d|0?[1-9]) (0?[1-9]|1[0-2]) (\\d{2,4})"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (dd:mm:yy:_)):_) -> do
+        y <- parseInt yy
+        m <- parseInt mm
+        d <- parseInt dd
+        tt $ yearMonthDay y m d
+      _ -> Nothing
+  }
+
 ruleNoonMidnightEOD :: Rule
 ruleNoonMidnightEOD = Rule
   { name = "noon|midnight|EOD|end of day"
@@ -1607,6 +1637,8 @@ rules =
   , ruleQuarterAfterHOD
   , ruleHalfHOD
   , ruleYYYYMMDD
+  , ruleMMDDYYYY
+  , ruleDDMMYYYY
   , ruleMMYYYY
   , ruleNoonMidnightEOD
   , rulePartOfDays

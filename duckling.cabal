@@ -543,6 +543,7 @@ library
                      , Duckling.Time.ZH.MO.Rules
                      , Duckling.Time.ZH.TW.Corpus
                      , Duckling.Time.ZH.TW.Rules
+                     , Duckling.Time.Computed
                      , Duckling.Time.Corpus
                      , Duckling.Time.Helpers
                      , Duckling.Time.Types

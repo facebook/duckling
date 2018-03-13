@@ -25,7 +25,7 @@ module Duckling.Time.Helpers
   , predNth, predNthAfter, second, timeOfDayAMPM, weekend, withDirection, year
   , yearMonthDay, tt
     -- Other
-  , getIntValue
+  , getIntValue, timeComputed
   -- Rule constructors
   , mkRuleInstants, mkRuleDaysOfWeek, mkRuleMonths, mkRuleSeasons
   , mkRuleHolidays
@@ -76,6 +76,11 @@ timeNegPeriod (DurationData v g) = DurationData
 
 -- -----------------------------------------------------------------
 -- Time predicates
+
+timeComputed :: [TTime.TimeObject] -> TTime.Predicate
+timeComputed xs = mkSeriesPredicate series
+  where
+    series t _ = span (flip TTime.timeBefore t) xs
 
 timeCycle :: TG.Grain -> TTime.Predicate
 timeCycle grain = mkSeriesPredicate series

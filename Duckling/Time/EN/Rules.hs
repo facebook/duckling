@@ -27,6 +27,7 @@ import Duckling.Numeral.Helpers (parseInt)
 import Duckling.Numeral.Types (NumeralData (..))
 import Duckling.Ordinal.Types (OrdinalData (..))
 import Duckling.Regex.Types
+import Duckling.Time.Computed (easterSunday)
 import Duckling.Time.Helpers
 import Duckling.Time.Types (TimeData (..))
 import Duckling.Types
@@ -1253,6 +1254,13 @@ ruleUSHolidays = mkRuleHolidays
     )
   ]
 
+ruleComputedHolidays :: [Rule]
+ruleComputedHolidays = mkRuleHolidays
+  [ ( "Easter Sunday", "easter(\\s+sun(day)?)?", easterSunday)
+  , ( "Easter Monday", "easter\\s+mon(day)?"
+    , cycleNthAfter False TG.Day 1 easterSunday
+    )
+  ]
 
 ruleCycleThisLastNext :: Rule
 ruleCycleThisLastNext = Rule
@@ -1661,3 +1669,4 @@ rules =
   ++ ruleMonths
   ++ ruleSeasons
   ++ ruleUSHolidays
+  ++ ruleComputedHolidays

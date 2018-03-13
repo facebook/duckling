@@ -362,6 +362,8 @@ library
                      , Duckling.Ordinal.EL.Rules
                      , Duckling.Ordinal.EN.Corpus
                      , Duckling.Ordinal.EN.Rules
+                     , Duckling.Ordinal.BG.Corpus
+                     , Duckling.Ordinal.BG.Rules
                      , Duckling.Ordinal.ES.Corpus
                      , Duckling.Ordinal.ES.Rules
                      , Duckling.Ordinal.ET.Corpus
@@ -762,6 +764,7 @@ test-suite duckling-test
                      , Duckling.Ordinal.DE.Tests
                      , Duckling.Ordinal.EL.Tests
                      , Duckling.Ordinal.EN.Tests
+                     , Duckling.Ordinal.BG.Tests
                      , Duckling.Ordinal.ES.Tests
                      , Duckling.Ordinal.ET.Tests
                      , Duckling.Ordinal.FR.Tests

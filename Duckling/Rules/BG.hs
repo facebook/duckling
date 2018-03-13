@@ -23,6 +23,7 @@ import qualified Duckling.AmountOfMoney.BG.Rules as AmountOfMoney
 import qualified Duckling.Distance.BG.Rules as Distance
 import qualified Duckling.Duration.BG.Rules as Duration
 import qualified Duckling.TimeGrain.BG.Rules as TimeGrain
+import qualified Duckling.Ordinal.BG.Rules as Ordinal
 
 defaultRules :: Some Dimension -> [Rule]
 defaultRules = langRules
@@ -36,7 +37,7 @@ langRules (This Distance) = Distance.rules
 langRules (This Duration) = Duration.rules
 langRules (This Email) = []
 langRules (This Numeral) = Numeral.rules
-langRules (This Ordinal) = []
+langRules (This Ordinal) = Ordinal.rules
 langRules (This PhoneNumber) = []
 langRules (This Quantity) = []
 langRules (This RegexMatch) = []

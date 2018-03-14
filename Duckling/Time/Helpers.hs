@@ -25,7 +25,7 @@ module Duckling.Time.Helpers
   , predNth, predNthAfter, second, timeOfDayAMPM, weekend, withDirection, year
   , yearMonthDay, tt
     -- Other
-  , getIntValue
+  , getIntValue, timeComputed
   -- Rule constructors
   , mkRuleInstants, mkRuleDaysOfWeek, mkRuleMonths, mkRuleSeasons
   , mkRuleHolidays
@@ -76,6 +76,11 @@ timeNegPeriod (DurationData v g) = DurationData
 
 -- -----------------------------------------------------------------
 -- Time predicates
+
+timeComputed :: [TTime.TimeObject] -> TTime.Predicate
+timeComputed xs = mkSeriesPredicate series
+  where
+    series t _ = span (flip TTime.timeBefore t) xs
 
 timeCycle :: TG.Grain -> TTime.Predicate
 timeCycle grain = mkSeriesPredicate series
@@ -558,26 +563,28 @@ mkSingleRegexRule name pattern token = Rule
 mkRuleInstants :: [(Text, TG.Grain, Int, String)] -> [Rule]
 mkRuleInstants = map go
   where
-    go (name, grain, n, ptn) = mkSingleRegexRule name ptn $ tt $
+    go (name, grain, n, ptn) = mkSingleRegexRule name ptn . tt $
       cycleNth grain n
 
 mkRuleDaysOfWeek :: [(Text, String)] -> [Rule]
 mkRuleDaysOfWeek daysOfWeek = zipWith go daysOfWeek [1..7]
   where
-    go (name, ptn) i = mkSingleRegexRule name ptn $ tt $ dayOfWeek i
+    go (name, ptn) i =
+      mkSingleRegexRule name ptn . tt . mkOkForThisNext $ dayOfWeek i
 
 mkRuleMonths :: [(Text, String)] -> [Rule]
 mkRuleMonths months  = zipWith go months [1..12]
   where
-    go (name, ptn) i = mkSingleRegexRule name ptn $ tt $ month i
+    go (name, ptn) i =
+      mkSingleRegexRule name ptn . tt . mkOkForThisNext $ month i
 
 mkRuleSeasons :: [(Text, String, TimeData, TimeData)] -> [Rule]
 mkRuleSeasons = map go
   where
-    go (name, ptn, start, end) =
-      mkSingleRegexRule name ptn $ Token Time <$> interval TTime.Open start end
+    go (name, ptn, start, end) = mkSingleRegexRule name ptn $
+      Token Time <$> mkOkForThisNext <$> interval TTime.Open start end
 
-mkRuleHolidays :: [(Text, TimeData, String)] -> [Rule]
+mkRuleHolidays :: [(Text, String, TimeData)] -> [Rule]
 mkRuleHolidays = map go
   where
-    go (name, date, ptn) = mkSingleRegexRule name ptn $ tt date
+    go (name, ptn, td) = mkSingleRegexRule name ptn . tt $ mkOkForThisNext td

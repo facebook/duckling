@@ -15,9 +15,9 @@ import Prelude
 import Test.Tasty
 
 import qualified Duckling.Duration.AR.Tests as AR
+import qualified Duckling.Duration.BG.Tests as BG
 import qualified Duckling.Duration.EL.Tests as EL
 import qualified Duckling.Duration.EN.Tests as EN
-import qualified Duckling.Duration.BG.Tests as BG
 import qualified Duckling.Duration.FR.Tests as FR
 import qualified Duckling.Duration.GA.Tests as GA
 import qualified Duckling.Duration.HU.Tests as HU
@@ -36,9 +36,9 @@ import qualified Duckling.Duration.ZH.Tests as ZH
 tests :: TestTree
 tests = testGroup "Duration Tests"
   [ AR.tests
+  , BG.tests
   , EL.tests
   , EN.tests
-  , BG.tests
   , FR.tests
   , GA.tests
   , HU.tests

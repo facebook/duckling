@@ -662,6 +662,20 @@ allExamples = concat
              [ "MLK day of last year"
              , "MLK day 2012"
              ]
+  , examples (datetime (2013, 3, 31, 0, 0, 0) Day)
+             [ "easter"
+             , "easter 2013"
+             ]
+  , examples (datetime (2013, 4, 1, 0, 0, 0) Day)
+             [ "easter mon"
+             ]
+  , examples (datetime (2010, 4, 4, 0, 0, 0) Day)
+             [ "easter 2010"
+             , "Easter Sunday two thousand ten"
+             ]
+  , examples (datetime (2013, 4, 3, 0, 0, 0) Day)
+             [ "three days after Easter"
+             ]
   , examples (datetimeInterval ((2013, 2, 12, 18, 0, 0), (2013, 2, 13, 0, 0, 0)) Hour)
              [ "this evening"
              , "today evening"

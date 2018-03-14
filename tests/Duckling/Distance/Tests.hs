@@ -6,12 +6,15 @@
 -- of patent rights can be found in the PATENTS file in the same directory.
 
 
-module Duckling.Distance.Tests (tests) where
+module Duckling.Distance.Tests
+  ( tests
+  ) where
 
-import Prelude
 import Data.String
+import Prelude
 import Test.Tasty
 
+import qualified Duckling.Distance.BG.Tests as BG
 import qualified Duckling.Distance.CS.Tests as CS
 import qualified Duckling.Distance.EN.Tests as EN
 import qualified Duckling.Distance.BG.Tests as BG
@@ -28,9 +31,9 @@ import qualified Duckling.Distance.TR.Tests as TR
 
 tests :: TestTree
 tests = testGroup "Distance Tests"
-  [ CS.tests
+  [ BG.tests
+  , CS.tests
   , EN.tests
-  , BG.tests
   , ES.tests
   , FR.tests
   , GA.tests

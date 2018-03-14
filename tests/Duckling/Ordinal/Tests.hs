@@ -13,11 +13,11 @@ import Prelude
 import Test.Tasty
 
 import qualified Duckling.Ordinal.AR.Tests as AR
+import qualified Duckling.Ordinal.BG.Tests as BG
 import qualified Duckling.Ordinal.DA.Tests as DA
 import qualified Duckling.Ordinal.DE.Tests as DE
 import qualified Duckling.Ordinal.EL.Tests as EL
 import qualified Duckling.Ordinal.EN.Tests as EN
-import qualified Duckling.Ordinal.BG.Tests as BG
 import qualified Duckling.Ordinal.ES.Tests as ES
 import qualified Duckling.Ordinal.ET.Tests as ET
 import qualified Duckling.Ordinal.FR.Tests as FR
@@ -45,11 +45,11 @@ import qualified Duckling.Ordinal.ZH.Tests as ZH
 tests :: TestTree
 tests = testGroup "Ordinal Tests"
   [ AR.tests
+  , BG.tests
   , DA.tests
   , DE.tests
   , EL.tests
   , EN.tests
-  , BG.tests
   , ES.tests
   , ET.tests
   , FR.tests

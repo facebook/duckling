@@ -27,6 +27,7 @@ import Duckling.Numeral.Helpers (parseInt)
 import Duckling.Numeral.Types (NumeralData (..))
 import Duckling.Ordinal.Types (OrdinalData (..))
 import Duckling.Regex.Types
+import Duckling.Time.Computed (easterSunday)
 import Duckling.Time.Helpers
 import Duckling.Time.Types (TimeData (..))
 import Duckling.Types
@@ -881,31 +882,13 @@ ruleWeekend = Rule
   , prod = \_ -> tt $ mkOkForThisNext weekend
   }
 
-ruleSeasons :: Rule
-ruleSeasons = Rule
-  { name = "seasons"
-  , pattern =
-    [ regex "(summer|fall|autumn|winter|spring)"
-    ]
-  , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> do
-        start <- case Text.toLower match of
-          "summer" -> Just $ monthDay 6 21
-          "fall"   -> Just $ monthDay 9 23
-          "autumn" -> Just $ monthDay 9 23
-          "winter" -> Just $ monthDay 12 21
-          "spring" -> Just $ monthDay 3 20
-          _ -> Nothing
-        end <- case Text.toLower match of
-          "summer" -> Just $ monthDay 9 23
-          "fall"   -> Just $ monthDay 12 21
-          "autumn" -> Just $ monthDay 12 21
-          "winter" -> Just $ monthDay 3 20
-          "spring" -> Just $ monthDay 6 21
-          _ -> Nothing
-        Token Time <$> mkOkForThisNext <$> interval TTime.Open start end
-      _ -> Nothing
-  }
+ruleSeasons :: [Rule]
+ruleSeasons = mkRuleSeasons
+  [ ( "summer", "summer"     , monthDay  6 21, monthDay  9 23 )
+  , ( "fall"  , "fall|autumn", monthDay  9 23, monthDay 12 21 )
+  , ( "winter", "winter"     , monthDay 12 21, monthDay  3 20 )
+  , ( "spring", "spring"     , monthDay  3 20, monthDay  6 21 )
+  ]
 
 ruleTODPrecision :: Rule
 ruleTODPrecision = Rule
@@ -1186,8 +1169,8 @@ ruleIntervalAfterFromSinceTOD = Rule
       _ -> Nothing
   }
 
-daysOfWeek :: [(Text, String)]
-daysOfWeek =
+ruleDaysOfWeek :: [Rule]
+ruleDaysOfWeek = mkRuleDaysOfWeek
   [ ( "Monday"   , "monday|mon\\.?"         )
   , ( "Tuesday"  , "tuesday|tues?\\.?"      )
   , ( "Wednesday", "wed?nesday|wed\\.?"     )
@@ -1197,17 +1180,8 @@ daysOfWeek =
   , ( "Sunday"   , "sunday|sun\\.?"         )
   ]
 
-ruleDaysOfWeek :: [Rule]
-ruleDaysOfWeek = zipWith go daysOfWeek [1..7]
-  where
-    go (name, regexPattern) i = Rule
-      { name = name
-      , pattern = [regex regexPattern]
-      , prod = \_ -> tt . mkOkForThisNext $ dayOfWeek i
-      }
-
-months :: [(Text, String)]
-months =
+ruleMonths :: [Rule]
+ruleMonths = mkRuleMonths
   [ ( "January"  , "january|jan\\.?"     )
   , ( "February" , "february|feb\\.?"    )
   , ( "March"    , "march|mar\\.?"       )
@@ -1221,15 +1195,6 @@ months =
   , ( "November" , "november|nov\\.?"    )
   , ( "December" , "december|dec\\.?"    )
   ]
-
-ruleMonths :: [Rule]
-ruleMonths = zipWith go months [1..12]
-  where
-    go (name, regexPattern) i = Rule
-      { name = name
-      , pattern = [regex regexPattern]
-      , prod = \_ -> tt . mkOkForThisNext $ month i
-      }
 
 rulePartOfMonth :: Rule
 rulePartOfMonth = Rule
@@ -1253,96 +1218,49 @@ rulePartOfMonth = Rule
       _ -> Nothing
   }
 
-usHolidays :: [(Text, String, Int, Int)]
-usHolidays =
-  [ ( "Christmas"       , "(xmas|christmas)( day)?"         , 12, 25 )
-  , ( "Christmas Eve"   , "(xmas|christmas)( day)?('s)? eve", 12, 24 )
-  , ( "New Year's Eve"  , "new year'?s? eve"                , 12, 31 )
-  , ( "New Year's Day"  , "new year'?s?( day)?"             , 1 , 1  )
-  , ( "Valentine's Day" , "valentine'?s?( day)?"            , 2 , 14 )
-  , ( "Independence Day", "independence day"                , 7 , 4  )
-  , ( "Halloween"       , "hall?owe?en( day)?"              , 10, 31 )
-  ]
-
 ruleUSHolidays :: [Rule]
-ruleUSHolidays = map go usHolidays
-  where
-    go (name, regexPattern, m, d) = Rule
-      { name = name
-      , pattern = [regex regexPattern]
-      , prod = \_ -> tt . mkOkForThisNext $ monthDay m d
-      }
+ruleUSHolidays = mkRuleHolidays
+  -- Fixed dates, year over year
+  [ ( "Christmas"       , "(xmas|christmas)( day)?"         , monthDay 12 25 )
+  , ( "Christmas Eve"   , "(xmas|christmas)( day)?('s)? eve", monthDay 12 24 )
+  , ( "New Year's Eve"  , "new year'?s? eve"                , monthDay 12 31 )
+  , ( "New Year's Day"  , "new year'?s?( day)?"             , monthDay  1  1 )
+  , ( "Valentine's Day" , "valentine'?s?( day)?"            , monthDay  2 14 )
+  , ( "Independence Day", "independence day"                , monthDay  7  4 )
+  , ( "Halloween"       , "hall?owe?en( day)?"              , monthDay 10 31 )
 
-moreUSHolidays :: [(Text, String, Int, Int, Int)]
-moreUSHolidays =
-  [ ( "Martin Luther King's Day" -- Third Monday of January
+  -- Fixed day/week/month, year over year
+  , ( "Martin Luther King's Day"
     , "(MLK|Martin Luther King,?)( Jr.?| Junior)? day"
-    , 3, 1, 1
+    , nthDOWOfMonth 3 1 1
     )
-  , ( "Father's Day" -- Third Sunday of June
-    , "father'?s?'? day"
-    , 3, 7, 6
+  , ( "Father's Day"            , "father'?s?'? day", nthDOWOfMonth 3 7 6 )
+  , ( "Mother's Day"            , "mother'?s?'? day", nthDOWOfMonth 2 7 5 )
+  , ( "Labor Day"               , "labor day"       , nthDOWOfMonth 1 1 9 )
+
+  -- The day after Thanksgiving (not always the fourth Friday of November)
+  , ( "Black Friday", "black frid?day"
+    , cycleNthAfter False TG.Day 1 $ nthDOWOfMonth 4 4 11
     )
-  , ( "Mother's Day" -- Second Sunday of May
-    , "mother'?s?'? day"
-    , 2, 7, 5
+  -- Last Monday of May
+  , ( "Memorial Day", "memorial day", predLastOf (dayOfWeek 1) (month 5) )
+  -- Long weekend before the last Monday of May
+  , ( "Memorial Day weekend", "memorial day week(\\s|-)?ends?"
+    , longWEBefore $ predLastOf (dayOfWeek 1) (month 5)
     )
-  ,  ( "Labor Day" -- First Monday of September
-     , "labor day"
-     , 1, 1, 9
-     )
+  -- Long weekend before the first Monday of September
+  , ( "Labor Day weekend", "labor day week(\\s|-)?ends?"
+    , longWEBefore $ nthDOWOfMonth 1 1 9
+    )
   ]
 
-ruleMoreUSHolidays :: [Rule]
-ruleMoreUSHolidays = map go moreUSHolidays
-  where
-    go (name, regexPattern, n, dow, m) = Rule
-      { name = name
-      , pattern = [regex regexPattern]
-      , prod = \_ -> tt . mkOkForThisNext $ nthDOWOfMonth n dow m
-      }
-
--- The day after Thanksgiving (not always the fourth Friday of November)
-ruleBlackFriday :: Rule
-ruleBlackFriday = Rule
-  { name = "black friday"
-  , pattern =
-    [ regex "black frid?day"
-    ]
-  , prod = \_ ->
-      tt . mkOkForThisNext . cycleNthAfter False TG.Day 1 $ nthDOWOfMonth 4 4 11
-  }
-
--- Last Monday of May
-ruleMemorialDay :: Rule
-ruleMemorialDay = Rule
-  { name = "Memorial Day"
-  , pattern =
-    [ regex "memorial day"
-    ]
-  , prod = \_ -> tt . mkOkForThisNext $ predLastOf (dayOfWeek 1) (month 5)
-  }
-
--- Long weekend before the last Monday of May
-ruleMemorialDayWeekend :: Rule
-ruleMemorialDayWeekend = Rule
-  { name = "Memorial Day Weekend"
-  , pattern =
-    [ regex "memorial day week(\\s|-)?ends?"
-    ]
-  , prod = \_ ->
-      tt . mkOkForThisNext . longWEBefore $ predLastOf (dayOfWeek 1) (month 5)
-  }
-
--- Long weekend before the first Monday of September
-ruleLaborDayWeekend :: Rule
-ruleLaborDayWeekend = Rule
-  { name = "Labor Day weekend"
-  , pattern =
-    [ regex "labor day week(\\s|-)?ends?"
-    ]
-  , prod = \_ -> tt . mkOkForThisNext . longWEBefore $ nthDOWOfMonth 1 1 9
-  }
+ruleComputedHolidays :: [Rule]
+ruleComputedHolidays = mkRuleHolidays
+  [ ( "Easter Sunday", "easter(\\s+sun(day)?)?", easterSunday)
+  , ( "Easter Monday", "easter\\s+mon(day)?"
+    , cycleNthAfter False TG.Day 1 easterSunday
+    )
+  ]
 
 ruleCycleThisLastNext :: Rule
 ruleCycleThisLastNext = Rule
@@ -1708,7 +1626,6 @@ rules =
   , ruleTimePOD
   , rulePODofTime
   , ruleWeekend
-  , ruleSeasons
   , ruleTODPrecision
   , rulePrecisionTOD
   , ruleIntervalFromMonthDDDD
@@ -1726,9 +1643,6 @@ rules =
   , ruleIntervalByTheEndOf
   , ruleIntervalUntilTOD
   , ruleIntervalAfterFromSinceTOD
-  , ruleMemorialDay
-  , ruleMemorialDayWeekend
-  , ruleLaborDayWeekend
   , ruleCycleTheAfterBeforeTime
   , ruleCycleThisLastNext
   , ruleCycleAfterBeforeTime
@@ -1749,10 +1663,10 @@ rules =
   , ruleTimezone
   , rulePartOfMonth
   , ruleNow
-  , ruleBlackFriday
   ]
   ++ ruleInstants
   ++ ruleDaysOfWeek
   ++ ruleMonths
+  ++ ruleSeasons
   ++ ruleUSHolidays
-  ++ ruleMoreUSHolidays
+  ++ ruleComputedHolidays

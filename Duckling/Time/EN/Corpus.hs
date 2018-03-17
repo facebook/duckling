@@ -610,20 +610,8 @@ allExamples = concat
   , examples (datetime (1996, 6, 16, 0, 0, 0) Day)
              [ "fathers day 1996"
              ]
-  , examples (datetime (2013, 5, 27, 0, 0, 0) Day)
-             [ "memorial day"
-             , "Next Memorial Day"
-             ]
-  , examples (datetime (2012, 5, 28, 0, 0, 0) Day)
-             [ "last memorial day"
-             , "memorial day of last year"
-             ]
-  , examples (datetimeInterval ((2013, 5, 24, 18, 0, 0), (2013, 5, 28, 0, 0, 0)) Hour)
-             [ "memorial day week-end"
-             ]
   , examples (datetime (2013, 7, 4, 0, 0, 0) Day)
-             [ "independence day"
-             , "4th of July"
+             [ "4th of July"
              , "4 of july"
              ]
   , examples (datetime (2013, 9, 2, 0, 0, 0) Day)
@@ -655,12 +643,15 @@ allExamples = concat
              , "this MLK day"
              ]
   , examples (datetime (2013, 1, 21, 0, 0, 0) Day)
-             [ "last MLK day"
+             [ "last MLK Jr. day"
              , "MLK day 2013"
              ]
   , examples (datetime (2012, 1, 16, 0, 0, 0) Day)
              [ "MLK day of last year"
              , "MLK day 2012"
+             ]
+  , examples (datetime (2013, 11, 1, 0, 0, 0) Day)
+             [ "world vegan day"
              ]
   , examples (datetime (2013, 3, 31, 0, 0, 0) Day)
              [ "easter"

@@ -62,4 +62,10 @@ allExamples = concat
   , examples (datetime (2017, 11, 23, 0, 0, 0) Day)
              [ "thanksgiving 2017"
              ]
+  , examples (datetime (2013, 2, 19, 0, 0, 0) Day)
+             [ "shivaji jayanti 2013"
+             ]
+  , examples (datetime (2013, 8, 15, 0, 0, 0) Day)
+             [ "independence day"
+             ]
   ]

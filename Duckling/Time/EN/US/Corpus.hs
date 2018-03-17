@@ -58,4 +58,27 @@ allExamples = concat
   , examples (datetime (2017, 11, 23, 0, 0, 0) Day)
              [ "thanksgiving 2017"
              ]
+  , examples (datetime (2013, 5, 27, 0, 0, 0) Day)
+             [ "memorial day"
+             , "Next Memorial Day"
+             , "decoration day"
+             ]
+  , examples (datetime (2012, 5, 28, 0, 0, 0) Day)
+             [ "last memorial day"
+             , "memorial day of last year"
+             ]
+  , examples (datetimeInterval ((2013, 5, 24, 18, 0, 0), (2013, 5, 28, 0, 0, 0)) Hour)
+             [ "memorial day week-end"
+             ]
+  , examples (datetime (2013, 7, 4, 0, 0, 0) Day)
+             [ "independence day"
+             ]
+  , examples (datetime (2013, 11, 11, 0, 0, 0) Day)
+             [ "veterans day"
+             ]
+  , examples (datetime (2013, 5, 1, 0, 0, 0) Day)
+             [ "law day"
+             , "Lei Day"
+             , "loyalty day"
+             ]
   ]

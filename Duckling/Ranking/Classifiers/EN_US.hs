@@ -1069,11 +1069,11 @@ classifiers
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("Memorial Day",
         Classifier{okData =
-                     ClassData{prior = -0.2231435513142097, unseen = -1.791759469228055,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 4},
+                     ClassData{prior = -0.1823215567939546,
+                               unseen = -1.9459101490553135,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 5},
                    koData =
-                     ClassData{prior = -1.6094379124341003,
-                               unseen = -1.0986122886681098,
+                     ClassData{prior = -1.791759469228055, unseen = -1.0986122886681098,
                                likelihoods = HashMap.fromList [("", 0.0)], n = 1}}),
        ("Monday",
         Classifier{okData =
@@ -1433,6 +1433,13 @@ classifiers
                      ClassData{prior = -2.1972245773362196,
                                unseen = -1.0986122886681098,
                                likelihoods = HashMap.fromList [("", 0.0)], n = 1}}),
+       ("Law/Lei/Loyalty Day",
+        Classifier{okData =
+                     ClassData{prior = 0.0, unseen = -1.6094379124341003,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 3},
+                   koData =
+                     ClassData{prior = -infinity, unseen = -0.6931471805599453,
+                               likelihoods = HashMap.fromList [], n = 0}}),
        ("February",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -2.70805020110221,
@@ -1717,6 +1724,13 @@ classifiers
                                     ("time-of-day (latent)", -2.0794415416798357),
                                     ("hour", -2.0794415416798357)],
                                n = 2}}),
+       ("World Vegan Day",
+        Classifier{okData =
+                     ClassData{prior = 0.0, unseen = -1.0986122886681098,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 1},
+                   koData =
+                     ClassData{prior = -infinity, unseen = -0.6931471805599453,
+                               likelihoods = HashMap.fromList [], n = 0}}),
        ("intersect by \",\", \"of\", \"from\", \"'s\"",
         Classifier{okData =
                      ClassData{prior = -0.48130318449966897,
@@ -1890,6 +1904,13 @@ classifiers
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -1.9459101490553135,
                                likelihoods = HashMap.fromList [("ordinal (digits)", 0.0)], n = 5},
+                   koData =
+                     ClassData{prior = -infinity, unseen = -0.6931471805599453,
+                               likelihoods = HashMap.fromList [], n = 0}}),
+       ("Veterans Day",
+        Classifier{okData =
+                     ClassData{prior = 0.0, unseen = -1.0986122886681098,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 1},
                    koData =
                      ClassData{prior = -infinity, unseen = -0.6931471805599453,
                                likelihoods = HashMap.fromList [], n = 0}}),

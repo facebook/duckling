@@ -58,4 +58,13 @@ allExamples = concat
   , examples (datetime (2017, 10, 9, 0, 0, 0) Day)
              [ "thanksgiving 2017"
              ]
+  , examples (datetime (2013, 7, 1, 0, 0, 0) Day)
+             [ "canada day"
+             , "memorial day"
+             , "dominion day"
+             , "Next Memorial Day"
+             ]
+  , examples (datetime (2013, 4, 9, 0, 0, 0) Day)
+             [ "vimy ridge day"
+             ]
   ]

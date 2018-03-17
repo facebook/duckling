@@ -45,13 +45,8 @@ import qualified Duckling.TimeGrain.EN.Rules as TimeGrain
 import qualified Duckling.Volume.EN.Rules as Volume
 
 defaultRules :: Some Dimension -> [Rule]
-defaultRules dim@(This Time) =
-  [ TimeUS.ruleMMDD
-  , TimeUS.ruleMMDDYYYY
-  , TimeUS.ruleMMDDYYYYDot
-  , TimeUS.ruleThanksgiving
-  ] ++ langRules dim
-defaultRules dim = langRules dim
+defaultRules dim@(This Time) = TimeUS.rulesBackwardCompatible ++ langRules dim
+defaultRules dim             = langRules dim
 
 localeRules :: Region -> Some Dimension -> [Rule]
 localeRules AU (This Time) = TimeAU.rules

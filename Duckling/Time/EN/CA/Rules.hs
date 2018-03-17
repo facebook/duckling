@@ -71,20 +71,30 @@ ruleMMDDYYYYDot = Rule
       _ -> Nothing
   }
 
--- Second Monday of October
-ruleThanksgiving :: Rule
-ruleThanksgiving = Rule
-  { name = "Thanksgiving Day"
-  , pattern =
-    [ regex "thanks?giving( day)?"
-    ]
-  , prod = \_ -> tt . mkOkForThisNext $ nthDOWOfMonth 2 1 10
-  }
+rulePeriodicHolidays :: [Rule]
+rulePeriodicHolidays = mkRuleHolidays
+  -- Fixed dates, year over year
+  [ ( "Anniversary of the Statute of Westminster", "anniversary of the statute of westminster", monthDay 12 11 )
+  , ( "Canada/Dominion/Memorial Day", "(canada|dominion|memorial) day", monthDay 7 1 )
+  , ( "Groundhog Day", "groundhog day", monthDay 2 2 )
+  , ( "Healthcare Aide Day", "healthcare aide day", monthDay 10 18 )
+  , ( "National Aboriginal Day", "national aboriginal day", monthDay 6 21 )
+  , ( "National Flag of Canada Day", "national flag of canada day", monthDay 2 15 )
+  , ( "National Tartan Day", "national tartan day", monthDay 4 6 )
+  , ( "Nunavut Day", "nunavut day", monthDay 7 9 )
+  , ( "Remembrance Day", "remembrance day", monthDay 11 11 )
+  , ( "St David's Day", "st\\.? david'?s day", monthDay 3 1 )
+  , ( "St. Jean Baptiste Day", "st\\.? jean baptiste day", monthDay 6 24 )
+  , ( "Vimy Ridge Day", "vimy ridge day", monthDay 4 9 )
+
+  -- Fixed day/week/month, year over year
+  , ( "Thanksgiving Day", "thanks?giving( day)?", nthDOWOfMonth 2 1 10 )
+  ]
 
 rules :: [Rule]
 rules =
   [ ruleMMDD
   , ruleMMDDYYYY
   , ruleMMDDYYYYDot
-  , ruleThanksgiving
   ]
+  ++ rulePeriodicHolidays

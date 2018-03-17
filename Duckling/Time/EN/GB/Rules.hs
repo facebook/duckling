@@ -69,20 +69,27 @@ ruleDDMMYYYYDot = Rule
       _ -> Nothing
   }
 
--- Fourth Thursday of November
-ruleThanksgiving :: Rule
-ruleThanksgiving = Rule
-  { name = "Thanksgiving Day"
-  , pattern =
-    [ regex "thanks?giving( day)?"
-    ]
-  , prod = \_ -> tt . mkOkForThisNext $ nthDOWOfMonth 4 4 11
-  }
+rulePeriodicHolidays :: [Rule]
+rulePeriodicHolidays = mkRuleHolidays
+  -- Fixed dates, year over year
+  [ ( "Bank Holiday", "bank holiday", monthDay 12 28 )
+  , ( "Battle of the Boyne", "battle of the boyne", monthDay 7 12 )
+  , ( "Burns Night", "burns night", monthDay 1 25 )
+  , ( "Guy Fawkes Day", "guy fawkes day", monthDay 11 5 )
+  , ( "Shakespeare Day", "shakespeare day", monthDay 4 23 )
+  , ( "St Andrew's Day", "st\\.? andrew'?s day", monthDay 11 30 )
+  , ( "St. David's Day", "st\\.? david'?s day", monthDay 3 1 )
+  , ( "St. George's Day", "st\\.? george'?s day", monthDay 4 23 )
+  , ( "Victory in Europe Day", "victory in europe day", monthDay 5 8 )
+
+  -- Fixed day/week/month, year over year
+  , ( "Thanksgiving Day", "thanks?giving( day)?", nthDOWOfMonth 4 4 11 )
+  ]
 
 rules :: [Rule]
 rules =
   [ ruleDDMM
   , ruleDDMMYYYY
   , ruleDDMMYYYYDot
-  , ruleThanksgiving
   ]
+  ++ rulePeriodicHolidays

@@ -24,25 +24,27 @@ corpus = (testContext {locale = makeLocale SV Nothing}, allExamples)
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (simple Kilometre 3)
-             [ "3 kilomètres"
-             , "3 kilometres"
+  [ examples (simple Kilometer 3)
+             [ "3 kilometer"
              , "3 km"
              , "3km"
              , "3k"
              ]
-  , examples (simple Kilometre 3.0)
+  , examples (simple Kilometer 3.0)
              [ "3,0 km"
              ]
-  , examples (simple Mile 8)
-             [ "8 miles"
+  , examples (simple Mil 8)
+             [ "8 mil"
              ]
-  , examples (simple Metre 9)
-             [ "9 metres"
+  , examples (simple Mile 8)
+             [ "8 mile"
+             ]
+  , examples (simple Meter 9)
+             [ "9 meter"
              , "9m"
              ]
-  , examples (simple Centimetre 2)
+  , examples (simple Centimeter 2)
              [ "2cm"
-             , "2 centimetres"
+             , "2 centimeter"
              ]
   ]

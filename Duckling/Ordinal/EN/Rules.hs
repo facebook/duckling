@@ -8,17 +8,18 @@
 
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE NoRebindableSyntax #-}
 
 module Duckling.Ordinal.EN.Rules
-  ( rules ) where
+  ( rules
+  ) where
 
-import Control.Monad (join)
-import Data.HashMap.Strict ( HashMap)
-import qualified Data.HashMap.Strict as HashMap
-import Data.Text (Text)
-import qualified Data.Text as Text
-import Prelude
+import Data.HashMap.Strict (HashMap)
 import Data.String
+import Data.Text (Text)
+import Prelude
+import qualified Data.HashMap.Strict as HashMap
+import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
 import Duckling.Numeral.Helpers (parseInt)
@@ -82,8 +83,8 @@ ruleOrdinals = Rule
 
 ruleCompositeOrdinals :: Rule
 ruleCompositeOrdinals = Rule
-  { name = "ordinals (composite, e.g., eighty-seven)"
-  , pattern = [regex "(twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety)\\-(first|second|third|fourth|fifth|sixth|seventh|eighth|ninth)"]
+  { name = "ordinals (composite, e.g. eighty-seven, forty—seventh, twenty ninth, thirtythird)"
+  , pattern = [regex "(twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety)[\\s\\-\\—]?(first|second|third|fourth|fifth|sixth|seventh|eighth|ninth)"]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (tens:units:_)):_) -> do
         tt <- HashMap.lookup (Text.toLower tens) cardinalsMap

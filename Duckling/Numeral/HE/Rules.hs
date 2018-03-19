@@ -9,7 +9,8 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Numeral.HE.Rules
-  ( rules ) where
+  ( rules
+  ) where
 
 import Data.Maybe
 import Data.String
@@ -38,11 +39,11 @@ ruleIntersectNumerals = Rule
   { name = "intersect numbers"
   , pattern =
     [ numberWith (fromMaybe 0 . TNumeral.grain) (>1)
-    , numberWith TNumeral.multipliable not
+    , Predicate $ and . sequence [not . isMultipliable, isPositive]
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = val1, TNumeral.grain = Just g}):
-       Token Numeral (NumeralData {TNumeral.value = val2}):
+      (Token Numeral NumeralData{TNumeral.value = val1, TNumeral.grain = Just g}:
+       Token Numeral NumeralData{TNumeral.value = val2}:
        _) | (10 ** fromIntegral g) > val2 -> double $ val1 + val2
       _ -> Nothing
   }
@@ -53,12 +54,12 @@ ruleIntersectWithAnd = Rule
   , pattern =
     [ numberWith (fromMaybe 0 . TNumeral.grain) (>1)
     , regex "ו"
-    , numberWith TNumeral.multipliable not
+    , Predicate isMultipliable
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = val1, TNumeral.grain = Just g}):
+      (Token Numeral NumeralData{TNumeral.value = val1, TNumeral.grain = Just g}:
        _:
-       Token Numeral (NumeralData {TNumeral.value = val2}):
+       Token Numeral NumeralData{TNumeral.value = val2}:
        _) | (10 ** fromIntegral g) > val2 -> double $ val1 + val2
       _ -> Nothing
   }
@@ -71,8 +72,8 @@ ruleCompositeTens = Rule
     , numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = tens}):
-       Token Numeral (NumeralData {TNumeral.value = units}):
+      (Token Numeral NumeralData{TNumeral.value = tens}:
+       Token Numeral NumeralData{TNumeral.value = units}:
        _) -> double $ tens + units
       _ -> Nothing
   }
@@ -86,9 +87,9 @@ ruleCompositeTensWithAnd = Rule
     , numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = tens}):
+      (Token Numeral NumeralData{TNumeral.value = tens}:
        _:
-       Token Numeral (NumeralData {TNumeral.value = units}):
+       Token Numeral NumeralData{TNumeral.value = units}:
        _) -> double $ tens + units
       _ -> Nothing
   }
@@ -98,23 +99,10 @@ ruleNumeralsPrefixWithNegativeOrMinus = Rule
   { name = "numbers prefix with -, negative or minus"
   , pattern =
     [ regex "-|מינוס"
-    , dimension Numeral
+    , Predicate isPositive
     ]
   , prod = \tokens -> case tokens of
       (_:Token Numeral nd:_) -> double (TNumeral.value nd * (-1))
-      _ -> Nothing
-  }
-
-ruleIntegerNumeric :: Rule
-ruleIntegerNumeric = Rule
-  { name = "integer (numeric)"
-  , pattern =
-    [ regex "(\\d{1,18})"
-    ]
-  , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> do
-        v <- toInteger <$> parseInt match
-        integer v
       _ -> Nothing
   }
 
@@ -247,8 +235,8 @@ ruleInteger14 = Rule
     , numberWith TNumeral.value (== 10)
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = v1}):
-       Token Numeral (NumeralData {TNumeral.value = v2}):
+      (Token Numeral NumeralData{TNumeral.value = v1}:
+       Token Numeral NumeralData{TNumeral.value = v2}:
        _) -> double $ v1 + v2
       _ -> Nothing
   }
@@ -279,8 +267,8 @@ ruleInteger16 = Rule
     , numberBetween 1 100
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = v1}):
-       Token Numeral (NumeralData {TNumeral.value = v2}):
+      (Token Numeral NumeralData{TNumeral.value = v1}:
+       Token Numeral NumeralData{TNumeral.value = v2}:
        _) -> double $ v1 + v2
       _ -> Nothing
   }
@@ -352,7 +340,7 @@ ruleCommas = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
-        parseDouble (Text.replace (Text.singleton ',') Text.empty match) >>= double
+        parseDouble (Text.replace "," Text.empty match) >>= double
       _ -> Nothing
   }
 
@@ -378,7 +366,6 @@ rules =
   , ruleInteger7
   , ruleInteger8
   , ruleInteger9
-  , ruleIntegerNumeric
   , ruleIntersectNumerals
   , ruleIntersectWithAnd
   , ruleMultiply

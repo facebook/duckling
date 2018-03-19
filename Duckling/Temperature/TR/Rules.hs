@@ -69,7 +69,7 @@ ruleTemperatureBelowZero = Rule
     , dimension Temperature
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Temperature td@(TemperatureData {TTemperature.value = v}):_) ->
+      (_:Token Temperature td@TemperatureData{TTemperature.value = v}:_) ->
         case TTemperature.unit td of
           Nothing -> Just . Token Temperature . withUnit TTemperature.Degree $
             td {TTemperature.value = - v}
@@ -85,7 +85,7 @@ ruleTemperatureBelowZeroReverse = Rule
     , regex "s\305f\305r\305n alt\305nda"
     ]
   , prod = \tokens -> case tokens of
-      (Token Temperature td@(TemperatureData {TTemperature.value = v}):_) ->
+      (Token Temperature td@TemperatureData{TTemperature.value = v}:_) ->
         case TTemperature.unit td of
           Nothing -> Just . Token Temperature . withUnit TTemperature.Degree $
             td {TTemperature.value = - v}

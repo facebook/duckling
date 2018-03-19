@@ -10,8 +10,8 @@ module Duckling.Quantity.EN.Tests
   ( tests
   ) where
 
-import Prelude
 import Data.String
+import Prelude
 import Test.Tasty
 
 import Duckling.Dimensions.Types

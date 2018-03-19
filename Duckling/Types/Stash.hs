@@ -41,7 +41,7 @@ empty = Stash IntMap.empty
 fromList :: [Node] -> Stash
 fromList ns = Stash (IntMap.fromListWith HashSet.union $ map mkKV ns)
   where
-  mkKV n@(Node { nodeRange = Range start _ }) = (start, HashSet.singleton n)
+  mkKV n@Node{nodeRange = Range start _} = (start, HashSet.singleton n)
 
 union :: Stash -> Stash -> Stash
 union (Stash set1) (Stash set2) =

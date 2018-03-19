@@ -11,7 +11,8 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Time.FR.Rules
-  ( rules ) where
+  ( rules
+  ) where
 
 import Data.Text (Text)
 import Prelude
@@ -1890,12 +1891,12 @@ ruleTimezone = Rule
   , prod = \tokens -> case tokens of
       (Token Time td:
        Token RegexMatch (GroupMatch (tz:_)):
-       _) -> Token Time <$> inTimezone tz td
+       _) -> Token Time <$> inTimezone (Text.toUpper tz) td
       _ -> Nothing
   }
 
-months :: [(Text, String)]
-months =
+ruleMonths :: [Rule]
+ruleMonths = mkRuleMonths
   [ ( "Janvier"   , "janvier|janv\\.?"                    )
   , ( "Fevrier"   , "f(é|e)vrier|f(é|e)v\\.?"   )
   , ( "Mars"      , "mars|mar\\.?"                        )
@@ -1910,17 +1911,8 @@ months =
   , ( "Decembre"  ,  "d(é|e)cembre|d(é|e)c\\.?" )
   ]
 
-ruleMonths :: [Rule]
-ruleMonths = zipWith go months [1..12]
-  where
-    go (name, regexPattern) i = Rule
-      { name = name
-      , pattern = [regex regexPattern]
-      , prod = \_ -> tt $ month i
-      }
-
-daysOfWeek :: [(Text, String)]
-daysOfWeek =
+ruleDaysOfWeek :: [Rule]
+ruleDaysOfWeek = mkRuleDaysOfWeek
   [ ( "Lundi"    , "lun\\.?(di)?"    )
   , ( "Mardi"    , "mar\\.?(di)?"    )
   , ( "Mercredi" , "mer\\.?(credi)?" )
@@ -1929,15 +1921,6 @@ daysOfWeek =
   , ( "Samedi"   , "sam\\.?(edi)?"   )
   , ( "Dimanche" , "dim\\.?(anche)?" )
   ]
-
-ruleDaysOfWeek :: [Rule]
-ruleDaysOfWeek = zipWith go daysOfWeek [1..7]
-  where
-    go (name, regexPattern) i = Rule
-      { name = name
-      , pattern = [regex regexPattern]
-      , prod = \_ -> tt $ dayOfWeek i
-      }
 
 rules :: [Rule]
 rules =

@@ -40,7 +40,7 @@ ruleThOrdinal16 = Rule
     , dimension Ordinal
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Ordinal (OrdinalData {TOrdinal.value = v}):_) ->
+      (_:Token Ordinal OrdinalData{TOrdinal.value = v}:_) ->
         Just . ordinal $ 30 + v
       _ -> Nothing
   }
@@ -190,7 +190,7 @@ ruleThOrdinal14 = Rule
     , dimension Ordinal
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Ordinal (OrdinalData {TOrdinal.value = v}):_) ->
+      (_:Token Ordinal OrdinalData{TOrdinal.value = v}:_) ->
         Just . ordinal $ 20 + v
       _ -> Nothing
   }

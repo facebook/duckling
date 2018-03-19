@@ -14,5 +14,6 @@ import Duckling.Dimensions.Types
 
 allDimensions :: [Some Dimension]
 allDimensions =
-  [ This Numeral
+  [ This Distance
+  , This Numeral
   ]

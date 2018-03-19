@@ -24,7 +24,7 @@ ruleURL :: Rule
 ruleURL = Rule
   { name = "url"
   , pattern =
-    [ regex "((([a-zA-Z]+)://)?(w{2,3}[0-9]*\\.)?(([\\w_-]+\\.)+[a-z]{2,4})(:(\\d+))?(/[^?\\s#]*)?(\\?[^\\s#]+)?)"
+    [ regex "((([a-zA-Z]+)://)?(w{2,3}[0-9]*\\.)?(([\\w_-]+\\.)+[a-z]{2,4})(:(\\d+))?(/[^?\\s#]*)?(\\?[^\\s#]+)?(#[\\-,*=&a-z0-9]+)?)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (m:_:_protocol:_:domain:_:_:_port:_path:_query:_)):

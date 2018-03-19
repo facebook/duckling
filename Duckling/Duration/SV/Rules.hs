@@ -10,21 +10,22 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Duration.SV.Rules
-  ( rules ) where
+  ( rules
+  ) where
 
 import Control.Monad (join)
-import qualified Data.Text as Text
-import Prelude
 import Data.String
+import Prelude
+import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
 import Duckling.Duration.Helpers
 import Duckling.Numeral.Helpers (parseInteger)
 import Duckling.Numeral.Types (NumeralData(..))
-import qualified Duckling.Numeral.Types as TNumeral
 import Duckling.Regex.Types
-import qualified Duckling.TimeGrain.Types as TG
 import Duckling.Types
+import qualified Duckling.Numeral.Types as TNumeral
+import qualified Duckling.TimeGrain.Types as TG
 
 ruleHalfAnHour :: Rule
 ruleHalfAnHour = Rule
@@ -44,7 +45,7 @@ ruleIntegerMoreUnitofduration = Rule
     , regex "fler|mer"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = v}):
+      (Token Numeral NumeralData{TNumeral.value = v}:
        Token TimeGrain grain:
        _) -> Just . Token Duration . duration grain $ floor v
       _ -> Nothing
@@ -74,7 +75,7 @@ ruleIntegerAndAnHalfHours = Rule
     , regex "och (en )?halv timme?"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = v}):_) ->
+      (Token Numeral NumeralData{TNumeral.value = v}:_) ->
         Just . Token Duration . duration TG.Minute $ 30 + 60 * floor v
       _ -> Nothing
   }
@@ -96,7 +97,7 @@ ruleAboutDuration :: Rule
 ruleAboutDuration = Rule
   { name = "about <duration>"
   , pattern =
-    [ regex "(omkring|cirka|ca.|ca|runt)"
+    [ regex "(omkring|cirka|ca\\.?|c:a|runt|ungefär)"
     , dimension Duration
     ]
   , prod = \tokens -> case tokens of

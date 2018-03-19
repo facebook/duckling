@@ -23,12 +23,13 @@ import Duckling.Time.Helpers
 import Duckling.Time.Types (TimeData (..))
 import Duckling.Regex.Types
 import Duckling.Types
+import qualified Data.Text as Text
 import qualified Duckling.Ordinal.Types as TOrdinal
 import qualified Duckling.Time.Types as TTime
 import qualified Duckling.TimeGrain.Types as TG
 
-daysOfWeek :: [(Text, String)]
-daysOfWeek =
+ruleDaysOfWeek :: [Rule]
+ruleDaysOfWeek = mkRuleDaysOfWeek
   [ ( "Monday"   , "mandag|man\\.?"           )
   , ( "Tuesday"  , "tirsdag|tirs?\\.?"        )
   , ( "Wednesday", "onsdag|ons\\.?"           )
@@ -38,17 +39,8 @@ daysOfWeek =
   , ( "Sunday"   , "søndag|søn\\.?" )
   ]
 
-ruleDaysOfWeek :: [Rule]
-ruleDaysOfWeek = zipWith go daysOfWeek [1..7]
-  where
-    go (name, regexPattern) i = Rule
-      { name = name
-      , pattern = [regex regexPattern]
-      , prod = \_ -> tt $ dayOfWeek i
-      }
-
-months :: [(Text, String)]
-months =
+ruleMonths :: [Rule]
+ruleMonths = mkRuleMonths
   [ ( "January"  , "januar|jan\\.?"      )
   , ( "February" , "februar|feb\\.?"     )
   , ( "March"    , "marts|mar\\.?"       )
@@ -62,15 +54,6 @@ months =
   , ( "November" , "november|nov\\.?"    )
   , ( "December" , "december|dec\\.?"    )
   ]
-
-ruleMonths :: [Rule]
-ruleMonths = zipWith go months [1..12]
-  where
-    go (name, regexPattern) i = Rule
-      { name = name
-      , pattern = [regex regexPattern]
-      , prod = \_ -> tt $ month i
-      }
 
 ruleTheDayAfterTomorrow :: Rule
 ruleTheDayAfterTomorrow = Rule
@@ -171,7 +154,7 @@ ruleNthTimeOfTime2 = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:
-       Token Ordinal (OrdinalData {TOrdinal.value = v}):
+       Token Ordinal OrdinalData{TOrdinal.value = v}:
        Token Time td1:
        _:
        Token Time td2:
@@ -752,7 +735,7 @@ ruleNthTimeAfterTime = Rule
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
-      (Token Ordinal (OrdinalData {TOrdinal.value = v}):
+      (Token Ordinal OrdinalData{TOrdinal.value = v}:
        Token Time td1:
        _:
        Token Time td2:
@@ -1047,7 +1030,7 @@ ruleNthTimeOfTime = Rule
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
-      (Token Ordinal (OrdinalData {TOrdinal.value = v}):
+      (Token Ordinal OrdinalData{TOrdinal.value = v}:
        Token Time td1:
        _:
        Token Time td2:
@@ -1110,7 +1093,7 @@ ruleNthTimeAfterTime2 = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:
-       Token Ordinal (OrdinalData {TOrdinal.value = v}):
+       Token Ordinal OrdinalData{TOrdinal.value = v}:
        Token Time td1:
        _:
        Token Time td2:
@@ -1396,7 +1379,7 @@ ruleDayofmonthOrdinal = Rule
     [ Predicate isDOMOrdinal
     ]
   , prod = \tokens -> case tokens of
-      (Token Ordinal (OrdinalData {TOrdinal.value = v}):_) ->
+      (Token Ordinal OrdinalData{TOrdinal.value = v}:_) ->
         tt . mkLatent $ dayOfMonth v
       _ -> Nothing
   }
@@ -1607,7 +1590,7 @@ ruleTheDayofmonthOrdinal = Rule
     , Predicate isDOMOrdinal
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Ordinal (OrdinalData {TOrdinal.value = v}):_) ->
+      (_:Token Ordinal OrdinalData{TOrdinal.value = v}:_) ->
         tt $ dayOfMonth v
       _ -> Nothing
   }
@@ -1724,7 +1707,7 @@ ruleTimezone = Rule
   , prod = \tokens -> case tokens of
       (Token Time td:
        Token RegexMatch (GroupMatch (tz:_)):
-       _) -> Token Time <$> inTimezone tz td
+       _) -> Token Time <$> inTimezone (Text.toUpper tz) td
       _ -> Nothing
   }
 

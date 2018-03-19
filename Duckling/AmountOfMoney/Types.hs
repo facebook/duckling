@@ -28,29 +28,39 @@ import Duckling.Resolve (Resolve(..))
 data Currency
   -- ambiguous
   = Cent
+  | Dinar
+  | Dirham
   | Dollar
   | Pound
+  | Rial
+  | Riyal
   | Unnamed -- e.g. bucks
   -- unambiguous
   | AED
   | AUD
   | BGN
   | BRL
+  | BYN
   | EGP
   | EUR
   | GBP
   | HRK
   | IDR
+  | ILS
   | INR
+  | IQD
+  | JOD
   | JPY
   | KRW
   | KWD
   | LBP
+  | MAD
   | MYR
   | NOK
   | PTS
   | QAR
   | RON
+  | RUB
   | SAR
   | SEK
   | SGD
@@ -62,26 +72,36 @@ instance ToJSON Currency where
   toJSON Cent    = "cent"
   toJSON Dollar  = "$"
   toJSON Pound   = "\x00a3"
+  toJSON Dinar   = "dinar"
+  toJSON Dirham  = "dirham"
+  toJSON Rial    = "rial"
+  toJSON Riyal   = "riyal"
   toJSON Unnamed = "unknown"
   toJSON AED     = "AED"
   toJSON AUD     = "AUD"
   toJSON BGN     = "BGN"
   toJSON BRL     = "BRL"
+  toJSON BYN     = "BYN"
   toJSON EGP     = "EGP"
   toJSON EUR     = "EUR"
   toJSON GBP     = "GBP"
   toJSON HRK     = "HRK"
   toJSON IDR     = "IDR"
+  toJSON ILS     = "ILS"
+  toJSON IQD     = "IQD"
   toJSON INR     = "INR"
+  toJSON JOD     = "JOD"
   toJSON JPY     = "JPY"
   toJSON KRW     = "KRW"
   toJSON KWD     = "KWD"
   toJSON LBP     = "LBP"
+  toJSON MAD     = "MAD"
   toJSON MYR     = "MYR"
   toJSON NOK     = "NOK"
   toJSON PTS     = "PTS"
   toJSON QAR     = "QAR"
   toJSON RON     = "RON"
+  toJSON RUB     = "RUB"
   toJSON SAR     = "SAR"
   toJSON SEK     = "SEK"
   toJSON SGD     = "SGD"
@@ -98,14 +118,18 @@ data AmountOfMoneyData = AmountOfMoneyData
 
 instance Resolve AmountOfMoneyData where
   type ResolvedValue AmountOfMoneyData = AmountOfMoneyValue
-  resolve _ AmountOfMoneyData {value = Nothing, minValue = Nothing, maxValue = Nothing} = Nothing
+  resolve _ AmountOfMoneyData {value = Nothing, minValue = Nothing
+                              , maxValue = Nothing} = Nothing
   resolve _ AmountOfMoneyData {value = Just value, currency} =
     Just $ simple currency value
-  resolve _ AmountOfMoneyData {value = Nothing, currency = c, minValue = Just from, maxValue = Just to} =
+  resolve _ AmountOfMoneyData {value = Nothing, currency = c
+                              , minValue = Just from, maxValue = Just to} =
     Just $ between c (from, to)
-  resolve _ AmountOfMoneyData {value = Nothing, currency = c, minValue = Just v, maxValue = Nothing} =
+  resolve _ AmountOfMoneyData {value = Nothing, currency = c
+                              , minValue = Just v, maxValue = Nothing} =
     Just $ above c v
-  resolve _ AmountOfMoneyData {value = Nothing, currency = c, minValue = Nothing, maxValue = Just v} =
+  resolve _ AmountOfMoneyData {value = Nothing, currency = c
+                              , minValue = Nothing, maxValue = Just v} =
     Just $ under c v
 
 data IntervalDirection = Above | Under

@@ -7,10 +7,11 @@
 
 
 module Duckling.Distance.EN.Tests
-  ( tests ) where
+  ( tests
+  ) where
 
-import Prelude
 import Data.String
+import Prelude
 import Test.Tasty
 
 import Duckling.Dimensions.Types

@@ -236,9 +236,9 @@ ruleCompositeWithAnd = Rule
     , dimension Ordinal
     ]
   , prod = \tokens -> case tokens of
-      (Token Ordinal (OrdinalData {TOrdinal.value = v1}):
+      (Token Ordinal OrdinalData{TOrdinal.value = v1}:
        _:
-       Token Ordinal (OrdinalData {TOrdinal.value = v2}):
+       Token Ordinal OrdinalData{TOrdinal.value = v2}:
        _) -> Just . ordinal $ v1 + v2
       _ -> Nothing
   }

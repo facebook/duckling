@@ -68,7 +68,7 @@ ruleLatentTempFaoiBhunNid = Rule
     , regex "faoi bhun (0|n(a|á)id)"
     ]
   , prod = \tokens -> case tokens of
-      (Token Temperature td@(TemperatureData {TTemperature.value = v}):_) ->
+      (Token Temperature td@TemperatureData{TTemperature.value = v}:_) ->
         case TTemperature.unit td of
           Nothing -> Just . Token Temperature . withUnit TTemperature.Degree $
             td {TTemperature.value = - v}

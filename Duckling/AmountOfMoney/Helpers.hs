@@ -7,11 +7,14 @@
 
 
 {-# LANGUAGE GADTs #-}
-{-# LANGUAGE OverloadedStrings #-}
+
 
 module Duckling.AmountOfMoney.Helpers
   ( currencyOnly
   , financeWith
+  , isCents
+  , isMoneyWithValue
+  , isWithoutCents
   , withCents
   , withInterval
   , withMax
@@ -20,9 +23,11 @@ module Duckling.AmountOfMoney.Helpers
   )
   where
 
+import Data.Maybe (isJust)
 import Prelude
 
 import Duckling.AmountOfMoney.Types (Currency (..), AmountOfMoneyData (..))
+import Duckling.Numeral.Types (isInteger)
 import Duckling.Dimensions.Types
 import Duckling.Types hiding (Entity(..))
 
@@ -34,6 +39,20 @@ financeWith f pred = Predicate $ \x ->
   case x of
     (Token AmountOfMoney x) -> pred (f x)
     _ -> False
+
+isCents :: Predicate
+isCents (Token AmountOfMoney AmountOfMoneyData{value = Just _, currency = Cent}) = True
+isCents _ = False
+
+isWithoutCents :: Predicate
+isWithoutCents (Token AmountOfMoney AmountOfMoneyData{currency = Cent}) = False
+isWithoutCents (Token AmountOfMoney AmountOfMoneyData{value = Just v}) = isInteger v
+isWithoutCents _ = False
+
+isMoneyWithValue :: Predicate
+isMoneyWithValue (Token AmountOfMoney AmountOfMoneyData{value = v1, minValue = v2, maxValue = v3}) =
+ any isJust [v1, v2, v3]
+isMoneyWithValue _ = False
 
 -- -----------------------------------------------------------------
 -- Production
@@ -52,7 +71,8 @@ withCents x AmountOfMoneyData {value = Nothing} = AmountOfMoneyData
   {value = Just x, currency = Cent, minValue = Nothing, maxValue = Nothing}
 
 withInterval :: (Double, Double) -> AmountOfMoneyData -> AmountOfMoneyData
-withInterval (from, to) fd = fd {minValue = Just from, maxValue = Just to}
+withInterval (from, to) fd = fd
+  {minValue = Just from, maxValue = Just to, value = Nothing}
 
 withMin :: Double -> AmountOfMoneyData -> AmountOfMoneyData
 withMin x fd = fd {minValue = Just x}

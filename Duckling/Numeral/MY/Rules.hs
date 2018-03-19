@@ -10,17 +10,21 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Numeral.MY.Rules
-  ( rules ) where
+  ( rules
+  ) where
 
-import Prelude
+import Data.HashMap.Strict       (HashMap)
 import Data.String
-
+import Data.Text                 (Text)
 import Duckling.Dimensions.Types
 import Duckling.Numeral.Helpers
-import Duckling.Numeral.Types (NumeralData (..))
-import qualified Duckling.Numeral.Types as TNumeral
+import Duckling.Numeral.Types    (NumeralData (..))
 import Duckling.Regex.Types
 import Duckling.Types
+import Prelude
+import qualified Data.HashMap.Strict       as HashMap
+import qualified Data.Text                 as Text
+import qualified Duckling.Numeral.Types    as TNumeral
 
 ruleInteger5 :: Rule
 ruleInteger5 = Rule
@@ -31,32 +35,36 @@ ruleInteger5 = Rule
     , numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = v1}):
+      (Token Numeral NumeralData{TNumeral.value = v1}:
        _:
-       Token Numeral (NumeralData {TNumeral.value = v2}):
+       Token Numeral NumeralData{TNumeral.value = v2}:
        _) -> double $ v1 + v2 * 10
       _ -> Nothing
   }
 
-ruleIntegerNumeric :: Rule
-ruleIntegerNumeric = Rule
+integer09Map :: HashMap Text Integer
+integer09Map = HashMap.fromList
+  [ ( "၀", 0 )
+  , ( "၁", 1 )
+  , ( "၂", 2 )
+  , ( "၃", 3 )
+  , ( "၄", 4 )
+  , ( "၅", 5 )
+  , ( "၆", 6 )
+  , ( "၇", 7 )
+  , ( "၈", 8 )
+  , ( "၉", 9 )
+  ]
+
+ruleInteger09 :: Rule
+ruleInteger09 = Rule
   { name = "integer (0..9) - numeric"
   , pattern =
     [ regex "(၀|၁|၂|၃|၄|၅|၆|၇|၈|၉)"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> case match of
-        "၀" -> integer 0
-        "၁" -> integer 1
-        "၂" -> integer 2
-        "၃" -> integer 3
-        "၄" -> integer 4
-        "၅" -> integer 5
-        "၆" -> integer 6
-        "၇" -> integer 7
-        "၈" -> integer 8
-        "၉" -> integer 9
-        _ -> Nothing
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        HashMap.lookup match integer09Map >>= integer
       _ -> Nothing
   }
 
@@ -68,9 +76,16 @@ ruleInteger3 = Rule
     , numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Numeral (NumeralData {TNumeral.value = v}):_) -> double $ v + 10
+      (_:Token Numeral NumeralData{TNumeral.value = v}:_) -> double $ v + 10
       _ -> Nothing
   }
+
+integerPaliMap :: HashMap Text Integer
+integerPaliMap = HashMap.fromList
+  [ ( "ပထမ", 1 )
+  , ( "ဒုတိယ", 2 )
+  , ( "တတိယ", 3 )
+  ]
 
 ruleIntegerPali :: Rule
 ruleIntegerPali = Rule
@@ -79,11 +94,8 @@ ruleIntegerPali = Rule
     [ regex "(ပထမ|ဒုတိယ|တတိယ)"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> case match of
-        "ပထမ" -> integer 1
-        "ဒုတိယ" -> integer 2
-        "တတိယ" -> integer 3
-        _ -> Nothing
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        HashMap.lookup match integerPaliMap >>= integer
       _ -> Nothing
   }
 
@@ -95,7 +107,7 @@ ruleInteger6 = Rule
     , regex "ရာ"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = v}):_) -> double $ v * 100
+      (Token Numeral NumeralData{TNumeral.value = v}:_) -> double $ v * 100
       _ -> Nothing
   }
 
@@ -107,7 +119,7 @@ ruleInteger7 = Rule
     , regex "ထောင်"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = v}):_) -> double $ v * 1000
+      (Token Numeral NumeralData{TNumeral.value = v}:_) -> double $ v * 1000
       _ -> Nothing
   }
 
@@ -119,7 +131,7 @@ ruleInteger8 = Rule
     , regex "သောင်း"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = v}):_) -> double $ v * 10000
+      (Token Numeral NumeralData{TNumeral.value = v}:_) -> double $ v * 10000
       _ -> Nothing
   }
 
@@ -140,9 +152,23 @@ ruleInteger4 = Rule
     , regex "ဆယ်"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = v}):_) -> double $ v * 10
+      (Token Numeral NumeralData{TNumeral.value = v}:_) -> double $ v * 10
       _ -> Nothing
   }
+
+integer2Map :: HashMap Text Integer
+integer2Map = HashMap.fromList
+  [ ( "တစ်", 1 )
+  , ( "နှစ်", 2 )
+  , ( "သုံး", 3 )
+  , ( "လေး", 4 )
+  , ( "ငါး", 5 )
+  , ( "ခြေါက်", 6 )
+  , ( "ခုနှစ်", 7 )
+  , ( "ရှစ်", 8 )
+  , ( "ကိုး", 9 )
+  , ( "တစ်ဆယ်", 10 )
+  ]
 
 ruleInteger2 :: Rule
 ruleInteger2 = Rule
@@ -151,18 +177,8 @@ ruleInteger2 = Rule
     [ regex "(တစ်|နှစ်|သုံး|လေး|ငါး|ခြေါက်|ခုနှစ်|ရှစ်|ကိုး|တစ်ဆယ်)"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> case match of
-        "တစ်" -> integer 1
-        "နှစ်" -> integer 2
-        "သုံး" -> integer 3
-        "လေး" -> integer 4
-        "ငါး" -> integer 5
-        "ခြေါက်" -> integer 6
-        "ခုနှစ်" -> integer 7
-        "ရှစ်" -> integer 8
-        "ကိုး" -> integer 9
-        "တစ်ဆယ်" -> integer 10
-        _ -> Nothing
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        HashMap.lookup match integer2Map >>= integer
       _ -> Nothing
   }
 
@@ -176,6 +192,6 @@ rules =
   , ruleInteger6
   , ruleInteger7
   , ruleInteger8
-  , ruleIntegerNumeric
+  , ruleInteger09
   , ruleIntegerPali
   ]

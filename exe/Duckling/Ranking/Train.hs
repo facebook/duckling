@@ -12,11 +12,10 @@ module Duckling.Ranking.Train
   ( makeClassifiers
   ) where
 
+import Data.HashSet (HashSet)
+import Prelude
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.HashSet as HashSet
-import Data.HashSet (HashSet)
-
-import Prelude
 import qualified Data.List as List
 
 import Duckling.Engine
@@ -63,7 +62,6 @@ makeClass feats total classTotal vocSize = ClassData
     likelihoods = HashMap.map (\x ->
       log $ (fromIntegral x + 1.0) / fromIntegral denum
       ) feats
-
 
 -- | Augment the dataset with one example.
 -- | Add all the nodes contributing to the resolutions of the input sentence.

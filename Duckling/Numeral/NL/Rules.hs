@@ -7,49 +7,37 @@
 
 
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE NoRebindableSyntax #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Numeral.NL.Rules
-  ( rules ) where
+  ( rules
+  ) where
 
-import Control.Monad (join)
 import Data.HashMap.Strict (HashMap)
-import qualified Data.HashMap.Strict as HashMap
 import Data.Maybe
-import Data.Text (Text)
-import qualified Data.Text as Text
-import Prelude
 import Data.String
+import Data.Text (Text)
+import Prelude
+import qualified Data.HashMap.Strict as HashMap
+import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
 import Duckling.Numeral.Helpers
 import Duckling.Numeral.Types (NumeralData (..))
-import qualified Duckling.Numeral.Types as TNumeral
 import Duckling.Regex.Types
 import Duckling.Types
+import qualified Duckling.Numeral.Types as TNumeral
 
 ruleNumeralsPrefixWithNegativeOrMinus :: Rule
 ruleNumeralsPrefixWithNegativeOrMinus = Rule
   { name = "numbers prefix with -, negative or minus"
   , pattern =
     [ regex "-|min|minus|negatief"
-    , dimension Numeral
+    , Predicate isPositive
     ]
   , prod = \tokens -> case tokens of
       (_:Token Numeral nd:_) -> double (TNumeral.value nd * (-1))
-      _ -> Nothing
-  }
-
-ruleIntegerNumeric :: Rule
-ruleIntegerNumeric = Rule
-  { name = "integer (numeric)"
-  , pattern =
-    [ regex "(\\d{1,18})"
-    ]
-  , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> do
-        v <- toInteger <$> parseInt match
-        integer v
       _ -> Nothing
   }
 
@@ -79,9 +67,7 @@ ruleDecimalWithThousandsSeparator = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):
-       _) -> let dot = Text.singleton '.'
-                 comma = Text.singleton ','
-                 fmt = Text.replace comma dot $ Text.replace dot Text.empty match
+       _) -> let fmt = Text.replace "," "." $ Text.replace "." Text.empty match
         in parseDouble fmt >>= double
       _ -> Nothing
   }
@@ -98,6 +84,7 @@ ruleDecimalNumeral = Rule
       _ -> Nothing
   }
 
+-- TODO: Single-word composition (#110)
 ruleInteger3 :: Rule
 ruleInteger3 = Rule
   { name = "integer ([2-9][1-9])"
@@ -117,7 +104,7 @@ ruleMultiply = Rule
   { name = "compose by multiplication"
   , pattern =
     [ dimension Numeral
-    , numberWith TNumeral.multipliable id
+    , Predicate isMultipliable
     ]
   , prod = \tokens -> case tokens of
       (token1:token2:_) -> multiply token1 token2
@@ -129,11 +116,11 @@ ruleIntersect = Rule
   { name = "intersect"
   , pattern =
     [ numberWith (fromMaybe 0 . TNumeral.grain) (>1)
-    , dimension Numeral
+    , Predicate $ and . sequence [not . isMultipliable, isPositive]
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = val1, TNumeral.grain = Just g}):
-       Token Numeral (NumeralData {TNumeral.value = val2}):
+      (Token Numeral NumeralData{TNumeral.value = val1, TNumeral.grain = Just g}:
+       Token Numeral NumeralData{TNumeral.value = val2}:
        _) | (10 ** fromIntegral g) > val2 -> double $ val1 + val2
       _ -> Nothing
   }
@@ -146,7 +133,7 @@ ruleNumeralsSuffixesKMG = Rule
     , regex "([kmg])(?=[\\W\\$€]|$)"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = v}):
+      (Token Numeral NumeralData{TNumeral.value = v}:
        Token RegexMatch (GroupMatch (match:_)):
        _) -> case Text.toLower match of
          "k" -> double $ v * 1e3
@@ -165,9 +152,9 @@ ruleNumeralsEn = Rule
     , oneOf [20, 30 .. 90]
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = v1}):
+      (Token Numeral NumeralData{TNumeral.value = v1}:
        _:
-       Token Numeral (NumeralData {TNumeral.value = v2}):
+       Token Numeral NumeralData{TNumeral.value = v2}:
        _) -> double $ v1 + v2
       _ -> Nothing
   }
@@ -203,6 +190,15 @@ ruleDozen = Rule
     [ regex "dozijn"
     ]
   , prod = \_ -> integer 12 >>= withGrain 1
+  }
+
+ruleGross :: Rule
+ruleGross = Rule
+  { name = "gros"
+  , pattern =
+    [ regex "gros"
+    ]
+  , prod = \_ -> integer 144 >>= withGrain 1
   }
 
 zeroNineteenMap :: HashMap Text Integer
@@ -274,11 +270,11 @@ rules =
   , ruleDecimalNumeral
   , ruleDecimalWithThousandsSeparator
   , ruleDozen
+  , ruleGross
   , ruleFew
   , ruleInteger
   , ruleInteger2
   , ruleInteger3
-  , ruleIntegerNumeric
   , ruleIntersect
   , ruleMultiply
   , ruleNumeralsEn

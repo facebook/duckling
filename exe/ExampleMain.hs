@@ -16,9 +16,9 @@ import Data.Aeson
 import Data.ByteString (ByteString)
 import Data.HashMap.Strict (HashMap)
 import Data.Maybe
+import Data.String
 import Data.Text (Text)
 import Data.Time.LocalTime.TimeZone.Series
-import Data.String
 import Prelude
 import System.Directory
 import TextShow
@@ -28,11 +28,13 @@ import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
 
+import Data.Time.Clock.POSIX (posixSecondsToUTCTime)
 import Snap.Core
 import Snap.Http.Server
 
 import Duckling.Core
 import Duckling.Data.TimeZone
+import Duckling.Resolve (DucklingTime)
 
 createIfMissing :: FilePath -> IO ()
 createIfMissing f = do
@@ -75,18 +77,20 @@ parseHandler tzs = do
   l <- getPostParam "lang"
   ds <- getPostParam "dims"
   tz <- getPostParam "tz"
+  loc <- getPostParam "locale"
+  ref <- getPostParam "reftime"
 
   case t of
     Nothing -> do
       modifyResponse $ setResponseStatus 422 "Bad Input"
       writeBS "Need a 'text' parameter to parse"
     Just tx -> do
-      refTime <- liftIO $ currentReftime tzs $
-                   fromMaybe defaultTimeZone $ Text.decodeUtf8 <$> tz
+      let timezone = parseTimeZone tz
+      now <- liftIO $ currentReftime tzs timezone
       let
         context = Context
-          { referenceTime = refTime
-          , lang = parseLang l
+          { referenceTime = maybe now (parseRefTime timezone) ref
+          , locale = maybe (makeLocale (parseLang l) Nothing) parseLocale loc
           }
 
         dimParse = fromMaybe [] $ decode $ LBS.fromStrict $ fromMaybe "" ds
@@ -97,8 +101,27 @@ parseHandler tzs = do
       writeLBS $ encode parsedResult
   where
     defaultLang = EN
+    defaultLocale = makeLocale defaultLang Nothing
     defaultTimeZone = "America/Los_Angeles"
+
+    parseTimeZone :: Maybe ByteString -> Text
+    parseTimeZone = fromMaybe defaultTimeZone . fmap Text.decodeUtf8
+
+    parseLocale :: ByteString -> Locale
+    parseLocale x = maybe defaultLocale (`makeLocale` mregion) mlang
+      where
+        (mlang, mregion) = case chunks of
+          [a, b] -> (readMaybe a :: Maybe Lang, readMaybe b :: Maybe Region)
+          _      -> (Nothing, Nothing)
+        chunks = map Text.unpack . Text.split (== '_') . Text.toUpper
+          $ Text.decodeUtf8 x
 
     parseLang :: Maybe ByteString -> Lang
     parseLang l = fromMaybe defaultLang $ l >>=
       readMaybe . Text.unpack . Text.toUpper . Text.decodeUtf8
+
+    parseRefTime :: Text -> ByteString -> DucklingTime
+    parseRefTime timezone refTime = makeReftime tzs timezone utcTime
+      where
+        msec = read $ Text.unpack $ Text.decodeUtf8 refTime
+        utcTime = posixSecondsToUTCTime $ fromInteger msec / 1000

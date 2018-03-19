@@ -8,13 +8,17 @@
 
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE LambdaCase #-}
 
 module Duckling.Quantity.EN.Rules
-  ( rules ) where
+  ( rules
+  ) where
 
+import Data.HashMap.Strict (HashMap)
 import Data.String
 import Data.Text (Text)
 import Prelude
+import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
@@ -22,6 +26,8 @@ import Duckling.Numeral.Helpers
 import Duckling.Quantity.Helpers
 import Duckling.Regex.Types
 import Duckling.Types
+import Duckling.Numeral.Types (NumeralData (..))
+import Duckling.Quantity.Types (QuantityData(..))
 import qualified Duckling.Numeral.Types as TNumeral
 import qualified Duckling.Quantity.Types as TQuantity
 
@@ -33,17 +39,20 @@ quantities =
   , ("<quantity> oz", "((ounces?)|oz)", TQuantity.Ounce)
   ]
 
+opsMap :: HashMap Text (Double -> Double)
+opsMap = HashMap.fromList
+  [ ( "milligram" , (/ 1000))
+  , ( "milligrams", (/ 1000))
+  , ( "mg"        , (/ 1000))
+  , ( "mgs"       , (/ 1000))
+  , ( "kilogram"  , (* 1000))
+  , ( "kilograms" , (* 1000))
+  , ( "kg"        , (* 1000))
+  , ( "kgs"       , (* 1000))
+  ]
+
 getValue :: Text -> Double -> Double
-getValue match value = case Text.toLower match of
-  "milligram" -> value / 1000
-  "milligrams" -> value / 1000
-  "mg" -> value / 1000
-  "mgs" -> value / 1000
-  "kilogram" -> value * 1000
-  "kilograms" -> value * 1000
-  "kg" -> value * 1000
-  "kgs" -> value * 1000
-  _ -> value
+getValue match = HashMap.lookupDefault id (Text.toLower match) opsMap
 
 ruleNumeralQuantities :: [Rule]
 ruleNumeralQuantities = map go quantities
@@ -51,8 +60,8 @@ ruleNumeralQuantities = map go quantities
     go :: (Text, String, TQuantity.Unit) -> Rule
     go (name, regexPattern, u) = Rule
       { name = name
-      , pattern = [ numberWith TNumeral.value (> 0), regex regexPattern ]
-      , prod = \tokens -> case tokens of
+      , pattern = [Predicate isPositive, regex regexPattern]
+      , prod = \case
         (Token Numeral nd:
          Token RegexMatch (GroupMatch (match:_)):
          _) -> Just . Token Quantity $ quantity u value
@@ -67,7 +76,7 @@ ruleAQuantity = map go quantities
     go (name, regexPattern, u) = Rule
       { name = name
       , pattern = [ regex ("an? " ++ regexPattern) ]
-      , prod = \tokens -> case tokens of
+      , prod = \case
         (Token RegexMatch (GroupMatch (match:_)):
          _) -> Just . Token Quantity $ quantity u $ getValue match 1
         _ -> Nothing
@@ -80,15 +89,151 @@ ruleQuantityOfProduct = Rule
     [ dimension Quantity
     , regex "of (\\w+)"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
     (Token Quantity qd:Token RegexMatch (GroupMatch (product:_)):_) ->
       Just . Token Quantity $ withProduct product qd
     _ -> Nothing
   }
 
+rulePrecision :: Rule
+rulePrecision = Rule
+    { name = "about|exactly <quantity>"
+    , pattern =
+      [ regex "\\~|exactly|precisely|about|approx(\\.|imately)?|close to|near( to)?|around|almost"
+      , dimension Quantity
+      ]
+      , prod = \case
+        (_:token:_) -> Just token
+        _ -> Nothing
+  }
+
+ruleIntervalBetweenNumeral :: Rule
+ruleIntervalBetweenNumeral = Rule
+    { name = "between|from <numeral> and|to <quantity>"
+    , pattern =
+      [ regex "between|from"
+      , Predicate isPositive
+      , regex "to|and"
+      , Predicate isSimpleQuantity
+      ]
+    , prod = \case
+        (_:
+         Token Numeral NumeralData{TNumeral.value = from}:
+         _:
+         Token Quantity QuantityData{TQuantity.value = Just to
+                                    , TQuantity.unit = Just u
+                                    , TQuantity.aproduct = Nothing}:
+         _) | from < to ->
+          Just . Token Quantity . withInterval (from, to) $ unitOnly u
+        _ -> Nothing
+    }
+
+ruleIntervalBetween :: Rule
+ruleIntervalBetween = Rule
+    { name = "between|from <quantity> to|and <quantity>"
+    , pattern =
+      [ regex "between|from"
+      , Predicate isSimpleQuantity
+      , regex "and|to"
+      , Predicate isSimpleQuantity
+      ]
+    , prod = \case
+        (_:
+         Token Quantity QuantityData{TQuantity.value = Just from
+                                    , TQuantity.unit = Just u1
+                                    , TQuantity.aproduct = Nothing}:
+         _:
+         Token Quantity QuantityData{TQuantity.value = Just to
+                                    , TQuantity.unit = Just u2
+                                    , TQuantity.aproduct = Nothing}:
+         _) | from < to && u1 == u2 ->
+          Just . Token Quantity . withInterval (from, to) $ unitOnly u1
+        _ -> Nothing
+    }
+
+ruleIntervalNumeralDash :: Rule
+ruleIntervalNumeralDash = Rule
+    { name = "<numeral> - <quantity>"
+    , pattern =
+      [ Predicate isPositive
+      , regex "\\-"
+      , Predicate isSimpleQuantity
+      ]
+    , prod = \case
+        (Token Numeral NumeralData{TNumeral.value = from}:
+         _:
+         Token Quantity QuantityData{TQuantity.value = Just to
+                                    , TQuantity.unit = Just u
+                                    , TQuantity.aproduct = Nothing}:
+         _) | from < to ->
+           Just . Token Quantity . withInterval (from, to) $ unitOnly u
+        _ -> Nothing
+    }
+
+ruleIntervalDash :: Rule
+ruleIntervalDash = Rule
+    { name = "<quantity> - <quantity>"
+    , pattern =
+      [ Predicate isSimpleQuantity
+      , regex "\\-"
+      , Predicate isSimpleQuantity
+      ]
+    , prod = \case
+        (Token Quantity QuantityData{TQuantity.value = Just from
+                                    , TQuantity.unit = Just u1
+                                    , TQuantity.aproduct = Nothing}:
+         _:
+         Token Quantity QuantityData{TQuantity.value = Just to
+                                    , TQuantity.unit = Just u2
+                                    , TQuantity.aproduct = Nothing}:
+         _) | from < to && u1 == u2 ->
+          Just . Token Quantity . withInterval (from, to) $ unitOnly u1
+        _ -> Nothing
+    }
+
+
+
+ruleIntervalMax :: Rule
+ruleIntervalMax = Rule
+    { name = "under/below/less/lower/at most/no more than <dist>"
+    , pattern =
+      [ regex "under|below|at most|(less|lower|not? more) than"
+      , Predicate isSimpleQuantity
+      ]
+    , prod = \case
+        (_:
+         Token Quantity QuantityData{TQuantity.value = Just to
+                                    , TQuantity.unit = Just u
+                                    , TQuantity.aproduct = Nothing}:
+         _) -> Just . Token Quantity . withMax to $ unitOnly u
+        _ -> Nothing
+    }
+
+ruleIntervalMin :: Rule
+ruleIntervalMin = Rule
+  { name = "over/above/exceeding/beyond/at least/more than <quantity>"
+  , pattern =
+      [ regex "over|above|exceeding|beyond|at least|(more|larger|bigger|heavier) than"
+      , Predicate isSimpleQuantity
+      ]
+    , prod = \case
+        (_:
+         Token Quantity QuantityData{TQuantity.value = Just from
+                                    , TQuantity.unit = Just u
+                                    , TQuantity.aproduct = Nothing}:
+         _) -> Just . Token Quantity . withMin from $ unitOnly u
+        _ -> Nothing
+    }
 rules :: [Rule]
 rules =
   [ ruleQuantityOfProduct
+  , ruleIntervalMin
+  , ruleIntervalMax
+  , ruleIntervalBetweenNumeral
+  , ruleIntervalBetween
+  , ruleIntervalNumeralDash
+  , ruleIntervalDash
+  , rulePrecision
   ]
   ++ ruleNumeralQuantities
   ++ ruleAQuantity

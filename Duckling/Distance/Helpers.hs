@@ -7,35 +7,65 @@
 
 
 {-# LANGUAGE GADTs #-}
-{-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Distance.Helpers
   ( distance
-  , unitDistance
+  , isDistanceOfUnit
+  , isSimpleDistance
+  , unitOnly
+  , withInterval
+  , withMax
+  , withMin
   , withUnit
+  , withValue
   ) where
-
 
 import Prelude
 
 import Duckling.Dimensions.Types
 import Duckling.Distance.Types (DistanceData(..))
-import qualified Duckling.Distance.Types as TDistance
 import Duckling.Types
+import qualified Duckling.Distance.Types as TDistance
 
 -- -----------------------------------------------------------------
 -- Patterns
 
-unitDistance :: TDistance.Unit -> PatternItem
-unitDistance value = Predicate $ \x -> case x of
-  (Token Distance DistanceData {TDistance.unit = Just unit}) -> value == unit
-  _ -> False
+isSimpleDistance :: Predicate
+isSimpleDistance (Token Distance DistanceData {TDistance.value = Just _
+                                              , TDistance.unit = Just _}) = True
+isSimpleDistance _ = False
+
+isDistanceOfUnit :: TDistance.Unit -> Predicate
+isDistanceOfUnit unit (Token Distance DistanceData {TDistance.unit = Just u}) = unit == u
+isDistanceOfUnit _ _ = False
 
 -- -----------------------------------------------------------------
 -- Production
 
 distance :: Double -> DistanceData
-distance x = DistanceData {TDistance.value = x, TDistance.unit = Nothing}
+distance x = DistanceData {TDistance.value = Just x
+                          , TDistance.unit = Nothing
+                          , TDistance.minValue = Nothing
+                          , TDistance.maxValue = Nothing}
+
+unitOnly :: TDistance.Unit -> DistanceData
+unitOnly u = DistanceData {TDistance.unit = Just u
+                          , TDistance.value = Nothing
+                          , TDistance.minValue = Nothing
+                          , TDistance.maxValue = Nothing}
 
 withUnit :: TDistance.Unit -> DistanceData -> DistanceData
-withUnit value dd = dd {TDistance.unit = Just value}
+withUnit u dd = dd {TDistance.unit = Just u}
+
+withValue :: Double -> DistanceData -> DistanceData
+withValue value dd = dd {TDistance.value = Just value}
+
+withInterval :: (Double, Double) -> DistanceData -> DistanceData
+withInterval (from, to) dd = dd {TDistance.minValue = Just from
+                                , TDistance.maxValue = Just to}
+
+withMin :: Double -> DistanceData -> DistanceData
+withMin from dd = dd {TDistance.minValue = Just from}
+
+withMax :: Double -> DistanceData -> DistanceData
+withMax to dd = dd {TDistance.maxValue = Just to}

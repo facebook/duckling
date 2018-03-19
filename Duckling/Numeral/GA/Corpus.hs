@@ -9,18 +9,19 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Numeral.GA.Corpus
-  ( corpus ) where
+  ( corpus
+  ) where
 
-import Prelude
 import Data.String
+import Prelude
 
-import Duckling.Lang
+import Duckling.Locale
 import Duckling.Numeral.Types
 import Duckling.Resolve
 import Duckling.Testing.Types
 
 corpus :: Corpus
-corpus = (testContext {lang = GA}, allExamples)
+corpus = (testContext {locale = makeLocale GA Nothing}, allExamples)
 
 allExamples :: [Example]
 allExamples = concat
@@ -37,5 +38,16 @@ allExamples = concat
   , examples (NumeralValue 20)
              [ "20"
              , "Fiche"
+             ]
+  , examples (NumeralValue 30)
+             [ "déag is fiche"
+             ]
+  , examples (NumeralValue 40)
+             [ "is dha fhichead"
+             , "is dá fhichead"
+             ]
+  , examples (NumeralValue 50)
+             [ "deag is dha fhichead"
+             , "deag is dá fhichead"
              ]
   ]

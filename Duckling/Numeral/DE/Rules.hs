@@ -7,50 +7,38 @@
 
 
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE NoRebindableSyntax #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Numeral.DE.Rules
-  ( rules ) where
+  ( rules
+  ) where
 
-import Control.Monad (join)
 import Data.HashMap.Strict (HashMap)
-import qualified Data.HashMap.Strict as HashMap
 import Data.Maybe
 import Data.Text (Text)
-import qualified Data.Text as Text
 import Prelude
 import Data.String
+import qualified Data.HashMap.Strict as HashMap
+import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
 import Duckling.Numeral.Helpers
 import Duckling.Numeral.Types (NumeralData (..))
-import qualified Duckling.Numeral.Types as TNumeral
 import Duckling.Regex.Types
 import Duckling.Types
+import qualified Duckling.Numeral.Types as TNumeral
 
 ruleNumeralsPrefixWithNegativeOrMinus :: Rule
 ruleNumeralsPrefixWithNegativeOrMinus = Rule
   { name = "numbers prefix with -, negative or minus"
   , pattern =
     [ regex "-|minus|negativ"
-    , dimension Numeral
+    , Predicate isPositive
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Numeral (NumeralData {TNumeral.value = v}):_) ->
+      (_:Token Numeral NumeralData{TNumeral.value = v}:_) ->
         double $ v * (- 1)
-      _ -> Nothing
-  }
-
-ruleIntegerNumeric :: Rule
-ruleIntegerNumeric = Rule
-  { name = "integer (numeric)"
-  , pattern =
-    [ regex "(\\d{1,18})"
-    ]
-  , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> do
-        v <- parseInt match
-        integer $ toInteger v
       _ -> Nothing
   }
 
@@ -79,10 +67,8 @@ ruleDecimalWithThousandsSeparator = Rule
     [ regex "(\\d+(\\.\\d\\d\\d)+\\,\\d+)"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) ->
-        let dot = Text.singleton '.'
-            comma = Text.singleton ','
-            fmt = Text.replace comma dot $ Text.replace dot Text.empty match
+      (Token RegexMatch (GroupMatch (match:_)):
+       _) -> let fmt = Text.replace "," "." $ Text.replace "." Text.empty match
         in parseDouble fmt >>= double
       _ -> Nothing
   }
@@ -99,6 +85,7 @@ ruleDecimalNumeral = Rule
       _ -> Nothing
   }
 
+-- TODO: Single-word composition (#110)
 ruleInteger3 :: Rule
 ruleInteger3 = Rule
   { name = "integer ([2-9][1-9])"
@@ -141,9 +128,9 @@ ruleNumeralsUnd = Rule
     , oneOf [20, 30 .. 90]
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = v1}):
+      (Token Numeral NumeralData{TNumeral.value = v1}:
        _:
-       Token Numeral (NumeralData {TNumeral.value = v2}):
+       Token Numeral NumeralData{TNumeral.value = v2}:
        _) -> double $ v1 + v2
       _ -> Nothing
   }
@@ -153,7 +140,7 @@ ruleMultiply = Rule
   { name = "compose by multiplication"
   , pattern =
     [ dimension Numeral
-    , numberWith TNumeral.multipliable id
+    , Predicate isMultipliable
     ]
   , prod = \tokens -> case tokens of
       (token1:token2:_) -> multiply token1 token2
@@ -165,11 +152,11 @@ ruleIntersect = Rule
   { name = "intersect"
   , pattern =
     [ numberWith (fromMaybe 0 . TNumeral.grain) (>1)
-    , dimension Numeral
+    , Predicate $ and . sequence [not . isMultipliable, isPositive]
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = val1, TNumeral.grain = Just g}):
-       Token Numeral (NumeralData {TNumeral.value = val2}):
+      (Token Numeral NumeralData{TNumeral.value = val1, TNumeral.grain = Just g}:
+       Token Numeral NumeralData{TNumeral.value = val2}:
        _) | (10 ** fromIntegral g) > val2 -> double $ val1 + val2
       _ -> Nothing
   }
@@ -182,7 +169,7 @@ ruleNumeralsSuffixesKMG = Rule
     , regex "([kmg])(?=[\\W\\$€]|$)"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = v}):
+      (Token Numeral NumeralData{TNumeral.value = v}:
        Token RegexMatch (GroupMatch (match:_)):
        _) -> case Text.toLower match of
          "k" -> double $ v * 1e3
@@ -263,60 +250,32 @@ zeroNineteenMap = HashMap.fromList
   , ("neunzehn", 19)
   ]
 
-ruleToNineteen :: Rule
-ruleToNineteen = Rule
+-- TODO: Single-word composition (#110)
+ruleZeroToNineteen :: Rule
+ruleZeroToNineteen = Rule
   { name = "integer (0..19)"
-  -- e.g. fourteen must be before four,
-  -- otherwise four will always shadow fourteen
-  , pattern = [regex "(keine?|keine?s|keiner|keinen|null|nichts|eins?(er)?|zwei|dreizehn|drei|vierzehn|vier|fünf|sechzehn|sechs|siebzehn|sieben|achtzehn|acht|neunzehn|neun|elf|zwölf|füfzehn)"]
+  , pattern =
+    [ regex "(keine[rn]|keine?s?|null|nichts|eins?(er)?|zwei|dreizehn|drei|vierzehn|vier|fünf|sechzehn|sechs|siebzehn|sieben|achtzehn|acht|neunzehn|neun|elf|zwölf|füfzehn)"
+    ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
         HashMap.lookup (Text.toLower match) zeroNineteenMap >>= integer
       _ -> Nothing
   }
 
-ruleInteger :: Rule
-ruleInteger = Rule
-  { name = "integer (0..19)"
-  , pattern =
-    [ regex "(keine?|keine?s|keiner|keinen|null|nichts|eins?(er)?|zwei|dreizehn|drei|vierzehn|vier|fünf|sechzehn|sechs|siebzehn|sieben|achtzehn|acht|neunzehn|neun|elf|zwölf|füfzehn)"
-    ]
-  , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
-        "nichts" -> integer 0
-        "keine" -> integer 0
-        "null" -> integer 0
-        "keiner" -> integer 0
-        "kein" -> integer 0
-        "keins" -> integer 0
-        "keinen" -> integer 0
-        "keines" -> integer 0
-        "einer" -> integer 1
-        "eins" -> integer 1
-        "ein" -> integer 1
-        "eine" -> integer 1
-        "zwei" -> integer 2
-        "drei" -> integer 3
-        "vier" -> integer 4
-        "fünf" -> integer 5
-        "sechs" -> integer 6
-        "sieben" -> integer 7
-        "acht" -> integer 8
-        "neun" -> integer 9
-        "zehn" -> integer 10
-        "elf" -> integer 11
-        "zwölf" -> integer 12
-        "dreizehn" -> integer 13
-        "vierzehn" -> integer 14
-        "fünfzehn" -> integer 15
-        "sechzehn" -> integer 16
-        "siebzehn" -> integer 17
-        "achtzehn" -> integer 18
-        "neunzehn" -> integer 19
-        _ -> Nothing
-      _ -> Nothing
-  }
+tensMap :: HashMap Text Integer
+tensMap = HashMap.fromList
+  [ ( "zwanzig" , 20 )
+  , ( "dreissig", 30 )
+  , ( "vierzig" , 40 )
+  , ( "fünfzig" , 50 )
+  , ( "sechzig" , 60 )
+  , ( "siebzig" , 70 )
+  , ( "achtzig" , 80 )
+  , ( "neunzig" , 90 )
+  ]
 
+-- TODO: Single-word composition (#110)
 ruleInteger2 :: Rule
 ruleInteger2 = Rule
   { name = "integer (20..90)"
@@ -324,16 +283,8 @@ ruleInteger2 = Rule
     [ regex "(zwanzig|dreissig|vierzig|fünfzig|sechzig|siebzig|achtzig|neunzig)"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
-        "zwanzig" -> integer 20
-        "dreissig" -> integer 30
-        "vierzig" -> integer 40
-        "fünfzig" -> integer 50
-        "sechzig" -> integer 60
-        "siebzig" -> integer 70
-        "achtzig" -> integer 80
-        "neunzig" -> integer 90
-        _ -> Nothing
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        HashMap.lookup (Text.toLower match) tensMap >>= integer
       _ -> Nothing
   }
 
@@ -346,9 +297,9 @@ ruleNumeralDotNumeral = Rule
     , numberWith TNumeral.grain isNothing
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = v1}):
+      (Token Numeral NumeralData{TNumeral.value = v1}:
        _:
-       Token Numeral (NumeralData {TNumeral.value = v2}):
+       Token Numeral NumeralData{TNumeral.value = v2}:
        _) -> double $ v1 + decimalsToDouble v2
       _ -> Nothing
   }
@@ -361,7 +312,7 @@ ruleIntegerWithThousandsSeparator = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
-        parseDouble (Text.replace (Text.singleton '.') Text.empty match) >>= double
+        parseDouble (Text.replace "." Text.empty match) >>= double
       _ -> Nothing
   }
 
@@ -372,10 +323,8 @@ rules =
   , ruleDecimalWithThousandsSeparator
   , ruleDozen
   , ruleFew
-  , ruleInteger
   , ruleInteger2
   , ruleInteger3
-  , ruleIntegerNumeric
   , ruleIntegerWithThousandsSeparator
   , ruleIntersect
   , ruleMultiply
@@ -385,5 +334,5 @@ rules =
   , ruleNumeralsUnd
   , rulePowersOfTen
   , ruleTen
-  , ruleToNineteen
+  , ruleZeroToNineteen
   ]

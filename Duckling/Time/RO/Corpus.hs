@@ -16,7 +16,7 @@ module Duckling.Time.RO.Corpus
 import Data.String
 import Prelude
 
-import Duckling.Lang
+import Duckling.Locale
 import Duckling.Resolve
 import Duckling.Time.Corpus
 import Duckling.TimeGrain.Types hiding (add)
@@ -30,7 +30,7 @@ negativeCorpus = (testContext, examples)
       ]
 
 corpus :: Corpus
-corpus = (testContext {lang = RO}, allExamples)
+corpus = (testContext {locale = makeLocale RO Nothing}, allExamples)
 
 allExamples :: [Example]
 allExamples = concat

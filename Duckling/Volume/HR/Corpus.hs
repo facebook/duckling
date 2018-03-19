@@ -13,13 +13,13 @@ module Duckling.Volume.HR.Corpus
 import Prelude
 import Data.String
 
-import Duckling.Lang
+import Duckling.Locale
 import Duckling.Resolve
 import Duckling.Testing.Types
 import Duckling.Volume.Types
 
 corpus :: Corpus
-corpus = (testContext {lang = HR}, allExamples)
+corpus = (testContext {locale = makeLocale HR Nothing}, allExamples)
 
 allExamples :: [Example]
 allExamples = concat

@@ -9,18 +9,19 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Numeral.AR.Corpus
-  ( corpus ) where
+  ( corpus
+  ) where
 
-import Prelude
 import Data.String
+import Prelude
 
-import Duckling.Lang
+import Duckling.Locale
 import Duckling.Numeral.Types
 import Duckling.Resolve
 import Duckling.Testing.Types
 
 corpus :: Corpus
-corpus = (testContext {lang = AR}, allExamples)
+corpus = (testContext {locale = makeLocale AR Nothing}, allExamples)
 
 allExamples :: [Example]
 allExamples = concat
@@ -36,20 +37,24 @@ allExamples = concat
              [ "4"
              , "أربعة"
              , "أربع"
+             , "اربعه"
              ]
   , examples (NumeralValue 6)
              [ "6"
              , "ستة"
              , "ست"
+             , "سته"
              ]
-  , examples (NumeralValue 33)
-             [ "33"
-             , "ثلاث و ثلاثون"
+  , examples (NumeralValue 10)
+             [ "10"
+             , "عشرة"
+             , "عشره"
              ]
   , examples (NumeralValue 11)
              [ "11"
              , "إحدى عشرة"
              , "إحدى عشر"
+             , "احد عشر"
              ]
   , examples (NumeralValue 12)
              [ "12"
@@ -72,9 +77,9 @@ allExamples = concat
              [ "18"
              , "ثمان عشرة"
              ]
-  , examples (NumeralValue 525)
-             [ "خمسمائة و خمسة و عشرون"
-             , "525"
+  , examples (NumeralValue 20)
+             [ "عشرون"
+             , "عشرين"
              ]
   , examples (NumeralValue 21)
              [ "واحدة و عشرون"
@@ -87,6 +92,42 @@ allExamples = concat
   , examples (NumeralValue 26)
              [ "ستة و عشرون"
              , "26"
+             ]
+  , examples (NumeralValue 20)
+             [ "عشرون"
+             , "عشرين"
+             ]
+  , examples (NumeralValue 30)
+             [ "ثلاثون"
+             , "ثلاثين"
+             ]
+  , examples (NumeralValue 33)
+             [ "33"
+             , "ثلاث و ثلاثون"
+             ]
+  , examples (NumeralValue 40)
+             [ "اربعون"
+             , "أربعين"
+             ]
+  , examples (NumeralValue 200)
+             [ "مائتين"
+             , "مائتان"
+             ]
+  , examples (NumeralValue 300)
+             [ "ثلاثمائة"
+             ]
+  , examples (NumeralValue 350)
+             [ "ثلاثمائة وخمسين"
+             ]
+  , examples (NumeralValue 500)
+             [ "خمسمائة"
+             ]
+  , examples (NumeralValue 525)
+             [ "خمسمائة و خمسة و عشرون"
+             , "525"
+             ]
+  , examples (NumeralValue 700)
+             [ "سبعمائة"
              ]
   , examples (NumeralValue 1.1)
              [ "1.1"

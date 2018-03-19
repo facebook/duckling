@@ -9,18 +9,19 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Numeral.NL.Corpus
-  ( corpus ) where
+  ( corpus
+  ) where
 
-import Prelude
 import Data.String
+import Prelude
 
-import Duckling.Lang
+import Duckling.Locale
 import Duckling.Numeral.Types
 import Duckling.Resolve
 import Duckling.Testing.Types
 
 corpus :: Corpus
-corpus = (testContext {lang = NL}, allExamples)
+corpus = (testContext {locale = makeLocale NL Nothing}, allExamples)
 
 allExamples :: [Example]
 allExamples = concat
@@ -46,6 +47,10 @@ allExamples = concat
              , "drieëndertig"
              , "drie en dertig"
              , "0033"
+             ]
+  , examples (NumeralValue 12)
+             [ "twaalf"
+             , "dozijn"
              ]
   , examples (NumeralValue 14)
              [ "14"
@@ -80,6 +85,9 @@ allExamples = concat
              [ "5 duizend"
              , "vijf duizend"
              ]
+  , examples (NumeralValue 144)
+             [ "gros"
+             ]
   , examples (NumeralValue 122)
              [ "honderd tweeëntwintig"
              , "honderd tweeentwintig"
@@ -87,5 +95,11 @@ allExamples = concat
              ]
   , examples (NumeralValue 20000)
              [ "twintig duizend"
+             ]
+  , examples (NumeralValue 0.2)
+             [ "1/5"
+             , "2/10"
+             , "3/15"
+             , "20/100"
              ]
   ]

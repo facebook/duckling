@@ -14,19 +14,20 @@ module Duckling.Numeral.RU.Corpus
 import Prelude
 import Data.String
 
-import Duckling.Lang
+import Duckling.Locale
 import Duckling.Numeral.Types
 import Duckling.Resolve
 import Duckling.Testing.Types
 
 corpus :: Corpus
-corpus = (testContext {lang = RU}, allExamples)
+corpus = (testContext {locale = makeLocale RU Nothing}, allExamples)
 
 allExamples :: [Example]
 allExamples = concat
   [ examples (NumeralValue 0)
              [ "0"
              , "ноль"
+             , "нисколько"
              ]
   , examples (NumeralValue 1)
              [ "1"
@@ -57,6 +58,10 @@ allExamples = concat
              , "тридцать три"
              , "0033"
              ]
+  , examples (NumeralValue 11)
+             [ "11"
+             , "одиннадцать"
+             ]
   , examples (NumeralValue 14)
              [ "14"
              , "четырнадцать"
@@ -73,9 +78,26 @@ allExamples = concat
              [ "18"
              , "восемнадцать"
              ]
+  , examples (NumeralValue 312)
+             [ "триста двенадцать"
+             , "312"
+             ]
+  , examples (NumeralValue 444)
+             [ "четыреста сорок четыре"
+             , "444"
+             ]
   , examples (NumeralValue 525)
              [ "пятьсот двадцать пять"
              , "525"
+             ]
+  , examples (NumeralValue 1.5)
+             [ "1.5"
+             , "полторы"
+             , "один с половиной"
+             ]
+  , examples (NumeralValue 3.5)
+             [ "3.5"
+             , "три с половиной"
              ]
   , examples (NumeralValue 1.1)
              [ "1.1"

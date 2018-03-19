@@ -10,20 +10,21 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Numeral.VI.Rules
-  ( rules ) where
+  ( rules
+  ) where
 
-import qualified Data.HashMap.Strict as HashMap
 import Data.Maybe
-import qualified Data.Text as Text
-import Prelude
 import Data.String
+import Prelude
+import qualified Data.HashMap.Strict as HashMap
+import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
 import Duckling.Numeral.Helpers
 import Duckling.Numeral.Types (NumeralData (..))
-import qualified Duckling.Numeral.Types as TNumeral
 import Duckling.Regex.Types
 import Duckling.Types
+import qualified Duckling.Numeral.Types as TNumeral
 
 powersOfTenMap :: HashMap.HashMap Text.Text (Double, Int)
 powersOfTenMap = HashMap.fromList
@@ -33,7 +34,7 @@ powersOfTenMap = HashMap.fromList
   , ( "nghìn", (1e3, 3) )
   , ( "triệ",  (1e6, 6) )
   , ( "triệu", (1e6, 6) )
-  , ( "t",          (1e9, 9) )
+  , ( "t",     (1e9, 9) )
   , ( "tỷ",    (1e9, 9) )
   ]
 
@@ -44,39 +45,9 @@ rulePowersOfTen = Rule
     [ regex "(trăm?|nghìn?|triệu?|tỷ?)"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) ->
-        do
-          (value, grain) <- HashMap.lookup (Text.toLower match) powersOfTenMap
-          double value >>= withGrain grain >>= withMultipliable
-      _ -> Nothing
-  }
-
-ruleIntersectWithAnd :: Rule
-ruleIntersectWithAnd = Rule
-  { name = "intersect (with and)"
-  , pattern =
-    [ numberWith (fromMaybe 0 . TNumeral.grain) (>1)
-    , regex "and"
-    , numberWith TNumeral.multipliable not
-    ]
-  , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = val1, TNumeral.grain = Just g}):
-       _:
-       Token Numeral (NumeralData {TNumeral.value = val2}):
-       _) | (10 ** fromIntegral g) > val2 -> double $ val1 + val2
-      _ -> Nothing
-  }
-
-ruleIntegerNumeric :: Rule
-ruleIntegerNumeric = Rule
-  { name = "integer (numeric)"
-  , pattern =
-    [ regex "(\\d{1,18})"
-    ]
-  , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> do
-        v <- parseInt match
-        integer $ toInteger v
+        (value, grain) <- HashMap.lookup (Text.toLower match) powersOfTenMap
+        double value >>= withGrain grain >>= withMultipliable
       _ -> Nothing
   }
 
@@ -84,8 +55,8 @@ ruleNumeralsPrefixWithM :: Rule
 ruleNumeralsPrefixWithM = Rule
   { name = "numbers prefix with -, âm"
   , pattern =
-    [ regex "-|âm\\s?"
-    , dimension Numeral
+    [ regex "\\-|âm"
+    , Predicate isPositive
     ]
   , prod = \tokens -> case tokens of
       (_:Token Numeral nd:_) -> double (TNumeral.value nd * (-1))
@@ -100,7 +71,7 @@ ruleNumerals2 = Rule
     , regex "lăm"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = v}):_) -> double $ v + 5
+      (Token Numeral NumeralData{TNumeral.value = v}:_) -> double $ v + 5
       _ -> Nothing
   }
 
@@ -112,7 +83,7 @@ ruleDecimalWithThousandsSeparator = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
-        parseDouble (Text.replace (Text.singleton ',') Text.empty match) >>= double
+        parseDouble (Text.replace "," Text.empty match) >>= double
       _ -> Nothing
   }
 
@@ -135,8 +106,8 @@ ruleInteger3 = Rule
     , numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = v1}):
-       Token Numeral (NumeralData {TNumeral.value = v2}):
+      (Token Numeral NumeralData{TNumeral.value = v1}:
+       Token Numeral NumeralData{TNumeral.value = v2}:
        _) -> double $ v1 + v2
       _ -> Nothing
   }
@@ -160,11 +131,11 @@ ruleIntersect = Rule
   { name = "intersect"
   , pattern =
     [ numberWith (fromMaybe 0 . TNumeral.grain) (>1)
-    , numberWith TNumeral.multipliable not
+    , Predicate $ and . sequence [not . isMultipliable, isPositive]
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = val1, TNumeral.grain = Just g}):
-       Token Numeral (NumeralData {TNumeral.value = val2}):
+      (Token Numeral NumeralData{TNumeral.value = val1, TNumeral.grain = Just g}:
+       Token Numeral NumeralData{TNumeral.value = val2}:
        _) | (10 ** fromIntegral g) > val2 -> double $ val1 + val2
       _ -> Nothing
   }
@@ -174,7 +145,7 @@ ruleMultiply = Rule
   { name = "compose by multiplication"
   , pattern =
     [ dimension Numeral
-    , numberWith TNumeral.multipliable id
+    , Predicate isMultipliable
     ]
   , prod = \tokens -> case tokens of
       (token1:token2:_) -> multiply token1 token2
@@ -189,7 +160,7 @@ ruleNumeralsSuffixesKMG = Rule
     , regex "([kmg])(?=[\\W\\$€]|$)"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = v}):
+      (Token Numeral NumeralData{TNumeral.value = v}:
        Token RegexMatch (GroupMatch (match:_)):
        _) -> case Text.toLower match of
          "k" -> double $ v * 1e3
@@ -199,61 +170,47 @@ ruleNumeralsSuffixesKMG = Rule
       _ -> Nothing
   }
 
-ruleNumeralNghn :: Rule
-ruleNumeralNghn = Rule
-  { name = "number nghìn"
-  , pattern =
-    [ numberBetween 1 1000
-    , numberWith TNumeral.value (== 1000)
-    ]
-  , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = v1}):
-       Token Numeral (NumeralData {TNumeral.value = v2, TNumeral.grain = Just g}):
-       _) -> double (v1 * v2) >>= withGrain g
-      _ -> Nothing
-  }
-
 integerMap :: HashMap.HashMap Text.Text Integer
 integerMap = HashMap.fromList
-  [ ("không",               0)
-  , ("một",                 1)
-  , ("linh một",            1)
-  , ("lẻ một",         1)
-  , ("hai",                      2)
-  , ("lẻ hai",              2)
-  , ("linh hai",                 2)
-  , ("ba",                       3)
-  , ("lẻ",                  3)
-  , ("linh ba",                  3)
-  , ("lẻ bốn",         4)
-  , ("linh bốn",            4)
-  , ("bốn",                 4)
-  , ("năm",                 5)
-  , ("lẻ năm",         5)
-  , ("linh năm",            5)
-  , ("linh sáu",            6)
-  , ("sáu",                 6)
-  , ("lẻ sáu",         6)
-  , ("linh bảy",            7)
-  , ("lẻ bảy",         7)
-  , ("bảy",                 7)
-  , ("lẻ tám",         8)
-  , ("linh tám",            8)
-  , ("tám",                 8)
-  , ("lẻ chín",        9)
-  , ("chín",                9)
-  , ("linh chín",           9)
-  , ("linh mười",      10)
-  , ("mười",           10)
-  , ("lẻ mười",   10)
-  , ("mười một",  11)
-  , ("mười hai",       12)
-  , ("mười ba",        13)
-  , ("mười bốn",  14)
-  , ("mười lăm",  15)
-  , ("mười sáu",  16)
-  , ("mười bảy",  17)
-  , ("mười tám",  18)
+  [ ("không", 0)
+  , ("một", 1)
+  , ("linh một", 1)
+  , ("lẻ một", 1)
+  , ("hai", 2)
+  , ("lẻ hai", 2)
+  , ("linh hai", 2)
+  , ("ba", 3)
+  , ("lẻ", 3)
+  , ("linh ba", 3)
+  , ("lẻ bốn", 4)
+  , ("linh bốn", 4)
+  , ("bốn", 4)
+  , ("năm", 5)
+  , ("lẻ năm", 5)
+  , ("linh năm", 5)
+  , ("linh sáu", 6)
+  , ("sáu", 6)
+  , ("lẻ sáu", 6)
+  , ("linh bảy", 7)
+  , ("lẻ bảy", 7)
+  , ("bảy", 7)
+  , ("lẻ tám", 8)
+  , ("linh tám", 8)
+  , ("tám", 8)
+  , ("lẻ chín", 9)
+  , ("chín", 9)
+  , ("linh chín", 9)
+  , ("linh mười", 10)
+  , ("mười", 10)
+  , ("lẻ mười", 10)
+  , ("mười một", 11)
+  , ("mười hai", 12)
+  , ("mười ba", 13)
+  , ("mười bốn", 14)
+  , ("mười lăm", 15)
+  , ("mười sáu", 16)
+  , ("mười bảy", 17)
+  , ("mười tám", 18)
   , ("mười chín", 19)
   ]
 
@@ -271,13 +228,13 @@ ruleInteger = Rule
 
 tensMap :: HashMap.HashMap Text.Text Integer
 tensMap = HashMap.fromList
-  [ ("hai mươi",       20)
-  , ("ba mươi",        30)
-  , ("bốn mươi",  40)
-  , ("năm mươi",  50)
-  , ("sáu mươi",  60)
-  , ("bảy mươi",  70)
-  , ("tám mươi",  80)
+  [ ("hai mươi", 20)
+  , ("ba mươi", 30)
+  , ("bốn mươi", 40)
+  , ("năm mươi", 50)
+  , ("sáu mươi", 60)
+  , ("bảy mươi", 70)
+  , ("tám mươi", 80)
   , ("chín mươi", 90)
   ]
 
@@ -301,7 +258,7 @@ ruleNumerals = Rule
     , regex "mốt"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = v}):_) -> double $ v + 1
+      (Token Numeral NumeralData{TNumeral.value = v}:_) -> double $ v + 1
       _ -> Nothing
   }
 
@@ -322,7 +279,7 @@ ruleIntegerWithThousandsSeparator = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):
-       _) -> let fmt = Text.replace (Text.singleton ',') Text.empty match
+       _) -> let fmt = Text.replace "," Text.empty match
         in parseDouble fmt >>= double
       _ -> Nothing
   }
@@ -334,13 +291,10 @@ rules =
   , ruleInteger
   , ruleInteger2
   , ruleInteger3
-  , ruleIntegerNumeric
   , ruleIntegerWithThousandsSeparator
   , ruleIntersect
-  , ruleIntersectWithAnd
   , ruleMultiply
   , ruleNumeralDot
-  , ruleNumeralNghn
   , ruleNumerals
   , ruleNumerals2
   , ruleNumeralsPrefixWithM

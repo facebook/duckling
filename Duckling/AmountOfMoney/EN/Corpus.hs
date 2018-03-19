@@ -9,13 +9,22 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.AmountOfMoney.EN.Corpus
-  ( corpus ) where
+  ( corpus
+  , negativeCorpus
+  ) where
 
-import Prelude
 import Data.String
+import Prelude
 
 import Duckling.AmountOfMoney.Types
 import Duckling.Testing.Types
+
+negativeCorpus :: NegativeCorpus
+negativeCorpus = (testContext, examples)
+  where
+    examples =
+      [ "exactly dollars"
+      ]
 
 corpus :: Corpus
 corpus = (testContext, allExamples)
@@ -145,6 +154,21 @@ allExamples = concat
              , "20 ringgit 43"
              , "twenty ringgit and 43"
              ]
+  , examples (simple Dinar 10)
+             [ "10 dinars"
+             ]
+  , examples (simple ILS 10)
+             [ "ten shekels"
+             , "10 ILS"
+             ]
+  , examples (simple Riyal 10)
+             [ "ten riyals"
+             , "10 riyals"
+             ]
+  , examples (simple Rial 10)
+             [ "ten rials"
+             , "10 rials"
+             ]
   , examples (between Dollar (10, 20))
              [ "between 10 and 20 dollars"
              , "from 10 dollars to 20 dollars"
@@ -153,6 +177,10 @@ allExamples = concat
              , "from 10 to 20 dollars"
              , "about $10-$20"
              , "10-20 dollars"
+             ]
+  , examples (between Dollar (1.1, 1.3))
+             [ "between 1.1 and 1.3 dollars"
+             , "from 1 point 1 and one point three dollars"
              ]
   , examples (under EUR 7)
              [ "under seven euros"

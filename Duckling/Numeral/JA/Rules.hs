@@ -10,21 +10,22 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Numeral.JA.Rules
-  ( rules ) where
+  ( rules
+  ) where
 
-import qualified Data.HashMap.Strict as HashMap
-import qualified Data.Text as Text
 import Data.HashMap.Strict (HashMap)
+import Data.String
 import Data.Text (Text)
 import Prelude
-import Data.String
+import qualified Data.HashMap.Strict as HashMap
+import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
 import Duckling.Numeral.Helpers
 import Duckling.Numeral.Types (NumeralData (..))
-import qualified Duckling.Numeral.Types as TNumeral
 import Duckling.Regex.Types
 import Duckling.Types
+import qualified Duckling.Numeral.Types as TNumeral
 
 ruleInteger5 :: Rule
 ruleInteger5 = Rule
@@ -40,23 +41,10 @@ ruleNumeralsPrefixWithNegativeOrMinus = Rule
   { name = "numbers prefix with -, negative or minus"
   , pattern =
     [ regex "-|マイナス\\s?|負\\s?"
-    , dimension Numeral
+    , Predicate isPositive
     ]
   , prod = \tokens -> case tokens of
       (_:Token Numeral nd:_) -> double (TNumeral.value nd * (-1))
-      _ -> Nothing
-  }
-
-ruleIntegerNumeric :: Rule
-ruleIntegerNumeric = Rule
-  { name = "integer (numeric)"
-  , pattern =
-    [ regex "(\\d{1,18})"
-    ]
-  , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> do
-        v <- toInteger <$> parseInt match
-        integer v
       _ -> Nothing
   }
 
@@ -68,7 +56,7 @@ ruleInteger10 = Rule
     , numberBetween 1 1000
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Numeral (NumeralData {TNumeral.value = v}):_) ->
+      (_:Token Numeral NumeralData{TNumeral.value = v}:_) ->
         double $ v + 1000
       _ -> Nothing
   }
@@ -81,7 +69,7 @@ ruleDecimalWithThousandsSeparator = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
-        parseDouble (Text.replace (Text.singleton ',') Text.empty match) >>= double
+        parseDouble (Text.replace "," Text.empty match) >>= double
       _ -> Nothing
   }
 
@@ -93,7 +81,7 @@ ruleInteger15 = Rule
     , regex "万"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = v}):_) -> double $ v * 10000
+      (Token Numeral NumeralData{TNumeral.value = v}:_) -> double $ v * 10000
       _ -> Nothing
   }
 
@@ -128,7 +116,7 @@ ruleInteger3 = Rule
     , regex "十"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = v}):_) -> double $ v * 10
+      (Token Numeral NumeralData{TNumeral.value = v}:_) -> double $ v * 10
       _ -> Nothing
   }
 
@@ -149,7 +137,7 @@ ruleInteger6 = Rule
     , numberBetween 1 100
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Numeral (NumeralData {TNumeral.value = v}):_) -> double $ v + 100
+      (_:Token Numeral NumeralData{TNumeral.value = v}:_) -> double $ v + 100
       _ -> Nothing
   }
 
@@ -161,8 +149,8 @@ ruleInteger12 = Rule
     , numberBetween 1 1000
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = v1}):
-       Token Numeral (NumeralData {TNumeral.value = v2}):
+      (Token Numeral NumeralData{TNumeral.value = v1}:
+       Token Numeral NumeralData{TNumeral.value = v2}:
        _) -> double $ v1 + v2
       _ -> Nothing
   }
@@ -175,7 +163,7 @@ ruleNumeralsSuffixesKMG = Rule
     , regex "(k|m|g|千|万)"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = v}):
+      (Token Numeral NumeralData{TNumeral.value = v}:
        Token RegexMatch (GroupMatch (match:_)):
        _) -> case Text.toLower match of
           "k"      -> double $ v * 1e3
@@ -195,7 +183,7 @@ ruleInteger7 = Rule
     , regex "百"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = v}):_) -> double $ v * 100
+      (Token Numeral NumeralData{TNumeral.value = v}:_) -> double $ v * 100
       _ -> Nothing
   }
 
@@ -207,7 +195,7 @@ ruleInteger14 = Rule
     , numberBetween 1 10000
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Numeral (NumeralData {TNumeral.value = v}):_) ->
+      (_:Token Numeral NumeralData{TNumeral.value = v}:_) ->
         double $ v + 10000
       _ -> Nothing
   }
@@ -220,8 +208,8 @@ ruleInteger8 = Rule
     , numberBetween 1 100
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = v1}):
-       Token Numeral (NumeralData {TNumeral.value = v2}):
+      (Token Numeral NumeralData{TNumeral.value = v1}:
+       Token Numeral NumeralData{TNumeral.value = v2}:
        _) -> double $ v1 + v2
       _ -> Nothing
   }
@@ -234,8 +222,8 @@ ruleInteger16 = Rule
     , numberBetween 1 10000
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = v1}):
-       Token Numeral (NumeralData {TNumeral.value = v2}):
+      (Token Numeral NumeralData{TNumeral.value = v1}:
+       Token Numeral NumeralData{TNumeral.value = v2}:
        _) -> double $ v1 + v2
       _ -> Nothing
   }
@@ -285,8 +273,8 @@ ruleInteger4 = Rule
     , numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = v1}):
-       Token Numeral (NumeralData {TNumeral.value = v2}):
+      (Token Numeral NumeralData{TNumeral.value = v1}:
+       Token Numeral NumeralData{TNumeral.value = v2}:
        _) -> double $ v1 + v2
       _ -> Nothing
   }
@@ -299,7 +287,7 @@ ruleInteger2 = Rule
     , numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Numeral (NumeralData {TNumeral.value = v}):_) -> double $ v + 10
+      (_:Token Numeral NumeralData{TNumeral.value = v}:_) -> double $ v + 10
       _ -> Nothing
   }
 
@@ -311,7 +299,7 @@ ruleInteger11 = Rule
     , regex "千"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = v}):_) -> double $ v * 1000
+      (Token Numeral NumeralData{TNumeral.value = v}:_) -> double $ v * 1000
       _ -> Nothing
   }
 
@@ -323,7 +311,7 @@ ruleIntegerWithThousandsSeparator = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
-        parseDouble (Text.replace (Text.singleton ',') Text.empty match) >>= double
+        parseDouble (Text.replace "," Text.empty match) >>= double
       _ -> Nothing
   }
 
@@ -347,7 +335,6 @@ rules =
   , ruleInteger7
   , ruleInteger8
   , ruleInteger9
-  , ruleIntegerNumeric
   , ruleIntegerWithThousandsSeparator
   , ruleNumeral
   , ruleNumeralsPrefixWithNegativeOrMinus

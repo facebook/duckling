@@ -8,6 +8,7 @@
 
 {-# LANGUAGE RecordWildCards #-}
 {-# LANGUAGE NoRebindableSyntax #-}
+{-# LANGUAGE NamedFieldPuns #-}
 
 module Duckling.Api
   ( analyze
@@ -17,18 +18,18 @@ module Duckling.Api
   ) where
 
 import Data.HashMap.Strict (HashMap)
-import qualified Data.HashMap.Strict as HashMap
 import Data.HashSet (HashSet)
-import qualified Data.HashSet as HashSet
 import Data.Text (Text)
-import qualified Data.Text as Text
 import Prelude
 import TextShow
+import qualified Data.HashMap.Strict as HashMap
+import qualified Data.HashSet as HashSet
+import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
 import Duckling.Dimensions
 import Duckling.Engine
-import Duckling.Lang
+import Duckling.Locale
 import Duckling.Ranking.Classifiers
 import Duckling.Ranking.Rank
 import Duckling.Resolve
@@ -47,15 +48,16 @@ supportedDimensions =
 -- When `targets` is non-empty, returns only tokens of such dimensions.
 analyze :: Text -> Context -> HashSet (Some Dimension) -> [ResolvedToken]
 analyze input context@Context{..} targets =
-  rank (classifiers lang) targets
-  . filter (\(Resolved{node = Node{token = (Token d _)}}) ->
+  rank (classifiers locale) targets
+  . filter (\Resolved{node = Node{token = (Token d _)}} ->
       HashSet.null targets || HashSet.member (This d) targets
     )
-  $ parseAndResolve (rulesFor lang targets) input context
+  $ parseAndResolve (rulesFor locale targets) input context
 
 -- | Converts the resolved token to the API format
 formatToken :: Text -> ResolvedToken -> Entity
-formatToken sentence (Resolved (Range start end) (Node{token=Token dimension _}) value) =
-  Entity (toName dimension) body value start end
+formatToken sentence
+  (Resolved (Range start end) node@Node{token = Token dimension _} value) =
+  Entity (toName dimension) body value start end node
   where
     body = Text.drop start $ Text.take end sentence

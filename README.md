@@ -1,6 +1,6 @@
-![Duckling Logo](https://github.com/facebookincubator/duckling/raw/master/logo.png)
+![Duckling Logo](https://github.com/facebook/duckling/raw/master/logo.png)
 
-# Duckling [![Build Status](https://travis-ci.org/facebookincubator/duckling.svg?branch=master)](https://travis-ci.org/facebookincubator/duckling)
+# Duckling [![Build Status](https://travis-ci.org/facebook/duckling.svg?branch=master)](https://travis-ci.org/facebook/duckling)
 Duckling is a Haskell library that parses text into structured data.
 
 ```
@@ -30,15 +30,17 @@ The first time you run it, it will download all required packages.
 
 This runs a basic HTTP server. Example request:
 ```
-$ curl -XPOST http://0.0.0.0:8000/parse --data 'lang=en&text=tomorrow at eight'
+$ curl -XPOST http://0.0.0.0:8000/parse --data 'locale=en_GB&text=tomorrow at eight'
 ```
 
 See `exe/ExampleMain.hs` for an example on how to integrate Duckling in your
 project.
+If your backend doesn't run Haskell or if you don't want to spin your own Duckling server, you can directly use [wit.ai](https://wit.ai)'s built-in entities.
 
 ## Supported dimensions
 Duckling supports many languages, but most don't support all dimensions yet
-(we need your help!).
+(**we need your help!**).
+Please look into [this directory](https://github.com/facebook/duckling/blob/master/Duckling/Dimensions) for language-specific support.
 
 | Dimension | Example input | Example value output
 | --------- | ------------- | --------------------
@@ -72,7 +74,12 @@ files need to be updated:
 To add a new language:
 * Make sure that the language code used follows the [ISO-639-1 standard](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes).
 * The first dimension to implement is `Numeral`.
-* Follow [this example](https://github.com/facebookincubator/duckling/commit/24d3f199768be970149412c95b1c1bf5d76f8240).
+* Follow [this example](https://github.com/facebook/duckling/commit/24d3f199768be970149412c95b1c1bf5d76f8240).
+
+To add a new locale:
+* There should be a need for diverging rules between the locale and the language.
+* Make sure that the locale code is a valid [ISO3166 alpha2 country code](https://www.iso.org/obp/ui/#search/code/).
+* Follow [this example](https://github.com/facebook/duckling/commit/1ab5f447d2635fe6d48887a501d333a52adff5b9).
 
 Rules have a name, a pattern and a production.
 Patterns are used to perform character-level matching (regexes on input) and
@@ -88,7 +95,7 @@ shouldn't) parse. The reference time for the corpus is Tuesday Feb 12, 2013 at
 ```
 $ stack repl --no-load
 > :l Duckling.Debug
-> debug EN "in two minutes" [This Time]
+> debug (makeLocale EN $ Just US) "in two minutes" [This Time]
 in|within|after <duration> (in two minutes)
 -- regex (in)
 -- <integer> <unit-of-duration> (two minutes)

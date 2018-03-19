@@ -15,33 +15,33 @@ import Prelude
 import Data.String
 
 import Duckling.Distance.Types
-import Duckling.Lang
+import Duckling.Locale
 import Duckling.Resolve
 import Duckling.Testing.Types
 
 corpus :: Corpus
-corpus = (testContext {lang = RO}, allExamples)
+corpus = (testContext {locale = makeLocale RO Nothing}, allExamples)
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (DistanceValue Kilometre 3)
+  [ examples (simple Kilometre 3)
              [ "3 kilometri"
              , "3 km"
              , "3km"
              , "3,0 km"
              ]
-  , examples (DistanceValue Mile 8)
+  , examples (simple Mile 8)
              [ "8 mile"
              ]
-  , examples (DistanceValue Metre 9)
+  , examples (simple Metre 9)
              [ "9m"
              , "9 m"
              ]
-  , examples (DistanceValue Centimetre 2)
+  , examples (simple Centimetre 2)
              [ "2cm"
              , "2 centimetri"
              ]
-  , examples (DistanceValue Foot 10)
+  , examples (simple Foot 10)
              [ "zece picioare"
              ]
   ]

@@ -10,25 +10,26 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Numeral.RU.Rules
-  ( rules ) where
+  ( rules
+  ) where
 
-import qualified Data.HashMap.Strict as HashMap
 import Data.HashMap.Strict (HashMap)
 import Data.Maybe
-import qualified Data.Text as Text
+import Data.String
 import Data.Text (Text)
 import Prelude
-import Data.String
+import qualified Data.HashMap.Strict as HashMap
+import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
 import Duckling.Numeral.Helpers
 import Duckling.Numeral.Types (NumeralData (..))
-import qualified Duckling.Numeral.Types as TNumeral
 import Duckling.Regex.Types
 import Duckling.Types
+import qualified Duckling.Numeral.Types as TNumeral
 
-dozensMap :: HashMap Text Integer
-dozensMap = HashMap.fromList
+tensMap :: HashMap Text Integer
+tensMap = HashMap.fromList
   [ ( "двадцать", 20)
   , ( "тридцать", 30)
   , ( "сорок", 40)
@@ -47,20 +48,7 @@ ruleInteger5 = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
-        HashMap.lookup (Text.toLower match) dozensMap >>= integer
-      _ -> Nothing
-  }
-
-ruleIntegerNumeric :: Rule
-ruleIntegerNumeric = Rule
-  { name = "integer (numeric)"
-  , pattern =
-    [ regex "(\\d{1,18})"
-    ]
-  , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> do
-        v <- toInteger <$> parseInt match
-        integer v
+        HashMap.lookup (Text.toLower match) tensMap >>= integer
       _ -> Nothing
   }
 
@@ -72,7 +60,7 @@ ruleDecimalWithThousandsSeparator = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
-        parseDouble (Text.replace (Text.singleton ',') Text.empty match) >>= double
+        parseDouble (Text.replace "," Text.empty match) >>= double
       _ -> Nothing
   }
 
@@ -96,12 +84,33 @@ ruleInteger3 = Rule
   , prod = \_ -> integer 2
   }
 
+ruleDecimalOneAndAHalf :: Rule
+ruleDecimalOneAndAHalf = Rule
+  { name = "decimal one and a half"
+   , pattern =
+    [ regex "(полтора|полторы|полутора)"
+    ]
+   , prod = \_ -> double 1.5
+  }
+
+ruleIntegerAndAHalf :: Rule
+ruleIntegerAndAHalf = Rule
+  { name = "<integer> and a half"
+  , pattern =
+    [ Predicate isNatural
+    , regex "с половиной"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Numeral NumeralData{TNumeral.value = v}:_) -> double $ v + 0.5
+      _ -> Nothing
+  }
+
 hundredsMap :: HashMap Text Integer
 hundredsMap = HashMap.fromList
   [ ( "сто", 100)
   , ( "двести", 200)
-  , ( "тристо", 300)
-  , ( "четыресто", 400)
+  , ( "триста", 300)
+  , ( "четыреста", 400)
   , ( "пятьсот", 500)
   , ( "шестьсот", 600)
   , ( "семьсот", 700)
@@ -113,7 +122,7 @@ ruleInteger6 :: Rule
 ruleInteger6 = Rule
   { name = "integer (100..900)"
   , pattern =
-    [ regex "(сто|двести|тристо|четыресто|пятьсот|шестьсот|семьсот|восемьсот|девятьсот)"
+    [ regex "(сто|двести|триста|четыреста|пятьсот|шестьсот|семьсот|восемьсот|девятьсот)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
@@ -125,8 +134,8 @@ ruleNumeralsPrefixWithMinus :: Rule
 ruleNumeralsPrefixWithMinus = Rule
   { name = "numbers prefix with -, minus"
   , pattern =
-    [ regex "-|минус\\s?"
-    , dimension Numeral
+    [ regex "-|минус"
+    , Predicate isPositive
     ]
   , prod = \tokens -> case tokens of
       (_:Token Numeral nd:_) -> double (TNumeral.value nd * (-1))
@@ -141,7 +150,7 @@ ruleNumeralsSuffixesKMG = Rule
     , regex "((к|м|г)|(К|М|Г))(?=[\\W\\$€]|$)"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = v}):
+      (Token Numeral NumeralData{TNumeral.value = v}:
        Token RegexMatch (GroupMatch (match:_)):
        _) -> case Text.toLower match of
          "к" -> double $ v * 1e3
@@ -162,8 +171,8 @@ ruleInteger7 = Rule
     , numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = v1}):
-       Token Numeral (NumeralData {TNumeral.value = v2}):
+      (Token Numeral NumeralData{TNumeral.value = v1}:
+       Token Numeral NumeralData{TNumeral.value = v2}:
        _) -> double $ v1 + v2
       _ -> Nothing
   }
@@ -176,8 +185,8 @@ ruleInteger8 = Rule
     , numberBetween 1 100
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = v1}):
-       Token Numeral (NumeralData {TNumeral.value = v2}):
+      (Token Numeral NumeralData{TNumeral.value = v1}:
+       Token Numeral NumeralData{TNumeral.value = v2}:
        _) -> double $ v1 + v2
       _ -> Nothing
   }
@@ -186,7 +195,7 @@ ruleInteger :: Rule
 ruleInteger = Rule
   { name = "integer 0"
   , pattern =
-    [ regex "(ноль)"
+    [ regex "(ноль|нуля|нисколько)"
     ]
   , prod = \_ -> integer 0
   }
@@ -201,7 +210,7 @@ threeToNineteenMap = HashMap.fromList
   , ( "восемь", 8)
   , ( "девять", 9)
   , ( "десять", 10)
-  , ( "одинадцать", 11)
+  , ( "одиннадцать", 11)
   , ( "двенадцать", 12)
   , ( "тринадцать", 13)
   , ( "четырнадцать", 14)
@@ -216,7 +225,7 @@ ruleInteger4 :: Rule
 ruleInteger4 = Rule
   { name = "integer (3..19)"
   , pattern =
-    [ regex "(три|четырнадцать|четыре|пятнадцать|пять|шестнадцать|шесть|семнадцать|семь|восемнадцать|восемь|девятнадцать|девять|десять|одинадцать|двенадцать|тринадцать)"
+    [ regex "(три|четырнадцать|четыре|пятнадцать|пять|шестнадцать|шесть|семнадцать|семь|восемнадцать|восемь|девятнадцать|девять|десять|одиннадцать|двенадцать|тринадцать)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
@@ -255,7 +264,7 @@ ruleIntegerWithThousandsSeparator = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
-        parseDouble (Text.replace (Text.singleton ',') Text.empty match) >>= double
+        parseDouble (Text.replace "," Text.empty match) >>= double
       _ -> Nothing
   }
 
@@ -271,7 +280,8 @@ rules =
   , ruleInteger6
   , ruleInteger7
   , ruleInteger8
-  , ruleIntegerNumeric
+  , ruleIntegerAndAHalf
+  , ruleDecimalOneAndAHalf
   , ruleIntegerWithThousandsSeparator
   , ruleNumeralDotNumeral
   , ruleNumeralsPrefixWithMinus

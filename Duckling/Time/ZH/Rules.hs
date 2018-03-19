@@ -11,7 +11,8 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Time.ZH.Rules
-  ( rules ) where
+  ( rules
+  ) where
 
 import Data.Text (Text)
 import Prelude
@@ -299,15 +300,6 @@ ruleNow = Rule
     [ regex "现在|此时|此刻|当前|現在|此時|當前|\x5b9c\x5bb6|\x800c\x5bb6|\x4f9d\x5bb6"
     ]
   , prod = \_ -> tt $ cycleNth TG.Second 0
-  }
-
-ruleNationalDay :: Rule
-ruleNationalDay = Rule
-  { name = "national day"
-  , pattern =
-    [ regex "(国庆|國慶)(节|節)?"
-    ]
-  , prod = \_ -> tt $ monthDay 10 1
   }
 
 ruleTheCycleAfterTime :: Rule
@@ -778,7 +770,7 @@ ruleTimeofdayAmpm = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:Token RegexMatch (GroupMatch (ap:_)):_) ->
-        tt . timeOfDayAMPM td $ Text.toLower ap == "a"
+        tt $ timeOfDayAMPM (Text.toLower ap == "a") td
       _ -> Nothing
   }
 
@@ -967,13 +959,12 @@ ruleTimezone = Rule
   , prod = \tokens -> case tokens of
       (Token Time td:
        Token RegexMatch (GroupMatch (tz:_)):
-       _) -> Token Time <$> inTimezone tz td
+       _) -> Token Time <$> inTimezone (Text.toUpper tz) td
       _ -> Nothing
   }
 
-
-daysOfWeek :: [(Text, String)]
-daysOfWeek =
+ruleDaysOfWeek :: [Rule]
+ruleDaysOfWeek = mkRuleDaysOfWeek
   [ ( "Monday", "星期一|周一|礼拜一|禮拜一|週一" )
   , ( "Tuesday", "星期二|周二|礼拜二|禮拜二|週二" )
   , ( "Wednesday", "星期三|周三|礼拜三|禮拜三|週三" )
@@ -983,17 +974,8 @@ daysOfWeek =
   , ( "Sunday", "星期日|星期天|礼拜天|周日|禮拜天|週日|禮拜日" )
   ]
 
-ruleDaysOfWeek :: [Rule]
-ruleDaysOfWeek = zipWith go daysOfWeek [1..7]
-  where
-    go (name, regexPattern) i = Rule
-      { name = name
-      , pattern = [regex regexPattern]
-      , prod = \_ -> tt $ dayOfWeek i
-      }
-
-months :: [(Text, String)]
-months =
+ruleMonths :: [Rule]
+ruleMonths = mkRuleMonths
   [ ( "January", "一月(份)?" )
   , ( "February", "二月(份)?" )
   , ( "March", "三月(份)?" )
@@ -1007,15 +989,6 @@ months =
   , ( "November", "十一月(份)?" )
   , ( "December", "十二月(份)?" )
   ]
-
-ruleMonths :: [Rule]
-ruleMonths = zipWith go months [1..12]
-  where
-    go (name, regexPattern) i = Rule
-      { name = name
-      , pattern = [regex regexPattern]
-      , prod = \_ -> tt $ month i
-      }
 
 rules :: [Rule]
 rules =
@@ -1049,7 +1022,6 @@ rules =
   , ruleMonthNumericWithMonthSymbol
   , ruleMorning
   , ruleNamedmonthDayofmonth
-  , ruleNationalDay
   , ruleNewYearsDay
   , ruleNextCycle
   , ruleNextNCycle

@@ -11,7 +11,8 @@
 {-# LANGUAGE NoRebindableSyntax #-}
 
 module Duckling.Numeral.EN.Rules
-  ( rules ) where
+  ( rules
+  ) where
 
 import Control.Applicative ((<|>))
 import Data.HashMap.Strict (HashMap)
@@ -29,18 +30,6 @@ import Duckling.Regex.Types
 import Duckling.Types
 import qualified Duckling.Numeral.Types as TNumeral
 
-ruleIntegers :: Rule
-ruleIntegers = Rule
-  { name = "integer (numeric)"
-  , pattern = [regex "(\\d{1,18})"]
-  , prod = \tokens ->
-      case tokens of
-        (Token RegexMatch (GroupMatch (match:_)):_) -> do
-          v <- parseInt match
-          integer $ toInteger v
-        _ -> Nothing
-  }
-
 ruleDozen :: Rule
 ruleDozen = Rule
   { name = "a dozen of"
@@ -52,50 +41,50 @@ ruleDozen = Rule
 
 zeroNineteenMap :: HashMap Text Integer
 zeroNineteenMap = HashMap.fromList
-  [ ( "naught", 0 )
-  , ( "nil"   , 0 )
-  , ( "nought", 0 )
-  , ( "none"  , 0 )
-  , ( "zero"  , 0 )
-  , ( "zilch" , 0 )
-  , ( "one"   , 1 )
-  , ( "two", 2 )
-  , ( "three", 3 )
-  , ( "four", 4 )
-  , ( "five", 5 )
-  , ( "six", 6 )
-  , ( "seven", 7 )
-  , ( "eight", 8 )
-  , ( "nine", 9 )
-  , ( "ten", 10 )
-  , ( "eleven", 11 )
-  , ( "twelve", 12 )
-  , ( "thirteen", 13 )
-  , ( "fourteen", 14 )
-  , ( "fifteen", 15 )
-  , ( "sixteen", 16 )
+  [ ( "naught"   , 0 )
+  , ( "nil"      , 0 )
+  , ( "nought"   , 0 )
+  , ( "none"     , 0 )
+  , ( "zero"     , 0 )
+  , ( "zilch"    , 0 )
+  , ( "one"      , 1 )
+  , ( "two"      , 2 )
+  , ( "three"    , 3 )
+  , ( "four"     , 4 )
+  , ( "five"     , 5 )
+  , ( "six"      , 6 )
+  , ( "seven"    , 7 )
+  , ( "eight"    , 8 )
+  , ( "nine"     , 9 )
+  , ( "ten"      , 10 )
+  , ( "eleven"   , 11 )
+  , ( "twelve"   , 12 )
+  , ( "thirteen" , 13 )
+  , ( "fourteen" , 14 )
+  , ( "fifteen"  , 15 )
+  , ( "sixteen"  , 16 )
   , ( "seventeen", 17 )
-  , ( "eighteen", 18 )
-  , ( "nineteen", 19 )
+  , ( "eighteen" , 18 )
+  , ( "nineteen" , 19 )
   ]
 
 informalMap :: HashMap Text Integer
 informalMap = HashMap.fromList
-  [ ( "single", 1 )
-  , ( "a couple", 2 )
+  [ ( "single"     , 1 )
+  , ( "a couple"   , 2 )
   , ( "a couple of", 2 )
-  , ( "couple", 2 )
-  , ( "couples", 2 )
-  , ( "couple of", 2 )
-  , ( "couples of", 2 )
-  , ( "a pair", 2 )
-  , ( "a pair of", 2 )
-  , ( "pair", 2 )
-  , ( "pairs", 2 )
-  , ( "pair of", 2 )
-  , ( "pairs of", 2 )
-  , ( "a few", 3 )
-  , ( "few", 3 )
+  , ( "couple"     , 2 )
+  , ( "couples"    , 2 )
+  , ( "couple of"  , 2 )
+  , ( "couples of" , 2 )
+  , ( "a pair"     , 2 )
+  , ( "a pair of"  , 2 )
+  , ( "pair"       , 2 )
+  , ( "pairs"      , 2 )
+  , ( "pair of"    , 2 )
+  , ( "pairs of"   , 2 )
+  , ( "a few"      , 3 )
+  , ( "few"        , 3 )
   ]
 
 ruleToNineteen :: Rule
@@ -113,25 +102,29 @@ ruleToNineteen = Rule
       _ -> Nothing
   }
 
+tensMap :: HashMap Text Integer
+tensMap = HashMap.fromList
+  [ ( "twenty"  , 20 )
+  , ( "thirty"  , 30 )
+  , ( "forty"   , 40 )
+  , ( "fourty"  , 40 )
+  , ( "fifty"   , 50 )
+  , ( "sixty"   , 60 )
+  , ( "seventy" , 70 )
+  , ( "eighty"  , 80 )
+  , ( "ninety"  , 90 )
+  ]
+
 ruleTens :: Rule
 ruleTens = Rule
   { name = "integer (20..90)"
-  , pattern = [regex "(twenty|thirty|fou?rty|fifty|sixty|seventy|eighty|ninety)"]
-  , prod = \tokens ->
-      case tokens of
-        (Token RegexMatch (GroupMatch (match:_)):_) ->
-          case Text.toLower match of
-            "twenty"  -> integer 20
-            "thirty"  -> integer 30
-            "forty"   -> integer 40
-            "fourty"  -> integer 40
-            "fifty"   -> integer 50
-            "sixty"   -> integer 60
-            "seventy" -> integer 70
-            "eighty"  -> integer 80
-            "ninety"  -> integer 90
-            _         -> Nothing
-        _ -> Nothing
+  , pattern =
+    [ regex "(twenty|thirty|fou?rty|fifty|sixty|seventy|eighty|ninety)"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        HashMap.lookup (Text.toLower match) tensMap >>= integer
+      _ -> Nothing
   }
 
 rulePowersOfTen :: Rule
@@ -153,22 +146,56 @@ rulePowersOfTen = Rule
 ruleCompositeTens :: Rule
 ruleCompositeTens = Rule
   { name = "integer 21..99"
-  , pattern = [oneOf [20,30..90], numberBetween 1 10]
+  , pattern =
+    [ oneOf [20,30..90]
+    , numberBetween 1 10
+    ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData { TNumeral.value = tens }) :
-       Token Numeral (NumeralData { TNumeral.value = units }) :
-       _) -> double (tens + units)
+      (Token Numeral NumeralData{TNumeral.value = tens}:
+       Token Numeral NumeralData{TNumeral.value = units}:
+       _) -> double $ tens + units
       _ -> Nothing
   }
 
-ruleSkipHundreds :: Rule
-ruleSkipHundreds = Rule
-  { name = "one twenty two"
-  , pattern = [numberBetween 1 10, numberBetween 10 100]
+ruleSkipHundreds1 :: Rule
+ruleSkipHundreds1 = Rule
+  { name = "one eleven"
+  , pattern =
+    [ regex "(one|two|three|four|five|six|seven|eight|nine)"
+    , regex "(ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|fou?rty|fifty|sixty|seventy|eighty|ninety)"
+    ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData { TNumeral.value = hundreds }) :
-       Token Numeral (NumeralData { TNumeral.value = rest }) :
-       _) -> double (hundreds*100 + rest)
+      (Token RegexMatch (GroupMatch (m1:_)):
+       Token RegexMatch (GroupMatch (m2:_)):
+       _) -> do
+       let x1 = Text.toLower m1
+       let x2 = Text.toLower m2
+       hundreds <- HashMap.lookup x1 zeroNineteenMap
+       rest <- HashMap.lookup x2 zeroNineteenMap <|> HashMap.lookup x2 tensMap
+       integer (hundreds * 100 + rest)
+      _ -> Nothing
+  }
+
+ruleSkipHundreds2 :: Rule
+ruleSkipHundreds2 = Rule
+  { name = "one twenty two"
+  , pattern =
+    [ regex "(one|two|three|four|five|six|seven|eight|nine)"
+    , regex "(twenty|thirty|fou?rty|fifty|sixty|seventy|eighty|ninety)"
+    , regex "(one|two|three|four|five|six|seven|eight|nine)"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (m1:_)):
+       Token RegexMatch (GroupMatch (m2:_)):
+       Token RegexMatch (GroupMatch (m3:_)):
+       _) -> do
+       let x1 = Text.toLower m1
+       let x2 = Text.toLower m2
+       let x3 = Text.toLower m3
+       hundreds <- HashMap.lookup x1 zeroNineteenMap
+       tens <- HashMap.lookup x2 tensMap
+       rest <- HashMap.lookup x3 zeroNineteenMap
+       integer (hundreds * 100 + tens + rest)
       _ -> Nothing
   }
 
@@ -201,31 +228,23 @@ ruleLeadingDotSpelledOut = Rule
 ruleDecimals :: Rule
 ruleDecimals = Rule
   { name = "decimal number"
-  , pattern = [regex "(\\d*\\.\\d+)"]
+  , pattern =
+    [ regex "(\\d*\\.\\d+)"
+    ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> parseDecimal True match
-      _ -> Nothing
-  }
-
-ruleFractions :: Rule
-ruleFractions = Rule
-  { name = "fractional number"
-  , pattern = [regex "(\\d+)/(\\d+)"]
-  , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (numerator:denominator:_)):_) -> do
-        n <- parseDecimal False numerator
-        d <- parseDecimal False denominator
-        divide n d
       _ -> Nothing
   }
 
 ruleCommas :: Rule
 ruleCommas = Rule
   { name = "comma-separated numbers"
-  , pattern = [regex "(\\d+(,\\d\\d\\d)+(\\.\\d+)?)"]
+  , pattern =
+    [ regex "(\\d+(,\\d\\d\\d)+(\\.\\d+)?)"
+    ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
-        parseDouble (Text.replace (Text.singleton ',') Text.empty match) >>= double
+        parseDouble (Text.replace "," Text.empty match) >>= double
       _ -> Nothing
   }
 
@@ -236,24 +255,23 @@ ruleSuffixes = Rule
     [ dimension Numeral
     , regex "(k|m|g)(?=[\\W$€¢£]|$)"
     ]
-  , prod = \tokens ->
-      case tokens of
-        (Token Numeral nd : Token RegexMatch (GroupMatch (match : _)):_) -> do
-          x <- case Text.toLower match of
-            "k" -> Just 1e3
-            "m" -> Just 1e6
-            "g" -> Just 1e9
-            _ -> Nothing
-          double $ TNumeral.value nd * x
-        _ -> Nothing
+  , prod = \tokens -> case tokens of
+      (Token Numeral nd : Token RegexMatch (GroupMatch (match : _)):_) -> do
+        x <- case Text.toLower match of
+          "k" -> Just 1e3
+          "m" -> Just 1e6
+          "g" -> Just 1e9
+          _ -> Nothing
+        double $ TNumeral.value nd * x
+      _ -> Nothing
   }
 
 ruleNegative :: Rule
 ruleNegative = Rule
   { name = "negative numbers"
   , pattern =
-    [ regex "-|minus\\s?|negative\\s?"
-    , dimension Numeral
+    [ regex "(-|minus|negative)(?!\\s*-)"
+    , Predicate isPositive
     ]
   , prod = \tokens -> case tokens of
       (_:Token Numeral nd:_) -> double (TNumeral.value nd * (-1))
@@ -265,14 +283,13 @@ ruleSum = Rule
   { name = "intersect 2 numbers"
   , pattern =
     [ numberWith (fromMaybe 0 . TNumeral.grain) (>1)
-    , numberWith TNumeral.multipliable not
+    , Predicate $ and . sequence [not . isMultipliable, isPositive]
     ]
-  , prod = \tokens ->
-      case tokens of
-        (Token Numeral (NumeralData {TNumeral.value = val1, TNumeral.grain = Just g}):
-         Token Numeral (NumeralData {TNumeral.value = val2}):
-         _) | (10 ** fromIntegral g) > val2 -> double $ val1 + val2
-        _ -> Nothing
+  , prod = \tokens -> case tokens of
+      (Token Numeral NumeralData{TNumeral.value = val1, TNumeral.grain = Just g}:
+       Token Numeral NumeralData{TNumeral.value = val2}:
+       _) | (10 ** fromIntegral g) > val2 -> double $ val1 + val2
+      _ -> Nothing
   }
 
 ruleSumAnd :: Rule
@@ -281,15 +298,14 @@ ruleSumAnd = Rule
   , pattern =
     [ numberWith (fromMaybe 0 . TNumeral.grain) (>1)
     , regex "and"
-    , numberWith TNumeral.multipliable not
+    , Predicate $ and . sequence [not . isMultipliable, isPositive]
     ]
-  , prod = \tokens ->
-      case tokens of
-        (Token Numeral (NumeralData {TNumeral.value = val1, TNumeral.grain = Just g}):
-         _:
-         Token Numeral (NumeralData {TNumeral.value = val2}):
-         _) | (10 ** fromIntegral g) > val2 -> double $ val1 + val2
-        _ -> Nothing
+  , prod = \tokens -> case tokens of
+      (Token Numeral NumeralData{TNumeral.value = val1, TNumeral.grain = Just g}:
+       _:
+       Token Numeral NumeralData{TNumeral.value = val2}:
+       _) | (10 ** fromIntegral g) > val2 -> double $ val1 + val2
+      _ -> Nothing
   }
 
 ruleMultiply :: Rule
@@ -297,7 +313,7 @@ ruleMultiply = Rule
   { name = "compose by multiplication"
   , pattern =
     [ dimension Numeral
-    , numberWith TNumeral.multipliable id
+    , Predicate isMultipliable
     ]
   , prod = \tokens -> case tokens of
       (token1:token2:_) -> multiply token1 token2
@@ -306,16 +322,15 @@ ruleMultiply = Rule
 
 rules :: [Rule]
 rules =
-  [ ruleIntegers
-  , ruleToNineteen
+  [ ruleToNineteen
   , ruleTens
   , rulePowersOfTen
   , ruleCompositeTens
-  , ruleSkipHundreds
+  , ruleSkipHundreds1
+  , ruleSkipHundreds2
   , ruleDotSpelledOut
   , ruleLeadingDotSpelledOut
   , ruleDecimals
-  , ruleFractions
   , ruleCommas
   , ruleSuffixes
   , ruleNegative

@@ -15,37 +15,37 @@ import Prelude
 import Data.String
 
 import Duckling.Distance.Types
-import Duckling.Lang
+import Duckling.Locale
 import Duckling.Resolve
 import Duckling.Testing.Types
 
 corpus :: Corpus
-corpus = (testContext {lang = KO}, allExamples)
+corpus = (testContext {locale = makeLocale KO Nothing}, allExamples)
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (DistanceValue Kilometre 3)
+  [ examples (simple Kilometre 3)
              [ "3 킬로미터"
              , "3 킬로"
              , "3 키로"
              , "3 km"
              , "3km"
              ]
-  , examples (DistanceValue Kilometre 3.0)
+  , examples (simple Kilometre 3.0)
              [ "3.0 km"
              ]
-  , examples (DistanceValue Mile 8)
+  , examples (simple Mile 8)
              [ "8 miles"
              , "8 마일"
              , "8 마일즈"
              ]
-  , examples (DistanceValue Metre 9)
+  , examples (simple Metre 9)
              [ "9m"
              , "9미터"
              , "9메터"
              , "구메터"
              ]
-  , examples (DistanceValue Centimetre 2)
+  , examples (simple Centimetre 2)
              [ "2cm"
              , "2 센치"
              , "이센치"

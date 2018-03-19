@@ -13,24 +13,26 @@ module Duckling.Email.EN.Rules
   ( rules ) where
 
 import Data.String
-import qualified Data.Text as Text
 import Prelude
+import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
 import Duckling.Email.Types (EmailData (..))
-import qualified Duckling.Email.Types as TEmail
 import Duckling.Regex.Types
 import Duckling.Types
+import qualified Duckling.Email.Types as TEmail
 
 ruleEmailSpelledOut :: Rule
 ruleEmailSpelledOut = Rule
   { name = "email spelled out"
   , pattern =
-    [ regex "([\\w\\._+-]+) at ([\\w_-]+(\\.[\\w_-]+)+)"
+    [ regex "([\\w_+-]+(?:(?: dot |\\.)[\\w_+-]+){0,10})(?: at |@)([a-zA-Z]+(?:(?:\\.| dot )[\\w_-]+){1,10})"
     ]
   , prod = \xs -> case xs of
       (Token RegexMatch (GroupMatch (m1:m2:_)):_) ->
-        Just $ Token Email EmailData {TEmail.value = Text.concat [m1, "@", m2]}
+        Just $ Token Email EmailData
+          { TEmail.value = Text.concat [replaceDots m1, "@", replaceDots m2] }
+        where replaceDots = Text.replace " dot " "."
       _ -> Nothing
   }
 

@@ -6,7 +6,7 @@
 -- of patent rights can be found in the PATENTS file in the same directory.
 
 
-{-# LANGUAGE OverloadedStrings #-}
+
 
 module Duckling.Url.Helpers
   ( url

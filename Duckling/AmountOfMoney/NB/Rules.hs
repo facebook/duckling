@@ -10,32 +10,34 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.AmountOfMoney.NB.Rules
-  ( rules ) where
+  ( rules
+  ) where
 
 import Data.Maybe
-import Prelude
 import Data.String
+import Prelude
 
 import Duckling.AmountOfMoney.Helpers
 import Duckling.AmountOfMoney.Types (Currency (..), AmountOfMoneyData (..))
-import qualified Duckling.AmountOfMoney.Types as TAmountOfMoney
 import Duckling.Dimensions.Types
+import Duckling.Numeral.Helpers (isNatural)
 import Duckling.Numeral.Types (NumeralData (..))
-import qualified Duckling.Numeral.Types as TNumeral
 import Duckling.Types
+import qualified Duckling.AmountOfMoney.Types as TAmountOfMoney
+import qualified Duckling.Numeral.Types as TNumeral
 
 ruleIntersectAndNumeral :: Rule
 ruleIntersectAndNumeral = Rule
   { name = "intersect (and number)"
   , pattern =
-    [ financeWith TAmountOfMoney.value isJust
+    [ Predicate isWithoutCents
     , regex "og"
-    , dimension Numeral
+    , Predicate isNatural
     ]
   , prod = \tokens -> case tokens of
       (Token AmountOfMoney fd:
        _:
-       Token Numeral (NumeralData {TNumeral.value = c}):
+       Token Numeral NumeralData{TNumeral.value = c}:
        _) -> Just . Token AmountOfMoney $ withCents c fd
       _ -> Nothing
   }
@@ -45,7 +47,7 @@ ruleAboutAmountofmoney = Rule
   { name = "about <amount-of-money>"
   , pattern =
     [ regex "omtrent|cirka|rundt|ca"
-    , financeWith TAmountOfMoney.value isJust
+    , Predicate isMoneyWithValue
     ]
   , prod = \tokens -> case tokens of
       (_:token:_) -> Just token
@@ -65,12 +67,12 @@ ruleIntersectXCents :: Rule
 ruleIntersectXCents = Rule
   { name = "intersect (X cents)"
   , pattern =
-    [ financeWith TAmountOfMoney.value isJust
-    , financeWith TAmountOfMoney.currency (== Cent)
+    [ Predicate isWithoutCents
+    , Predicate isCents
     ]
   , prod = \tokens -> case tokens of
       (Token AmountOfMoney fd:
-       Token AmountOfMoney (AmountOfMoneyData {TAmountOfMoney.value = Just c}):
+       Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just c}:
        _) -> Just . Token AmountOfMoney $ withCents c fd
       _ -> Nothing
   }
@@ -79,14 +81,14 @@ ruleIntersectXCentsWithAnd :: Rule
 ruleIntersectXCentsWithAnd = Rule
   { name = "intersect (X cents) with and"
   , pattern =
-    [ financeWith TAmountOfMoney.value isJust
+    [ Predicate isWithoutCents
     , regex "og"
-    , financeWith TAmountOfMoney.currency (== Cent)
+    , Predicate isCents
     ]
   , prod = \tokens -> case tokens of
       (Token AmountOfMoney fd:
        _:
-       Token AmountOfMoney (AmountOfMoneyData {TAmountOfMoney.value = Just c}):
+       Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just c}:
        _) -> Just . Token AmountOfMoney $ withCents c fd
       _ -> Nothing
   }
@@ -113,14 +115,14 @@ ruleIntersectAndXCents :: Rule
 ruleIntersectAndXCents = Rule
   { name = "intersect (and X cents)"
   , pattern =
-    [ financeWith TAmountOfMoney.value isJust
+    [ Predicate isWithoutCents
     , regex "og"
-    , financeWith TAmountOfMoney.currency (== Cent)
+    , Predicate isCents
     ]
   , prod = \tokens -> case tokens of
       (Token AmountOfMoney fd:
        _:
-       Token AmountOfMoney (AmountOfMoneyData {TAmountOfMoney.value = Just c}):
+       Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just c}:
        _) -> Just . Token AmountOfMoney $ withCents c fd
       _ -> Nothing
   }
@@ -129,12 +131,12 @@ ruleIntersect :: Rule
 ruleIntersect = Rule
   { name = "intersect"
   , pattern =
-    [ financeWith TAmountOfMoney.value isJust
-    , dimension Numeral
+    [ Predicate isWithoutCents
+    , Predicate isNatural
     ]
   , prod = \tokens -> case tokens of
       (Token AmountOfMoney fd:
-       Token Numeral (NumeralData {TNumeral.value = c}):
+       Token Numeral NumeralData{TNumeral.value = c}:
        _) -> Just . Token AmountOfMoney $ withCents c fd
       _ -> Nothing
   }

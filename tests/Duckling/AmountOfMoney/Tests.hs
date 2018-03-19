@@ -12,6 +12,7 @@ import Data.String
 import Prelude
 import Test.Tasty
 
+import qualified Duckling.AmountOfMoney.AR.Tests as AR
 import qualified Duckling.AmountOfMoney.EN.Tests as EN
 import qualified Duckling.AmountOfMoney.BG.Tests as BG
 import qualified Duckling.AmountOfMoney.ES.Tests as ES
@@ -23,12 +24,14 @@ import qualified Duckling.AmountOfMoney.KO.Tests as KO
 import qualified Duckling.AmountOfMoney.NB.Tests as NB
 import qualified Duckling.AmountOfMoney.PT.Tests as PT
 import qualified Duckling.AmountOfMoney.RO.Tests as RO
+import qualified Duckling.AmountOfMoney.RU.Tests as RU
 import qualified Duckling.AmountOfMoney.SV.Tests as SV
 import qualified Duckling.AmountOfMoney.VI.Tests as VI
 
 tests :: TestTree
 tests = testGroup "AmountOfMoney Tests"
-  [ EN.tests
+  [ AR.tests
+  , EN.tests
   , BG.tests
   , ES.tests
   , FR.tests
@@ -39,6 +42,7 @@ tests = testGroup "AmountOfMoney Tests"
   , NB.tests
   , PT.tests
   , RO.tests
+  , RU.tests
   , SV.tests
   , VI.tests
   ]

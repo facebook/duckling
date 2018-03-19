@@ -62,8 +62,8 @@ ruleCeTime = Rule
       _ -> Nothing
   }
 
-daysOfWeek :: [(Text.Text, String)]
-daysOfWeek =
+ruleDaysOfWeek :: [Rule]
+ruleDaysOfWeek = mkRuleDaysOfWeek
   [ ( "Lunes"     , "lunes|lun?\\.?"                        )
   , ( "Martes"    , "martes|mar?\\.?"                       )
   , ( "Miercoles" , "mi(e|é)\\.?(rcoles)?|mx|mier?\\." )
@@ -73,17 +73,8 @@ daysOfWeek =
   , ( "Domingo"   , "domingo|dom\\.?"                       )
   ]
 
-ruleDaysOfWeek :: [Rule]
-ruleDaysOfWeek = zipWith go daysOfWeek [1..7]
-  where
-    go (name, regexPattern) i = Rule
-      { name = name
-      , pattern = [regex regexPattern]
-      , prod = \_ -> tt $ dayOfWeek i
-      }
-
-months :: [(Text.Text, String)]
-months =
+ruleMonths :: [Rule]
+ruleMonths = mkRuleMonths
   [ ( "Enero"     , "enero|ene\\.?")
   , ( "Febrero"   , "febrero|feb\\.?")
   , ( "Marzo"     , "marzo|mar\\.?")
@@ -97,15 +88,6 @@ months =
   , ( "Noviembre" , "noviembre|nov\\.?")
   , ( "Diciembre" , "diciembre|dic\\.?")
   ]
-
-ruleMonths :: [Rule]
-ruleMonths = zipWith go months [1..12]
-  where
-    go (name, regexPattern) i = Rule
-      { name = name
-      , pattern = [regex regexPattern]
-      , prod = \_ -> tt $ month i
-      }
 
 ruleThisDayofweek :: Rule
 ruleThisDayofweek = Rule
@@ -863,7 +845,7 @@ ruleNthTimeDeTime2 = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:
-       Token Ordinal (OrdinalData {TOrdinal.value = v}):
+       Token Ordinal OrdinalData{TOrdinal.value = v}:
        Token Time td1:
        _:
        Token Time td2:
@@ -904,7 +886,7 @@ ruleOrdinalQuarterYear = Rule
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
-      (Token Ordinal (OrdinalData {TOrdinal.value = v}):_:Token Time td:_) ->
+      (Token Ordinal OrdinalData{TOrdinal.value = v}:_:Token Time td:_) ->
         tt $ cycleNthAfter False TG.Quarter (v - 1) td
       _ -> Nothing
   }
@@ -1083,7 +1065,7 @@ ruleTimeofdayAmpm = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:Token RegexMatch (GroupMatch (ap:_)):_) ->
-        tt . timeOfDayAMPM td $ Text.toLower ap == "a"
+        tt $ timeOfDayAMPM (Text.toLower ap == "a") td
       _ -> Nothing
   }
 
@@ -1242,7 +1224,7 @@ ruleOrdinalQuarter = Rule
     , Predicate $ isGrain TG.Quarter
     ]
   , prod = \tokens -> case tokens of
-      (Token Ordinal (OrdinalData {TOrdinal.value = v}):_) ->
+      (Token Ordinal OrdinalData{TOrdinal.value = v}:_) ->
         tt . cycleNthAfter False TG.Quarter (v - 1)
           $ cycleNth TG.Year 0
       _ -> Nothing
@@ -1323,7 +1305,7 @@ ruleNthTimeDeTime = Rule
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
-      (Token Ordinal (OrdinalData {TOrdinal.value = v}):
+      (Token Ordinal OrdinalData{TOrdinal.value = v}:
        Token Time td1:
        _:
        Token Time td2:
@@ -1341,7 +1323,7 @@ ruleTimezone = Rule
   , prod = \tokens -> case tokens of
       (Token Time td:
        Token RegexMatch (GroupMatch (tz:_)):
-       _) -> Token Time <$> inTimezone tz td
+       _) -> Token Time <$> inTimezone (Text.toUpper tz) td
       _ -> Nothing
   }
 

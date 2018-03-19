@@ -12,15 +12,15 @@
 module Duckling.Time.SV.Tests
   ( tests ) where
 
-import qualified Data.HashSet as HashSet
-import Prelude
 import Data.String
+import Prelude
 import Test.Tasty
 import Test.Tasty.HUnit
+import qualified Data.HashSet as HashSet
 
 import Duckling.Api
 import Duckling.Dimensions.Types
-import Duckling.Lang
+import Duckling.Locale
 import Duckling.Resolve
 import Duckling.Testing.Asserts
 import Duckling.Testing.Types hiding (examples)
@@ -43,7 +43,7 @@ ambiguousTests = testCase "Ambiguous Tests" $ mapM_ check xs
     xs = examples (datetimeInterval ((2013, 2, 12, 4, 0, 0), (2013, 2, 12, 12, 0, 0)) Hour)
                   [ "i morgonen"
                   ]
-    ctx = testContext {lang = SV}
+    ctx = testContext {locale = makeLocale SV Nothing}
     dims = HashSet.singleton $ This Time
     check :: Example -> IO ()
     check (input, predicate) = case analyze input ctx dims of

@@ -9,18 +9,19 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.AmountOfMoney.FR.Corpus
-  ( corpus ) where
+  ( corpus
+  ) where
 
-import Prelude
 import Data.String
+import Prelude
 
 import Duckling.AmountOfMoney.Types
-import Duckling.Lang
+import Duckling.Locale
 import Duckling.Resolve
 import Duckling.Testing.Types
 
 corpus :: Corpus
-corpus = (testContext {lang = FR}, allExamples)
+corpus = (testContext {locale = makeLocale FR Nothing}, allExamples)
 
 allExamples :: [Example]
 allExamples = concat
@@ -33,6 +34,8 @@ allExamples = concat
              [ "$10.000"
              , "10K$"
              , "$10k"
+             , "10 000 dollars"
+             , "10 000,00 $"
              ]
   , examples (simple USD 1.23)
              [ "USD1,23"
@@ -61,5 +64,30 @@ allExamples = concat
   , examples (simple GBP 3.01)
              [ "GBP3,01"
              , "GBP 3,01"
+             ]
+  , examples (simple ILS 10)
+             [ "dix shekels"
+             ]
+  , examples (simple Rial 10)
+             [ "dix rials"
+             ]
+  , examples (simple Riyal 10)
+             [ "dix riyals"
+             ]
+  , examples (between EUR (10, 20))
+             [ "entre 10 et 20 euro"
+             , "entre 10 euro et 20 euro"
+             , "10 - 20 euro"
+             , "10 euro - 20 euro"
+             ]
+  , examples (above EUR 10)
+             [ "au moins 10 euro"
+             , "plus que 10 euros"
+             , "plus de 10 euros"
+             ]
+  , examples (under Dollar 10)
+             [ "en-dessous de 10 dollars"
+             , "moins de 10 dollars"
+             , "pas plus de 10 dollars"
              ]
   ]

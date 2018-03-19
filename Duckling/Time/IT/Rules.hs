@@ -1110,28 +1110,19 @@ ruleNextCycle = Rule
       _ -> Nothing
   }
 
-daysOfWeek :: [(Text, String)]
-daysOfWeek =
+ruleDaysOfWeek :: [Rule]
+ruleDaysOfWeek = mkRuleDaysOfWeek
   [ ( "Lunedi"   , "luned(i|ì)|lun?\\.?"   )
   , ( "Martedi"  , "marted(i|ì)|mar\\.?"   )
   , ( "Mercoledi", "mercoled(i|ì)|mer\\.?" )
   , ( "Giovedi"  , "gioved(i|ì)|gio\\.?"   )
   , ( "Venerdi"  , "venerd(i|ì)|ven\\.?"   )
-  , ( "Sabato"   , "sabato|sab\\.?"             )
-  , ( "Domenica" , "domenica|dom\\.?"           )
+  , ( "Sabato"   , "sabato|sab\\.?"        )
+  , ( "Domenica" , "domenica|dom\\.?"      )
   ]
 
-ruleDaysOfWeek :: [Rule]
-ruleDaysOfWeek = zipWith go daysOfWeek [1..7]
-  where
-    go (name, regexPattern) i = Rule
-      { name = name
-      , pattern = [regex regexPattern]
-      , prod = \_ -> tt $ dayOfWeek i
-      }
-
-months :: [(Text, String)]
-months =
+ruleMonths :: [Rule]
+ruleMonths = mkRuleMonths
   [ ( "Gennaio"  , "gennaio|genn?\\.?"   )
   , ( "Febbraio" , "febbraio|febb?\\.?"  )
   , ( "Marzo"    , "marzo|mar\\.?"       )
@@ -1145,15 +1136,6 @@ months =
   , ( "Novembre" , "novembre|nov\\.?"    )
   , ( "Dicembre" , "dicembre|dic\\.?"    )
   ]
-
-ruleMonths :: [Rule]
-ruleMonths = zipWith go months [1..12]
-  where
-    go (name, regexPattern) i = Rule
-      { name = name
-      , pattern = [regex regexPattern]
-      , prod = \_ -> tt $ month i
-      }
 
 ruleTheCycleOfTime :: Rule
 ruleTheCycleOfTime = Rule
@@ -1283,7 +1265,7 @@ ruleNthTimeAfterTime = Rule
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
-      (Token Ordinal (OrdinalData {TOrdinal.value = v}):
+      (Token Ordinal OrdinalData{TOrdinal.value = v}:
        Token Time td1:
        _:
        Token Time td2:
@@ -1998,7 +1980,7 @@ ruleIntegerDelPartOfDay = Rule
     , regex "d(i|el(la)?) (pomeriggio|(sta)?(sera|notte))"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = v}):_) ->
+      (Token Numeral NumeralData{TNumeral.value = v}:_) ->
         tt $ hour False (12 + floor v)
       _ -> Nothing
   }
@@ -2248,7 +2230,7 @@ ruleTimezone = Rule
   , prod = \tokens -> case tokens of
       (Token Time td:
        Token RegexMatch (GroupMatch (tz:_)):
-       _) -> Token Time <$> inTimezone tz td
+       _) -> Token Time <$> inTimezone (Text.toUpper tz) td
       _ -> Nothing
   }
 

@@ -19,16 +19,16 @@ module Duckling.Types where
 
 import Control.DeepSeq
 import Data.Aeson
-import qualified Data.ByteString.Lazy as LB
 import Data.GADT.Compare
 import Data.Hashable
 import Data.Maybe
 import Data.String
 import Data.Text (Text)
-import qualified Data.Text.Encoding as Text
 import Data.Typeable ((:~:)(Refl), Typeable)
 import GHC.Generics
 import Prelude
+import qualified Data.ByteString.Lazy as LB
+import qualified Data.Text.Encoding as Text
 import qualified Text.Regex.Base as R
 import qualified Text.Regex.PCRE as PCRE
 
@@ -79,8 +79,8 @@ data Candidate = Candidate ResolvedToken Double Bool
   deriving (Eq, Show)
 
 instance Ord Candidate where
-  compare (Candidate (Resolved{range = Range s1 e1, node = Node{token = Token d1 _}}) score1 t1)
-          (Candidate (Resolved{range = Range s2 e2, node = Node{token = tok2}}) score2 t2)
+  compare (Candidate Resolved{range = Range s1 e1, node = Node{token = Token d1 _}} score1 t1)
+          (Candidate Resolved{range = Range s2 e2, node = Node{token = tok2}} score2 t2)
     | isDimension d1 tok2 = case starts of
         EQ -> case ends of
           EQ -> compare score1 score2
@@ -132,10 +132,17 @@ data Entity = Entity
   , value :: Value
   , start :: Int
   , end   :: Int
+  , enode :: Node
   } deriving (Eq, Generic, Show, NFData)
 
 instance ToJSON Entity where
-  toEncoding = genericToEncoding defaultOptions
+  toJSON ent = object
+    [ "dim"   .= dim ent
+    , "body"  .= body ent
+    , "value" .= value ent
+    , "start" .= start ent
+    , "end"   .= end ent
+    ]
 
 toJText :: ToJSON x => x -> Text
 toJText = Text.decodeUtf8 . LB.toStrict . encode

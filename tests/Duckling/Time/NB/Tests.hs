@@ -9,8 +9,8 @@
 module Duckling.Time.NB.Tests
   ( tests ) where
 
-import Prelude
 import Data.String
+import Prelude
 import Test.Tasty
 
 import Duckling.Dimensions.Types

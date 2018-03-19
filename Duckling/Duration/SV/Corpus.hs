@@ -16,13 +16,13 @@ import Prelude
 import Data.String
 
 import Duckling.Duration.Types
-import Duckling.Lang
+import Duckling.Locale
 import Duckling.Resolve
 import Duckling.Testing.Types
 import Duckling.TimeGrain.Types (Grain(..))
 
 corpus :: Corpus
-corpus = (testContext {lang = SV}, allExamples)
+corpus = (testContext {locale = makeLocale SV Nothing}, allExamples)
 
 allExamples :: [Example]
 allExamples = concat
@@ -44,5 +44,12 @@ allExamples = concat
   , examples (DurationData 5 Year)
              [ "5 år"
              , "fem år"
+             , "omkring fem år"
+             , "ungefär fem år"
+             , "runt fem år"
+             , "cirka fem år"
+             , "ca fem år"
+             , "ca. fem år"
+             , "c:a fem år"
              ]
   ]

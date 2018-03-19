@@ -47,7 +47,7 @@ ruleIntegerAndAnHalfHours = Rule
     , regex "og (en )?halv timer?"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = v}):_) ->
+      (Token Numeral NumeralData{TNumeral.value = v}:_) ->
         Just . Token Duration . duration TG.Minute $ 30 + 60 * floor v
       _ -> Nothing
   }
@@ -73,7 +73,7 @@ ruleIntegerMoreUnitofduration = Rule
     , regex "mere|mindre"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = v}):
+      (Token Numeral NumeralData{TNumeral.value = v}:
        Token TimeGrain grain:
        _) -> Just . Token Duration . duration grain $ floor v
       _ -> Nothing

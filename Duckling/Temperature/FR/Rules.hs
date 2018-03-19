@@ -68,7 +68,7 @@ ruleLatentTempEnDessousDeZero = Rule
     , regex "en dessous de (0|z(é|e)ro)"
     ]
   , prod = \tokens -> case tokens of
-      (Token Temperature td@(TemperatureData {TTemperature.value = v}):_) ->
+      (Token Temperature td@TemperatureData{TTemperature.value = v}:_) ->
         case TTemperature.unit td of
           Nothing -> Just . Token Temperature . withUnit TTemperature.Degree $
             td {TTemperature.value = - v}

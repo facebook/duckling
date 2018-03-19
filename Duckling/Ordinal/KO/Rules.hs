@@ -29,7 +29,7 @@ ruleOrdinals = Rule
     , regex "번째|째(번)?"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral (NumeralData {TNumeral.value = v}):_) ->
+      (Token Numeral NumeralData{TNumeral.value = v}:_) ->
         Just . ordinal $ floor v
       _ -> Nothing
   }

@@ -24,9 +24,11 @@ import Duckling.Testing.Asserts
 import Duckling.Testing.Types
 import Duckling.Time.Types
 import Duckling.TimeGrain.Types
+import qualified Duckling.Time.AR.Tests as AR
 import qualified Duckling.Time.DA.Tests as DA
 import qualified Duckling.Time.DE.Tests as DE
 import qualified Duckling.Time.EN.Tests as EN
+import qualified Duckling.Time.EL.Tests as EL
 import qualified Duckling.Time.ES.Tests as ES
 import qualified Duckling.Time.FR.Tests as FR
 import qualified Duckling.Time.GA.Tests as GA
@@ -36,6 +38,7 @@ import qualified Duckling.Time.HU.Tests as HU
 import qualified Duckling.Time.IT.Tests as IT
 import qualified Duckling.Time.KO.Tests as KO
 import qualified Duckling.Time.NB.Tests as NB
+import qualified Duckling.Time.NL.Tests as NL
 import qualified Duckling.Time.PL.Tests as PL
 import qualified Duckling.Time.PT.Tests as PT
 import qualified Duckling.Time.RO.Tests as RO
@@ -45,8 +48,10 @@ import qualified Duckling.Time.ZH.Tests as ZH
 
 tests :: TestTree
 tests = testGroup "Time Tests"
-  [ DA.tests
+  [ AR.tests
+  , DA.tests
   , DE.tests
+  , EL.tests
   , EN.tests
   , ES.tests
   , FR.tests
@@ -57,6 +62,7 @@ tests = testGroup "Time Tests"
   , IT.tests
   , KO.tests
   , NB.tests
+  , NL.tests
   , PL.tests
   , PT.tests
   , RO.tests

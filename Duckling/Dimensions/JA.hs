@@ -18,5 +18,4 @@ allDimensions =
   , This Numeral
   , This Ordinal
   , This Temperature
-  , This Time
   ]

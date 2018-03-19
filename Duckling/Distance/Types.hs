@@ -34,6 +34,7 @@ data Unit
   | M -- ambiguous between Mile and Metre
   | Metre
   | Mile
+  | Mil -- mil = 10,000 meters in swedish
   | Millimetre
   | Yard
   deriving (Eq, Generic, Hashable, Ord, Show, NFData)

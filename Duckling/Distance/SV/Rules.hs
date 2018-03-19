@@ -25,11 +25,11 @@ ruleLatentDistKm = Rule
   { name = "<latent dist> km"
   , pattern =
     [ dimension Distance
-    , regex "k(ilo)?m?((e|é|è)ter)?s?"
+    , regex "k(ilo)?m?(eter)?"
     ]
   , prod = \tokens -> case tokens of
       (Token Distance dd:_) ->
-        Just . Token Distance $ withUnit TDistance.Kilometer dd
+        Just . Token Distance $ withUnit TDistance.Kilometre dd
       _ -> Nothing
   }
 
@@ -38,11 +38,11 @@ ruleDistMeters = Rule
   { name = "<dist> meter"
   , pattern =
     [ dimension Distance
-    , regex "m((e|é|è)ters?)?"
+    , regex "m(eter)?"
     ]
   , prod = \tokens -> case tokens of
       (Token Distance dd:_) ->
-        Just . Token Distance $ withUnit TDistance.Meter dd
+        Just . Token Distance $ withUnit TDistance.Metre dd
       _ -> Nothing
   }
 
@@ -51,24 +51,24 @@ ruleDistCentimeters = Rule
   { name = "<dist> centimeters"
   , pattern =
     [ dimension Distance
-    , regex "cm|centim(e|é|è)ters?"
+    , regex "cm|centimeter"
     ]
   , prod = \tokens -> case tokens of
       (Token Distance dd:_) ->
-        Just . Token Distance $ withUnit TDistance.Centimeter dd
+        Just . Token Distance $ withUnit TDistance.Centimetre dd
       _ -> Nothing
   }
 
-ruleDistMiles :: Rule
-ruleDistMiles = Rule
-  { name = "<dist> miles"
+ruleDistMils :: Rule
+ruleDistMils = Rule
+  { name = "<dist> mils"
   , pattern =
     [ dimension Distance
-    , regex "mile?s?"
+    , regex "mils?"
     ]
   , prod = \tokens -> case tokens of
       (Token Distance dd:_) ->
-        Just . Token Distance $ withUnit TDistance.Mile dd
+        Just . Token Distance $ withUnit TDistance.Mil dd
       _ -> Nothing
   }
 
@@ -76,6 +76,6 @@ rules :: [Rule]
 rules =
   [ ruleDistCentimeters
   , ruleDistMeters
-  , ruleDistMiles
+  , ruleDistMils
   , ruleLatentDistKm
   ]

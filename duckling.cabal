@@ -222,6 +222,8 @@ library
                      , Duckling.Distance.RU.Rules
                      , Duckling.Distance.TR.Corpus
                      , Duckling.Distance.TR.Rules
+                     , Duckling.Distance.SV.Corpus
+                     , Duckling.Distance.SV.Rules
                      , Duckling.Distance.Helpers
                      , Duckling.Distance.Rules
                      , Duckling.Distance.Types
@@ -689,6 +691,7 @@ test-suite duckling-test
                      , Duckling.Distance.RO.Tests
                      , Duckling.Distance.RU.Tests
                      , Duckling.Distance.TR.Tests
+                     , Duckling.Distance.SV.Tests
                      , Duckling.Distance.Tests
 
                      -- Duration

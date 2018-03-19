@@ -13,7 +13,7 @@
 module Duckling.Debug
   ( allParses
   , debug
-  , debugContext
+  , debugCustom
   , fullParses
   , ptree
   ) where
@@ -38,7 +38,7 @@ import Duckling.Types
 -- API
 
 debug :: Locale -> Text -> [Some Dimension] -> IO [Entity]
-debug locale = debugContext testContext {locale = locale}
+debug locale = debugCustom testContext {locale = locale} testOptions
 
 allParses :: Locale -> Text -> [Some Dimension] -> IO [Entity]
 allParses l sentence targets = debugTokens sentence $ parses l sentence targets
@@ -62,12 +62,12 @@ parses l sentence targets = flip filter tokens $
       [] -> True
       _ -> elem (This d) targets
   where
-    tokens = parseAndResolve rules sentence testContext {locale = l}
+    tokens = parseAndResolve rules sentence testContext {locale = l} testOptions
     rules = rulesFor l $ HashSet.fromList targets
 
-debugContext :: Context -> Text -> [Some Dimension] -> IO [Entity]
-debugContext context sentence targets =
-  debugTokens sentence . analyze sentence context $ HashSet.fromList targets
+debugCustom :: Context -> Options -> Text -> [Some Dimension] -> IO [Entity]
+debugCustom context options sentence targets = debugTokens sentence .
+  analyze sentence context options $ HashSet.fromList targets
 
 debugTokens :: Text -> [ResolvedToken] -> IO [Entity]
 debugTokens sentence tokens = do

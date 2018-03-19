@@ -37,8 +37,8 @@ data PhoneNumberData = PhoneNumberData
 
 instance Resolve PhoneNumberData where
   type ResolvedValue PhoneNumberData = PhoneNumberValue
-  resolve _ PhoneNumberData {prefix, number, extension} = Just PhoneNumberValue
-    {value = Text.concat [p, number, e]}
+  resolve _ _ PhoneNumberData {prefix, number, extension} = Just
+    (PhoneNumberValue {value = Text.concat [p, number, e]}, False)
     where
       p = case prefix of
         Just p -> "(+" <> TS.showt p <> ") "

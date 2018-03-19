@@ -40,9 +40,9 @@ tests = testGroup "API Tests"
 
 parseTest :: TestTree
 parseTest = testCase "Parse Test" $
-  case parse sentence testContext [This Numeral] of
+  case parse sentence testContext testOptions [This Numeral] of
     [] -> assertFailure "empty result"
-    (Entity dim body value start end _:_) -> do
+    (Entity dim body value start end _ _:_) -> do
       assertEqual "dim" "number" dim
       assertEqual "body" "42" body
       assertEqual "value" val (toJText value)
@@ -84,7 +84,7 @@ rankFilterTest = testCase "Rank Filter Tests" $ do
   where
     check :: (Text, [Some Dimension], [Some Dimension]) -> IO ()
     check (sentence, targets, expected) =
-      let go = analyze sentence testContext $ HashSet.fromList targets
+      let go = analyze sentence testContext testOptions $ HashSet.fromList targets
           actual = flip map go $
                      \(Resolved{node=Node{token=Token d _}}) -> This d
       in assertEqual ("wrong winners for " ++ show sentence) expected actual
@@ -98,12 +98,12 @@ rankOrderTest = testCase "Rank Order Tests" $ do
     ]
   where
     check (s, targets) =
-      let tokens = analyze s testContext $ HashSet.fromList targets
+      let tokens = analyze s testContext testOptions $ HashSet.fromList targets
         in assertEqual "wrong ordering" (sortOn range tokens) tokens
 
 rangeTest :: TestTree
 rangeTest = testCase "Range Tests" $ do
-  mapM_ (analyzedFirstTest testContext) xs
+  mapM_ (analyzedFirstTest testContext testOptions) xs
   where
     xs = map (\(input, targets, range) -> (input, targets, f range))
              [ ( "order status 3233763377", [This PhoneNumber], Range 13 23 )

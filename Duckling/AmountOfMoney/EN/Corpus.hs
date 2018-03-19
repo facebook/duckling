@@ -20,14 +20,14 @@ import Duckling.AmountOfMoney.Types
 import Duckling.Testing.Types
 
 negativeCorpus :: NegativeCorpus
-negativeCorpus = (testContext, examples)
+negativeCorpus = (testContext, testOptions, examples)
   where
     examples =
       [ "exactly dollars"
       ]
 
 corpus :: Corpus
-corpus = (testContext, allExamples)
+corpus = (testContext, testOptions, allExamples)
 
 allExamples :: [Example]
 allExamples = concat

@@ -20,7 +20,7 @@ import Duckling.Testing.Types
 import Duckling.TimeGrain.Types (Grain(..))
 
 corpus :: Corpus
-corpus = (testContext {locale = makeLocale HU Nothing}, allExamples)
+corpus = (testContext {locale = makeLocale HU Nothing}, testOptions, allExamples)
 
 
 allExamples :: [Example]

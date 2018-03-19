@@ -21,6 +21,7 @@ module Duckling.Testing.Types
   , parserCheck
   , refTime
   , testContext
+  , testOptions
   , withLocale
   , zTime
   ) where
@@ -37,8 +38,8 @@ import Duckling.Types
 
 type TestPredicate = Context -> ResolvedToken -> Bool
 type Example = (Text, TestPredicate)
-type Corpus = (Context, [Example])
-type NegativeCorpus = (Context, [Text])
+type Corpus = (Context, Options, [Example])
+type NegativeCorpus = (Context, Options, [Text])
 
 examplesCustom :: TestPredicate -> [Text] -> [Example]
 examplesCustom check = map (, check)
@@ -74,6 +75,12 @@ testContext = Context
   , referenceTime = refTime (2013, 2, 12, 4, 30, 0) (-2)
   }
 
-withLocale :: (Context, [a]) -> Locale -> [a] -> (Context, [a])
-withLocale (langContext, langXs) locale localeXs
-  = (langContext {locale = locale}, langXs ++ localeXs)
+testOptions :: Options
+testOptions = Options
+  { withLatent = False
+  }
+
+withLocale :: (Context, Options, [a]) -> Locale -> [a]
+  -> (Context, Options, [a])
+withLocale (langContext, options, langXs) locale localeXs
+  = (langContext {locale = locale}, options, langXs ++ localeXs)

@@ -46,6 +46,6 @@ ambiguousTests = testCase "Ambiguous Tests" $ mapM_ check xs
     ctx = testContext {locale = makeLocale SV Nothing}
     dims = HashSet.singleton $ This Time
     check :: Example -> IO ()
-    check (input, predicate) = case analyze input ctx dims of
+    check (input, predicate) = case analyze input ctx testOptions dims of
       [] -> assertFailure $ "empty result on " ++ show input
       xs -> mapM_ (assertBool ("predicate on " ++ show input) . predicate ctx) xs

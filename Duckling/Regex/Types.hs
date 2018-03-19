@@ -27,4 +27,4 @@ data GroupMatch = GroupMatch [Text]
 
 instance Resolve GroupMatch where
   type ResolvedValue GroupMatch = ()
-  resolve _ _ = Nothing
+  resolve _ _ _ = Nothing

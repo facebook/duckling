@@ -20,7 +20,7 @@ import Prelude
 import Duckling.Dimensions.Types
 import qualified Duckling.Temperature.Types as TTemperature
 import Duckling.Temperature.Types (TemperatureData(..))
-import Duckling.Types
+import Duckling.Types hiding (isLatent)
 
 -- -----------------------------------------------------------------
 -- Patterns

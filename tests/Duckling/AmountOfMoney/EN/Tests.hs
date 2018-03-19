@@ -18,7 +18,7 @@ import Test.Tasty.HUnit
 import Duckling.AmountOfMoney.EN.Corpus
 import Duckling.Dimensions.Types
 import Duckling.Testing.Asserts
-import Duckling.Testing.Types (testContext)
+import Duckling.Testing.Types (testContext, testOptions)
 import Duckling.Types (Range(..))
 
 tests :: TestTree
@@ -31,7 +31,7 @@ tests = testGroup "EN Tests"
 
 intersectTests :: TestTree
 intersectTests = testCase "Intersect Test" $
-  mapM_ (analyzedNTest testContext . withTargets [This AmountOfMoney]) xs
+  mapM_ (analyzedNTest testContext testOptions . withTargets [This AmountOfMoney]) xs
   where
     xs = [ ("7c7", 2)
          , ("7c7c", 3)
@@ -45,7 +45,7 @@ intersectTests = testCase "Intersect Test" $
 
 rangeTests :: TestTree
 rangeTests = testCase "Range Test" $
-  mapM_ (analyzedRangeTest testContext . withTargets [This AmountOfMoney]) xs
+  mapM_ (analyzedRangeTest testContext testOptions . withTargets [This AmountOfMoney]) xs
   where
     xs = [ ("between 3 and 1 dollars", Range 14 23)
          , ("between 1 and between 2 and 3 dollars", Range 14 37)

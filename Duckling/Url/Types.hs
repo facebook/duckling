@@ -34,7 +34,7 @@ data UrlData = UrlData
 
 instance Resolve UrlData where
   type ResolvedValue UrlData = UrlData
-  resolve _ x = Just x
+  resolve _ _ x = Just (x, False)
 
 instance ToJSON UrlData where
   toJSON (UrlData value domain) = object

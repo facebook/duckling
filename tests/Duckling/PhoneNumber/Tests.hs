@@ -34,7 +34,8 @@ tests = testGroup "PhoneNumber Tests"
 
 surroundTests :: TestTree
 surroundTests = testCase "Surround Tests" $
-  mapM_ (analyzedFirstTest testContext . withTargets [This PhoneNumber]) xs
+  mapM_ (analyzedFirstTest testContext testOptions .
+    withTargets [This PhoneNumber]) xs
   where
     xs = examples (PhoneNumberValue "06354640807")
                   [ "hey 06354640807"

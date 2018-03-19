@@ -55,33 +55,33 @@ data QuantityData = QuantityData
 instance Resolve QuantityData where
   type ResolvedValue QuantityData = QuantityValue
 
-  resolve _ QuantityData {value = Just value
+  resolve _ _ QuantityData {value = Just value
                          , unit = Just unit
                          , aproduct = aproduct}
-   = Just $ simple unit value aproduct
+   = Just (simple unit value aproduct, False)
 
-  resolve _ QuantityData {value = Nothing
+  resolve _ _ QuantityData {value = Nothing
                          , unit = Just unit
                          , aproduct = aproduct
                          , minValue = Just from
                          , maxValue = Just to}
-   = Just $ between unit (from, to) aproduct
+   = Just (between unit (from, to) aproduct, False)
 
-  resolve _ QuantityData {value = Nothing
+  resolve _ _ QuantityData {value = Nothing
                          , unit = Just unit
                          , aproduct = aproduct
                          , minValue = Just from
                          , maxValue = Nothing}
-   = Just $ above unit from aproduct
+   = Just (above unit from aproduct, False)
 
-  resolve _ QuantityData {value = Nothing
+  resolve _ _ QuantityData {value = Nothing
                          , unit = Just unit
                          , aproduct = aproduct
                          , minValue = Nothing
                          , maxValue = Just to}
-   = Just $ under unit to aproduct
+   = Just (under unit to aproduct, False)
 
-  resolve _ _ = Nothing
+  resolve _ _ _ = Nothing
 
 data IntervalDirection = Above | Under
   deriving (Eq, Generic, Hashable, Ord, Show, NFData)

@@ -43,9 +43,9 @@ data VolumeData = VolumeData
 
 instance Resolve VolumeData where
   type ResolvedValue VolumeData = VolumeValue
-  resolve _ VolumeData {unit = Nothing} = Nothing
-  resolve _ VolumeData {unit = Just unit, value} = Just VolumeValue
-    {vValue = value, vUnit = unit}
+  resolve _ _ VolumeData {unit = Nothing} = Nothing
+  resolve _ _ VolumeData {unit = Just unit, value} = Just (VolumeValue
+    {vValue = value, vUnit = unit}, False)
 
 data VolumeValue = VolumeValue
   { vUnit :: Unit

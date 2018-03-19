@@ -20,7 +20,7 @@ import Duckling.Resolve
 import Duckling.Testing.Types
 
 corpus :: Corpus
-corpus = (testContext {locale = makeLocale IT Nothing}, allExamples)
+corpus = (testContext {locale = makeLocale IT Nothing}, testOptions, allExamples)
 
 allExamples :: [Example]
 allExamples = concat

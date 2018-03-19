@@ -67,12 +67,15 @@ data ResolvedToken = Resolved
   { range :: Range
   , node :: Node
   , jsonValue :: Value
+  , isLatent :: Bool
   } deriving (Eq, Show)
 
 instance Ord ResolvedToken where
-  compare (Resolved range1 _ json1) (Resolved range2 _ json2) =
+  compare (Resolved range1 _ json1 latent1) (Resolved range2 _ json2 latent2) =
     case compare range1 range2 of
-      EQ -> compare (toJText json1) (toJText json2)
+      EQ -> case compare (toJText json1) (toJText json2) of
+        EQ -> compare latent1 latent2
+        z -> z
       z  -> z
 
 data Candidate = Candidate ResolvedToken Double Bool
@@ -127,21 +130,23 @@ instance Show Rule where
   show (Rule name _ _) = show name
 
 data Entity = Entity
-  { dim   :: Text
-  , body  :: Text
-  , value :: Value
-  , start :: Int
-  , end   :: Int
-  , enode :: Node
+  { dim    :: Text
+  , body   :: Text
+  , value  :: Value
+  , start  :: Int
+  , end    :: Int
+  , latent :: Bool
+  , enode  :: Node
   } deriving (Eq, Generic, Show, NFData)
 
 instance ToJSON Entity where
   toJSON ent = object
-    [ "dim"   .= dim ent
-    , "body"  .= body ent
-    , "value" .= value ent
-    , "start" .= start ent
-    , "end"   .= end ent
+    [ "dim"    .= dim ent
+    , "body"   .= body ent
+    , "value"  .= value ent
+    , "start"  .= start ent
+    , "end"    .= end ent
+    , "latent" .= latent ent
     ]
 
 toJText :: ToJSON x => x -> Text

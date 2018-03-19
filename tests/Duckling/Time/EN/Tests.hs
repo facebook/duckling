@@ -52,6 +52,7 @@ tests = testGroup "EN Tests"
   , intersectTests
   , rangeTests
   , localeTests
+  , latentTests
   ]
 
 localeTests :: TestTree
@@ -121,7 +122,7 @@ localeTests = testGroup "Locale Tests"
 
 exactSecondTests :: TestTree
 exactSecondTests = testCase "Exact Second Tests" $
-  mapM_ (analyzedFirstTest context . withTargets [This Time]) xs
+  mapM_ (analyzedFirstTest context testOptions . withTargets [This Time]) xs
   where
     context = testContext {referenceTime = refTime (2016, 12, 6, 13, 21, 42) 1}
     xs = concat
@@ -131,7 +132,8 @@ exactSecondTests = testCase "Exact Second Tests" $
       , examples (datetime (2016, 12, 6, 13, 31, 42) Second)
                  [ "in ten minutes"
                  ]
-      , examples (datetimeInterval ((2016, 12, 6, 13, 21, 42), (2016, 12, 12, 0, 0, 0)) Second)
+      , examples (datetimeInterval
+          ((2016, 12, 6, 13, 21, 42), (2016, 12, 12, 0, 0, 0)) Second)
                  [ "by next week"
                  , "by Monday"
                  ]
@@ -139,7 +141,7 @@ exactSecondTests = testCase "Exact Second Tests" $
 
 valuesTest :: TestTree
 valuesTest = testCase "Values Test" $
-  mapM_ (analyzedFirstTest testContext . withTargets [This Time]) xs
+  mapM_ (analyzedFirstTest testContext testOptions . withTargets [This Time]) xs
   where
     xs = examplesCustom (parserCheck 1 parseValuesSize)
                         [ "now"
@@ -154,7 +156,7 @@ valuesTest = testCase "Values Test" $
 
 intersectTests :: TestTree
 intersectTests = testCase "Intersect Test" $
-  mapM_ (analyzedNTest testContext . withTargets [This Time]) xs
+  mapM_ (analyzedNTest testContext testOptions . withTargets [This Time]) xs
   where
     xs = [ ("tomorrow July", 2)
          , ("Mar tonight", 2)
@@ -163,7 +165,7 @@ intersectTests = testCase "Intersect Test" $
 
 rangeTests :: TestTree
 rangeTests = testCase "Range Test" $
-  mapM_ (analyzedRangeTest testContext . withTargets [This Time]) xs
+  mapM_ (analyzedRangeTest testContext testOptions . withTargets [This Time]) xs
   where
     xs = [ ("at 615.", Range 0 6) -- make sure ruleHHMMLatent allows this
          , ("last in 2'", Range 5 10) -- ruleLastTime too eager
@@ -173,3 +175,6 @@ rangeTests = testCase "Range Test" $
          , ("one ninety nine a m", Range 11 19) -- ruleMilitarySpelledOutAMPM2
          , ("thirteen fifty nine a m", Range 15 23) -- ruleMilitarySpelledOutAMPM
          ]
+
+latentTests :: TestTree
+latentTests = makeCorpusTest [This Time] latentCorpus

@@ -51,18 +51,18 @@ data DistanceData = DistanceData
 
 instance Resolve DistanceData where
   type ResolvedValue DistanceData = DistanceValue
-  resolve _ DistanceData {unit = Just unit, value = Just val} =
-    Just $ simple unit val
-  resolve _ DistanceData {unit = Just unit, value = Nothing
+  resolve _ _ DistanceData {unit = Just unit, value = Just val} =
+    Just (simple unit val, False)
+  resolve _ _ DistanceData {unit = Just unit, value = Nothing
                          , minValue = Just from, maxValue = Just to} =
-    Just $ between unit (from, to)
-  resolve _ DistanceData {unit = Just unit, value = Nothing
+    Just (between unit (from, to), False)
+  resolve _ _ DistanceData {unit = Just unit, value = Nothing
                          , minValue = Just from, maxValue = Nothing} =
-    Just $ above unit from
-  resolve _ DistanceData {unit = Just unit, value = Nothing
+    Just (above unit from, False)
+  resolve _ _ DistanceData {unit = Just unit, value = Nothing
                          , minValue = Nothing, maxValue = Just to} =
-    Just $ under unit to
-  resolve _ _ = Nothing
+    Just (under unit to, False)
+  resolve _ _ _ = Nothing
 
 data IntervalDirection = Above | Under
   deriving (Eq, Generic, Hashable, Ord, Show, NFData)

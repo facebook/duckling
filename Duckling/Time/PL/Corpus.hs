@@ -24,10 +24,10 @@ import Duckling.Time.Types hiding (Month)
 import Duckling.TimeGrain.Types hiding (add)
 
 corpus :: Corpus
-corpus = (testContext {locale = makeLocale PL Nothing}, allExamples)
+corpus = (testContext {locale = makeLocale PL Nothing}, testOptions, allExamples)
 
 negativeCorpus :: NegativeCorpus
-negativeCorpus = (testContext {locale = makeLocale PL Nothing}, examples)
+negativeCorpus = (testContext {locale = makeLocale PL Nothing}, testOptions, examples)
   where
     examples =
       [ "nie"

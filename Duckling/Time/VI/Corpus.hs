@@ -22,7 +22,7 @@ import Duckling.Time.Types hiding (Month, refTime)
 import Duckling.TimeGrain.Types hiding (add)
 
 corpus :: Corpus
-corpus = (context, allExamples)
+corpus = (context, testOptions, allExamples)
   where
     context = testContext
       { locale = makeLocale VI Nothing

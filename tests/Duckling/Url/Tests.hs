@@ -32,7 +32,7 @@ tests = testGroup "Url Tests"
 
 surroundTests :: TestTree
 surroundTests = testCase "Surround Tests" $
-  mapM_ (analyzedFirstTest testContext . withTargets [This Url]) xs
+  mapM_ (analyzedFirstTest testContext testOptions . withTargets [This Url]) xs
   where
     xs = examples (UrlData "www.lets-try-this-one.co.uk/episode-7" "lets-try-this-one.co.uk")
                   [ "phishing link: www.lets-try-this-one.co.uk/episode-7  If you want my job"

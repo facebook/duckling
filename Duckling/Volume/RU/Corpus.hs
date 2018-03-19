@@ -21,7 +21,7 @@ import Duckling.Testing.Types
 import Duckling.Volume.Types
 
 corpus :: Corpus
-corpus = (testContext {locale = makeLocale RU Nothing}, allExamples)
+corpus = (testContext {locale = makeLocale RU Nothing}, testOptions, allExamples)
 
 allExamples :: [Example]
 allExamples = concat

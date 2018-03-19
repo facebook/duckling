@@ -8,12 +8,12 @@
 
 {-# LANGUAGE OverloadedStrings #-}
 
-import Control.Applicative
+import Control.Applicative hiding (empty)
 import Control.Arrow ((***))
 import Control.Monad (unless)
 import Control.Monad.IO.Class
 import Data.Aeson
-import Data.ByteString (ByteString)
+import Data.ByteString (ByteString, empty)
 import Data.HashMap.Strict (HashMap)
 import Data.Maybe
 import Data.String
@@ -79,6 +79,7 @@ parseHandler tzs = do
   tz <- getPostParam "tz"
   loc <- getPostParam "locale"
   ref <- getPostParam "reftime"
+  latent <- getPostParam "latent"
 
   case t of
     Nothing -> do
@@ -92,17 +93,19 @@ parseHandler tzs = do
           { referenceTime = maybe now (parseRefTime timezone) ref
           , locale = maybe (makeLocale (parseLang l) Nothing) parseLocale loc
           }
+        options = Options {withLatent = parseLatent latent}
 
         dimParse = fromMaybe [] $ decode $ LBS.fromStrict $ fromMaybe "" ds
         dims = mapMaybe fromName dimParse
 
-        parsedResult = parse (Text.decodeUtf8 tx) context dims
+        parsedResult = parse (Text.decodeUtf8 tx) context options dims
 
       writeLBS $ encode parsedResult
   where
     defaultLang = EN
     defaultLocale = makeLocale defaultLang Nothing
     defaultTimeZone = "America/Los_Angeles"
+    defaultLatent = False
 
     parseTimeZone :: Maybe ByteString -> Text
     parseTimeZone = fromMaybe defaultTimeZone . fmap Text.decodeUtf8
@@ -125,3 +128,7 @@ parseHandler tzs = do
       where
         msec = read $ Text.unpack $ Text.decodeUtf8 refTime
         utcTime = posixSecondsToUTCTime $ fromInteger msec / 1000
+
+    parseLatent :: Maybe ByteString -> Bool
+    parseLatent x = fromMaybe defaultLatent
+      (readMaybe (Text.unpack $ Text.toTitle $ Text.decodeUtf8 $ fromMaybe empty x)::Maybe Bool)

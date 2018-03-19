@@ -101,8 +101,8 @@ instance NFData TimeData where
 
 instance Resolve TimeData where
   type ResolvedValue TimeData = TimeValue
-  resolve _ TimeData {latent = True} = Nothing
-  resolve context TimeData {timePred, notImmediate, direction} = do
+  resolve _ Options {withLatent = False} TimeData {latent = True} = Nothing
+  resolve context _ TimeData {timePred, latent, notImmediate, direction} = do
     value <- case future of
       [] -> listToMaybe past
       ahead:nextAhead:_
@@ -110,10 +110,10 @@ instance Resolve TimeData where
       ahead:_ -> Just ahead
     values <- Just . take 3 $ if List.null future then past else future
     Just $ case direction of
-      Nothing -> TimeValue (timeValue tzSeries value) $
-        map (timeValue tzSeries) values
-      Just d -> TimeValue (openInterval tzSeries d value) $
-        map (openInterval tzSeries d) values
+      Nothing -> (TimeValue (timeValue tzSeries value) $
+        map (timeValue tzSeries) values, latent)
+      Just d -> (TimeValue (openInterval tzSeries d value) $
+        map (openInterval tzSeries d) values, latent)
     where
       DucklingTime (Series.ZoneSeriesTime utcTime tzSeries) = referenceTime context
       refTime = TimeObject

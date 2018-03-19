@@ -12,13 +12,14 @@
 
 module Duckling.Core
   ( Context(..)
-  , Region(..)
   , Dimension(..)
   , Entity(..)
-  , Node(..)
-  , Range(..)
   , Lang(..)
   , Locale
+  , Node(..)
+  , Options(..)
+  , Range(..)
+  , Region(..)
   , Some(..)
   , fromName
   , makeLocale

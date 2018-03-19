@@ -39,9 +39,9 @@ data TemperatureData = TemperatureData
 
 instance Resolve TemperatureData where
   type ResolvedValue TemperatureData = TemperatureValue
-  resolve _ TemperatureData {unit = Nothing} = Nothing
-  resolve _ TemperatureData {unit = Just unit, value} =
-    Just TemperatureValue {vUnit = unit, vValue = value}
+  resolve _ _ TemperatureData {unit = Nothing} = Nothing
+  resolve _ _ TemperatureData {unit = Just unit, value} =
+    Just (TemperatureValue {vUnit = unit, vValue = value}, False)
 
 data TemperatureValue = TemperatureValue
   { vUnit :: TemperatureUnit

@@ -22,7 +22,7 @@ import Duckling.TimeGrain.Types hiding (add)
 import Duckling.Testing.Types hiding (examples)
 
 corpus :: Corpus
-corpus = (testContext {locale = makeLocale HU Nothing}, allExamples)
+corpus = (testContext {locale = makeLocale HU Nothing}, testOptions, allExamples)
 
 allExamples :: [Example]
 allExamples = concat

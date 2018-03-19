@@ -20,7 +20,7 @@ import Duckling.Temperature.Types
 import Duckling.Testing.Types
 
 corpus :: Corpus
-corpus = (testContext {locale = makeLocale ES Nothing}, allExamples)
+corpus = (testContext {locale = makeLocale ES Nothing}, testOptions, allExamples)
 
 allExamples :: [Example]
 allExamples = concat

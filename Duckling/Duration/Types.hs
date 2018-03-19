@@ -34,7 +34,7 @@ data DurationData = DurationData
 
 instance Resolve DurationData where
   type ResolvedValue DurationData = DurationData
-  resolve _ x = Just x
+  resolve _ _ x = Just (x, False)
 
 instance ToJSON DurationData where
   toJSON DurationData {value, grain} = object

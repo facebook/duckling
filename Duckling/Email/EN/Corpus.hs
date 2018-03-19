@@ -21,7 +21,7 @@ import Duckling.Email.Types
 import Duckling.Testing.Types
 
 negativeCorpus :: NegativeCorpus
-negativeCorpus = (testContext, examples)
+negativeCorpus = (testContext, testOptions, examples)
   where
     examples =
       [ "fitness at 6.40"
@@ -35,7 +35,7 @@ negativeCorpus = (testContext, examples)
       ]
 
 corpus :: Corpus
-corpus = (testContext, allExamples)
+corpus = (testContext, testOptions, allExamples)
 
 allExamples :: [Example]
 allExamples = concat

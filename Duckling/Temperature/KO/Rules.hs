@@ -18,7 +18,7 @@ import Data.String
 import Duckling.Dimensions.Types
 import Duckling.Temperature.Helpers
 import qualified Duckling.Temperature.Types as TTemperature
-import Duckling.Types
+import Duckling.Types hiding (isLatent)
 
 ruleLatentTempDegrees :: Rule
 ruleLatentTempDegrees = Rule

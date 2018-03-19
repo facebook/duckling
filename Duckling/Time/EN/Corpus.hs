@@ -12,21 +12,23 @@ module Duckling.Time.EN.Corpus
   ( corpus
   , defaultCorpus
   , negativeCorpus
+  , latentCorpus
   ) where
 
 import Data.String
 import Prelude
 
+import Duckling.Resolve
 import Duckling.Testing.Types hiding (examples)
 import Duckling.Time.Corpus
 import Duckling.Time.Types hiding (Month)
 import Duckling.TimeGrain.Types hiding (add)
 
 corpus :: Corpus
-corpus = (testContext, allExamples)
+corpus = (testContext, testOptions, allExamples)
 
 defaultCorpus :: Corpus
-defaultCorpus = (testContext, allExamples ++ custom)
+defaultCorpus = (testContext, testOptions, allExamples ++ custom)
   where
     custom = concat
       [ examples (datetime (2013, 2, 15, 0, 0, 0) Day)
@@ -69,7 +71,7 @@ defaultCorpus = (testContext, allExamples ++ custom)
       ]
 
 negativeCorpus :: NegativeCorpus
-negativeCorpus = (testContext, examples)
+negativeCorpus = (testContext, testOptions, examples)
   where
     examples =
       [ "laughing out loud"
@@ -94,6 +96,35 @@ negativeCorpus = (testContext, examples)
       , "at 650.650.6500"
       , "at 650-650-6500"
       , "two sixty a m"
+      ]
+
+latentCorpus :: Corpus
+latentCorpus = (testContext, testOptions {withLatent = True}, xs)
+  where
+    xs = concat
+      [ examples (datetime (2013, 2, 24, 0, 0, 0) Day)
+                 [ "the 24"
+                 , "On 24th"
+                 ]
+      , examples (datetime (2013, 2, 12, 7, 0, 0) Hour)
+                 [ "7"
+                 ]
+      , examples (datetimeInterval
+          ((2013, 2, 12, 4, 0, 0), (2013, 2, 12, 12, 0, 0)) Hour)
+                 [ "morning"
+                 ]
+      , examples (datetimeInterval
+          ((2013, 2, 12, 12, 0, 0), (2013, 2, 12, 19, 0, 0)) Hour)
+                 [ "afternoon"
+                 ]
+      , examples (datetimeInterval
+          ((2013, 2, 12, 18, 0, 0), (2013, 2, 13, 0, 0, 0)) Hour)
+                 [ "evening"
+                 ]
+      , examples (datetimeInterval
+          ((2013, 2, 12, 18, 0, 0), (2013, 2, 13, 0, 0, 0)) Hour)
+                 [ "night"
+                 ]
       ]
 
 allExamples :: [Example]

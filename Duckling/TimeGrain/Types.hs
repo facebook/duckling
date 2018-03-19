@@ -38,7 +38,7 @@ data Grain
 
 instance Resolve Grain where
   type ResolvedValue Grain = Grain
-  resolve _ _ = Nothing
+  resolve _ _ _ = Nothing
 
 instance TextShow Grain where
   showb = fromText . Text.toLower . Text.pack . show

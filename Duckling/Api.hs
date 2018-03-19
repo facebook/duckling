@@ -37,8 +37,9 @@ import Duckling.Rules
 import Duckling.Types
 
 -- | Parses `input` and returns a curated list of entities found.
-parse :: Text -> Context -> [Some Dimension] -> [Entity]
-parse input ctx = map (formatToken input) . analyze input ctx . HashSet.fromList
+parse :: Text -> Context -> Options -> [Some Dimension] -> [Entity]
+parse input ctx options = map (formatToken input) . analyze input ctx options .
+  HashSet.fromList
 
 supportedDimensions :: HashMap Lang [Some Dimension]
 supportedDimensions =
@@ -46,18 +47,19 @@ supportedDimensions =
 
 -- | Returns a curated list of resolved tokens found
 -- When `targets` is non-empty, returns only tokens of such dimensions.
-analyze :: Text -> Context -> HashSet (Some Dimension) -> [ResolvedToken]
-analyze input context@Context{..} targets =
+analyze :: Text -> Context -> Options -> HashSet (Some Dimension)
+  -> [ResolvedToken]
+analyze input context@Context{..} options targets =
   rank (classifiers locale) targets
   . filter (\Resolved{node = Node{token = (Token d _)}} ->
       HashSet.null targets || HashSet.member (This d) targets
     )
-  $ parseAndResolve (rulesFor locale targets) input context
+  $ parseAndResolve (rulesFor locale targets) input context options
 
 -- | Converts the resolved token to the API format
 formatToken :: Text -> ResolvedToken -> Entity
 formatToken sentence
-  (Resolved (Range start end) node@Node{token = Token dimension _} value) =
-  Entity (toName dimension) body value start end node
+  (Resolved (Range start end) node@Node{token = Token dimension _} value latent)
+  = Entity (toName dimension) body value start end latent node
   where
     body = Text.drop start $ Text.take end sentence

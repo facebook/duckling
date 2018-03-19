@@ -26,7 +26,7 @@ defaultCorpus :: Corpus
 defaultCorpus = corpus
 
 corpus :: Corpus
-corpus = (testContext {locale = makeLocale ZH Nothing}, allExamples)
+corpus = (testContext {locale = makeLocale ZH Nothing}, testOptions, allExamples)
 
 allExamples :: [Example]
 allExamples = concat

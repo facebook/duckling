@@ -60,6 +60,7 @@ data Lang
   | RO
   | RU
   | SV
+  | TA
   | TR
   | UK
   | VI

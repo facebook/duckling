@@ -41,6 +41,7 @@ import qualified Duckling.Numeral.PT.Tests as PT
 import qualified Duckling.Numeral.RO.Tests as RO
 import qualified Duckling.Numeral.RU.Tests as RU
 import qualified Duckling.Numeral.SV.Tests as SV
+import qualified Duckling.Numeral.TA.Tests as TA
 import qualified Duckling.Numeral.TR.Tests as TR
 import qualified Duckling.Numeral.UK.Tests as UK
 import qualified Duckling.Numeral.VI.Tests as VI
@@ -77,6 +78,7 @@ tests = testGroup "Numeral Tests"
   , RO.tests
   , RU.tests
   , SV.tests
+  , TA.tests
   , TR.tests
   , UK.tests
   , VI.tests

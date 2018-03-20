@@ -19,7 +19,7 @@ module Duckling.Engine
 
 import Control.DeepSeq
 import Control.Monad.Extra
-import Data.Aeson
+import Data.Aeson (toJSON)
 import Data.ByteString (ByteString)
 import Data.Functor.Identity
 import Data.Maybe

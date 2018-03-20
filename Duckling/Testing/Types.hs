@@ -26,7 +26,7 @@ module Duckling.Testing.Types
   , zTime
   ) where
 
-import Data.Aeson
+import Data.Aeson (toJSON, ToJSON, Value)
 import Data.Fixed (Pico)
 import Data.Text (Text)
 import Prelude

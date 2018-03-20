@@ -8,14 +8,15 @@
 
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE NoRebindableSyntax #-}
 
 module Duckling.Ordinal.RU.Rules
-  ( rules ) where
+  ( rules
+  ) where
 
-import Control.Monad (join)
-import qualified Data.Text as Text
-import Prelude
 import Data.String
+import Prelude
+import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
 import Duckling.Numeral.Helpers (parseInt)

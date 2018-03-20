@@ -18,7 +18,7 @@ module Duckling.Resolve
   , toUTC
   ) where
 
-import Data.Aeson
+import Data.Aeson (ToJSON)
 import Prelude
 import qualified Data.Time as Time
 import qualified Data.Time.LocalTime.TimeZone.Series as Series

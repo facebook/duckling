@@ -17,6 +17,7 @@ import Test.Tasty
 import qualified Duckling.Distance.BG.Tests as BG
 import qualified Duckling.Distance.CS.Tests as CS
 import qualified Duckling.Distance.EN.Tests as EN
+import qualified Duckling.Distance.BG.Tests as BG
 import qualified Duckling.Distance.ES.Tests as ES
 import qualified Duckling.Distance.FR.Tests as FR
 import qualified Duckling.Distance.GA.Tests as GA

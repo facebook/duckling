@@ -232,6 +232,8 @@ library
                      -- Duration
                      , Duckling.Duration.AR.Corpus
                      , Duckling.Duration.AR.Rules
+                     , Duckling.Duration.BG.Corpus
+                     , Duckling.Duration.BG.Rules
                      , Duckling.Duration.DA.Rules
                      , Duckling.Duration.DE.Rules
                      , Duckling.Duration.EL.Corpus
@@ -357,6 +359,8 @@ library
                      -- Ordinal
                      , Duckling.Ordinal.AR.Corpus
                      , Duckling.Ordinal.AR.Rules
+                     , Duckling.Ordinal.BG.Corpus
+                     , Duckling.Ordinal.BG.Rules
                      , Duckling.Ordinal.DA.Corpus
                      , Duckling.Ordinal.DA.Rules
                      , Duckling.Ordinal.DE.Corpus
@@ -559,6 +563,7 @@ library
 
                      -- TimeGrain
                      , Duckling.TimeGrain.AR.Rules
+                     , Duckling.TimeGrain.BG.Rules
                      , Duckling.TimeGrain.DA.Rules
                      , Duckling.TimeGrain.DE.Rules
                      , Duckling.TimeGrain.EN.Rules
@@ -698,6 +703,7 @@ test-suite duckling-test
 
                      -- Duration
                      , Duckling.Duration.AR.Tests
+                     , Duckling.Duration.BG.Tests
                      , Duckling.Duration.EL.Tests
                      , Duckling.Duration.EN.Tests
                      , Duckling.Duration.FR.Tests
@@ -761,6 +767,7 @@ test-suite duckling-test
 
                      -- Ordinal
                      , Duckling.Ordinal.AR.Tests
+                     , Duckling.Ordinal.BG.Tests
                      , Duckling.Ordinal.DA.Tests
                      , Duckling.Ordinal.DE.Tests
                      , Duckling.Ordinal.EL.Tests

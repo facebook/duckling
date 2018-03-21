@@ -126,6 +126,7 @@ rulePeriodicHolidays = mkRuleHolidays
   , ( "Kent State Shootings Remembrance", "kent state shootings remembrance", monthDay 5 4 )
   , ( "Law/Lei/Loyalty Day", "l(aw|ei|oyalty) day", monthDay 5 1 )
   , ( "Leif Erikson Day", "leif erikson day", monthDay 10 9 )
+  , ( "Lincoln's Birthday", "(abraham )?lincoln'?s?'? birthday", monthDay 2 12 )
   , ( "Linus Pauling Day", "linus pauling day", monthDay 2 28 )
   , ( "Lyndon Baines Johnson Day", "lyndon baines johnson day", monthDay 8 27 )
   , ( "Marine Corps Birthday", "marine corps birthday", monthDay 11 10 )
@@ -167,6 +168,12 @@ rulePeriodicHolidays = mkRuleHolidays
   , ( "White Cane Safety Day", "white cane safety day", monthDay 10 15 )
   , ( "Women's Equality Day", "women'?s equality day", monthDay 8 26 )
   , ( "Wright Brothers Day", "wright brothers day", monthDay 12 17 )
+
+  -- Fixed day/week/month, year over year
+  , ( "Washington's Birthday/President's Day"
+    , "(george )?washington'?s? (birth)?day|president'?s?'? day"
+    , nthDOWOfMonth 3 1 2
+    )
 
   -- Last Monday of May
   , ( "Memorial Day", "(decoration|memorial) day", predLastOf (dayOfWeek 1) (month 5) )

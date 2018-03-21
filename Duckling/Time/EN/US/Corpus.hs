@@ -81,4 +81,16 @@ allExamples = concat
              , "Lei Day"
              , "loyalty day"
              ]
+  , examples (datetime (2013, 2, 18, 0, 0, 0) Day)
+             [ "George Washington Day"
+             , "washington's birthday"
+             , "presidents' day"
+             , "president day 2013"
+             ]
+  , examples (datetime (2013, 2, 12, 0, 0, 0) Day)
+             [ "Lincolns birthday"
+             , "Abraham Lincoln's birthday"
+             , "Lincoln birthday"
+             , "Lincolns' birthday"
+             ]
   ]

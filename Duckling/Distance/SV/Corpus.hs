@@ -30,7 +30,9 @@ allExamples = concat
              , "3 km"
              , "3km"
              , "3k"
-             , "3 mil"
+             ]
+  , examples (simple Kilometre 30)
+             [ "3 mil"
              , "tre mil"
              , "några få mil"
              ]

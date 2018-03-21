@@ -18,6 +18,7 @@ import Prelude
 
 import Duckling.Dimensions.Types
 import Duckling.Distance.Helpers
+import Duckling.Distance.Types (DistanceData(..))
 import Duckling.Types
 import qualified Duckling.Distance.Types as TDistance
 
@@ -68,8 +69,9 @@ ruleDistMils = Rule
     , regex "mils?"
     ]
   , prod = \tokens -> case tokens of
-      (Token Distance dd:_) ->
-        Just . Token Distance $ withUnit TDistance.Kilometre dd
+      (Token Distance dd@DistanceData {TDistance.value = Just x}:_) ->
+        Just . Token Distance . withValue (10 * x)
+          $ withUnit TDistance.Kilometre dd
       _ -> Nothing
   }
 

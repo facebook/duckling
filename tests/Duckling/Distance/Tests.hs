@@ -28,6 +28,7 @@ import qualified Duckling.Distance.PT.Tests as PT
 import qualified Duckling.Distance.RO.Tests as RO
 import qualified Duckling.Distance.RU.Tests as RU
 import qualified Duckling.Distance.TR.Tests as TR
+import qualified Duckling.Distance.SV.Tests as SV
 
 tests :: TestTree
 tests = testGroup "Distance Tests"
@@ -44,4 +45,5 @@ tests = testGroup "Distance Tests"
   , RO.tests
   , RU.tests
   , TR.tests
+  , SV.tests
   ]

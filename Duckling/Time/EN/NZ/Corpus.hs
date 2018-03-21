@@ -33,6 +33,7 @@ allExamples = concat
              , "31/10/74"
              , "31-10-74"
              , "31.10.1974"
+             , "31 10 1974"
              ]
   , examples (datetime (2013, 4, 25, 16, 0, 0) Minute)
              [ "25/4 at 4:00pm"

@@ -17,7 +17,6 @@ import Test.Tasty
 import qualified Duckling.Distance.BG.Tests as BG
 import qualified Duckling.Distance.CS.Tests as CS
 import qualified Duckling.Distance.EN.Tests as EN
-import qualified Duckling.Distance.BG.Tests as BG
 import qualified Duckling.Distance.ES.Tests as ES
 import qualified Duckling.Distance.FR.Tests as FR
 import qualified Duckling.Distance.GA.Tests as GA
@@ -29,6 +28,7 @@ import qualified Duckling.Distance.RO.Tests as RO
 import qualified Duckling.Distance.RU.Tests as RU
 import qualified Duckling.Distance.TR.Tests as TR
 import qualified Duckling.Distance.SV.Tests as SV
+import qualified Duckling.Distance.ZH.Tests as ZH
 
 tests :: TestTree
 tests = testGroup "Distance Tests"
@@ -46,4 +46,5 @@ tests = testGroup "Distance Tests"
   , RU.tests
   , TR.tests
   , SV.tests
+  , ZH.tests
   ]

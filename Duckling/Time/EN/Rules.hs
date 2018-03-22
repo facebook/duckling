@@ -1218,6 +1218,67 @@ rulePartOfMonth = Rule
       _ -> Nothing
   }
 
+ruleEndOrBeginningOfMonth :: Rule
+ruleEndOrBeginningOfMonth = Rule
+  { name = "at the beginning|end of <named-month>"
+  , pattern =
+    [ regex "(at the )?(beginning|end) of"
+    , Predicate isAMonth
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (_:match:_)):Token Time td:_) -> do
+        (sd, ed) <- case Text.toLower match of
+          "beginning" -> Just (1, 10)
+          "end"       -> Just (21, -1)
+          _           -> Nothing
+        start <- intersect td $ dayOfMonth sd
+        end <- if ed /= -1
+          then intersect td $ dayOfMonth ed
+          else Just $ cycleLastOf TG.Day td
+        Token Time <$> interval TTime.Open start end
+      _ -> Nothing
+  }
+
+ruleEndOrBeginningOfYear :: Rule
+ruleEndOrBeginningOfYear = Rule
+  { name = "at the beginning|end of <year>"
+  , pattern =
+    [ regex "(at the )?(beginning|end) of"
+    , Predicate $ isGrainOfTime TG.Year
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (_:match:_)):Token Time td:_) -> do
+        (sd, ed) <- case Text.toLower match of
+          "beginning" -> Just (1, 4)
+          "end"       -> Just (9, -1)
+          _           -> Nothing
+        start <- intersect td $ month sd
+        end <- if ed /= -1
+          then intersect td $ cycleLastOf TG.Month $ month ed
+          else Just $ cycleLastOf TG.Month td
+        Token Time <$> interval TTime.Open start end
+      _ -> Nothing
+  }
+
+ruleEndOrBeginningOfWeek :: Rule
+ruleEndOrBeginningOfWeek = Rule
+  { name = "at the beginning|end of <week>"
+  , pattern =
+    [ regex "(at the )?(beginning|end) of"
+    , Predicate $ isGrainOfTime TG.Week
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (_:match1:_)):Token Time td:_) -> do
+        (sd, ed) <- case Text.toLower match1 of
+          "beginning" -> Just (1, 3)
+          "end"       -> Just (5, 7)
+          _           -> Nothing
+        start <- intersect td $ dayOfWeek sd
+        end <- intersect td $ dayOfWeek ed
+        Token Time <$> interval TTime.Open start end
+      _ -> Nothing
+  }
+
 rulePeriodicHolidays :: [Rule]
 rulePeriodicHolidays = mkRuleHolidays
   -- Fixed dates, year over year
@@ -1814,6 +1875,9 @@ rules =
   , ruleInNumeral
   , ruleTimezone
   , rulePartOfMonth
+  , ruleEndOrBeginningOfMonth
+  , ruleEndOrBeginningOfYear
+  , ruleEndOrBeginningOfWeek
   , ruleNow
   ]
   ++ ruleInstants

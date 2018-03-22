@@ -1015,4 +1015,68 @@ allExamples = concat
   , examples (datetimeInterval ((2013, 8, 19, 0, 0, 0), (2013, 8, 22, 0, 0, 0)) Day)
              [ "19th To 21st aug"
              ]
+  , examples (datetimeInterval ((2013, 4, 21, 0, 0, 0), (2013, 5, 1, 0, 0, 0)) Day)
+             [ "end of April"
+             , "at the end of April"
+             ]
+  , examples (datetimeInterval ((2014, 1, 1, 0, 0, 0), (2014, 1, 11, 0, 0, 0)) Day)
+             [ "beginning of January"
+             , "at the beginning of January"
+             ]
+  , examples (datetimeInterval ((2012, 9, 1, 0, 0, 0), (2012, 12, 1, 0, 0, 0)) Month)
+             [ "end of 2012"
+             , "at the end of 2012"
+             ]
+  , examples (datetimeInterval ((2017, 1, 1, 0, 0, 0), (2017, 4, 1, 0, 0, 0)) Month)
+             [ "beginning of 2017"
+             , "at the beginning of 2017"
+             ]
+  , examples (datetimeInterval ((2013, 2, 11, 0, 0, 0), (2013, 2, 14, 0, 0, 0)) Day)
+             [ "beginning of this week"
+             , "beginning of current week"
+             , "beginning of coming week"
+             , "at the beginning of this week"
+             , "at the beginning of current week"
+             , "at the beginning of coming week"
+             ]
+  , examples (datetimeInterval ((2013, 2, 4, 0, 0, 0), (2013, 2, 7, 0, 0, 0)) Day)
+             [ "beginning of last week"
+             , "beginning of past week"
+             , "beginning of previous week"
+             , "at the beginning of last week"
+             , "at the beginning of past week"
+             , "at the beginning of previous week"
+             ]
+  , examples (datetimeInterval ((2013, 2, 18, 0, 0, 0), (2013, 2, 21, 0, 0, 0)) Day)
+             [ "beginning of next week"
+             , "beginning of the following week"
+             , "beginning of around next week"
+             , "at the beginning of next week"
+             , "at the beginning of the following week"
+             , "at the beginning of around next week"
+             ]
+  , examples (datetimeInterval ((2013, 2, 15, 0, 0, 0), (2013, 2, 18, 0, 0, 0)) Day)
+             [ "end of this week"
+             , "end of current week"
+             , "end of coming week"
+             , "at the end of this week"
+             , "at the end of current week"
+             , "at the end of coming week"
+             ]
+  , examples (datetimeInterval ((2013, 2, 8, 0, 0, 0), (2013, 2, 11, 0, 0, 0)) Day)
+             [ "end of last week"
+             , "end of past week"
+             , "end of previous week"
+             , "at the end of last week"
+             , "at the end of past week"
+             , "at the end of previous week"
+             ]
+  , examples (datetimeInterval ((2013, 2, 22, 0, 0, 0), (2013, 2, 25, 0, 0, 0)) Day)
+             [ "end of next week"
+             , "end of the following week"
+             , "end of around next week"
+             , "at the end of next week"
+             , "at the end of the following week"
+             , "at the end of around next week"
+             ]
   ]

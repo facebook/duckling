@@ -727,6 +727,10 @@ allExamples = concat
              , "monday early morning"
              , "monday in the early hours of the morning"
              ]
+  , examples (datetimeInterval ((2013, 2, 12, 21, 0, 0), (2013, 2, 13, 0, 0, 0)) Hour)
+             [ "late tonight"
+             , "late tonite"
+             ]
   , examples (datetimeInterval ((2013, 2, 15, 4, 0, 0), (2013, 2, 15, 12, 0, 0)) Hour)
              [ "february the 15th in the morning"
              , "15 of february in the morning"

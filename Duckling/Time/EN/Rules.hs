@@ -821,11 +821,14 @@ rulePODThis = Rule
 ruleTonight :: Rule
 ruleTonight = Rule
   { name = "tonight"
-  , pattern = [regex "toni(ght|gth|te)s?"]
-  , prod = \_ -> do
-      let today = cycleNth TG.Day 0
-      evening <- interval TTime.Open (hour False 18) (hour False 0)
-      Token Time . partOfDay . notLatent <$> intersect today evening
+  , pattern = [regex "(late )?toni(ght|gth|te)s?"]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (match:_)):_) -> do
+        let today = cycleNth TG.Day 0
+            h = if Text.toLower match == "late " then 21 else 18
+        evening <- interval TTime.Open (hour False h) (hour False 0)
+        Token Time . partOfDay . notLatent <$> intersect today evening
+      _ -> Nothing
   }
 
 ruleAfterPartofday :: Rule

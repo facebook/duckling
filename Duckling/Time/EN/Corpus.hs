@@ -605,6 +605,13 @@ allExamples = concat
   , examples (datetimeInterval ((2012, 12, 21, 0, 0, 0), (2013, 3, 21, 0, 0, 0)) Day)
              [ "this winter"
              ]
+  , examples (datetimeInterval ((2013, 2, 11, 18, 0, 0), (2013, 2, 12, 0, 0, 0)) Hour)
+             [ "last night"
+             , "yesterday evening"
+             ]
+  , examples (datetimeInterval ((2013, 2, 11, 21, 0, 0), (2013, 2, 12, 0, 0, 0)) Hour)
+             [ "late last night"
+             ]
   , examples (datetime (2013, 12, 25, 0, 0, 0) Day)
              [ "xmas"
              , "christmas"

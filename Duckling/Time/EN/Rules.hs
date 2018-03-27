@@ -232,6 +232,21 @@ ruleLastCycleOfTime = Rule
       _ -> Nothing
   }
 
+ruleLastNight :: Rule
+ruleLastNight = Rule
+  { name = "last night"
+  , pattern =
+    [ regex "(late )?last night"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        let hours = if Text.toLower match == "late " then 3 else 6
+            start = durationBefore (DurationData hours TG.Hour) end
+            end = cycleNth TG.Day 0
+        in Token Time . partOfDay . notLatent <$> interval TTime.Open start end
+      _ -> Nothing
+  }
+
 ruleNthTimeOfTime :: Rule
 ruleNthTimeOfTime = Rule
   { name = "nth <time> of <time>"
@@ -1793,6 +1808,7 @@ rules =
   , ruleTimeBeforeLastAfterNext
   , ruleLastDOWOfTime
   , ruleLastCycleOfTime
+  , ruleLastNight
   , ruleLastWeekendOfMonth
   , ruleNthTimeOfTime
   , ruleTheNthTimeOfTime

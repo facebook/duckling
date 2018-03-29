@@ -687,6 +687,7 @@ allExamples = concat
   , examples (datetime (2012, 1, 16, 0, 0, 0) Day)
              [ "MLK day of last year"
              , "MLK day 2012"
+             , "Civil Rights Day of last year"
              ]
   , examples (datetime (2013, 11, 1, 0, 0, 0) Day)
              [ "world vegan day"

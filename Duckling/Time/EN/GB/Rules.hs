@@ -79,7 +79,6 @@ rulePeriodicHolidays = mkRuleHolidays
   , ( "Shakespeare Day", "shakespeare day", monthDay 4 23 )
   , ( "St Andrew's Day", "st\\.? andrew'?s day", monthDay 11 30 )
   , ( "St. David's Day", "st\\.? david'?s day", monthDay 3 1 )
-  , ( "St. George's Day", "st\\.? george'?s day", monthDay 4 23 )
   , ( "Victory in Europe Day", "victory in europe day", monthDay 5 8 )
 
   -- Fixed day/week/month, year over year

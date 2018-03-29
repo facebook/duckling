@@ -87,6 +87,7 @@ allExamples = concat
              , "washington's birthday"
              , "presidents' day"
              , "president day 2013"
+             , "Daisy Gatson Bates Day"
              ]
   , examples (datetime (2013, 2, 12, 0, 0, 0) Day)
              [ "Lincolns birthday"

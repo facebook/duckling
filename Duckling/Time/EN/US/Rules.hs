@@ -103,8 +103,8 @@ rulePeriodicHolidays = mkRuleHolidays
   , ( "Bunker Hill Day", "bunker hill day", monthDay 6 17 )
   , ( "California Admission Day", "california admission day", monthDay 9 9 )
   , ( "Cinco de Mayo", "cinco de mayo", monthDay 5 5 )
-  , ( "Citizenship Day", "citizenship day", monthDay 9 17 )
-  , ( "Coast Guard Birthday", "coast guard birthday", monthDay 8 4 )
+  , ( "Citizenship Day", "citizenship day|i am an american day", monthDay 9 17 )
+  , ( "Coast Guard Birthday", "coast guard (birth)?day", monthDay 8 4 )
   , ( "Colorado Day", "colorado day", monthDay 8 1 )
   , ( "Constitution Day and Citizenship Day", "constitution day and citizenship day", monthDay 9 17 )
   , ( "César Chávez Day", "c[ée]sar ch[áa]vez day", monthDay 3 31 )
@@ -129,17 +129,17 @@ rulePeriodicHolidays = mkRuleHolidays
   , ( "Lincoln's Birthday", "(abraham )?lincoln'?s?'? birthday", monthDay 2 12 )
   , ( "Linus Pauling Day", "linus pauling day", monthDay 2 28 )
   , ( "Lyndon Baines Johnson Day", "lyndon baines johnson day", monthDay 8 27 )
-  , ( "Marine Corps Birthday", "marine corps birthday", monthDay 11 10 )
+  , ( "Marine Corps Birthday", "marine corps (birth)?day", monthDay 11 10 )
   , ( "Maryland Day", "maryland day", monthDay 3 25 )
   , ( "National Aviation Day", "national aviation day", monthDay 8 19 )
   , ( "National Freedom Day", "national freedom day", monthDay 2 1 )
-  , ( "National Guard Birthday", "national guard birthday", monthDay 12 13 )
+  , ( "National Guard Birthday", "national guard (birth)?day", monthDay 12 13 )
   , ( "National Korean War Veterans Armistice Day", "national korean war veterans armistice day", monthDay 7 27 )
   , ( "National Maritime Day", "national maritime day", monthDay 5 22 )
   , ( "National Missing Children's Day", "national missing children'?s day", monthDay 5 25 )
   , ( "National Nurses Day", "national nurses day", monthDay 5 6 )
   , ( "National Tartan Day", "national tartan day", monthDay 4 6 )
-  , ( "Navy Birthday", "navy birthday", monthDay 10 13 )
+  , ( "Navy Birthday", "(u\\.?s\\.? )?navy (birth)?day", monthDay 10 13 )
   , ( "Oklahoma Day", "oklahoma day", monthDay 4 22 )
   , ( "Pan American Aviation Day", "pan american aviation day", monthDay 12 17 )
   , ( "Pascua Florida Day", "pascua florida day", monthDay 4 2 )
@@ -149,6 +149,7 @@ rulePeriodicHolidays = mkRuleHolidays
   , ( "Pioneer Day", "pioneer day", monthDay 7 24 )
   , ( "Prince Jonah Kuhio Kalanianaole Day", "prince jonah kuhio kalanianaole day", monthDay 3 26 )
   , ( "Purple Heart Day", "purple heart day", monthDay 8 7 )
+  , ( "Read Across America Day", "read across america day", monthDay 3 2 )
   , ( "Rhode Island Independence Day", "rhode island independence day", monthDay 5 4 )
   , ( "Rosa Parks Day", "rosa parks day", monthDay 2 4 )
   , ( "San Jacinto Day", "san jacinto day", monthDay 4 21 )
@@ -170,8 +171,8 @@ rulePeriodicHolidays = mkRuleHolidays
   , ( "Wright Brothers Day", "wright brothers day", monthDay 12 17 )
 
   -- Fixed day/week/month, year over year
-  , ( "Washington's Birthday/President's Day"
-    , "(george )?washington'?s? (birth)?day|president'?s?'? day"
+  , ( "Washington's Birthday/President's Day/Daisy Gatson Bates Day"
+    , "(george )?washington'?s? (birth)?day|president'?s?'? day|daisy gatson bates'? day"
     , nthDOWOfMonth 3 1 2
     )
 

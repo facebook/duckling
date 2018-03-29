@@ -68,4 +68,9 @@ allExamples = concat
   , examples (datetime (2013, 4, 9, 0, 0, 0) Day)
              [ "vimy ridge day"
              ]
+  , examples (datetime (2013, 7, 12, 0, 0, 0) Day)
+             [ "the Glorious Twelfth"
+             , "Orangemen's Day"
+             , "the twelfth"
+             ]
   ]

@@ -85,6 +85,7 @@ rulePeriodicHolidays = mkRuleHolidays
   , ( "Remembrance Day", "remembrance day", monthDay 11 11 )
   , ( "St David's Day", "st\\.? david'?s day", monthDay 3 1 )
   , ( "St. Jean Baptiste Day", "st\\.? jean baptiste day", monthDay 6 24 )
+  , ( "The Twelfth", "orangemen's day|the (glorious )?twelfth", monthDay 7 12 )
   , ( "Vimy Ridge Day", "vimy ridge day", monthDay 4 9 )
 
   -- Fixed day/week/month, year over year

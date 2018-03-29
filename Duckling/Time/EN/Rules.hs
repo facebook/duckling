@@ -1300,7 +1300,8 @@ ruleEndOrBeginningOfWeek = Rule
 rulePeriodicHolidays :: [Rule]
 rulePeriodicHolidays = mkRuleHolidays
   -- Fixed dates, year over year
-  [ ( "Africa Industrialization Day", "africa industrialization day", monthDay 11 20 )
+  [ ( "Africa Day", "africa(n (freedom|liberation))? day", monthDay 5 25 )
+  , ( "Africa Industrialization Day", "africa industrialization day", monthDay 11 20 )
   , ( "All Saints' Day", "all saints' day", monthDay 11 1 )
   , ( "All Souls' Day", "all souls' day", monthDay 11 2 )
   , ( "April Fools", "(april|all) fool'?s('? day)?", monthDay 4 1 )
@@ -1320,7 +1321,7 @@ rulePeriodicHolidays = mkRuleHolidays
   , ( "Feast of the Immaculate Conception", "feast of the immaculate conception", monthDay 12 8 )
   , ( "Global Day of Parents", "global day of parents", monthDay 6 1 )
   , ( "Halloween", "hall?owe?en( day)?", monthDay 10 31 )
-  , ( "Human Rights Day", "human rights day", monthDay 12 10 )
+  , ( "Human Rights Day", "human rights? day", monthDay 12 10 )
   , ( "International Albinism Awareness Day", "international albinism awareness day", monthDay 6 13 )
   , ( "International Anti-Corruption Day", "international anti(\\-|\\s)corruption day", monthDay 12 9 )
   , ( "International Asteroid Day", "international asteroid day", monthDay 6 30 )
@@ -1330,7 +1331,7 @@ rulePeriodicHolidays = mkRuleHolidays
   , ( "International Customs Day", "international customs day", monthDay 1 26 )
   , ( "International Day Against Drug Abuse and Illicit Trafficking", "international day against drug abuse and illicit trafficking", monthDay 6 26 )
   , ( "International Day against Nuclear Tests", "international day against nuclear tests", monthDay 8 29 )
-  , ( "International Day for Biological Diversity", "international day for biological diversity", monthDay 5 22 )
+  , ( "International Day for Biological Diversity", "international day for biological diversity|world biodiversity day", monthDay 5 22 )
   , ( "International Day for Monuments and Sites", "international day for monuments and sites", monthDay 4 18 )
   , ( "International Day for Preventing the Exploitation of the Environment in War and Armed Conflict", "international day for preventing the exploitation of the environment in war and armed conflict", monthDay 11 6 )
   , ( "International Day for South-South Cooperation", "international day for south(\\-|\\s)south cooperation", monthDay 9 12 )
@@ -1375,6 +1376,7 @@ rulePeriodicHolidays = mkRuleHolidays
   , ( "International Day of the World's Indigenous People", "international day of the world'?s indigenous people", monthDay 8 9 )
   , ( "International Day to End Impunity for Crimes against Journalists", "international day to end impunity for crimes against journalists", monthDay 11 2 )
   , ( "International Day to End Obstetric Fistula", "international day to end obstetric fistula", monthDay 5 23 )
+  , ( "International Day for Disaster Reduction", "iddr|international day for (natural )?disaster reduction", monthDay 10 13 )
   , ( "International Human Solidarity Day", "international human solidarity day", monthDay 12 20 )
   , ( "International Jazz Day", "international jazz day", monthDay 4 30 )
   , ( "International Literacy Day", "international literacy day", monthDay 9 8 )
@@ -1395,6 +1397,7 @@ rulePeriodicHolidays = mkRuleHolidays
   , ( "Orthodox Christmas Day", "orthodox christmas day", monthDay 1 7 )
   , ( "Orthodox New Year", "orthodox new year", monthDay 1 14 )
   , ( "Public Service Day", "public service day", monthDay 6 23 )
+  , ( "St. George's Day", "(saint|st\\.?) george'?s day|feast of saint george", monthDay 4 23 )
   , ( "St Patrick's Day", "st\\.? patrick'?s day", monthDay 3 17 )
   , ( "St. Stephen's Day", "st\\.? stephen'?s day", monthDay 12 26 )
   , ( "Time of Remembrance and Reconciliation for Those Who Lost Their Lives during the Second World War", "time of remembrance and reconciliation for those who lost their lives during the second world war", monthDay 5 8 )
@@ -1411,6 +1414,7 @@ rulePeriodicHolidays = mkRuleHolidays
   , ( "World Braille Day", "world braille day", monthDay 1 4 )
   , ( "World Cancer Day", "world cancer day", monthDay 2 4 )
   , ( "World Cities Day", "world cities day", monthDay 10 31 )
+  , ( "World CP Day", "world (cerebral palsy| cp) day", monthDay 10 6 )
   , ( "World Day Against Child Labour", "world day against child labour", monthDay 6 12 )
   , ( "World Day against Trafficking in Persons", "world day against trafficking in persons", monthDay 7 30 )
   , ( "World Day for Audiovisual Heritage", "world day for audiovisual heritage", monthDay 10 27 )
@@ -1468,7 +1472,7 @@ rulePeriodicHolidays = mkRuleHolidays
 
   -- Fixed day/week/month, year over year
   , ( "Martin Luther King's Day"
-    , "(MLK|Martin Luther King,?)( Jr\\.?| Junior)? day"
+    , "(MLK|Martin Luther King,?)( Jr\\.?| Junior)? day|(civil|idaho human) rights day"
     , nthDOWOfMonth 3 1 1
     )
   , ( "Father's Day"            , "father'?s?'? day", nthDOWOfMonth 3 7 6 )

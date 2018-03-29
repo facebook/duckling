@@ -75,7 +75,8 @@ rulePeriodicHolidays = mkRuleHolidays
   [ ( "Bonifacio Day", "bonifacio day", monthDay 11 30 )
   , ( "Independence Day", "independence day", monthDay 6 12 )
   , ( "Ninoy Aquino Day", "ninoy aquino day", monthDay 8 21 )
-  , ( "People Power Anniversary", "people power anniversary", monthDay 2 25 )
+  , ( "People Power Anniversary", "(edsa revolution|people power) anniversary"
+    , monthDay 2 25 )
   , ( "Rizal Day", "rizal day", monthDay 12 30 )
   , ( "The Day of Valor", "the day of valor", monthDay 4 9 )
 

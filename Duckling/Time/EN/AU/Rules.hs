@@ -73,13 +73,20 @@ rulePeriodicHolidays :: [Rule]
 rulePeriodicHolidays = mkRuleHolidays
   -- Fixed dates, year over year
   [ ( "ANZAC Day", "anzac day", monthDay 4 25 )
-  , ( "Australia Day", "australia day", monthDay 1 26 )
+  , ( "Australia Day", "(ana|anniversary|australia|foundation) day"
+    , monthDay 1 26 )
   , ( "Harmony Day", "harmony day", monthDay 3 21 )
   , ( "National Sorry Day", "national sorry day", monthDay 5 26 )
   , ( "Queensland Day", "queensland day", monthDay 6 6 )
   , ( "Remembrance Day", "remembrance day", monthDay 11 11 )
+  , ( "Take our Daughters and Sons to Work Day"
+    , "take our daughters and sons to work day", monthDay 1 5 )
 
   -- Fixed day/week/month, year over year
+  , ( "National Tree Day", "national tree day"
+    , predLastOf (dayOfWeek 7) (month 6) )
+  , ( "National Schools Tree Day", "national schools tree day"
+    , predLastOf (dayOfWeek 5) (month 6) )
   , ( "Thanksgiving Day", "thanks?giving( day)?", nthDOWOfMonth 4 4 11 )
   ]
 

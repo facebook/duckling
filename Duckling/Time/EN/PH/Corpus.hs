@@ -65,4 +65,13 @@ allExamples = concat
   , examples (datetime (2013, 6, 12, 0, 0, 0) Day)
              [ "Independence day"
              ]
+  , examples (datetime (2013, 6, 16, 0, 0, 0) Day)
+             [ "Father's Day"
+             ]
+  , examples (datetime (2012, 6, 17, 0, 0, 0) Day)
+             [ "last fathers day"
+             ]
+  , examples (datetime (1996, 6, 16, 0, 0, 0) Day)
+             [ "fathers day 1996"
+             ]
   ]

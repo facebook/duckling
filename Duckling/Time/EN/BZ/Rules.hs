@@ -78,6 +78,7 @@ rulePeriodicHolidays = mkRuleHolidays
   , ( "St. George's Caye Day", "st\\.? george'?s caye day", monthDay 9 10 )
 
   -- Fixed day/week/month, year over year
+  , ( "Father's Day", "father'?s?'? day", nthDOWOfMonth 3 7 6 )
   , ( "Thanksgiving Day", "thanks?giving( day)?", nthDOWOfMonth 4 4 11 )
   ]
 

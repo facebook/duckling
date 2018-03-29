@@ -82,6 +82,13 @@ rulePeriodicHolidays = mkRuleHolidays
   , ( "Victory in Europe Day", "victory in europe day", monthDay 5 8 )
 
   -- Fixed day/week/month, year over year
+  , ( "August Bank Holiday", "(august|(late )?summer) bank holiday"
+    , predLastOf (dayOfWeek 1) (month 8) )
+  , ( "Early May Bank Holiday", "early may bank holiday", nthDOWOfMonth 1 1 5 )
+  , ( "Father's Day", "father'?s?'? day", nthDOWOfMonth 3 7 6 )
+  , ( "Remembrance Sunday", "remembrance sunday", nthDOWOfMonth 2 7 11 )
+  , ( "Spring Bank Holiday", "(sprint|late may) bank holiday"
+    , predLastOf (dayOfWeek 1) (month 5) )
   , ( "Thanksgiving Day", "thanks?giving( day)?", nthDOWOfMonth 4 4 11 )
   ]
 

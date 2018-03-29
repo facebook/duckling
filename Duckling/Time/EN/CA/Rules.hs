@@ -86,10 +86,28 @@ rulePeriodicHolidays = mkRuleHolidays
   , ( "St David's Day", "st\\.? david'?s day", monthDay 3 1 )
   , ( "St. Jean Baptiste Day", "st\\.? jean baptiste day", monthDay 6 24 )
   , ( "The Twelfth", "orangemen's day|the (glorious )?twelfth", monthDay 7 12 )
+  , ( "Victoria Day", "sovereign's birthday|victoria day"
+    , predLastOf (dayOfWeek 1) (monthDay 5 25) )
   , ( "Vimy Ridge Day", "vimy ridge day", monthDay 4 9 )
 
   -- Fixed day/week/month, year over year
+  , ( "Civic Holiday"
+    , "british columbia day|civic holiday|natal day|new brunswick day|Saskatchewan Day|terry fox day"
+    , nthDOWOfMonth 1 1 8
+    )
+  , ( "Family Day"
+    , "(family|islander|louis riel|nova scotia heritage) day"
+    , nthDOWOfMonth 3 1 2 )
+  , ( "Father's Day", "father'?s?'? day", nthDOWOfMonth 3 7 6 )
+  , ( "Gold Cup Parade", "gold cup parade", nthDOWOfMonth 3 5 8 )
+  , ( "Heritage Day in Alberta", "heritage day in alberta", nthDOWOfMonth 1 1 8 )
+  , ( "Royal St. John's Regatta", "regatta day|royal st\\.? john's regatta"
+    , nthDOWOfMonth 1 3 8 )
+  , ( "Take our Daughters and Sons to Work Day"
+    , "take our daughters and sons to work day", nthDOWOfMonth 1 3 11 )
   , ( "Thanksgiving Day", "thanks?giving( day)?", nthDOWOfMonth 2 1 10 )
+  , ( "Yukon's Discovery Day", "(klondike gold|yukon's) discovery day"
+    , nthDOWOfMonth 3 1 8 )
   ]
 
 rules :: [Rule]

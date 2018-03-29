@@ -77,6 +77,11 @@ rulePeriodicHolidays = mkRuleHolidays
   , ( "Waitangi Day", "waitangi day", monthDay 2 6 )
 
   -- Fixed day/week/month, year over year
+  , ( "Administrative Professionals' Day"
+    , "(admin(istrative professionals'?)|secretaries'?) day"
+    , nthDOWOfMonth 3 3 4 )
+  , ( "Father's Day", "father'?s?'? day", nthDOWOfMonth 1 7 9 )
+  , ( "Queen's birthday", "queen's birthday", nthDOWOfMonth 1 1 6 )
   , ( "Thanksgiving Day", "thanks?giving( day)?", nthDOWOfMonth 4 4 11 )
   ]
 

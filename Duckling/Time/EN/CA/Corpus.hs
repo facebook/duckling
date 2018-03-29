@@ -73,4 +73,31 @@ allExamples = concat
              , "Orangemen's Day"
              , "the twelfth"
              ]
+  , examples (datetime (2013, 6, 16, 0, 0, 0) Day)
+             [ "Father's Day"
+             ]
+  , examples (datetime (2012, 6, 17, 0, 0, 0) Day)
+             [ "last fathers day"
+             ]
+  , examples (datetime (1996, 6, 16, 0, 0, 0) Day)
+             [ "fathers day 1996"
+             ]
+  , examples (datetime (2018, 5, 21, 0, 0, 0) Day)
+             [ "Victoria day 2018"
+             , "Sovereign's birthday 2018"
+             ]
+  , examples (datetime (2013, 8, 5, 0, 0, 0) Day)
+             [ "Civic Holiday"
+             , "British Columbia Day"
+             , "Natal Day"
+             , "New Brunswick Day"
+             , "Saskatchewan Day"
+             , "Terry Fox Day"
+             ]
+  , examples (datetime (2018, 2, 19, 0, 0, 0) Day)
+             [ "family day 2018"
+             , "islander day 2018"
+             , "louis riel day 2018"
+             , "nova scotia heritage day 2018"
+             ]
   ]

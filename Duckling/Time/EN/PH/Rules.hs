@@ -72,7 +72,8 @@ ruleMMDDYYYYDot = Rule
 rulePeriodicHolidays :: [Rule]
 rulePeriodicHolidays = mkRuleHolidays
   -- Fixed dates, year over year
-  [ ( "Bonifacio Day", "bonifacio day", monthDay 11 30 )
+  [ ( "Arbor Day", "arbor day", monthDay 6 25 )
+  , ( "Bonifacio Day", "bonifacio day", monthDay 11 30 )
   , ( "Independence Day", "independence day", monthDay 6 12 )
   , ( "Ninoy Aquino Day", "ninoy aquino day", monthDay 8 21 )
   , ( "People Power Anniversary", "(edsa revolution|people power) anniversary"
@@ -81,6 +82,9 @@ rulePeriodicHolidays = mkRuleHolidays
   , ( "The Day of Valor", "the day of valor", monthDay 4 9 )
 
   -- Fixed day/week/month, year over year
+  , ( "Father's Day", "father'?s?'? day", nthDOWOfMonth 3 7 6 )
+  , ( "National Elections Day", "national elections day", nthDOWOfMonth 2 1 5 )
+  , ( "Parents' Day", "parents' day", nthDOWOfMonth 1 1 12 )
   , ( "Thanksgiving Day", "thanks?giving( day)?", nthDOWOfMonth 4 4 11 )
   ]
 

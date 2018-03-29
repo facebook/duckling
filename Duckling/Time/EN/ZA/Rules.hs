@@ -23,6 +23,7 @@ import Duckling.Regex.Types
 import Duckling.Time.Helpers
 import Duckling.Time.Types (TimeData (..))
 import Duckling.Types
+import qualified Duckling.Time.Types as TTime
 
 ruleMMDD :: Rule
 ruleMMDD = Rule
@@ -79,7 +80,15 @@ rulePeriodicHolidays = mkRuleHolidays
   , ( "Workers' Day", "workers'? day", monthDay 5 1 )
 
   -- Fixed day/week/month, year over year
+  , ( "Father's Day", "father'?s?'? day", nthDOWOfMonth 3 7 6 )
   , ( "Thanksgiving Day", "thanks?giving( day)?", nthDOWOfMonth 4 4 11 )
+  ]
+
+rulePeriodicHolidays' :: [Rule]
+rulePeriodicHolidays' = mkRuleHolidays'
+  -- Fixed dates, year over year
+  [ ( "National Arbor Week", "national arbor week"
+    , interval TTime.Open (monthDay 9 1) (monthDay 9 7) )
   ]
 
 rules :: [Rule]
@@ -89,3 +98,4 @@ rules =
   , ruleDDMMYYYYDot
   ]
   ++ rulePeriodicHolidays
+  ++ rulePeriodicHolidays'

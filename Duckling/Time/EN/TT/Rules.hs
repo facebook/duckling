@@ -76,6 +76,7 @@ rulePeriodicHolidays = mkRuleHolidays
   , ( "Spiritual Baptist Liberation Day", "spiritual baptist liberation day", monthDay 3 30 )
 
   -- Fixed day/week/month, year over year
+  , ( "Father's Day", "father'?s?'? day", nthDOWOfMonth 3 7 6 )
   , ( "Thanksgiving Day", "thanks?giving( day)?", nthDOWOfMonth 4 4 11 )
   ]
 

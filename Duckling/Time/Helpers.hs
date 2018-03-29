@@ -28,7 +28,7 @@ module Duckling.Time.Helpers
   , getIntValue, timeComputed
   -- Rule constructors
   , mkRuleInstants, mkRuleDaysOfWeek, mkRuleMonths, mkRuleSeasons
-  , mkRuleHolidays
+  , mkRuleHolidays, mkRuleHolidays'
   ) where
 
 import Data.Maybe
@@ -588,3 +588,10 @@ mkRuleHolidays :: [(Text, String, TimeData)] -> [Rule]
 mkRuleHolidays = map go
   where
     go (name, ptn, td) = mkSingleRegexRule name ptn . tt $ mkOkForThisNext td
+
+mkRuleHolidays' :: [(Text, String, Maybe TimeData)] -> [Rule]
+mkRuleHolidays' = map go
+  where
+    go (name, ptn, td) = mkSingleRegexRule name ptn $ do
+      td <- td
+      tt $ mkOkForThisNext td

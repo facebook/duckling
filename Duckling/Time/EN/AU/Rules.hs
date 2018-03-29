@@ -23,6 +23,8 @@ import Duckling.Regex.Types
 import Duckling.Time.Helpers
 import Duckling.Time.Types (TimeData (..))
 import Duckling.Types
+import qualified Duckling.Time.Types as TTime
+import qualified Duckling.TimeGrain.Types as TG
 
 ruleDDMM :: Rule
 ruleDDMM = Rule
@@ -83,11 +85,42 @@ rulePeriodicHolidays = mkRuleHolidays
     , "take our daughters and sons to work day", monthDay 1 5 )
 
   -- Fixed day/week/month, year over year
-  , ( "National Tree Day", "national tree day"
+  , ( "Adelaide Cup", "adelaide cup", nthDOWOfMonth 2 1 3 )
+  , ( "Administrative Professionals' Day"
+    , "(admin(istrative professionals'?)|secretaries'?) day"
+    , nthDOWOfMonth 1 5 5 )
+  , ( "Canberra Day", "canberra day", nthDOWOfMonth 2 1 3 )
+  , ( "Eight Hours Day", "eight hours day", nthDOWOfMonth 2 1 3 )
+  , ( "Father's Day", "father'?s?'? day", nthDOWOfMonth 1 7 9 )
+  , ( "Melbourne Cup Day", "melbourne cup day", nthDOWOfMonth 1 2 11 )
+  , ( "National Close the Gap Day", "national close the gap day"
+    , nthDOWOfMonth 3 4 3 )
+  , ( "National Tree Day", "(arbor|national tree) day"
     , predLastOf (dayOfWeek 7) (month 6) )
   , ( "National Schools Tree Day", "national schools tree day"
     , predLastOf (dayOfWeek 5) (month 6) )
+  , ( "New South Wales Bank Holiday", "new south wales bank holiday"
+    , nthDOWOfMonth 1 1 8 )
+  , ( "Picnic Day", "(northern territory )?picnic day", nthDOWOfMonth 1 1 8 )
+  , ( "Recreation Day", "recreation day", nthDOWOfMonth 1 1 10 )
   , ( "Thanksgiving Day", "thanks?giving( day)?", nthDOWOfMonth 4 4 11 )
+  , ( "Western Australia Day", "western australia day", nthDOWOfMonth 1 1 6 )
+  ]
+
+rulePeriodicHolidays' :: [Rule]
+rulePeriodicHolidays' = mkRuleHolidays'
+  -- Fixed day/week/month, year over year
+  -- Week from Sunday of July until following Sunday that has the second Friday
+  [ ( "NAIDOC Week"
+    , "(naidoc|national aboriginal and islander day observance committee) week"
+    , let fri = nthDOWOfMonth 2 5 7
+          start = cycleNthAfter False TG.Day (- 5) fri
+          end = cycleNthAfter False TG.Day 2 fri
+      in interval TTime.Open start end )
+  -- 3 days ending on the second Monday of February
+  , ( "Royal Hobart Regatta", "royal hobart regatta"
+    , let end = nthDOWOfMonth 2 1 2
+      in interval TTime.Open (cycleNthAfter False TG.Day (- 2) end) end )
   ]
 
 rules :: [Rule]
@@ -97,3 +130,4 @@ rules =
   , ruleDDMMYYYYDot
   ]
   ++ rulePeriodicHolidays
+  ++ rulePeriodicHolidays'

@@ -64,4 +64,16 @@ allExamples = concat
              , "day of reconciliation"
              , "day of the covenant"
              ]
+  , examples (datetimeInterval ((2013, 9, 1, 0, 0, 0), (2013, 9, 8, 0, 0, 0)) Day)
+             [ "national arbor week"
+             ]
+  , examples (datetime (2013, 6, 16, 0, 0, 0) Day)
+             [ "Father's Day"
+             ]
+  , examples (datetime (2012, 6, 17, 0, 0, 0) Day)
+             [ "last fathers day"
+             ]
+  , examples (datetime (1996, 6, 16, 0, 0, 0) Day)
+             [ "fathers day 1996"
+             ]
   ]

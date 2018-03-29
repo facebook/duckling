@@ -66,4 +66,19 @@ allExamples = concat
   , examples (datetime (2013, 4, 25, 0, 0, 0) Day)
              [ "anzac day"
              ]
+  , examples (datetime (2013, 9, 1, 0, 0, 0) Day)
+             [ "Father's Day"
+             ]
+  , examples (datetime (2012, 9, 2, 0, 0, 0) Day)
+             [ "last fathers day"
+             ]
+  , examples (datetime (1996, 9, 1, 0, 0, 0) Day)
+             [ "fathers day 1996"
+             ]
+  , examples (datetimeInterval ((2020, 2, 8, 0, 0, 0), (2020, 2, 11, 0, 0, 0)) Day)
+             [ "Royal Hobart Regatta 2020"
+             ]
+  , examples (datetimeInterval ((2018, 7, 8, 0, 0, 0), (2018, 7, 16, 0, 0, 0)) Day)
+             [ "NAIDOC week 2018"
+             ]
   ]

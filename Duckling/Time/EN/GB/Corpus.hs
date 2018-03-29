@@ -35,6 +35,10 @@ allExamples = concat
              , "31.10.1974"
              , "31 10 1974"
              ]
+  , examples (datetime (2013, 10, 10, 0, 0, 0) Day)
+             [ "10/10"
+             , "10/10/2013"
+             ]
   , examples (datetime (2013, 4, 25, 16, 0, 0) Minute)
              [ "25/4 at 4:00pm"
              ]
@@ -62,8 +66,18 @@ allExamples = concat
   , examples (datetime (2013, 11, 5, 0, 0, 0) Day)
              [ "guy fawkes day"
              ]
-  , examples (datetime (2013, 10, 10, 0, 0, 0) Day)
-             [ "10/10"
-             , "10/10/2013"
+  , examples (datetime (2018, 8, 27, 0, 0, 0) Day)
+             [ "august bank holiday 2018"
+             , "summer bank holiday 2018"
+             , "late summer bank holiday 2018"
+             ]
+  , examples (datetime (2013, 6, 16, 0, 0, 0) Day)
+             [ "Father's Day"
+             ]
+  , examples (datetime (2012, 6, 17, 0, 0, 0) Day)
+             [ "last fathers day"
+             ]
+  , examples (datetime (1996, 6, 16, 0, 0, 0) Day)
+             [ "fathers day 1996"
              ]
   ]

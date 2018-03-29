@@ -25,6 +25,7 @@ import Duckling.Time.Helpers
 import Duckling.Time.Types (TimeData (..))
 import Duckling.Types
 import qualified Duckling.Time.Types as TTime
+import qualified Duckling.TimeGrain.Types as TG
 
 ruleMMDD :: Rule
 ruleMMDD = Rule
@@ -81,14 +82,13 @@ ruleThanksgiving = Rule
   , prod = const . tt . mkOkForThisNext $ nthDOWOfMonth 4 4 11
   }
 
-ruleKwanzaa :: Rule
-ruleKwanzaa  = Rule
-  { name = "Kwanzaa"
+ruleFathersDay :: Rule
+ruleFathersDay = Rule
+  { name = "Father's Day"
   , pattern =
-    [ regex "kwanzaa"
+    [ regex "father'?s?'? day"
     ]
-  , prod = const $ Token Time <$> mkOkForThisNext
-      <$> interval TTime.Open (monthDay 12 26) (monthDay 1 1)
+  , prod = const . tt . mkOkForThisNext $ nthDOWOfMonth 3 7 6
   }
 
 rulePeriodicHolidays :: [Rule]
@@ -171,17 +171,78 @@ rulePeriodicHolidays = mkRuleHolidays
   , ( "Wright Brothers Day", "wright brothers day", monthDay 12 17 )
 
   -- Fixed day/week/month, year over year
+  , ( "Arbor Day", "arbor day", predLastOf (dayOfWeek 5) (month 4) )
+  , ( "Armed Forces Day", "armed forces day", nthDOWOfMonth 3 6 5 )
+  , ( "Casimir Pulaski Day", "casimir pulaski day", nthDOWOfMonth 1 1 3 )
+  , ( "Child Health Day", "child health day", nthDOWOfMonth 1 1 10 )
+  , ( "Columbus Day", "columbus day", nthDOWOfMonth 2 1 10 )
+  -- Saturday after Labor Day
+  , ( "Carl Garner Federal Lands Cleanup Day"
+    , "carl garner federal lands cleanup day"
+    , cycleNthAfter False TG.Day 5 $ nthDOWOfMonth 1 1 9 )
+  -- Monday after Thanksgiving
+  , ( "Cyber Monday", "cyber monday"
+    , cycleNthAfter False TG.Day 4 $ nthDOWOfMonth 4 4 11 )
+  , ( "Election Day", "election day"
+    , cycleNthAfter False TG.Day 1 $ nthDOWOfMonth 1 1 11 )
+  , ( "Employee Appreciation Day", "employee appreciation day"
+    , nthDOWOfMonth 1 5 3 )
+  , ( "Friendship Day", "friendship day", nthDOWOfMonth 1 7 8 )
+  , ( "Gold Star Mother's Day", "gold star mother's day"
+    , predLastOf (dayOfWeek 7) (month 9) )
+  , ( "Indigenous People's Day", "indigenous people's day"
+    , nthDOWOfMonth 2 1 10 )
+  , ( "Lee Jackson Day", "lee jackson day", nthDOWOfMonth 2 5 1 )
+  -- Last Monday of May
+  , ( "Memorial Day", "(decoration|memorial) day"
+    , predLastOf (dayOfWeek 1) (month 5) )
+  -- Long weekend before the last Monday of May
+  , ( "Memorial Day weekend", "(decoration|memorial) day week(\\s|-)?ends?"
+    , longWEBefore $ predLastOf (dayOfWeek 1) (month 5) )
+  -- 2 days before Mother's Day
+  , ( "Military Spouse Day", "military spouse (appreciation )?day"
+    , cycleNthAfter False TG.Day (- 2) $ nthDOWOfMonth 2 7 5 )
+  , ( "National CleanUp Day", "national clean\\-?up day", nthDOWOfMonth 3 6 9 )
+  , ( "National Day of Prayer", "national day of prayer", nthDOWOfMonth 1 4 5 )
+  , ( "National Defense Transportation Day"
+    , "national defense transportation day"
+    , nthDOWOfMonth 3 5 5 )
+  , ( "National Explosive Ordnance Disposal Day"
+    , "national (eod|explosive ordnance disosal) day"
+    , nthDOWOfMonth 1 6 5 )
+  -- First Sunday after Labor Day
+  , ( "National Grandparents Day", "national grandparents day"
+    , cycleNthAfter False TG.Day 6 $ nthDOWOfMonth 1 1 9 )
+  , ( "National POW/MIA Recognition Day", "national pow/mia recognition day"
+    , nthDOWOfMonth 3 5 9 )
+  , ( "National Wear Red Day", "national wear red day", nthDOWOfMonth 1 5 2 )
+  -- Day after Thanksgiving
+  , ( "Native American Heritage Day"
+    , "(american indian|native american) heritage day"
+    , cycleNthAfter False TG.Day 1 $ nthDOWOfMonth 4 4 11 )
+  , ( "Native Americans' Day", "native americans' day", nthDOWOfMonth 4 1 9 )
+  , ( "Nevada Day", "nevada day", predLastOf (dayOfWeek 5) (month 10) )
+  , ( "Parents' Day", "parents' day", nthDOWOfMonth 4 7 7 )
+  , ( "Patriots' Day", "patriot'?s'? day", nthDOWOfMonth 3 1 4 )
+  , ( "Robert E. Lee Day", "robert e\\. lee day|lee's (birth)?day"
+    , nthDOWOfMonth 3 1 1 )
+  , ( "Seward's Day", "seward's day", predLastOf (dayOfWeek 1) (month 3) )
+  , ( "Statehood Day", "(admission|statehood) day", nthDOWOfMonth 3 5 8 )
+  , ( "Sweetest Day", "sweetest day", nthDOWOfMonth 3 6 10 )
+  , ( "Take our Daughters and Sons to Work Day"
+    , "take our daughters and sons to work day", nthDOWOfMonth 4 4 4 )
+  , ( "Town Meeting Day", "town meeting day", nthDOWOfMonth 1 2 3 )
+  , ( "Victory Day", "victory day", nthDOWOfMonth 2 1 8 )
   , ( "Washington's Birthday/President's Day/Daisy Gatson Bates Day"
     , "(george )?washington'?s? (birth)?day|president'?s?'? day|daisy gatson bates'? day"
     , nthDOWOfMonth 3 1 2
     )
+  ]
 
-  -- Last Monday of May
-  , ( "Memorial Day", "(decoration|memorial) day", predLastOf (dayOfWeek 1) (month 5) )
-  -- Long weekend before the last Monday of May
-  , ( "Memorial Day weekend", "(decoration|memorial) day week(\\s|-)?ends?"
-    , longWEBefore $ predLastOf (dayOfWeek 1) (month 5)
-    )
+rulePeriodicHolidays' :: [Rule]
+rulePeriodicHolidays' = mkRuleHolidays'
+  -- Fixed dates, year over year
+  [ ( "Kwanzaa", "kwanzaa", interval TTime.Open (monthDay 12 26) (monthDay 1 1) )
   ]
 
 rulesBackwardCompatible :: [Rule]
@@ -190,11 +251,10 @@ rulesBackwardCompatible =
   , ruleMMDDYYYY
   , ruleMMDDYYYYDot
   , ruleThanksgiving
+  , ruleFathersDay
   ]
 
 rules :: [Rule]
-rules =
- [ ruleKwanzaa
- ]
- ++ rulesBackwardCompatible
- ++ rulePeriodicHolidays
+rules = rulesBackwardCompatible
+  ++ rulePeriodicHolidays
+  ++ rulePeriodicHolidays'

@@ -59,6 +59,13 @@ allExamples = concat
   , examples (datetime (2017, 11, 23, 0, 0, 0) Day)
              [ "thanksgiving 2017"
              ]
+  , examples (datetime (2012, 11, 26, 0, 0, 0) Day)
+             [ "last cyber monday"
+             , "cyber monday 2012"
+             ]
+  , examples (datetime (2017, 11, 27, 0, 0, 0) Day)
+             [ "cyber monday 2017"
+             ]
   , examples (datetime (2013, 5, 27, 0, 0, 0) Day)
              [ "memorial day"
              , "Next Memorial Day"
@@ -94,5 +101,20 @@ allExamples = concat
              , "Abraham Lincoln's birthday"
              , "Lincoln birthday"
              , "Lincolns' birthday"
+             ]
+  , examples (datetime (2013, 6, 16, 0, 0, 0) Day)
+             [ "Father's Day"
+             ]
+  , examples (datetime (2012, 6, 17, 0, 0, 0) Day)
+             [ "last fathers day"
+             ]
+  , examples (datetime (1996, 6, 16, 0, 0, 0) Day)
+             [ "fathers day 1996"
+             ]
+  , examples (datetime (2019, 9, 8, 0, 0, 0) Day)
+             [ "national grandparents day 2019"
+             ]
+  , examples (datetime (2018, 5, 11, 0, 0, 0) Day)
+             [ "Military Spouse day 2018"
              ]
   ]

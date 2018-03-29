@@ -1471,13 +1471,18 @@ rulePeriodicHolidays = mkRuleHolidays
   , ( "Zero Discrimination Day", "zero discrimination day", monthDay 3 1 )
 
   -- Fixed day/week/month, year over year
+  , ( "Commonwealth Day", "commonwealth day", nthDOWOfMonth 2 1 3 )
+  , ( "Day of Remembrance for Road Traffic Victims"
+    , "(world )?day of remembrance for road traffic victims"
+    , nthDOWOfMonth 3 7 11 )
+  , ( "International Day of Cooperatives"
+    , "international day of co\\-?operatives", nthDOWOfMonth 1 6 7 )
+  , ( "Labor Day"               , "labor day"       , nthDOWOfMonth 1 1 9 )
   , ( "Martin Luther King's Day"
     , "(MLK|Martin Luther King,?)( Jr\\.?| Junior)? day|(civil|idaho human) rights day"
     , nthDOWOfMonth 3 1 1
     )
-  , ( "Father's Day"            , "father'?s?'? day", nthDOWOfMonth 3 7 6 )
   , ( "Mother's Day"            , "mother'?s?'? day", nthDOWOfMonth 2 7 5 )
-  , ( "Labor Day"               , "labor day"       , nthDOWOfMonth 1 1 9 )
 
   -- The day after Thanksgiving (not always the fourth Friday of November)
   , ( "Black Friday", "black frid?day"
@@ -1487,6 +1492,17 @@ rulePeriodicHolidays = mkRuleHolidays
   , ( "Labor Day weekend", "labor day week(\\s|-)?ends?"
     , longWEBefore $ nthDOWOfMonth 1 1 9
     )
+  , ( "World Habitat Day", "world habitat day", nthDOWOfMonth 1 1 10 )
+  , ( "World Kidney Day", "world kidney day", nthDOWOfMonth 2 4 3 )
+  , ( "World Leprosy Day", "world leprosy day"
+    , predLastOf (dayOfWeek 7) (month 1) )
+  , ( "World Maritime Day", "world maritime day"
+    , predLastOf (dayOfWeek 4) (month 9) )
+  , ( "World Migratory Bird Day", "world migratory bird day"
+    , nthDOWOfMonth 2 6 5 )
+  , ( "World Philosophy Day", "world philosophy day", nthDOWOfMonth 3 4 11 )
+  , ( "World Religion Day", "world religion day", nthDOWOfMonth 3 7 1 )
+  , ( "World Sight Day", "world sight day", nthDOWOfMonth 2 4 10 )
   ]
 
 ruleComputedHolidays :: [Rule]

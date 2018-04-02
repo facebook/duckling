@@ -420,39 +420,37 @@ allExamples = concat
   , examples (datetimeInterval ((2012, 12, 21, 0, 0, 0), (2013, 3, 21, 0, 0, 0)) Day)
              [ "deze winter"
              ]
-  , examples (datetime (2013, 12, 25, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2013, 12, 25, 0, 0, 0) Day "Kerstmis")
              [ "kerst"
              , "kerstmis"
              ]
-  , examples (datetime (2013, 12, 31, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2013, 12, 31, 0, 0, 0) Day "Oudjaar")
              [ "oudjaar"
              , "oudejaarsavond"
              ]
-  , examples (datetime (2014, 1, 1, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2014, 1, 1, 0, 0, 0) Day "Nieuwjaarsdag")
              [ "nieuwjaarsdag"
              , "nieuwjaar"
              ]
-  , examples (datetime (2013, 2, 14, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2013, 2, 14, 0, 0, 0) Day "Valentijnsdag")
              [ "Valentijnsdag"
              ]
-  , examples (datetime (2013, 5, 12, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2013, 5, 12, 0, 0, 0) Day "Moederdag")
              [ "moederdag"
-             , "tweede zondag in mei"
              ]
-  , examples (datetime (2013, 6, 16, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2013, 6, 16, 0, 0, 0) Day "Vaderdag")
              [ "vaderdag"
-             , "derde zondag in juni"
              ]
-  , examples (datetime (2017, 04, 27, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2017, 04, 27, 0, 0, 0) Day "Koningsdag")
              [ "Koningsdag 2017"
              ]
-  , examples (datetime (2013, 10, 31, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2013, 10, 31, 0, 0, 0) Day "Halloween")
              [ "Halloween"
              ]
-  , examples (datetime (2013, 11, 1, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2013, 11, 1, 0, 0, 0) Day "Allerheiligen")
              [ "Allerheiligen"
              ]
-  , examples (datetime (2013, 12, 5, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2013, 12, 5, 0, 0, 0) Day "Sinterklaas")
              [ "Sinterklaas"
              , "Pakjesavond"
              , "Sinterklaasavond"

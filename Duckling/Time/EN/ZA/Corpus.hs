@@ -38,42 +38,42 @@ allExamples = concat
   , examples (datetime (2013, 4, 25, 16, 0, 0) Minute)
              [ "4/25 at 4:00pm"
              ]
-  , examples (datetime (2013, 11, 28, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2013, 11, 28, 0, 0, 0) Day "Thanksgiving Day")
              [ "thanksgiving day"
              , "thanksgiving"
              , "thanksgiving 2013"
              , "this thanksgiving"
              , "next thanksgiving day"
              ]
-  , examples (datetime (2014, 11, 27, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2014, 11, 27, 0, 0, 0) Day "Thanksgiving Day")
              [ "thanksgiving of next year"
              , "thanksgiving 2014"
              ]
-  , examples (datetime (2012, 11, 22, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2012, 11, 22, 0, 0, 0) Day "Thanksgiving Day")
              [ "last thanksgiving"
              , "thanksgiving day 2012"
              ]
-  , examples (datetime (2016, 11, 24, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2016, 11, 24, 0, 0, 0) Day "Thanksgiving Day")
              [ "thanksgiving 2016"
              ]
-  , examples (datetime (2017, 11, 23, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2017, 11, 23, 0, 0, 0) Day "Thanksgiving Day")
              [ "thanksgiving 2017"
              ]
-  , examples (datetime (2013, 12, 16, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2013, 12, 16, 0, 0, 0) Day "Day of Reconciliation")
              [ "day of the vow"
              , "day of reconciliation"
              , "day of the covenant"
              ]
-  , examples (datetimeInterval ((2013, 9, 1, 0, 0, 0), (2013, 9, 8, 0, 0, 0)) Day)
+  , examples (datetimeIntervalHoliday ((2013, 9, 1, 0, 0, 0), (2013, 9, 8, 0, 0, 0)) Day "National Arbor Week")
              [ "national arbor week"
              ]
-  , examples (datetime (2013, 6, 16, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2013, 6, 16, 0, 0, 0) Day "Father's Day")
              [ "Father's Day"
              ]
-  , examples (datetime (2012, 6, 17, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2012, 6, 17, 0, 0, 0) Day "Father's Day")
              [ "last fathers day"
              ]
-  , examples (datetime (1996, 6, 16, 0, 0, 0) Day)
+  , examples (datetimeHoliday (1996, 6, 16, 0, 0, 0) Day "Father's Day")
              [ "fathers day 1996"
              ]
   ]

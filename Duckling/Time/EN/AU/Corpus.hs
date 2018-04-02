@@ -42,43 +42,43 @@ allExamples = concat
              [ "10/10"
              , "10/10/2013"
              ]
-  , examples (datetime (2013, 11, 28, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2013, 11, 28, 0, 0, 0) Day "Thanksgiving Day")
              [ "thanksgiving day"
              , "thanksgiving"
              , "thanksgiving 2013"
              , "this thanksgiving"
              , "next thanksgiving day"
              ]
-  , examples (datetime (2014, 11, 27, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2014, 11, 27, 0, 0, 0) Day "Thanksgiving Day")
              [ "thanksgiving of next year"
              , "thanksgiving 2014"
              ]
-  , examples (datetime (2012, 11, 22, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2012, 11, 22, 0, 0, 0) Day "Thanksgiving Day")
              [ "last thanksgiving"
              , "thanksgiving day 2012"
              ]
-  , examples (datetime (2016, 11, 24, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2016, 11, 24, 0, 0, 0) Day "Thanksgiving Day")
              [ "thanksgiving 2016"
              ]
-  , examples (datetime (2017, 11, 23, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2017, 11, 23, 0, 0, 0) Day "Thanksgiving Day")
              [ "thanksgiving 2017"
              ]
-  , examples (datetime (2013, 4, 25, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2013, 4, 25, 0, 0, 0) Day "ANZAC Day")
              [ "anzac day"
              ]
-  , examples (datetime (2013, 9, 1, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2013, 9, 1, 0, 0, 0) Day "Father's Day")
              [ "Father's Day"
              ]
-  , examples (datetime (2012, 9, 2, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2012, 9, 2, 0, 0, 0) Day "Father's Day")
              [ "last fathers day"
              ]
-  , examples (datetime (1996, 9, 1, 0, 0, 0) Day)
+  , examples (datetimeHoliday (1996, 9, 1, 0, 0, 0) Day "Father's Day")
              [ "fathers day 1996"
              ]
-  , examples (datetimeInterval ((2020, 2, 8, 0, 0, 0), (2020, 2, 11, 0, 0, 0)) Day)
+  , examples (datetimeIntervalHoliday ((2020, 2, 8, 0, 0, 0), (2020, 2, 11, 0, 0, 0)) Day "Royal Hobart Regatta")
              [ "Royal Hobart Regatta 2020"
              ]
-  , examples (datetimeInterval ((2018, 7, 8, 0, 0, 0), (2018, 7, 16, 0, 0, 0)) Day)
+  , examples (datetimeIntervalHoliday ((2018, 7, 8, 0, 0, 0), (2018, 7, 16, 0, 0, 0)) Day "NAIDOC Week")
              [ "NAIDOC week 2018"
              ]
   ]

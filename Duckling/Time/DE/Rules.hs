@@ -80,9 +80,9 @@ ruleSeasons = mkRuleSeasons
 
 ruleHolidays :: [Rule]
 ruleHolidays = mkRuleHolidays
-  [ ( "new year's day"                    , "neujahr(s?tag)?"
+  [ ( "Neujahr"                           , "neujahr(s?tag)?"
     , monthDay  1  1 )
-  , ( "valentine's day"                   , "valentin'?stag"
+  , ( "Valentinstag"                      , "valentin'?stag"
     , monthDay  2 14 )
   , ( "Schweizer Bundesfeiertag"
     , "schweiz(er)? (bundes)?feiertag|bundes feiertag"
@@ -92,21 +92,21 @@ ruleHolidays = mkRuleHolidays
   , ( "Oesterreichischer Nationalfeiertag"
     , "((ö)sterreichischer?)? nationalfeiertag|national feiertag"
     , monthDay 10 26 )
-  , ( "halloween day"                     , "hall?owe?en?"
+  , ( "Halloween"                         , "hall?owe?en?"
     , monthDay 10 31 )
   , ( "Allerheiligen"                     , "allerheiligen?|aller heiligen?"
     , monthDay 11  1 )
   , ( "Nikolaus"                          , "nikolaus(tag)?|nikolaus tag|nikolo"
     , monthDay 12  6 )
-  , ( "christmas eve"                     , "heilig(er)? abend"
+  , ( "Heiligabend"                       , "heilig(er)? abend"
     , monthDay 12 24 )
-  , ( "christmas"                         , "weih?nacht(en|stag)?"
+  , ( "Weihnachten"                       , "weih?nacht(en|stag)?"
     , monthDay 12 25 )
-  , ( "new year's eve"                    , "silvester"
+  , ( "Silvester"                         , "silvester"
     , monthDay 12 31 )
-  , ( "Mother's Day"                      , "mutt?ertag|mutt?er (tag)?"
+  , ( "Muttertag"                      , "mutt?ertag|mutt?er (tag)?"
     , nthDOWOfMonth 2 7 5 )
-  , ( "Father's Day"                      , "vatt?er( ?tag)?"
+  , ( "Vatertag"                      , "vatt?er( ?tag)?"
     , nthDOWOfMonth 3 7 6 )
   ]
 

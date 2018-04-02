@@ -413,37 +413,36 @@ allExamples = concat
   , examples (datetimeInterval ((2012, 12, 21, 0, 0, 0), (2013, 3, 21, 0, 0, 0)) Day)
              [ "diesen winter"
              ]
-  , examples (datetime (2013, 12, 25, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2013, 12, 25, 0, 0, 0) Day "Weihnachten")
              [ "Weihnachten"
              , "Weihnachtstag"
              ]
-  , examples (datetime (2013, 12, 31, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2013, 12, 31, 0, 0, 0) Day "Silvester")
              [ "Silvester"
              ]
-  , examples (datetime (2014, 1, 1, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2014, 1, 1, 0, 0, 0) Day "Neujahr")
              [ "Neujahrstag"
              , "Neujahr"
              ]
-  , examples (datetime (2013, 2, 14, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2013, 2, 14, 0, 0, 0) Day "Valentinstag")
              [ "Valentinstag"
              ]
-  , examples (datetime (2013, 5, 12, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2013, 5, 12, 0, 0, 0) Day "Muttertag" )
              [ "Muttertag"
              ]
-  , examples (datetime (2013, 6, 16, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2013, 6, 16, 0, 0, 0) Day "Vatertag" )
              [ "Vatertag"
              ]
-  , examples (datetime (2013, 10, 3, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2013, 10, 3, 0, 0, 0) Day "Tag der Deutschen Einheit")
              [ "Tag der Deutschen Einheit"
-             , "3. Oktober"
              ]
-  , examples (datetime (2013, 10, 31, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2013, 10, 31, 0, 0, 0) Day "Halloween")
              [ "Halloween"
              ]
-  , examples (datetime (2013, 11, 1, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2013, 11, 1, 0, 0, 0) Day "Allerheiligen" )
              [ "Allerheiligen"
              ]
-  , examples (datetime (2013, 12, 6, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2013, 12, 6, 0, 0, 0) Day "Nikolaus")
              [ "Nikolaus"
              , "Nikolaustag"
              ]

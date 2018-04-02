@@ -75,7 +75,7 @@ rulePeriodicHolidays :: [Rule]
 rulePeriodicHolidays = mkRuleHolidays
   -- Fixed dates, year over year
   [ ( "Anniversary of the Statute of Westminster", "anniversary of the statute of westminster", monthDay 12 11 )
-  , ( "Canada/Dominion/Memorial Day", "(canada|dominion|memorial) day", monthDay 7 1 )
+  , ( "Memorial Day", "(canada|dominion|memorial) day", monthDay 7 1 )
   , ( "Groundhog Day", "groundhog day", monthDay 2 2 )
   , ( "Healthcare Aide Day", "healthcare aide day", monthDay 10 18 )
   , ( "National Aboriginal Day", "national aboriginal day", monthDay 6 21 )

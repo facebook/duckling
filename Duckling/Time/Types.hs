@@ -65,18 +65,19 @@ data TimeData = TimeData
   , form :: Maybe Form
   , direction :: Maybe IntervalDirection
   , okForThisNext :: Bool -- allows specific this+Time
+  , holiday :: Maybe Text
   }
 
 instance Eq TimeData where
-  (==) (TimeData _ l1 g1 n1 f1 d1 _) (TimeData _ l2 g2 n2 f2 d2 _) =
+  (==) (TimeData _ l1 g1 n1 f1 d1 _ _) (TimeData _ l2 g2 n2 f2 d2 _ _) =
     l1 == l2 && g1 == g2 && n1 == n2 && f1 == f2 && d1 == d2
 
 instance Hashable TimeData where
-  hashWithSalt s (TimeData _ latent grain imm form dir _) = hashWithSalt s
+  hashWithSalt s (TimeData _ latent grain imm form dir _ _) = hashWithSalt s
     (0::Int, (latent, grain, imm, form, dir))
 
 instance Ord TimeData where
-  compare (TimeData _ l1 g1 n1 f1 d1 _) (TimeData _ l2 g2 n2 f2 d2 _) =
+  compare (TimeData _ l1 g1 n1 f1 d1 _ _) (TimeData _ l2 g2 n2 f2 d2 _ _) =
     case compare g1 g2 of
       EQ -> case compare f1 f2 of
         EQ -> case compare l1 l2 of
@@ -88,12 +89,13 @@ instance Ord TimeData where
       z -> z
 
 instance Show TimeData where
-  show (TimeData _ latent grain _ form dir _) =
+  show (TimeData _ latent grain _ form dir _ holiday) =
     "TimeData{" ++
     "latent=" ++ show latent ++
     ", grain=" ++ show grain ++
     ", form=" ++ show form ++
     ", direction=" ++ show dir ++
+    ", holiday=" ++ show holiday ++
     "}"
 
 instance NFData TimeData where
@@ -102,7 +104,7 @@ instance NFData TimeData where
 instance Resolve TimeData where
   type ResolvedValue TimeData = TimeValue
   resolve _ Options {withLatent = False} TimeData {latent = True} = Nothing
-  resolve context _ TimeData {timePred, latent, notImmediate, direction} = do
+  resolve context _ TimeData {timePred, latent, notImmediate, direction, holiday} = do
     value <- case future of
       [] -> listToMaybe past
       ahead:nextAhead:_
@@ -110,10 +112,10 @@ instance Resolve TimeData where
       ahead:_ -> Just ahead
     values <- Just . take 3 $ if List.null future then past else future
     Just $ case direction of
-      Nothing -> (TimeValue (timeValue tzSeries value) $
-        map (timeValue tzSeries) values, latent)
-      Just d -> (TimeValue (openInterval tzSeries d value) $
-        map (openInterval tzSeries d) values, latent)
+      Nothing -> (TimeValue (timeValue tzSeries value)
+        (map (timeValue tzSeries) values) holiday, latent)
+      Just d -> (TimeValue (openInterval tzSeries d value)
+        (map (openInterval tzSeries d) values) holiday, latent)
     where
       DucklingTime (Series.ZoneSeriesTime utcTime tzSeries) = referenceTime context
       refTime = TimeObject
@@ -138,6 +140,7 @@ timedata' = TimeData
   , form = Nothing
   , direction = Nothing
   , okForThisNext = False
+  , holiday = Nothing
   }
 
 data TimeContext = TimeContext
@@ -164,7 +167,7 @@ data SingleTimeValue
   | OpenIntervalValue (InstantValue, IntervalDirection)
   deriving (Show, Eq)
 
-data TimeValue = TimeValue SingleTimeValue [SingleTimeValue]
+data TimeValue = TimeValue SingleTimeValue [SingleTimeValue] (Maybe Text)
   deriving (Show, Eq)
 
 instance ToJSON InstantValue where
@@ -192,9 +195,14 @@ instance ToJSON SingleTimeValue where
     ]
 
 instance ToJSON TimeValue where
-  toJSON (TimeValue value values) = case toJSON value of
-    Object o -> Object $ H.insert "values" (toJSON values) o
+  toJSON (TimeValue value values holiday) = case toJSON value of
+    Object o ->
+      Object $ insertHoliday holiday $ H.insert "values" (toJSON values) o
     _ -> Object H.empty
+    where
+      insertHoliday :: Maybe Text -> Object -> Object
+      insertHoliday Nothing obj = obj
+      insertHoliday (Just h) obj = H.insert "holidayBeta" (toJSON h) obj
 
 -- | Return a tuple of (past, future) elements
 type SeriesPredicate = TimeObject -> TimeContext -> ([TimeObject], [TimeObject])

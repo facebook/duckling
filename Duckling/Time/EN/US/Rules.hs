@@ -72,24 +72,11 @@ ruleMMDDYYYYDot = Rule
       _ -> Nothing
   }
 
--- Fourth Thursday of November
-ruleThanksgiving :: Rule
-ruleThanksgiving = Rule
-  { name = "Thanksgiving Day"
-  , pattern =
-    [ regex "thanks?giving( day)?"
-    ]
-  , prod = const . tt . mkOkForThisNext $ nthDOWOfMonth 4 4 11
-  }
-
-ruleFathersDay :: Rule
-ruleFathersDay = Rule
-  { name = "Father's Day"
-  , pattern =
-    [ regex "father'?s?'? day"
-    ]
-  , prod = const . tt . mkOkForThisNext $ nthDOWOfMonth 3 7 6
-  }
+ruleBackwardCompatibleHolidays :: [Rule]
+ruleBackwardCompatibleHolidays = mkRuleHolidays
+  [ ("Thanksgiving Day", "thanks?giving( day)?", nthDOWOfMonth 4 4 11)
+  , ("Father's Day", "father'?s?'? day", nthDOWOfMonth 3 7 6)
+  ]
 
 rulePeriodicHolidays :: [Rule]
 rulePeriodicHolidays = mkRuleHolidays
@@ -124,7 +111,7 @@ rulePeriodicHolidays = mkRuleHolidays
   , ( "Kamehameha Day", "kamehameha day", monthDay 6 11 )
   , ( "Kansas Day", "kansas day", monthDay 1 29 )
   , ( "Kent State Shootings Remembrance", "kent state shootings remembrance", monthDay 5 4 )
-  , ( "Law/Lei/Loyalty Day", "l(aw|ei|oyalty) day", monthDay 5 1 )
+  , ( "Loyalty Day", "l(aw|ei|oyalty) day", monthDay 5 1 )
   , ( "Leif Erikson Day", "leif erikson day", monthDay 10 9 )
   , ( "Lincoln's Birthday", "(abraham )?lincoln'?s?'? birthday", monthDay 2 12 )
   , ( "Linus Pauling Day", "linus pauling day", monthDay 2 28 )
@@ -233,7 +220,7 @@ rulePeriodicHolidays = mkRuleHolidays
     , "take our daughters and sons to work day", nthDOWOfMonth 4 4 4 )
   , ( "Town Meeting Day", "town meeting day", nthDOWOfMonth 1 2 3 )
   , ( "Victory Day", "victory day", nthDOWOfMonth 2 1 8 )
-  , ( "Washington's Birthday/President's Day/Daisy Gatson Bates Day"
+  , ( "President's Day"
     , "(george )?washington'?s? (birth)?day|president'?s?'? day|daisy gatson bates'? day"
     , nthDOWOfMonth 3 1 2
     )
@@ -250,9 +237,8 @@ rulesBackwardCompatible =
   [ ruleMMDD
   , ruleMMDDYYYY
   , ruleMMDDYYYYDot
-  , ruleThanksgiving
-  , ruleFathersDay
   ]
+  ++ ruleBackwardCompatibleHolidays
 
 rules :: [Rule]
 rules = rulesBackwardCompatible

@@ -38,55 +38,55 @@ allExamples = concat
   , examples (datetime (2013, 4, 25, 16, 0, 0) Minute)
              [ "4/25 at 4:00pm"
              ]
-  , examples (datetime (2013, 10, 14, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2013, 10, 14, 0, 0, 0) Day "Thanksgiving Day")
              [ "thanksgiving day"
              , "thanksgiving"
              , "thanksgiving 2013"
              , "this thanksgiving"
              , "next thanksgiving day"
              ]
-  , examples (datetime (2014, 10, 13, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2014, 10, 13, 0, 0, 0) Day "Thanksgiving Day")
              [ "thanksgiving of next year"
              , "thanksgiving 2014"
              ]
-  , examples (datetime (2012, 10, 8, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2012, 10, 8, 0, 0, 0) Day "Thanksgiving Day")
              [ "last thanksgiving"
              , "thanksgiving day 2012"
              ]
-  , examples (datetime (2016, 10, 10, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2016, 10, 10, 0, 0, 0) Day "Thanksgiving Day")
              [ "thanksgiving 2016"
              ]
-  , examples (datetime (2017, 10, 9, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2017, 10, 9, 0, 0, 0) Day "Thanksgiving Day")
              [ "thanksgiving 2017"
              ]
-  , examples (datetime (2013, 7, 1, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2013, 7, 1, 0, 0, 0) Day "Memorial Day")
              [ "canada day"
              , "memorial day"
              , "dominion day"
              , "Next Memorial Day"
              ]
-  , examples (datetime (2013, 4, 9, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2013, 4, 9, 0, 0, 0) Day "Vimy Ridge Day")
              [ "vimy ridge day"
              ]
-  , examples (datetime (2013, 7, 12, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2013, 7, 12, 0, 0, 0) Day "The Twelfth")
              [ "the Glorious Twelfth"
              , "Orangemen's Day"
              , "the twelfth"
              ]
-  , examples (datetime (2013, 6, 16, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2013, 6, 16, 0, 0, 0) Day "Father's Day")
              [ "Father's Day"
              ]
-  , examples (datetime (2012, 6, 17, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2012, 6, 17, 0, 0, 0) Day "Father's Day")
              [ "last fathers day"
              ]
-  , examples (datetime (1996, 6, 16, 0, 0, 0) Day)
+  , examples (datetimeHoliday (1996, 6, 16, 0, 0, 0) Day "Father's Day")
              [ "fathers day 1996"
              ]
-  , examples (datetime (2018, 5, 21, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2018, 5, 21, 0, 0, 0) Day "Victoria Day")
              [ "Victoria day 2018"
              , "Sovereign's birthday 2018"
              ]
-  , examples (datetime (2013, 8, 5, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2013, 8, 5, 0, 0, 0) Day "Civic Holiday")
              [ "Civic Holiday"
              , "British Columbia Day"
              , "Natal Day"
@@ -94,7 +94,7 @@ allExamples = concat
              , "Saskatchewan Day"
              , "Terry Fox Day"
              ]
-  , examples (datetime (2018, 2, 19, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2018, 2, 19, 0, 0, 0) Day "Family Day")
              [ "family day 2018"
              , "islander day 2018"
              , "louis riel day 2018"

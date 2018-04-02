@@ -47,25 +47,25 @@ defaultCorpus = (testContext, testOptions, allExamples ++ custom)
       , examples (datetime (2013, 4, 25, 16, 0, 0) Minute)
                  [ "4/25 at 4:00pm"
                  ]
-      , examples (datetime (2013, 11, 28, 0, 0, 0) Day)
+      , examples (datetimeHoliday (2013, 11, 28, 0, 0, 0) Day "Thanksgiving Day")
                  [ "thanksgiving day"
                  , "thanksgiving"
                  , "thanksgiving 2013"
                  , "this thanksgiving"
                  , "next thanksgiving day"
                  ]
-      , examples (datetime (2014, 11, 27, 0, 0, 0) Day)
+      , examples (datetimeHoliday (2014, 11, 27, 0, 0, 0) Day "Thanksgiving Day")
                  [ "thanksgiving of next year"
                  , "thanksgiving 2014"
                  ]
-      , examples (datetime (2012, 11, 22, 0, 0, 0) Day)
+      , examples (datetimeHoliday (2012, 11, 22, 0, 0, 0) Day "Thanksgiving Day")
                  [ "last thanksgiving"
                  , "thanksgiving day 2012"
                  ]
-      , examples (datetime (2016, 11, 24, 0, 0, 0) Day)
+      , examples (datetimeHoliday (2016, 11, 24, 0, 0, 0) Day "Thanksgiving Day")
                  [ "thanksgiving 2016"
                  ]
-      , examples (datetime (2017, 11, 23, 0, 0, 0) Day)
+      , examples (datetimeHoliday (2017, 11, 23, 0, 0, 0) Day "Thanksgiving Day")
                  [ "thanksgiving 2017"
                  ]
       ]
@@ -612,85 +612,93 @@ allExamples = concat
   , examples (datetimeInterval ((2013, 2, 11, 21, 0, 0), (2013, 2, 12, 0, 0, 0)) Hour)
              [ "late last night"
              ]
-  , examples (datetime (2013, 12, 25, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2013, 12, 25, 0, 0, 0) Day "Christmas")
              [ "xmas"
              , "christmas"
              , "christmas day"
              ]
-  , examples (datetime (2013, 12, 31, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2013, 12, 25, 18, 0, 0) Hour "Christmas")
+             [ "xmas at 6 pm"
+             ]
+  , examples (datetimeIntervalHoliday ((2013, 12, 25, 4, 0, 0), (2013, 12, 25, 12, 0, 0)) Hour "Christmas")
+             [ "morning of xmas"
+             , "morning of christmas 2013"
+             , "morning of this christmas day"
+             ]
+  , examples (datetimeHoliday (2013, 12, 31, 0, 0, 0) Day "New Year's Eve")
              [ "new year's eve"
              , "new years eve"
              ]
-  , examples (datetime (2014, 1, 1, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2014, 1, 1, 0, 0, 0) Day "New Year's Day")
              [ "new year's day"
              , "new years day"
              ]
-  , examples (datetime (2013, 2, 14, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2013, 2, 14, 0, 0, 0) Day "Valentine's Day")
              [ "valentine's day"
              , "valentine day"
              ]
-  , examples (datetime (2013, 5, 12, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2013, 5, 12, 0, 0, 0) Day "Mother's Day")
              [ "Mother's Day"
              , "next mothers day"
              ]
-  , examples (datetime (2012, 5, 13, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2012, 5, 13, 0, 0, 0) Day "Mother's Day")
              [ "last mothers day"
              ]
-  , examples (datetime (2014, 5, 11, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2014, 5, 11, 0, 0, 0) Day "Mother's Day")
              [ "mothers day 2014"
              ]
   , examples (datetime (2013, 7, 4, 0, 0, 0) Day)
              [ "4th of July"
              , "4 of july"
              ]
-  , examples (datetime (2013, 9, 2, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2013, 9, 2, 0, 0, 0) Day "Labor Day")
              [ "labor day"
              ]
-  , examples (datetime (2012, 9, 3, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2012, 9, 3, 0, 0, 0) Day "Labor Day")
              [ "labor day of last year"
              , "Labor Day 2012"
              ]
-  , examples (datetimeInterval ((2013, 8, 30, 18, 0, 0), (2013, 9, 3, 0, 0, 0)) Hour)
+  , examples (datetimeIntervalHoliday ((2013, 8, 30, 18, 0, 0), (2013, 9, 3, 0, 0, 0)) Hour "Labor Day weekend")
              [ "labor day weekend"
              ]
-  , examples (datetime (2013, 10, 31, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2013, 10, 31, 0, 0, 0) Day "Halloween")
              [ "halloween"
              , "next halloween"
              , "Halloween 2013"
              ]
-  , examples (datetime (2013, 11, 29, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2013, 11, 29, 0, 0, 0) Day "Black Friday")
              [ "black friday"
              , "black friday of this year"
              , "black friday 2013"
              ]
-  , examples (datetime (2017, 11, 24, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2017, 11, 24, 0, 0, 0) Day "Black Friday")
              [ "black friday 2017"
              ]
-  , examples (datetime (2014, 1, 20, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2014, 1, 20, 0, 0, 0) Day "Martin Luther King's Day")
              [ "MLK day"
              , "next Martin Luther King day"
              , "this MLK day"
              ]
-  , examples (datetime (2013, 1, 21, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2013, 1, 21, 0, 0, 0) Day "Martin Luther King's Day")
              [ "last MLK Jr. day"
              , "MLK day 2013"
              ]
-  , examples (datetime (2012, 1, 16, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2012, 1, 16, 0, 0, 0) Day "Martin Luther King's Day")
              [ "MLK day of last year"
              , "MLK day 2012"
              , "Civil Rights Day of last year"
              ]
-  , examples (datetime (2013, 11, 1, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2013, 11, 1, 0, 0, 0) Day "World Vegan Day")
              [ "world vegan day"
              ]
-  , examples (datetime (2013, 3, 31, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2013, 3, 31, 0, 0, 0) Day "Easter Sunday")
              [ "easter"
              , "easter 2013"
              ]
-  , examples (datetime (2013, 4, 1, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2013, 4, 1, 0, 0, 0) Day "Easter Monday")
              [ "easter mon"
              ]
-  , examples (datetime (2010, 4, 4, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2010, 4, 4, 0, 0, 0) Day "Easter Sunday")
              [ "easter 2010"
              , "Easter Sunday two thousand ten"
              ]

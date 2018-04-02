@@ -321,21 +321,26 @@ intersect td1 td2 =
     res -> Just res
 
 intersect' :: (TimeData, TimeData) -> TimeData
-intersect' (TimeData pred1 _ g1 _ _ d1 _, TimeData pred2 _ g2 _ _ d2 _)
+intersect' (TimeData pred1 _ g1 _ _ d1 _ h1, TimeData pred2 _ g2 _ _ d2 _ h2)
   | g1 < g2 = TTime.timedata'
     { TTime.timePred = timeCompose pred1 pred2
     , TTime.timeGrain = g1
     , TTime.direction = dir
+    , TTime.holiday = hol
     }
   | otherwise = TTime.timedata'
     { TTime.timePred = timeCompose pred2 pred1
     , TTime.timeGrain = g2
     , TTime.direction = dir
+    , TTime.holiday = hol
     }
   where
     dir = case catMaybes [d1, d2] of
       [] -> Nothing
       (x:_) -> Just x
+    hol = case catMaybes [h1, h2] of
+      [] -> Nothing
+      (h:_) -> Just h
 
 now :: TimeData
 now = td {TTime.timeGrain = TG.NoGrain}
@@ -419,9 +424,12 @@ predLastOf TimeData {TTime.timePred = cyclicPred, TTime.timeGrain = g} base =
 
 -- Generalized version of cycleNth with custom predicate
 predNth :: Int -> Bool -> TimeData -> TimeData
-predNth n notImmediate TimeData {TTime.timePred = p, TTime.timeGrain = g} =
+predNth n notImmediate TimeData
+  {TTime.timePred = p, TTime.timeGrain = g, TTime.holiday = h} =
   TTime.timedata'
-    {TTime.timePred = takeNth n notImmediate p, TTime.timeGrain = g}
+    {TTime.timePred = takeNth n notImmediate p
+    , TTime.timeGrain = g
+    , TTime.holiday = h}
 
 -- Generalized version of `cycleNthAfter` with custom predicate
 predNthAfter :: Int -> TimeData -> TimeData -> TimeData
@@ -432,7 +440,7 @@ predNthAfter n TimeData {TTime.timePred = p, TTime.timeGrain = g} base =
     }
 
 interval' :: TTime.TimeIntervalType -> (TimeData, TimeData) -> TimeData
-interval' intervalType (TimeData p1 _ g1 _ _ _ _, TimeData p2 _ g2 _ _ _ _) =
+interval' intervalType (TimeData p1 _ g1 _ _ _ _ _, TimeData p2 _ g2 _ _ _ _ _) =
   TTime.timedata'
     { TTime.timePred = mkTimeIntervalsPredicate intervalType' p1 p2
     , TTime.timeGrain = min g1 g2
@@ -479,6 +487,9 @@ inTimezone :: Text -> TimeData -> Maybe TimeData
 inTimezone input td@TimeData {TTime.timePred = p} = do
   tz <- parseTimezone input
   Just $ td {TTime.timePred = shiftTimezone (Series.TimeZoneSeries tz []) p}
+
+withHoliday :: Text -> TimeData -> TimeData
+withHoliday n td = td {TTime.holiday = Just n}
 
 mkLatent :: TimeData -> TimeData
 mkLatent td = td {TTime.latent = True}
@@ -587,11 +598,12 @@ mkRuleSeasons = map go
 mkRuleHolidays :: [(Text, String, TimeData)] -> [Rule]
 mkRuleHolidays = map go
   where
-    go (name, ptn, td) = mkSingleRegexRule name ptn . tt $ mkOkForThisNext td
+    go (name, ptn, td) = mkSingleRegexRule name ptn . tt
+      $ withHoliday name $ mkOkForThisNext td
 
 mkRuleHolidays' :: [(Text, String, Maybe TimeData)] -> [Rule]
 mkRuleHolidays' = map go
   where
     go (name, ptn, td) = mkSingleRegexRule name ptn $ do
       td <- td
-      tt $ mkOkForThisNext td
+      tt $ withHoliday name $ mkOkForThisNext td

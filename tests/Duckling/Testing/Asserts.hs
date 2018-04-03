@@ -19,6 +19,7 @@ module Duckling.Testing.Asserts
   , withTargets
   ) where
 
+import Data.List (partition)
 import Data.String
 import Data.Text (Text)
 import Prelude
@@ -64,15 +65,20 @@ makeCorpusTest targets (context, options, xs) = testCase "Corpus Tests" $
     check :: Example -> IO ()
     check (input, predicate) =
       let tokens = analyze input context options dims in
-      case tokens of
-        [] -> assertFailure $ "empty result on " ++ show input
-        (_:_:_) -> assertFailure $
-          show (length tokens) ++ " tokens found for " ++ show input
-        (token:_) -> do
-          assertEqual ("don't fully match " ++ show input)
-            (Range 0 (Text.length input)) (range token)
-          assertBool ("don't pass predicate on " ++ show input) $
-            predicate context token
+      let inputRange = Range 0 $ Text.length input in
+      let (fullRangeTokens, restTokens) =
+            partition ((== inputRange) . range) tokens in
+      case fullRangeTokens of
+        [] -> case restTokens of
+          [] -> assertFailure $ "empty result on " ++ show input
+          (_:_:_) -> assertFailure $
+            show (length restTokens) ++ " tokens found for " ++ show input
+          _ -> assertFailure $ "don't fully match " ++ show input
+        [token] -> assertBool ("don't pass predicate on " ++ show input) $
+          predicate context token
+        _ -> assertFailure $ show (length fullRangeTokens)
+          ++ " different ambiguous parses"
+
 
 makeNegativeCorpusTest :: [Some Dimension] -> NegativeCorpus -> TestTree
 makeNegativeCorpusTest targets (context, options, xs) =

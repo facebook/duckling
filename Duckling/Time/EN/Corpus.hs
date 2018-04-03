@@ -1121,4 +1121,11 @@ allExamples = concat
              , "at the end of the following week"
              , "at the end of around next week"
              ]
+  , examples (datetimeHoliday (2014, 1, 31, 0, 0, 0) Day "Chinese New Year")
+             [ "chinese new year"
+             , "chinese lunar new year's day"
+             ]
+  , examples (datetimeHoliday (2018, 2, 16, 0, 0, 0) Day "Chinese New Year")
+             [ "chinese new year's day 2018"
+             ]
   ]

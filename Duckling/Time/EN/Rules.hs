@@ -28,7 +28,7 @@ import Duckling.Numeral.Helpers (parseInt)
 import Duckling.Numeral.Types (NumeralData (..))
 import Duckling.Ordinal.Types (OrdinalData (..))
 import Duckling.Regex.Types
-import Duckling.Time.Computed (easterSunday, orthodoxEaster)
+import Duckling.Time.Computed
 import Duckling.Time.Helpers
 import Duckling.Time.Types (TimeData (..))
 import Duckling.Types
@@ -1526,6 +1526,8 @@ ruleComputedHolidays = mkRuleHolidays
     , cycleNthAfter False TG.Day 39 easterSunday )
   , ( "Ash Wednesday", "ash\\s+wednesday|carnival"
     , cycleNthAfter False TG.Day (-46) easterSunday )
+  , ( "Chinese New Year", "chinese\\s+(lunar\\s+)?new\\s+year('s\\s+day)?"
+    , chineseNewYear )
   , ( "Clean Monday", "(orthodox\\s+)?(ash|clean|green|pure|shrove)\\s+monday|monday of lent"
     , cycleNthAfter False TG.Day (-48) orthodoxEaster )
   , ( "Corpus Christi", "(the feast of )?corpus\\s+christi"

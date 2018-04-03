@@ -28,7 +28,7 @@ import Duckling.Numeral.Helpers (parseInt)
 import Duckling.Numeral.Types (NumeralData (..))
 import Duckling.Ordinal.Types (OrdinalData (..))
 import Duckling.Regex.Types
-import Duckling.Time.Computed (easterSunday)
+import Duckling.Time.Computed (easterSunday, orthodoxEaster)
 import Duckling.Time.Helpers
 import Duckling.Time.Types (TimeData (..))
 import Duckling.Types
@@ -1531,6 +1531,8 @@ ruleComputedHolidays = mkRuleHolidays
     , cycleNthAfter False TG.Day 39 easterSunday )
   , ( "Ash Wednesday", "ash\\s+wednesday|carnival"
     , cycleNthAfter False TG.Day (-46) easterSunday )
+  , ( "Clean Monday", "(orthodox\\s+)?(ash|clean|green|pure|shrove)\\s+monday|monday of lent"
+    , cycleNthAfter False TG.Day (-48) orthodoxEaster )
   , ( "Corpus Christi", "(the feast of )?corpus\\s+christi"
     , cycleNthAfter False TG.Day 60 easterSunday )
   , ( "Easter Monday", "easter\\s+mon(day)?"
@@ -1539,11 +1541,23 @@ ruleComputedHolidays = mkRuleHolidays
   , ( "Good Friday", "(good|great|holy)\\s+fri(day)?"
     , cycleNthAfter False TG.Day (-2) easterSunday )
   , ( "Holy Saturday"
-    , "(black|holy (and great )?|joyous)sat(urday)?|the great sabbath|easter even"
+    , "(black|holy (and great )?|joyous)sat(urday)?|the great sabbath|easter eve"
     , cycleNthAfter False TG.Day (-1) easterSunday )
+  , ( "Lazarus Saturday", "lazarus\\s+saturday"
+    , cycleNthAfter False TG.Day (-8) orthodoxEaster )
   , ( "Maundy Thursday"
     , "(covenant|(great and )?holy|maundy|sheer)\\s+thu(rsday)?|thu(rsday)? of mysteries"
     , cycleNthAfter False TG.Day (-3) easterSunday )
+  , ( "Orthodox Easter Monday", "orthodox\\s+easter\\s+mon(day)?"
+    , cycleNthAfter False TG.Day 1 orthodoxEaster )
+  , ( "Orthodox Easter Sunday", "orthodox\\s+easter(\\s+sun(day)?)?|pascha?"
+    , orthodoxEaster )
+  , ( "Orthodox Holy Saturday", "orthodox\\s+holy\\s+sat(urday)?|the great sabbath"
+    , cycleNthAfter False TG.Day (-1) orthodoxEaster )
+  , ( "Orthodox Great Friday", "orthodox\\s+great(\\s+and\\s+holy)?\\s+friday"
+    , cycleNthAfter False TG.Day (-2) orthodoxEaster )
+  , ( "Orthodox Palm Sunday", "orthodox\\s+(branch|palm|yew\\s+sunday)"
+    , cycleNthAfter False TG.Day (-7) orthodoxEaster )
   , ( "Palm Sunday", "branch|palm|yew\\s+sunday"
     , cycleNthAfter False TG.Day (-7) easterSunday )
   , ( "Pentecost", "pentecost|white sunday|whitsunday"
@@ -1558,7 +1572,11 @@ ruleComputedHolidays = mkRuleHolidays
 
 ruleComputedHolidays' :: [Rule]
 ruleComputedHolidays' = mkRuleHolidays'
-  [ ( "Lent", "lent"
+  [ ( "Great Lent", "great\\s+(fast|lent)"
+    , let start = cycleNthAfter False TG.Day (-48) orthodoxEaster
+          end = cycleNthAfter False TG.Day (-9) orthodoxEaster
+        in interval TTime.Open start end )
+  , ( "Lent", "lent"
     , let start = cycleNthAfter False TG.Day (-46) easterSunday
           end = cycleNthAfter False TG.Day (-1) easterSunday
         in interval TTime.Open start end )

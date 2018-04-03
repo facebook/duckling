@@ -733,6 +733,19 @@ allExamples = concat
   , examples (datetimeIntervalHoliday ((2018, 2, 14, 0, 0, 0), (2018, 4, 1, 0, 0, 0)) Day "Lent")
              [ "lent 2018"
              ]
+  , examples (datetimeHoliday (2018, 4, 8, 0, 0, 0) Day "Orthodox Easter Sunday")
+             [ "orthodox easter 2018"
+             ]
+  , examples (datetimeHoliday (2018, 2, 19, 0, 0, 0) Day "Clean Monday")
+             [ "clean monday 2018"
+             , "orthodox shrove monday two thousand eighteen"
+             ]
+  , examples (datetimeHoliday (2018, 3, 31, 0, 0, 0) Day "Lazarus Saturday")
+             [ "lazarus saturday 2018"
+             ]
+  , examples (datetimeIntervalHoliday ((2018, 2, 19, 0, 0, 0), (2018, 3, 31, 0, 0, 0)) Day "Great Lent")
+             [ "great fast 2018"
+             ]
   , examples (datetimeInterval ((2013, 2, 12, 18, 0, 0), (2013, 2, 13, 0, 0, 0)) Hour)
              [ "this evening"
              , "today evening"

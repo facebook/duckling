@@ -189,6 +189,7 @@ rulePeriodicHolidays = mkRuleHolidays
   -- 2 days before Mother's Day
   , ( "Military Spouse Day", "military spouse (appreciation )?day"
     , cycleNthAfter False TG.Day (- 2) $ nthDOWOfMonth 2 7 5 )
+  , ( "Mother's Day", "mother'?s?'? day", nthDOWOfMonth 2 7 5 )
   , ( "National CleanUp Day", "national clean\\-?up day", nthDOWOfMonth 3 6 9 )
   , ( "National Day of Prayer", "national day of prayer", nthDOWOfMonth 1 4 5 )
   , ( "National Defense Transportation Day"

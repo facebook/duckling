@@ -1503,7 +1503,6 @@ rulePeriodicHolidays = mkRuleHolidays
     , "(MLK|Martin Luther King,?)( Jr\\.?| Junior)? day|(civil|idaho human) rights day"
     , nthDOWOfMonth 3 1 1
     )
-  , ( "Mother's Day"            , "mother'?s?'? day", nthDOWOfMonth 2 7 5 )
 
   -- The day after Thanksgiving (not always the fourth Friday of November)
   , ( "Black Friday", "black frid?day"
@@ -1528,10 +1527,41 @@ rulePeriodicHolidays = mkRuleHolidays
 
 ruleComputedHolidays :: [Rule]
 ruleComputedHolidays = mkRuleHolidays
-  [ ( "Easter Sunday", "easter(\\s+sun(day)?)?", easterSunday)
+  [ ( "Ascension Day", "ascension\\s+(thurs)?day"
+    , cycleNthAfter False TG.Day 39 easterSunday )
+  , ( "Ash Wednesday", "ash\\s+wednesday|carnival"
+    , cycleNthAfter False TG.Day (-46) easterSunday )
+  , ( "Corpus Christi", "(the feast of )?corpus\\s+christi"
+    , cycleNthAfter False TG.Day 60 easterSunday )
   , ( "Easter Monday", "easter\\s+mon(day)?"
-    , cycleNthAfter False TG.Day 1 easterSunday
-    )
+    , cycleNthAfter False TG.Day 1 easterSunday )
+  , ( "Easter Sunday", "easter(\\s+sun(day)?)?", easterSunday )
+  , ( "Good Friday", "(good|great|holy)\\s+fri(day)?"
+    , cycleNthAfter False TG.Day (-2) easterSunday )
+  , ( "Holy Saturday"
+    , "(black|holy (and great )?|joyous)sat(urday)?|the great sabbath|easter even"
+    , cycleNthAfter False TG.Day (-1) easterSunday )
+  , ( "Maundy Thursday"
+    , "(covenant|(great and )?holy|maundy|sheer)\\s+thu(rsday)?|thu(rsday)? of mysteries"
+    , cycleNthAfter False TG.Day (-3) easterSunday )
+  , ( "Palm Sunday", "branch|palm|yew\\s+sunday"
+    , cycleNthAfter False TG.Day (-7) easterSunday )
+  , ( "Pentecost", "pentecost|white sunday|whitsunday"
+    , cycleNthAfter False TG.Day 49 easterSunday )
+  , ( "Shrove Tuesday", "pancake (tues)?day|shrove tuesday"
+    , cycleNthAfter False TG.Day (-47) easterSunday )
+  , ( "Trinity Sunday", "trinity\\s+sunday"
+    , cycleNthAfter False TG.Day 56 easterSunday )
+  , ( "Whit Monday", "(pentecost|whit)\\s+monday|monday of the holy spirit"
+    , cycleNthAfter False TG.Day 50 easterSunday )
+  ]
+
+ruleComputedHolidays' :: [Rule]
+ruleComputedHolidays' = mkRuleHolidays'
+  [ ( "Lent", "lent"
+    , let start = cycleNthAfter False TG.Day (-46) easterSunday
+          end = cycleNthAfter False TG.Day (-1) easterSunday
+        in interval TTime.Open start end )
   ]
 
 ruleCycleThisLastNext :: Rule
@@ -1946,4 +1976,5 @@ rules =
   ++ ruleMonths
   ++ ruleSeasons
   ++ ruleComputedHolidays
+  ++ ruleComputedHolidays'
   ++ rulePeriodicHolidays

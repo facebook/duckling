@@ -101,6 +101,7 @@ rulePeriodicHolidays = mkRuleHolidays
   , ( "Father's Day", "father'?s?'? day", nthDOWOfMonth 3 7 6 )
   , ( "Gold Cup Parade", "gold cup parade", nthDOWOfMonth 3 5 8 )
   , ( "Heritage Day in Alberta", "heritage day in alberta", nthDOWOfMonth 1 1 8 )
+  , ( "Mother's Day", "mother'?s?'? day", nthDOWOfMonth 2 7 5 )
   , ( "Royal St. John's Regatta", "regatta day|royal st\\.? john's regatta"
     , nthDOWOfMonth 1 3 8 )
   , ( "Take our Daughters and Sons to Work Day"

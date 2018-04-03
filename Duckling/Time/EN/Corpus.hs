@@ -649,16 +649,6 @@ allExamples = concat
              [ "valentine's day"
              , "valentine day"
              ]
-  , examples (datetimeHoliday (2013, 5, 12, 0, 0, 0) Day "Mother's Day")
-             [ "Mother's Day"
-             , "next mothers day"
-             ]
-  , examples (datetimeHoliday (2012, 5, 13, 0, 0, 0) Day "Mother's Day")
-             [ "last mothers day"
-             ]
-  , examples (datetimeHoliday (2014, 5, 11, 0, 0, 0) Day "Mother's Day")
-             [ "mothers day 2014"
-             ]
   , examples (datetime (2013, 7, 4, 0, 0, 0) Day)
              [ "4th of July"
              , "4 of july"
@@ -716,6 +706,32 @@ allExamples = concat
              ]
   , examples (datetime (2013, 4, 3, 0, 0, 0) Day)
              [ "three days after Easter"
+             ]
+  , examples (datetimeHoliday (2013, 3, 28, 0, 0, 0) Day "Maundy Thursday")
+             [ "Maundy Thursday"
+             , "Covenant thu"
+             , "Thu of Mysteries"
+             ]
+  , examples (datetimeHoliday (2013, 5, 19, 0, 0, 0) Day "Pentecost")
+             [ "Pentecost"
+             , "white sunday 2013"
+             ]
+  , examples (datetimeHoliday (2013, 5, 20, 0, 0, 0) Day "Whit Monday")
+             [ "whit monday"
+             , "Monday of the Holy Spirit"
+             ]
+  , examples (datetimeHoliday (2013, 3, 24, 0, 0, 0) Day "Palm Sunday")
+             [ "palm sunday"
+             , "branch sunday 2013"
+             ]
+  , examples (datetimeHoliday (2013, 5, 26, 0, 0, 0) Day "Trinity Sunday")
+             [ "trinity sunday"
+             ]
+  , examples (datetimeHoliday (2013, 2, 12, 0, 0, 0) Day "Shrove Tuesday")
+             [ "pancake day 2013"
+             ]
+  , examples (datetimeIntervalHoliday ((2018, 2, 14, 0, 0, 0), (2018, 4, 1, 0, 0, 0)) Day "Lent")
+             [ "lent 2018"
              ]
   , examples (datetimeInterval ((2013, 2, 12, 18, 0, 0), (2013, 2, 13, 0, 0, 0)) Hour)
              [ "this evening"

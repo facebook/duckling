@@ -80,4 +80,18 @@ allExamples = concat
   , examples (datetimeHoliday (1996, 6, 16, 0, 0, 0) Day "Father's Day")
              [ "fathers day 1996"
              ]
+  , examples (datetimeHoliday (2013, 3, 10, 0, 0, 0) Day "Mothering Sunday")
+             [ "Mother's Day"
+             , "next mothers day"
+             , "mothering sunday"
+             ]
+  , examples (datetimeHoliday (2012, 3, 18, 0, 0, 0) Day "Mothering Sunday")
+             [ "mothers day 2012"
+             ]
+  , examples (datetimeHoliday (2014, 3, 30, 0, 0, 0) Day "Mothering Sunday")
+             [ "mothers day 2014"
+             ]
+  , examples (datetimeHoliday (2013, 5, 19, 0, 0, 0) Day "Pentecost")
+             [ "whitsunday"
+             ]
   ]

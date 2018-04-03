@@ -76,6 +76,7 @@ rulePeriodicHolidays = mkRuleHolidays
     , nthDOWOfMonth 1 1 8 )
   , ( "Early May Bank Holiday", "early may bank holiday", nthDOWOfMonth 1 1 5 )
   , ( "Father's Day", "father'?s?'? day", nthDOWOfMonth 3 7 6 )
+  , ( "Mother's Day", "mother'?s?'? day", nthDOWOfMonth 2 7 5 )
   , ( "June Bank Holiday", "june bank holiday", nthDOWOfMonth 1 1 6 )
   , ( "October Bank Holiday", "october (bank )?holiday"
     , predLastOf (dayOfWeek 1) (month 10) )

@@ -100,4 +100,14 @@ allExamples = concat
              , "louis riel day 2018"
              , "nova scotia heritage day 2018"
              ]
+  , examples (datetimeHoliday (2013, 5, 12, 0, 0, 0) Day "Mother's Day")
+             [ "Mother's Day"
+             , "next mothers day"
+             ]
+  , examples (datetimeHoliday (2012, 5, 13, 0, 0, 0) Day "Mother's Day")
+             [ "last mothers day"
+             ]
+  , examples (datetimeHoliday (2014, 5, 11, 0, 0, 0) Day "Mother's Day")
+             [ "mothers day 2014"
+             ]
   ]

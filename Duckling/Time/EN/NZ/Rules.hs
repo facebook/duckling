@@ -20,9 +20,11 @@ import Prelude
 import Duckling.Dimensions.Types
 import Duckling.Numeral.Helpers (parseInt)
 import Duckling.Regex.Types
+import Duckling.Time.Computed (easterSunday)
 import Duckling.Time.Helpers
 import Duckling.Time.Types (TimeData (..))
 import Duckling.Types
+import qualified Duckling.TimeGrain.Types as TG
 
 ruleDDMM :: Rule
 ruleDDMM = Rule
@@ -81,8 +83,15 @@ rulePeriodicHolidays = mkRuleHolidays
     , "(admin(istrative professionals'?)|secretaries'?) day"
     , nthDOWOfMonth 3 3 4 )
   , ( "Father's Day", "father'?s?'? day", nthDOWOfMonth 1 7 9 )
+  , ( "Mother's Day", "mother'?s?'? day", nthDOWOfMonth 2 7 5 )
   , ( "Queen's birthday", "queen's birthday", nthDOWOfMonth 1 1 6 )
   , ( "Thanksgiving Day", "thanks?giving( day)?", nthDOWOfMonth 4 4 11 )
+  ]
+
+ruleComputedHolidays :: [Rule]
+ruleComputedHolidays = mkRuleHolidays
+  [ ( "Easter Tuesday", "easter\\s+tue(sday)?"
+    , cycleNthAfter False TG.Day 2 easterSunday )
   ]
 
 rules :: [Rule]
@@ -91,4 +100,5 @@ rules =
   , ruleDDMMYYYY
   , ruleDDMMYYYYDot
   ]
+  ++ ruleComputedHolidays
   ++ rulePeriodicHolidays

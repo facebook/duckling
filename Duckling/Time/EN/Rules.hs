@@ -7,6 +7,7 @@
 
 
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE NamedFieldPuns #-}
 {-# LANGUAGE NoRebindableSyntax #-}
 {-# LANGUAGE OverloadedStrings #-}
@@ -898,6 +899,26 @@ ruleWeekend = Rule
     [ regex "(week(\\s|-)?end|wkend)s?"
     ]
   , prod = \_ -> tt $ mkOkForThisNext weekend
+  }
+
+ruleSeason :: Rule
+ruleSeason = Rule
+  { name = "last|this|next <season>"
+  , pattern =
+    [ regex "(this|current|next|last|past|previous) seasons?"
+    ]
+  , prod = \case
+      (Token RegexMatch (GroupMatch (match:_)):_) -> do
+        n <- case Text.toLower match of
+               "this" -> Just 0
+               "current" -> Just 0
+               "last" -> Just (-1)
+               "past" -> Just (-1)
+               "previous" -> Just (-1)
+               "next" -> Just 1
+               _ -> Nothing
+        tt $ predNth n False season
+      _ -> Nothing
   }
 
 ruleSeasons :: [Rule]
@@ -1918,6 +1939,7 @@ rules =
   , ruleEndOrBeginningOfYear
   , ruleEndOrBeginningOfWeek
   , ruleNow
+  , ruleSeason
   ]
   ++ ruleInstants
   ++ ruleDaysOfWeek

@@ -605,6 +605,18 @@ allExamples = concat
   , examples (datetimeInterval ((2012, 12, 21, 0, 0, 0), (2013, 3, 21, 0, 0, 0)) Day)
              [ "this winter"
              ]
+  , examples (datetimeInterval ((2012, 12, 21, 0, 0, 0), (2013, 3, 19, 0, 0, 0)) Day)
+             [ "this season"
+             , "current seasons"
+             ]
+  , examples (datetimeInterval ((2012, 9, 23, 0, 0, 0), (2012, 12, 20, 0, 0, 0)) Day)
+             [ "last season"
+             , "past seasons"
+             , "previous seasons"
+             ]
+  , examples (datetimeInterval ((2013, 3, 20, 0, 0, 0), (2013, 6, 20, 0, 0, 0)) Day)
+             [ "next season"
+             ]
   , examples (datetimeInterval ((2013, 2, 11, 18, 0, 0), (2013, 2, 12, 0, 0, 0)) Hour)
              [ "last night"
              , "yesterday evening"

@@ -21,10 +21,12 @@ import Control.Arrow ((***))
 import Control.DeepSeq
 import Control.Monad (join)
 import Data.Aeson
+import Data.Foldable (find)
 import Data.Hashable
 import Data.Maybe
 import Data.Monoid
 import Data.Text (Text)
+import Data.Tuple.Extra (both)
 import GHC.Generics
 import Prelude
 import TextShow (showt)
@@ -210,6 +212,12 @@ type SeriesPredicate = TimeObject -> TimeContext -> ([TimeObject], [TimeObject])
 data AMPM = AM | PM
   deriving (Eq, Show)
 
+data SeasonName = Spring | Summer | Fall | Winter deriving (Enum,Eq,Ord,Show)
+
+-- | Regular seasons of the Northern Hemisphere.
+data Season = Season { startYear :: Integer, seasonName :: SeasonName }
+  deriving (Eq,Ord,Show)
+
 newtype NoShow a = NoShow a
 
 instance Show (NoShow a) where
@@ -348,6 +356,46 @@ containsTimeIntervalsPredicate _ = False
 isEmptyPredicate :: Predicate -> Bool
 isEmptyPredicate EmptyPredicate{} = True
 isEmptyPredicate _ = False
+
+seasonStart :: Season -> Time.Day
+seasonStart (Season year Spring) = Time.fromGregorian year 3 20
+seasonStart (Season year Summer) = Time.fromGregorian year 6 21
+seasonStart (Season year Fall) = Time.fromGregorian year 9 23
+seasonStart (Season year Winter) = Time.fromGregorian year 12 21
+
+seasonEnd :: Season -> Time.Day
+seasonEnd = Time.addDays (-1) . seasonStart . nextSeason
+
+nextSeason :: Season -> Season
+nextSeason (Season year Winter) = Season (year+1) Spring
+nextSeason (Season year x) = Season year (succ x)
+
+prevSeason :: Season -> Season
+prevSeason (Season year Spring) = Season (year-1) Winter
+prevSeason (Season year x) = Season year (pred x)
+
+seasonOf :: Time.Day -> Season
+seasonOf day = fromMaybe (Season (year-1) Winter) mbSeason
+  where
+  (year,_,_) = Time.toGregorian day
+  mbSeason = find ((<= day) . seasonStart) $
+               Season year <$> [Winter,Fall,Summer,Spring]
+
+seasonPredicate :: Predicate
+seasonPredicate = mkSeriesPredicate series
+  where
+  series t = const (past,future)
+    where
+    day = Time.utctDay (start t)
+    (past,future) = both (map toTimeObj) (toZipper day)
+    toUTC d = Time.UTCTime d (Time.timeOfDayToTime Time.midnight)
+    toTimeObj season = TimeObject { start = s, grain = TG.Day, end = Just e }
+      where (s,e) = both toUTC (seasonStart season, seasonEnd season)
+    toZipper d = (before, currentAndAfter)
+      where
+      current = seasonOf d
+      currentAndAfter = iterate nextSeason current
+      before = iterate prevSeason (prevSeason current)
 
 -- Predicate runners
 

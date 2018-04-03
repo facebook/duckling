@@ -22,8 +22,8 @@ module Duckling.Time.Helpers
   , hourMinute, hourMinuteSecond, inDuration, intersect, intersectDOM, interval
   , inTimezone, longWEBefore, minute, minutesAfter, minutesBefore, mkLatent
   , month, monthDay, notLatent, now, nthDOWOfMonth, partOfDay, predLastOf
-  , predNth, predNthAfter, second, timeOfDayAMPM, weekend, withDirection, year
-  , yearMonthDay, tt
+  , predNth, predNthAfter, season, second, timeOfDayAMPM, weekend
+  , withDirection, year, yearMonthDay, tt
     -- Other
   , getIntValue, timeComputed
   -- Rule constructors
@@ -390,6 +390,12 @@ hourMinute is12H h m = timeOfDay (Just h) is12H $
 hourMinuteSecond :: Bool -> Int -> Int -> Int -> TimeData
 hourMinuteSecond is12H h m s = timeOfDay (Just h) is12H $
   intersect' (intersect' (hour is12H h, minute m), second s)
+
+season :: TimeData
+season = TTime.timedata'
+  { TTime.timePred = TTime.seasonPredicate
+  , TTime.timeGrain = TG.Day
+  }
 
 cycleN :: Bool -> TG.Grain -> Int -> TimeData
 cycleN notImmediate grain n = TTime.timedata'

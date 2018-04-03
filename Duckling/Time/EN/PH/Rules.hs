@@ -75,6 +75,7 @@ rulePeriodicHolidays = mkRuleHolidays
   [ ( "Arbor Day", "arbor day", monthDay 6 25 )
   , ( "Bonifacio Day", "bonifacio day", monthDay 11 30 )
   , ( "Independence Day", "independence day", monthDay 6 12 )
+  , ( "Labour Day", "labour day", monthDay 5 1 )
   , ( "Ninoy Aquino Day", "ninoy aquino day", monthDay 8 21 )
   , ( "People Power Anniversary", "(edsa revolution|people power) anniversary"
     , monthDay 2 25 )
@@ -85,6 +86,8 @@ rulePeriodicHolidays = mkRuleHolidays
   , ( "Father's Day", "father'?s?'? day", nthDOWOfMonth 3 7 6 )
   , ( "Mother's Day", "mother'?s?'? day", nthDOWOfMonth 2 7 5 )
   , ( "National Elections Day", "national elections day", nthDOWOfMonth 2 1 5 )
+  , ( "National Heroes' Day", "(national )?heroes' day"
+    , predLastOf (dayOfWeek 1) (month 8) )
   , ( "Parents' Day", "parents' day", nthDOWOfMonth 1 1 12 )
   , ( "Thanksgiving Day", "thanks?giving( day)?", nthDOWOfMonth 4 4 11 )
   ]

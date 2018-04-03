@@ -653,16 +653,6 @@ allExamples = concat
              [ "4th of July"
              , "4 of july"
              ]
-  , examples (datetimeHoliday (2013, 9, 2, 0, 0, 0) Day "Labor Day")
-             [ "labor day"
-             ]
-  , examples (datetimeHoliday (2012, 9, 3, 0, 0, 0) Day "Labor Day")
-             [ "labor day of last year"
-             , "Labor Day 2012"
-             ]
-  , examples (datetimeIntervalHoliday ((2013, 8, 30, 18, 0, 0), (2013, 9, 3, 0, 0, 0)) Hour "Labor Day weekend")
-             [ "labor day weekend"
-             ]
   , examples (datetimeHoliday (2013, 10, 31, 0, 0, 0) Day "Halloween")
              [ "halloween"
              , "next halloween"

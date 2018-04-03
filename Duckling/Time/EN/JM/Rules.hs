@@ -71,8 +71,12 @@ ruleDDMMYYYYDot = Rule
 
 rulePeriodicHolidays :: [Rule]
 rulePeriodicHolidays = mkRuleHolidays
+  -- Fixed dates, year over year
+  [ ( "Labour Day", "labour day", monthDay 5 23 )
+
   -- Fixed day/week/month, year over year
-  [ ( "Father's Day", "father'?s?'? day", nthDOWOfMonth 3 7 6 )
+  , ( "Father's Day", "father'?s?'? day", nthDOWOfMonth 3 7 6 )
+  , ( "Heroes' Day", "heroes' day", nthDOWOfMonth 3 1 10 )
   , ( "Mother's Day", "mother'?s?'? day", nthDOWOfMonth 2 7 5 )
   , ( "Thanksgiving Day", "thanks?giving( day)?", nthDOWOfMonth 4 4 11 )
   ]

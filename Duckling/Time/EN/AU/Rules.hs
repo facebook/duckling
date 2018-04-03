@@ -93,6 +93,7 @@ rulePeriodicHolidays = mkRuleHolidays
   , ( "Canberra Day", "canberra day", nthDOWOfMonth 2 1 3 )
   , ( "Eight Hours Day", "eight hours day", nthDOWOfMonth 2 1 3 )
   , ( "Father's Day", "father'?s?'? day", nthDOWOfMonth 1 7 9 )
+  , ( "Labour Day", "labour day", nthDOWOfMonth 1 1 10 )
   , ( "Melbourne Cup Day", "melbourne cup day", nthDOWOfMonth 1 2 11 )
   , ( "Mother's Day", "mother'?s?'? day", nthDOWOfMonth 2 7 5 )
   , ( "National Close the Gap Day", "national close the gap day"

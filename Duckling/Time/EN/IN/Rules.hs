@@ -72,8 +72,10 @@ ruleDDMMYYYYDot = Rule
 rulePeriodicHolidays :: [Rule]
 rulePeriodicHolidays = mkRuleHolidays
   -- Fixed dates, year over year
-  [ ( "Guru Tegh Bahadur's Martyrdom Day", "guru tegh bahadur'?s martyrdom day", monthDay 11 24 )
+  [ ( "Guru Tegh Bahadur's Martyrdom Day", "guru tegh bahadur'?s martyrdom day"
+    , monthDay 11 24 )
   , ( "Independence Day", "independence day", monthDay 8 15 )
+  , ( "Labour Day", "labour day", monthDay 5 1 )
   , ( "Mahatma Gandhi Jayanti", "mahatma gandhi jayanti", monthDay 10 2 )
   , ( "Republic Day", "republic day", monthDay 1 26 )
   , ( "Shivaji Jayanti", "shivaji jayanti", monthDay 2 19 )

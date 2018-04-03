@@ -101,6 +101,11 @@ rulePeriodicHolidays = mkRuleHolidays
   , ( "Father's Day", "father'?s?'? day", nthDOWOfMonth 3 7 6 )
   , ( "Gold Cup Parade", "gold cup parade", nthDOWOfMonth 3 5 8 )
   , ( "Heritage Day in Alberta", "heritage day in alberta", nthDOWOfMonth 1 1 8 )
+  , ( "Labour Day", "labou?r day", nthDOWOfMonth 1 1 9 )
+  -- Long weekend before the first Monday of September
+  , ( "Labour Day weekend", "labou?r day week(\\s|-)?ends?"
+    , longWEBefore $ nthDOWOfMonth 1 1 9
+    )
   , ( "Mother's Day", "mother'?s?'? day", nthDOWOfMonth 2 7 5 )
   , ( "Royal St. John's Regatta", "regatta day|royal st\\.? john's regatta"
     , nthDOWOfMonth 1 3 8 )
@@ -109,6 +114,10 @@ rulePeriodicHolidays = mkRuleHolidays
   , ( "Thanksgiving Day", "thanks?giving( day)?", nthDOWOfMonth 2 1 10 )
   , ( "Yukon's Discovery Day", "(klondike gold|yukon's) discovery day"
     , nthDOWOfMonth 3 1 8 )
+
+  -- Monday before May 25th
+  , ( "National Patriots' Day", "national patriot'?s'? day"
+    , predNthAfter (-1) (dayOfWeek 1) (monthDay 5 25) )
   ]
 
 rules :: [Rule]

@@ -73,7 +73,9 @@ rulePeriodicHolidays :: [Rule]
 rulePeriodicHolidays = mkRuleHolidays
   -- Fixed dates, year over year
   [ ( "Garifuna Settlement Day", "garifuna settlement day", monthDay 11 19 )
-  , ( "National Heroes and Benefactors Day", "national heroes and benefactors day", monthDay 3 9 )
+  , ( "Labour Day", "labour day", monthDay 5 1 )
+  , ( "National Heroes and Benefactors Day"
+    , "national heroes and benefactors day", monthDay 3 9 )
   , ( "Pan American Day", "pan american day", monthDay 10 12 )
   , ( "St. George's Caye Day", "st\\.? george'?s caye day", monthDay 9 10 )
 

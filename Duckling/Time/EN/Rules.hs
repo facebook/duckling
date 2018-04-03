@@ -1498,7 +1498,6 @@ rulePeriodicHolidays = mkRuleHolidays
     , nthDOWOfMonth 3 7 11 )
   , ( "International Day of Cooperatives"
     , "international day of co\\-?operatives", nthDOWOfMonth 1 6 7 )
-  , ( "Labor Day"               , "labor day"       , nthDOWOfMonth 1 1 9 )
   , ( "Martin Luther King's Day"
     , "(MLK|Martin Luther King,?)( Jr\\.?| Junior)? day|(civil|idaho human) rights day"
     , nthDOWOfMonth 3 1 1
@@ -1507,10 +1506,6 @@ rulePeriodicHolidays = mkRuleHolidays
   -- The day after Thanksgiving (not always the fourth Friday of November)
   , ( "Black Friday", "black frid?day"
     , cycleNthAfter False TG.Day 1 $ nthDOWOfMonth 4 4 11
-    )
-  -- Long weekend before the first Monday of September
-  , ( "Labor Day weekend", "labor day week(\\s|-)?ends?"
-    , longWEBefore $ nthDOWOfMonth 1 1 9
     )
   , ( "World Habitat Day", "world habitat day", nthDOWOfMonth 1 1 10 )
   , ( "World Kidney Day", "world kidney day", nthDOWOfMonth 2 4 3 )

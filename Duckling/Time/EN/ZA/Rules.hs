@@ -76,6 +76,8 @@ rulePeriodicHolidays = mkRuleHolidays
   [ ( "Day of Goodwill", "day of goodwill", monthDay 12 26 )
   , ( "Day of Reconciliation", "day of( the)? (covenant|reconciliation|vow)", monthDay 12 16 )
   , ( "Heritage Day", "heritage day", monthDay 9 24 )
+  , ( "Heroes' Day", "(heroes'|kruger) day", monthDay 10 10 )
+  , ( "Labour Day", "labour day", monthDay 5 1 )
   , ( "National Women's Day", "national women'?s day", monthDay 8 9 )
   , ( "Workers' Day", "workers'? day", monthDay 5 1 )
 

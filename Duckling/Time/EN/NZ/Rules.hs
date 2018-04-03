@@ -83,6 +83,7 @@ rulePeriodicHolidays = mkRuleHolidays
     , "(admin(istrative professionals'?)|secretaries'?) day"
     , nthDOWOfMonth 3 3 4 )
   , ( "Father's Day", "father'?s?'? day", nthDOWOfMonth 1 7 9 )
+  , ( "Labour Day", "labour day", nthDOWOfMonth 4 1 10 )
   , ( "Mother's Day", "mother'?s?'? day", nthDOWOfMonth 2 7 5 )
   , ( "Queen's birthday", "queen's birthday", nthDOWOfMonth 1 1 6 )
   , ( "Thanksgiving Day", "thanks?giving( day)?", nthDOWOfMonth 4 4 11 )

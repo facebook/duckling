@@ -73,6 +73,7 @@ rulePeriodicHolidays :: [Rule]
 rulePeriodicHolidays = mkRuleHolidays
   -- Fixed dates, year over year
   [ ( "Indian Arrival Day", "indian arrival day", monthDay 5 30 )
+  , ( "Labour Day", "labour day", monthDay 6 19 )
   , ( "Spiritual Baptist Liberation Day", "spiritual baptist liberation day", monthDay 3 30 )
 
   -- Fixed day/week/month, year over year

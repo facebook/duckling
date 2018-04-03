@@ -86,4 +86,11 @@ allExamples = concat
   , examples (datetimeHoliday (2014, 5, 11, 0, 0, 0) Day "Mother's Day")
              [ "mothers day 2014"
              ]
+  , examples (datetimeHoliday (2013, 5, 6, 0, 0, 0) Day "Labour Day")
+             [ "labour day"
+             ]
+  , examples (datetimeHoliday (2012, 5, 7, 0, 0, 0) Day "Labour Day")
+             [ "labour day of last year"
+             , "Labour Day 2012"
+             ]
   ]

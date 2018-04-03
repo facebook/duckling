@@ -179,6 +179,11 @@ rulePeriodicHolidays = mkRuleHolidays
     , predLastOf (dayOfWeek 7) (month 9) )
   , ( "Indigenous People's Day", "indigenous people's day"
     , nthDOWOfMonth 2 1 10 )
+  , ( "Labor Day", "labor day", nthDOWOfMonth 1 1 9 )
+  -- Long weekend before the first Monday of September
+  , ( "Labor Day weekend", "labor day week(\\s|-)?ends?"
+    , longWEBefore $ nthDOWOfMonth 1 1 9
+    )
   , ( "Lee Jackson Day", "lee jackson day", nthDOWOfMonth 2 5 1 )
   -- Last Monday of May
   , ( "Memorial Day", "(decoration|memorial) day"

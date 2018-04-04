@@ -77,7 +77,7 @@ makeCorpusTest targets (context, options, xs) = testCase "Corpus Tests" $
         [token] -> assertBool ("don't pass predicate on " ++ show input) $
           predicate context token
         _ -> assertFailure $ show (length fullRangeTokens)
-          ++ " different ambiguous parses"
+          ++ " different ambiguous parses on " ++ show input
 
 
 makeNegativeCorpusTest :: [Some Dimension] -> NegativeCorpus -> TestTree

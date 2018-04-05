@@ -7,6 +7,7 @@
 
 
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.AmountOfMoney.FR.Rules
@@ -25,6 +26,20 @@ import Duckling.Numeral.Types (NumeralData (..))
 import Duckling.Types
 import qualified Duckling.AmountOfMoney.Types as TAmountOfMoney
 import qualified Duckling.Numeral.Types as TNumeral
+
+ruleUnitAmount :: Rule
+ruleUnitAmount = Rule
+  { name = "<unit> <amount>"
+  , pattern =
+    [ Predicate isCurrencyOnly
+    , Predicate isPositive
+    ]
+  , prod = \case
+      (Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.currency = c}:
+       Token Numeral NumeralData{TNumeral.value = v}:
+       _) -> Just . Token AmountOfMoney . withValue v $ currencyOnly c
+      _ -> Nothing
+  }
 
 ruleIntersectAndNumeral :: Rule
 ruleIntersectAndNumeral = Rule
@@ -242,7 +257,8 @@ ruleUnnamedCurrency = Rule
 
 rules :: [Rule]
 rules =
-  [ ruleCent
+  [ ruleUnitAmount
+  , ruleCent
   , ruleIntersect
   , ruleIntersectAndNumeral
   , ruleIntersectAndXCents

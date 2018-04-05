@@ -117,7 +117,7 @@ ruleAmountUnit = Rule
   { name = "<amount> <unit>"
   , pattern =
     [ Predicate isPositive
-    , financeWith TAmountOfMoney.value isNothing
+    , Predicate isCurrencyOnly
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData{TNumeral.value = v}:
@@ -126,23 +126,8 @@ ruleAmountUnit = Rule
       _ -> Nothing
   }
 
-ruleUnitAmount :: Rule
-ruleUnitAmount = Rule
-  { name = "<unit> <amount>"
-  , pattern =
-    [ financeWith TAmountOfMoney.value isNothing
-    , Predicate isPositive
-    ]
-  , prod = \tokens -> case tokens of
-      (Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.currency = c}:
-       Token Numeral NumeralData{TNumeral.value = v}:
-       _) -> Just . Token AmountOfMoney . withValue v $ currencyOnly c
-      _ -> Nothing
-  }
-
 rules :: [Rule]
 rules =
   [ ruleAmountUnit
   , ruleCurrencies
-  , ruleUnitAmount
   ]

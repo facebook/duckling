@@ -7,6 +7,7 @@
 
 
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.AmountOfMoney.RO.Rules
@@ -21,12 +22,26 @@ import qualified Data.Text as Text
 import Duckling.AmountOfMoney.Helpers
 import Duckling.AmountOfMoney.Types (Currency(..), AmountOfMoneyData (..))
 import Duckling.Dimensions.Types
-import Duckling.Numeral.Helpers (isNatural)
+import Duckling.Numeral.Helpers (isNatural, isPositive)
 import Duckling.Numeral.Types (NumeralData (..))
 import Duckling.Regex.Types
 import Duckling.Types
 import qualified Duckling.AmountOfMoney.Types as TAmountOfMoney
 import qualified Duckling.Numeral.Types as TNumeral
+
+ruleUnitAmount :: Rule
+ruleUnitAmount = Rule
+  { name = "<unit> <amount>"
+  , pattern =
+    [ Predicate isCurrencyOnly
+    , Predicate isPositive
+    ]
+  , prod = \case
+      (Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.currency = c}:
+       Token Numeral NumeralData{TNumeral.value = v}:
+       _) -> Just . Token AmountOfMoney . withValue v $ currencyOnly c
+      _ -> Nothing
+  }
 
 ruleIntersectAndNumeral :: Rule
 ruleIntersectAndNumeral = Rule
@@ -195,7 +210,8 @@ ruleAed = Rule
 
 rules :: [Rule]
 rules =
-  [ ruleAed
+  [ ruleUnitAmount
+  , ruleAed
   , ruleCent
   , ruleDollar
   , ruleInr

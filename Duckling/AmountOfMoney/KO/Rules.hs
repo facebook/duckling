@@ -7,6 +7,7 @@
 
 
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.AmountOfMoney.KO.Rules
@@ -20,8 +21,25 @@ import Prelude
 import Duckling.Dimensions.Types
 import Duckling.AmountOfMoney.Helpers
 import Duckling.AmountOfMoney.Types (Currency(..), AmountOfMoneyData (..))
+import Duckling.Numeral.Helpers (isPositive)
+import Duckling.Numeral.Types (NumeralData (..))
 import Duckling.Types
 import qualified Duckling.AmountOfMoney.Types as TAmountOfMoney
+import qualified Duckling.Numeral.Types as TNumeral
+
+ruleUnitAmount :: Rule
+ruleUnitAmount = Rule
+  { name = "<unit> <amount>"
+  , pattern =
+    [ Predicate isCurrencyOnly
+    , Predicate isPositive
+    ]
+  , prod = \case
+      (Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.currency = c}:
+       Token Numeral NumeralData{TNumeral.value = v}:
+       _) -> Just . Token AmountOfMoney . withValue v $ currencyOnly c
+      _ -> Nothing
+  }
 
 ruleAmountofmoneyAbout :: Rule
 ruleAmountofmoneyAbout = Rule
@@ -147,7 +165,8 @@ ruleDirham = Rule
 
 rules :: [Rule]
 rules =
-  [ ruleAboutAmountofmoney
+  [ ruleUnitAmount
+  , ruleAboutAmountofmoney
   , ruleAmountofmoneyAbout
   , ruleAud
   , ruleCent

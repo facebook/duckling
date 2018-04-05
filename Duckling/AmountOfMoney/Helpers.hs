@@ -13,6 +13,7 @@ module Duckling.AmountOfMoney.Helpers
   ( currencyOnly
   , financeWith
   , isCents
+  , isCurrencyOnly
   , isMoneyWithValue
   , isWithoutCents
   , withCents
@@ -53,6 +54,11 @@ isMoneyWithValue :: Predicate
 isMoneyWithValue (Token AmountOfMoney AmountOfMoneyData{value = v1, minValue = v2, maxValue = v3}) =
  any isJust [v1, v2, v3]
 isMoneyWithValue _ = False
+
+isCurrencyOnly :: Predicate
+isCurrencyOnly (Token AmountOfMoney AmountOfMoneyData
+  {value = Nothing, minValue = Nothing, maxValue = Nothing}) = True
+isCurrencyOnly _ = False
 
 -- -----------------------------------------------------------------
 -- Production

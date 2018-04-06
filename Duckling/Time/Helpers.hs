@@ -46,7 +46,6 @@ import Duckling.Ordinal.Types (OrdinalData (OrdinalData))
 import Duckling.Time.TimeZone.Parse (parseTimezone)
 import Duckling.Time.Types
   ( TimeData(TimeData)
-  , TimeObject(TimeObject)
   , mkSeriesPredicate
   , mkSecondPredicate
   , mkMinutePredicate

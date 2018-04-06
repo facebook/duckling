@@ -73,6 +73,16 @@ allExamples = concat
              , "Orangemen's Day"
              , "the twelfth"
              ]
+  , examples (datetimeHoliday (2013, 6, 24, 0, 0, 0) Day "Discovery Day")
+             [ "discovery day"
+             , "next discovery  day"
+             ]
+  , examples (datetimeHoliday (2018, 6, 25, 0, 0, 0) Day "Discovery Day")
+             [ "discovery day 2018"
+             ]
+  , examples (datetimeHoliday (2020, 6, 22, 0, 0, 0) Day "Discovery Day")
+             [ "discovery   day 2020"
+             ]
   , examples (datetimeHoliday (2013, 6, 16, 0, 0, 0) Day "Father's Day")
              [ "Father's Day"
              ]

@@ -118,6 +118,10 @@ rulePeriodicHolidays = mkRuleHolidays
   -- Monday before May 25th
   , ( "National Patriots' Day", "national patriot'?s'? day"
     , predNthAfter (-1) (dayOfWeek 1) (monthDay 5 25) )
+
+  -- Closest Monday to June 24th
+  , ( "Discovery Day", "discovery\\s+day"
+    , predNthClosest 0 (dayOfWeek 1) (monthDay 6 24) )
   ]
 
 rules :: [Rule]

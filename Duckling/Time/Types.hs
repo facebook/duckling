@@ -353,6 +353,11 @@ containsTimeIntervalsPredicate _ = False
   -- SeriesPredicate might contain one, but we'll underapproximate for
   -- now
 
+-- Computes the difference of the start time of two `TimeObject`s.
+diffStartTime :: TimeObject -> TimeObject -> Time.NominalDiffTime
+diffStartTime TimeObject{start = x} TimeObject{start = y} =
+  abs (Time.diffUTCTime x y)
+
 isEmptyPredicate :: Predicate -> Bool
 isEmptyPredicate EmptyPredicate{} = True
 isEmptyPredicate _ = False
@@ -388,14 +393,38 @@ seasonPredicate = mkSeriesPredicate series
     where
     day = Time.utctDay (start t)
     (past,future) = both (map toTimeObj) (toZipper day)
-    toUTC d = Time.UTCTime d (Time.timeOfDayToTime Time.midnight)
     toTimeObj season = TimeObject { start = s, grain = TG.Day, end = Just e }
-      where (s,e) = both toUTC (seasonStart season, seasonEnd season)
+      where (s,e) = both toMidnight (seasonStart season, seasonEnd season)
     toZipper d = (before, currentAndAfter)
       where
       current = seasonOf d
       currentAndAfter = iterate nextSeason current
       before = iterate prevSeason (prevSeason current)
+
+-- Predicate for weekdays, i.e., Mon to Fri.
+weekdayPredicate :: Predicate
+weekdayPredicate = mkSeriesPredicate series
+  where
+  series t = const (past,future)
+    where
+    day = Time.utctDay (start t)
+    (_,_,dayOfWeek) = Time.toWeekDate day
+    past = toTimeObj . toMidnight . fst <$>
+      iterate prevWeekday (prevWeekday (day,dayOfWeek))
+    future = toTimeObj . toMidnight <$>
+      if dayOfWeek <= 5 then day:days else days
+        where days = fst <$> iterate nextWeekday (nextWeekday (day,dayOfWeek))
+    toTimeObj t = TimeObject { start = t, grain = TG.Day, end = Nothing }
+    nextWeekday (d,dow)
+      | dow < 5 = (Time.addDays 1 d, dow+1)
+      | otherwise = (Time.addDays (toInteger $ 8-dow) d, 1)
+    prevWeekday (d,dow)
+      | dow == 1 = (Time.addDays (-3) d, 5)
+      | dow == 7 = (Time.addDays (-2) d, 5)
+      | otherwise = (Time.addDays (-1) d, dow-1)
+
+toMidnight :: Time.Day -> Time.UTCTime
+toMidnight = flip Time.UTCTime (Time.timeOfDayToTime Time.midnight)
 
 -- Predicate runners
 

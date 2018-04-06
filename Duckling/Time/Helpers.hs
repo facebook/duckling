@@ -22,8 +22,8 @@ module Duckling.Time.Helpers
   , hourMinute, hourMinuteSecond, inDuration, intersect, intersectDOM, interval
   , inTimezone, longWEBefore, minute, minutesAfter, minutesBefore, mkLatent
   , month, monthDay, notLatent, now, nthDOWOfMonth, partOfDay, predLastOf
-  , predNth, predNthAfter, season, second, timeOfDayAMPM, weekend
-  , withDirection, year, yearMonthDay, tt
+  , predNth, predNthAfter, predNthClosest, season, second, timeOfDayAMPM
+  , weekday, weekend, withDirection, year, yearMonthDay, tt
     -- Other
   , getIntValue, timeComputed
   -- Rule constructors
@@ -32,7 +32,9 @@ module Duckling.Time.Helpers
   ) where
 
 import Data.Maybe
+import Data.Ord (comparing)
 import Data.Text (Text)
+import Data.Tuple.Extra (both)
 import Prelude
 import qualified Data.Time as Time
 import qualified Data.Time.Calendar.WeekDate as Time
@@ -44,6 +46,7 @@ import Duckling.Ordinal.Types (OrdinalData (OrdinalData))
 import Duckling.Time.TimeZone.Parse (parseTimezone)
 import Duckling.Time.Types
   ( TimeData(TimeData)
+  , TimeObject(TimeObject)
   , mkSeriesPredicate
   , mkSecondPredicate
   , mkMinutePredicate
@@ -180,6 +183,27 @@ takeNthAfter n notImmediate cyclicPred basePred =
       in case rest of
            [] -> Nothing
            (nth:_) -> Just nth
+
+-- | Take the nth closest value to `basePred` among those yielded by
+-- `cyclicPred`.
+-- n = 0 is the closest value, n = 1 is the second closest value, etc.
+-- n < 0 is treated as n = 0.
+takeNthClosest :: Int -> TTime.Predicate -> TTime.Predicate -> TTime.Predicate
+takeNthClosest n cyclicPred basePred =
+  mkSeriesPredicate $! TTime.timeSeqMap False f basePred
+  where
+  f t ctx = nth (n `max` 0) past future Nothing
+    where
+    (past, future) = runPredicate cyclicPred t ctx
+    nth n pa fu res
+      | n < 0 = res
+      | otherwise = case comparing (against t) x y of
+          GT -> nth (n-1) (tailSafe pa) fu x
+          _ -> nth (n-1) pa (tailSafe fu) y
+      where (x,y) = both listToMaybe (pa,fu)
+    against t = fmap (negate . TTime.diffStartTime t)
+    tailSafe (_:xs) = xs
+    tailSafe [] = []
 
 -- | Takes the last occurrence of `cyclicPred` within `basePred`.
 takeLastOf :: TTime.Predicate -> TTime.Predicate -> TTime.Predicate
@@ -397,6 +421,14 @@ season = TTime.timedata'
   , TTime.timeGrain = TG.Day
   }
 
+-- | Note that this function is not the counterpart of `weekend`.
+-- `weekend` returns an interval while `weekday` returns a single day.
+weekday :: TimeData
+weekday = TTime.timedata'
+  { TTime.timePred = TTime.weekdayPredicate
+  , TTime.timeGrain = TG.Day
+  }
+
 cycleN :: Bool -> TG.Grain -> Int -> TimeData
 cycleN notImmediate grain n = TTime.timedata'
   { TTime.timePred = takeN n notImmediate $ timeCycle grain
@@ -443,6 +475,17 @@ predNthAfter n TimeData {TTime.timePred = p, TTime.timeGrain = g} base =
   TTime.timedata'
     { TTime.timePred = takeNthAfter n True p $ TTime.timePred base
     , TTime.timeGrain = g
+    }
+
+-- This function can be used to express predicates invoving "closest",
+-- such as "the second closest Monday to Oct 5th"
+predNthClosest :: Int -> TimeData -> TimeData -> TimeData
+predNthClosest n TimeData
+  {TTime.timePred = p, TTime.timeGrain = g, TTime.holiday = h} base =
+  TTime.timedata'
+    { TTime.timePred = takeNthClosest n p $ TTime.timePred base
+    , TTime.timeGrain = g
+    , TTime.holiday = h
     }
 
 interval' :: TTime.TimeIntervalType -> (TimeData, TimeData) -> TimeData

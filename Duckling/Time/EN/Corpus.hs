@@ -666,6 +666,18 @@ allExamples = concat
   , examples (datetimeHoliday (2017, 11, 24, 0, 0, 0) Day "Black Friday")
              [ "black friday 2017"
              ]
+  , examples (datetimeHoliday (2013, 10, 16, 0, 0, 0) Day "Boss's Day")
+             [ "boss's day"
+             , "boss's"
+             , "boss day"
+             , "next boss's day"
+             ]
+  , examples (datetimeHoliday (2016, 10, 17, 0, 0, 0) Day "Boss's Day")
+             [ "boss's day 2016"
+             ]
+  , examples (datetimeHoliday (2021, 10, 15, 0, 0, 0) Day "Boss's Day")
+             [ "boss's day 2021"
+             ]
   , examples (datetimeHoliday (2014, 1, 20, 0, 0, 0) Day "Martin Luther King's Day")
              [ "MLK day"
              , "next Martin Luther King day"

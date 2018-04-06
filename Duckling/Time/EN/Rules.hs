@@ -1565,6 +1565,10 @@ ruleComputedHolidays = mkRuleHolidays
     , cycleNthAfter False TG.Day 56 easterSunday )
   , ( "Whit Monday", "(pentecost|whit)\\s+monday|monday of the holy spirit"
     , cycleNthAfter False TG.Day 50 easterSunday )
+
+  -- Holidays whose dates involve "closest"
+  , ( "Boss's Day", "boss'?s?( day)?"
+    , predNthClosest 0 weekday (monthDay 10 16) )
   ]
 
 ruleComputedHolidays' :: [Rule]

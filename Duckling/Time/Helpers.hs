@@ -82,7 +82,9 @@ timeNegPeriod (DurationData v g) = DurationData
 timeComputed :: [TTime.TimeObject] -> TTime.Predicate
 timeComputed xs = mkSeriesPredicate series
   where
-    series t _ = span (flip TTime.timeBefore t) xs
+    series t _ = (reverse start, end)
+      where
+        (start, end) = span (flip TTime.timeBefore t) xs
 
 timeCycle :: TG.Grain -> TTime.Predicate
 timeCycle grain = mkSeriesPredicate series

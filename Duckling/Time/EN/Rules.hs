@@ -1540,6 +1540,7 @@ ruleComputedHolidays = mkRuleHolidays
   , ( "Holy Saturday"
     , "(black|holy (and great )?|joyous)sat(urday)?|the great sabbath|easter eve"
     , cycleNthAfter False TG.Day (-1) easterSunday )
+  , ( "Lag BaOmer", "lag b[a']omer", lagBaOmer )
   , ( "Lazarus Saturday", "lazarus\\s+saturday"
     , cycleNthAfter False TG.Day (-8) orthodoxEaster )
   , ( "Maundy Thursday"
@@ -1559,10 +1560,20 @@ ruleComputedHolidays = mkRuleHolidays
     , cycleNthAfter False TG.Day (-7) easterSunday )
   , ( "Pentecost", "pentecost|white sunday|whitsunday"
     , cycleNthAfter False TG.Day 49 easterSunday )
+  , ( "Shemini Atzeret", "shemini\\s+atzeret"
+    , cycleNthAfter False TG.Day 21 roshHashana )
   , ( "Shrove Tuesday", "pancake (tues)?day|shrove tuesday"
     , cycleNthAfter False TG.Day (-47) easterSunday )
+  , ( "Simchat Torah", "simc?hat\\s+torah"
+    , cycleNthAfter False TG.Day 22 roshHashana )
+  , ( "Tisha B'Av", "tisha b'av", tishaBAv )
   , ( "Trinity Sunday", "trinity\\s+sunday"
     , cycleNthAfter False TG.Day 56 easterSunday )
+  , ( "Yom Ha'atzmaut", "yom ha'?atzmaut", yomHaatzmaut )
+  , ( "Yom HaShoah"
+    , "yom hashoah|yom hazikaron lashoah ve-lag'vurah|holocaust (remembrance )?day"
+    , cycleNthAfter False TG.Day 12 passover )
+  , ( "Yom Kippur", "yom\\s+kippur", cycleNthAfter False TG.Day 9 roshHashana )
   , ( "Whit Monday", "(pentecost|whit)\\s+monday|monday of the holy spirit"
     , cycleNthAfter False TG.Day 50 easterSunday )
 
@@ -1577,9 +1588,29 @@ ruleComputedHolidays' = mkRuleHolidays'
     , let start = cycleNthAfter False TG.Day (-48) orthodoxEaster
           end = cycleNthAfter False TG.Day (-9) orthodoxEaster
         in interval TTime.Open start end )
+  , ( "Hanukkah", "c?hanukk?ah"
+    , let start = chanukah
+          end = cycleNthAfter False TG.Day 7 chanukah
+        in interval TTime.Open start end )
   , ( "Lent", "lent"
     , let start = cycleNthAfter False TG.Day (-46) easterSunday
           end = cycleNthAfter False TG.Day (-1) easterSunday
+        in interval TTime.Open start end )
+  , ( "Passover", "passover|pesa[ck]?h"
+    , let start = passover
+          end = cycleNthAfter False TG.Day 8 passover
+        in interval TTime.Open start end )
+  , ( "Rosh Hashanah", "rosh hashanah|yom teruah"
+    , let start = roshHashana
+          end = cycleNthAfter False TG.Day 2 roshHashana
+        in interval TTime.Open start end )
+  , ( "Shavuot", "feast of weeks|shavu'?oth?|shovuos"
+    , let start = cycleNthAfter False TG.Day 50 passover
+          end = cycleNthAfter False TG.Day 52 passover
+        in interval TTime.Open start end )
+  , ( "Sukkot", "feast of (booths|tabernacles|the ingathering)|su[ck]{2}o[st]"
+    , let start = cycleNthAfter False TG.Day 14 roshHashana
+          end = cycleNthAfter False TG.Day 22 roshHashana
         in interval TTime.Open start end )
   ]
 

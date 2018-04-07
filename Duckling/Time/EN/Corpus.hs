@@ -699,6 +699,9 @@ allExamples = concat
              [ "easter"
              , "easter 2013"
              ]
+ , examples (datetimeHoliday (2012, 4, 08, 0, 0, 0) Day "Easter Sunday")
+             [ "last easter"
+             ]
   , examples (datetimeHoliday (2013, 4, 1, 0, 0, 0) Day "Easter Monday")
              [ "easter mon"
              ]
@@ -1137,7 +1140,49 @@ allExamples = concat
              [ "chinese new year"
              , "chinese lunar new year's day"
              ]
+  , examples (datetimeHoliday (2013, 2, 10, 0, 0, 0) Day "Chinese New Year")
+             [ "last chinese new year"
+             , "last chinese lunar new year's day"
+             ]
   , examples (datetimeHoliday (2018, 2, 16, 0, 0, 0) Day "Chinese New Year")
              [ "chinese new year's day 2018"
+             ]
+  , examples (datetimeHoliday (2018, 9, 18, 0, 0, 0) Day "Yom Kippur")
+             [ "yom kippur 2018"
+             ]
+  , examples (datetimeHoliday (2018, 9, 30, 0, 0, 0) Day "Shemini Atzeret")
+             [ "shemini atzeret 2018"
+             ]
+  , examples (datetimeHoliday (2018, 10, 1, 0, 0, 0) Day "Simchat Torah")
+             [ "simchat torah 2018"
+             ]
+  , examples (datetimeHoliday (2018, 7, 21, 0, 0, 0) Day "Tisha B'Av")
+             [ "tisha b'av 2018"
+             ]
+  , examples (datetimeHoliday (2018, 4, 18, 0, 0, 0) Day "Yom Ha'atzmaut")
+             [ "yom haatzmaut 2018"
+             ]
+  , examples (datetimeHoliday (2017, 5, 13, 0, 0, 0) Day "Lag BaOmer")
+             [ "lag b'omer 2017"
+             ]
+  , examples (datetimeHoliday (2018, 4, 11, 0, 0, 0) Day "Yom HaShoah")
+             [ "Yom Hashoah 2018"
+             , "Holocaust Day 2018"
+             ]
+  , examples (datetimeIntervalHoliday ((2018, 9, 9, 0, 0, 0), (2018, 9, 12, 0, 0, 0)) Day "Rosh Hashanah")
+             [ "rosh hashanah 2018"
+             ]
+  , examples (datetimeIntervalHoliday ((2018, 12, 2, 0, 0, 0), (2018, 12, 10, 0, 0, 0)) Day "Hanukkah")
+             [ "Chanukah 2018"
+             ]
+  , examples (datetimeIntervalHoliday ((2018, 3, 30, 0, 0, 0), (2018, 4, 8, 0, 0, 0)) Day "Passover")
+             [ "passover 2018"
+             ]
+  , examples (datetimeIntervalHoliday ((2018, 9, 23, 0, 0, 0), (2018, 10, 2, 0, 0, 0)) Day "Sukkot")
+             [ "feast of the ingathering 2018"
+             , "succos 2018"
+             ]
+  , examples (datetimeIntervalHoliday ((2018, 5, 19, 0, 0, 0), (2018, 5, 22, 0, 0, 0)) Day "Shavuot")
+             [ "shavuot 2018"
              ]
   ]

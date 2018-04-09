@@ -267,6 +267,18 @@ allExamples = concat
   , examples (datetime (2013, 3, 1, 0, 0, 0) Month)
              [ "next month"
              ]
+  , examples (datetime (2013, 3, 20, 0, 0, 0) Day)
+             [ "20 of next month"
+             , "20th of the next month"
+             , "20th day of next month"
+             ]
+  , examples (datetime (2013, 2, 20, 0, 0, 0) Day)
+             [ "20th of the current month"
+             , "20 of this month"
+             ]
+  , examples (datetime (2013, 1, 20, 0, 0, 0) Day)
+             [ "20th of the previous month"
+             ]
   , examples (datetime (2013, 1, 1, 0, 0, 0) Quarter)
              [ "this quarter"
              , "this qtr"

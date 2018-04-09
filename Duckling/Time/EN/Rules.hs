@@ -117,8 +117,6 @@ ruleInstants = mkRuleInstants
   , ("today"        , TG.Day   , 0  , "todays?|(at this time)"           )
   , ("tomorrow"     , TG.Day   , 1  , "(tmrw?|tomm?or?rows?)"            )
   , ("yesterday"    , TG.Day   , - 1, "yesterdays?"                      )
-  , ("end of month" , TG.Month , 1  , "(the )?(EOM|end of (the )?month)" )
-  , ("end of year"  , TG.Year  , 1  , "(the )?(EOY|end of (the )?year)"  )
   ]
 
 ruleNow :: Rule
@@ -1278,6 +1276,36 @@ ruleEndOrBeginningOfMonth = Rule
       _ -> Nothing
   }
 
+ruleEndOfMonth :: Rule
+ruleEndOfMonth = Rule
+  { name = "end of month"
+  , pattern = [ regex "(by (the )?|(at )?the )?(EOM|end of (the )?month)" ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (match:_)):_)
+        | (Just start, Just end) <- parsed ->
+          Token Time <$> interval TTime.Open start end
+        where
+          cycleMonth = cycleNth TG.Month
+          parsed = if "by" `Text.isPrefixOf` Text.toLower match
+            then
+              ( Just $ cycleNth TG.Second 0
+              , intersect (dayOfMonth 1) $ cycleMonth 1)
+            else
+              ( intersect (dayOfMonth 21) $ cycleMonth 0
+              , Just $ cycleLastOf TG.Day $ cycleMonth 0)
+      _ -> Nothing
+  }
+
+ruleBeginningOfMonth :: Rule
+ruleBeginningOfMonth = Rule
+  { name = "beginning of month"
+  , pattern = [ regex "((at )?the )?(BOM|beginning of (the )?month)" ]
+  , prod = \_ -> do
+      start <- intersect (dayOfMonth 1) $ cycleNth TG.Month 0
+      end <- intersect (dayOfMonth 10) $ cycleNth TG.Month 0
+      Token Time <$> interval TTime.Open start end
+  }
+
 ruleEndOrBeginningOfYear :: Rule
 ruleEndOrBeginningOfYear = Rule
   { name = "at the beginning|end of <year>"
@@ -1294,9 +1322,36 @@ ruleEndOrBeginningOfYear = Rule
         start <- intersect td $ month sd
         end <- if ed /= -1
           then intersect td $ cycleLastOf TG.Month $ month ed
-          else Just $ cycleLastOf TG.Month td
+          else cycleNthAfter False TG.Year 1 <$> intersect td (month 1)
         Token Time <$> interval TTime.Open start end
       _ -> Nothing
+  }
+
+ruleEndOfYear :: Rule
+ruleEndOfYear = Rule
+  { name = "end of year"
+  , pattern = [ regex "(by (the )?|(at )?the )?(EOY|end of (the )?year)" ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (match:_)):_) -> do
+        start <- std
+        end <- intersect (month 1) $ cycleYear 1
+        Token Time <$> interval TTime.Open start end
+          where
+            std = if "by" `Text.isPrefixOf` Text.toLower match
+              then Just $ cycleNth TG.Second 0
+              else intersect (month 9) $ cycleYear 0
+            cycleYear = cycleNth TG.Year
+      _ -> Nothing
+  }
+
+ruleBeginningOfYear :: Rule
+ruleBeginningOfYear = Rule
+  { name = "beginning of year"
+  , pattern = [ regex "((at )?the )?(BOY|beginning of (the )?year)" ]
+  , prod = \_ -> do
+      start <- intersect (month 1) $ cycleNth TG.Year 0
+      end <- intersect (month 4) $ cycleNth TG.Year 0
+      Token Time <$> interval TTime.Open start end
   }
 
 ruleEndOrBeginningOfWeek :: Rule
@@ -2020,6 +2075,10 @@ rules =
   , ruleEndOrBeginningOfWeek
   , ruleNow
   , ruleSeason
+  , ruleEndOfMonth
+  , ruleBeginningOfMonth
+  , ruleEndOfYear
+  , ruleBeginningOfYear
   ]
   ++ ruleInstants
   ++ ruleDaysOfWeek

@@ -914,6 +914,25 @@ allExamples = concat
              ]
   , examples (datetimeInterval ((2013, 2, 12, 4, 30, 0), (2013, 3, 1, 0, 0, 0)) Second)
              [ "by EOM"
+             , "by the EOM"
+             , "by end of the month"
+             , "by the end of month"
+             ]
+  , examples (datetimeInterval ((2013, 2, 21, 0, 0, 0), (2013, 3, 1, 0, 0, 0)) Day)
+             [ "EOM"
+             , "the EOM"
+             , "at the EOM"
+             , "the end of the month"
+             , "end of the month"
+             , "at the end of month"
+             ]
+  , examples (datetimeInterval ((2013, 2, 1, 0, 0, 0), (2013, 2, 11, 0, 0, 0)) Day)
+             [ "BOM"
+             , "the BOM"
+             , "at the BOM"
+             , "beginning of the month"
+             , "the beginning of the month"
+             , "at the beginning of month"
              ]
   , examples (datetimeInterval ((2013, 2, 12, 4, 30, 0), (2013, 4, 1, 0, 0, 0)) Second)
              [ "by the end of next month"
@@ -1080,13 +1099,33 @@ allExamples = concat
              [ "beginning of January"
              , "at the beginning of January"
              ]
-  , examples (datetimeInterval ((2012, 9, 1, 0, 0, 0), (2012, 12, 1, 0, 0, 0)) Month)
+  , examples (datetimeInterval ((2012, 9, 1, 0, 0, 0), (2013, 1, 1, 0, 0, 0)) Month)
              [ "end of 2012"
              , "at the end of 2012"
              ]
   , examples (datetimeInterval ((2017, 1, 1, 0, 0, 0), (2017, 4, 1, 0, 0, 0)) Month)
              [ "beginning of 2017"
              , "at the beginning of 2017"
+             ]
+  , examples (datetimeInterval ((2013, 1, 1, 0, 0, 0), (2013, 4, 1, 0, 0, 0)) Month)
+             [ "beginning of year"
+             , "the beginning of the year"
+             , "the BOY"
+             , "BOY"
+             ]
+  , examples (datetimeInterval ((2013, 2, 12, 4, 30, 0), (2014, 1, 1, 0, 0, 0)) Second)
+             [ "by EOY"
+             , "by the EOY"
+             , "by end of the year"
+             , "by the end of year"
+             ]
+  , examples (datetimeInterval ((2013, 9, 1, 0, 0, 0), (2014, 1, 1, 0, 0, 0)) Month)
+             [ "EOY"
+             , "the EOY"
+             , "at the EOY"
+             , "the end of the year"
+             , "end of the year"
+             , "at the end of year"
              ]
   , examples (datetimeInterval ((2013, 2, 11, 0, 0, 0), (2013, 2, 14, 0, 0, 0)) Day)
              [ "beginning of this week"

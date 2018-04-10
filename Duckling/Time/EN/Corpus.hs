@@ -1236,4 +1236,50 @@ allExamples = concat
   , examples (datetimeIntervalHoliday ((2018, 5, 19, 0, 0, 0), (2018, 5, 22, 0, 0, 0)) Day "Shavuot")
              [ "shavuot 2018"
              ]
+  , examples (datetimeHoliday (2017, 11, 30, 0, 0, 0) Day "Mawlid")
+             [ "mawlid al-nabawi 2017"
+             ]
+  , examples (datetimeHoliday (2018, 6, 15, 0, 0, 0) Day "Eid al-Fitr")
+             [ "Eid al-Fitr 2018"
+             ]
+  , examples (datetimeHoliday (2018, 8, 21, 0, 0, 0) Day "Eid al-Adha")
+             [ "Eid al-Adha 2018"
+             , "id ul-adha 2018"
+             , "sacrifice feast 2018"
+             , "Bakr Id 2018"
+             ]
+  , examples (datetimeHoliday (2017, 6, 22, 0, 0, 0) Day "Laylat al-Qadr")
+             [ "laylat al kadr 2017"
+             , "night of measures 2017"
+             ]
+  , examples (datetimeHoliday (2018, 6, 11, 0, 0, 0) Day "Laylat al-Qadr")
+             [ "laylat al-qadr 2018"
+             , "night of power 2018"
+             ]
+  , examples (datetimeHoliday (2018, 9, 11, 0, 0, 0) Day "Islamic New Year")
+             [ "Islamic New Year 2018"
+             , "Amun Jadid 2018"
+             ]
+  , examples (datetimeHoliday (2017, 9, 30, 0, 0, 0) Day "Ashura")
+             [ "day of Ashura 2017"
+             ]
+  , examples (datetimeHoliday (2017, 6, 23, 0, 0, 0) Day "Jumu'atul-Wida")
+             [ "Jamat Ul-Vida 2017"
+             , "Jumu'atul-Wida 2017"
+             ]
+  , examples (datetimeHoliday (2018, 6, 8, 0, 0, 0) Day "Jumu'atul-Wida")
+             [ "Jamat Ul-Vida 2018"
+             , "Jumu'atul-Wida 2018"
+             ]
+  , examples (datetimeHoliday (2018, 4, 13, 0, 0, 0) Day "Isra and Mi'raj")
+             [ "isra and mi'raj 2018"
+             , "the prophet's ascension 2018"
+             ]
+  , examples (datetimeHoliday (2019, 4, 3, 0, 0, 0) Day "Isra and Mi'raj")
+             [ "the night journey 2019"
+             , "ascension to heaven 2019"
+             ]
+  , examples (datetimeIntervalHoliday ((2018, 5, 16, 0, 0, 0), (2018, 6, 15, 0, 0, 0)) Day "Ramadan")
+             [ "Ramadan 2018"
+             ]
   ]

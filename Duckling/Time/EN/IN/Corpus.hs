@@ -95,4 +95,13 @@ allExamples = concat
              [ "labour day of last year"
              , "Labour Day 2012"
              ]
+  , examples (datetimeHoliday (2018, 3, 30, 0, 0, 0) Day "Hazarat Ali's Birthday")
+             [ "Hazarat Ali's Birthday 2018"
+             ]
+  , examples (datetimeHoliday (2019, 3, 20, 0, 0, 0) Day "Hazarat Ali's Birthday")
+             [ "Hazarat Ali's Birthday 2019"
+             ]
+  , examples (datetimeIntervalHoliday ((2018, 5, 16, 0, 0, 0), (2018, 6, 15, 0, 0, 0)) Day "Ramadan")
+             [ "ramzaan 2018"
+             ]
   ]

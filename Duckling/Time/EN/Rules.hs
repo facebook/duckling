@@ -1581,26 +1581,46 @@ ruleComputedHolidays = mkRuleHolidays
     , cycleNthAfter False TG.Day 39 easterSunday )
   , ( "Ash Wednesday", "ash\\s+wednesday|carnival"
     , cycleNthAfter False TG.Day (-46) easterSunday )
+  , ( "Ashura", "(day of )?ashura"
+    , cycleNthAfter False TG.Day 9 muharram )
   , ( "Chinese New Year", "chinese\\s+(lunar\\s+)?new\\s+year('s\\s+day)?"
     , chineseNewYear )
-  , ( "Clean Monday", "(orthodox\\s+)?(ash|clean|green|pure|shrove)\\s+monday|monday of lent"
+  , ( "Clean Monday"
+    , "(orthodox\\s+)?(ash|clean|green|pure|shrove)\\s+monday|monday of lent"
     , cycleNthAfter False TG.Day (-48) orthodoxEaster )
   , ( "Corpus Christi", "(the feast of )?corpus\\s+christi"
     , cycleNthAfter False TG.Day 60 easterSunday )
   , ( "Easter Monday", "easter\\s+mon(day)?"
     , cycleNthAfter False TG.Day 1 easterSunday )
   , ( "Easter Sunday", "easter(\\s+sun(day)?)?", easterSunday )
+  , ( "Eid al-Adha", "bakr[\\-\\s]e?id|e?id [au]l\\-adha|sacrifice feast"
+    , eidalAdha )
+  , ( "Eid al-Fitr", "eid al\\-fitr", eidalFitr )
   , ( "Good Friday", "(good|great|holy)\\s+fri(day)?"
     , cycleNthAfter False TG.Day (-2) easterSunday )
   , ( "Holy Saturday"
     , "(black|holy (and great )?|joyous)sat(urday)?|the great sabbath|easter eve"
     , cycleNthAfter False TG.Day (-1) easterSunday )
+  , ( "Islamic New Year", "(arabic|hijri|islamic) new year|amun jadid|muharram"
+    , muharram )
+  , ( "Isra and Mi'raj"
+    , "isra and mi'raj|(the )?prophet'?s'? ascension|(the )?ascension to heaven|the night journey"
+    , cycleNthAfter False TG.Day 26 rajab
+    )
+  , ( "Jumu'atul-Wida", "jumu'atul\\-widaa?'?|jamat[\\-\\s]ul[\\-\\s]vida"
+    , predNthAfter (-1) (dayOfWeek 5) eidalFitr )
   , ( "Lag BaOmer", "lag b[a']omer", lagBaOmer )
+  , ( "Laylat al-Qadr"
+    , "laylat al[\\-\\s][qk]adr|night of (destiny|measures|power|value)"
+    , cycleNthAfter False TG.Day 26 ramadan )
   , ( "Lazarus Saturday", "lazarus\\s+saturday"
     , cycleNthAfter False TG.Day (-8) orthodoxEaster )
   , ( "Maundy Thursday"
     , "(covenant|(great and )?holy|maundy|sheer)\\s+thu(rsday)?|thu(rsday)? of mysteries"
     , cycleNthAfter False TG.Day (-3) easterSunday )
+  , ( "Mawlid"
+    , "mawlid(\\s+al\\-nab(awi|i\\s+al\\-sharif))?|mevli[dt]|mulud|birth(day)? of (the )?prophet( muhammad)?|(the )?prophet's birthday"
+    , mawlid )
   , ( "Orthodox Easter Monday", "orthodox\\s+easter\\s+mon(day)?"
     , cycleNthAfter False TG.Day 1 orthodoxEaster )
   , ( "Orthodox Easter Sunday", "orthodox\\s+easter(\\s+sun(day)?)?|pascha?"
@@ -1654,6 +1674,10 @@ ruleComputedHolidays' = mkRuleHolidays'
   , ( "Passover", "passover|pesa[ck]?h"
     , let start = passover
           end = cycleNthAfter False TG.Day 8 passover
+        in interval TTime.Open start end )
+  , ( "Ramadan", "rama[dt]h?an|ramzaa?n"
+    , let start = ramadan
+          end = cycleNthAfter False TG.Day (-1) eidalFitr
         in interval TTime.Open start end )
   , ( "Rosh Hashanah", "rosh hashanah|yom teruah"
     , let start = roshHashana

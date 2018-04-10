@@ -94,7 +94,7 @@ allExamples = concat
              , "van 1,1$ en 1,3 dollars"
              ]
   , examples (under EUR 7)
-             [ "minden dan seven euros"
+             [ "minden dan 7 euros"
              , "minden dan 7 EUR"
              , "lager than 7€"
              ]

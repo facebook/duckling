@@ -91,7 +91,7 @@ allExamples = concat
              ]
   , examples (between Dollar (1.1, 1.3))
              [ "tussen 1,1 dollar en 1,3 dollars"
-             , "van 1 point 1 en 1 point three dollars"
+             , "van 1,1$ en 1,3 dollars"
              ]
   , examples (under EUR 7)
              [ "minden dan seven euros"
@@ -99,7 +99,7 @@ allExamples = concat
              , "lager than 7€"
              ]
   , examples (above Dollar 1.42)
-             [ "meer dan 1 dollar and forty-two cents"
+             [ "meer dan 1 dollar en 42 cents"
              , "minstens $1,42"
              , "boven de 1,42 dollars"
              , "boven een dollar en 42 cents"

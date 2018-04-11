@@ -224,7 +224,7 @@ ruleIntervalMax :: Rule
 ruleIntervalMax = Rule
   { name = "under/less/lower/no more than <amount-of-money>"
   , pattern =
-    [ regex "minder|(lager|niet? meer) dan"
+    [ regex "(minder|lager|niet? meer) dan"
     , financeWith TAmountOfMoney.value isJust
     ]
   , prod = \tokens -> case tokens of

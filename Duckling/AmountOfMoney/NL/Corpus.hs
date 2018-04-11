@@ -96,7 +96,7 @@ allExamples = concat
   , examples (under EUR 7)
              [ "minder dan 7 euros"
              , "minder dan 7 EUR"
-             , "lager than 7€"
+             , "lager dan 7€"
              ]
   , examples (above Dollar 1.42)
              [ "meer dan 1 dollar en 42 cents"

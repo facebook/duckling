@@ -43,10 +43,11 @@ ruleIntersect = Rule
   { name = "intersect"
   , pattern =
     [ Predicate isNotLatent
-    , Predicate isNotLatent
+    , Predicate $ or . sequence [isNotLatent, isGrainOfTime TG.Year]
     ]
   , prod = \tokens -> case tokens of
-      (Token Time td1:Token Time td2:_) -> Token Time <$> intersect td1 td2
+      (Token Time td1:Token Time td2:_) ->
+        Token Time <$> intersect td1 td2 -- . notLatent
       _ -> Nothing
   }
 
@@ -56,10 +57,11 @@ ruleIntersectOf = Rule
   , pattern =
     [ Predicate isNotLatent
     , regex "of|from|for|'s|,"
-    , Predicate isNotLatent
+    , Predicate $ or . sequence [isNotLatent, isGrainOfTime TG.Year]
     ]
   , prod = \tokens -> case tokens of
-      (Token Time td1:_:Token Time td2:_) -> Token Time <$> intersect td1 td2
+      (Token Time td1:_:Token Time td2:_) ->
+        Token Time . notLatent <$> intersect td1 td2
       _ -> Nothing
   }
 
@@ -308,41 +310,19 @@ ruleTheNthTimeAfterTime = Rule
       _ -> Nothing
   }
 
-ruleYear :: Rule
-ruleYear = Rule
-  { name = "year"
-  , pattern = [Predicate $ isIntegerBetween 1000 2100]
+ruleYearLatent :: Rule
+ruleYearLatent = Rule
+  { name = "year (latent)"
+  , pattern =
+      [ Predicate $
+        or . sequence [isIntegerBetween (- 10000) 0, isIntegerBetween 25 10000]
+      ]
   , prod = \tokens -> case tokens of
       (token:_) -> do
         n <- getIntValue token
-        tt $ year n
+        tt . mkLatent $ year n
       _ -> Nothing
   }
-
-ruleYearPastLatent :: Rule
-ruleYearPastLatent = Rule
- { name = "past year (latent)"
- , pattern =
-   [ Predicate $
-       or . sequence [isIntegerBetween (- 10000) 0, isIntegerBetween 25 999]
-   ]
- , prod = \tokens -> case tokens of
-     (token:_) -> do
-       n <- getIntValue token
-       tt . mkLatent $ year n
-     _ -> Nothing
- }
-
-ruleYearFutureLatent :: Rule
-ruleYearFutureLatent = Rule
- { name = "future year (latent)"
- , pattern = [Predicate $ isIntegerBetween 2101 10000]
- , prod = \tokens -> case tokens of
-     (token:_) -> do
-       n <- getIntValue token
-       tt . mkLatent $ year n
-     _ -> Nothing
- }
 
 ruleDOMLatent :: Rule
 ruleDOMLatent = Rule
@@ -2027,9 +2007,7 @@ rules =
   , ruleTheNthTimeOfTime
   , ruleNthTimeAfterTime
   , ruleTheNthTimeAfterTime
-  , ruleYear
-  , ruleYearPastLatent
-  , ruleYearFutureLatent
+  , ruleYearLatent
   , ruleTheDOMNumeral
   , ruleTheDOMOrdinal
   , ruleDOMLatent

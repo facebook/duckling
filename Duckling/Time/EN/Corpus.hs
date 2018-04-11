@@ -96,6 +96,7 @@ negativeCorpus = (testContext, testOptions, examples)
       , "at 650.650.6500"
       , "at 650-650-6500"
       , "two sixty a m"
+      , "Pay ABC 2000"
       ]
 
 latentCorpus :: Corpus
@@ -124,6 +125,9 @@ latentCorpus = (testContext, testOptions {withLatent = True}, xs)
       , examples (datetimeInterval
           ((2013, 2, 12, 18, 0, 0), (2013, 2, 13, 0, 0, 0)) Hour)
                  [ "night"
+                 ]
+      , examples (datetime (1954, 1, 1, 0, 0, 0) Year)
+                 [ "1954"
                  ]
       ]
 
@@ -579,9 +583,6 @@ allExamples = concat
   , examples (datetime (2011, 2, 1, 0, 0, 0) Month)
              [ "two years ago"
              ]
-  , examples (datetime (1954, 1, 1, 0, 0, 0) Year)
-             [ "1954"
-             ]
   , examples (datetime (2013, 2, 19, 4, 0, 0) Hour)
              [ "7 days hence"
              ]
@@ -880,6 +881,12 @@ allExamples = concat
              ]
   , examples (datetimeInterval ((2013, 2, 14, 9, 30, 0), (2013, 2, 14, 11, 1, 0)) Minute)
              [ "from 9:30 - 11:00 on Thursday"
+             , "between 9:30 and 11:00 on thursday"
+             , "between 9:30 and 11:00 on thursday"
+             , "between 9:30 and 11:00 on thursday"
+             , "between 9:30 and 11:00 on thursday"
+             , "between 9:30 and 11:00 on thursday"
+             , "between 9:30 and 11:00 on thursday"
              , "between 9:30 and 11:00 on thursday"
              , "between 9:30 and 11:00 on thursday"
              , "between 9:30 and 11:00 on thursday"

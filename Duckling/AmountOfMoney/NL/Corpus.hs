@@ -102,6 +102,6 @@ allExamples = concat
              [ "meer dan 1 dollar en 42 cents"
              , "minstens $1,42"
              , "boven de 1,42 dollars"
-             , "boven een dollar en 42 cents"
+             , "boven de 1 dollar en 42 cents"
              ]
   ]

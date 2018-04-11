@@ -239,7 +239,7 @@ ruleIntervalMin :: Rule
 ruleIntervalMin = Rule
   { name = "over/above/at least/more than <amount-of-money>"
   , pattern =
-    [ regex "boven de|minstens|meer than"
+    [ regex "boven de|minstens|meer dan"
     , financeWith TAmountOfMoney.value isJust
     ]
   , prod = \tokens -> case tokens of

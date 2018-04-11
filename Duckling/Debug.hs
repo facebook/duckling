@@ -50,8 +50,13 @@ fullParses l sentence targets = debugTokens sentence .
   where
     n = Text.length sentence
 
+debugCustom :: Context -> Options -> Text -> [Some Dimension] -> IO [Entity]
+debugCustom context options sentence targets = debugTokens sentence .
+  analyze sentence context options $ HashSet.fromList targets
+
 ptree :: Text -> Entity -> IO ()
 ptree sentence Entity {enode} = pnode sentence 0 enode
+
 -- -----------------------------------------------------------------
 -- Internals
 
@@ -64,10 +69,6 @@ parses l sentence targets = flip filter tokens $
   where
     tokens = parseAndResolve rules sentence testContext {locale = l} testOptions
     rules = rulesFor l $ HashSet.fromList targets
-
-debugCustom :: Context -> Options -> Text -> [Some Dimension] -> IO [Entity]
-debugCustom context options sentence targets = debugTokens sentence .
-  analyze sentence context options $ HashSet.fromList targets
 
 debugTokens :: Text -> [ResolvedToken] -> IO [Entity]
 debugTokens sentence tokens = do

@@ -47,7 +47,7 @@ ruleIntersect = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td1:Token Time td2:_) ->
-        Token Time <$> intersect td1 td2 -- . notLatent
+        Token Time . notLatent <$> intersect td1 td2
       _ -> Nothing
   }
 
@@ -89,15 +89,15 @@ ruleAbsorbOnADOW = Rule
       _ -> Nothing
   }
 
-ruleAbsorbInMonth :: Rule
-ruleAbsorbInMonth = Rule
-  { name = "in <named-month>"
+ruleAbsorbInMonthYear :: Rule
+ruleAbsorbInMonthYear = Rule
+  { name = "in <named-month>|year"
   , pattern =
     [ regex "in"
-    , Predicate isAMonth
+    , Predicate $ or . sequence [isAMonth, isGrainOfTime TG.Year]
     ]
   , prod = \tokens -> case tokens of
-      (_:token:_) -> Just token
+      (_:Token Time td:_) -> tt $ notLatent td
       _ -> Nothing
   }
 
@@ -1992,7 +1992,7 @@ rules =
   , ruleIntersectOf
   , ruleAbsorbOnTime
   , ruleAbsorbOnADOW
-  , ruleAbsorbInMonth
+  , ruleAbsorbInMonthYear
   , ruleAbsorbCommaTOD
   , ruleNextDOW
   , ruleNextTime

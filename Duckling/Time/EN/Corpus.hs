@@ -79,7 +79,6 @@ negativeCorpus = (testContext, testOptions, examples)
       , "we are separated"
       , "25"
       , "this is the one"
-      , "in 61"
       , "this one"
       , "this past one"
       , "at single"
@@ -110,6 +109,9 @@ latentCorpus = (testContext, testOptions {withLatent = True}, xs)
       , examples (datetime (2013, 2, 12, 7, 0, 0) Hour)
                  [ "7"
                  ]
+      , examples (datetime (1954, 1, 1, 0, 0, 0) Year)
+                 [ "1954"
+                 ]
       , examples (datetimeInterval
           ((2013, 2, 12, 4, 0, 0), (2013, 2, 12, 12, 0, 0)) Hour)
                  [ "morning"
@@ -126,9 +128,6 @@ latentCorpus = (testContext, testOptions {withLatent = True}, xs)
           ((2013, 2, 12, 18, 0, 0), (2013, 2, 13, 0, 0, 0)) Hour)
                  [ "night"
                  ]
-      , examples (datetime (1954, 1, 1, 0, 0, 0) Year)
-                 [ "1954"
-                 ]
       ]
 
 allExamples :: [Example]
@@ -144,6 +143,9 @@ allExamples = concat
              ]
   , examples (datetime (2013, 2, 1, 0, 0, 0) Day)
              [ "2/2013"
+             ]
+  , examples (datetime (2014, 1, 1, 0, 0, 0) Year)
+             [ "in 2014"
              ]
   , examples (datetime (2013, 2, 11, 0, 0, 0) Day)
              [ "yesterday"

@@ -52,7 +52,7 @@ tests = testGroup "EN Tests"
   , intersectTests
   , rangeTests
   , localeTests
-  , latentTests
+  , makeCorpusTest [This Time] latentCorpus
   ]
 
 localeTests :: TestTree
@@ -175,6 +175,3 @@ rangeTests = testCase "Range Test" $
          , ("one ninety nine a m", Range 11 19) -- ruleMilitarySpelledOutAMPM2
          , ("thirteen fifty nine a m", Range 15 23) -- ruleMilitarySpelledOutAMPM
          ]
-
-latentTests :: TestTree
-latentTests = makeCorpusTest [This Time] latentCorpus

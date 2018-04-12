@@ -34,7 +34,7 @@ ruleInteger = Rule
   , pattern =
     [ regex "(〇|零|一|二|两|兩|三|四|五|六|七|八|九|十)"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token RegexMatch (GroupMatch (match:_)):_) ->
         HashMap.lookup match integerMap >>= integer
       _ -> Nothing
@@ -66,7 +66,7 @@ ruleNumeralsPrefixWithNegativeOrMinus = Rule
     [ regex "-|负|負"
     , Predicate isPositive
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (_:Token Numeral nd:_) -> double (TNumeral.value nd * (-1))
       _ -> Nothing
   }
@@ -77,7 +77,7 @@ ruleDecimalWithThousandsSeparator = Rule
   , pattern =
     [ regex "(\\d+(,\\d\\d\\d)+\\.\\d+)"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token RegexMatch (GroupMatch (match:_)):_) ->
         parseDouble (Text.replace "," Text.empty match) >>= double
       _ -> Nothing
@@ -89,7 +89,7 @@ ruleDecimalNumeral = Rule
   , pattern =
     [ regex "(\\d*\\.\\d+)"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token RegexMatch (GroupMatch (match:_)):_) -> parseDecimal True match
       _ -> Nothing
   }
@@ -101,7 +101,7 @@ ruleNumeral = Rule
     [ dimension Numeral
     , regex "个|個"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (token:_) -> Just token
       _ -> Nothing
   }

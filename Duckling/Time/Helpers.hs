@@ -8,7 +8,7 @@
 
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE NoRebindableSyntax #-}
-
+{-# LANGUAGE TupleSections #-}
 
 module Duckling.Time.Helpers
   ( -- Patterns
@@ -28,8 +28,8 @@ module Duckling.Time.Helpers
     -- Other
   , getIntValue, timeComputed
   -- Rule constructors
-  , mkRuleInstants, mkRuleDaysOfWeek, mkRuleMonths, mkRuleSeasons
-  , mkRuleHolidays, mkRuleHolidays'
+  , mkRuleInstants, mkRuleDaysOfWeek, mkRuleMonths, mkRuleMonthsWithLatent
+  , mkRuleSeasons, mkRuleHolidays, mkRuleHolidays'
   ) where
 
 import Data.Maybe
@@ -646,10 +646,14 @@ mkRuleDaysOfWeek daysOfWeek = zipWith go daysOfWeek [1..7]
       mkSingleRegexRule name ptn . tt . mkOkForThisNext $ dayOfWeek i
 
 mkRuleMonths :: [(Text, String)] -> [Rule]
-mkRuleMonths months  = zipWith go months [1..12]
+mkRuleMonths = mkRuleMonthsWithLatent . map (uncurry (,, False))
+
+mkRuleMonthsWithLatent :: [(Text, String, Bool)] -> [Rule]
+mkRuleMonthsWithLatent months  = zipWith go months [1..12]
   where
-    go (name, ptn) i =
-      mkSingleRegexRule name ptn . tt . mkOkForThisNext $ month i
+    go (name, ptn, latent) i =
+      mkSingleRegexRule name ptn . tt . (if latent then mkLatent else id)
+      . mkOkForThisNext $ month i
 
 mkRuleSeasons :: [(Text, String, TimeData, TimeData)] -> [Rule]
 mkRuleSeasons = map go

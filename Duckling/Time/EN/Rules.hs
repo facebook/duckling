@@ -1198,19 +1198,19 @@ ruleDaysOfWeek = mkRuleDaysOfWeek
   ]
 
 ruleMonths :: [Rule]
-ruleMonths = mkRuleMonths
-  [ ( "January"  , "january|jan\\.?"     )
-  , ( "February" , "february|feb\\.?"    )
-  , ( "March"    , "march|mar\\.?"       )
-  , ( "April"    , "april|apr\\.?"       )
-  , ( "May"      , "may"                 )
-  , ( "June"     , "june|jun\\.?"        )
-  , ( "July"     , "july|jul\\.?"        )
-  , ( "August"   , "august|aug\\.?"      )
-  , ( "September", "september|sept?\\.?" )
-  , ( "October"  , "october|oct\\.?"     )
-  , ( "November" , "november|nov\\.?"    )
-  , ( "December" , "december|dec\\.?"    )
+ruleMonths = mkRuleMonthsWithLatent
+  [ ( "January"  , "january|jan\\.?"    , False )
+  , ( "February" , "february|feb\\.?"   , False )
+  , ( "March"    , "march|mar\\.?"      , False )
+  , ( "April"    , "april|apr\\.?"      , False )
+  , ( "May"      , "may"                , True  )
+  , ( "June"     , "june|jun\\.?"       , False )
+  , ( "July"     , "july|jul\\.?"       , False )
+  , ( "August"   , "august|aug\\.?"     , False )
+  , ( "September", "september|sept?\\.?", False )
+  , ( "October"  , "october|oct\\.?"    , False )
+  , ( "November" , "november|nov\\.?"   , False )
+  , ( "December" , "december|dec\\.?"   , False )
   ]
 
 rulePartOfMonth :: Rule

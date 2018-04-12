@@ -98,4 +98,10 @@ allExamples = concat
              [ "labour day of last year"
              , "Labour Day 2012"
              ]
+  , examples (datetimeHoliday (2018, 5, 28, 0, 0, 0) Day "Reconciliation Day")
+             [ "reconciliation day 2018"
+             ]
+  , examples (datetimeHoliday (2019, 5, 27, 0, 0, 0) Day "Reconciliation Day")
+             [ "reconciliation day 2019"
+             ]
   ]

@@ -109,9 +109,9 @@ latentCorpus = (testContext, testOptions {withLatent = True}, xs)
       , examples (datetime (2013, 2, 12, 7, 0, 0) Hour)
                  [ "7"
                  ]
-      , examples (datetime (1954, 1, 1, 0, 0, 0) Year)
-                 [ "1954"
-                 ]
+      --, examples (datetime (1954, 1, 1, 0, 0, 0) Year)
+      --           [ "1954"
+      --           ]
       , examples (datetimeInterval
           ((2013, 2, 12, 4, 0, 0), (2013, 2, 12, 12, 0, 0)) Hour)
                  [ "morning"

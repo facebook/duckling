@@ -108,6 +108,10 @@ rulePeriodicHolidays = mkRuleHolidays
   , ( "Recreation Day", "recreation day", nthDOWOfMonth 1 1 10 )
   , ( "Thanksgiving Day", "thanks?giving( day)?", nthDOWOfMonth 4 4 11 )
   , ( "Western Australia Day", "western australia day", nthDOWOfMonth 1 1 6 )
+
+  -- Other
+  , ( "Reconciliation Day", "reconciliation\\s+day"
+    , predNthAfter 0 (dayOfWeek 1) (monthDay 5 26) )
   ]
 
 rulePeriodicHolidays' :: [Rule]

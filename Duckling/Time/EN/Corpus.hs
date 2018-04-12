@@ -1272,6 +1272,9 @@ allExamples = concat
   , examples (datetimeHoliday (2017, 9, 30, 0, 0, 0) Day "Ashura")
              [ "day of Ashura 2017"
              ]
+  , examples (datetimeHoliday (2018, 1, 30, 0, 0, 0) Day "Tu BiShvat")
+             [ "tu bishvat 2018"
+             ]
   , examples (datetimeHoliday (2017, 6, 23, 0, 0, 0) Day "Jumu'atul-Wida")
              [ "Jamat Ul-Vida 2017"
              , "Jumu'atul-Wida 2017"

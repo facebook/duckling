@@ -1624,6 +1624,8 @@ ruleComputedHolidays = mkRuleHolidays
   , ( "Tisha B'Av", "tisha b'av", tishaBAv )
   , ( "Trinity Sunday", "trinity\\s+sunday"
     , cycleNthAfter False TG.Day 56 easterSunday )
+  -- 15th day of Shevat
+  , ( "Tu BiShvat", "tu b[i']shvat", tuBishvat )
   , ( "Yom Ha'atzmaut", "yom ha'?atzmaut", yomHaatzmaut )
   , ( "Yom HaShoah"
     , "yom hashoah|yom hazikaron lashoah ve-lag'vurah|holocaust (remembrance )?day"
@@ -1632,7 +1634,7 @@ ruleComputedHolidays = mkRuleHolidays
   , ( "Whit Monday", "(pentecost|whit)\\s+monday|monday of the holy spirit"
     , cycleNthAfter False TG.Day 50 easterSunday )
 
-  -- Holidays whose dates involve "closest"
+  -- Other
   , ( "Boss's Day", "boss'?s?( day)?"
     , predNthClosest 0 weekday (monthDay 10 16) )
   ]

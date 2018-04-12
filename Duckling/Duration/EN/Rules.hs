@@ -7,6 +7,7 @@
 
 
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE NoRebindableSyntax #-}
 {-# LANGUAGE OverloadedStrings #-}
 
@@ -14,16 +15,19 @@ module Duckling.Duration.EN.Rules
   ( rules
   ) where
 
+import Data.Semigroup ((<>))
 import Data.String
 import Prelude
 import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
 import Duckling.Duration.Helpers
+import Duckling.Duration.Types (DurationData(..))
 import Duckling.Numeral.Helpers (parseInt, parseInteger)
 import Duckling.Numeral.Types (NumeralData(..))
 import Duckling.Regex.Types
 import Duckling.Types
+import qualified Duckling.Duration.Types as TDuration
 import qualified Duckling.Numeral.Types as TNumeral
 import qualified Duckling.TimeGrain.Types as TG
 
@@ -70,7 +74,7 @@ ruleNumeralQuotes = Rule
     [ Predicate isNatural
     , regex "(['\"])"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Numeral NumeralData{TNumeral.value = v}:
        Token RegexMatch (GroupMatch (x:_)):
        _) -> case x of
@@ -88,7 +92,7 @@ ruleDurationNumeralMore = Rule
     , regex "more|less"
     , dimension TimeGrain
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Numeral nd:_:Token TimeGrain grain:_) ->
         Just . Token Duration . duration grain . floor $ TNumeral.value nd
       _ -> Nothing
@@ -100,7 +104,7 @@ ruleDurationDotNumeralHours = Rule
   , pattern =
     [ regex "(\\d+)\\.(\\d+) *hours?"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token RegexMatch (GroupMatch (h:m:_)):_) -> do
         hh <- parseInteger h
         mnum <- parseInteger m
@@ -116,7 +120,7 @@ ruleDurationAndHalfHour = Rule
     [ Predicate isNatural
     , regex "and (an? )?half hours?"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Numeral NumeralData{TNumeral.value = v}:_) ->
         Just . Token Duration . duration TG.Minute $ 30 + 60 * floor v
       _ -> Nothing
@@ -129,7 +133,7 @@ ruleDurationA = Rule
     [ regex "an?"
     , dimension TimeGrain
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (_:Token TimeGrain grain:_) -> Just . Token Duration $ duration grain 1
       _ -> Nothing
   }
@@ -141,9 +145,27 @@ ruleDurationPrecision = Rule
     [ regex "(about|around|approximately|exactly)"
     , dimension Duration
     ]
-    , prod = \tokens -> case tokens of
+    , prod = \case
         (_:token:_) -> Just token
         _ -> Nothing
+  }
+
+ruleCompositeDuration :: Rule
+ruleCompositeDuration = Rule
+  { name = "composite <duration>"
+  , pattern =
+    [ Predicate isNatural
+    , dimension TimeGrain
+    , regex ",|and"
+    , dimension Duration
+    ]
+  , prod = \case
+      (Token Numeral NumeralData{TNumeral.value = v}:
+       Token TimeGrain g:
+       _:
+       Token Duration dd@DurationData{TDuration.grain = dg}:
+       _) | g > dg -> Just . Token Duration $ duration g (floor v) <> dd
+      _ -> Nothing
   }
 
 rules :: [Rule]
@@ -158,4 +180,5 @@ rules =
   , ruleDurationA
   , ruleDurationPrecision
   , ruleNumeralQuotes
+  , ruleCompositeDuration
   ]

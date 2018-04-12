@@ -14,7 +14,6 @@ module Duckling.Duration.Rules
   ( rules
   ) where
 
-import Data.Semigroup ((<>))
 import Data.String
 import Prelude
 
@@ -22,7 +21,6 @@ import Duckling.Dimensions.Types
 import Duckling.Duration.Helpers
 import Duckling.Numeral.Types (NumeralData(..))
 import Duckling.Types
-import qualified Duckling.Duration.Types as TDuration
 import qualified Duckling.Numeral.Types as TNumeral
 
 ruleIntegerUnitofduration :: Rule
@@ -39,26 +37,7 @@ ruleIntegerUnitofduration = Rule
       _ -> Nothing
   }
 
-ruleCompositeDuration :: Rule
-ruleCompositeDuration = Rule
-  { name = "composite <duration>"
-  , pattern =
-    [ Predicate isNatural
-    , dimension TimeGrain
-    , regex ",|and"
-    , dimension Duration
-    ]
-  , prod = \case
-      (Token Numeral NumeralData{TNumeral.value = v}: Token TimeGrain g: _:
-       Token Duration dur: _)
-        | g > TDuration.grain dur ->
-            let dur1 = duration g $ floor v
-            in Just . Token Duration $ dur1 <> dur
-      _ -> Nothing
-  }
-
 rules :: [Rule]
 rules =
-  [ ruleCompositeDuration
-  , ruleIntegerUnitofduration
+  [ ruleIntegerUnitofduration
   ]

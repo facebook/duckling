@@ -1928,6 +1928,38 @@ ruleDurationHenceAgo = Rule
       _ -> Nothing
   }
 
+ruleDayDurationHenceAgo :: Rule
+ruleDayDurationHenceAgo = Rule
+  { name = "<day> <duration> hence|ago"
+  , pattern =
+    [ Predicate $ or . sequence [isGrainOfTime TG.Day, isGrainOfTime TG.Month]
+    , dimension Duration
+    , regex "(from now|hence|ago)"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Time td:
+       Token Duration dd:
+       Token RegexMatch (GroupMatch (match:_)):
+       _) -> case Text.toLower match of
+         "ago" -> Token Time <$> intersect td (durationIntervalAgo dd)
+         _     -> Token Time <$> intersect td (inDurationInterval dd)
+      _ -> Nothing
+  }
+
+ruleDayInDuration :: Rule
+ruleDayInDuration = Rule
+  { name = "<day> in <duration>"
+  , pattern =
+    [ Predicate $ or . sequence [isGrainOfTime TG.Day, isGrainOfTime TG.Month]
+    , regex "in"
+    , dimension Duration
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Time td:_:Token Duration dd:_) ->
+        Token Time <$> intersect td (inDurationInterval dd)
+      _ -> Nothing
+  }
+
 ruleInNumeral :: Rule
 ruleInNumeral = Rule
   { name = "in <number> (implicit minutes)"
@@ -2083,6 +2115,8 @@ rules =
   , ruleDurationInWithinAfter
   , ruleDurationLastNext
   , ruleDurationHenceAgo
+  , ruleDayDurationHenceAgo
+  , ruleDayInDuration
   , ruleDurationAfterBeforeTime
   , ruleIntervalForDurationFrom
   , ruleInNumeral

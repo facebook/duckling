@@ -23,7 +23,8 @@ module Duckling.Time.Helpers
   , inTimezone, longWEBefore, minute, minutesAfter, minutesBefore, mkLatent
   , month, monthDay, notLatent, now, nthDOWOfMonth, partOfDay, predLastOf
   , predNth, predNthAfter, predNthClosest, season, second, timeOfDayAMPM
-  , weekday, weekend, withDirection, year, yearMonthDay, tt
+  , weekday, weekend, withDirection, year, yearMonthDay, tt, durationIntervalAgo
+  , inDurationInterval
     -- Other
   , getIntValue, timeComputed
   -- Rule constructors
@@ -75,6 +76,10 @@ getIntValue _ = Nothing
 timeNegPeriod :: DurationData -> DurationData
 timeNegPeriod (DurationData v g) = DurationData
   {TDuration.grain = g, TDuration.value = negate v}
+
+timeShiftPeriod :: Int -> DurationData -> DurationData
+timeShiftPeriod n dd@DurationData{TDuration.value = v} =
+  dd{TDuration.value = v + n}
 
 -- -----------------------------------------------------------------
 -- Time predicates
@@ -513,6 +518,9 @@ mkOkForThisNext td = td {TTime.okForThisNext = True}
 durationAgo :: DurationData -> TimeData
 durationAgo dd = inDuration $ timeNegPeriod dd
 
+durationIntervalAgo :: DurationData -> TimeData
+durationIntervalAgo dd = inDurationInterval $ timeNegPeriod dd
+
 durationAfter :: DurationData -> TimeData -> TimeData
 durationAfter dd TimeData {TTime.timePred = pred1, TTime.timeGrain = g} =
   TTime.timedata'
@@ -532,6 +540,10 @@ inDuration dd = TTime.timedata'
   }
   where
     t = takeNth 0 False $ timeCycle TG.Second
+
+inDurationInterval :: DurationData -> TimeData
+inDurationInterval dd = interval' TTime.Open
+  (inDuration dd, inDuration $ timeShiftPeriod 1 dd)
 
 inTimezone :: Text -> TimeData -> Maybe TimeData
 inTimezone input td@TimeData {TTime.timePred = p} = do

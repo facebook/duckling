@@ -53,17 +53,23 @@ defaultCorpus = (testContext, testOptions, allExamples ++ custom)
                  , "thanksgiving 2013"
                  , "this thanksgiving"
                  , "next thanksgiving day"
+                 , "thanksgiving in 9 months"
+                 , "thanksgiving 9 months from now"
                  ]
       , examples (datetimeHoliday (2014, 11, 27, 0, 0, 0) Day "Thanksgiving Day")
                  [ "thanksgiving of next year"
+                 , "thanksgiving in a year"
                  , "thanksgiving 2014"
                  ]
       , examples (datetimeHoliday (2012, 11, 22, 0, 0, 0) Day "Thanksgiving Day")
                  [ "last thanksgiving"
                  , "thanksgiving day 2012"
+                 , "thanksgiving 3 months ago"
+                 , "thanksgiving 1 year ago"
                  ]
       , examples (datetimeHoliday (2016, 11, 24, 0, 0, 0) Day "Thanksgiving Day")
                  [ "thanksgiving 2016"
+                 , "thanksgiving in 3 years"
                  ]
       , examples (datetimeHoliday (2017, 11, 23, 0, 0, 0) Day "Thanksgiving Day")
                  [ "thanksgiving 2017"
@@ -220,6 +226,10 @@ allExamples = concat
              ]
   , examples (datetime (2013, 8, 8, 0, 0, 0) Day)
              [ "Aug 8"
+             ]
+  , examples (datetime (2014, 3, 1, 0, 0, 0) Month)
+             [ "March in 1 year"
+             , "March in a year"
              ]
   , examples (datetime (2014, 7, 18, 0, 0, 0) Day)
              [ "Fri, Jul 18"
@@ -412,6 +422,9 @@ allExamples = concat
   , examples (datetime (2013, 2, 13, 3, 18, 0) Minute)
              [ "3:18am"
              , "3:18a"
+             ]
+  , examples (datetime (2016, 2, 1, 7, 0, 0) Hour)
+             [ "at 7 in 3 years"
              ]
   , examples (datetime (2013, 2, 12, 15, 0, 0) Hour)
              [ "at 3pm"

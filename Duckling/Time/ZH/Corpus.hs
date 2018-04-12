@@ -401,7 +401,6 @@ allExamples = concat
   , examples (datetimeInterval ((2012, 12, 0, 0, 0, 0), (2013, 2, 0, 0, 0, 0)) Month)
              [ "上两个月"
              , "上二个月"
-             , "上二月"
              , "前两个月"
              , "前二个月"
              , "前两月"

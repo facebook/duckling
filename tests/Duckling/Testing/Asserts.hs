@@ -11,6 +11,7 @@
 module Duckling.Testing.Asserts
   ( analyzedTargetTest
   , analyzedFirstTest
+  , analyzedAmbiguousTest
   , analyzedNTest
   , analyzedNothingTest
   , analyzedRangeTest
@@ -54,6 +55,16 @@ analyzedFirstTest context options (input, targets, predicate) =
     [] -> assertFailure ("empty result on " ++ show (input, targets))
     (token:_) -> assertBool ("don't pass predicate on " ++ show input) $
       predicate context token
+    where
+      tokens = analyze input context options $ HashSet.fromList targets
+
+analyzedAmbiguousTest :: Context -> Options ->
+  (Text, [Some Dimension], [TestPredicate]) -> IO ()
+analyzedAmbiguousTest context options (input, targets, predicates) =
+  case tokens of
+    [] -> assertFailure ("empty result on " ++ show (input, targets))
+    _ -> assertBool ("don't pass predicate on " ++ show input) $
+      all (\predicate -> any (predicate context) tokens) predicates
     where
       tokens = analyze input context options $ HashSet.fromList targets
 

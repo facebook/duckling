@@ -11,6 +11,7 @@
 
 module Duckling.Numeral.Helpers
   ( decimalsToDouble
+  , diffIntegerDigits
   , double
   , integer
   , multiply
@@ -78,6 +79,18 @@ decimalsToDouble x =
     case xs of
       [] -> 0
       (multiplier : _) -> x / multiplier
+
+-- diffIntegerDigits a b = # of digits in a - # of digits in b
+-- ignores the nondecimal components
+diffIntegerDigits :: Double -> Double -> Int
+diffIntegerDigits a b = digitsOf a - digitsOf b
+  where
+    digitsOf :: Double -> Int
+    digitsOf = digitsOfInt . floor . abs
+
+    digitsOfInt :: Int -> Int
+    digitsOfInt 0 = 0
+    digitsOfInt a = 1 + digitsOfInt (a `div` 10)
 
 -- -----------------------------------------------------------------
 -- Patterns

@@ -20,6 +20,7 @@ module Duckling.Testing.Types
   , examplesCustom
   , parserCheck
   , refTime
+  , simpleCheck
   , testContext
   , testOptions
   , withLocale

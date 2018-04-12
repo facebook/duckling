@@ -38,8 +38,7 @@ allExamples = concat
              , "9公尺"
              ]
   , examples (simple Kilometre 3)
-             [ "3千米"
-             , "3公里"
+             [ "3公里"
              , "三公裏"
              , "3 km"
              , "3km"

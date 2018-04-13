@@ -103,7 +103,7 @@ rulePeriodicHolidays = mkRuleHolidays
   , ( "Father Damien Day", "father damien day", monthDay 4 15 )
   , ( "Feast of Our Lady of Guadalupe", "feast of our lady of guadalupe", monthDay 12 12 )
   , ( "Flag Day", "flag day", monthDay 6 14 )
-  , ( "Groundhog Day", "groundhog day", monthDay 2 2 )
+  , ( "Groundhog Day", "groundhogs? day", monthDay 2 2 )
   , ( "Harvey Milk Day", "harvey milk day", monthDay 5 22 )
   , ( "Inauguration Day", "inauguration day", monthDay 1 20 )
   , ( "Independence Day", "independence day", monthDay 7 4 )

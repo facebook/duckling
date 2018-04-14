@@ -18,6 +18,7 @@ module Duckling.Numeral.Helpers
   , isMultipliable
   , isNatural
   , isPositive
+  , hasGrain
   , divide
   , notOkForAnyTime
   , numberBetween
@@ -120,6 +121,10 @@ isPositive _ = False
 isMultipliable :: Predicate
 isMultipliable (Token Numeral nd) = multipliable nd
 isMultipliable _ = False
+
+hasGrain :: Predicate
+hasGrain (Token Numeral NumeralData {grain = Just g}) = g > 1
+hasGrain _ = False
 
 oneOf :: [Double] -> PatternItem
 oneOf vs = Predicate $ \x ->

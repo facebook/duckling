@@ -127,6 +127,10 @@ allExamples = concat
              [ "5 thousand"
              , "five thousand"
              ]
+  , examples (NumeralValue (-504))
+             [ "-504"
+             , "negative five hundred and four"
+             ]
   , examples (NumeralValue (-1.2e6))
              [ "- 1,200,000"
              , "-1200000"

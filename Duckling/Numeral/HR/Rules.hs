@@ -158,7 +158,7 @@ ruleSum :: Rule
 ruleSum = Rule
   { name = "intersect"
   , pattern =
-    [ numberWith (fromMaybe 0 . TNumeral.grain) (>1)
+    [ Predicate hasGrain
     , Predicate $ and . sequence [not . isMultipliable, isPositive]
     ]
   , prod = \tokens -> case tokens of
@@ -309,7 +309,7 @@ ruleNumberDotNumber = Rule
   , pattern =
     [ dimension Numeral
     , regex "cijela|to(c|č)ka|zarez"
-    , numberWith TNumeral.grain isNothing
+    , Predicate $ not . hasGrain
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData{TNumeral.value = v1}:

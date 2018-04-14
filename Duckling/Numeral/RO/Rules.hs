@@ -109,7 +109,7 @@ ruleIntersect :: Rule
 ruleIntersect = Rule
   { name = "intersect"
   , pattern =
-    [ numberWith (fromMaybe 0 . TNumeral.grain) (>1)
+    [ Predicate hasGrain
     , Predicate $ and . sequence [not . isMultipliable, isPositive]
     ]
   , prod = \tokens -> case tokens of
@@ -123,7 +123,7 @@ ruleIntersectCuI :: Rule
 ruleIntersectCuI = Rule
   { name = "intersect (cu și)"
   , pattern =
-    [ numberWith (fromMaybe 0 . TNumeral.grain) (>1)
+    [ Predicate hasGrain
     , regex "(s|ș)i"
     , Predicate $ and . sequence [not . isMultipliable, isPositive]
     ]

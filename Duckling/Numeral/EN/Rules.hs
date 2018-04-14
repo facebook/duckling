@@ -205,7 +205,7 @@ ruleDotSpelledOut = Rule
   , pattern =
     [ dimension Numeral
     , regex "point|dot"
-    , numberWith TNumeral.grain isNothing
+    , Predicate $ not . hasGrain
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral nd1:_:Token Numeral nd2:_) ->
@@ -218,7 +218,7 @@ ruleLeadingDotSpelledOut = Rule
   { name = "point 77"
   , pattern =
     [ regex "point|dot"
-    , numberWith TNumeral.grain isNothing
+    , Predicate $ not . hasGrain
     ]
   , prod = \tokens -> case tokens of
       (_:Token Numeral nd:_) -> double . decimalsToDouble $ TNumeral.value nd
@@ -282,7 +282,7 @@ ruleSum :: Rule
 ruleSum = Rule
   { name = "intersect 2 numbers"
   , pattern =
-    [ numberWith (fromMaybe 0 . TNumeral.grain) (>1)
+    [ Predicate $ and . sequence [hasGrain, isPositive]
     , Predicate $ and . sequence [not . isMultipliable, isPositive]
     ]
   , prod = \tokens -> case tokens of
@@ -296,7 +296,7 @@ ruleSumAnd :: Rule
 ruleSumAnd = Rule
   { name = "intersect 2 numbers (with and)"
   , pattern =
-    [ numberWith (fromMaybe 0 . TNumeral.grain) (>1)
+    [ Predicate $ and . sequence [hasGrain, isPositive]
     , regex "and"
     , Predicate $ and . sequence [not . isMultipliable, isPositive]
     ]

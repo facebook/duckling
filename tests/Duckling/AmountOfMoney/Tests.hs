@@ -30,6 +30,7 @@ import qualified Duckling.AmountOfMoney.RO.Tests as RO
 import qualified Duckling.AmountOfMoney.RU.Tests as RU
 import qualified Duckling.AmountOfMoney.SV.Tests as SV
 import qualified Duckling.AmountOfMoney.VI.Tests as VI
+import qualified Duckling.AmountOfMoney.ZH.Tests as ZH
 
 tests :: TestTree
 tests = testGroup "AmountOfMoney Tests"
@@ -49,4 +50,5 @@ tests = testGroup "AmountOfMoney Tests"
   , RU.tests
   , SV.tests
   , VI.tests
+  , ZH.tests
   ]

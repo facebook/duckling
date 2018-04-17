@@ -196,6 +196,8 @@ library
                      , Duckling.AmountOfMoney.VI.Rules
                      , Duckling.AmountOfMoney.NL.Corpus
                      , Duckling.AmountOfMoney.NL.Rules
+                     , Duckling.AmountOfMoney.ZH.Corpus
+                     , Duckling.AmountOfMoney.ZH.Rules
                      , Duckling.AmountOfMoney.Helpers
                      , Duckling.AmountOfMoney.Rules
                      , Duckling.AmountOfMoney.Types
@@ -690,6 +692,7 @@ test-suite duckling-test
                      , Duckling.AmountOfMoney.SV.Tests
                      , Duckling.AmountOfMoney.VI.Tests
                      , Duckling.AmountOfMoney.NL.Tests
+                     , Duckling.AmountOfMoney.ZH.Tests
                      , Duckling.AmountOfMoney.Tests
 
                      -- Distance

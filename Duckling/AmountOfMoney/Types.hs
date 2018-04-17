@@ -41,6 +41,7 @@ data Currency
   | BGN
   | BRL
   | BYN
+  | CNY
   | EGP
   | EUR
   | GBP
@@ -82,6 +83,7 @@ instance ToJSON Currency where
   toJSON BGN     = "BGN"
   toJSON BRL     = "BRL"
   toJSON BYN     = "BYN"
+  toJSON CNY     = "CNY"
   toJSON EGP     = "EGP"
   toJSON EUR     = "EUR"
   toJSON GBP     = "GBP"

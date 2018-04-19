@@ -1310,4 +1310,27 @@ allExamples = concat
   , examples (datetimeIntervalHoliday ((2018, 5, 16, 0, 0, 0), (2018, 6, 15, 0, 0, 0)) Day "Ramadan")
              [ "Ramadan 2018"
              ]
+  , examples (datetimeHoliday (2017, 10, 17, 0, 0, 0) Day "Dhanteras")
+             [ "dhanatrayodashi in 2017"
+             ]
+  , examples (datetimeHoliday (2019, 10, 25, 0, 0, 0) Day "Dhanteras")
+             [ "dhanteras 2019"
+             ]
+  , examples (datetimeHoliday (2019, 10, 26, 0, 0, 0) Day "Naraka Chaturdashi")
+             [ "kali chaudas 2019"
+             , "choti diwali two thousand nineteen"
+             ]
+  , examples (datetimeHoliday (2019, 10, 27, 0, 0, 0) Day "Diwali")
+             [ "diwali 2019"
+             , "Deepavali in 2019"
+             , "Lakshmi Puja six years hence"
+             ]
+  , examples (datetimeHoliday (2019, 10, 29, 0, 0, 0) Day "Bhai Dooj")
+             [ "bhai dooj 2019"
+             ]
+  , examples (datetimeHoliday (2019, 11, 2, 0, 0, 0) Day "Chhath")
+             [ "chhath 2019"
+             , "dala puja 2019"
+             , "Surya Shashthi in 2019"
+             ]
   ]

@@ -6,9 +6,9 @@
 -- of patent rights can be found in the PATENTS file in the same directory.
 
 module Duckling.Time.Computed
-  ( chanukah, chineseNewYear, easterSunday, eidalAdha, eidalFitr, lagBaOmer
-  , mawlid, muharram, orthodoxEaster, passover, rajab, ramadan, roshHashana
-  , tishaBAv, tuBishvat, yomHaatzmaut
+  ( chanukah, chineseNewYear, dhanteras, easterSunday, eidalAdha, eidalFitr
+  , lagBaOmer, mawlid, muharram, orthodoxEaster, passover, rajab, ramadan
+  , roshHashana, tishaBAv, tuBishvat, yomHaatzmaut
   ) where
 
 import Data.Maybe
@@ -1339,4 +1339,42 @@ tuBishvat' = mapMaybe toTimeObjectM
   , (2048, 1, 29)
   , (2049, 1, 17)
   , (2050, 2, 6)
+  ]
+
+dhanteras :: TimeData
+dhanteras = computedDays dhanteras'
+
+dhanteras' :: [TimeObject]
+dhanteras' = mapMaybe toTimeObjectM
+  [ (2000, 10, 24)
+  , (2001, 11, 12)
+  , (2002, 11, 2)
+  , (2003, 10, 23)
+  , (2004, 11, 10)
+  , (2005, 10, 30)
+  , (2006, 10, 19)
+  , (2007, 11, 7)
+  , (2008, 10, 26)
+  , (2009, 10, 15)
+  , (2010, 11, 3)
+  , (2011, 10, 24)
+  , (2012, 11, 11)
+  , (2013, 11, 1)
+  , (2014, 10, 21)
+  , (2015, 11, 9)
+  , (2016, 10, 28)
+  , (2017, 10, 17)
+  , (2018, 11, 5)
+  , (2019, 10, 25)
+  , (2020, 11, 13)
+  , (2021, 11, 2)
+  , (2022, 10, 22)
+  , (2023, 11, 10)
+  , (2024, 10, 29)
+  , (2025, 10, 18)
+  , (2026, 11, 6)
+  , (2027, 10, 27)
+  , (2028, 10, 15)
+  , (2029, 11, 4)
+  , (2030, 10, 24)
   ]

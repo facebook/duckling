@@ -1563,6 +1563,11 @@ ruleComputedHolidays = mkRuleHolidays
     , cycleNthAfter False TG.Day (-46) easterSunday )
   , ( "Ashura", "(day of )?ashura"
     , cycleNthAfter False TG.Day 9 muharram )
+  , ( "Bhai Dooj", "bhai(ya)?\\s+d(u|oo)j|bhau\\-beej|bhai\\s+(tika|phonta)"
+    , cycleNthAfter False TG.Day 4 dhanteras )
+  -- 6th day after Diwali
+  , ( "Chhath", "chhathi?|chhath (parv|puja)|dala (chhath|puja)|surya shashthi"
+    , cycleNthAfter False TG.Day 8 dhanteras )
   , ( "Chinese New Year", "chinese\\s+(lunar\\s+)?new\\s+year('s\\s+day)?"
     , chineseNewYear )
   , ( "Clean Monday"
@@ -1570,12 +1575,18 @@ ruleComputedHolidays = mkRuleHolidays
     , cycleNthAfter False TG.Day (-48) orthodoxEaster )
   , ( "Corpus Christi", "(the feast of )?corpus\\s+christi"
     , cycleNthAfter False TG.Day 60 easterSunday )
+  , ( "Dhanteras", "dhanatrayodashi|dhanteras|dhanvantari\\s+trayodashi"
+    , dhanteras )
+  , ( "Diwali", "deepavali|diwali|lakshmi\\s+puja"
+    , cycleNthAfter False TG.Day 2 dhanteras )
   , ( "Easter Monday", "easter\\s+mon(day)?"
     , cycleNthAfter False TG.Day 1 easterSunday )
   , ( "Easter Sunday", "easter(\\s+sun(day)?)?", easterSunday )
   , ( "Eid al-Adha", "bakr[\\-\\s]e?id|e?id [au]l\\-adha|sacrifice feast"
     , eidalAdha )
   , ( "Eid al-Fitr", "eid al\\-fitr", eidalFitr )
+  , ( "Govardhan Puja", "govardhan\\s+puja|annak(u|oo)t"
+    , cycleNthAfter False TG.Day 3 dhanteras )
   , ( "Good Friday", "(good|great|holy)\\s+fri(day)?"
     , cycleNthAfter False TG.Day (-2) easterSunday )
   , ( "Holy Saturday"
@@ -1601,6 +1612,9 @@ ruleComputedHolidays = mkRuleHolidays
   , ( "Mawlid"
     , "mawlid(\\s+al\\-nab(awi|i\\s+al\\-sharif))?|mevli[dt]|mulud|birth(day)? of (the )?prophet( muhammad)?|(the )?prophet's birthday"
     , mawlid )
+  , ( "Naraka Chaturdashi"
+    , "naraka? (nivaran )?chaturdashi|(kali|roop) chaudas|choti diwali"
+    , cycleNthAfter False TG.Day 1 dhanteras )
   , ( "Orthodox Easter Monday", "orthodox\\s+easter\\s+mon(day)?"
     , cycleNthAfter False TG.Day 1 orthodoxEaster )
   , ( "Orthodox Easter Sunday", "orthodox\\s+easter(\\s+sun(day)?)?|pascha?"

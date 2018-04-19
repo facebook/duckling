@@ -1333,4 +1333,15 @@ allExamples = concat
              , "dala puja 2019"
              , "Surya Shashthi in 2019"
              ]
+  , examples (datetimeHoliday (2021, 10, 12, 0, 0, 0) Day "Maha Saptami")
+             [ "Maha Saptami 2021"
+             ]
+  , examples (datetimeHoliday (2018, 10, 18, 0, 0, 0) Day "Vijayadashami")
+             [ "Dussehra 2018"
+             , "vijayadashami in five years"
+             ]
+  , examples (datetimeIntervalHoliday ((2018, 10, 9, 0, 0, 0), (2018, 10, 19, 0, 0, 0)) Day "Navaratri")
+             [ "navaratri 2018"
+             , "durga puja in 2018"
+             ]
   ]

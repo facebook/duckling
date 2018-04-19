@@ -7,8 +7,8 @@
 
 module Duckling.Time.Computed
   ( chanukah, chineseNewYear, dhanteras, easterSunday, eidalAdha, eidalFitr
-  , lagBaOmer, mawlid, muharram, orthodoxEaster, passover, rajab, ramadan
-  , roshHashana, tishaBAv, tuBishvat, yomHaatzmaut
+  , lagBaOmer, mawlid, muharram, navaratri, orthodoxEaster, passover, rajab
+  , ramadan, roshHashana, tishaBAv, tuBishvat, yomHaatzmaut
   ) where
 
 import Data.Maybe
@@ -1377,4 +1377,42 @@ dhanteras' = mapMaybe toTimeObjectM
   , (2028, 10, 15)
   , (2029, 11, 4)
   , (2030, 10, 24)
+  ]
+
+navaratri :: TimeData
+navaratri = computedDays navaratri'
+
+navaratri' :: [TimeObject]
+navaratri' = mapMaybe toTimeObjectM
+  [ (2000, 9, 28)
+  , (2001, 10, 17)
+  , (2002, 10, 7)
+  , (2003, 9, 26)
+  , (2004, 10, 14)
+  , (2005, 10, 4)
+  , (2006, 9, 23)
+  , (2007, 10, 12)
+  , (2008, 9, 30)
+  , (2009, 9, 19)
+  , (2010, 10, 8)
+  , (2011, 9, 28)
+  , (2012, 10, 16)
+  , (2013, 10, 5)
+  , (2014, 9, 25)
+  , (2015, 10, 13)
+  , (2016, 10, 1)
+  , (2017, 9, 21)
+  , (2018, 10, 9)
+  , (2019, 9, 29)
+  , (2020, 10, 17)
+  , (2021, 10, 6)
+  , (2022, 9, 26)
+  , (2023, 10, 15)
+  , (2024, 10, 3)
+  , (2025, 9, 22)
+  , (2026, 10, 11)
+  , (2027, 9, 30)
+  , (2028, 9, 19)
+  , (2029, 10, 8)
+  , (2030, 9, 27)
   ]

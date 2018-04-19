@@ -1579,6 +1579,8 @@ ruleComputedHolidays = mkRuleHolidays
     , dhanteras )
   , ( "Diwali", "deepavali|diwali|lakshmi\\s+puja"
     , cycleNthAfter False TG.Day 2 dhanteras )
+  , ( "Durga Ashtami", "(durga|maha)(\\s+a)?shtami"
+    , cycleNthAfter False TG.Day 7 navaratri )
   , ( "Easter Monday", "easter\\s+mon(day)?"
     , cycleNthAfter False TG.Day 1 easterSunday )
   , ( "Easter Sunday", "easter(\\s+sun(day)?)?", easterSunday )
@@ -1606,6 +1608,8 @@ ruleComputedHolidays = mkRuleHolidays
     , cycleNthAfter False TG.Day 26 ramadan )
   , ( "Lazarus Saturday", "lazarus\\s+saturday"
     , cycleNthAfter False TG.Day (-8) orthodoxEaster )
+  , ( "Maha Navami", "maha\\s+navami", cycleNthAfter False TG.Day 8 navaratri )
+  , ( "Maha Saptami", "maha\\s+saptami", cycleNthAfter False TG.Day 6 navaratri )
   , ( "Maundy Thursday"
     , "(covenant|(great and )?holy|maundy|sheer)\\s+thu(rsday)?|thu(rsday)? of mysteries"
     , cycleNthAfter False TG.Day (-3) easterSunday )
@@ -1638,6 +1642,8 @@ ruleComputedHolidays = mkRuleHolidays
   , ( "Tisha B'Av", "tisha b'av", tishaBAv )
   , ( "Trinity Sunday", "trinity\\s+sunday"
     , cycleNthAfter False TG.Day 56 easterSunday )
+  , ( "Vijayadashami", "dasara|duss(eh|he)ra|vijayadashami"
+    , cycleNthAfter False TG.Day 9 navaratri )
   -- 15th day of Shevat
   , ( "Tu BiShvat", "tu b[i']shvat", tuBishvat )
   , ( "Yom Ha'atzmaut", "yom ha'?atzmaut", yomHaatzmaut )
@@ -1666,6 +1672,10 @@ ruleComputedHolidays' = mkRuleHolidays'
   , ( "Lent", "lent"
     , let start = cycleNthAfter False TG.Day (-46) easterSunday
           end = cycleNthAfter False TG.Day (-1) easterSunday
+        in interval TTime.Open start end )
+  , ( "Navaratri", "durga\\s+puja|durgotsava|nava?rath?ri"
+    , let start = navaratri
+          end = cycleNthAfter False TG.Day 9 navaratri
         in interval TTime.Open start end )
   , ( "Passover", "passover|pesa[ck]?h"
     , let start = passover

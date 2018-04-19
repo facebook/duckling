@@ -16,7 +16,6 @@
 
 module Duckling.Time.Types where
 
-import Control.Applicative ((<|>))
 import Control.Arrow ((***))
 import Control.DeepSeq
 import Control.Monad (join)

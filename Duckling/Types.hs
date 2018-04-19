@@ -6,34 +6,57 @@
 -- of patent rights can be found in the PATENTS file in the same directory.
 
 
+{-# LANGUAGE AllowAmbiguousTypes #-}
 {-# LANGUAGE DeriveAnyClass #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE ExistentialQuantification #-}
 {-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE NoRebindableSyntax #-}
 {-# LANGUAGE RankNTypes #-}
+{-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE StandaloneDeriving #-}
+{-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE TypeOperators #-}
 
 module Duckling.Types where
 
 import Control.DeepSeq
 import Data.Aeson
 import Data.GADT.Compare
+import Data.GADT.Show
 import Data.Hashable
+import Data.HashSet (HashSet)
 import Data.Maybe
-import Data.String
+import Data.Some
 import Data.Text (Text)
-import Data.Typeable ((:~:)(Refl), Typeable)
+import Data.Typeable ((:~:)(Refl), eqT, Typeable)
 import GHC.Generics
 import Prelude
+import TextShow (TextShow(..))
 import qualified Data.ByteString.Lazy as LB
 import qualified Data.Text.Encoding as Text
 import qualified Text.Regex.Base as R
 import qualified Text.Regex.PCRE as PCRE
+import qualified TextShow as TS
 
-import Duckling.Dimensions.Types
+import Duckling.AmountOfMoney.Types (AmountOfMoneyData)
+import Duckling.Distance.Types (DistanceData)
+import Duckling.Duration.Types (DurationData)
+import Duckling.Email.Types (EmailData)
+import Duckling.Locale
+import Duckling.Numeral.Types (NumeralData)
+import Duckling.Ordinal.Types (OrdinalData)
+import Duckling.PhoneNumber.Types (PhoneNumberData)
+import Duckling.Quantity.Types (QuantityData)
+import Duckling.Regex.Types (GroupMatch)
 import Duckling.Resolve
+import Duckling.Temperature.Types (TemperatureData)
+import Duckling.Time.Types (TimeData)
+import Duckling.TimeGrain.Types (Grain)
+import Duckling.Url.Types (UrlData)
+import Duckling.Volume.Types (VolumeData)
 
 -- -----------------------------------------------------------------
 -- Token
@@ -52,6 +75,115 @@ instance Hashable Token where
 
 instance NFData Token where
   rnf (Token _ v) = rnf v
+
+
+-- -----------------------------------------------------------------
+-- Dimension
+
+class (Show a, Typeable a) => CustomDimension a where
+  type DimensionData a
+  dimRules :: a -> [Rule]
+  dimLangRules :: Lang -> a -> [Rule]
+  dimLocaleRules :: Region -> a -> [Rule]
+  dimDependents :: a -> HashSet (Some Dimension)
+
+-- | GADT for differentiating between dimensions
+-- Each dimension should have its own constructor and provide the data structure
+-- for its parsed data
+data Dimension a where
+  RegexMatch :: Dimension GroupMatch
+  AmountOfMoney :: Dimension AmountOfMoneyData
+  Distance :: Dimension DistanceData
+  Duration :: Dimension DurationData
+  Email :: Dimension EmailData
+  Numeral :: Dimension NumeralData
+  Ordinal :: Dimension OrdinalData
+  PhoneNumber :: Dimension PhoneNumberData
+  Quantity :: Dimension QuantityData
+  Temperature :: Dimension TemperatureData
+  Time :: Dimension TimeData
+  TimeGrain :: Dimension Grain
+  Url :: Dimension UrlData
+  Volume :: Dimension VolumeData
+  CustomDimension :: CustomDimension a => a -> Dimension (DimensionData a)
+
+-- Show
+instance Show (Dimension a) where
+  show RegexMatch = "RegexMatch"
+  show Distance = "Distance"
+  show Duration = "Duration"
+  show Email = "Email"
+  show AmountOfMoney = "AmountOfMoney"
+  show Numeral = "Numeral"
+  show Ordinal = "Ordinal"
+  show PhoneNumber = "PhoneNumber"
+  show Quantity = "Quantity"
+  show Temperature = "Temperature"
+  show Time = "Time"
+  show TimeGrain = "TimeGrain"
+  show Url = "Url"
+  show Volume = "Volume"
+  show (CustomDimension dim) = show dim
+instance GShow Dimension where gshowsPrec = showsPrec
+
+-- TextShow
+instance TextShow (Dimension a) where
+  showb d = TS.fromString $ show d
+instance TextShow (Some Dimension) where
+  showb (This d) = showb d
+
+-- Hashable
+instance Hashable (Some Dimension) where
+  hashWithSalt s (This a) = hashWithSalt s a
+instance Hashable (Dimension a) where
+  hashWithSalt s RegexMatch          = hashWithSalt s (0::Int)
+  hashWithSalt s Distance            = hashWithSalt s (1::Int)
+  hashWithSalt s Duration            = hashWithSalt s (2::Int)
+  hashWithSalt s Email               = hashWithSalt s (3::Int)
+  hashWithSalt s AmountOfMoney       = hashWithSalt s (4::Int)
+  hashWithSalt s Numeral             = hashWithSalt s (5::Int)
+  hashWithSalt s Ordinal             = hashWithSalt s (6::Int)
+  hashWithSalt s PhoneNumber         = hashWithSalt s (7::Int)
+  hashWithSalt s Quantity            = hashWithSalt s (8::Int)
+  hashWithSalt s Temperature         = hashWithSalt s (9::Int)
+  hashWithSalt s Time                = hashWithSalt s (10::Int)
+  hashWithSalt s TimeGrain           = hashWithSalt s (11::Int)
+  hashWithSalt s Url                 = hashWithSalt s (12::Int)
+  hashWithSalt s Volume              = hashWithSalt s (13::Int)
+  hashWithSalt s (CustomDimension _) = hashWithSalt s (14::Int)
+
+instance GEq Dimension where
+  geq RegexMatch RegexMatch = Just Refl
+  geq RegexMatch _ = Nothing
+  geq Distance Distance = Just Refl
+  geq Distance _ = Nothing
+  geq Duration Duration = Just Refl
+  geq Duration _ = Nothing
+  geq Email Email = Just Refl
+  geq Email _ = Nothing
+  geq AmountOfMoney AmountOfMoney = Just Refl
+  geq AmountOfMoney _ = Nothing
+  geq Numeral Numeral = Just Refl
+  geq Numeral _ = Nothing
+  geq Ordinal Ordinal = Just Refl
+  geq Ordinal _ = Nothing
+  geq PhoneNumber PhoneNumber = Just Refl
+  geq PhoneNumber _ = Nothing
+  geq Quantity Quantity = Just Refl
+  geq Quantity _ = Nothing
+  geq Temperature Temperature = Just Refl
+  geq Temperature _ = Nothing
+  geq Time Time = Just Refl
+  geq Time _ = Nothing
+  geq TimeGrain TimeGrain = Just Refl
+  geq TimeGrain _ = Nothing
+  geq Url Url = Just Refl
+  geq Url _ = Nothing
+  geq Volume Volume = Just Refl
+  geq Volume _ = Nothing
+  geq (CustomDimension (_ :: a)) (CustomDimension (_ :: b))
+    | Just Refl <- eqT :: Maybe (a :~: b) = Just Refl
+  geq (CustomDimension _) _ = Nothing
 
 isDimension :: Dimension a -> Token -> Bool
 isDimension dim (Token dim' _) = isJust $ geq dim dim'

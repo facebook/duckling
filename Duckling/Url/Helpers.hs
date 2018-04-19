@@ -12,10 +12,8 @@ module Duckling.Url.Helpers
   ( url
   ) where
 
-import Data.String
 import Data.Text (Text)
 import qualified Data.Text as Text
-import Prelude
 
 import qualified Duckling.Url.Types as TUrl
 import Duckling.Url.Types (UrlData(..))

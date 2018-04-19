@@ -19,6 +19,8 @@ import Prelude
 import qualified Data.HashSet as HashSet
 
 import Duckling.Dimensions.Types
+import Duckling.Locale
+import Duckling.Types
 import qualified Duckling.Dimensions.Common as CommonDimensions
 import qualified Duckling.Dimensions.AR as ARDimensions
 import qualified Duckling.Dimensions.BG as BGDimensions
@@ -54,7 +56,6 @@ import qualified Duckling.Dimensions.TR as TRDimensions
 import qualified Duckling.Dimensions.UK as UKDimensions
 import qualified Duckling.Dimensions.VI as VIDimensions
 import qualified Duckling.Dimensions.ZH as ZHDimensions
-import Duckling.Locale
 
 allDimensions :: Lang -> [Some Dimension]
 allDimensions lang = CommonDimensions.allDimensions ++ langDimensions lang
@@ -82,6 +83,7 @@ dependents (This Time) =
 dependents (This TimeGrain) = HashSet.empty
 dependents (This Url) = HashSet.empty
 dependents (This Volume) = HashSet.singleton (This Numeral)
+dependents (This (CustomDimension dim)) = dimDependents dim
 
 langDimensions :: Lang -> [Some Dimension]
 langDimensions AR = ARDimensions.allDimensions

@@ -61,7 +61,8 @@ localeRules PH (This Time) = TimePH.rules
 localeRules TT (This Time) = TimeTT.rules
 localeRules US (This Time) = TimeUS.rules
 localeRules ZA (This Time) = TimeZA.rules
-localeRules _ _            = []
+localeRules region (This (CustomDimension dim)) = dimLocaleRules region dim
+localeRules _ _ = []
 
 langRules :: Some Dimension -> [Rule]
 langRules (This AmountOfMoney) = AmountOfMoney.rules
@@ -78,3 +79,4 @@ langRules (This Time) = Time.rules
 langRules (This TimeGrain) = TimeGrain.rules
 langRules (This Url) = []
 langRules (This Volume) = Volume.rules
+langRules (This (CustomDimension dim)) = dimLangRules EN dim

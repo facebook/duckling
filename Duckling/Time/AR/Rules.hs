@@ -17,7 +17,7 @@ module Duckling.Time.AR.Rules
 import Data.Maybe
 import Data.Text (Text)
 import Prelude
-import Data.HashMap.Strict ( HashMap)
+import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Text as Text
 
@@ -25,7 +25,6 @@ import Duckling.Dimensions.Types
 import Duckling.Duration.Helpers (duration)
 import Duckling.Numeral.Helpers (parseInt)
 import Duckling.Numeral.Types (NumeralData (..))
-import Duckling.Ordinal.Types (OrdinalData (..))
 import Duckling.Regex.Types
 import Duckling.Time.Helpers
 import Duckling.Time.Types (TimeData (..))

@@ -16,7 +16,6 @@ module Duckling.Numeral.BG.Rules
 
 import Data.HashMap.Strict (HashMap)
 import Data.Maybe
-import Data.String
 import Data.Text (Text)
 import Prelude
 import qualified Data.HashMap.Strict as HashMap

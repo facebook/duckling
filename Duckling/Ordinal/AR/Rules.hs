@@ -15,7 +15,6 @@ module Duckling.Ordinal.AR.Rules
   ) where
 
 import Data.HashMap.Strict (HashMap)
-import Data.String
 import Data.Text (Text)
 import Prelude
 import qualified Data.Text as Text

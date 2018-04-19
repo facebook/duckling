@@ -37,7 +37,6 @@ module Duckling.Core
   ) where
 
 import Data.HashMap.Strict (HashMap)
-import Data.Maybe
 import Data.Text (Text)
 import Data.Time
 import Data.Time.LocalTime.TimeZone.Series

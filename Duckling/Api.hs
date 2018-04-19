@@ -21,7 +21,6 @@ import Data.HashMap.Strict (HashMap)
 import Data.HashSet (HashSet)
 import Data.Text (Text)
 import Prelude
-import TextShow
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.HashSet as HashSet
 import qualified Data.Text as Text

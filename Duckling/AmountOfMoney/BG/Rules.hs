@@ -17,14 +17,12 @@ module Duckling.AmountOfMoney.BG.Rules
 import Data.Maybe
 import Data.String
 import Prelude
-import qualified Data.Text as Text
 
 import Duckling.AmountOfMoney.Helpers
 import Duckling.AmountOfMoney.Types (Currency(..), AmountOfMoneyData (..))
 import Duckling.Dimensions.Types
 import Duckling.Numeral.Helpers (isNatural, isPositive)
 import Duckling.Numeral.Types (NumeralData (..))
-import Duckling.Regex.Types
 import Duckling.Types
 import qualified Duckling.AmountOfMoney.Types as TAmountOfMoney
 import qualified Duckling.Numeral.Types as TNumeral

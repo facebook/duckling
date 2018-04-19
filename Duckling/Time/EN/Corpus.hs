@@ -1344,4 +1344,30 @@ allExamples = concat
              [ "navaratri 2018"
              , "durga puja in 2018"
              ]
+  , examples (datetimeHoliday (2018, 8, 26, 0, 0, 0) Day "Raksha Bandhan")
+             [ "rakhi 2018"
+             ]
+  , examples (datetimeHoliday (2018, 1, 14, 0, 0, 0) Day "Thai Pongal")
+             [ "pongal 2018"
+             , "makara sankranthi 2018"
+             ]
+  , examples (datetimeHoliday (2018, 1, 13, 0, 0, 0) Day "Boghi")
+             [ "bogi pandigai 2018"
+             ]
+  , examples (datetimeHoliday (2018, 1, 15, 0, 0, 0) Day "Mattu Pongal")
+             [ "maattu pongal 2018"
+             ]
+  , examples (datetimeHoliday (2018, 1, 16, 0, 0, 0) Day "Kaanum Pongal")
+             [ "kaanum pongal 2018"
+             , "kanni pongal 2018"
+             ]
+  , examples (datetimeHoliday (2019, 1, 15, 0, 0, 0) Day "Thai Pongal")
+             [ "makar sankranti 2019"
+             , "maghi in 2019"
+             ]
+  , examples (datetimeHoliday (2018, 8, 24, 0, 0, 0) Day "Thiru Onam")
+             [ "onam 2018"
+             , "Thiru Onam 2018"
+             , "Thiruvonam 2018"
+             ]
   ]

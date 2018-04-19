@@ -1568,6 +1568,8 @@ ruleComputedHolidays = mkRuleHolidays
   -- 6th day after Diwali
   , ( "Chhath", "chhathi?|chhath (parv|puja)|dala (chhath|puja)|surya shashthi"
     , cycleNthAfter False TG.Day 8 dhanteras )
+  , ( "Boghi", "boghi|bogi\\s+pandigai"
+    , cycleNthAfter False TG.Day (-1) thaiPongal )
   , ( "Chinese New Year", "chinese\\s+(lunar\\s+)?new\\s+year('s\\s+day)?"
     , chineseNewYear )
   , ( "Clean Monday"
@@ -1602,6 +1604,8 @@ ruleComputedHolidays = mkRuleHolidays
     )
   , ( "Jumu'atul-Wida", "jumu'atul\\-widaa?'?|jamat[\\-\\s]ul[\\-\\s]vida"
     , predNthAfter (-1) (dayOfWeek 5) eidalFitr )
+  , ( "Kaanum Pongal", "(kaanum|kanni)\\s+pongal"
+    , cycleNthAfter False TG.Day 2 thaiPongal )
   , ( "Lag BaOmer", "lag b[a']omer", lagBaOmer )
   , ( "Laylat al-Qadr"
     , "laylat al[\\-\\s][qk]adr|night of (destiny|measures|power|value)"
@@ -1610,6 +1614,8 @@ ruleComputedHolidays = mkRuleHolidays
     , cycleNthAfter False TG.Day (-8) orthodoxEaster )
   , ( "Maha Navami", "maha\\s+navami", cycleNthAfter False TG.Day 8 navaratri )
   , ( "Maha Saptami", "maha\\s+saptami", cycleNthAfter False TG.Day 6 navaratri )
+  , ( "Mattu Pongal", "maa?ttu\\s+pongal"
+    , cycleNthAfter False TG.Day 1 thaiPongal )
   , ( "Maundy Thursday"
     , "(covenant|(great and )?holy|maundy|sheer)\\s+thu(rsday)?|thu(rsday)? of mysteries"
     , cycleNthAfter False TG.Day (-3) easterSunday )
@@ -1633,12 +1639,17 @@ ruleComputedHolidays = mkRuleHolidays
     , cycleNthAfter False TG.Day (-7) easterSunday )
   , ( "Pentecost", "pentecost|white sunday|whitsunday"
     , cycleNthAfter False TG.Day 49 easterSunday )
+  , ( "Raksha Bandhan", "raksha(\\s+)?bandhan|rakhi", rakshaBandhan )
   , ( "Shemini Atzeret", "shemini\\s+atzeret"
     , cycleNthAfter False TG.Day 21 roshHashana )
   , ( "Shrove Tuesday", "pancake (tues)?day|shrove tuesday"
     , cycleNthAfter False TG.Day (-47) easterSunday )
   , ( "Simchat Torah", "simc?hat\\s+torah"
     , cycleNthAfter False TG.Day 22 roshHashana )
+  , ( "Thai Pongal"
+    , "(thai )?pongal|pongal pandigai|(makara? |magha )?sankranth?i|maghi"
+    , thaiPongal )
+  , ( "Thiru Onam", "(thiru(v|\\s+))?onam", thiruOnam )
   , ( "Tisha B'Av", "tisha b'av", tishaBAv )
   , ( "Trinity Sunday", "trinity\\s+sunday"
     , cycleNthAfter False TG.Day 56 easterSunday )

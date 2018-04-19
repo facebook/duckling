@@ -8,7 +8,8 @@
 module Duckling.Time.Computed
   ( chanukah, chineseNewYear, dhanteras, easterSunday, eidalAdha, eidalFitr
   , lagBaOmer, mawlid, muharram, navaratri, orthodoxEaster, passover, rajab
-  , ramadan, roshHashana, tishaBAv, tuBishvat, yomHaatzmaut
+  , rakshaBandhan, ramadan, roshHashana, thaiPongal, thiruOnam, tishaBAv
+  , tuBishvat, yomHaatzmaut
   ) where
 
 import Data.Maybe
@@ -1415,4 +1416,118 @@ navaratri' = mapMaybe toTimeObjectM
   , (2028, 9, 19)
   , (2029, 10, 8)
   , (2030, 9, 27)
+  ]
+
+rakshaBandhan :: TimeData
+rakshaBandhan = computedDays rakshaBandhan'
+
+rakshaBandhan' :: [TimeObject]
+rakshaBandhan' = mapMaybe toTimeObjectM
+  [ (2000, 8, 15)
+  , (2001, 8, 4)
+  , (2002, 8, 22)
+  , (2003, 8, 12)
+  , (2004, 8, 29)
+  , (2005, 8, 19)
+  , (2006, 8, 9)
+  , (2007, 8, 28)
+  , (2008, 8, 16)
+  , (2009, 8, 5)
+  , (2010, 8, 24)
+  , (2011, 8, 13)
+  , (2012, 8, 2)
+  , (2013, 8, 20)
+  , (2014, 8, 10)
+  , (2015, 8, 29)
+  , (2016, 8, 18)
+  , (2017, 8, 7)
+  , (2018, 8, 26)
+  , (2019, 8, 15)
+  , (2020, 8, 3)
+  , (2021, 8, 22)
+  , (2022, 8, 11)
+  , (2023, 8, 30)
+  , (2024, 8, 19)
+  , (2025, 8, 9)
+  , (2026, 8, 28)
+  , (2027, 8, 17)
+  , (2028, 8, 5)
+  , (2029, 8, 23)
+  , (2030, 8, 13)
+  ]
+
+thaiPongal :: TimeData
+thaiPongal = computedDays thaiPongal'
+
+thaiPongal' :: [TimeObject]
+thaiPongal' = mapMaybe toTimeObjectM
+  [ (2000, 1, 15)
+  , (2001, 1, 14)
+  , (2002, 1, 14)
+  , (2003, 1, 14)
+  , (2004, 1, 15)
+  , (2005, 1, 14)
+  , (2006, 1, 14)
+  , (2007, 1, 15)
+  , (2008, 1, 15)
+  , (2009, 1, 14)
+  , (2010, 1, 14)
+  , (2011, 1, 15)
+  , (2012, 1, 15)
+  , (2013, 1, 14)
+  , (2014, 1, 14)
+  , (2015, 1, 15)
+  , (2016, 1, 15)
+  , (2017, 1, 14)
+  , (2018, 1, 14)
+  , (2019, 1, 15)
+  , (2020, 1, 15)
+  , (2021, 1, 14)
+  , (2022, 1, 14)
+  , (2023, 1, 15)
+  , (2024, 1, 15)
+  , (2025, 1, 14)
+  , (2026, 1, 14)
+  , (2027, 1, 15)
+  , (2028, 1, 15)
+  , (2029, 1, 14)
+  , (2030, 1, 14)
+  ]
+
+thiruOnam :: TimeData
+thiruOnam = computedDays thiruOnam'
+
+thiruOnam' :: [TimeObject]
+thiruOnam' = mapMaybe toTimeObjectM
+  [ (2000, 9, 10)
+  , (2001, 8, 31)
+  , (2002, 8, 21)
+  , (2003, 9, 8)
+  , (2004, 8, 28)
+  , (2005, 9, 15)
+  , (2006, 9, 5)
+  , (2007, 8, 26)
+  , (2008, 9, 12)
+  , (2009, 9, 2)
+  , (2010, 8, 23)
+  , (2011, 9, 9)
+  , (2012, 8, 29)
+  , (2013, 8, 20)
+  , (2014, 9, 6)
+  , (2015, 8, 28)
+  , (2016, 9, 13)
+  , (2017, 9, 4)
+  , (2018, 8, 24)
+  , (2019, 9, 11)
+  , (2020, 8, 31)
+  , (2021, 8, 21)
+  , (2022, 9, 8)
+  , (2023, 8, 29)
+  , (2024, 9, 15)
+  , (2025, 9, 5)
+  , (2026, 8, 26)
+  , (2027, 9, 12)
+  , (2028, 9, 1)
+  , (2029, 8, 22)
+  , (2030, 9, 9)
   ]

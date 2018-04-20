@@ -24,7 +24,7 @@ import qualified Data.Text as Text
 import Duckling.Dimensions.Types
 import Duckling.Duration.Helpers (duration)
 import Duckling.Duration.Types (DurationData (..))
-import Duckling.Numeral.Helpers (parseInt)
+import Duckling.Numeral.Helpers (isNatural, parseInt)
 import Duckling.Numeral.Types (NumeralData (..))
 import Duckling.Ordinal.Types (OrdinalData (..))
 import Duckling.Regex.Types
@@ -1188,13 +1188,13 @@ ruleIntervalAfterFromSinceTOD = Rule
 
 ruleDaysOfWeek :: [Rule]
 ruleDaysOfWeek = mkRuleDaysOfWeek
-  [ ( "Monday"   , "monday|mon\\.?"         )
-  , ( "Tuesday"  , "tuesday|tues?\\.?"      )
-  , ( "Wednesday", "wed?nesday|wed\\.?"     )
-  , ( "Thursday" , "thursday|thu(rs?)?\\.?" )
-  , ( "Friday"   , "friday|fri\\.?"         )
-  , ( "Saturday" , "saturday|sat\\.?"       )
-  , ( "Sunday"   , "sunday|sun\\.?"         )
+  [ ( "Monday"   , "mondays?|mon\\.?"         )
+  , ( "Tuesday"  , "tuesdays?|tues?\\.?"      )
+  , ( "Wednesday", "wed?nesdays?|wed\\.?"     )
+  , ( "Thursday" , "thursdays?|thu(rs?)?\\.?" )
+  , ( "Friday"   , "fridays?|fri\\.?"         )
+  , ( "Saturday" , "saturdays?|sat\\.?"       )
+  , ( "Sunday"   , "sundays?|sun\\.?"         )
   ]
 
 ruleMonths :: [Rule]
@@ -1952,6 +1952,20 @@ ruleDurationLastNext = Rule
       _ -> Nothing
   }
 
+ruleNDOWago :: Rule
+ruleNDOWago = Rule
+  { name = "<integer> <named-day> ago|back"
+  , pattern =
+    [ Predicate isNatural
+    , Predicate isADayOfWeek
+    , regex "ago|back"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Numeral NumeralData{TNumeral.value = v}:Token Time td:_) ->
+        tt $ predNth (- (floor v)) False td
+      _ -> Nothing
+  }
+
 ruleDurationHenceAgo :: Rule
 ruleDurationHenceAgo = Rule
   { name = "<duration> hence|ago"
@@ -2154,6 +2168,7 @@ rules =
   , ruleCycleOrdinalQuarterYear
   , ruleDurationInWithinAfter
   , ruleDurationLastNext
+  , ruleNDOWago
   , ruleDurationHenceAgo
   , ruleDayDurationHenceAgo
   , ruleDayInDuration

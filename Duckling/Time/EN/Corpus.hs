@@ -592,6 +592,10 @@ allExamples = concat
              , "one week ago"
              , "1 week ago"
              ]
+  , examples (datetime (2013, 1, 31, 0, 0, 0) Day)
+             [ "2 thursdays back"
+             , "2 thursdays ago"
+             ]
   , examples (datetime (2013, 1, 22, 0, 0, 0) Day)
              [ "three weeks ago"
              ]

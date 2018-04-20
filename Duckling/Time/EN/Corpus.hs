@@ -1370,4 +1370,18 @@ allExamples = concat
              , "Thiru Onam 2018"
              , "Thiruvonam 2018"
              ]
+  , examples (datetimeHoliday (2019, 2, 10, 0, 0, 0) Day "Vasant Panchami")
+             [ "vasant panchami in 2019"
+             , "basant panchami 2019"
+             ]
+  , examples (datetimeHoliday (2019, 3, 20, 0, 0, 0) Day "Holika Dahan")
+             [ "chhoti holi 2019"
+             , "holika dahan 2019"
+             , "kamudu pyre 2019"
+             ]
+  , examples (datetimeHoliday (2019, 3, 21, 0, 0, 0) Day "Holi")
+             [ "holi 2019"
+             , "dhulandi 2019"
+             , "phagwah 2019"
+             ]
   ]

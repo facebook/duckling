@@ -1593,6 +1593,10 @@ ruleComputedHolidays = mkRuleHolidays
     , cycleNthAfter False TG.Day 3 dhanteras )
   , ( "Good Friday", "(good|great|holy)\\s+fri(day)?"
     , cycleNthAfter False TG.Day (-2) easterSunday )
+  , ( "Holi", "(rangwali )?holi|dhuleti|dhulandi|phagwah"
+    , cycleNthAfter False TG.Day 39 vasantPanchami )
+  , ( "Holika Dahan", "holika dahan|kamudu pyre|chhoti holi"
+    , cycleNthAfter False TG.Day 38 vasantPanchami )
   , ( "Holy Saturday"
     , "(black|holy (and great )?|joyous)sat(urday)?|the great sabbath|easter eve"
     , cycleNthAfter False TG.Day (-1) easterSunday )
@@ -1653,6 +1657,7 @@ ruleComputedHolidays = mkRuleHolidays
   , ( "Tisha B'Av", "tisha b'av", tishaBAv )
   , ( "Trinity Sunday", "trinity\\s+sunday"
     , cycleNthAfter False TG.Day 56 easterSunday )
+  , ( "Vasant Panchami", "[bv]asant\\s+panchami", vasantPanchami )
   , ( "Vijayadashami", "dasara|duss(eh|he)ra|vijayadashami"
     , cycleNthAfter False TG.Day 9 navaratri )
   -- 15th day of Shevat

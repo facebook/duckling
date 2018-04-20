@@ -42,7 +42,10 @@ newtype Options = Options
   }
   deriving (Eq, Show)
 
-class ToJSON (ResolvedValue a) => Resolve a where
+class ( Eq (ResolvedValue a)
+      , Show (ResolvedValue a)
+      , ToJSON (ResolvedValue a)
+      ) => Resolve a where
   type ResolvedValue a
   resolve :: Context -> Options -> a -> Maybe (ResolvedValue a, Bool)
 

@@ -67,7 +67,7 @@ datetimeOpenInterval dir d g ctx = TimeValue tv [tv] Nothing
 
 
 check :: ToJSON a => (Context -> a) -> TestPredicate
-check f context Resolved{jsonValue} = case jsonValue of
+check f context Resolved{rval = RVal _ v} = case toJSON v of
   Object o -> deleteValues (toJSON (f context)) == deleteValues (Object o)
   _ -> False
   where

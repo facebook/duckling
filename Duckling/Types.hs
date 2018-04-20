@@ -76,7 +76,6 @@ instance Hashable Token where
 instance NFData Token where
   rnf (Token _ v) = rnf v
 
-
 -- -----------------------------------------------------------------
 -- Dimension
 
@@ -188,6 +187,19 @@ instance GEq Dimension where
 isDimension :: Dimension a -> Token -> Bool
 isDimension dim (Token dim' _) = isJust $ geq dim dim'
 
+data ResolvedVal
+  = forall a . ( Resolve a, Eq (ResolvedValue a)
+               , Show (ResolvedValue a)
+               , ToJSON (ResolvedValue a)) =>
+    RVal (Dimension a) (ResolvedValue a)
+
+deriving instance Show ResolvedVal
+
+instance Eq ResolvedVal where
+  RVal d1 v1 == RVal d2 v2
+    | Just Refl <- geq d1 d2 = v1 == v2
+    | otherwise = False
+
 data Node = Node
   { nodeRange :: Range
   , token     :: Token
@@ -198,14 +210,15 @@ data Node = Node
 data ResolvedToken = Resolved
   { range :: Range
   , node :: Node
-  , jsonValue :: Value
+  , rval :: ResolvedVal
   , isLatent :: Bool
   } deriving (Eq, Show)
 
 instance Ord ResolvedToken where
-  compare (Resolved range1 _ json1 latent1) (Resolved range2 _ json2 latent2) =
+  compare (Resolved range1 _ (RVal _ v1) latent1)
+          (Resolved range2 _ (RVal _ v2) latent2) =
     case compare range1 range2 of
-      EQ -> case compare (toJText json1) (toJText json2) of
+      EQ -> case compare (toJText v1) (toJText v2) of
         EQ -> compare latent1 latent2
         z -> z
       z  -> z
@@ -264,18 +277,18 @@ instance Show Rule where
 data Entity = Entity
   { dim    :: Text
   , body   :: Text
-  , value  :: Value
+  , value  :: ResolvedVal
   , start  :: Int
   , end    :: Int
   , latent :: Bool
   , enode  :: Node
-  } deriving (Eq, Generic, Show, NFData)
+  } deriving (Eq, Generic, Show)
 
 instance ToJSON Entity where
-  toJSON ent = object
+  toJSON ent@Entity{value = RVal _ val} = object
     [ "dim"    .= dim ent
     , "body"   .= body ent
-    , "value"  .= value ent
+    , "value"  .= val
     , "start"  .= start ent
     , "end"    .= end ent
     , "latent" .= latent ent

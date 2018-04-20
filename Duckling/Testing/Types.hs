@@ -46,11 +46,11 @@ examplesCustom :: TestPredicate -> [Text] -> [Example]
 examplesCustom check = map (, check)
 
 simpleCheck :: ToJSON a => a -> TestPredicate
-simpleCheck json _ Resolved{jsonValue = v} = toJSON json == v
+simpleCheck json _ Resolved{rval = RVal _ v} = toJSON json == toJSON v
 
 parserCheck :: Eq a => a -> (Value -> Maybe a) -> TestPredicate
-parserCheck expected parse _ Resolved{jsonValue = v} =
-  maybe False (expected ==) $ parse v
+parserCheck expected parse _ Resolved{rval = RVal _ v} =
+  maybe False (expected ==) $ parse (toJSON v)
 
 examples :: ToJSON a => a -> [Text] -> [Example]
 examples output = examplesCustom (simpleCheck output)

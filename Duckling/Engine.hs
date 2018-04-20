@@ -219,12 +219,12 @@ parseString rules sentence = do
     [ rule | rule@Rule{pattern = (Predicate _ : _)} <- rules ]
 
 resolveNode :: Context -> Options -> Node -> Maybe ResolvedToken
-resolveNode context options n@Node{token = (Token _ dd), nodeRange = nodeRange}
+resolveNode context options n@Node{token = (Token dim dd), nodeRange = r}
   = do
   (val, latent) <- resolve context options dd
   Just Resolved
-    { range = nodeRange
+    { range = r
     , node = n
-    , jsonValue = toJSON val
+    , rval = RVal dim val
     , isLatent = latent
     }

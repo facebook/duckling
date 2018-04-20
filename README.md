@@ -103,7 +103,7 @@ in|within|after <duration> (in two minutes)
 -- -- -- regex (two)
 -- -- minute (grain) (minutes)
 -- -- -- regex (minutes)
-[Entity {dim = "time", body = "in two minutes", value = "{\"values\":[{\"value\":\"2013-02-12T04:32:00.000-02:00\",\"grain\":\"second\",\"type\":\"value\"}],\"value\":\"2013-02-12T04:32:00.000-02:00\",\"grain\":\"second\",\"type\":\"value\"}", start = 0, end = 14}]
+[Entity {dim = "time", body = "in two minutes", value = RVal Time (TimeValue (SimpleValue (InstantValue {vValue = 2013-02-12 04:32:00 -0200, vGrain = Second})) [SimpleValue (InstantValue {vValue = 2013-02-12 04:32:00 -0200, vGrain = Second})] Nothing), start = 0, end = 14}]
 ```
 
 ## License

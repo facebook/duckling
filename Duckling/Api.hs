@@ -6,9 +6,9 @@
 -- of patent rights can be found in the PATENTS file in the same directory.
 
 
-{-# LANGUAGE RecordWildCards #-}
-{-# LANGUAGE NoRebindableSyntax #-}
 {-# LANGUAGE NamedFieldPuns #-}
+{-# LANGUAGE NoRebindableSyntax #-}
+{-# LANGUAGE RecordWildCards #-}
 
 module Duckling.Api
   ( analyze

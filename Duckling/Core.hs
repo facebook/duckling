@@ -20,9 +20,11 @@ module Duckling.Core
   , Options(..)
   , Range(..)
   , Region(..)
+  , ResolvedVal(..)
   , Some(..)
   , fromName
   , makeLocale
+  , toJText
   , toName
 
   -- Duckling API

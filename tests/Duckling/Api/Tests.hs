@@ -8,7 +8,6 @@
 
 {-# LANGUAGE NoRebindableSyntax #-}
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE TupleSections #-}
 
 module Duckling.Api.Tests
   ( tests
@@ -42,10 +41,10 @@ parseTest :: TestTree
 parseTest = testCase "Parse Test" $
   case parse sentence testContext testOptions [This Numeral] of
     [] -> assertFailure "empty result"
-    (Entity dim body value start end _ _:_) -> do
+    (Entity dim body (RVal _ v) start end _ _:_) -> do
       assertEqual "dim" "number" dim
       assertEqual "body" "42" body
-      assertEqual "value" val (toJText value)
+      assertEqual "value" val (toJText v)
       assertEqual "start" 4 start
       assertEqual "end" 6 end
   where

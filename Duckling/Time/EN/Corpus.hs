@@ -155,6 +155,7 @@ allExamples = concat
              ]
   , examples (datetime (2014, 1, 1, 0, 0, 0) Year)
              [ "in 2014"
+             , "since 2014"
              ]
   , examples (datetime (2013, 2, 11, 0, 0, 0) Day)
              [ "yesterday"

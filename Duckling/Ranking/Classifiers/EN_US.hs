@@ -75,10 +75,10 @@ classifiers
                                likelihoods = HashMap.fromList [("", 0.0)], n = 3}}),
        ("integer (numeric)",
         Classifier{okData =
-                     ClassData{prior = -0.6206516785217917, unseen = -5.662960480135946,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 286},
+                     ClassData{prior = -0.6190392084062235, unseen = -5.666426688112432,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 287},
                    koData =
-                     ClassData{prior = -0.7713119534092816,
+                     ClassData{prior = -0.7731898882334817,
                                unseen = -5.5134287461649825,
                                likelihoods = HashMap.fromList [("", 0.0)], n = 246}}),
        ("<duration> hence|ago",
@@ -781,15 +781,16 @@ classifiers
                                      -6.037870919922137),
                                     ("<time-of-day> am|pmintersect by \",\", \"of\", \"from\", \"'s\"",
                                      -5.344723739362192),
+                                    ("Navaratriin|since <named-month>|year", -6.037870919922137),
                                     ("<time-of-day> am|pmintersect", -4.785107951426769),
                                     ("Octoberyear (latent)", -4.785107951426769),
                                     ("intersect<time-of-day> am|pm", -6.037870919922137),
                                     ("Mattu Pongalyear (latent)", -6.037870919922137),
                                     ("Shavuotyear (latent)", -6.037870919922137),
-                                    ("Dhanterasin <named-month>|year", -6.037870919922137),
                                     ("at <time-of-day>in|within|after <duration>",
                                      -6.037870919922137),
                                     ("Thursdayhh(:mm) - <time-of-day> am|pm", -6.037870919922137),
+                                    ("Tuesdayin|since <named-month>|year", -6.037870919922137),
                                     ("<named-month>|<named-day> <day-of-month> (ordinal)year (latent)",
                                      -5.632405811813974),
                                     ("Marchyear (latent)", -6.037870919922137),
@@ -798,6 +799,7 @@ classifiers
                                      -6.037870919922137),
                                     ("Clean Mondayyear (latent)", -5.632405811813974),
                                     ("monthhour", -5.632405811813974),
+                                    ("Diwaliin|since <named-month>|year", -6.037870919922137),
                                     ("todayat <time-of-day>", -6.037870919922137),
                                     ("Thursday<time> timezone", -4.333122827683712),
                                     ("this <time>hh(:mm) - <time-of-day> am|pm",
@@ -809,6 +811,9 @@ classifiers
                                     ("tonightat <time-of-day>", -6.037870919922137),
                                     ("<time-of-day> am|pmabsorption of , after named day",
                                      -5.344723739362192),
+                                    ("Chhathin|since <named-month>|year", -6.037870919922137),
+                                    ("Vasant Panchamiin|since <named-month>|year",
+                                     -6.037870919922137),
                                     ("today<time-of-day> am|pm", -6.037870919922137),
                                     ("Februarythe <day-of-month> (ordinal)", -5.632405811813974),
                                     ("at <time-of-day><time> <part-of-day>", -6.037870919922137),
@@ -826,9 +831,6 @@ classifiers
                                     ("Thursdayat <time-of-day>", -5.632405811813974),
                                     ("Islamic New Yearyear (latent)", -5.632405811813974),
                                     ("Laylat al-Qadryear (latent)", -5.121580188047982),
-                                    ("Chhathin <named-month>|year", -6.037870919922137),
-                                    ("Vasant Panchamiin <named-month>|year", -6.037870919922137),
-                                    ("Diwaliin <named-month>|year", -6.037870919922137),
                                     ("Shrove Tuesdayyear (latent)", -6.037870919922137),
                                     ("<time-of-day> am|pmtomorrow", -5.344723739362192),
                                     ("Yom Kippuryear (latent)", -6.037870919922137),
@@ -846,6 +848,7 @@ classifiers
                                      -5.121580188047982),
                                     ("on <date><named-month> <day-of-month> (non ordinal)",
                                      -5.632405811813974),
+                                    ("Thai Pongalin|since <named-month>|year", -6.037870919922137),
                                     ("Pentecostyear (latent)", -6.037870919922137),
                                     ("Thursdayfrom <time-of-day> - <time-of-day> (interval)",
                                      -5.121580188047982),
@@ -854,10 +857,10 @@ classifiers
                                     ("Raksha Bandhanyear (latent)", -6.037870919922137),
                                     ("tomorrowfrom <time-of-day> - <time-of-day> (interval)",
                                      -5.632405811813974),
-                                    ("Navaratriin <named-month>|year", -6.037870919922137),
                                     ("Ashurayear (latent)", -6.037870919922137),
                                     ("Chinese New Yearyear (latent)", -6.037870919922137),
                                     ("Sundayyear (latent)", -6.037870919922137),
+                                    ("Dhanterasin|since <named-month>|year", -6.037870919922137),
                                     ("Lag BaOmeryear (latent)", -6.037870919922137),
                                     ("last weekend of <named-month>year (latent)",
                                      -6.037870919922137),
@@ -874,7 +877,6 @@ classifiers
                                      -5.121580188047982),
                                     ("<day-of-month> (ordinal or number) of <named-month>in|during the <part-of-day>",
                                      -6.037870919922137),
-                                    ("Thai Pongalin <named-month>|year", -6.037870919922137),
                                     ("Septemberyear (latent)", -5.632405811813974),
                                     ("mm/ddyear (latent)", -6.037870919922137),
                                     ("Thursday<time-of-day> - <time-of-day> (interval)",
@@ -932,7 +934,6 @@ classifiers
                                     ("Hanukkahyear (latent)", -6.037870919922137),
                                     ("February<time> <part-of-day>", -6.037870919922137),
                                     ("National Grandparents Dayyear (latent)", -6.037870919922137),
-                                    ("Tuesdayin <named-month>|year", -6.037870919922137),
                                     ("Great Lentyear (latent)", -6.037870919922137),
                                     ("tomorrowat <time-of-day>", -5.344723739362192),
                                     ("Labor Dayyear (latent)", -6.037870919922137),
@@ -1002,6 +1003,7 @@ classifiers
                                     ("from|since|after <time-of-day>July", -5.655991810819852),
                                     ("Mondayyear (latent)", -4.557379522151743),
                                     ("dayday", -5.250526702711688),
+                                    ("week-endin|since <named-month>|year", -5.655991810819852),
                                     ("mm/ddat <time-of-day>", -5.250526702711688),
                                     ("<time-of-day> am|pmon <date>", -4.403228842324484),
                                     ("dayyear", -2.6355669246754903),
@@ -1018,7 +1020,6 @@ classifiers
                                      -5.655991810819852),
                                     ("minutemonth", -3.8642323415917974),
                                     ("Sundayfrom|since|after <time-of-day>", -5.655991810819852),
-                                    ("week-endin <named-month>|year", -5.655991810819852),
                                     ("Augustyear (latent)", -5.250526702711688),
                                     ("Thursdayfrom <datetime> - <datetime> (interval)",
                                      -5.250526702711688),
@@ -1061,7 +1062,6 @@ classifiers
                                     ("Naraka Chaturdashiyear (latent)", -5.655991810819852),
                                     ("on <date>September", -5.250526702711688),
                                     ("at <time-of-day>on <date>", -5.250526702711688),
-                                    ("in <named-month>|yearyear (latent)", -5.655991810819852),
                                     ("dayweek", -5.655991810819852),
                                     ("Easter Sundayyear (latent)", -5.250526702711688),
                                     ("Thursday<time-of-day> am|pm", -5.250526702711688),
@@ -1076,6 +1076,8 @@ classifiers
                                     ("<named-month> <day-of-month> (non ordinal)year (latent)",
                                      -4.962844630259907),
                                     ("Diwaliyear (latent)", -5.250526702711688),
+                                    ("in|since <named-month>|yearyear (latent)",
+                                     -5.655991810819852),
                                     ("Tuesdayfrom|since|after <time-of-day>", -5.655991810819852),
                                     ("Fridayyear (latent)", -5.250526702711688),
                                     ("minuteyear", -4.403228842324484)],
@@ -1282,15 +1284,15 @@ classifiers
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("year (latent)",
         Classifier{okData =
-                     ClassData{prior = -0.15524059819128397,
-                               unseen = -4.912654885736052,
+                     ClassData{prior = -0.15415067982725836,
+                               unseen = -4.919980925828125,
                                likelihoods =
                                  HashMap.fromList
-                                   [("integer (numeric)", -4.546237407675729e-2),
-                                    ("intersect 2 numbers", -3.518980417318539)],
-                               n = 131},
+                                   [("integer (numeric)", -4.5120435280469544e-2),
+                                    ("intersect 2 numbers", -3.5263605246161616)],
+                               n = 132},
                    koData =
-                     ClassData{prior = -1.9393954680341197, unseen = -3.295836866004329,
+                     ClassData{prior = -1.9459101490553135, unseen = -3.295836866004329,
                                likelihoods =
                                  HashMap.fromList
                                    [("integer (numeric)", -1.3121863889661687),
@@ -2543,26 +2545,6 @@ classifiers
                    koData =
                      ClassData{prior = -infinity, unseen = -2.0794415416798357,
                                likelihoods = HashMap.fromList [], n = 0}}),
-       ("in <named-month>|year",
-        Classifier{okData =
-                     ClassData{prior = -0.2876820724517809,
-                               unseen = -3.1780538303479458,
-                               likelihoods =
-                                 HashMap.fromList
-                                   [("October", -2.4423470353692043),
-                                    ("year (latent)", -1.0560526742493137),
-                                    ("year", -1.0560526742493137), ("March", -2.4423470353692043),
-                                    ("month", -2.03688192726104)],
-                               n = 9},
-                   koData =
-                     ClassData{prior = -1.3862943611198906,
-                               unseen = -2.4849066497880004,
-                               likelihoods =
-                                 HashMap.fromList
-                                   [("October", -1.2992829841302609),
-                                    ("year (latent)", -1.7047480922384253),
-                                    ("year", -1.7047480922384253), ("month", -1.2992829841302609)],
-                               n = 3}}),
        ("Islamic New Year",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -1.3862943611198906,
@@ -2844,6 +2826,24 @@ classifiers
                    koData =
                      ClassData{prior = -infinity, unseen = -0.6931471805599453,
                                likelihoods = HashMap.fromList [], n = 0}}),
+       ("in|since <named-month>|year",
+        Classifier{okData =
+                     ClassData{prior = -0.262364264467491, unseen = -3.258096538021482,
+                               likelihoods =
+                                 HashMap.fromList
+                                   [("October", -2.5257286443082556),
+                                    ("year (latent)", -1.0216512475319814),
+                                    ("year", -1.0216512475319814), ("March", -2.5257286443082556),
+                                    ("month", -2.120263536200091)],
+                               n = 10},
+                   koData =
+                     ClassData{prior = -1.466337068793427, unseen = -2.4849066497880004,
+                               likelihoods =
+                                 HashMap.fromList
+                                   [("October", -1.2992829841302609),
+                                    ("year (latent)", -1.7047480922384253),
+                                    ("year", -1.7047480922384253), ("month", -1.2992829841302609)],
+                               n = 3}}),
        ("Diwali",
         Classifier{okData =
                      ClassData{prior = -0.2876820724517809,

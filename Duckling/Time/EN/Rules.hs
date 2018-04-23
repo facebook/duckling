@@ -89,11 +89,11 @@ ruleAbsorbOnADOW = Rule
       _ -> Nothing
   }
 
-ruleAbsorbInMonthYear :: Rule
-ruleAbsorbInMonthYear = Rule
-  { name = "in <named-month>|year"
+ruleAbsorbInSinceMonthYear :: Rule
+ruleAbsorbInSinceMonthYear = Rule
+  { name = "in|since <named-month>|year"
   , pattern =
-    [ regex "in"
+    [ regex "in|since"
     , Predicate $ or . sequence [isAMonth, isGrainOfTime TG.Year]
     ]
   , prod = \tokens -> case tokens of
@@ -2080,7 +2080,7 @@ rules =
   , ruleIntersectOf
   , ruleAbsorbOnTime
   , ruleAbsorbOnADOW
-  , ruleAbsorbInMonthYear
+  , ruleAbsorbInSinceMonthYear
   , ruleAbsorbCommaTOD
   , ruleNextDOW
   , ruleNextTime

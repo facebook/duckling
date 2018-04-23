@@ -3,8 +3,8 @@ version:             0.1.6.0
 synopsis:            A Haskell library for parsing text into structured data.
 description:
   Duckling is a library for parsing text into structured data.
-homepage:            https://github.com/facebookincubator/duckling#readme
-bug-reports:         https://github.com/facebookincubator/duckling/issues
+homepage:            https://github.com/facebook/duckling#readme
+bug-reports:         https://github.com/facebook/duckling/issues
 license:             OtherLicense
 license-files:       LICENSE,PATENTS
 author:              Facebook, Inc.
@@ -980,4 +980,4 @@ executable duckling-expensive
 
 source-repository head
   type:     git
-  location: https://github.com/facebookincubator/duckling
+  location: https://github.com/facebook/duckling

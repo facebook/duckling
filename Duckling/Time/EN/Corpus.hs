@@ -155,7 +155,6 @@ allExamples = concat
              ]
   , examples (datetime (2014, 1, 1, 0, 0, 0) Year)
              [ "in 2014"
-             , "since 2014"
              ]
   , examples (datetime (2013, 2, 11, 0, 0, 0) Day)
              [ "yesterday"
@@ -1009,6 +1008,14 @@ allExamples = concat
              [ "after 2 pm"
              , "from 2 pm"
              , "since 2pm"
+             ]
+  , examples (datetimeOpenInterval After (2014, 1, 1, 0, 0, 0) Year)
+             [ "anytime after 2014"
+             , "since 2014"
+             ]
+  , examples (datetimeOpenInterval Before (2014, 1, 1, 0, 0, 0) Year)
+             [ "sometimes before 2014"
+             , "through 2014"
              ]
   , examples (datetimeOpenInterval After (2013, 2, 17, 4, 0, 0) Hour)
              [ "after 5 days"

@@ -89,11 +89,11 @@ ruleAbsorbOnADOW = Rule
       _ -> Nothing
   }
 
-ruleAbsorbInSinceMonthYear :: Rule
-ruleAbsorbInSinceMonthYear = Rule
-  { name = "in|since <named-month>|year"
+ruleAbsorbInMonthYear :: Rule
+ruleAbsorbInMonthYear = Rule
+  { name = "in <named-month>|year"
   , pattern =
-    [ regex "in|since"
+    [ regex "in"
     , Predicate $ or . sequence [isAMonth, isGrainOfTime TG.Year]
     ]
   , prod = \tokens -> case tokens of
@@ -1162,27 +1162,27 @@ ruleIntervalByTheEndOf = Rule
       _ -> Nothing
   }
 
-ruleIntervalUntilTOD :: Rule
-ruleIntervalUntilTOD = Rule
-  { name = "until <time-of-day>"
+ruleIntervalUntilTime :: Rule
+ruleIntervalUntilTime = Rule
+  { name = "until <time>"
   , pattern =
     [ regex "(anytime |sometimes? )?(before|(un)?til(l)?|through|up to)"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td:_) -> tt $ withDirection TTime.Before td
+      (_:Token Time td:_) -> tt . withDirection TTime.Before $ notLatent td
       _ -> Nothing
   }
 
-ruleIntervalAfterFromSinceTOD :: Rule
-ruleIntervalAfterFromSinceTOD = Rule
-  { name = "from|since|after <time-of-day>"
+ruleIntervalAfterFromSinceTime :: Rule
+ruleIntervalAfterFromSinceTime = Rule
+  { name = "from|since|after <time>"
   , pattern =
     [ regex "from|since|(anytime |sometimes? )?after"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td:_) -> tt $ withDirection TTime.After td
+      (_:Token Time td:_) -> tt . withDirection TTime.After $ notLatent td
       _ -> Nothing
   }
 
@@ -2080,7 +2080,7 @@ rules =
   , ruleIntersectOf
   , ruleAbsorbOnTime
   , ruleAbsorbOnADOW
-  , ruleAbsorbInSinceMonthYear
+  , ruleAbsorbInMonthYear
   , ruleAbsorbCommaTOD
   , ruleNextDOW
   , ruleNextTime
@@ -2152,8 +2152,8 @@ rules =
   , ruleIntervalTODBetween
   , ruleIntervalBy
   , ruleIntervalByTheEndOf
-  , ruleIntervalUntilTOD
-  , ruleIntervalAfterFromSinceTOD
+  , ruleIntervalUntilTime
+  , ruleIntervalAfterFromSinceTime
   , ruleCycleTheAfterBeforeTime
   , ruleCycleThisLastNext
   , ruleDOMOfTimeMonth

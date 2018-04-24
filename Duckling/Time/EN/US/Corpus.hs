@@ -141,4 +141,13 @@ allExamples = concat
              [ "Groundhog day"
              , "groundhogs day"
              ]
+  , examples (datetimeHoliday (2011, 4, 15, 0, 0, 0) Day "Emancipation Day")
+             [ "emancipation day 2011"
+             ]
+  , examples (datetimeHoliday (2012, 4, 16, 0, 0, 0) Day "Emancipation Day")
+             [ "emancipation day 2012"
+             ]
+  , examples (datetimeHoliday (2017, 4, 17, 0, 0, 0) Day "Emancipation Day")
+             [ "emancipation day 2017"
+             ]
   ]

@@ -98,7 +98,6 @@ rulePeriodicHolidays = mkRuleHolidays
   , ( "D-Day", "d\\-day", monthDay 6 6 )
   , ( "Day After Christmas Day", "day after christmas day", monthDay 12 26 )
   , ( "Elizabeth Peratrovich Day", "elizabeth peratrovich day", monthDay 2 16 )
-  , ( "Emancipation Day", "emancipation day", monthDay 4 16 )
   , ( "Evacuation Day", "evacuation day", monthDay 3 17 )
   , ( "Father Damien Day", "father damien day", monthDay 4 15 )
   , ( "Feast of Our Lady of Guadalupe", "feast of our lady of guadalupe", monthDay 12 12 )
@@ -230,6 +229,10 @@ rulePeriodicHolidays = mkRuleHolidays
     , "(george )?washington'?s? (birth)?day|president'?s?'? day|daisy gatson bates'? day"
     , nthDOWOfMonth 3 1 2
     )
+
+  -- Other
+  , ( "Emancipation Day", "emancipation day"
+    , predNthClosest 0 weekday $ monthDay 4 16 )
   ]
 
 rulePeriodicHolidays' :: [Rule]

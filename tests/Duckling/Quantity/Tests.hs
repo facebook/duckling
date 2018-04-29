@@ -22,6 +22,7 @@ import qualified Duckling.Quantity.KO.Tests as KO
 import qualified Duckling.Quantity.PT.Tests as PT
 import qualified Duckling.Quantity.RO.Tests as RO
 import qualified Duckling.Quantity.RU.Tests as RU
+import qualified Duckling.Quantity.ZH.Tests as ZH
 
 tests :: TestTree
 tests = testGroup "Quantity Tests"
@@ -33,4 +34,5 @@ tests = testGroup "Quantity Tests"
   , PT.tests
   , RO.tests
   , RU.tests
+  , ZH.tests
   ]

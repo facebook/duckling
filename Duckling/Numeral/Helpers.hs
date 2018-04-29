@@ -35,7 +35,6 @@ module Duckling.Numeral.Helpers
 
 import Data.HashMap.Strict (HashMap)
 import Data.Maybe
-import Data.String
 import Data.Text (Text)
 import Prelude
 import qualified Data.Attoparsec.Text as Atto

@@ -239,6 +239,15 @@ rulePeriodicHolidays' :: [Rule]
 rulePeriodicHolidays' = mkRuleHolidays'
   -- Fixed dates, year over year
   [ ( "Kwanzaa", "kwanzaa", interval TTime.Open (monthDay 12 26) (monthDay 1 1) )
+
+  -- Other
+  -- First weekday on or after April 15 if different than Emancipation Day
+  -- Otherwise, first weekday following Emancipation Day
+  , ( "Tax Day", "tax day"
+    , let emancipationDay = predNthClosest 0 weekday $ monthDay 4 16
+          tentative = predNthAfter 0 weekday $ monthDay 4 15
+          alternative = predNthAfter 1 weekday emancipationDay
+      in intersectWithReplacement emancipationDay tentative alternative )
   ]
 
 rulesBackwardCompatible :: [Rule]

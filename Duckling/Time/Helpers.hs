@@ -24,7 +24,7 @@ module Duckling.Time.Helpers
   , month, monthDay, notLatent, now, nthDOWOfMonth, partOfDay, predLastOf
   , predNth, predNthAfter, predNthClosest, season, second, timeOfDayAMPM
   , weekday, weekend, withDirection, year, yearMonthDay, tt, durationIntervalAgo
-  , inDurationInterval
+  , inDurationInterval, intersectWithReplacement
     -- Other
   , getIntValue, timeComputed
   -- Rule constructors
@@ -32,6 +32,7 @@ module Duckling.Time.Helpers
   , mkRuleSeasons, mkRuleHolidays, mkRuleHolidays'
   ) where
 
+import Control.Applicative ((<|>))
 import Data.Maybe
 import Data.Ord (comparing)
 import Data.Text (Text)
@@ -58,6 +59,7 @@ import Duckling.Time.Types
   , mkYearPredicate
   , mkIntersectPredicate
   , mkTimeIntervalsPredicate
+  , mkReplaceIntersectPredicate
   , runPredicate
   , AMPM(..)
   )
@@ -226,6 +228,11 @@ takeLastOf cyclicPred basePred =
 timeCompose :: TTime.Predicate -> TTime.Predicate -> TTime.Predicate
 timeCompose pred1 pred2 = mkIntersectPredicate pred1 pred2
 
+timeComposeWithReplacement
+  :: TTime.Predicate -> TTime.Predicate -> TTime.Predicate -> TTime.Predicate
+timeComposeWithReplacement pred1 pred2 pred3 =
+  mkReplaceIntersectPredicate pred1 pred2 pred3
+
 addDuration :: DurationData -> TTime.TimeObject -> TTime.TimeObject
 addDuration (DurationData n g) t = TTime.timePlus t g $ toInteger n
 
@@ -350,27 +357,33 @@ intersect td1 td2 =
       | TTime.isEmptyPredicate pred -> Nothing
     res -> Just res
 
+intersectWithReplacement :: TimeData -> TimeData -> TimeData -> Maybe TimeData
+intersectWithReplacement
+  (TimeData pred1 _ g1 _ _ _ _ h1)
+  (TimeData pred2 _ g2 _ _ _ _ h2)
+  (TimeData pred3 _ g3 _ _ _ _ h3)
+  | g1 == g2 && g2 == g3 = Just $ TTime.timedata'
+    { TTime.timePred = timeComposeWithReplacement pred1 pred2 pred3
+    , TTime.timeGrain = g1
+    , TTime.direction = Nothing
+    , TTime.holiday = h1 <|> h2 <|> h3
+    }
+  | otherwise = Nothing
+
 intersect' :: (TimeData, TimeData) -> TimeData
 intersect' (TimeData pred1 _ g1 _ _ d1 _ h1, TimeData pred2 _ g2 _ _ d2 _ h2)
   | g1 < g2 = TTime.timedata'
     { TTime.timePred = timeCompose pred1 pred2
     , TTime.timeGrain = g1
-    , TTime.direction = dir
-    , TTime.holiday = hol
+    , TTime.direction = d1 <|> d2
+    , TTime.holiday = h1 <|> h2
     }
   | otherwise = TTime.timedata'
     { TTime.timePred = timeCompose pred2 pred1
     , TTime.timeGrain = g2
-    , TTime.direction = dir
-    , TTime.holiday = hol
+    , TTime.direction = d1 <|> d2
+    , TTime.holiday = h1 <|> h2
     }
-  where
-    dir = case catMaybes [d1, d2] of
-      [] -> Nothing
-      (x:_) -> Just x
-    hol = case catMaybes [h1, h2] of
-      [] -> Nothing
-      (h:_) -> Just h
 
 now :: TimeData
 now = td {TTime.timeGrain = TG.NoGrain}

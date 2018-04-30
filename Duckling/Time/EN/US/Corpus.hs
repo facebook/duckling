@@ -150,4 +150,20 @@ allExamples = concat
   , examples (datetimeHoliday (2017, 4, 17, 0, 0, 0) Day "Emancipation Day")
              [ "emancipation day 2017"
              ]
+  , examples (datetimeHoliday (2011, 4, 18, 0, 0, 0) Day "Tax Day")
+             [ "tax day 2011"
+             , "tax day two years ago"
+             ]
+  , examples (datetimeHoliday (2012, 4, 17, 0, 0, 0) Day "Tax Day")
+             [ "tax day 2012"
+             , "tax day last year"
+             ]
+  , examples (datetimeHoliday (2013, 4, 15, 0, 0, 0) Day "Tax Day")
+             [ "next tax day"
+             , "tax day 2013"
+             ]
+  , examples (datetimeHoliday (2017, 4, 18, 0, 0, 0) Day "Tax Day")
+             [ "tax day 2017"
+             , "tax day in 4 years"
+             ]
   ]

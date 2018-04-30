@@ -16,9 +16,7 @@
 
 module Duckling.Time.Types where
 
-import Control.Arrow ((***))
 import Control.DeepSeq
-import Control.Monad (join)
 import Data.Aeson
 import Data.Foldable (find)
 import Data.Hashable
@@ -237,6 +235,7 @@ data Predicate
     }
   | IntersectPredicate Predicate Predicate
   | TimeIntervalsPredicate TimeIntervalType Predicate Predicate
+  | ReplaceIntersectPredicate Predicate Predicate Predicate
   deriving Show
 
 {-# ANN runPredicate ("HLint: ignore Use foldr1OrError" :: String) #-}
@@ -265,6 +264,8 @@ runPredicate (IntersectPredicate pred1 pred2) =
   runIntersectPredicate pred1 pred2
 runPredicate (TimeIntervalsPredicate ty pred1 pred2) =
   runTimeIntervalsPredicate ty pred1 pred2
+runPredicate (ReplaceIntersectPredicate pred1 pred2 pred3) =
+  runReplaceIntersectPredicate pred1 pred2 pred3
 
 -- Don't use outside this module, use a smart constructor
 emptyTimeDatePredicate :: Predicate
@@ -331,6 +332,10 @@ mkIntersectPredicate
     | a == b = Just ma
     | otherwise = Nothing
 mkIntersectPredicate pred1 pred2 = IntersectPredicate pred1 pred2
+
+mkReplaceIntersectPredicate :: Predicate -> Predicate -> Predicate -> Predicate
+mkReplaceIntersectPredicate pred1 pred2 pred3 =
+  ReplaceIntersectPredicate pred1 pred2 pred3
 
 mkTimeIntervalsPredicate
   :: TimeIntervalType -> Predicate -> Predicate -> Predicate
@@ -559,6 +564,41 @@ runYearPredicate n = series
 safeMax :: Int
 safeMax = 10
 
+runReplaceIntersectPredicate
+  :: Predicate -> Predicate -> Predicate -> SeriesPredicate
+runReplaceIntersectPredicate pred1 pred2 pred3 = runComposeWithReplacement
+  (runPredicate pred1) (runPredicate pred2) (runPredicate pred3)
+
+-- If pred1 intersects with pred2, returns pred3 otherwise pred2
+-- Caveat: only works if all predicates are aligned (e.g. once a year)
+runComposeWithReplacement
+  :: SeriesPredicate -> SeriesPredicate -> SeriesPredicate -> SeriesPredicate
+runComposeWithReplacement pred1 pred2 pred3 = series
+  where
+  series nowTime context = (backward, forward)
+    where
+    (past1, future1) = pred1 nowTime context
+    (past2, future2) = pred2 nowTime context
+    (past3, future3) = pred3 nowTime context
+
+    computeSerie :: [[TimeObject]] -> [TimeObject]
+    computeSerie [tokens1,tokens2,tokens3] =
+      zipWith3 (\token1 token2 token3 -> case timeIntersect token1 token2 of
+        Just _ -> token3
+        Nothing -> token2
+      ) tokens1 tokens2 tokens3
+    computeSerie _ = []
+
+    backwardBounded =
+      takeWhile (\t -> timeStartsBeforeTheEndOf (minTime context) t)
+      . take safeMax
+    forwardBounded =
+      takeWhile (\t -> timeStartsBeforeTheEndOf t (maxTime context))
+      . take safeMax
+
+    backward = computeSerie $ map backwardBounded [past1, past2, past3]
+    forward = computeSerie $ map forwardBounded [future1, future2, future3]
+
 runIntersectPredicate :: Predicate -> Predicate -> SeriesPredicate
 runIntersectPredicate pred1 pred2 =
   runCompose (runPredicate pred1) (runPredicate pred2)
@@ -676,7 +716,7 @@ timezoneOffset :: Time.TimeZone -> Text
 timezoneOffset (Time.TimeZone t _ _) = Text.concat [sign, hh, ":", mm]
   where
     (sign, t') = if t < 0 then ("-", negate t) else ("+", t)
-    (hh, mm) = join (***) (pad 2) $ divMod t' 60
+    (hh, mm) = both (pad 2) $ divMod t' 60
 
 -- | Return a RFC3339 formatted time, e.g. "2013-02-12T04:30:00.000-02:00".
 -- | Backward-compatible with Duckling: fraction of second is milli and padded.

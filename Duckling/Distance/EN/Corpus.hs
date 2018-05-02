@@ -69,4 +69,9 @@ allExamples = concat
              , "over 5\""
              , "above 5 in"
              ]
+  , examples (between Millimetre (5, 6))
+             [ "between 5 and six millimeters"
+             , "between 5 and six millimetres"
+             , "5-6 mm"
+             ]
   ]

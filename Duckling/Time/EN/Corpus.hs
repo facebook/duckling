@@ -102,6 +102,9 @@ negativeCorpus = (testContext, testOptions, examples)
       , "at 650-650-6500"
       , "two sixty a m"
       , "Pay ABC 2000"
+      , "4a"
+      , "4a."
+      , "A4 A5"
       ]
 
 latentCorpus :: Corpus
@@ -114,6 +117,10 @@ latentCorpus = (testContext, testOptions {withLatent = True}, xs)
                  ]
       , examples (datetime (2013, 2, 12, 7, 0, 0) Hour)
                  [ "7"
+                 , "7a"
+                 ]
+      , examples (datetime (2013, 2, 12, 19, 0, 0) Hour)
+                 [ "7p"
                  ]
       --, examples (datetime (1954, 1, 1, 0, 0, 0) Year)
       --           [ "1954"
@@ -439,6 +446,8 @@ allExamples = concat
              , "3ish pm"
              , "3pm approximately"
              , "at about 3pm"
+             , "at 3p"
+             , "at 3p."
              ]
   , examples (datetime (2013, 2, 12, 15, 15, 0) Minute)
              [ "at 15 past 3pm"

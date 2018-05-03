@@ -574,9 +574,12 @@ ruleTODAMPM = Rule
   { name = "<time-of-day> am|pm"
   , pattern =
     [ Predicate isATimeOfDay
-    , regex "(in the )?([ap])(\\s|\\.)?m?\\.?"
+    , regex "(in the )?([ap])(\\s|\\.)?(m?)\\.?"
     ]
   , prod = \tokens -> case tokens of
+      (Token Time td@TimeData {TTime.latent = True}:
+       Token RegexMatch (GroupMatch (_:ap:_:"":_)):_) ->
+        tt . mkLatent $ timeOfDayAMPM (Text.toLower ap == "a") td
       (Token Time td:Token RegexMatch (GroupMatch (_:ap:_)):_) ->
         tt $ timeOfDayAMPM (Text.toLower ap == "a") td
       _ -> Nothing

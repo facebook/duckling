@@ -17,17 +17,32 @@ import Test.Tasty.HUnit
 
 import Duckling.AmountOfMoney.EN.Corpus
 import Duckling.Dimensions.Types
+import Duckling.Locale
 import Duckling.Testing.Asserts
-import Duckling.Testing.Types (testContext, testOptions)
+import Duckling.Testing.Types (testContext, testOptions, withLocale)
 import Duckling.Types (Range(..))
+import qualified Duckling.AmountOfMoney.EN.US.Corpus as US
 
 tests :: TestTree
 tests = testGroup "EN Tests"
   [ makeCorpusTest [This AmountOfMoney] corpus
   , makeNegativeCorpusTest [This AmountOfMoney] negativeCorpus
+  , localeTests
   , intersectTests
   , rangeTests
   ]
+
+localeTests :: TestTree
+localeTests = testGroup "Locale Tests"
+  [ testGroup "EN_US Tests"
+    [ makeCorpusTest [This AmountOfMoney]
+      $ withLocale corpus localeUS US.allExamples
+    , makeNegativeCorpusTest [This AmountOfMoney]
+      $ withLocale negativeCorpus localeUS US.negativeExamples
+    ]
+  ]
+  where
+    localeUS = makeLocale EN $ Just US
 
 intersectTests :: TestTree
 intersectTests = testCase "Intersect Test" $

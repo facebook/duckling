@@ -168,6 +168,8 @@ library
                      , Duckling.AmountOfMoney.AR.Rules
                      , Duckling.AmountOfMoney.EN.Corpus
                      , Duckling.AmountOfMoney.EN.Rules
+                     , Duckling.AmountOfMoney.EN.US.Corpus
+                     , Duckling.AmountOfMoney.EN.US.Rules
                      , Duckling.AmountOfMoney.BG.Corpus
                      , Duckling.AmountOfMoney.BG.Rules
                      , Duckling.AmountOfMoney.ES.Corpus

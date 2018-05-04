@@ -141,6 +141,7 @@ rulePeriodicHolidays = mkRuleHolidays
   , ( "San Jacinto Day", "san jacinto day", monthDay 4 21 )
   , ( "Self-Injury Awareness Day", "self\\-injury awareness day", monthDay 3 1 )
   , ( "Senior Citizens Day", "senior citizens day", monthDay 8 21 )
+  , ( "Siblings Day", "(national )?sibling'?s?'? day", monthDay 4 10 )
   , ( "St Nicholas' Day", "st\\.? nicholas'? day", monthDay 12 6 )
   , ( "St. David's Day", "st\\.? david'?s day", monthDay 3 1 )
   , ( "Statehood Day", "statehood day", monthDay 6 1 )

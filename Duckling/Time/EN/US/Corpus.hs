@@ -166,4 +166,8 @@ allExamples = concat
              [ "tax day 2017"
              , "tax day in 4 years"
              ]
+  , examples (datetimeHoliday (2013, 4, 10, 0, 0, 0) Day "Siblings Day")
+             [ "siblings day"
+             , "national sibling day"
+             ]
   ]

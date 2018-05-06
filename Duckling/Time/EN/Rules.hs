@@ -1665,6 +1665,8 @@ ruleComputedHolidays = mkRuleHolidays
     , cycleNthAfter False TG.Day 9 navaratri )
   -- 15th day of Shevat
   , ( "Tu BiShvat", "tu b[i']shvat", tuBishvat )
+  -- day of the full moon in May in the Gregorian calendar
+  , ( "Vesak", "v(e|ai)sak(ha)?|buddha (day|purnima)", vesak )
   , ( "Yom Ha'atzmaut", "yom ha'?atzmaut", yomHaatzmaut )
   , ( "Yom HaShoah"
     , "yom hashoah|yom hazikaron lashoah ve-lag'vurah|holocaust (remembrance )?day"

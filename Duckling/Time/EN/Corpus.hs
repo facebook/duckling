@@ -1409,4 +1409,10 @@ allExamples = concat
              [ "GYSD 2013"
              , "global youth service day"
              ]
+  , examples (datetimeHoliday (2013, 5, 24, 0, 0, 0) Day "Vesak")
+             [ "vesak"
+             , "vaisakha"
+             , "Buddha day"
+             , "Buddha Purnima"
+             ]
   ]

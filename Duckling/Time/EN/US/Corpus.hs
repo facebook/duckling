@@ -170,4 +170,7 @@ allExamples = concat
              [ "siblings day"
              , "national sibling day"
              ]
+  , examples (datetimeIntervalHoliday ((2013, 4, 26, 0, 0, 0), (2013, 4, 29, 0, 0, 0)) Day "Global Youth Service Day")
+             [ "national youth service day"
+             ]
   ]

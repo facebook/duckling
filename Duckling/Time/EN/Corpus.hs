@@ -1405,4 +1405,8 @@ allExamples = concat
              , "dhulandi 2019"
              , "phagwah 2019"
              ]
+  , examples (datetimeIntervalHoliday ((2013, 4, 26, 0, 0, 0), (2013, 4, 29, 0, 0, 0)) Day "Global Youth Service Day")
+             [ "GYSD 2013"
+             , "global youth service day"
+             ]
   ]

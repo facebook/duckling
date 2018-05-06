@@ -21,6 +21,7 @@ import Prelude
 import Duckling.Dimensions.Types
 import Duckling.Numeral.Helpers (parseInt)
 import Duckling.Regex.Types
+import Duckling.Time.Computed
 import Duckling.Time.Helpers
 import Duckling.Time.Types (TimeData (..))
 import Duckling.Types
@@ -251,6 +252,14 @@ rulePeriodicHolidays' = mkRuleHolidays'
       in intersectWithReplacement emancipationDay tentative alternative )
   ]
 
+ruleComputedHolidays' :: [Rule]
+ruleComputedHolidays' = mkRuleHolidays'
+  [ ( "Global Youth Service Day", "national youth service day"
+    , let start = globalYouthServiceDay
+          end = cycleNthAfter False TG.Day 2 globalYouthServiceDay
+        in interval TTime.Open start end )
+  ]
+
 rulesBackwardCompatible :: [Rule]
 rulesBackwardCompatible =
   [ ruleMMDD
@@ -263,3 +272,4 @@ rules :: [Rule]
 rules = rulesBackwardCompatible
   ++ rulePeriodicHolidays
   ++ rulePeriodicHolidays'
+  ++ ruleComputedHolidays'

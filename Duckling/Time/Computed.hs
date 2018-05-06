@@ -7,9 +7,9 @@
 
 module Duckling.Time.Computed
   ( chanukah, chineseNewYear, dhanteras, easterSunday, eidalAdha, eidalFitr
-  , lagBaOmer, mawlid, muharram, navaratri, orthodoxEaster, passover, rajab
-  , rakshaBandhan, ramadan, roshHashana, thaiPongal, thiruOnam, tishaBAv
-  , tuBishvat, vasantPanchami, yomHaatzmaut
+  , globalYouthServiceDay, lagBaOmer, mawlid, muharram, navaratri
+  , orthodoxEaster, passover, rajab, rakshaBandhan, ramadan, roshHashana
+  , thaiPongal, thiruOnam, tishaBAv, tuBishvat, vasantPanchami, yomHaatzmaut
   ) where
 
 import Data.Maybe
@@ -1568,4 +1568,18 @@ vasantPanchami' = mapMaybe toTimeObjectM
   , (2028, 1, 31)
   , (2029, 1, 19)
   , (2030, 2, 7)
+  ]
+
+globalYouthServiceDay :: TimeData
+globalYouthServiceDay = computedDays globalYouthServiceDay'
+
+globalYouthServiceDay' :: [TimeObject]
+globalYouthServiceDay' = mapMaybe toTimeObjectM
+  [ (2012, 4, 20)
+  , (2013, 4, 26)
+  , (2014, 4, 11)
+  , (2015, 4, 17)
+  , (2016, 4, 15)
+  , (2017, 4, 21)
+  , (2018, 4, 20)
   ]

@@ -1680,7 +1680,11 @@ ruleComputedHolidays = mkRuleHolidays
 
 ruleComputedHolidays' :: [Rule]
 ruleComputedHolidays' = mkRuleHolidays'
-  [ ( "Great Lent", "great\\s+(fast|lent)"
+  [ ( "Global Youth Service Day", "global youth service day|gysd"
+    , let start = globalYouthServiceDay
+          end = cycleNthAfter False TG.Day 2 globalYouthServiceDay
+        in interval TTime.Open start end )
+  , ( "Great Lent", "great\\s+(fast|lent)"
     , let start = cycleNthAfter False TG.Day (-48) orthodoxEaster
           end = cycleNthAfter False TG.Day (-9) orthodoxEaster
         in interval TTime.Open start end )

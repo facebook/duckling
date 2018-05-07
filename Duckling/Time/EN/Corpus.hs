@@ -1415,4 +1415,10 @@ allExamples = concat
              , "Buddha day"
              , "Buddha Purnima"
              ]
+  , examples (datetimeIntervalHoliday ((2013, 3, 23, 20, 30, 0), (2013, 3, 23, 21, 31, 0)) Minute "Earth Hour")
+             [ "earth hour"
+             ]
+  , examples (datetimeIntervalHoliday ((2016, 3, 19, 20, 30, 0), (2016, 3, 19, 21, 31, 0)) Minute "Earth Hour")
+             [ "earth hour 2016"
+             ]
   ]

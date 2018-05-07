@@ -1722,6 +1722,18 @@ ruleComputedHolidays' = mkRuleHolidays'
     , let start = cycleNthAfter False TG.Day 14 roshHashana
           end = cycleNthAfter False TG.Day 22 roshHashana
         in interval TTime.Open start end )
+
+  -- Other
+  -- Last Saturday of March unless it falls on Holy Saturday
+  -- In which case it's the Saturday before
+  , ( "Earth Hour", "earth hour"
+    , let holySaturday = cycleNthAfter False TG.Day (-1) easterSunday
+          tentative = predLastOf (dayOfWeek 6) (month 3)
+          alternative = cycleNthAfter False TG.Day (-7) tentative
+        in do
+          day <- intersectWithReplacement holySaturday tentative alternative
+          start <- intersect day $ hourMinute True 20 30
+          interval TTime.Closed start $ cycleNthAfter False TG.Minute 60 start )
   ]
 
 ruleCycleThisLastNext :: Rule

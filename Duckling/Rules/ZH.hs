@@ -22,6 +22,7 @@ import qualified Duckling.AmountOfMoney.ZH.Rules as AmountOfMoney
 import qualified Duckling.Distance.ZH.Rules as Distance
 import qualified Duckling.Numeral.ZH.Rules as Numeral
 import qualified Duckling.Ordinal.ZH.Rules as Ordinal
+import qualified Duckling.Quantity.ZH.Rules as Quantity
 import qualified Duckling.Temperature.ZH.Rules as Temperature
 import qualified Duckling.Time.ZH.Rules as Time
 import qualified Duckling.Time.ZH.CN.Rules as TimeCN
@@ -49,7 +50,7 @@ langRules (This Email) = []
 langRules (This Numeral) = Numeral.rules
 langRules (This Ordinal) = Ordinal.rules
 langRules (This PhoneNumber) = []
-langRules (This Quantity) = []
+langRules (This Quantity) = Quantity.rules
 langRules (This RegexMatch) = []
 langRules (This Temperature) = Temperature.rules
 langRules (This Time) = Time.rules

@@ -231,6 +231,12 @@ rulePeriodicHolidays = mkRuleHolidays
     , "(george )?washington'?s? (birth)?day|president'?s?'? day|daisy gatson bates'? day"
     , nthDOWOfMonth 3 1 2
     )
+  -- Wednesday of the last full week of April, where a full week starts on
+  -- Sunday and ends on Saturday.
+  , ( "Administrative Professionals' Day"
+    , "(administrative professional|secretarie|admin)('?s'?)? day"
+    , cycleNthAfter False TG.Day (-3) $ predNthAfter (-1) (dayOfWeek 6) (monthDay 5 1)
+    )
 
   -- Other
   , ( "Emancipation Day", "emancipation day"

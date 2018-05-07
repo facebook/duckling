@@ -1813,6 +1813,23 @@ ruleCycleOrdinalOfTime = Rule
       _ -> Nothing
   }
 
+ruleCycleLastOrdinalOfTime :: Rule
+ruleCycleLastOrdinalOfTime = Rule
+  { name = "<ordinal> last <cycle> of <time>"
+  , pattern =
+    [ dimension Ordinal
+    , regex "last"
+    , dimension TimeGrain
+    , regex "of|in|from"
+    , dimension Time
+    ]
+  , prod = \tokens -> case tokens of
+      (token:_:Token TimeGrain grain:_:Token Time td:_) -> do
+        n <- getIntValue token
+        tt . cycleNthAfter True grain (-n) . cycleNthAfter True (timeGrain td) 1 $ td
+      _ -> Nothing
+  }
+
 ruleCycleTheOrdinalOfTime :: Rule
 ruleCycleTheOrdinalOfTime = Rule
   { name = "the <ordinal> <cycle> of <time>"
@@ -1827,6 +1844,24 @@ ruleCycleTheOrdinalOfTime = Rule
       (_:token:Token TimeGrain grain:_:Token Time td:_) -> do
         n <- getIntValue token
         tt $ cycleNthAfter True grain (n - 1) td
+      _ -> Nothing
+  }
+
+ruleCycleTheLastOrdinalOfTime :: Rule
+ruleCycleTheLastOrdinalOfTime = Rule
+  { name = "the <ordinal> last <cycle> of <time>"
+  , pattern =
+    [ regex "the"
+    , dimension Ordinal
+    , regex "last"
+    , dimension TimeGrain
+    , regex "of|in|from"
+    , dimension Time
+    ]
+  , prod = \tokens -> case tokens of
+      (_:token:_:Token TimeGrain grain:_:Token Time td:_) -> do
+        n <- getIntValue token
+        tt . cycleNthAfter True grain (-n) . cycleNthAfter True (timeGrain td) 1 $ td
       _ -> Nothing
   }
 
@@ -2168,7 +2203,9 @@ rules =
   , ruleDOMOfTimeMonth
   , ruleCycleAfterBeforeTime
   , ruleCycleOrdinalOfTime
+  , ruleCycleLastOrdinalOfTime
   , ruleCycleTheOrdinalOfTime
+  , ruleCycleTheLastOrdinalOfTime
   , ruleCycleTheOfTime
   , ruleCycleOrdinalAfterTime
   , ruleCycleTheOrdinalAfterTime

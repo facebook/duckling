@@ -104,4 +104,13 @@ allExamples = concat
   , examples (datetimeHoliday (2019, 5, 27, 0, 0, 0) Day "Reconciliation Day")
              [ "reconciliation day 2019"
              ]
+  , examples (datetimeIntervalHoliday ((2013, 8, 9, 0, 0, 0), (2013, 8, 19, 0, 0, 0)) Day "Royal Queensland Show")
+             [ "ekka"
+             , "royal national agricultural show"
+             ]
+  , examples (datetimeHoliday (2018, 8, 15, 0, 0, 0) Day "Royal Queensland Show Day")
+             [ "ekka day 2018"
+             , "RNA Show Day 2018"
+             , "Royal Queensland Show Day in five years"
+             ]
   ]

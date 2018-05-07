@@ -128,6 +128,29 @@ rulePeriodicHolidays' = mkRuleHolidays'
   , ( "Royal Hobart Regatta", "royal hobart regatta"
     , let end = nthDOWOfMonth 2 1 2
       in interval TTime.Open (cycleNthAfter False TG.Day (- 2) end) end )
+
+  -- Other
+  -- Wednesday of the Royal Queensland Show
+  -- Starts on the first Friday of August if it's not before August 5th
+  -- Otherwise on the second Friday of August
+  , ( "Royal Queensland Show Day"
+    , "(royal (national agricultural|queensland)|rna) show day|ekka day"
+    , let tentative = nthDOWOfMonth 1 5 8
+          alternative = nthDOWOfMonth 2 5 8
+      in do
+        forbidden <- interval TTime.Open (monthDay 8 1) (monthDay 8 4)
+        start <- intersectWithReplacement forbidden tentative alternative
+        return $ cycleNthAfter False TG.Day 5 start )
+  -- Starts on the first Friday of August if it's not before August 5th
+  -- Otherwise on the second Friday of August
+  , ( "Royal Queensland Show"
+    , "ekka|(royal (national agricultural|queensland)|rna) show"
+    , let tentative = nthDOWOfMonth 1 5 8
+          alternative = nthDOWOfMonth 2 5 8
+      in do
+        forbidden <- interval TTime.Open (monthDay 8 1) (monthDay 8 4)
+        start <- intersectWithReplacement forbidden tentative alternative
+        interval TTime.Open start $ cycleNthAfter False TG.Day 9 start )
   ]
 
 ruleComputedHolidays :: [Rule]

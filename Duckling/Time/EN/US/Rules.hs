@@ -237,7 +237,11 @@ rulePeriodicHolidays = mkRuleHolidays
   , ( "Administrative Professionals' Day"
     , "(administrative professional|secretarie|admin)('?s'?)? day"
     , cycleNthAfter False TG.Day (-3) $
-        predNthAfter (-1) (dayOfWeek 6) (monthDay 5 1)
+        predNthAfter (-1) (dayOfWeek 6) (monthDay 5 1) )
+  -- Wednesday of the 3rd full week in May, starting on a Sunday
+  , ( "Emergency Medical Services for Children Day"
+    , "(national )?(emsc|emergency medical services for children) day"
+    , cycleNthAfter False TG.Day 3 $ predNthAfter 2 (dayOfWeek 7) (monthDay 5 1)
     )
 
   -- Other
@@ -249,6 +253,13 @@ rulePeriodicHolidays' :: [Rule]
 rulePeriodicHolidays' = mkRuleHolidays'
   -- Fixed dates, year over year
   [ ( "Kwanzaa", "kwanzaa", interval TTime.Open (monthDay 12 26) (monthDay 1 1) )
+
+  -- 3rd full week in May, starting on a Sunday
+  , ( "Emergency Medical Services Week"
+    , "(national )?(ems|emergency medical services) week"
+    , let start = predNthAfter 2 (dayOfWeek 7) (monthDay 5 1)
+          end = cycleNthAfter False TG.Day 6 start
+      in interval TTime.Open start end )
 
   -- Other
   -- First weekday on or after April 15 if different than Emancipation Day

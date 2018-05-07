@@ -187,4 +187,10 @@ allExamples = concat
   , examples (datetimeIntervalHoliday ((2013, 4, 26, 0, 0, 0), (2013, 4, 29, 0, 0, 0)) Day "Global Youth Service Day")
              [ "national youth service day"
              ]
+  , examples (datetimeIntervalHoliday ((2018, 5, 20, 0, 0, 0), (2018, 5, 27, 0, 0, 0)) Day "Emergency Medical Services Week")
+             [ "ems week 2018"
+             ]
+  , examples (datetimeHoliday (2018, 5, 23, 0, 0, 0) Day "Emergency Medical Services for Children Day")
+             [ "emsc day 2018"
+             ]
   ]

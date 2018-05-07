@@ -88,7 +88,7 @@ rulePeriodicHolidays = mkRuleHolidays
   -- Fixed day/week/month, year over year
   , ( "Adelaide Cup", "adelaide cup", nthDOWOfMonth 2 1 3 )
   , ( "Administrative Professionals' Day"
-    , "(admin(istrative professionals'?)|secretaries'?) day"
+    , "(administrative professional|secretarie|admin)('?s'?)? day"
     , nthDOWOfMonth 1 5 5 )
   , ( "Canberra Day", "canberra day", nthDOWOfMonth 2 1 3 )
   , ( "Eight Hours Day", "eight hours day", nthDOWOfMonth 2 1 3 )

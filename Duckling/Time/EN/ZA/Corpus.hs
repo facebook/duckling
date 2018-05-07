@@ -97,4 +97,7 @@ allExamples = concat
              [ "heroes' day"
              , "kruger day"
              ]
+  , examples (datetimeHoliday (2013, 9, 4, 0, 0, 0) Day "Administrative Professionals' Day")
+             [ "admin day"
+             ]
   ]

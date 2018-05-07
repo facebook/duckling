@@ -23,6 +23,7 @@ import Duckling.Regex.Types
 import Duckling.Time.Helpers
 import Duckling.Time.Types (TimeData (..))
 import Duckling.Types
+import qualified Duckling.TimeGrain.Types as TG
 
 -- Although one can see both MMDD and DDMM in Canada,
 -- there is no direct way to implement this today. Let's fallback to MMDD (US).
@@ -122,6 +123,14 @@ rulePeriodicHolidays = mkRuleHolidays
   -- Closest Monday to June 24th
   , ( "Discovery Day", "discovery\\s+day"
     , predNthClosest 0 (dayOfWeek 1) (monthDay 6 24) )
+
+  -- Wednesday of the last full week of April, where a full week starts on
+  -- Sunday and ends on Saturday.
+  , ( "Administrative Professionals' Day"
+    , "(administrative professional|secretarie|admin)('?s'?)? day"
+    , cycleNthAfter False TG.Day (-3) $
+        predNthAfter (-1) (dayOfWeek 6) (monthDay 5 1)
+    )
   ]
 
 rules :: [Rule]

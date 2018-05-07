@@ -92,4 +92,7 @@ allExamples = concat
              [ "labour day of last year"
              , "Labour Day 2012"
              ]
+  , examples (datetimeHoliday (2013, 4, 17, 0, 0, 0) Day "Administrative Professionals' Day")
+             [ "admin day"
+             ]
   ]

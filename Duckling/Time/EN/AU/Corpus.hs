@@ -113,4 +113,7 @@ allExamples = concat
              , "RNA Show Day 2018"
              , "Royal Queensland Show Day in five years"
              ]
+  , examples (datetimeHoliday (2013, 5, 3, 0, 0, 0) Day "Administrative Professionals' Day")
+             [ "admin day"
+             ]
   ]

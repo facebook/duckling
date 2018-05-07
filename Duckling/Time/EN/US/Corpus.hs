@@ -170,6 +170,20 @@ allExamples = concat
              [ "siblings day"
              , "national sibling day"
              ]
+  , examples (datetimeHoliday (2016, 4, 27, 0, 0, 0) Day "Administrative Professionals' Day")
+             [ "administrative professionals' day 2016"
+             , "administrative professionals day 2016"
+             , "administrative professional day 2016"
+             , "administrative professional's day of 2016"
+             , "secretaries' day 2016"
+             , "admins day 2016"
+             ]
+  , examples (datetimeHoliday (2010, 4, 21, 0, 0, 0) Day "Administrative Professionals' Day")
+             [ "administrative professionals' day 2010"
+             ]
+  , examples (datetimeHoliday (2019, 4, 24, 0, 0, 0) Day "Administrative Professionals' Day")
+             [ "administrative professionals' day 2019"
+             ]
   , examples (datetimeIntervalHoliday ((2013, 4, 26, 0, 0, 0), (2013, 4, 29, 0, 0, 0)) Day "Global Youth Service Day")
              [ "national youth service day"
              ]

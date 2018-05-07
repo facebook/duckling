@@ -143,4 +143,11 @@ allExamples = concat
              [ "Groundhog day"
              , "groundhogs day"
              ]
+  , examples (datetimeHoliday (2010, 4, 21, 0, 0, 0) Day "Administrative Professionals' Day")
+             [ "administrative professionals' day 2010"
+             ]
+  , examples (datetimeHoliday (2019, 4, 24, 0, 0, 0) Day "Administrative Professionals' Day")
+             [ "admin day 2019"
+             , "secretaries day in six years"
+             ]
   ]

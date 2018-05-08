@@ -27,15 +27,15 @@ import qualified Data.Text as Text
 import Duckling.Resolve (Resolve(..))
 
 data Unit
-  = Foot
-  | Centimetre
-  | Kilometre
-  | Inch
-  | M -- ambiguous between Mile and Metre
-  | Metre
-  | Mile
-  | Millimetre
+  = Mile
   | Yard
+  | Foot
+  | Inch
+  | Kilometre
+  | Metre
+  | Centimetre
+  | Millimetre
+  | M -- ambiguous between Mile and Metre
   deriving (Eq, Generic, Hashable, Ord, Show, NFData)
 
 instance ToJSON Unit where

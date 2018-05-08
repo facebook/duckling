@@ -11,7 +11,8 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Time.DA.Rules
-  ( rules ) where
+  ( rules
+  ) where
 
 import Data.Text (Text)
 import Prelude
@@ -30,13 +31,14 @@ import qualified Duckling.TimeGrain.Types as TG
 
 ruleDaysOfWeek :: [Rule]
 ruleDaysOfWeek = mkRuleDaysOfWeek
-  [ ( "Monday"   , "mandag|man\\.?"           )
-  , ( "Tuesday"  , "tirsdag|tirs?\\.?"        )
-  , ( "Wednesday", "onsdag|ons\\.?"           )
-  , ( "Thursday" , "torsdag|tors?\\.?"        )
-  , ( "Friday"   , "fredag|fre\\.?"           )
-  , ( "Saturday" , "lørdag|lør\\.?" )
-  , ( "Sunday"   , "søndag|søn\\.?" )
+  -- 'man' is a common Danish word ('you'), leading to false positives
+  [ ( "Monday"   , "mandag"            )
+  , ( "Tuesday"  , "tirsdag|tirs?\\.?" )
+  , ( "Wednesday", "onsdag|ons\\.?"    )
+  , ( "Thursday" , "torsdag|tors?\\.?" )
+  , ( "Friday"   , "fredag|fre\\.?"    )
+  , ( "Saturday" , "lørdag|lør\\.?"    )
+  , ( "Sunday"   , "søndag|søn\\.?"    )
   ]
 
 ruleMonths :: [Rule]

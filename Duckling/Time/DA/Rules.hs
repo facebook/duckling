@@ -30,7 +30,7 @@ import qualified Duckling.TimeGrain.Types as TG
 
 ruleDaysOfWeek :: [Rule]
 ruleDaysOfWeek = mkRuleDaysOfWeek
-  [ ( "Monday"   , "mandag|man\\.?"           )
+  [ ( "Monday"   , "mandag"         ) -- 'man' is a common Danish word, leading to false positives
   , ( "Tuesday"  , "tirsdag|tirs?\\.?"        )
   , ( "Wednesday", "onsdag|ons\\.?"           )
   , ( "Thursday" , "torsdag|tors?\\.?"        )

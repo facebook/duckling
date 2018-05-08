@@ -42,12 +42,11 @@ allExamples = concat
              ]
   , examples (datetime (2013, 2, 18, 0, 0, 0) Day)
              [ "mandag"
-             , "man."
              , "på mandag"
              ]
   , examples (datetime (2013, 2, 18, 0, 0, 0) Day)
              [ "Mandag den 18. februar"
-             , "Man, 18 februar"
+             , "Mandag, 18 februar"
              ]
   , examples (datetime (2013, 2, 19, 0, 0, 0) Day)
              [ "tirsdag"
@@ -144,7 +143,6 @@ allExamples = concat
              ]
   , examples (datetime (2013, 2, 18, 0, 0, 0) Day)
              [ "Mandag, Feb 18"
-             , "Man, februar 18"
              ]
   , examples (datetime (2013, 2, 11, 0, 0, 0) Week)
              [ "denne uge"

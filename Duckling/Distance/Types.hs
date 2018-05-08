@@ -27,10 +27,10 @@ import qualified Data.Text as Text
 import Duckling.Resolve (Resolve(..))
 
 data Unit
-  = Foot
-  | Centimetre
-  | Kilometre
+  = Centimetre
+  | Foot
   | Inch
+  | Kilometre
   | M -- ambiguous between Mile and Metre
   | Metre
   | Mile

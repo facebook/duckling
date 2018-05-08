@@ -1556,6 +1556,10 @@ rulePeriodicHolidays = mkRuleHolidays
   , ( "World Philosophy Day", "world philosophy day", nthDOWOfMonth 3 4 11 )
   , ( "World Religion Day", "world religion day", nthDOWOfMonth 3 7 1 )
   , ( "World Sight Day", "world sight day", nthDOWOfMonth 2 4 10 )
+
+  -- Other
+  , ( "Boss's Day", "boss'?s?( day)?"
+    , predNthClosest 0 weekday (monthDay 10 16) )
   ]
 
 ruleComputedHolidays :: [Rule]
@@ -1674,10 +1678,6 @@ ruleComputedHolidays = mkRuleHolidays
   , ( "Yom Kippur", "yom\\s+kippur", cycleNthAfter False TG.Day 9 roshHashana )
   , ( "Whit Monday", "(pentecost|whit)\\s+monday|monday of the holy spirit"
     , cycleNthAfter False TG.Day 50 easterSunday )
-
-  -- Other
-  , ( "Boss's Day", "boss'?s?( day)?"
-    , predNthClosest 0 weekday (monthDay 10 16) )
   ]
 
 ruleComputedHolidays' :: [Rule]

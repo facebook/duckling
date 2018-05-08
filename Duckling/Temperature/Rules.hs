@@ -17,10 +17,10 @@ import Data.String
 import Prelude
 
 import Duckling.Dimensions.Types
-import qualified Duckling.Numeral.Types as TNumeral
 import Duckling.Temperature.Types (TemperatureData (..))
-import qualified Duckling.Temperature.Types as TTemperature
 import Duckling.Types
+import qualified Duckling.Numeral.Types as TNumeral
+import qualified Duckling.Temperature.Types as TTemperature
 
 ruleNumeralAsTemp :: Rule
 ruleNumeralAsTemp = Rule

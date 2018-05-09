@@ -38,6 +38,7 @@ currencies = HashMap.fromList
   , ("bgn", BGN)
   , ("brl", BRL)
   , ("byn", BYN)
+  , ("cad", CAD)
   , ("¢", Cent)
   , ("c", Cent)
   , ("cny", CNY)
@@ -106,7 +107,7 @@ ruleCurrencies :: Rule
 ruleCurrencies = Rule
   { name = "currencies"
   , pattern =
-    [ regex "(aed|aud|bgn|brl|byn|¢|c|cny|\\$|dinars?|dollars?|egp|(e|€)uro?s?|€|gbp|hrk|idr|ils|inr|iqd|jod|¥|jpy|krw|kwd|lbp|mad|myr|rm|nok|£|pta?s?|qar|₽|rs\\.?|riy?als?|ron|rub|rupees?|sar|sek|sgb|shekels?|us(d|\\$)|vnd|yen|yuan)"
+    [ regex "(aed|aud|bgn|brl|byn|¢|c|cad|cny|\\$|dinars?|dollars?|egp|(e|€)uro?s?|€|gbp|hrk|idr|ils|inr|iqd|jod|¥|jpy|krw|kwd|lbp|mad|myr|rm|nok|£|pta?s?|qar|₽|rs\\.?|riy?als?|ron|rub|rupees?|sar|sek|sgb|shekels?|us(d|\\$)|vnd|yen|yuan)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> do

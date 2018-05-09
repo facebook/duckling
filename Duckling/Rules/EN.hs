@@ -21,6 +21,8 @@ import Duckling.Dimensions.Types
 import Duckling.Locale
 import Duckling.Types
 import qualified Duckling.AmountOfMoney.EN.Rules as AmountOfMoney
+import qualified Duckling.AmountOfMoney.EN.CA.Rules as AmountOfMoneyCA
+import qualified Duckling.AmountOfMoney.EN.GB.Rules as AmountOfMoneyGB
 import qualified Duckling.AmountOfMoney.EN.US.Rules as AmountOfMoneyUS
 import qualified Duckling.Distance.EN.Rules as Distance
 import qualified Duckling.Duration.EN.Rules as Duration
@@ -50,6 +52,8 @@ defaultRules dim@(This Time) = TimeUS.rulesBackwardCompatible ++ langRules dim
 defaultRules dim             = langRules dim
 
 localeRules :: Region -> Some Dimension -> [Rule]
+localeRules CA (This AmountOfMoney) = AmountOfMoneyCA.rules
+localeRules GB (This AmountOfMoney) = AmountOfMoneyGB.rules
 localeRules US (This AmountOfMoney) = AmountOfMoneyUS.rules
 localeRules AU (This Time) = TimeAU.rules
 localeRules BZ (This Time) = TimeBZ.rules

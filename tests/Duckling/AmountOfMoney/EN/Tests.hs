@@ -21,6 +21,8 @@ import Duckling.Locale
 import Duckling.Testing.Asserts
 import Duckling.Testing.Types (testContext, testOptions, withLocale)
 import Duckling.Types (Range(..))
+import qualified Duckling.AmountOfMoney.EN.CA.Corpus as CA
+import qualified Duckling.AmountOfMoney.EN.GB.Corpus as GB
 import qualified Duckling.AmountOfMoney.EN.US.Corpus as US
 
 tests :: TestTree
@@ -34,7 +36,19 @@ tests = testGroup "EN Tests"
 
 localeTests :: TestTree
 localeTests = testGroup "Locale Tests"
-  [ testGroup "EN_US Tests"
+  [ testGroup "EN_CA Tests"
+    [ makeCorpusTest [This AmountOfMoney]
+      $ withLocale corpus localeCA CA.allExamples
+    , makeNegativeCorpusTest [This AmountOfMoney]
+      $ withLocale negativeCorpus localeCA CA.negativeExamples
+    ]
+   , testGroup "EN_GB Tests"
+    [ makeCorpusTest [This AmountOfMoney]
+      $ withLocale corpus localeGB GB.allExamples
+    , makeNegativeCorpusTest [This AmountOfMoney]
+      $ withLocale negativeCorpus localeGB GB.negativeExamples
+    ]
+   , testGroup "EN_US Tests"
     [ makeCorpusTest [This AmountOfMoney]
       $ withLocale corpus localeUS US.allExamples
     , makeNegativeCorpusTest [This AmountOfMoney]
@@ -42,6 +56,8 @@ localeTests = testGroup "Locale Tests"
     ]
   ]
   where
+    localeCA = makeLocale EN $ Just CA
+    localeGB = makeLocale EN $ Just GB
     localeUS = makeLocale EN $ Just US
 
 intersectTests :: TestTree

@@ -324,6 +324,20 @@ ruleYearLatent = Rule
       _ -> Nothing
   }
 
+ruleYearADBC :: Rule
+ruleYearADBC = Rule
+  { name = "<year> (bc|ad)"
+  , pattern =
+    [ Predicate $ isIntegerBetween (-10000) 10000
+    , regex "(a\\.?d\\.?|b\\.?c\\.?)"
+    ]
+  , prod = \case
+    (token:Token RegexMatch (GroupMatch (ab:_)):_) -> do
+      y <- getIntValue token
+      tt . yearADBC $ if Text.head (Text.toLower ab) == 'b' then -y else y
+    _ -> Nothing
+  }
+
 ruleDOMLatent :: Rule
 ruleDOMLatent = Rule
   { name = "<day-of-month> (ordinal)"
@@ -2152,6 +2166,7 @@ rules =
   , ruleNthTimeAfterTime
   , ruleTheNthTimeAfterTime
   , ruleYearLatent
+  , ruleYearADBC
   , ruleTheDOMNumeral
   , ruleTheDOMOrdinal
   , ruleDOMLatent

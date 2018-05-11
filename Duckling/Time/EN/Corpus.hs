@@ -338,6 +338,17 @@ allExamples = concat
              [ "next year"
              , "next yr"
              ]
+  , examples (datetime (2014, 1, 1, 0, 0, 0) Year)
+             [ "in 2014 A.D.",
+               "in 2014 AD"
+             ]
+  , examples (datetime (-2014, 1, 1, 0, 0, 0) Year)
+             [ "in 2014 B.C.",
+               "in 2014 BC"
+             ]
+  , examples (datetime (14, 1, 1, 0, 0, 0) Year)
+             [ "in 14 a.d."
+             ]
   , examples (datetime (2013, 2, 10, 0, 0, 0) Day)
              [ "last sunday"
              , "sunday from last week"

@@ -546,7 +546,6 @@ runMonthPredicate n = series
         then rounded
         else timePlus rounded TG.Year 1
 
--- | Converts 2-digits to a year between 1950 and 2050
 runYearPredicate :: Int -> SeriesPredicate
 runYearPredicate n = series
   where
@@ -557,7 +556,7 @@ runYearPredicate n = series
     where
       Time.UTCTime day _ = start t
       (tyear, _, _) = Time.toGregorian day
-      year = toInteger $ if n <= 99 then mod (n + 50) 100 + 2000 - 50 else n
+      year = toInteger n
       y = timePlus (timeRound t TG.Year) TG.Year $ year - tyear
 
 -- Limits how deep into lists of segments to look

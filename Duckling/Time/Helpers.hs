@@ -24,7 +24,7 @@ module Duckling.Time.Helpers
   , month, monthDay, notLatent, now, nthDOWOfMonth, partOfDay, predLastOf
   , predNth, predNthAfter, predNthClosest, season, second, timeOfDayAMPM
   , weekday, weekend, withDirection, year, yearMonthDay, tt, durationIntervalAgo
-  , inDurationInterval, intersectWithReplacement
+  , inDurationInterval, intersectWithReplacement, yearADBC
     -- Other
   , getIntValue, timeComputed
   -- Rule constructors
@@ -116,7 +116,6 @@ timeDayOfMonth n = mkDayOfTheMonthPredicate n
 timeMonth :: Int -> TTime.Predicate
 timeMonth n = mkMonthPredicate n
 
--- | Converts 2-digits to a year between 1950 and 2050
 timeYear :: Int -> TTime.Predicate
 timeYear n = mkYearPredicate n
 
@@ -417,8 +416,15 @@ month :: Int -> TimeData
 month n = form TTime.Month {TTime.month = n} $ TTime.timedata'
   {TTime.timePred = timeMonth n, TTime.timeGrain = TG.Month}
 
+-- | Converts 2-digits to a year between 1950 and 2050
 year :: Int -> TimeData
-year n = TTime.timedata' {TTime.timePred = timeYear n, TTime.timeGrain = TG.Year}
+year n = TTime.timedata'{TTime.timePred = timeYear y, TTime.timeGrain = TG.Year}
+  where
+    y = if n <= 99 then mod (n + 50) 100 + 2000 - 50 else n
+
+yearADBC :: Int -> TimeData
+yearADBC n =
+  TTime.timedata'{TTime.timePred = timeYear n, TTime.timeGrain = TG.Year}
 
 yearMonthDay :: Int -> Int -> Int -> TimeData
 yearMonthDay y m d = intersect' (intersect' (year y, month m), dayOfMonth d)

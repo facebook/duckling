@@ -173,7 +173,7 @@ rulePowersOfTen :: Rule
 rulePowersOfTen = Rule
   { name = "powers of tens"
   , pattern =
-    [ regex "(ما?[ئي][ةه]|مئات|[أا]لف|ال??|[آا]لاف|ملايين)"
+    [ regex "(ما?[ئي][ةه]|مئات|[أا]لف|ال??|[آا]لاف|ملايين|مليون)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
@@ -196,6 +196,8 @@ rulePowersOfTen = Rule
         "ملايي" ->
           double 1e6 >>= withGrain 6 >>= withMultipliable
         "ملايين" ->
+          double 1e6 >>= withGrain 6 >>= withMultipliable
+        "مليون" ->
           double 1e6 >>= withGrain 6 >>= withMultipliable
         _ -> Nothing
       _ -> Nothing

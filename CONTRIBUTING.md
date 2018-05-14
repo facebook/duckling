@@ -23,6 +23,18 @@ to do this once to work on any of Facebook's open source projects.
 
 Complete your CLA here: <https://code.facebook.com/cla>
 
+## Coding Style
+
+### Simple heuristic: Look around
+Match the style you see used in the rest of the project. This includes formatting and naming things in code.
+
+### Simple philosophy: Make it 1% better
+The code is far from perfectly clean. When the code surrounding your changes is not consistent, go ahead and make it so. However don't clutter your changes with style clean-up; split the pull requests to make the review process easier.
+
+### Guidelines
+- 80-char limit.
+- Imports: one block for standard modules and other packages, one block for project modules. Qualified imports at the end of each block, alphabetical ordering.
+
 ## Issues
 We use GitHub issues to track public bugs. Please ensure your description is
 clear and has sufficient instructions to be able to reproduce the issue.

@@ -148,9 +148,14 @@ allExamples = concat
              [ "10000"
              , "10 آلاف"
              ]
+  , examples (NumeralValue 1000000)
+             [ "1000000"
+             , "مليون"
+             ]
   , examples (NumeralValue 3000000)
              [ "3 ملايين"
              , "3000000"
+             , "3 مليون"
              ]
   , examples (NumeralValue (-1200000))
              [ "-1200000"

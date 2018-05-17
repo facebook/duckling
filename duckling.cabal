@@ -166,14 +166,32 @@ library
                      -- AmountOfMoney
                      , Duckling.AmountOfMoney.AR.Corpus
                      , Duckling.AmountOfMoney.AR.Rules
+                     , Duckling.AmountOfMoney.EN.AU.Corpus
+                     , Duckling.AmountOfMoney.EN.AU.Rules
+                     , Duckling.AmountOfMoney.EN.BZ.Corpus
+                     , Duckling.AmountOfMoney.EN.BZ.Rules
                      , Duckling.AmountOfMoney.EN.CA.Corpus
                      , Duckling.AmountOfMoney.EN.CA.Rules
                      , Duckling.AmountOfMoney.EN.Corpus
                      , Duckling.AmountOfMoney.EN.GB.Corpus
                      , Duckling.AmountOfMoney.EN.GB.Rules
+                     , Duckling.AmountOfMoney.EN.IE.Corpus
+                     , Duckling.AmountOfMoney.EN.IE.Rules
+                     , Duckling.AmountOfMoney.EN.IN.Corpus
+                     , Duckling.AmountOfMoney.EN.IN.Rules
+                     , Duckling.AmountOfMoney.EN.JM.Corpus
+                     , Duckling.AmountOfMoney.EN.JM.Rules
+                     , Duckling.AmountOfMoney.EN.NZ.Corpus
+                     , Duckling.AmountOfMoney.EN.NZ.Rules
+                     , Duckling.AmountOfMoney.EN.PH.Corpus
+                     , Duckling.AmountOfMoney.EN.PH.Rules
                      , Duckling.AmountOfMoney.EN.Rules
+                     , Duckling.AmountOfMoney.EN.TT.Corpus
+                     , Duckling.AmountOfMoney.EN.TT.Rules
                      , Duckling.AmountOfMoney.EN.US.Corpus
                      , Duckling.AmountOfMoney.EN.US.Rules
+                     , Duckling.AmountOfMoney.EN.ZA.Corpus
+                     , Duckling.AmountOfMoney.EN.ZA.Rules
                      , Duckling.AmountOfMoney.BG.Corpus
                      , Duckling.AmountOfMoney.BG.Rules
                      , Duckling.AmountOfMoney.ES.Corpus

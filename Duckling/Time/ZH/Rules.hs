@@ -207,15 +207,6 @@ ruleHalfAfterpastNoonmidnight = Rule
       _ -> Nothing
   }
 
-ruleValentinesDay :: Rule
-ruleValentinesDay = Rule
-  { name = "valentine's day"
-  , pattern =
-    [ regex "情人(节|節)"
-    ]
-  , prod = \_ -> tt $ monthDay 2 14
-  }
-
 ruleHhmmTimeofday :: Rule
 ruleHhmmTimeofday = Rule
   { name = "hh:mm (time-of-day)"
@@ -256,15 +247,6 @@ ruleNthTimeOfTime2 = Rule
       (Token Time td1:_:Token Ordinal od:Token Time td2:_) -> Token Time .
         predNth (TOrdinal.value od - 1) False <$> intersect td2 td1
       _ -> Nothing
-  }
-
-ruleNewYearsDay :: Rule
-ruleNewYearsDay = Rule
-  { name = "new year's day"
-  , pattern =
-    [ regex "元旦(节|節)?"
-    ]
-  , prod = \_ -> tt $ monthDay 1 1
   }
 
 ruleLastTime :: Rule
@@ -370,15 +352,6 @@ ruleTheDayBeforeYesterday = Rule
     [ regex "前天|前日"
     ]
   , prod = \_ -> tt . cycleNth TG.Day $ - 2
-  }
-
-ruleLaborDay :: Rule
-ruleLaborDay = Rule
-  { name = "labor day"
-  , pattern =
-    [ regex "劳动节|勞動節"
-    ]
-  , prod = \_ -> tt $ monthDay 5 1
   }
 
 ruleNextCycle :: Rule
@@ -740,15 +713,6 @@ ruleYesterday = Rule
   , prod = \_ -> tt . cycleNth TG.Day $ - 1
   }
 
-ruleChristmas :: Rule
-ruleChristmas = Rule
-  { name = "christmas"
-  , pattern =
-    [ regex "(圣诞|聖誕)(节|節)?"
-    ]
-  , prod = \_ -> tt $ monthDay 12 25
-  }
-
 ruleLastNight :: Rule
 ruleLastNight = Rule
   { name = "last night"
@@ -772,15 +736,6 @@ ruleTimeofdayAmpm = Rule
       (Token Time td:Token RegexMatch (GroupMatch (ap:_)):_) ->
         tt $ timeOfDayAMPM (Text.toLower ap == "a") td
       _ -> Nothing
-  }
-
-ruleArmysDay :: Rule
-ruleArmysDay = Rule
-  { name = "army's day"
-  , pattern =
-    [ regex "建(军节|軍節)"
-    ]
-  , prod = \_ -> tt $ monthDay 8 1
   }
 
 ruleNamedmonthDayofmonth :: Rule
@@ -847,15 +802,6 @@ ruleTomorrowNight = Rule
       Token Time . partOfDay <$> intersect td1 td2
   }
 
-ruleChildrensDay :: Rule
-ruleChildrensDay = Rule
-  { name = "children's day"
-  , pattern =
-    [ regex "(儿|兒)童(节|節)"
-    ]
-  , prod = \_ -> tt $ monthDay 6 1
-  }
-
 ruleThisYear :: Rule
 ruleThisYear = Rule
   { name = "this year"
@@ -875,15 +821,6 @@ ruleAbsorptionOfAfterNamedDay = Rule
   , prod = \tokens -> case tokens of
       (x:_) -> Just x
       _ -> Nothing
-  }
-
-ruleWomensDay :: Rule
-ruleWomensDay = Rule
-  { name = "women's day"
-  , pattern =
-    [ regex "(妇|婦)女(节|節)"
-    ]
-  , prod = \_ -> tt $ monthDay 3 8
   }
 
 ruleEveningnight :: Rule
@@ -977,13 +914,70 @@ ruleMonths = mkRuleMonths
   , ( "December", "十二月(份)?" )
   ]
 
+rulePeriodicHolidays :: [Rule]
+rulePeriodicHolidays = mkRuleHolidays
+  -- Fixed dates, year over year
+  [ ( "中国共产党的生日", "中(国共产党诞|國共產黨誕)生日|(党|黨)的生日", monthDay 7 1 )
+  , ( "愚人节", "愚人(节|節)", monthDay 4 1 )
+  , ( "建军节", "(中国人民解放(军|軍)|八一)?建(军节|軍節)", monthDay 8 1 )
+  , ( "植树节", "中(国植树节|國植樹節)", monthDay 3 12 )
+  , ( "五四青年节", "(中(国|國))?(五四|54)?青年(节|節)", monthDay 5 4 )
+  , ( "圣诞节", "(圣诞|聖誕)(节|節)?", monthDay 12 25 )
+  , ( "平安夜", "(平安|聖誕)夜", monthDay 12 24 )
+  , ( "哥伦布日", "哥(伦|倫)布日", monthDay 10 12 )
+  , ( "双十一", "(双|雙)(十一|11)", monthDay 11 11 )
+  , ( "万圣节", "万圣节|萬聖節", monthDay 10 31 )
+  , ( "香港回归纪念日", "香港回(归纪|歸紀)念日", monthDay 7 1 )
+  , ( "人权日", "人(权|權)日", monthDay 12 10 )
+  , ( "美国独立日", "(美国)?(独|獨)立日", monthDay 7 4 )
+  , ( "儿童节", "(国际|國際)?(六一|61)?(儿|兒)童(节|節)", monthDay 6 1 )
+  , ( "国际慈善日", "(国际|國際)慈善日", monthDay 9 5 )
+  , ( "国际瑜伽日", "(国际|國際)瑜伽日", monthDay 6 21 )
+  , ( "国际爵士日", "(国际|國際)爵士日", monthDay 4 30 )
+  , ( "国际奥林匹克日", "(国际|國際)奥林匹克日", monthDay 6 23 )
+  , ( "妇女节", "(国际劳动|國際勞動|三八)?(妇|婦)女(节|節)", monthDay 3 8 )
+  , ( "劳动节", "(五一|51)?(国际|國際)?(劳动|勞動)(节|節)", monthDay 5 1 )
+  , ( "国际青年节", "(国际|國際)青年(节|節)", monthDay 8 12 )
+  , ( "澳门回归纪念日", "澳(门|門)回(归纪|歸紀)念日", monthDay 12 20 )
+  , ( "全国爱牙日", "全(国爱|國愛)牙日", monthDay 9 20 )
+  , ( "全国爱耳日", "全(国爱|國愛)耳日", monthDay 3 3 )
+  , ( "全国爱眼日", "全(国爱|國愛)眼日", monthDay 6 6 )
+  , ( "南京大屠杀纪念日", "南京大屠(杀纪|殺紀)念日", monthDay 12 13 )
+  , ( "辛亥革命纪念日", "辛亥革命(纪|紀)念日", monthDay 10 10 )
+  , ( "元旦", "元旦(节|節)?|((公|(阳|陽))(历|曆))?新年", monthDay 1 1 )
+  , ( "新年夜", "新年夜", monthDay 12 31 )
+  , ( "情人节", "(情人|(圣瓦伦丁|聖瓦倫丁))(节|節)", monthDay 2 14 )
+  , ( "清明节", "清明(节|節)", monthDay 4 5 )
+  , ( "光棍节", "光棍(节|節)", monthDay 11 11 )
+  , ( "圣帕特里克节", "圣帕特里克节|聖帕特裏克節", monthDay 3 17 )
+  , ( "教师节", "(中(国|國))?教师(节|節)", monthDay 9 10 )
+  , ( "退伍军人节", "(退伍(军|軍)人|老兵)(节|節)", monthDay 11 11 )
+  , ( "白色情人节", "白色情人(节|節)", monthDay 3 14 )
+  , ( "世界艾滋病日", "世界艾滋病日", monthDay 12 1 )
+  , ( "世界献血日", "世界(献|獻)血日", monthDay 6 14 )
+  , ( "世界癌症日", "世界癌(症|癥)日", monthDay 2 4 )
+  , ( "国际消费者权益日", "(国际|世界)?(消费者权益|消費者權益)日|三一五", monthDay 3 15 )
+  , ( "世界糖尿病日", "世界糖尿病日", monthDay 11 14 )
+  , ( "世界环境日", "世界(环|環)境日", monthDay 6 5 )
+  , ( "世界粮食日", "世界((粮|糧)食|食物)日", monthDay 10 16 )
+  , ( "世界心脏日", "世界心(脏|臟)日", monthDay 9 29 )
+  , ( "世界海洋日", "世界海洋日", monthDay 6 8 )
+  , ( "世界诗歌日", "世界(诗|詩)歌日", monthDay 3 21 )
+  , ( "世界人口日", "世界人口日", monthDay 7 11 )
+  , ( "世界难民日", "世界(难|難)民日", monthDay 6 20 )
+  , ( "世界教师日", "世界教师日", monthDay 10 5 )
+  , ( "世界旅游日", "世界旅游日", monthDay 9 27 )
+
+  -- Fixed day/week/month, year over year
+  , ( "父亲节", "父(亲节|親節)", nthDOWOfMonth 3 7 6 )
+  , ( "马丁路德金日", "(马|馬)丁路德金((纪|紀)念)?日", nthDOWOfMonth 3 1 1)
+  , ( "母亲节", "母(亲节|親節)", nthDOWOfMonth 2 7 5 )
+  ]
+
 rules :: [Rule]
 rules =
   [ ruleAbsorptionOfAfterNamedDay
   , ruleAfternoon
-  , ruleArmysDay
-  , ruleChildrensDay
-  , ruleChristmas
   , ruleDimTimePartofday
   , ruleDurationAgo
   , ruleDurationFromNow
@@ -995,7 +989,6 @@ rules =
   , ruleIntegerLatentTimeofday
   , ruleIntersect
   , ruleIntersectBy
-  , ruleLaborDay
   , ruleLastCycle
   , ruleLastNCycle
   , ruleNCycleLast
@@ -1008,7 +1001,6 @@ rules =
   , ruleMonthNumericWithMonthSymbol
   , ruleMorning
   , ruleNamedmonthDayofmonth
-  , ruleNewYearsDay
   , ruleNextCycle
   , ruleNextNCycle
   , ruleNCycleNext
@@ -1046,9 +1038,7 @@ rules =
   , ruleTomorrow
   , ruleTomorrowNight
   , ruleTonight
-  , ruleValentinesDay
   , ruleWeekend
-  , ruleWomensDay
   , ruleYearNumericWithYearSymbol
   , ruleYesterday
   , ruleYyyymmdd
@@ -1056,3 +1046,4 @@ rules =
   ]
   ++ ruleDaysOfWeek
   ++ ruleMonths
+  ++ rulePeriodicHolidays

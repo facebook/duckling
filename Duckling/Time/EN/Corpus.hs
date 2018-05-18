@@ -1292,9 +1292,13 @@ allExamples = concat
              ]
   , examples (datetimeIntervalHoliday ((2018, 9, 9, 0, 0, 0), (2018, 9, 12, 0, 0, 0)) Day "Rosh Hashanah")
              [ "rosh hashanah 2018"
+             , "rosh hashana 2018"
+             , "rosh hashanna 2018"
              ]
   , examples (datetimeIntervalHoliday ((2018, 12, 2, 0, 0, 0), (2018, 12, 10, 0, 0, 0)) Day "Hanukkah")
              [ "Chanukah 2018"
+             , "hanukah 2018"
+             , "hannukkah 2018"
              ]
   , examples (datetimeIntervalHoliday ((2018, 3, 30, 0, 0, 0), (2018, 4, 8, 0, 0, 0)) Day "Passover")
              [ "passover 2018"

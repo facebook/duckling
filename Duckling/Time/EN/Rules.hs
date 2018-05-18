@@ -1704,7 +1704,7 @@ ruleComputedHolidays' = mkRuleHolidays'
     , let start = cycleNthAfter False TG.Day (-48) orthodoxEaster
           end = cycleNthAfter False TG.Day (-9) orthodoxEaster
         in interval TTime.Open start end )
-  , ( "Hanukkah", "c?hanukk?ah"
+  , ( "Hanukkah", "c?hann?ukk?ah"
     , let start = chanukah
           end = cycleNthAfter False TG.Day 7 chanukah
         in interval TTime.Open start end )
@@ -1724,7 +1724,7 @@ ruleComputedHolidays' = mkRuleHolidays'
     , let start = ramadan
           end = cycleNthAfter False TG.Day (-1) eidalFitr
         in interval TTime.Open start end )
-  , ( "Rosh Hashanah", "rosh hashanah|yom teruah"
+  , ( "Rosh Hashanah", "rosh hashann?ah?|yom teruah"
     , let start = roshHashana
           end = cycleNthAfter False TG.Day 2 roshHashana
         in interval TTime.Open start end )

@@ -11,7 +11,6 @@
 
 module Duckling.AmountOfMoney.Helpers
   ( currencyOnly
-  , financeWith
   , isSimpleAmountOfMoney
   , isCent
   , isCents
@@ -38,12 +37,6 @@ import Duckling.Types hiding (Entity(..))
 -- -----------------------------------------------------------------
 -- Patterns
 
-financeWith :: (AmountOfMoneyData -> t) -> (t -> Bool) -> PatternItem
-financeWith f pred = Predicate $ \x ->
-  case x of
-    (Token AmountOfMoney x) -> pred (f x)
-    _ -> False
-
 isCents :: Predicate
 isCents (Token AmountOfMoney AmountOfMoneyData{value = Just _, currency = Cent}) = True
 isCents _ = False
@@ -65,7 +58,7 @@ isCurrencyOnly _ = False
 
 isSimpleAmountOfMoney :: Predicate
 isSimpleAmountOfMoney (Token AmountOfMoney AmountOfMoneyData
-  {minValue = Nothing, maxValue = Nothing}) = True
+  {value = Just _, minValue = Nothing, maxValue = Nothing}) = True
 isSimpleAmountOfMoney _ = False
 
 isDime :: Predicate

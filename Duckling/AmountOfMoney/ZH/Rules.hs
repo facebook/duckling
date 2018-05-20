@@ -185,7 +185,7 @@ ruleIntervalNumeralDash = Rule
   , pattern =
     [ Predicate isPositive
     , regex "-|~|到"
-    , financeWith TAmountOfMoney.value isJust
+    , Predicate isSimpleAmountOfMoney
     ]
   , prod = \case
       (Token Numeral NumeralData{TNumeral.value = from}:
@@ -201,9 +201,9 @@ ruleIntervalDash :: Rule
 ruleIntervalDash = Rule
   { name = "<amount-of-money> - <amount-of-money>"
   , pattern =
-    [ financeWith TAmountOfMoney.value isJust
+    [ Predicate isSimpleAmountOfMoney
     , regex "-|~|到"
-    , financeWith TAmountOfMoney.value isJust
+    , Predicate isSimpleAmountOfMoney
     ]
   , prod = \case
       (Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just from,
@@ -221,7 +221,7 @@ ruleIntervalBound = Rule
   { name = "under/less/lower/no more than <amount-of-money> (最多|至少|最少)"
   , pattern =
     [ regex "(最多|至少|最少)"
-    , financeWith TAmountOfMoney.value isJust
+    , Predicate isSimpleAmountOfMoney
     ]
   , prod = \case
       (Token RegexMatch (GroupMatch (match:_)):
@@ -239,7 +239,7 @@ ruleIntervalBound2 :: Rule
 ruleIntervalBound2 = Rule
   { name = "under/less/lower/no more than <amount-of-money> (以下|以上)"
   , pattern =
-    [ financeWith TAmountOfMoney.value isJust
+    [ Predicate isSimpleAmountOfMoney
     , regex "(以下|以上)"
     ]
   , prod = \case

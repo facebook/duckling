@@ -7,6 +7,7 @@
 
 
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Temperature.TR.Rules
@@ -26,10 +27,10 @@ ruleTemperatureDegrees :: Rule
 ruleTemperatureDegrees = Rule
   { name = "<latent temp> degrees"
   , pattern =
-    [ dimension Temperature
+    [ Predicate $ isValueOnly False
     , regex "derece|°"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
     (Token Temperature td:_) -> Just . Token Temperature $
       withUnit TTemperature.Degree td
     _ -> Nothing
@@ -39,10 +40,10 @@ ruleTemperatureCelsius :: Rule
 ruleTemperatureCelsius = Rule
   { name = "<temp> Celsius"
   , pattern =
-    [ dimension Temperature
+    [ Predicate $ isValueOnly True
     , regex "c|santigrat"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
     (Token Temperature td:_) -> Just . Token Temperature $
       withUnit TTemperature.Celsius td
     _ -> Nothing
@@ -52,10 +53,10 @@ ruleTemperatureFahrenheit :: Rule
 ruleTemperatureFahrenheit = Rule
   { name = "<temp> Fahrenheit"
   , pattern =
-    [ dimension Temperature
+    [ Predicate $ isValueOnly True
     , regex "f(ahrenh?ayt)?"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
     (Token Temperature td:_) -> Just . Token Temperature $
       withUnit TTemperature.Fahrenheit td
     _ -> Nothing
@@ -66,14 +67,14 @@ ruleTemperatureBelowZero = Rule
   { name = "below zero <temp>"
   , pattern =
     [ regex "s\305f\305r\305n alt\305nda"
-    , dimension Temperature
+    , Predicate $ isValueOnly True
     ]
-  , prod = \tokens -> case tokens of
-      (_:Token Temperature td@TemperatureData{TTemperature.value = v}:_) ->
+  , prod = \case
+      (_:Token Temperature td@TemperatureData{TTemperature.value = Just v}:_) ->
         case TTemperature.unit td of
           Nothing -> Just . Token Temperature . withUnit TTemperature.Degree $
-            td {TTemperature.value = - v}
-          _ -> Just . Token Temperature $ td {TTemperature.value = - v}
+            td {TTemperature.value = Just (- v)}
+          _ -> Just . Token Temperature $ td {TTemperature.value = Just (- v)}
       _ -> Nothing
   }
 
@@ -81,15 +82,15 @@ ruleTemperatureBelowZeroReverse :: Rule
 ruleTemperatureBelowZeroReverse = Rule
   { name = "<temp> below zero"
   , pattern =
-    [ dimension Temperature
+    [ Predicate $ isValueOnly True
     , regex "s\305f\305r\305n alt\305nda"
     ]
-  , prod = \tokens -> case tokens of
-      (Token Temperature td@TemperatureData{TTemperature.value = v}:_) ->
+  , prod = \case
+      (Token Temperature td@TemperatureData{TTemperature.value = Just v}:_) ->
         case TTemperature.unit td of
           Nothing -> Just . Token Temperature . withUnit TTemperature.Degree $
-            td {TTemperature.value = - v}
-          _ -> Just . Token Temperature $ td {TTemperature.value = - v}
+            td {TTemperature.value = Just (- v)}
+          _ -> Just . Token Temperature $ td {TTemperature.value = Just (- v)}
       _ -> Nothing
   }
 

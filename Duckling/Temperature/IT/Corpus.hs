@@ -23,7 +23,7 @@ corpus = (testContext {locale = makeLocale IT Nothing}, testOptions, allExamples
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (TemperatureValue Celsius 37)
+  [ examples (simple Celsius 37)
              [ "37°C"
              , "37 ° celsius"
              , "37 ° centigradi"
@@ -32,21 +32,21 @@ allExamples = concat
              , "trentasette celsius"
              , "trentasette gradi centigradi"
              ]
-  , examples (TemperatureValue Celsius 1)
+  , examples (simple Celsius 1)
              [ "1 grado centigrado"
              ]
-  , examples (TemperatureValue Fahrenheit 70)
+  , examples (simple Fahrenheit 70)
              [ "70°F"
              , "70 ° Fahrenheit"
              , "70 gradi F"
              , "70 gradi Fahreneit"
              , "settanta Fahrenheit"
              ]
-  , examples (TemperatureValue Degree 45)
+  , examples (simple Degree 45)
              [ "45°"
              , "45 gradi"
              ]
-  , examples (TemperatureValue Degree 1)
+  , examples (simple Degree 1)
              [ "1 grado"
              ]
   ]

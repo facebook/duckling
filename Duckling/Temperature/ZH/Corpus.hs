@@ -24,7 +24,7 @@ corpus = (testContext {locale = makeLocale ZH Nothing}, testOptions, allExamples
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (TemperatureValue Celsius 37)
+  [ examples (simple Celsius 37)
              [ "37°C"
              , "摄氏37°"
              , "攝氏37°"
@@ -35,7 +35,7 @@ allExamples = concat
              , "37摄氏度"
              , "37攝氏度"
              ]
-  , examples (TemperatureValue Fahrenheit 70)
+  , examples (simple Fahrenheit 70)
              [ "70°F"
              , "华氏70°"
              , "華氏70°"
@@ -46,7 +46,7 @@ allExamples = concat
              , "70华氏度"
              , "70華氏度"
              ]
-  , examples (TemperatureValue Degree 45)
+  , examples (simple Degree 45)
              [ "45°"
              , "45度"
              ]

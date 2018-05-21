@@ -23,7 +23,7 @@ corpus = (testContext, testOptions, allExamples)
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (TemperatureValue Celsius 37)
+  [ examples (simple Celsius 37)
              [ "37°C"
              , "37 ° celsius"
              , "37 degrees Celsius"
@@ -31,21 +31,42 @@ allExamples = concat
              , "37 degrees Celsius"
              , "thirty seven celsius"
              ]
-  , examples (TemperatureValue Fahrenheit 70)
+  , examples (simple Fahrenheit 70)
              [ "70°F"
              , "70 ° Fahrenheit"
              , "70 degrees F"
              , "seventy Fahrenheit"
              ]
-  , examples (TemperatureValue Degree 45)
+  , examples (simple Degree 45)
              [ "45°"
              , "45 degrees"
              , "45 deg."
              ]
-  , examples (TemperatureValue Degree (-2))
+  , examples (simple Degree (-2))
              [ "-2°"
              , "- 2 degrees"
              , "2 degrees below zero"
              , "2 below zero"
+             ]
+  , examples (between Degree (30, 40))
+             [ "between 30 and 40 degrees"
+             , "from 30 degrees to 40 degrees"
+             ]
+  , examples (between Celsius (30, 40))
+             [ "between 30 and 40 celsius"
+             , "from 30 celsius and 40 celsius"
+             , "between 30 and 40 degrees celsius"
+             , "from 30 degrees celsius to 40 degrees celsius"
+             , "30-40 degrees celsius"
+             ]
+    , examples (above Degree 40)
+             [ "over 40 degrees"
+             , "at least 40 degrees"
+             , "more than 40 degrees"
+             ]
+    , examples (under Degree 40)
+             [ "under 40 degrees"
+             , "less than 40 degrees"
+             , "lower than 40 degrees"
              ]
   ]

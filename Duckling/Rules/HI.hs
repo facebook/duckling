@@ -20,6 +20,7 @@ import Duckling.Types
 import qualified Duckling.Numeral.HI.Rules as Numeral
 import qualified Duckling.Ordinal.HI.Rules as Ordinal
 import qualified Duckling.Duration.HI.Rules as Duration
+import qualified Duckling.TimeGrain.HI.Rules as TimeGrain
 
 defaultRules :: Some Dimension -> [Rule]
 defaultRules = langRules
@@ -40,7 +41,7 @@ langRules (This Quantity) = []
 langRules (This RegexMatch) = []
 langRules (This Temperature) = []
 langRules (This Time) = []
-langRules (This TimeGrain) = []
+langRules (This TimeGrain) = TimeGrain.rules
 langRules (This Url) = []
 langRules (This Volume) = []
 langRules (This (CustomDimension dim)) = dimLangRules HI dim

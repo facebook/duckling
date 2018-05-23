@@ -1291,19 +1291,6 @@ ruleDayofmonthOrdinal = Rule
       _ -> Nothing
   }
 
-ruleTimeofdayAmpm :: Rule
-ruleTimeofdayAmpm = Rule
-  { name = "<time-of-day> am|pm"
-  , pattern =
-    [ Predicate isATimeOfDay
-    , regex "([ap])\\.?m\\.?(?:[\\s'\"-_{}\\[\\]()]|$)"
-    ]
-  , prod = \tokens -> case tokens of
-      (Token Time td:Token RegexMatch (GroupMatch (ap:_)):_) ->
-        tt $ timeOfDayAMPM (Text.toLower ap == "a") td
-      _ -> Nothing
-  }
-
 ruleHalfIntegerGermanStyleHourofday :: Rule
 ruleHalfIntegerGermanStyleHourofday = Rule
   { name = "half <integer> (german style hour-of-day)"
@@ -1712,7 +1699,6 @@ rules =
   , ruleTimeAfterNext
   , ruleTimeBeforeLast
   , ruleTimePartofday
-  , ruleTimeofdayAmpm
   , ruleTimeofdayApproximately
   , ruleTimeofdayLatent
   , ruleTimeofdayOclock

@@ -40,11 +40,11 @@ ruleDurationQuarterOfAnHour = Rule
   , prod = \_ -> Just . Token Duration $ duration TG.Minute 15
   }
 
-ruleDurationHalfAnHour :: Rule
-ruleDurationHalfAnHour = Rule
-  { name = "half an hour"
+ruleDurationHalfAnHourAbbrev :: Rule
+ruleDurationHalfAnHourAbbrev = Rule
+  { name = "half an hour (abbrev)."
   , pattern =
-    [ regex "(1/2\\s?h(our)?|half an? hour)"
+    [ regex "1/2\\s?h"
     ]
   , prod = \_ -> Just . Token Duration $ duration TG.Minute 30
   }
@@ -138,6 +138,31 @@ ruleDurationA = Rule
       _ -> Nothing
   }
 
+ruleDurationHalfATimeGrain :: Rule
+ruleDurationHalfATimeGrain = Rule
+  { name = "half a <time-grain>"
+  , pattern =
+    [ regex "(1/2|half)( an?)?"
+    , dimension TimeGrain
+    ]
+  , prod = \case
+      (_:Token TimeGrain grain:_) -> Token Duration <$> timesOneAndAHalf grain 0
+      _ -> Nothing
+  }
+
+ruleDurationOneGrainAndHalf :: Rule
+ruleDurationOneGrainAndHalf = Rule
+  { name = "a <unit-of-duration> and a half"
+  , pattern =
+    [ regex "an?|one"
+    , dimension TimeGrain
+    , regex "and (a )?half"
+    ]
+  , prod = \case
+      (_:Token TimeGrain grain:_) -> Token Duration <$> timesOneAndAHalf grain 1
+      _ -> Nothing
+  }
+
 ruleDurationPrecision :: Rule
 ruleDurationPrecision = Rule
   { name = "about|exactly <duration>"
@@ -171,13 +196,15 @@ ruleCompositeDuration = Rule
 rules :: [Rule]
 rules =
   [ ruleDurationQuarterOfAnHour
-  , ruleDurationHalfAnHour
+  , ruleDurationHalfAnHourAbbrev
   , ruleDurationThreeQuartersOfAnHour
   , ruleDurationFortnight
   , ruleDurationNumeralMore
   , ruleDurationDotNumeralHours
   , ruleDurationAndHalfHour
   , ruleDurationA
+  , ruleDurationHalfATimeGrain
+  , ruleDurationOneGrainAndHalf
   , ruleDurationPrecision
   , ruleNumeralQuotes
   , ruleCompositeDuration

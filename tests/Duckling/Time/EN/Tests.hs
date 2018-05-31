@@ -174,4 +174,6 @@ rangeTests = testCase "Range Test" $
          , ("this this week", Range 5 14) -- ruleThisTime too eager
          , ("one ninety nine a m", Range 11 19) -- ruleMilitarySpelledOutAMPM2
          , ("thirteen fifty nine a m", Range 15 23) -- ruleMilitarySpelledOutAMPM
+         , ("table Wednesday for 30 people", Range 6 15)
+           -- do not parse "for 30" as year intersect
          ]

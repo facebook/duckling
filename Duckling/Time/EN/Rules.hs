@@ -57,7 +57,21 @@ ruleIntersectOf = Rule
   , pattern =
     [ Predicate isNotLatent
     , regex "of|from|for|'s|,"
-    , Predicate $ or . sequence [isNotLatent, isGrainOfTime TG.Year]
+    , Predicate isNotLatent
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Time td1:_:Token Time td2:_) ->
+        Token Time . notLatent <$> intersect td1 td2
+      _ -> Nothing
+  }
+
+ruleIntersectYear :: Rule
+ruleIntersectYear = Rule
+  { name = "intersect by \",\", \"of\", \"from\" for year"
+  , pattern =
+    [ Predicate isNotLatent
+    , regex "of|from|,"
+    , Predicate $ isGrainOfTime TG.Year
     ]
   , prod = \tokens -> case tokens of
       (Token Time td1:_:Token Time td2:_) ->
@@ -2130,6 +2144,35 @@ ruleIntervalForDurationFrom = Rule
       _ -> Nothing
 }
 
+ruleIntervalTimeForDuration :: Rule
+ruleIntervalTimeForDuration = Rule
+  { name = "<time> for <duration>"
+  , pattern =
+    [ Predicate isNotLatent
+    , regex "for"
+    , dimension Duration
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Time td1:_:Token Duration dd:_) ->
+        Token Time <$> interval TTime.Open td1 (durationAfter dd td1)
+      _ -> Nothing
+}
+
+ruleIntervalFromTimeForDuration :: Rule
+ruleIntervalFromTimeForDuration = Rule
+  { name = "from <time> for <duration>"
+  , pattern =
+    [ regex "(from|starting|beginning|after|starting from)"
+    , Predicate isNotLatent
+    , regex "for"
+    , dimension Duration
+    ]
+  , prod = \tokens -> case tokens of
+      (_:Token Time td1:_:Token Duration dd:_) ->
+        Token Time <$> interval TTime.Open td1 (durationAfter dd td1)
+      _ -> Nothing
+}
+
 ruleTimezone :: Rule
 ruleTimezone = Rule
   { name = "<time> timezone"
@@ -2148,6 +2191,7 @@ rules :: [Rule]
 rules =
   [ ruleIntersect
   , ruleIntersectOf
+  , ruleIntersectYear
   , ruleAbsorbOnTime
   , ruleAbsorbOnADOW
   , ruleAbsorbInMonthYear
@@ -2247,6 +2291,8 @@ rules =
   , ruleDayInDuration
   , ruleDurationAfterBeforeTime
   , ruleIntervalForDurationFrom
+  , ruleIntervalFromTimeForDuration
+  , ruleIntervalTimeForDuration
   , ruleInNumeral
   , ruleTimezone
   , rulePartOfMonth

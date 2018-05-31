@@ -665,6 +665,8 @@ allExamples = concat
              ]
   , examples (datetimeInterval ((2013, 12, 18, 0, 0, 0), (2013, 12, 29, 0, 0, 0)) Day)
              [ "for 10 days from 18th Dec"
+             , "from 18th Dec for 10 days"
+             , "18th Dec for 10 days"
              ]
   , examples (datetimeInterval ((2013, 6, 21, 0, 0, 0), (2013, 9, 24, 0, 0, 0)) Day)
              [ "this Summer"

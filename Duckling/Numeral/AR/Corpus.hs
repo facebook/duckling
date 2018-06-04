@@ -140,6 +140,11 @@ allExamples = concat
              [ "0.77"
              , ".77"
              ]
+  , examples (NumeralValue 2000)
+             [ "2000"
+             , "الفان"
+             , "الفين"
+             ]
   , examples (NumeralValue 100000)
              [ "100000"
              , "100 الف"
@@ -151,6 +156,12 @@ allExamples = concat
   , examples (NumeralValue 1000000)
              [ "1000000"
              , "مليون"
+             ]
+  , examples (NumeralValue 2000000)
+             [ "2000000"
+             , "2 مليون"
+             , "مليونان"
+             , "مليونين"
              ]
   , examples (NumeralValue 3000000)
              [ "3 ملايين"

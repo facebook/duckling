@@ -81,30 +81,17 @@ ruleSeasons = mkRuleSeasons
 
 ruleHolidays :: [Rule]
 ruleHolidays = mkRuleHolidays
-  [ ( "Nieuwjaarsdag"      , "nieuwjaars?(dag)?"
-    , monthDay  1  1 )
-  , ( "Valentijnsdag"     , "valentijns?(dag)?"
-    , monthDay  2 14 )
-  , ( "Halloween"       , "hall?oween?"
-    , monthDay 10 31 )
-  , ( "Koningsdag"      , "konings?dag"
-    , monthDay  4 27 )
-  , ( "Allerheiligen"       , "allerheiligen?|aller heiligen?"
-    , monthDay 11  1 )
-  , ( "Sinterklaas"         , "sinterklaas(avond)?|pakjesavond"
-    , monthDay 12  5 )
-  , ( "Kerstavond"       , "kerstavond"
-    , monthDay 12 24 )
-  , ( "Tweede Kerstdag", "tweede kerstdag"
-    , monthDay 12 26 )
-  , ( "Kerstmis"           , "kerstmis|(eerste )?kerstdag|kerst"
-    , monthDay 12 25 )
-  , ( "Oudjaar"      , "oudjaar|oudejaars?avond"
-    , monthDay 12 31 )
-  , ( "Moederdag"        , "moederdag"
-    , nthDOWOfMonth 2 7 5 )
-  , ( "Vaderdag"        , "vaderdag"
-    , nthDOWOfMonth 3 7 6 )
+  [ ( "Nieuwjaarsdag", "nieuwjaars?(dag)?", monthDay  1  1 )
+  , ( "Valentijnsdag", "valentijns?(dag)?", monthDay  2 14 )
+  , ( "Halloween", "hall?oween?", monthDay 10 31 )
+  , ( "Koningsdag", "konings?dag", monthDay  4 27 )
+  , ( "Allerheiligen", "allerheiligen?|aller heiligen?", monthDay 11  1 )
+  , ( "Kerstavond", "kerstavond", monthDay 12 24 )
+  , ( "Tweede Kerstdag", "tweede kerstdag", monthDay 12 26 )
+  , ( "Kerstmis", "kerstmis|(eerste )?kerstdag|kerst", monthDay 12 25 )
+  , ( "Oudjaar", "oudjaar|oudejaars?avond", monthDay 12 31 )
+  , ( "Moederdag", "moederdag", nthDOWOfMonth 2 7 5 )
+  , ( "Vaderdag", "vaderdag", nthDOWOfMonth 3 7 6 )
   ]
 
 ruleRelativeMinutesToOrAfterIntegerPartOfDay :: Rule

@@ -45,6 +45,7 @@ import qualified Duckling.Time.IT.Corpus as ITTime
 import qualified Duckling.Time.KO.Corpus as KOTime
 import qualified Duckling.Time.NB.Corpus as NBTime
 import qualified Duckling.Time.NL.Corpus as NLTime
+import qualified Duckling.Time.NL.BE.Corpus as NL_BETime
 import qualified Duckling.Time.PL.Corpus as PLTime
 import qualified Duckling.Time.PT.Corpus as PTTime
 import qualified Duckling.Time.RO.Corpus as ROTime
@@ -157,6 +158,7 @@ getCorpus locale@(Locale lang (Just region)) =
 -- | For backward compatibility.
 getDefaultCorpusForLang :: Lang -> Corpus
 getDefaultCorpusForLang EN = ENTime.defaultCorpus
+getDefaultCorpusForLang NL = NLTime.defaultCorpus
 getDefaultCorpusForLang lang = getCorpusForLang lang
 
 getCorpusForLang :: Lang -> Corpus
@@ -199,6 +201,7 @@ getExamplesForLocale :: Lang -> Region -> [Example]
 getExamplesForLocale EN CA = EN_CATime.allExamples
 getExamplesForLocale EN GB = EN_GBTime.allExamples
 getExamplesForLocale EN US = EN_USTime.allExamples
+getExamplesForLocale NL BE = NL_BETime.allExamples
 getExamplesForLocale ZH CN = ZH_CNTime.allExamples
 getExamplesForLocale ZH HK = ZH_HKTime.allExamples
 getExamplesForLocale ZH MO = ZH_MOTime.allExamples

@@ -31,6 +31,7 @@ library
                      , Duckling.Engine
                      , Duckling.Engine.Regex
                      , Duckling.Locale
+                     , Duckling.Region
                      , Duckling.Resolve
                      , Duckling.Types
                      , Duckling.Types.Document
@@ -107,6 +108,8 @@ library
                      , Duckling.Ranking.Classifiers.MY_XX
                      , Duckling.Ranking.Classifiers.NB_XX
                      , Duckling.Ranking.Classifiers.NE_XX
+                     , Duckling.Ranking.Classifiers.NL_BE
+                     , Duckling.Ranking.Classifiers.NL_NL
                      , Duckling.Ranking.Classifiers.NL_XX
                      , Duckling.Ranking.Classifiers.PL_XX
                      , Duckling.Ranking.Classifiers.PT_XX
@@ -570,6 +573,9 @@ library
                      , Duckling.Time.NB.Rules
                      , Duckling.Time.NL.Corpus
                      , Duckling.Time.NL.Rules
+                     , Duckling.Time.NL.BE.Corpus
+                     , Duckling.Time.NL.BE.Rules
+                     , Duckling.Time.NL.NL.Rules
                      , Duckling.Time.PL.Corpus
                      , Duckling.Time.PL.Rules
                      , Duckling.Time.PT.Corpus

@@ -10,6 +10,7 @@
 
 module Duckling.Time.NL.Corpus
   ( corpus
+  , defaultCorpus
   , negativeCorpus
   ) where
 
@@ -28,6 +29,17 @@ context = testContext {locale = makeLocale NL Nothing}
 
 corpus :: Corpus
 corpus = (context, testOptions, allExamples)
+
+defaultCorpus :: Corpus
+defaultCorpus = (context, testOptions, allExamples ++ custom)
+  where
+    custom = concat
+      [ examples (datetimeHoliday (2013, 12, 5, 0, 0, 0) Day "Sinterklaas")
+                 [ "Sinterklaas"
+                 , "Pakjesavond"
+                 , "Sinterklaasavond"
+                 ]
+      ]
 
 negativeCorpus :: NegativeCorpus
 negativeCorpus = (context, testOptions, examples)
@@ -449,11 +461,6 @@ allExamples = concat
              ]
   , examples (datetimeHoliday (2013, 11, 1, 0, 0, 0) Day "Allerheiligen")
              [ "Allerheiligen"
-             ]
-  , examples (datetimeHoliday (2013, 12, 5, 0, 0, 0) Day "Sinterklaas")
-             [ "Sinterklaas"
-             , "Pakjesavond"
-             , "Sinterklaasavond"
              ]
   , examples (datetimeInterval ((2013, 2, 12, 18, 0, 0), (2013, 2, 13, 0, 0, 0)) Hour)
              [ "vanavond"

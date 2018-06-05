@@ -8,12 +8,13 @@
 
 {-# LANGUAGE GADTs #-}
 
-
 module Duckling.Rules.NL
   ( defaultRules
   , langRules
   , localeRules
   ) where
+
+import Prelude
 
 import Duckling.Dimensions.Types
 import Duckling.Locale
@@ -24,14 +25,18 @@ import qualified Duckling.Duration.NL.Rules as Duration
 import qualified Duckling.Numeral.NL.Rules as Numeral
 import qualified Duckling.Ordinal.NL.Rules as Ordinal
 import qualified Duckling.Time.NL.Rules as Time
+import qualified Duckling.Time.NL.BE.Rules as TimeBE
+import qualified Duckling.Time.NL.NL.Rules as TimeNL
 import qualified Duckling.TimeGrain.NL.Rules as TimeGrain
 import qualified Duckling.Volume.NL.Rules as Volume
 
 defaultRules :: Some Dimension -> [Rule]
-defaultRules = langRules
+defaultRules dim@(This Time) = TimeNL.rulesBackwardCompatible ++ langRules dim
+defaultRules dim = langRules dim
 
 localeRules :: Region -> Some Dimension -> [Rule]
 localeRules region (This (CustomDimension dim)) = dimLocaleRules region dim
+localeRules BE (This Time) = TimeBE.rules
 localeRules _ _ = []
 
 langRules :: Some Dimension -> [Rule]

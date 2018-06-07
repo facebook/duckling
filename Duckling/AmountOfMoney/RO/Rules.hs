@@ -22,7 +22,7 @@ import qualified Data.Text as Text
 import Duckling.AmountOfMoney.Helpers
 import Duckling.AmountOfMoney.Types (Currency(..), AmountOfMoneyData (..))
 import Duckling.Dimensions.Types
-import Duckling.Numeral.Helpers (isNatural, isPositive)
+import Duckling.Numeral.Helpers (isNatural, isPositive, numberWith)
 import Duckling.Numeral.Types (NumeralData (..))
 import Duckling.Regex.Types
 import Duckling.Types
@@ -39,6 +39,22 @@ ruleUnitAmount = Rule
   , prod = \case
       (Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.currency = c}:
        Token Numeral NumeralData{TNumeral.value = v}:
+       _) -> Just . Token AmountOfMoney . withValue v $ currencyOnly c
+      _ -> Nothing
+  }
+
+ruleAmountDeUnit :: Rule
+ruleAmountDeUnit = Rule
+  { name = "<amount >= 20> de <unit>"
+  , pattern =
+    [ numberWith TNumeral.value (>= 20)
+    , regex "de"
+    , Predicate isCurrencyOnly
+    ]
+  , prod = \case
+      (Token Numeral NumeralData{TNumeral.value = v}:
+       _:
+       Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.currency = c}:
        _) -> Just . Token AmountOfMoney . withValue v $ currencyOnly c
       _ -> Nothing
   }
@@ -211,6 +227,7 @@ ruleAed = Rule
 rules :: [Rule]
 rules =
   [ ruleUnitAmount
+  , ruleAmountDeUnit
   , ruleAed
   , ruleCent
   , ruleDollar

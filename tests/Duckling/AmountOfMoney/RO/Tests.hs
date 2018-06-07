@@ -7,17 +7,19 @@
 
 
 module Duckling.AmountOfMoney.RO.Tests
-  ( tests ) where
+  ( tests
+  ) where
 
-import Prelude
 import Data.String
+import Prelude
 import Test.Tasty
 
+import Duckling.AmountOfMoney.RO.Corpus
 import Duckling.Dimensions.Types
 import Duckling.Testing.Asserts
-import Duckling.AmountOfMoney.RO.Corpus
 
 tests :: TestTree
 tests = testGroup "RO Tests"
   [ makeCorpusTest [This AmountOfMoney] corpus
+  , makeNegativeCorpusTest [This AmountOfMoney] negativeCorpus
   ]

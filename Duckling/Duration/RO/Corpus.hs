@@ -38,6 +38,7 @@ allExamples = concat
   , examples (DurationData 45 Minute)
              [ "trei sferturi de oră"
              , "45min"
+             , "45 de minute"
              ]
   , examples (DurationData 12 Week)
              [ "doișpe saptamanile"

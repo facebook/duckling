@@ -9,10 +9,11 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Numeral.RO.Corpus
-  ( corpus ) where
+  ( corpus
+  ) where
 
-import Prelude
 import Data.String
+import Prelude
 
 import Duckling.Locale
 import Duckling.Numeral.Types

@@ -7,27 +7,29 @@
 
 
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Temperature.RO.Rules
-  ( rules ) where
+  ( rules
+  ) where
 
-import Prelude
 import Data.String
+import Prelude
 
 import Duckling.Dimensions.Types
 import Duckling.Temperature.Helpers
-import qualified Duckling.Temperature.Types as TTemperature
 import Duckling.Types
+import qualified Duckling.Temperature.Types as TTemperature
 
 ruleLatentTempGrade :: Rule
 ruleLatentTempGrade = Rule
   { name = "<latent temp> grade"
   , pattern =
     [ Predicate $ isValueOnly False
-    , regex "(grade)|°"
+    , regex "(de )?(grade)|°"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Temperature td:_) -> Just . Token Temperature $
         withUnit TTemperature.Degree td
       _ -> Nothing
@@ -38,9 +40,9 @@ ruleTempCelcius = Rule
   { name = "<temp> Celcius"
   , pattern =
     [ Predicate $ isValueOnly True
-    , regex "c(el[cs]?(ius)?)?\\.?"
+    , regex "(de )?c(el[cs]?(ius)?)?\\.?"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Temperature td:_) -> Just . Token Temperature $
         withUnit TTemperature.Celsius td
       _ -> Nothing
@@ -51,9 +53,9 @@ ruleTempFahrenheit = Rule
   { name = "<temp> Fahrenheit"
   , pattern =
     [ Predicate $ isValueOnly True
-    , regex "f(ah?rh?eh?n(h?eit)?)?\\.?"
+    , regex "(de )?f(ah?rh?eh?n(h?eit)?)?\\.?"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Temperature td:_) -> Just . Token Temperature $
         withUnit TTemperature.Fahrenheit td
       _ -> Nothing

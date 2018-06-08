@@ -129,4 +129,29 @@ allExamples = concat
              [ "1 rial saudit"
              , "un rial saudi"
              ]
+  , examples (between RON (5, 15))
+             [ "intre 5 si 15 lei"
+             , "intre 5 și 15 lei"
+             , "de la 5 RON la 15 RON"
+             , "intre 5 lei si 15 lei"
+             , "de la 5 la 15 lei"
+             , "5 - 15 roni"
+             , "aproximativ 5-15 lei"
+             , "aproape de 5-15 lei"
+             , "cam 5-15 RON"
+             ]
+  , examples (under EUR 7)
+             [ "sub șapte euro"
+             , "mai putin de 7 EUR"
+             , "mai puțin de 7 EUR"
+             , "nu chiar 7€"
+             , "nici macar 7 euro"
+             , "mai ieftin de 7€"
+             , "cel mult 7 euro"
+             ]
+  , examples (above Dollar 3)
+            [ "mai mult de 3 dolari"
+            , "peste 3 dolari"
+            , "mai scump de trei dolari"
+            ]
   ]

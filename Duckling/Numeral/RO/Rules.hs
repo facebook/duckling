@@ -40,20 +40,6 @@ ruleNumeralsPrefixWithOrMinus = Rule
       _ -> Nothing
   }
 
-ruleSpecialCompositionForMissingHundredsLikeInOneTwentyTwo :: Rule
-ruleSpecialCompositionForMissingHundredsLikeInOneTwentyTwo = Rule
-  { name = "special composition for missing hundreds like in one twenty two"
-  , pattern =
-    [ numberBetween 1 10
-    , numberBetween 11 100
-    ]
-  , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = hundreds}:
-       Token Numeral NumeralData{TNumeral.value = rest}:
-       _) -> double $ hundreds * 100 + rest
-      _ -> Nothing
-  }
-
 ruleDecimalWithThousandsSeparator :: Rule
 ruleDecimalWithThousandsSeparator = Rule
   { name = "decimal with thousands separator"
@@ -297,5 +283,4 @@ rules =
   , ruleNumeralsPrefixWithOrMinus
   , ruleNumeralsSuffixesWithNegativ
   , rulePowersOfTen
-  , ruleSpecialCompositionForMissingHundredsLikeInOneTwentyTwo
   ]

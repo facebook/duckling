@@ -479,7 +479,7 @@ ruleTODLatent = Rule
   , prod = \tokens -> case tokens of
       (token:_) -> do
         n <- getIntValue token
-        tt . mkLatent $ hour True n
+        tt . mkLatent $ hour (n < 13) n
       _ -> Nothing
   }
 
@@ -605,10 +605,13 @@ ruleTODAMPM = Rule
     , regex "(in the )?([ap])(\\s|\\.)?(m?)\\.?"
     ]
   , prod = \tokens -> case tokens of
-      (Token Time td@TimeData {TTime.latent = True}:
-       Token RegexMatch (GroupMatch (_:ap:_:"":_)):_) ->
+      (Token Time td@TimeData{TTime.latent = True}:
+       Token RegexMatch (GroupMatch (_:ap:_:"":_)):
+       _) ->
         tt . mkLatent $ timeOfDayAMPM (Text.toLower ap == "a") td
-      (Token Time td:Token RegexMatch (GroupMatch (_:ap:_)):_) ->
+      (Token Time td@TimeData{TTime.form = Just (TTime.TimeOfDay (Just hours) _)}:
+       Token RegexMatch (GroupMatch (_:ap:_)):
+       _) | hours < 13 ->
         tt $ timeOfDayAMPM (Text.toLower ap == "a") td
       _ -> Nothing
   }
@@ -617,15 +620,18 @@ ruleHONumeral :: Rule
 ruleHONumeral = Rule
   { name = "<hour-of-day> <integer>"
   , pattern =
-    [ Predicate $ and . sequence [isNotLatent, isAnHourOfDay]
+    [ Predicate isAnHourOfDay
     , Predicate $ isIntegerBetween 1 59
     ]
   , prod = \tokens -> case tokens of
-      (Token Time TimeData {TTime.form = Just (TTime.TimeOfDay (Just hours) is12H)}:
+      (Token Time TimeData{TTime.form = Just (TTime.TimeOfDay (Just hours) is12H)
+                          ,TTime.latent = isLatent}:
        token:
        _) -> do
         n <- getIntValue token
-        tt $ hourMinute is12H hours n
+        if isLatent
+          then tt . mkLatent $ hourMinute is12H hours n
+          else tt $ hourMinute is12H hours n
       _ -> Nothing
   }
 
@@ -637,8 +643,8 @@ ruleHODHalf = Rule
     , regex "half"
     ]
   , prod = \tokens -> case tokens of
-      (Token Time TimeData {TTime.form = Just (TTime.TimeOfDay (Just hours) is12H)}:_) ->
-        tt $ hourMinute is12H hours 30
+      (Token Time TimeData{TTime.form = Just (TTime.TimeOfDay (Just hours) is12H)}:
+       _) -> tt $ hourMinute is12H hours 30
       _ -> Nothing
   }
 
@@ -650,8 +656,8 @@ ruleHODQuarter = Rule
     , regex "(a|one)? ?quarter"
     ]
   , prod = \tokens -> case tokens of
-      (Token Time TimeData {TTime.form = Just (TTime.TimeOfDay (Just hours) is12H)}:_) ->
-        tt $ hourMinute is12H hours 15
+      (Token Time TimeData{TTime.form = Just (TTime.TimeOfDay (Just hours) is12H)}:
+       _) -> tt $ hourMinute is12H hours 15
       _ -> Nothing
   }
 

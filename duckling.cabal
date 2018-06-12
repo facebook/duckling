@@ -498,6 +498,8 @@ library
                      , Duckling.Temperature.FR.Rules
                      , Duckling.Temperature.GA.Corpus
                      , Duckling.Temperature.GA.Rules
+                     , Duckling.Temperature.HI.Corpus
+                     , Duckling.Temperature.HI.Rules
                      , Duckling.Temperature.HR.Corpus
                      , Duckling.Temperature.HR.Rules
                      , Duckling.Temperature.IT.Corpus
@@ -867,6 +869,7 @@ test-suite duckling-test
                      , Duckling.Temperature.ES.Tests
                      , Duckling.Temperature.FR.Tests
                      , Duckling.Temperature.GA.Tests
+                     , Duckling.Temperature.HI.Tests
                      , Duckling.Temperature.HR.Tests
                      , Duckling.Temperature.IT.Tests
                      , Duckling.Temperature.JA.Tests

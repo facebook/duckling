@@ -88,5 +88,6 @@ allExamples = concat
              ]
   , examples (DurationData 31719604 Second)
              [ "1 year, 2 days, 3 hours and 4 seconds"
+             , "1 year 2 days 3 hours and 4 seconds"
              ]
   ]

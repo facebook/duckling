@@ -171,6 +171,7 @@ getCorpusForLang EL = ELTime.corpus
 getCorpusForLang EN = ENTime.corpus
 getCorpusForLang ES = ESTime.corpus
 getCorpusForLang ET = (testContext, testOptions, [])
+getCorpusForLang FI = (testContext, testOptions, [])
 getCorpusForLang FR = FRTime.corpus
 getCorpusForLang GA = GATime.corpus
 getCorpusForLang HR = HRTime.corpus

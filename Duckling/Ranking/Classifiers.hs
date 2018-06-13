@@ -25,6 +25,7 @@ import qualified Duckling.Ranking.Classifiers.EN_US as EN_USClassifiers
 import qualified Duckling.Ranking.Classifiers.EN_XX as EN_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.ES_XX as ES_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.ET_XX as ET_XXClassifiers
+import qualified Duckling.Ranking.Classifiers.FI_XX as FI_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.FR_XX as FR_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.GA_XX as GA_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.HE_XX as HE_XXClassifiers
@@ -63,6 +64,7 @@ classifiers (Locale EN (Just US)) = EN_USClassifiers.classifiers
 classifiers (Locale EN _) = EN_XXClassifiers.classifiers
 classifiers (Locale ES _) = ES_XXClassifiers.classifiers
 classifiers (Locale ET _) = ET_XXClassifiers.classifiers
+classifiers (Locale FI _) = FI_XXClassifiers.classifiers
 classifiers (Locale FR _) = FR_XXClassifiers.classifiers
 classifiers (Locale GA _) = GA_XXClassifiers.classifiers
 classifiers (Locale HE _) = HE_XXClassifiers.classifiers

@@ -43,6 +43,7 @@ data Lang
   | EN
   | ES
   | ET
+  | FI
   | FR
   | GA
   | HE

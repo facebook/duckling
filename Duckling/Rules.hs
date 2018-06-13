@@ -32,6 +32,7 @@ import qualified Duckling.Rules.EL as ELRules
 import qualified Duckling.Rules.EN as ENRules
 import qualified Duckling.Rules.ES as ESRules
 import qualified Duckling.Rules.ET as ETRules
+import qualified Duckling.Rules.FI as FIRules
 import qualified Duckling.Rules.FR as FRRules
 import qualified Duckling.Rules.GA as GARules
 import qualified Duckling.Rules.HE as HERules
@@ -88,6 +89,7 @@ defaultRules EL = ELRules.defaultRules
 defaultRules EN = ENRules.defaultRules
 defaultRules ES = ESRules.defaultRules
 defaultRules ET = ETRules.defaultRules
+defaultRules FI = FIRules.defaultRules
 defaultRules FR = FRRules.defaultRules
 defaultRules GA = GARules.defaultRules
 defaultRules HE = HERules.defaultRules

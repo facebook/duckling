@@ -31,6 +31,7 @@ import qualified Duckling.Dimensions.EL as ELDimensions
 import qualified Duckling.Dimensions.EN as ENDimensions
 import qualified Duckling.Dimensions.ES as ESDimensions
 import qualified Duckling.Dimensions.ET as ETDimensions
+import qualified Duckling.Dimensions.FI as FIDimensions
 import qualified Duckling.Dimensions.FR as FRDimensions
 import qualified Duckling.Dimensions.GA as GADimensions
 import qualified Duckling.Dimensions.HE as HEDimensions
@@ -95,6 +96,7 @@ langDimensions EL = ELDimensions.allDimensions
 langDimensions EN = ENDimensions.allDimensions
 langDimensions ES = ESDimensions.allDimensions
 langDimensions ET = ETDimensions.allDimensions
+langDimensions FI = FIDimensions.allDimensions
 langDimensions FR = FRDimensions.allDimensions
 langDimensions GA = GADimensions.allDimensions
 langDimensions HE = HEDimensions.allDimensions

@@ -616,6 +616,7 @@ library
                      , Duckling.TimeGrain.EN.Rules
                      , Duckling.TimeGrain.EL.Rules
                      , Duckling.TimeGrain.ES.Rules
+                     , Duckling.TimeGrain.FI.Rules
                      , Duckling.TimeGrain.FR.Rules
                      , Duckling.TimeGrain.GA.Rules
                      , Duckling.TimeGrain.HE.Rules

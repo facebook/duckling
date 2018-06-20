@@ -1915,7 +1915,7 @@ ruleDaysOfWeek :: [Rule]
 ruleDaysOfWeek = mkRuleDaysOfWeek
   [ ( "Lundi"    , "lun\\.?(di)?"    )
   , ( "Mardi"    , "mar\\.?(di)?"    )
-  , ( "Mercredi" , "mer\\.?(credi)?" )
+  , ( "Mercredi" , "mercredi" )
   , ( "Jeudi"    , "jeu\\.?(di)?"    )
   , ( "Vendredi" , "ven\\.?(dredi)?" )
   , ( "Samedi"   , "sam\\.?(edi)?"   )

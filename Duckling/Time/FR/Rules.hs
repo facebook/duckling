@@ -7,6 +7,7 @@
 
 
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE NoRebindableSyntax #-}
 {-# LANGUAGE OverloadedStrings #-}
 
@@ -273,24 +274,6 @@ ruleDatetimeDatetimeInterval = Rule
       _ -> Nothing
   }
 
-ruleDatetimeddMonthinterval :: Rule
-ruleDatetimeddMonthinterval = Rule
-  { name = "<datetime>-dd <month>(interval)"
-  , pattern =
-    [ dimension Time
-    , regex "\\-|au|jusqu'au"
-    , regex "(3[01]|[12]\\d|0?[1-9])"
-    , Predicate isAMonth
-    ]
-  , prod = \tokens -> case tokens of
-      (Token Time td1:_:Token RegexMatch (GroupMatch (match:_)):Token Time td2:_) -> do
-        n <- parseInt match
-        from <- intersect td2 td1
-        to <- intersect (dayOfMonth n) td2
-        Token Time <$> interval TTime.Closed from to
-      _ -> Nothing
-  }
-
 ruleDeTimeofdayTimeofdayInterval :: Rule
 ruleDeTimeofdayTimeofdayInterval = Rule
   { name = "de <time-of-day> - <time-of-day> (interval)"
@@ -358,9 +341,45 @@ ruleEntreDatetimeEtDatetimeInterval = Rule
     , regex "et"
     , dimension Time
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (_:Token Time td1:_:Token Time td2:_) ->
         Token Time <$> interval TTime.Closed td1 td2
+      _ -> Nothing
+  }
+
+ruleDuDatetimedayofweekDdMonthinterval :: Rule
+ruleDuDatetimedayofweekDdMonthinterval = Rule
+  { name = "du <datetime>-<day-of-week> dd <month>(interval)"
+  , pattern =
+    [ regex "du"
+    , dimension Time
+    , regex "\\-|au|jusqu'au"
+    , Predicate isADayOfWeek
+    , Predicate isDOMValue
+    , Predicate isAMonth
+    ]
+  , prod = \case
+      (_:Token Time td1:_:_:token:Token Time td2:_) -> do
+        from <- intersect td2 td1
+        to <- intersectDOM td2 token
+        Token Time <$> interval TTime.Closed from to
+      _ -> Nothing
+  }
+
+ruleDuDdAuDdLatentMonthInterval :: Rule
+ruleDuDdAuDdLatentMonthInterval = Rule
+  { name = "du dd au dd (interval) (latent month)"
+  , pattern =
+    [ regex "du"
+    , Predicate isDOMValue
+    , regex "au|jusqu'au"
+    , Predicate isDOMValue
+    ]
+  , prod = \case
+      (_:token1:_:token2:_) -> do
+        n1 <- getIntValue token1
+        n2 <- getIntValue token2
+        Token Time <$> interval TTime.Closed (dayOfMonth n1) (dayOfMonth n2)
       _ -> Nothing
   }
 
@@ -371,15 +390,67 @@ ruleDatetimedayofweekDdMonthinterval = Rule
     [ dimension Time
     , regex "\\-|(jusqu')?au"
     , Predicate isADayOfWeek
-    , regex "(3[01]|[12]\\d|0?[1-9])"
+    , Predicate isDOMValue
     , Predicate isAMonth
     ]
-  , prod = \tokens -> case tokens of
-      (Token Time td1:_:_:Token RegexMatch (GroupMatch (match:_)):Token Time td2:_) -> do
-        n <- parseInt match
+  , prod = \case
+      (Token Time td1:_:_:token:Token Time td2:_) -> do
         from <- intersect td2 td1
-        to <- intersect (dayOfMonth n) td2
+        to <- intersectDOM td2 token
         Token Time <$> interval TTime.Closed from to
+      _ -> Nothing
+  }
+
+ruleEntreDdEtDdMonthinterval :: Rule
+ruleEntreDdEtDdMonthinterval = Rule
+  { name = "entre dd et dd <month>(interval)"
+  , pattern =
+    [ regex "entre( le)?"
+    , Predicate isDOMValue
+    , regex "et( le)?"
+    , Predicate isDOMValue
+    , Predicate isAMonth
+    ]
+  , prod = \case
+      (_:token1:_:token2:Token Time td:_) -> do
+        dom1 <- intersectDOM td token1
+        dom2 <- intersectDOM td token2
+        Token Time <$> interval TTime.Closed dom1 dom2
+      _ -> Nothing
+  }
+
+ruleDatetimeddMonthinterval :: Rule
+ruleDatetimeddMonthinterval = Rule
+  { name = "<datetime>-dd <month>(interval)"
+  , pattern =
+    [ dimension Time
+    , regex "\\-|au|jusqu'au"
+    , Predicate isDOMValue
+    , Predicate isAMonth
+    ]
+  , prod = \case
+      (Token Time td1:_:token:Token Time td2:_) -> do
+        from <- intersect td2 td1
+        to <- intersectDOM td2 token
+        Token Time <$> interval TTime.Closed from to
+      _ -> Nothing
+  }
+
+ruleDuDdAuDdMonthInterval :: Rule
+ruleDuDdAuDdMonthInterval = Rule
+  { name = "du dd/nth au dd/nth month (interval)"
+  , pattern =
+    [ regex "du"
+    , Predicate isDOMValue
+    , regex "\\-|au|jusqu'(au?|à)"
+    , Predicate isDOMValue
+    , Predicate isAMonth
+    ]
+  , prod = \case
+      (_:token1:_:token2:Token Time td:_) -> do
+        dom1 <- intersectDOM td token1
+        dom2 <- intersectDOM td token2
+        Token Time <$> interval TTime.Closed dom1 dom2
       _ -> Nothing
   }
 
@@ -1389,43 +1460,6 @@ ruleCeDayofweek = Rule
       _ -> Nothing
   }
 
-ruleDuDatetimedayofweekDdMonthinterval :: Rule
-ruleDuDatetimedayofweekDdMonthinterval = Rule
-  { name = "du <datetime>-<day-of-week> dd <month>(interval)"
-  , pattern =
-    [ regex "du"
-    , dimension Time
-    , regex "\\-|au|jusqu'au"
-    , Predicate isADayOfWeek
-    , regex "(3[01]|[12]\\d|0?[1-9])"
-    , Predicate isAMonth
-    ]
-  , prod = \tokens -> case tokens of
-      (_:Token Time td1:_:_:Token RegexMatch (GroupMatch (m:_)):Token Time td2:_) -> do
-        n <- parseInt m
-        from <- intersect td2 td1
-        to <- intersect (dayOfMonth n) td2
-        Token Time <$> interval TTime.Closed from to
-      _ -> Nothing
-  }
-
-ruleDuDdAuDdinterval :: Rule
-ruleDuDdAuDdinterval = Rule
-  { name = "du dd au dd(interval)"
-  , pattern =
-    [ regex "du"
-    , regex "(3[01]|[12]\\d|0?[1-9])"
-    , regex "au|jusqu'au"
-    , regex "(3[01]|[12]\\d|0?[1-9])"
-    ]
-  , prod = \tokens -> case tokens of
-      (_:Token RegexMatch (GroupMatch (m1:_)):_:Token RegexMatch (GroupMatch (m2:_)):_) -> do
-        n1 <- parseInt m1
-        n2 <- parseInt m2
-        Token Time <$> interval TTime.Closed (dayOfMonth n1) (dayOfMonth n2)
-      _ -> Nothing
-  }
-
 ruleMatin :: Rule
 ruleMatin = Rule
   { name = "matin"
@@ -1551,31 +1585,6 @@ ruleLeCycleAprssuivantTime = Rule
   , prod = \tokens -> case tokens of
       (_:Token TimeGrain grain:_:Token Time td:_) ->
         tt $ cycleNthAfter False grain 1 td
-      _ -> Nothing
-  }
-
-ruleEntreDdEtDdMonthinterval :: Rule
-ruleEntreDdEtDdMonthinterval = Rule
-  { name = "entre dd et dd <month>(interval)"
-  , pattern =
-    [ regex "entre( le)?"
-    , regex "(3[01]|[12]\\d|0?[1-9])"
-    , regex "et( le)?"
-    , regex "(3[01]|[12]\\d|0?[1-9])"
-    , Predicate isAMonth
-    ]
-  , prod = \tokens -> case tokens of
-      (_:
-       Token RegexMatch (GroupMatch (m1:_)):
-       _:
-       Token RegexMatch (GroupMatch (m2:_)):
-       Token Time td:
-       _) -> do
-        n1 <- parseInt m1
-        n2 <- parseInt m2
-        from <- intersect (dayOfMonth n1) td
-        to <- intersect (dayOfMonth n2) td
-        Token Time <$> interval TTime.Closed from to
       _ -> Nothing
   }
 
@@ -1974,7 +1983,8 @@ rules =
   , ruleDimTimeDuSoir
   , ruleDimTimePartofday
   , ruleDuDatetimedayofweekDdMonthinterval
-  , ruleDuDdAuDdinterval
+  , ruleDuDdAuDdLatentMonthInterval
+  , ruleDuDdAuDdMonthInterval
   , ruleDuDddayofweekDdMonthinterval
   , ruleDudansLePartofday
   , ruleDurationApresTime

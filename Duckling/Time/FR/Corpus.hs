@@ -709,20 +709,26 @@ allExamples = concat
              , "13 juillet au 15 juillet"
              , "13 juillet - 15 juillet"
              , "entre le 13 et le 15 juillet"
-             , "samedi 13 au dimanche 15 juillet"
+             , "samedi 13 au dimanche 15e juillet"
              , "du samedi 13 au dimanche 15 juillet"
              , "du 13 au dimanche 15 juillet"
+             , "entre le 13 et le quinze juillet"
+             , "du treize au 15 juillet"
+             , "du 13e au 15 juillet"
              ]
   , examples (datetimeInterval ((2013, 7, 1, 0, 0, 0), (2013, 7, 11, 0, 0, 0)) Day)
              [ "1er au 10 juillet"
              , "lundi 1er au mercredi 10 juillet"
-             , "lundi 1 au mercredi 10 juillet"
+             , "lundi 1 au mercredi 10e juillet"
              , "du lundi 1er au mercredi 10 juillet"
              , "du 1er au mercredi 10 juillet"
+             , "du 1er au dix juillet"
+             , "1er au dix juillet"
              ]
   , examples (datetimeInterval ((2013, 2, 13, 0, 0, 0), (2013, 2, 19, 0, 0, 0)) Day)
              [ "du 13 au 18"
-             , "entre le 13 et le 18"
+             , "entre le 13 et le dix-huit"
+             , "du 13e au dix-huit"
              ]
   , examples (datetimeInterval ((2013, 6, 10, 0, 0, 0), (2013, 7, 2, 0, 0, 0)) Day)
              [ "10 juin au 1er juillet"

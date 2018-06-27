@@ -12,6 +12,7 @@
 module Duckling.Ranking.Generate
   ( regenAllClassifiers
   , regenClassifiers
+  , regenLangClassifiers
   ) where
 
 import Data.HashSet (HashSet)
@@ -68,11 +69,17 @@ regenAllClassifiers = do
   mapM_ regenClassifiers locales
   where
     defaultLocale :: Lang -> Locale
-    defaultLocale lang = Locale lang Nothing
+    defaultLocale lang = makeLocale lang Nothing
     f :: [Locale] -> Lang -> HashSet Region -> [Locale]
     f res lang countries =
-      res ++ [Locale lang (Just c) | c <- HashSet.toList countries]
+      res ++ [makeLocale lang (Just c) | c <- HashSet.toList countries]
     locales = HashMap.foldlWithKey' f [] allLocales
+
+regenLangClassifiers :: Lang -> IO ()
+regenLangClassifiers lang = do
+  regenClassifiers $ makeLocale lang Nothing
+  mapM_ (regenClassifiers . makeLocale lang . Just)
+    $ HashMap.lookupDefault HashSet.empty lang allLocales
 
 -- | Run this function to overwrite the file with Classifiers data
 regenClassifiers :: Locale -> IO ()

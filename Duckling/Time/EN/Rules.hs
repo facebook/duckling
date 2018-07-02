@@ -773,12 +773,26 @@ ruleYYYYMMDD = Rule
   , pattern =
     [ regex "(\\d{2,4})-(0?[1-9]|1[0-2])-(3[01]|[12]\\d|0?[1-9])"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token RegexMatch (GroupMatch (yy:mm:dd:_)):_) -> do
         y <- parseInt yy
         m <- parseInt mm
         d <- parseInt dd
         tt $ yearMonthDay y m d
+      _ -> Nothing
+  }
+
+ruleYYYYQQ :: Rule
+ruleYYYYQQ = Rule
+  { name = "yyyyqq"
+  , pattern =
+    [ regex "(\\d{2,4})q([1-4])"
+    ]
+  , prod = \case
+      (Token RegexMatch (GroupMatch (yy:qq:_)):_) -> do
+        y <- parseInt yy
+        q <- parseInt qq
+        tt . cycleNthAfter True TG.Quarter (q - 1) $ year y
       _ -> Nothing
   }
 
@@ -788,7 +802,7 @@ ruleNoonMidnightEOD = Rule
   , pattern =
     [ regex "(noon|midni(ght|te)|(the )?(EOD|end of (the )?day))"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token RegexMatch (GroupMatch (match:_)):_) -> tt . hour False $
         if Text.toLower match == "noon" then 12 else 0
       _ -> Nothing
@@ -2246,6 +2260,7 @@ rules =
   , ruleHalfAfterHOD
   , ruleQuarterAfterHOD
   , ruleHalfHOD
+  , ruleYYYYQQ
   , ruleYYYYMMDD
   , ruleMMYYYY
   , ruleNoonMidnightEOD

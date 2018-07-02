@@ -68,11 +68,11 @@ classifiers
                                likelihoods = HashMap.fromList [("", 0.0)], n = 3}}),
        ("integer (numeric)",
         Classifier{okData =
-                     ClassData{prior = -0.5818290513461541, unseen = -5.768320995793772,
+                     ClassData{prior = -0.5888343339345626, unseen = -5.768320995793772,
                                likelihoods = HashMap.fromList [("", 0.0)], n = 318},
                    koData =
-                     ClassData{prior = -0.818427494994547, unseen = -5.53338948872752,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 251}}),
+                     ClassData{prior = -0.8096221715563133, unseen = -5.54907608489522,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 255}}),
        ("<year> (bc|ad)",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -1.9459101490553135,
@@ -2671,6 +2671,13 @@ classifiers
                      ClassData{prior = -infinity, unseen = -0.6931471805599453,
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("Naraka Chaturdashi",
+        Classifier{okData =
+                     ClassData{prior = 0.0, unseen = -1.3862943611198906,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 2},
+                   koData =
+                     ClassData{prior = -infinity, unseen = -0.6931471805599453,
+                               likelihoods = HashMap.fromList [], n = 0}}),
+       ("yyyyqq",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -1.3862943611198906,
                                likelihoods = HashMap.fromList [("", 0.0)], n = 2},

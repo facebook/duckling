@@ -328,6 +328,8 @@ allExamples = concat
              [ "4th quarter 2018"
              , "4th qtr 2018"
              , "the 4th qtr of 2018"
+             , "18q4"
+             , "2018Q4"
              ]
   , examples (datetime (2012, 1, 1, 0, 0, 0) Year)
              [ "last year"

@@ -782,6 +782,21 @@ ruleYYYYMMDD = Rule
       _ -> Nothing
   }
 
+ruleYYYYQQ :: Rule
+ruleYYYYQQ = Rule
+  { name = "yyyyqq"
+  , pattern =
+    [ regex "(\\d{2,4})[Q|q]([1-4])"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (yy:qq:_)):_) -> do
+        y <- parseInt yy
+        q <- parseInt qq
+        tt . cycleNthAfter True TG.Quarter (q - 1) $
+                  year y
+      _ -> Nothing
+  }
+
 ruleNoonMidnightEOD :: Rule
 ruleNoonMidnightEOD = Rule
   { name = "noon|midnight|EOD|end of day"
@@ -2246,6 +2261,7 @@ rules =
   , ruleHalfAfterHOD
   , ruleQuarterAfterHOD
   , ruleHalfHOD
+  , ruleYYYYQQ
   , ruleYYYYMMDD
   , ruleMMYYYY
   , ruleNoonMidnightEOD

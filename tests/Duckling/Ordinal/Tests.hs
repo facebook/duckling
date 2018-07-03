@@ -29,6 +29,7 @@ import qualified Duckling.Ordinal.HU.Tests as HU
 import qualified Duckling.Ordinal.ID.Tests as ID
 import qualified Duckling.Ordinal.IT.Tests as IT
 import qualified Duckling.Ordinal.JA.Tests as JA
+import qualified Duckling.Ordinal.KA.Tests as KA
 import qualified Duckling.Ordinal.KO.Tests as KO
 import qualified Duckling.Ordinal.NB.Tests as NB
 import qualified Duckling.Ordinal.NL.Tests as NL
@@ -61,6 +62,7 @@ tests = testGroup "Ordinal Tests"
   , ID.tests
   , IT.tests
   , JA.tests
+  , KA.tests
   , KO.tests
   , NB.tests
   , NL.tests

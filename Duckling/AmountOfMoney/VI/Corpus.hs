@@ -101,4 +101,39 @@ allExamples = concat
              [ "1 AED."
              , "1 dirham"
              ]
+  , examples (between VND (1000, 2000))
+             [ "giữa 1000 và 2000 đồng"
+             , "giữa 1000 đồng và 2000 đồng"
+             , "từ 1000 đồng đến 2000 đồng"
+             , "từ 1000 VNĐ tới 2000 VNĐ"
+             , "từ 1000 đến 2000 đồng"
+             , "khoảng 1000-2000 đồng"
+             , "khoảng chừng từ 1000 đến 2000 đồng"
+             , "tầm khoảng 1000 tới 2000 đồng"
+             , "xấp xỉ VND1000-VND2000"
+             , "1000-2000 đồng"
+             ]
+  , examples (between Dollar (1.1, 1.3))
+             [ "giữa 1,1 và 1,3 đô la"
+             , "từ 1 phẩy 1 đến một chấm ba đô la"
+             ]
+  , examples (under VND 7000)
+             [ "dưới bảy ngàn đồng"
+             , "ít hơn bảy nghìn đồng"
+             , "kém hơn 7k đồng"
+             , "không tới 7000 đồng"
+             , "không cao hơn 7000 đồng"
+             , "không hơn 7.000 đồng"
+             , "không quá 7.000 đồng"
+             , "từ 7000 đồng trở xuống"
+             ]
+  , examples (above Dollar 1.42)
+             [ "nhiều hơn 1 đô la và bốn mươi hai xen"
+             , "ít nhất $1,42"
+             , "hơn 1,42 đô la"
+             , "trên một đô la và 42 xu"
+             , "không ít hơn 1,42 đô la"
+             , "cao hơn $1,42"
+             , "từ $1,42 trở lên"
+             ]
   ]

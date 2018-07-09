@@ -36,6 +36,7 @@ import qualified Duckling.Region as R (Region(NL))
 data Lang
   = AR
   | BG
+  | BN
   | CS
   | DA
   | DE

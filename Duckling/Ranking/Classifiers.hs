@@ -16,6 +16,7 @@ import Duckling.Locale
 import Duckling.Ranking.Types
 import qualified Duckling.Ranking.Classifiers.AR_XX as AR_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.BG_XX as BG_XXClassifiers
+import qualified Duckling.Ranking.Classifiers.BN_XX as BN_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.CS_XX as CS_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.DA_XX as DA_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.DE_XX as DE_XXClassifiers
@@ -55,6 +56,7 @@ import qualified Duckling.Ranking.Classifiers.ZH_XX as ZH_XXClassifiers
 classifiers :: Locale -> Classifiers
 classifiers (Locale AR _) = AR_XXClassifiers.classifiers
 classifiers (Locale BG _) = BG_XXClassifiers.classifiers
+classifiers (Locale BN _) = BN_XXClassifiers.classifiers
 classifiers (Locale CS _) = CS_XXClassifiers.classifiers
 classifiers (Locale DA _) = DA_XXClassifiers.classifiers
 classifiers (Locale DE _) = DE_XXClassifiers.classifiers

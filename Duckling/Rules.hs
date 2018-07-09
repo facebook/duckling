@@ -25,6 +25,7 @@ import Duckling.Types
 import qualified Duckling.Rules.AR as ARRules
 import qualified Duckling.Rules.Common as CommonRules
 import qualified Duckling.Rules.BG as BGRules
+import qualified Duckling.Rules.BN as BNRules
 import qualified Duckling.Rules.CS as CSRules
 import qualified Duckling.Rules.DA as DARules
 import qualified Duckling.Rules.DE as DERules
@@ -82,6 +83,7 @@ rulesFor' (Locale lang Nothing) dim =
 defaultRules :: Lang -> Some Dimension -> [Rule]
 defaultRules AR = ARRules.defaultRules
 defaultRules BG = BGRules.defaultRules
+defaultRules BN = BNRules.defaultRules
 defaultRules CS = CSRules.defaultRules
 defaultRules DA = DARules.defaultRules
 defaultRules DE = DERules.defaultRules
@@ -119,6 +121,7 @@ defaultRules ZH = ZHRules.defaultRules
 localeRules :: Lang -> Region -> Some Dimension -> [Rule]
 localeRules AR = ARRules.localeRules
 localeRules BG = BGRules.localeRules
+localeRules BN = BNRules.localeRules
 localeRules CS = CSRules.localeRules
 localeRules DA = DARules.localeRules
 localeRules DE = DERules.localeRules
@@ -156,6 +159,7 @@ localeRules ZH = ZHRules.localeRules
 langRules :: Lang -> Some Dimension -> [Rule]
 langRules AR = ARRules.langRules
 langRules BG = BGRules.langRules
+langRules BN = BNRules.langRules
 langRules CS = CSRules.langRules
 langRules DA = DARules.langRules
 langRules DE = DERules.langRules

@@ -18,6 +18,7 @@ import Duckling.Dimensions.Types
 import Duckling.Locale
 import Duckling.Types
 import qualified Duckling.Numeral.TA.Rules as Numeral
+import qualified Duckling.Ordinal.TA.Rules as Ordinal
 
 defaultRules :: Some Dimension -> [Rule]
 defaultRules = langRules
@@ -32,7 +33,7 @@ langRules (This Distance) = []
 langRules (This Duration) = []
 langRules (This Numeral) = Numeral.rules
 langRules (This Email) = []
-langRules (This Ordinal) = []
+langRules (This Ordinal) = Ordinal.rules
 langRules (This PhoneNumber) = []
 langRules (This Quantity) = []
 langRules (This RegexMatch) = []

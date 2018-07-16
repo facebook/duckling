@@ -454,6 +454,8 @@ library
                      , Duckling.Ordinal.RU.Rules
                      , Duckling.Ordinal.SV.Corpus
                      , Duckling.Ordinal.SV.Rules
+                     , Duckling.Ordinal.TA.Corpus
+                     , Duckling.Ordinal.TA.Rules
                      , Duckling.Ordinal.TR.Corpus
                      , Duckling.Ordinal.TR.Rules
                      , Duckling.Ordinal.UK.Corpus
@@ -854,6 +856,7 @@ test-suite duckling-test
                      , Duckling.Ordinal.RO.Tests
                      , Duckling.Ordinal.RU.Tests
                      , Duckling.Ordinal.SV.Tests
+                     , Duckling.Ordinal.TA.Tests
                      , Duckling.Ordinal.TR.Tests
                      , Duckling.Ordinal.UK.Tests
                      , Duckling.Ordinal.VI.Tests

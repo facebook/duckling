@@ -37,6 +37,7 @@ import qualified Duckling.Ordinal.PT.Tests as PT
 import qualified Duckling.Ordinal.RO.Tests as RO
 import qualified Duckling.Ordinal.RU.Tests as RU
 import qualified Duckling.Ordinal.SV.Tests as SV
+import qualified Duckling.Ordinal.TA.Tests as TA
 import qualified Duckling.Ordinal.TR.Tests as TR
 import qualified Duckling.Ordinal.UK.Tests as UK
 import qualified Duckling.Ordinal.VI.Tests as VI
@@ -69,6 +70,7 @@ tests = testGroup "Ordinal Tests"
   , RO.tests
   , RU.tests
   , SV.tests
+  , TA.tests
   , TR.tests
   , UK.tests
   , VI.tests

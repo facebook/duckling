@@ -148,7 +148,7 @@ ruleNumeralsEn = Rule
   { name = "numbers en"
   , pattern =
     [ numberBetween 1 10
-    , regex "en"
+    , regex "-?en-?"
     , oneOf [20, 30 .. 90]
     ]
   , prod = \tokens -> case tokens of

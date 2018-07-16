@@ -148,10 +148,12 @@ ruleCompositeTens = Rule
   { name = "integer 21..99"
   , pattern =
     [ oneOf [20,30..90]
+    , regex "[\\s\\-]+"
     , numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData{TNumeral.value = tens}:
+       _:
        Token Numeral NumeralData{TNumeral.value = units}:
        _) -> double $ tens + units
       _ -> Nothing

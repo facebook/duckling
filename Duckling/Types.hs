@@ -79,7 +79,8 @@ instance NFData Token where
 -- -----------------------------------------------------------------
 -- Dimension
 
-class (Show a, Typeable a) => CustomDimension a where
+class (Show a, Typeable a, Typeable (DimensionData  a)) =>
+    CustomDimension a where
   type DimensionData a
   dimRules :: a -> [Rule]
   dimLangRules :: Lang -> a -> [Rule]

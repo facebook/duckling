@@ -163,7 +163,7 @@ allExamples = concat
              [ "today"
              , "at this time"
              ]
-  , examples (datetime (2013, 2, 1, 0, 0, 0) Day)
+  , examples (datetime (2013, 2, 1, 0, 0, 0) Month)
              [ "2/2013"
              ]
   , examples (datetime (2014, 1, 1, 0, 0, 0) Year)
@@ -253,6 +253,8 @@ allExamples = concat
              ]
   , examples (datetime (2014, 10, 1, 0, 0, 0) Month)
              [ "October 2014"
+             , "2014-10"
+             , "2014/10"
              ]
   , examples (datetime (2015, 4, 14, 0, 0, 0) Day)
              [ "14april 2015"

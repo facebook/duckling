@@ -782,11 +782,25 @@ ruleMMYYYY = Rule
   , pattern =
     [ regex "(0?[1-9]|1[0-2])[/-](\\d{4})"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token RegexMatch (GroupMatch (mm:yy:_)):_) -> do
         y <- parseInt yy
         m <- parseInt mm
-        tt $ yearMonthDay y m 1
+        tt $ yearMonth y m
+      _ -> Nothing
+  }
+
+ruleYYYYMM :: Rule
+ruleYYYYMM = Rule
+  { name = "yyyy-mm"
+  , pattern =
+    [ regex "(\\d{4})\\s*[/-]\\s*(1[0-2]|0?[1-9])"
+    ]
+  , prod = \case
+      (Token RegexMatch (GroupMatch (yy:mm:_)):_) -> do
+        y <- parseInt yy
+        m <- parseInt mm
+        tt $ yearMonth y m
       _ -> Nothing
   }
 
@@ -2285,6 +2299,7 @@ rules =
   , ruleQuarterAfterHOD
   , ruleHalfHOD
   , ruleYYYYQQ
+  , ruleYYYYMM
   , ruleYYYYMMDD
   , ruleMMYYYY
   , ruleNoonMidnightEOD

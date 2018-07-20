@@ -172,7 +172,7 @@ ruleNgyDdmmyyyy = Rule
   { name = "ngày dd/mm/yyyy"
   , pattern =
     [ regex "ng(à)y"
-    , regex "(3[01]|[12]\\d|0?[1-9])[-/](0?[1-9]|1[0-2])[/-](\\d{2,4})"
+    , regex "(3[01]|[12]\\d|0?[1-9])[-/](1[0-2]|0?[1-9])[/-](\\d{2,4})"
     ]
   , prod = \tokens -> case tokens of
       (_:Token RegexMatch (GroupMatch (m1:m2:m3:_)):_) -> do
@@ -864,7 +864,7 @@ ruleNgyDdmm = Rule
   { name = "ngày dd/mm"
   , pattern =
     [ regex "ng(à)y"
-    , regex "(3[01]|[12]\\d|0?[1-9])/(0?[1-9]|1[0-2])"
+    , regex "(3[01]|[12]\\d|0?[1-9])/(1[0-2]|0?[1-9])"
     ]
   , prod = \tokens -> case tokens of
       (_:Token RegexMatch (GroupMatch (dd:mm:_)):_) -> do

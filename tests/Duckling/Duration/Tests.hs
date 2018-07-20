@@ -23,6 +23,7 @@ import qualified Duckling.Duration.GA.Tests as GA
 import qualified Duckling.Duration.HI.Tests as HI
 import qualified Duckling.Duration.HU.Tests as HU
 import qualified Duckling.Duration.JA.Tests as JA
+import qualified Duckling.Duration.KA.Tests as KA
 import qualified Duckling.Duration.KO.Tests as KO
 import qualified Duckling.Duration.NB.Tests as NB
 import qualified Duckling.Duration.NL.Tests as NL
@@ -45,6 +46,7 @@ tests = testGroup "Duration Tests"
   , HI.tests
   , HU.tests
   , JA.tests
+  , KA.tests
   , KO.tests
   , NB.tests
   , NL.tests

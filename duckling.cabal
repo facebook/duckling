@@ -293,6 +293,8 @@ library
                      , Duckling.Duration.HU.Rules
                      , Duckling.Duration.IT.Rules
                      , Duckling.Duration.JA.Corpus
+                     , Duckling.Duration.KA.Corpus
+                     , Duckling.Duration.KA.Rules
                      , Duckling.Duration.KO.Corpus
                      , Duckling.Duration.KO.Rules
                      , Duckling.Duration.NB.Corpus
@@ -438,6 +440,8 @@ library
                      , Duckling.Ordinal.IT.Rules
                      , Duckling.Ordinal.JA.Corpus
                      , Duckling.Ordinal.JA.Rules
+                     , Duckling.Ordinal.KA.Corpus
+                     , Duckling.Ordinal.KA.Rules
                      , Duckling.Ordinal.KO.Corpus
                      , Duckling.Ordinal.KO.Rules
                      , Duckling.Ordinal.NB.Corpus
@@ -581,6 +585,8 @@ library
                      , Duckling.Time.HU.Rules
                      , Duckling.Time.IT.Corpus
                      , Duckling.Time.IT.Rules
+                     , Duckling.Time.KA.Corpus
+                     , Duckling.Time.KA.Rules
                      , Duckling.Time.KO.Corpus
                      , Duckling.Time.KO.Rules
                      , Duckling.Time.NB.Corpus
@@ -634,6 +640,7 @@ library
                      , Duckling.TimeGrain.HU.Rules
                      , Duckling.TimeGrain.IT.Rules
                      , Duckling.TimeGrain.JA.Rules
+                     , Duckling.TimeGrain.KA.Rules
                      , Duckling.TimeGrain.KO.Rules
                      , Duckling.TimeGrain.NB.Rules
                      , Duckling.TimeGrain.NL.Rules
@@ -773,6 +780,7 @@ test-suite duckling-test
                      , Duckling.Duration.HU.Tests
                      , Duckling.Duration.HI.Tests
                      , Duckling.Duration.JA.Tests
+                     , Duckling.Duration.KA.Tests
                      , Duckling.Duration.KO.Tests
                      , Duckling.Duration.NB.Tests
                      , Duckling.Duration.NL.Tests
@@ -848,6 +856,7 @@ test-suite duckling-test
                      , Duckling.Ordinal.ID.Tests
                      , Duckling.Ordinal.IT.Tests
                      , Duckling.Ordinal.JA.Tests
+                     , Duckling.Ordinal.KA.Tests
                      , Duckling.Ordinal.KO.Tests
                      , Duckling.Ordinal.NB.Tests
                      , Duckling.Ordinal.NL.Tests
@@ -909,6 +918,7 @@ test-suite duckling-test
                      , Duckling.Time.HE.Tests
                      , Duckling.Time.HU.Tests
                      , Duckling.Time.IT.Tests
+                     , Duckling.Time.KA.Tests
                      , Duckling.Time.KO.Tests
                      , Duckling.Time.NB.Tests
                      , Duckling.Time.NL.Tests

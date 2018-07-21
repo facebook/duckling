@@ -54,6 +54,7 @@ data Currency
   | JMD
   | JOD
   | JPY
+  | GEL
   | KRW
   | KWD
   | LBP
@@ -100,6 +101,7 @@ instance ToJSON Currency where
   toJSON JMD     = "JMD"
   toJSON JOD     = "JOD"
   toJSON JPY     = "JPY"
+  toJSON GEL     = "GEL"
   toJSON KRW     = "KRW"
   toJSON KWD     = "KWD"
   toJSON LBP     = "LBP"

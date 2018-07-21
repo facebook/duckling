@@ -207,6 +207,8 @@ library
                      , Duckling.AmountOfMoney.HR.Rules
                      , Duckling.AmountOfMoney.ID.Corpus
                      , Duckling.AmountOfMoney.ID.Rules
+                     , Duckling.AmountOfMoney.KA.Corpus
+                     , Duckling.AmountOfMoney.KA.Rules
                      , Duckling.AmountOfMoney.KO.Corpus
                      , Duckling.AmountOfMoney.KO.Rules
                      , Duckling.AmountOfMoney.NB.Corpus

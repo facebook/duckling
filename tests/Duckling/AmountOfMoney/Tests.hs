@@ -22,6 +22,7 @@ import qualified Duckling.AmountOfMoney.FR.Tests as FR
 import qualified Duckling.AmountOfMoney.GA.Tests as GA
 import qualified Duckling.AmountOfMoney.HR.Tests as HR
 import qualified Duckling.AmountOfMoney.ID.Tests as ID
+import qualified Duckling.AmountOfMoney.KA.Tests as KA
 import qualified Duckling.AmountOfMoney.KO.Tests as KO
 import qualified Duckling.AmountOfMoney.NB.Tests as NB
 import qualified Duckling.AmountOfMoney.NL.Tests as NL
@@ -42,6 +43,7 @@ tests = testGroup "AmountOfMoney Tests"
   , GA.tests
   , HR.tests
   , ID.tests
+  , KA.tests
   , KO.tests
   , NB.tests
   , NL.tests

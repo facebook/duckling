@@ -1122,6 +1122,22 @@ ruleIntervalDash = Rule
       _ -> Nothing
   }
 
+ruleIntervalSlash :: Rule
+ruleIntervalSlash = Rule
+  { name = "<datetime>/<datetime> (interval)"
+  , pattern =
+    [ Predicate isNotLatent
+    , regex "/"
+    , Predicate isNotLatent
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Time td1:_:Token Time td2:_) ->
+        if sameGrain td1 td2 then
+          Token Time <$> interval TTime.Closed td1 td2
+        else Nothing
+      _ -> Nothing
+  }
+
 ruleIntervalFrom :: Rule
 ruleIntervalFrom = Rule
   { name = "from <datetime> - <datetime> (interval)"
@@ -2319,6 +2335,7 @@ rules =
   , ruleIntervalMonthDDDD
   , ruleIntervalDDDDMonth
   , ruleIntervalDash
+  , ruleIntervalSlash
   , ruleIntervalFrom
   , ruleIntervalBetween
   , ruleIntervalTODDash

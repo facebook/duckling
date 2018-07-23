@@ -946,6 +946,10 @@ allExamples = concat
   , examples (datetimeInterval ((2013, 2, 12, 9, 30, 0), (2013, 2, 12, 11, 1, 0)) Minute)
              [ "9:30 - 11:00"
              ]
+  , examples (datetimeInterval
+      ((2015, 3, 28, 17, 00, 0), (2015, 3, 29, 21, 0, 1)) Second)
+             [ "2015-03-28 17:00:00/2015-03-29 21:00:00"
+             ]
   , examples (datetimeInterval ((2013, 2, 14, 9, 30, 0), (2013, 2, 14, 11, 1, 0)) Minute)
              [ "from 9:30 - 11:00 on Thursday"
              , "between 9:30 and 11:00 on thursday"

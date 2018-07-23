@@ -15,7 +15,7 @@ module Duckling.Time.Helpers
     hasNoDirection, isADayOfWeek, isAMonth, isAnHourOfDay, isAPartOfDay
   , isATimeOfDay, isDOMInteger, isDOMOrdinal, isDOMValue, isGrain
   , isGrainFinerThan, isGrainOfTime, isIntegerBetween, isNotLatent
-  , isOrdinalBetween, isMidnightOrNoon, isOkWithThisNext
+  , isOrdinalBetween, isMidnightOrNoon, isOkWithThisNext, sameGrain
     -- Production
   , cycleLastOf, cycleN, cycleNth, cycleNthAfter, dayOfMonth, dayOfWeek
   , durationAfter, durationAgo, durationBefore, mkOkForThisNext, form, hour
@@ -277,6 +277,9 @@ isGrainFinerThan _ _ = False
 isGrainOfTime :: TG.Grain -> Predicate
 isGrainOfTime value (Token Time TimeData{TTime.timeGrain = g}) = g == value
 isGrainOfTime _ _ = False
+
+sameGrain :: TimeData -> TimeData -> Bool
+sameGrain TimeData{TTime.timeGrain = g} TimeData{TTime.timeGrain = h} = g == h
 
 isADayOfWeek :: Predicate
 isADayOfWeek (Token Time td) = case TTime.form td of

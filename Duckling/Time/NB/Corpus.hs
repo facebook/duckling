@@ -38,6 +38,7 @@ allExamples = concat
              ]
   , examples (datetime (2013, 2, 13, 0, 0, 0) Day)
              [ "i morgen"
+             , "i morra"
              ]
   , examples (datetime (2013, 2, 18, 0, 0, 0) Day)
              [ "mandag"
@@ -221,6 +222,7 @@ allExamples = concat
              ]
   , examples (datetime (2013, 2, 14, 0, 0, 0) Day)
              [ "i overimorgen"
+             , "i overimorra"
              ]
   , examples (datetime (2013, 2, 10, 0, 0, 0) Day)
              [ "i forigårs"
@@ -287,8 +289,11 @@ allExamples = concat
              ]
   , examples (datetime (2013, 2, 13, 17, 0, 0) Hour)
              [ "imorgen klokken 17 sharp"
+             , "imorra klokken 17 sharp"
              , "imorgen klokka 17 presis"
+             , "imorra klokka 17 presis"
              , "imorgen kl. 17 presis"
+             , "imorra kl. 17 presis"
              ]
   , examples (datetime (2013, 2, 12, 15, 15, 0) Minute)
              [ "kvarter over 15"
@@ -446,9 +451,11 @@ allExamples = concat
              ]
   , examples (datetimeInterval ((2013, 2, 13, 18, 0, 0), (2013, 2, 14, 0, 0, 0)) Hour)
              [ "i morgen kveld"
+             , "i morra kveld"
              ]
   , examples (datetimeInterval ((2013, 2, 13, 12, 0, 0), (2013, 2, 13, 14, 0, 0)) Hour)
              [ "i morgen middag"
+             , "i morra middag"
              ]
   , examples (datetimeInterval ((2013, 2, 11, 18, 0, 0), (2013, 2, 12, 0, 0, 0)) Hour)
              [ "i går kveld"
@@ -461,6 +468,7 @@ allExamples = concat
              ]
   , examples (datetimeInterval ((2013, 2, 18, 4, 0, 0), (2013, 2, 18, 12, 0, 0)) Hour)
              [ "mandag morgen"
+             , "mandag morra"
              ]
   , examples (datetimeInterval ((2013, 12, 24, 0, 0, 0), (2013, 12, 31, 0, 0, 0)) Day)
              [ "i romjulen"
@@ -601,9 +609,13 @@ allExamples = concat
              ]
   , examples (datetime (2013, 2, 13, 15, 0, 0) Minute)
              [ "15:00 i morgen"
+             , "15:00 i morra"
              , "kl. 15:00 i morgen"
+             , "kl. 15:00 i morra"
              , "klokken 15:00 i morgen"
+             , "klokken 15:00 i morra"
              , "klokka 15:00 i morgen"
+             , "klokka 15:00 i morra"
              ]
   , examples (datetimeOpenInterval After (2013, 2, 12, 14, 0, 0) Hour)
              [ "etter kl. 14"
@@ -620,11 +632,17 @@ allExamples = concat
              ]
   , examples (datetimeOpenInterval After (2013, 2, 13, 14, 0, 0) Hour)
              [ "etter i morgen kl. 14"
+             , "etter i morra kl. 14"
              , "etter i morgen klokken 14"
+             , "etter i morra klokken 14"
              , "etter i morgen klokka 14"
+             , "etter i morra klokka 14"
              , "i morgen etter kl. 14"
+             , "i morra etter kl. 14"
              , "i morgen etter klokken 14"
+             , "i morra etter klokken 14"
              , "i morgen etter klokka 14"
+             , "i morra etter klokka 14"
              ]
   , examples (datetimeOpenInterval Before (2013, 2, 12, 11, 0, 0) Hour)
              [ "før kl. 11"
@@ -633,8 +651,11 @@ allExamples = concat
              ]
   , examples (datetimeOpenInterval Before (2013, 2, 13, 11, 0, 0) Hour)
              [ "i morgen før kl. 11"
+             , "i morra før kl. 11"
              , "i morgen før klokken 11"
+             , "i morra før klokken 11"
              , "i morgen før klokka 11"
+             , "i morra før klokka 11"
              ]
   , examples (datetimeInterval ((2013, 2, 12, 12, 0, 0), (2013, 2, 12, 19, 0, 0)) Hour)
              [ "om ettermiddagen"
@@ -655,6 +676,7 @@ allExamples = concat
              ]
   , examples (datetimeInterval ((2013, 2, 12, 4, 0, 0), (2013, 2, 12, 12, 0, 0)) Hour)
              [ "denne morgen"
+             , "denne morran"
              ]
   , examples (datetime (2013, 2, 18, 0, 0, 0) Day)
              [ "neste mandag"

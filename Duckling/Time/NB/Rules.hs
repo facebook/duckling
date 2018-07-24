@@ -32,7 +32,7 @@ ruleTheDayAfterTomorrow :: Rule
 ruleTheDayAfterTomorrow = Rule
   { name = "the day after tomorrow"
   , pattern =
-    [ regex "i overimorgen"
+    [ regex "i overimorgen|i overimorra"
     ]
   , prod = \_ -> tt $ cycleNth TG.Day 2
   }
@@ -1177,7 +1177,7 @@ ruleMorning :: Rule
 ruleMorning = Rule
   { name = "morning"
   , pattern =
-    [ regex "morgen(en)?"
+    [ regex "morgen(en)?|morran"
     ]
   , prod = \_ ->
       let from = hour False 4
@@ -1596,7 +1596,7 @@ ruleTomorrow :: Rule
 ruleTomorrow = Rule
   { name = "tomorrow"
   , pattern =
-    [ regex "i morgen|imorgen"
+    [ regex "i morgen|imorgen|i morra|imorra"
     ]
   , prod = \_ -> tt $ cycleNth TG.Day 1
   }

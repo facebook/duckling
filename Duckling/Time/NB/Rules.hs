@@ -130,7 +130,7 @@ ruleHalfTotillbeforeIntegerHourofday :: Rule
 ruleHalfTotillbeforeIntegerHourofday = Rule
   { name = "half to|till|before <integer> (hour-of-day)"
   , pattern =
-    [ regex "halv time *på"
+    [ regex "halv time *på|halvtime *på|halv"
     , Predicate isAnHourOfDay
     ]
   , prod = \tokens -> case tokens of

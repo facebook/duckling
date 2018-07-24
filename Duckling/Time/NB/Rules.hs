@@ -32,7 +32,7 @@ ruleTheDayAfterTomorrow :: Rule
 ruleTheDayAfterTomorrow = Rule
   { name = "the day after tomorrow"
   , pattern =
-    [ regex "i overimorgen"
+    [ regex "i overimorgen|i overimorra"
     ]
   , prod = \_ -> tt $ cycleNth TG.Day 2
   }
@@ -130,7 +130,7 @@ ruleHalfTotillbeforeIntegerHourofday :: Rule
 ruleHalfTotillbeforeIntegerHourofday = Rule
   { name = "half to|till|before <integer> (hour-of-day)"
   , pattern =
-    [ regex "halv time *på"
+    [ regex "halv time *på|halvtime *på|halv"
     , Predicate isAnHourOfDay
     ]
   , prod = \tokens -> case tokens of
@@ -782,7 +782,7 @@ ruleExactlyTimeofday :: Rule
 ruleExactlyTimeofday = Rule
   { name = "exactly <time-of-day>"
   , pattern =
-    [ regex "presis( kl.| klokken)?"
+    [ regex "presis( kl.| klokken | klokka)?"
     , Predicate isATimeOfDay
     ]
   , prod = \tokens -> case tokens of
@@ -968,7 +968,7 @@ ruleAboutTimeofday :: Rule
 ruleAboutTimeofday = Rule
   { name = "about <time-of-day>"
   , pattern =
-    [ regex "(omkring|cirka|ca\\.)( kl\\.| klokken)?"
+    [ regex "(omkring|cirka|ca\\.)( kl\\.| klokken | klokka)?"
     , Predicate isATimeOfDay
     ]
   , prod = \tokens -> case tokens of
@@ -993,7 +993,7 @@ ruleAtTimeofday :: Rule
 ruleAtTimeofday = Rule
   { name = "at <time-of-day>"
   , pattern =
-    [ regex "klokken|kl.|@"
+    [ regex "klokken|klokka|kl.|@"
     , Predicate isATimeOfDay
     ]
   , prod = \tokens -> case tokens of
@@ -1177,7 +1177,7 @@ ruleMorning :: Rule
 ruleMorning = Rule
   { name = "morning"
   , pattern =
-    [ regex "morgen(en)?"
+    [ regex "morgen(en)?|morran"
     ]
   , prod = \_ ->
       let from = hour False 4
@@ -1596,7 +1596,7 @@ ruleTomorrow :: Rule
 ruleTomorrow = Rule
   { name = "tomorrow"
   , pattern =
-    [ regex "i morgen|imorgen"
+    [ regex "i morgen|imorgen|i morra|imorra"
     ]
   , prod = \_ -> tt $ cycleNth TG.Day 1
   }

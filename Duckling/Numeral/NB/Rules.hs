@@ -208,7 +208,7 @@ zeroToNineteenMap = HashMap.fromList
   , ( "seks" , 6 )
   , ( "sju" , 7 )
   , ( "syv" , 7 )
-  , ( "otte" , 8 )
+  , ( "åtte" , 8 )
   , ( "ni" , 9 )
   , ( "ti" , 10 )
   , ( "elleve" , 11 )

@@ -30,7 +30,7 @@ import Duckling.Ordinal.Types (OrdinalData (..))
 import Duckling.Regex.Types
 import Duckling.Time.Computed
 import Duckling.Time.Helpers
-import Duckling.Time.Types (TimeData (..))
+import Duckling.Time.Types (TimeData (..), TimeIntervalType (..))
 import Duckling.Types
 import qualified Duckling.Duration.Types as TDuration
 import qualified Duckling.Numeral.Types as TNumeral
@@ -966,6 +966,21 @@ ruleWeekend = Rule
     ]
   , prod = \_ -> tt $ mkOkForThisNext weekend
   }
+
+ruleWeek :: Rule
+ruleWeek = Rule
+ { name = "week"
+ , pattern = [regex "(all|rest of the) week"]
+ , prod = \case
+     (Token RegexMatch (GroupMatch (match:_)):_) ->
+       let end = cycleNthAfter True TG.Day (-2) (cycleNth TG.Week 1)
+           period = case Text.toLower match of
+                      "all" -> interval Closed (cycleNth TG.Week 0) end
+                      "rest of the" -> interval Open (cycleNth TG.Day 0) end
+                      _ -> Nothing
+       in Token Time <$> period
+     _ -> Nothing
+ }
 
 ruleSeason :: Rule
 ruleSeason = Rule
@@ -2328,6 +2343,7 @@ rules =
   , ruleTimePOD
   , rulePODofTime
   , ruleWeekend
+  , ruleWeek
   , ruleTODPrecision
   , rulePrecisionTOD
   , ruleIntervalFromMonthDDDD

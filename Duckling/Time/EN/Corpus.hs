@@ -1170,6 +1170,12 @@ allExamples = concat
              , "last week-end in October"
              , "last week end of October"
              ]
+  , examples (datetimeInterval ((2013, 2, 11, 0, 0, 0), (2013, 2, 17, 0, 0, 0)) Day)
+             [ "all week"
+             ]
+  , examples (datetimeInterval ((2013, 2, 12, 0, 0, 0), (2013, 2, 17, 0, 0, 0)) Day)
+             [ "rest of the week"
+             ]
   , examples (datetimeInterval ((2013, 7, 26, 18, 0, 0), (2013, 7, 29, 0, 0, 0)) Hour)
              [ "last wkend of July"
              ]

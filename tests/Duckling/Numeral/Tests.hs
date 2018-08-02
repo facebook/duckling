@@ -33,6 +33,7 @@ import qualified Duckling.Numeral.ID.Tests as ID
 import qualified Duckling.Numeral.IT.Tests as IT
 import qualified Duckling.Numeral.JA.Tests as JA
 import qualified Duckling.Numeral.KA.Tests as KA
+import qualified Duckling.Numeral.KM.Tests as KM
 import qualified Duckling.Numeral.KO.Tests as KO
 import qualified Duckling.Numeral.MY.Tests as MY
 import qualified Duckling.Numeral.NB.Tests as NB
@@ -72,6 +73,7 @@ tests = testGroup "Numeral Tests"
   , IT.tests
   , JA.tests
   , KA.tests
+  , KM.tests
   , KO.tests
   , MY.tests
   , NB.tests

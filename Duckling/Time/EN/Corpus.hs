@@ -1036,6 +1036,7 @@ allExamples = concat
              , "Thu at 8 GMT"
              , "Thu at 8 gmt"
              , "Thursday 9 am BST"
+             , "Thursday 9 am (BST)"
              ]
   , examples (datetime (2013, 2, 14, 14, 0, 0) Minute)
              [ "Thursday 8:00 PST"

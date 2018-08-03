@@ -44,6 +44,7 @@ import qualified Duckling.Rules.ID as IDRules
 import qualified Duckling.Rules.IT as ITRules
 import qualified Duckling.Rules.JA as JARules
 import qualified Duckling.Rules.KA as KARules
+import qualified Duckling.Rules.KM as KMRules
 import qualified Duckling.Rules.KO as KORules
 import qualified Duckling.Rules.MY as MYRules
 import qualified Duckling.Rules.NB as NBRules
@@ -102,6 +103,7 @@ defaultRules ID = IDRules.defaultRules
 defaultRules IT = ITRules.defaultRules
 defaultRules JA = JARules.defaultRules
 defaultRules KA = KARules.defaultRules
+defaultRules KM = KMRules.defaultRules
 defaultRules KO = KORules.defaultRules
 defaultRules MY = MYRules.defaultRules
 defaultRules NB = NBRules.defaultRules
@@ -140,6 +142,7 @@ localeRules ID = IDRules.localeRules
 localeRules IT = ITRules.localeRules
 localeRules JA = JARules.localeRules
 localeRules KA = KARules.localeRules
+localeRules KM = KMRules.localeRules
 localeRules KO = KORules.localeRules
 localeRules MY = MYRules.localeRules
 localeRules NB = NBRules.localeRules
@@ -178,6 +181,7 @@ langRules ID = IDRules.langRules
 langRules IT = ITRules.langRules
 langRules JA = JARules.langRules
 langRules KA = KARules.langRules
+langRules KM = KMRules.langRules
 langRules KO = KORules.langRules
 langRules MY = MYRules.langRules
 langRules NB = NBRules.langRules

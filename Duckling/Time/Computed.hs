@@ -10,7 +10,7 @@ module Duckling.Time.Computed
   , globalYouthServiceDay, lagBaOmer, mawlid, muharram, navaratri
   , orthodoxEaster, passover, rajab, rakshaBandhan, ramadan, roshHashana
   , thaiPongal, thiruOnam, tishaBAv, tuBishvat, vasantPanchami, vesak
-  , yomHaatzmaut
+  , yomHaatzmaut, vaisakhi
   ) where
 
 import Data.Maybe
@@ -1621,4 +1621,42 @@ vesak' = mapMaybe toTimeObjectM
   , (2028, 5, 8)
   , (2029, 5, 27)
   , (2030, 5, 17)
+  ]
+
+vaisakhi :: TimeData
+vaisakhi = computedDays vaisakhi'
+
+vaisakhi' :: [TimeObject]
+vaisakhi' = mapMaybe toTimeObjectM
+  [ (2000, 4, 13)
+  , (2001, 4, 13)
+  , (2002, 4, 14)
+  , (2003, 4, 14)
+  , (2004, 4, 13)
+  , (2005, 4, 13)
+  , (2006, 4, 14)
+  , (2007, 4, 14)
+  , (2008, 4, 13)
+  , (2009, 4, 14)
+  , (2010, 4, 14)
+  , (2011, 4, 14)
+  , (2012, 4, 13)
+  , (2013, 4, 14)
+  , (2014, 4, 14)
+  , (2015, 4, 14)
+  , (2016, 4, 13)
+  , (2017, 4, 14)
+  , (2018, 4, 14)
+  , (2019, 4, 14)
+  , (2020, 4, 13)
+  , (2021, 4, 14)
+  , (2022, 4, 14)
+  , (2023, 4, 14)
+  , (2024, 4, 13)
+  , (2025, 4, 14)
+  , (2026, 4, 14)
+  , (2027, 4, 14)
+  , (2028, 4, 13)
+  , (2029, 4, 14)
+  , (2030, 4, 14)
   ]

@@ -1440,6 +1440,12 @@ allExamples = concat
              [ "makar sankranti 2019"
              , "maghi in 2019"
              ]
+  , examples (datetimeHoliday (2018, 4, 14, 0, 0, 0) Day "Vaisakhi")
+             [ "Vaisakhi 2018"
+             , "baisakhi in 2018"
+             , "Vasakhi 2018"
+             , "vaishakhi 2018"
+             ]
   , examples (datetimeHoliday (2018, 8, 24, 0, 0, 0) Day "Thiru Onam")
              [ "onam 2018"
              , "Thiru Onam 2018"

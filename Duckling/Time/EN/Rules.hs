@@ -1734,6 +1734,7 @@ ruleComputedHolidays = mkRuleHolidays
   , ( "Kaanum Pongal", "(kaanum|kanni)\\s+pongal"
     , cycleNthAfter False TG.Day 2 thaiPongal )
   , ( "Lag BaOmer", "lag b[a']omer", lagBaOmer )
+  , ( "Vaisakhi", "mesadi|[bv]aisakhi|vaisakhadi|vasakhi|vaishakhi", vaisakhi)
   , ( "Laylat al-Qadr"
     , "laylat al[\\-\\s][qk]adr|night of (destiny|measures|power|value)"
     , cycleNthAfter False TG.Day 26 ramadan )

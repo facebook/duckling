@@ -164,6 +164,9 @@ rulePeriodicHolidays = mkRuleHolidays
   , ( "Casimir Pulaski Day", "casimir pulaski day", nthDOWOfMonth 1 1 3 )
   , ( "Child Health Day", "child health day", nthDOWOfMonth 1 1 10 )
   , ( "Columbus Day", "columbus day", nthDOWOfMonth 2 1 10 )
+  , ( "Daylight Saving Start Day", "daylight savings? start( day)?", nthDOWOfMonth 2 7 3 )
+  , ( "Daylight Saving End Day", "daylight savings? end( day)?", nthDOWOfMonth 1 7 11 )
+
   -- Saturday after Labor Day
   , ( "Carl Garner Federal Lands Cleanup Day"
     , "carl garner federal lands cleanup day"

@@ -193,4 +193,16 @@ allExamples = concat
   , examples (datetimeHoliday (2018, 5, 23, 0, 0, 0) Day "Emergency Medical Services for Children Day")
              [ "emsc day 2018"
              ]
+  , examples (datetimeHoliday (2017, 3, 12, 0, 0, 0) Day "Daylight Saving Start Day")
+             [ "daylight saving start day 2017"
+             , "daylight saving start 2017"
+             , "daylight savings start day 2017"
+             , "daylight savings start 2017"
+             ]
+  , examples (datetimeHoliday (2017, 11, 5, 0, 0, 0) Day "Daylight Saving End Day")
+             [ "daylight saving end day 2017"
+             , "daylight saving end 2017"
+             , "daylight savings end day 2017"
+             , "daylight savings end 2017"
+             ]
   ]

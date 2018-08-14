@@ -1693,7 +1693,7 @@ ruleComputedHolidays = mkRuleHolidays
     , cycleNthAfter False TG.Day 8 dhanteras )
   , ( "Boghi", "boghi|bogi\\s+pandigai"
     , cycleNthAfter False TG.Day (-1) thaiPongal )
-  , ( "Chinese New Year", "chinese\\s+(lunar\\s+)?new\\s+year('s\\s+day)?"
+  , ( "Chinese New Year", "chinese\\s+(lunar\\s+)?new\\s+year('?s(\\s+day)?)?"
     , chineseNewYear )
   , ( "Clean Monday"
     , "(orthodox\\s+)?(ash|clean|green|pure|shrove)\\s+monday|monday of lent"

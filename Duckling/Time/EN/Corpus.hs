@@ -1290,6 +1290,7 @@ allExamples = concat
   , examples (datetimeHoliday (2013, 2, 10, 0, 0, 0) Day "Chinese New Year")
              [ "last chinese new year"
              , "last chinese lunar new year's day"
+             , "last chinese new years"
              ]
   , examples (datetimeHoliday (2018, 2, 16, 0, 0, 0) Day "Chinese New Year")
              [ "chinese new year's day 2018"

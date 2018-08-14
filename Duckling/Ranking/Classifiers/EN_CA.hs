@@ -1942,8 +1942,8 @@ classifiers
                                likelihoods = HashMap.fromList [("", 0.0)], n = 5}}),
        ("Chinese New Year",
         Classifier{okData =
-                     ClassData{prior = 0.0, unseen = -1.9459101490553135,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 5},
+                     ClassData{prior = 0.0, unseen = -2.0794415416798357,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 6},
                    koData =
                      ClassData{prior = -infinity, unseen = -0.6931471805599453,
                                likelihoods = HashMap.fromList [], n = 0}}),
@@ -2497,22 +2497,22 @@ classifiers
                                n = 30}}),
        ("last <time>",
         Classifier{okData =
-                     ClassData{prior = -0.5306282510621704,
-                               unseen = -3.4965075614664802,
+                     ClassData{prior = -0.49247648509779407,
+                               unseen = -3.5553480614894135,
                                likelihoods =
                                  HashMap.fromList
-                                   [("Father's Day", -2.772588722239781),
-                                    ("Martin Luther King's Day", -2.772588722239781),
-                                    ("Mother's Day", -2.772588722239781),
-                                    ("day", -1.1631508098056809), ("Sunday", -2.772588722239781),
-                                    ("Chinese New Year", -2.367123614131617),
-                                    ("Thanksgiving Day", -2.772588722239781),
-                                    ("Easter Sunday", -2.772588722239781),
-                                    ("hour", -2.772588722239781), ("Tuesday", -2.772588722239781),
-                                    ("week-end", -2.772588722239781)],
-                               n = 10},
+                                   [("Father's Day", -2.833213344056216),
+                                    ("Martin Luther King's Day", -2.833213344056216),
+                                    ("Mother's Day", -2.833213344056216),
+                                    ("day", -1.128465251817791), ("Sunday", -2.833213344056216),
+                                    ("Chinese New Year", -2.1400661634962708),
+                                    ("Thanksgiving Day", -2.833213344056216),
+                                    ("Easter Sunday", -2.833213344056216),
+                                    ("hour", -2.833213344056216), ("Tuesday", -2.833213344056216),
+                                    ("week-end", -2.833213344056216)],
+                               n = 11},
                    koData =
-                     ClassData{prior = -0.8873031950009028, unseen = -3.295836866004329,
+                     ClassData{prior = -0.9444616088408514, unseen = -3.295836866004329,
                                likelihoods =
                                  HashMap.fromList
                                    [("Monday", -2.5649493574615367), ("day", -2.159484249353372),
@@ -2861,13 +2861,13 @@ classifiers
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("New Year's Day",
         Classifier{okData =
-                     ClassData{prior = -1.6094379124341003,
+                     ClassData{prior = -1.7047480922384253,
                                unseen = -1.3862943611198906,
                                likelihoods = HashMap.fromList [("", 0.0)], n = 2},
                    koData =
-                     ClassData{prior = -0.2231435513142097,
-                               unseen = -2.3025850929940455,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 8}}),
+                     ClassData{prior = -0.2006706954621511,
+                               unseen = -2.3978952727983707,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 9}}),
        ("fortnight",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -1.3862943611198906,

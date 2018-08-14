@@ -1847,8 +1847,8 @@ classifiers
                                likelihoods = HashMap.fromList [("", 0.0)], n = 5}}),
        ("Chinese New Year",
         Classifier{okData =
-                     ClassData{prior = 0.0, unseen = -1.9459101490553135,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 5},
+                     ClassData{prior = 0.0, unseen = -2.0794415416798357,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 6},
                    koData =
                      ClassData{prior = -infinity, unseen = -0.6931471805599453,
                                likelihoods = HashMap.fromList [], n = 0}}),
@@ -2384,19 +2384,18 @@ classifiers
                                n = 30}}),
        ("last <time>",
         Classifier{okData =
-                     ClassData{prior = -0.6931471805599453,
-                               unseen = -3.1780538303479458,
+                     ClassData{prior = -0.6286086594223742, unseen = -3.258096538021482,
                                likelihoods =
                                  HashMap.fromList
-                                   [("Martin Luther King's Day", -2.4423470353692043),
-                                    ("day", -1.1895840668738362), ("Sunday", -2.4423470353692043),
-                                    ("Chinese New Year", -2.03688192726104),
-                                    ("Easter Sunday", -2.4423470353692043),
-                                    ("hour", -2.4423470353692043), ("Tuesday", -2.4423470353692043),
-                                    ("week-end", -2.4423470353692043)],
-                               n = 7},
+                                   [("Martin Luther King's Day", -2.5257286443082556),
+                                    ("day", -1.1394342831883648), ("Sunday", -2.5257286443082556),
+                                    ("Chinese New Year", -1.8325814637483102),
+                                    ("Easter Sunday", -2.5257286443082556),
+                                    ("hour", -2.5257286443082556), ("Tuesday", -2.5257286443082556),
+                                    ("week-end", -2.5257286443082556)],
+                               n = 8},
                    koData =
-                     ClassData{prior = -0.6931471805599453,
+                     ClassData{prior = -0.7621400520468967,
                                unseen = -3.1780538303479458,
                                likelihoods =
                                  HashMap.fromList
@@ -2727,13 +2726,13 @@ classifiers
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("New Year's Day",
         Classifier{okData =
-                     ClassData{prior = -1.6094379124341003,
+                     ClassData{prior = -1.7047480922384253,
                                unseen = -1.3862943611198906,
                                likelihoods = HashMap.fromList [("", 0.0)], n = 2},
                    koData =
-                     ClassData{prior = -0.2231435513142097,
-                               unseen = -2.3025850929940455,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 8}}),
+                     ClassData{prior = -0.2006706954621511,
+                               unseen = -2.3978952727983707,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 9}}),
        ("fortnight",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -1.3862943611198906,

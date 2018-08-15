@@ -2702,6 +2702,15 @@ classifiers
                    koData =
                      ClassData{prior = -infinity, unseen = -1.0986122886681098,
                                likelihoods = HashMap.fromList [], n = 0}}),
+       ("Purim",
+        Classifier{okData =
+                     ClassData{prior = -0.6931471805599453,
+                               unseen = -1.0986122886681098,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 1},
+                   koData =
+                     ClassData{prior = -0.6931471805599453,
+                               unseen = -1.0986122886681098,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 1}}),
        ("<time> before last|after next",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -2.639057329615259,
@@ -3311,6 +3320,13 @@ classifiers
                                n = 9},
                    koData =
                      ClassData{prior = -infinity, unseen = -2.3978952727983707,
+                               likelihoods = HashMap.fromList [], n = 0}}),
+       ("Shushan Purim",
+        Classifier{okData =
+                     ClassData{prior = 0.0, unseen = -1.0986122886681098,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 1},
+                   koData =
+                     ClassData{prior = -infinity, unseen = -0.6931471805599453,
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("August",
         Classifier{okData =

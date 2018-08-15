@@ -1767,11 +1767,13 @@ ruleComputedHolidays = mkRuleHolidays
     , cycleNthAfter False TG.Day (-7) easterSunday )
   , ( "Pentecost", "pentecost|white sunday|whitsunday"
     , cycleNthAfter False TG.Day 49 easterSunday )
+  , ( "Purim", "purim", purim )
   , ( "Raksha Bandhan", "raksha(\\s+)?bandhan|rakhi", rakshaBandhan )
   , ( "Shemini Atzeret", "shemini\\s+atzeret"
     , cycleNthAfter False TG.Day 21 roshHashana )
   , ( "Shrove Tuesday", "pancake (tues)?day|shrove tuesday"
     , cycleNthAfter False TG.Day (-47) easterSunday )
+  , ( "Shushan Purim", "shushan\\s+purim", cycleNthAfter False TG.Day 1 purim )
   , ( "Simchat Torah", "simc?hat\\s+torah"
     , cycleNthAfter False TG.Day 22 roshHashana )
   , ( "Thai Pongal"

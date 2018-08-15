@@ -164,8 +164,8 @@ classifiers
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("Martin Luther King's Day",
         Classifier{okData =
-                     ClassData{prior = 0.0, unseen = -2.3025850929940455,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 8},
+                     ClassData{prior = 0.0, unseen = -2.4849066497880004,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 10},
                    koData =
                      ClassData{prior = -infinity, unseen = -0.6931471805599453,
                                likelihoods = HashMap.fromList [], n = 0}}),
@@ -2571,17 +2571,17 @@ classifiers
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("next <time>",
         Classifier{okData =
-                     ClassData{prior = 0.0, unseen = -3.332204510175204,
+                     ClassData{prior = 0.0, unseen = -3.4657359027997265,
                                likelihoods =
                                  HashMap.fromList
-                                   [("Martin Luther King's Day", -2.6026896854443837),
-                                    ("Halloween", -2.6026896854443837),
-                                    ("Wednesday", -2.6026896854443837),
-                                    ("Boss's Day", -2.6026896854443837),
-                                    ("Monday", -2.6026896854443837), ("day", -1.0986122886681098),
-                                    ("March", -2.6026896854443837), ("month", -2.6026896854443837),
-                                    ("Tuesday", -1.9095425048844386)],
-                               n = 9},
+                                   [("Martin Luther King's Day", -2.0476928433652555),
+                                    ("Halloween", -2.740840023925201),
+                                    ("Wednesday", -2.740840023925201),
+                                    ("Boss's Day", -2.740840023925201),
+                                    ("Monday", -2.740840023925201), ("day", -1.0360919316867756),
+                                    ("March", -2.740840023925201), ("month", -2.740840023925201),
+                                    ("Tuesday", -2.0476928433652555)],
+                               n = 11},
                    koData =
                      ClassData{prior = -infinity, unseen = -2.3025850929940455,
                                likelihoods = HashMap.fromList [], n = 0}}),

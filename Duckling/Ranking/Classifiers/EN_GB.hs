@@ -170,8 +170,8 @@ classifiers
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("Martin Luther King's Day",
         Classifier{okData =
-                     ClassData{prior = 0.0, unseen = -2.3025850929940455,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 8},
+                     ClassData{prior = 0.0, unseen = -2.4849066497880004,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 10},
                    koData =
                      ClassData{prior = -infinity, unseen = -0.6931471805599453,
                                likelihoods = HashMap.fromList [], n = 0}}),
@@ -2635,19 +2635,19 @@ classifiers
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("next <time>",
         Classifier{okData =
-                     ClassData{prior = 0.0, unseen = -3.5263605246161616,
+                     ClassData{prior = 0.0, unseen = -3.6375861597263857,
                                likelihoods =
                                  HashMap.fromList
-                                   [("Martin Luther King's Day", -2.803360380906535),
-                                    ("Halloween", -2.803360380906535),
-                                    ("Wednesday", -2.803360380906535),
-                                    ("Boss's Day", -2.803360380906535),
-                                    ("Mothering Sunday", -2.803360380906535),
-                                    ("Monday", -2.803360380906535), ("day", -1.0986122886681098),
-                                    ("Thanksgiving Day", -2.803360380906535),
-                                    ("March", -2.803360380906535), ("month", -2.803360380906535),
-                                    ("Tuesday", -2.1102132003465894)],
-                               n = 11},
+                                   [("Martin Luther King's Day", -2.2246235515243336),
+                                    ("Halloween", -2.917770732084279),
+                                    ("Wednesday", -2.917770732084279),
+                                    ("Boss's Day", -2.917770732084279),
+                                    ("Mothering Sunday", -2.917770732084279),
+                                    ("Monday", -2.917770732084279), ("day", -1.0459685551826876),
+                                    ("Thanksgiving Day", -2.917770732084279),
+                                    ("March", -2.917770732084279), ("month", -2.917770732084279),
+                                    ("Tuesday", -2.2246235515243336)],
+                               n = 13},
                    koData =
                      ClassData{prior = -infinity, unseen = -2.4849066497880004,
                                likelihoods = HashMap.fromList [], n = 0}}),

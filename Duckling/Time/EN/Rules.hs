@@ -1653,7 +1653,7 @@ rulePeriodicHolidays = mkRuleHolidays
   , ( "International Day of Cooperatives"
     , "international day of co\\-?operatives", nthDOWOfMonth 1 6 7 )
   , ( "Martin Luther King's Day"
-    , "(MLK|Martin Luther King,?)( Jr\\.?| Junior)? day|(civil|idaho human) rights day"
+    , "(MLK|Martin Luther King('?s)?,?)( Jr\\.?| Junior)? day|(civil|idaho human) rights day"
     , nthDOWOfMonth 3 1 1
     )
 

@@ -108,6 +108,7 @@ negativeCorpus = (testContext, testOptions, examples)
       , "4a."
       , "A4 A5"
       , "palm"
+      , "Martin Luther King' day"
       ]
 
 latentCorpus :: Corpus
@@ -761,6 +762,8 @@ allExamples = concat
   , examples (datetimeHoliday (2014, 1, 20, 0, 0, 0) Day "Martin Luther King's Day")
              [ "MLK day"
              , "next Martin Luther King day"
+             , "next Martin Luther King's day"
+             , "next Martin Luther Kings day"
              , "this MLK day"
              ]
   , examples (datetimeHoliday (2013, 1, 21, 0, 0, 0) Day "Martin Luther King's Day")

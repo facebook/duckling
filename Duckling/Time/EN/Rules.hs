@@ -79,12 +79,12 @@ ruleIntersectYear = Rule
       _ -> Nothing
   }
 
-ruleAbsorbOnTime :: Rule
-ruleAbsorbOnTime = Rule
-  { name = "on <date>"
+ruleAbsorbOnDay :: Rule
+ruleAbsorbOnDay = Rule
+  { name = "on <day>"
   , pattern =
     [ regex "on"
-    , dimension Time
+    , Predicate $ isGrainOfTime TG.Day
     ]
   , prod = \tokens -> case tokens of
       (_:token:_) -> Just token
@@ -2298,7 +2298,7 @@ rules =
   [ ruleIntersect
   , ruleIntersectOf
   , ruleIntersectYear
-  , ruleAbsorbOnTime
+  , ruleAbsorbOnDay
   , ruleAbsorbOnADOW
   , ruleAbsorbInMonthYear
   , ruleAbsorbCommaTOD

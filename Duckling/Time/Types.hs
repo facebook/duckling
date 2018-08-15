@@ -815,13 +815,21 @@ data TimeIntervalType = Open | Closed
   deriving (Eq, Show)
 
 timeInterval :: TimeIntervalType -> TimeObject -> TimeObject -> TimeObject
-timeInterval intervalType t1 t2 = TimeObject
-  { start = start t1
-  , grain = min (grain t1) (grain t2)
+timeInterval
+  intervalType
+  TimeObject{start = s1, grain = g1}
+  TimeObject{start = s2, end = e2, grain = g2} = TimeObject
+  { start = s1
+  , grain = g'
   , end = Just $ case intervalType of
-                   Open -> start t2
-                   Closed -> timeEnd t2
+      Open -> s2
+      Closed -> fromMaybe (TG.add s2 g2' 1) e2
   }
+  where
+    g' = min g1 g2
+    g2'
+      | g1 < TG.Day && g2 < TG.Day = g'
+      | otherwise = g2
 
 timeStartsBeforeTheEndOf :: TimeObject -> TimeObject -> Bool
 timeStartsBeforeTheEndOf t1 t2 = start t1 < timeEnd t2

@@ -984,9 +984,17 @@ allExamples = concat
              , "from 3 to 4 in the PM"
              , "around 3-4pm"
              ]
-  , examples (datetimeInterval ((2013, 2, 12, 15, 30, 0), (2013, 2, 12, 19, 0, 0)) Minute)
+  , examples (datetimeInterval ((2013, 2, 12, 15, 30, 0), (2013, 2, 12, 18, 1, 0)) Minute)
              [ "3:30 to 6 PM"
              , "3:30-6 p.m."
+             , "3:30-6:00pm"
+             , "from 3:30 to six p.m."
+             , "from 3:30 to 6:00pm"
+             , "later than 3:30pm but before 6pm"
+             , "between 3:30pm and 6 pm"
+             ]
+  , examples (datetimeInterval ((2013, 2, 12, 15, 0, 0), (2013, 2, 12, 18, 0, 1)) Second)
+             [ "3pm - 6:00:00pm"
              ]
   , examples (datetimeInterval ((2013, 2, 12, 8, 0, 0), (2013, 2, 12, 14, 0, 0)) Hour)
              [ "8am - 1pm"

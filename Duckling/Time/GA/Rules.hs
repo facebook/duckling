@@ -454,7 +454,7 @@ ruleAnois = Rule
   , pattern =
     [ regex "anois|(ag an (t-?)?am seo)"
     ]
-  , prod = \_ -> tt $ cycleNth TG.Second 0
+  , prod = \_ -> tt now
   }
 
 ruleLFhilePdraig :: Rule

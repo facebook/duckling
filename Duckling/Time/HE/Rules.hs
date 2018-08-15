@@ -356,7 +356,7 @@ ruleNow = Rule
   , pattern =
     [ regex "עכשיו|מייד"
     ]
-  , prod = \_ -> tt $ cycleNth TG.Second 0
+  , prod = \_ -> tt now
   }
 
 ruleCurrentDayofweek :: Rule

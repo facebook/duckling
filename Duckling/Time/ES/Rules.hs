@@ -691,7 +691,7 @@ ruleRightNow = Rule
   , pattern =
     [ regex "ahor(it)?a|ya|en\\s?seguida|cuanto antes"
     ]
-  , prod = \_ -> tt $ cycleNth TG.Second 0
+  , prod = \_ -> tt now
   }
 
 ruleDimTimeDeLaTarde :: Rule
@@ -834,8 +834,7 @@ ruleDentroDeDuration = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Duration dd:_) ->
-        Token Time <$>
-          interval TTime.Open (cycleNth TG.Second 0) (inDuration dd)
+        Token Time <$> interval TTime.Open now (inDuration dd)
       _ -> Nothing
   }
 

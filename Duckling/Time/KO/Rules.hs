@@ -175,7 +175,7 @@ ruleNow = Rule
   , pattern =
     [ regex "방금|지금|방금|막"
     ]
-  , prod = \_ -> tt $ cycleNth TG.Second 0
+  , prod = \_ -> tt now
   }
 
 ruleMonth :: Rule
@@ -678,9 +678,7 @@ ruleWithinDuration = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Duration dd:_) ->
-        let from = cycleNth TG.Second 0
-            to = inDuration dd
-        in Token Time <$> interval TTime.Open from to
+        Token Time <$> interval TTime.Open now (inDuration dd)
       _ -> Nothing
   }
 
@@ -1091,8 +1089,7 @@ ruleByTime = Rule
     , regex "까지"
     ]
   , prod = \tokens -> case tokens of
-      (Token Time td:_) -> Token Time <$>
-        interval TTime.Open (cycleNth TG.Second 0) td
+      (Token Time td:_) -> Token Time <$> interval TTime.Open now td
       _ -> Nothing
   }
 

@@ -424,8 +424,7 @@ ruleInDuration = Rule
       (Token RegexMatch (GroupMatch (match:_)):
        Token Duration dd:
        _) -> case Text.toLower match of
-        "entro" -> Token Time <$>
-          interval TTime.Open (cycleNth TG.Second 0) (inDuration dd)
+        "entro" -> Token Time <$> interval TTime.Open now (inDuration dd)
         "in"    -> tt $ inDuration dd
         _       -> Nothing
       _ -> Nothing
@@ -463,7 +462,7 @@ ruleRightNow = Rule
   , pattern =
     [ regex "(subito|(immediata|attual)mente|(proprio )?adesso|(in questo|al) momento|ora)"
     ]
-  , prod = \_ -> tt $ cycleNth TG.Second 0
+  , prod = \_ -> tt now
   }
 
 ruleToday :: Rule
@@ -1034,9 +1033,7 @@ ruleEntroIlDuration = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token TimeGrain grain:_) ->
-        let from = cycleNth TG.Second 0
-            to = cycleNth grain 1
-        in Token Time <$> interval TTime.Open from to
+        Token Time <$> interval TTime.Open now (cycleNth grain 1)
       _ -> Nothing
   }
 
@@ -1460,9 +1457,7 @@ ruleFinoAlDatetimeInterval = Rule
     , Predicate isNotLatent
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td:_) ->
-        let now = cycleNth TG.Second 0
-        in Token Time <$> interval TTime.Open now td
+      (_:Token Time td:_) -> Token Time <$> interval TTime.Open now td
       _ -> Nothing
   }
 

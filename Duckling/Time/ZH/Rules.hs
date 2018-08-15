@@ -229,8 +229,7 @@ ruleThisDayofweek = Rule
     , Predicate isADayOfWeek
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td:_) ->
-        tt $ predNth 0 False td
+      (_:Token Time td:_) -> tt $ predNth 0 False td
       _ -> Nothing
   }
 
@@ -257,8 +256,7 @@ ruleLastTime = Rule
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td:_) ->
-        tt $ predNth (-1) False td
+      (_:Token Time td:_) -> tt $ predNth (-1) False td
       _ -> Nothing
   }
 
@@ -270,8 +268,7 @@ ruleInDuration = Rule
     , dimension Duration
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Duration dd:_) ->
-        tt $ inDuration dd
+      (_:Token Duration dd:_) -> tt $ inDuration dd
       _ -> Nothing
   }
 
@@ -281,7 +278,7 @@ ruleNow = Rule
   , pattern =
     [ regex "现在|此时|此刻|当前|現在|此時|當前|\x5b9c\x5bb6|\x800c\x5bb6|\x4f9d\x5bb6"
     ]
-  , prod = \_ -> tt $ cycleNth TG.Second 0
+  , prod = \_ -> tt now
   }
 
 ruleTheCycleAfterTime :: Rule

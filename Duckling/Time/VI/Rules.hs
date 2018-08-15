@@ -856,7 +856,7 @@ ruleByGi = Rule
   , pattern =
     [ regex "(ngay )?(b(â)y gi(ờ)|l(ú)c n(à)y)"
     ]
-  , prod = \_ -> tt $ cycleNth TG.Second 0
+  , prod = \_ -> tt now
   }
 
 ruleNgyDdmm :: Rule

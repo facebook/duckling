@@ -1263,8 +1263,7 @@ ruleIntervalBy = Rule
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td:_) ->
-        Token Time <$> interval TTime.Open (cycleNth TG.Second 0) td
+      (_:Token Time td:_) -> Token Time <$> interval TTime.Open now td
       _ -> Nothing
   }
 
@@ -1276,8 +1275,7 @@ ruleIntervalByTheEndOf = Rule
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td:_) ->
-        Token Time <$> interval TTime.Closed (cycleNth TG.Second 0) td
+      (_:Token Time td:_) -> Token Time <$> interval TTime.Closed now td
       _ -> Nothing
   }
 
@@ -1387,7 +1385,7 @@ ruleEndOfMonth = Rule
           cycleMonth = cycleNth TG.Month
           parsed = if "by" `Text.isPrefixOf` Text.toLower match
             then
-              ( Just $ cycleNth TG.Second 0
+              ( Just now
               , intersect (dayOfMonth 1) $ cycleMonth 1)
             else
               ( intersect (dayOfMonth 21) $ cycleMonth 0
@@ -1437,7 +1435,7 @@ ruleEndOfYear = Rule
         Token Time <$> interval TTime.Open start end
           where
             std = if "by" `Text.isPrefixOf` Text.toLower match
-              then Just $ cycleNth TG.Second 0
+              then Just now
               else intersect (month 9) $ cycleYear 0
             cycleYear = cycleNth TG.Year
       _ -> Nothing
@@ -2101,8 +2099,7 @@ ruleDurationInWithinAfter = Rule
       (Token RegexMatch (GroupMatch (match:_)):
        Token Duration dd:
        _) -> case Text.toLower match of
-         "within" -> Token Time <$>
-           interval TTime.Open (cycleNth TG.Second 0) (inDuration dd)
+         "within" -> Token Time <$> interval TTime.Open now (inDuration dd)
          "after"  -> tt . withDirection TTime.After $ inDuration dd
          "in"     -> tt $ inDuration dd
          _        -> Nothing

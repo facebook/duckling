@@ -245,7 +245,7 @@ ruleToday = Rule
   , pattern =
     [ regex "오늘|당일|금일"
     ]
-  , prod = \_ -> tt $ cycleNth TG.Day 0
+  , prod = \_ -> tt today
   }
 
 ruleIntegerHourofdayRelativeMinutes :: Rule
@@ -259,8 +259,7 @@ ruleIntegerHourofdayRelativeMinutes = Rule
   , prod = \tokens -> case tokens of
       (Token Time td:token:_) -> do
         v <- getIntValue token
-        t <- minutesBefore v td
-        Just $ Token Time t
+        Token Time <$> minutesBefore v td
       _ -> Nothing
   }
 
@@ -990,8 +989,7 @@ ruleAfterPartofday = Rule
     , regex "지나서|후에"
     ]
   , prod = \tokens -> case tokens of
-      (Token Time td:_) ->
-        Token Time . partOfDay <$> intersect (cycleNth TG.Day 0) td
+      (Token Time td:_) -> Token Time . partOfDay <$> intersect today td
       _ -> Nothing
   }
 

@@ -15,7 +15,7 @@ module Duckling.Time.Helpers
     hasNoDirection, isADayOfWeek, isAMonth, isAnHourOfDay, isAPartOfDay
   , isATimeOfDay, isDOMInteger, isDOMOrdinal, isDOMValue, isGrain
   , isGrainFinerThan, isGrainOfTime, isIntegerBetween, isNotLatent
-  , isOrdinalBetween, isMidnightOrNoon, isOkWithThisNext, sameGrain
+  , isOrdinalBetween, isMidnightOrNoon, isOkWithThisNext, sameGrain, today
     -- Production
   , cycleLastOf, cycleN, cycleNth, cycleNthAfter, dayOfMonth, dayOfWeek
   , durationAfter, durationAgo, durationBefore, mkOkForThisNext, form, hour
@@ -391,6 +391,9 @@ now :: TimeData
 now = td {TTime.timeGrain = TG.NoGrain}
   where
     td = cycleNth TG.Second 0
+
+today :: TimeData
+today = cycleNth TG.Day 0
 
 hour :: Bool -> Int -> TimeData
 hour is12H n = timeOfDay (Just n) is12H $ TTime.timedata'

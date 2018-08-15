@@ -525,7 +525,7 @@ ruleInDurationFromTime = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Duration dd:_:Token Time td1:_) ->
-        Just . Token Time $ durationAfter dd td1
+        tt $ durationAfter dd td1
       _ -> Nothing
 }
 
@@ -785,9 +785,8 @@ ruleAfterWork = Rule
     [ regex "μετά τη δουλειά"
     ]
   , prod = \_ -> do
-      let td1 = cycleNth TG.Day 0
       td2 <- interval TTime.Open (hour False 17) (hour False 21)
-      Token Time . partOfDay <$> intersect td1 td2
+      Token Time . partOfDay <$> intersect today td2
   }
 
 ruleLastNCycle :: Rule
@@ -1129,8 +1128,7 @@ ruleThisPartofday = Rule
     , Predicate isAPartOfDay
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td:_) -> Token Time . partOfDay <$>
-        intersect (cycleNth TG.Day 0) td
+      (_:Token Time td:_) -> Token Time . partOfDay <$> intersect today td
       _ -> Nothing
   }
 
@@ -1374,9 +1372,8 @@ ruleTonight = Rule
     [ regex "απόψε"
     ]
   , prod = \_ -> do
-      let td1 = cycleNth TG.Day 0
       td2 <- interval TTime.Open (hour False 18) (hour False 0)
-      Token Time . partOfDay <$> intersect td1 td2
+      Token Time . partOfDay <$> intersect today td2
   }
 
 ruleTomorrowNight :: Rule

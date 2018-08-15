@@ -221,7 +221,7 @@ ruleEvenings = Rule
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> do
         td1 <- case Text.toLower match of
-          "van"    -> Just $ cycleNth TG.Day 0
+          "van"    -> Just today
           "morgen" -> Just $ cycleNth TG.Day 1
           _        -> Just $ cycleNth TG.Day $ - 1
         td2 <- interval TTime.Open (hour False 18) (hour False 0)
@@ -502,7 +502,7 @@ ruleAfternoons = Rule
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> do
         td1 <- case Text.toLower match of
-          "vanmiddag"     -> Just $ cycleNth TG.Day 0
+          "vanmiddag"     -> Just today
           "morgenmiddag"  -> Just $ cycleNth TG.Day 1
           "morgenmiddags" -> Just $ cycleNth TG.Day 1
           _               -> Just . cycleNth TG.Day $ - 1
@@ -713,9 +713,8 @@ ruleAfterWork = Rule
     [ regex "na het werk"
     ]
   , prod = \_ -> do
-      let td1 = cycleNth TG.Day 0
       td2 <- interval TTime.Open (hour False 17) (hour False 21)
-      Token Time . partOfDay <$> intersect td1 td2
+      Token Time . partOfDay <$> intersect today td2
   }
 
 ruleLastNCycle :: Rule
@@ -1021,7 +1020,7 @@ ruleMornings = Rule
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> do
         td1 <- case Text.toLower match of
-          "vanmorgen"     -> Just $ cycleNth TG.Day 0
+          "vanmorgen"     -> Just today
           "morgenochtend" -> Just $ cycleNth TG.Day 1
           _               -> Just . cycleNth TG.Day $ - 1
         td2 <- interval TTime.Open (hour False 0) (hour False 12)
@@ -1037,8 +1036,7 @@ ruleThisPartofday = Rule
     , Predicate isAPartOfDay
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td:_) -> Token Time . partOfDay <$>
-        intersect (cycleNth TG.Day 0) td
+      (_:Token Time td:_) -> Token Time . partOfDay <$> intersect today td
       _ -> Nothing
   }
 
@@ -1086,9 +1084,8 @@ ruleAfterLunch = Rule
     [ regex "na de lunch|na het middageten"
     ]
   , prod = \_ -> do
-      let td1 = cycleNth TG.Day 0
       td2 <- interval TTime.Open (hour False 13) (hour False 17)
-      Token Time . partOfDay <$> intersect td1 td2
+      Token Time . partOfDay <$> intersect today td2
   }
 
 ruleOnANamedday :: Rule

@@ -256,9 +256,8 @@ ruleLastNight = Rule
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
         let hours = if Text.toLower match == "late " then 3 else 6
-            start = durationBefore (DurationData hours TG.Hour) end
-            end = cycleNth TG.Day 0
-        in Token Time . partOfDay . notLatent <$> interval TTime.Open start end
+            start = durationBefore (DurationData hours TG.Hour) today
+        in Token Time . partOfDay . notLatent <$> interval TTime.Open start today
       _ -> Nothing
   }
 
@@ -695,8 +694,7 @@ ruleNumeralToHOD = Rule
   , prod = \tokens -> case tokens of
       (token:_:Token Time td:_) -> do
         n <- getIntValue token
-        t <- minutesBefore n td
-        Just $ Token Time t
+        Token Time <$> minutesBefore n td
       _ -> Nothing
   }
 
@@ -735,8 +733,7 @@ ruleNumeralAfterHOD = Rule
   , prod = \tokens -> case tokens of
       (token:_:Token Time td:_) -> do
         n <- getIntValue token
-        t <- minutesAfter n td
-        Just $ Token Time t
+        Token Time <$> minutesAfter n td
       _ -> Nothing
   }
 
@@ -896,7 +893,7 @@ rulePODThis = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td:_) -> Token Time . partOfDay . notLatent <$>
-        intersect (cycleNth TG.Day 0) td
+        intersect today td
       _ -> Nothing
   }
 
@@ -906,8 +903,7 @@ ruleTonight = Rule
   , pattern = [regex "(late )?toni(ght|gth|te)s?"]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> do
-        let today = cycleNth TG.Day 0
-            h = if Text.toLower match == "late " then 21 else 18
+        let h = if Text.toLower match == "late " then 21 else 18
         evening <- interval TTime.Open (hour False h) (hour False 0)
         Token Time . partOfDay . notLatent <$> intersect today evening
       _ -> Nothing
@@ -927,8 +923,7 @@ ruleAfterPartofday = Rule
           "school" -> Just (hour False 15, hour False 21)
           _        -> Nothing
         td <- interval TTime.Open start end
-        Token Time . partOfDay . notLatent <$>
-          intersect (cycleNth TG.Day 0) td
+        Token Time . partOfDay . notLatent <$> intersect today td
       _ -> Nothing
   }
 
@@ -973,10 +968,10 @@ ruleWeek = Rule
  , pattern = [regex "(all|rest of the) week"]
  , prod = \case
      (Token RegexMatch (GroupMatch (match:_)):_) ->
-       let end = cycleNthAfter True TG.Day (-2) (cycleNth TG.Week 1)
+       let end = cycleNthAfter True TG.Day (-2) $ cycleNth TG.Week 1
            period = case Text.toLower match of
                       "all" -> interval Closed (cycleNth TG.Week 0) end
-                      "rest of the" -> interval Open (cycleNth TG.Day 0) end
+                      "rest of the" -> interval Open today end
                       _ -> Nothing
        in Token Time <$> period
      _ -> Nothing

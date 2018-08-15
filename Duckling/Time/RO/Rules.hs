@@ -204,7 +204,7 @@ ruleAzi = Rule
   , pattern =
     [ regex "a(st(a|ă))?zi"
     ]
-  , prod = \_ -> tt $ cycleNth TG.Day 0
+  , prod = \_ -> tt today
   }
 
 ruleNoon :: Rule
@@ -408,9 +408,8 @@ ruleDiseara = Rule
     [ regex "disear(a|ă)|((i|î)n aceas(a|ă) )?sear(a|ă)"
     ]
   , prod = \_ -> do
-      let td1 = cycleNth TG.Day 0
       td2 <- interval TTime.Open (hour False 18) (hour False 0)
-      Token Time . partOfDay <$> intersect td1 td2
+      Token Time . partOfDay <$> intersect today td2
   }
 
 ruleIntersectBy :: Rule
@@ -740,7 +739,7 @@ rulePartofdayAsta = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_) ->
-        Token Time . partOfDay <$> intersect (cycleNth TG.Day 0) td
+        Token Time . partOfDay <$> intersect today td
       _ -> Nothing
   }
 

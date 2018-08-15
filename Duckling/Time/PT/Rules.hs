@@ -151,7 +151,7 @@ ruleNow = Rule
   , pattern =
     [ regex "(hoje)|(neste|nesse) momento"
     ]
-  , prod = \_ -> tt $ cycleNth TG.Day 0
+  , prod = \_ -> tt today
   }
 
 ruleDimTimeDaMadrugada :: Rule
@@ -366,8 +366,7 @@ ruleIntegerParaAsHourofdayAsRelativeMinutes = Rule
   , prod = \tokens -> case tokens of
       (token:_:Token Time td:_) -> do
         n <- getIntValue token
-        t <- minutesBefore n td
-        Just $ Token Time t
+        Token Time <$> minutesBefore n td
       _ -> Nothing
   }
 
@@ -417,8 +416,7 @@ ruleIntegerParaAsHourofdayAsRelativeMinutes2 = Rule
   , prod = \tokens -> case tokens of
       (token:_:_:Token Time td:_) -> do
         n <- getIntValue token
-        t <- minutesBefore n td
-        Just $ Token Time t
+        Token Time <$> minutesBefore n td
       _ -> Nothing
   }
 
@@ -560,8 +558,7 @@ rulePartofdayDessaSemana = Rule
     , regex "(d?es[ts]a semana)|agora"
     ]
   , prod = \tokens -> case tokens of
-      (Token Time td:_) ->
-        Token Time . partOfDay <$> intersect (cycleNth TG.Day 0) td
+      (Token Time td:_) -> Token Time . partOfDay <$> intersect today td
       _ -> Nothing
   }
 
@@ -1080,8 +1077,7 @@ ruleThisPartofday = Rule
     , Predicate isAPartOfDay
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td:_) ->
-        Token Time . partOfDay <$> intersect (cycleNth TG.Day 0) td
+      (_:Token Time td:_) -> Token Time . partOfDay <$> intersect today td
       _ -> Nothing
   }
 

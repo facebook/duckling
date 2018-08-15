@@ -48,7 +48,7 @@ ruleInniu = Rule
   , pattern =
     [ regex "inniu"
     ]
-  , prod = \_ -> tt $ cycleNth TG.Day 0
+  , prod = \_ -> tt today
   }
 
 ruleAnOrdinalCycleINdiaidhTime :: Rule

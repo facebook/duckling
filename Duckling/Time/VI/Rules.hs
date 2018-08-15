@@ -162,8 +162,7 @@ rulePartofdayHmNay = Rule
     , regex "(h(ô)m )?nay"
     ]
   , prod = \tokens -> case tokens of
-      (Token Time td:_) ->
-        Token Time . partOfDay <$> intersect (cycleNth TG.Day 0) td
+      (Token Time td:_) -> Token Time . partOfDay <$> intersect today td
       _ -> Nothing
   }
 
@@ -330,7 +329,7 @@ ruleHmNay = Rule
   , pattern =
     [ regex "((ngay )?h(ô)m|b(ữ)a) nay"
     ]
-  , prod = \_ -> tt $ cycleNth TG.Day 0
+  , prod = \_ -> tt today
   }
 
 ruleAtHhmm :: Rule
@@ -521,8 +520,7 @@ ruleAfterWork = Rule
     ]
   , prod = \_ -> do
       td <- interval TTime.Open (hour False 17) (hour False 21)
-      Token Time . partOfDay . notLatent <$>
-        intersect (cycleNth TG.Day 0) td
+      Token Time . partOfDay . notLatent <$> intersect today td
   }
 
 ruleLastNCycle :: Rule
@@ -733,8 +731,7 @@ ruleAfterLunch = Rule
     ]
   , prod = \_ -> do
       td <- interval TTime.Open (hour False 13) (hour False 17)
-      Token Time . partOfDay . notLatent <$>
-        intersect (cycleNth TG.Day 0) td
+      Token Time . partOfDay . notLatent <$> intersect today td
   }
 
 ruleSeason2 :: Rule
@@ -831,7 +828,6 @@ ruleTonight = Rule
     [ regex "(t(ố)i|(đ)(ê)m)( h(ô)m)? nay"
     ]
   , prod = \_ -> do
-      let today = cycleNth TG.Day 0
       evening <- interval TTime.Open (hour False 18) (hour False 0)
       Token Time . partOfDay . notLatent <$> intersect today evening
   }

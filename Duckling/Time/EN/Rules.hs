@@ -2231,7 +2231,7 @@ ruleIntervalForDurationFrom = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Duration dd:_:Token Time td1:_) ->
-        Token Time <$> interval TTime.Open td1 (durationAfter dd td1)
+        Token Time <$> interval TTime.Closed td1 (durationAfter dd td1)
       _ -> Nothing
 }
 
@@ -2245,7 +2245,7 @@ ruleIntervalTimeForDuration = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td1:_:Token Duration dd:_) ->
-        Token Time <$> interval TTime.Open td1 (durationAfter dd td1)
+        Token Time <$> interval TTime.Closed td1 (durationAfter dd td1)
       _ -> Nothing
 }
 
@@ -2260,7 +2260,7 @@ ruleIntervalFromTimeForDuration = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td1:_:Token Duration dd:_) ->
-        Token Time <$> interval TTime.Open td1 (durationAfter dd td1)
+        Token Time <$> interval TTime.Closed td1 (durationAfter dd td1)
       _ -> Nothing
 }
 

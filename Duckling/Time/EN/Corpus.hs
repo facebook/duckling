@@ -679,6 +679,11 @@ allExamples = concat
              , "from 18th Dec for 10 days"
              , "18th Dec for 10 days"
              ]
+  , examples (datetimeInterval ((2013, 2, 12, 16, 0, 0), (2013, 2, 12, 16, 31, 0)) Minute)
+             [ "for 30' starting from 4pm"
+             , "from 4pm for thirty minutes"
+             , "4pm for 30 mins"
+             ]
   , examples (datetimeInterval ((2013, 6, 21, 0, 0, 0), (2013, 9, 24, 0, 0, 0)) Day)
              [ "this Summer"
              , "current summer"

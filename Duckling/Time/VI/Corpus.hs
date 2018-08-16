@@ -341,6 +341,9 @@ allExamples = concat
   , examples (datetime (2017, 4, 23, 16, 0, 0) Minute)
              [ "lúc 4:00 chiều ngày 23/4"
              ]
+  , examples (datetime (2017, 10, 12, 0, 0, 0) Day)
+             [ "ngày 12/10"
+             ]
   , examples (datetime (2017, 4, 23, 16, 0, 0) Hour)
              [ "lúc 4 giờ chiều ngày 23 tháng 4"
              ]

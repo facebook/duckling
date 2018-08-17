@@ -57,6 +57,7 @@ data Lang
   | KA
   | KM
   | KO
+  | LO
   | MY
   | NB
   | NE

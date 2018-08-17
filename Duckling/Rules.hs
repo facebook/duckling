@@ -46,6 +46,7 @@ import qualified Duckling.Rules.JA as JARules
 import qualified Duckling.Rules.KA as KARules
 import qualified Duckling.Rules.KM as KMRules
 import qualified Duckling.Rules.KO as KORules
+import qualified Duckling.Rules.LO as LORules
 import qualified Duckling.Rules.MY as MYRules
 import qualified Duckling.Rules.NB as NBRules
 import qualified Duckling.Rules.NE as NERules
@@ -105,6 +106,7 @@ defaultRules JA = JARules.defaultRules
 defaultRules KA = KARules.defaultRules
 defaultRules KM = KMRules.defaultRules
 defaultRules KO = KORules.defaultRules
+defaultRules LO = LORules.defaultRules
 defaultRules MY = MYRules.defaultRules
 defaultRules NB = NBRules.defaultRules
 defaultRules NE = NERules.defaultRules
@@ -144,6 +146,7 @@ localeRules JA = JARules.localeRules
 localeRules KA = KARules.localeRules
 localeRules KM = KMRules.localeRules
 localeRules KO = KORules.localeRules
+localeRules LO = LORules.localeRules
 localeRules MY = MYRules.localeRules
 localeRules NB = NBRules.localeRules
 localeRules NE = NERules.localeRules
@@ -183,6 +186,7 @@ langRules JA = JARules.langRules
 langRules KA = KARules.langRules
 langRules KM = KMRules.langRules
 langRules KO = KORules.langRules
+langRules LO = LORules.langRules
 langRules MY = MYRules.langRules
 langRules NB = NBRules.langRules
 langRules NE = NERules.langRules

@@ -617,6 +617,12 @@ allExamples = concat
   , examples (datetime (2013, 2, 19, 4, 0, 0) Hour)
              [ "in 7 days"
              ]
+  , examples (datetime (2013, 2, 19, 17, 0, 0) Hour)
+             [ "in 7 days at 5pm"
+             ]
+  , examples (datetime (2017, 2, 1, 17, 0, 0) Hour)
+             [ "in 4 years at 5pm"
+             ]
   , examples (datetime (2013, 2, 19, 0, 0, 0) Day)
              [ "in 1 week"
              , "in a week"

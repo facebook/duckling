@@ -13,8 +13,8 @@
 module Duckling.Time.Helpers
   ( -- Patterns
     hasNoDirection, isADayOfWeek, isAMonth, isAnHourOfDay, isAPartOfDay
-  , isATimeOfDay, isDOMInteger, isDOMOrdinal, isDOMValue, isGrain
-  , isGrainFinerThan, isGrainOfTime, isIntegerBetween, isNotLatent
+  , isATimeOfDay, isDurationGreaterThan, isDOMInteger, isDOMOrdinal, isDOMValue
+  , isGrain, isGrainFinerThan, isGrainOfTime, isIntegerBetween, isNotLatent
   , isOrdinalBetween, isMidnightOrNoon, isOkWithThisNext, sameGrain, today
     -- Production
   , cycleLastOf, cycleN, cycleNth, cycleNthAfter, dayOfMonth, dayOfWeek
@@ -334,6 +334,10 @@ isOrdinalBetween :: Int -> Int -> Predicate
 isOrdinalBetween low high (Token Ordinal od) =
   TOrdinal.isBetween (TOrdinal.value od) low high
 isOrdinalBetween _ _ _ = False
+
+isDurationGreaterThan :: TG.Grain -> Predicate
+isDurationGreaterThan value (Token Duration DurationData{TDuration.grain = grain}) = grain > value
+isDurationGreaterThan _ _ = False
 
 isDOMOrdinal :: Predicate
 isDOMOrdinal = isOrdinalBetween 1 31

@@ -2181,6 +2181,21 @@ ruleDayInDuration = Rule
       _ -> Nothing
   }
 
+ruleInDurationAtTime :: Rule
+ruleInDurationAtTime = Rule
+  { name = "in <duration> at <time-of-day>"
+  , pattern =
+    [ regex "in"
+    , Predicate $ isDurationGreaterThan TG.Hour
+    , regex "at"
+    , Predicate isATimeOfDay
+    ]
+  , prod = \tokens -> case tokens of
+      (_:Token Duration dd:_:Token Time td:_) ->
+        Token Time <$> intersect td (inDurationInterval dd)
+      _ -> Nothing
+  }
+
 ruleInNumeral :: Rule
 ruleInNumeral = Rule
   { name = "in <number> (implicit minutes)"
@@ -2394,6 +2409,7 @@ rules =
   , ruleDurationHenceAgo
   , ruleDayDurationHenceAgo
   , ruleDayInDuration
+  , ruleInDurationAtTime
   , ruleDurationAfterBeforeTime
   , ruleIntervalForDurationFrom
   , ruleIntervalFromTimeForDuration

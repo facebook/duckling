@@ -6,16 +6,19 @@
 -- of patent rights can be found in the PATENTS file in the same directory.
 
 
-module Duckling.Dimensions.KA
-  ( allDimensions
+module Duckling.Ordinal.KA.Tests
+  ( tests
   ) where
 
-import Duckling.Dimensions.Types
+import Prelude
+import Data.String
+import Test.Tasty
 
-allDimensions :: [Some Dimension]
-allDimensions =
-  [ This Numeral
-  , This Ordinal
-  , This Duration
-  , This Time
+import Duckling.Dimensions.Types
+import Duckling.Ordinal.KA.Corpus
+import Duckling.Testing.Asserts
+
+tests :: TestTree
+tests = testGroup "KA Tests"
+  [ makeCorpusTest [This Ordinal] corpus
   ]

@@ -23,7 +23,7 @@ module Duckling.Time.Helpers
   , inTimezone, longWEBefore, minute, minutesAfter, minutesBefore, mkLatent
   , month, monthDay, notLatent, now, nthDOWOfMonth, partOfDay, predLastOf
   , predNth, predNthAfter, predNthClosest, season, second, timeOfDayAMPM
-  , weekday, weekend, withDirection, year, yearMonthDay, tt, durationIntervalAgo
+  , weekday, weekend, workweek, withDirection, year, yearMonthDay, tt, durationIntervalAgo
   , inDurationInterval, intersectWithReplacement, yearADBC, yearMonth
     -- Other
   , getIntValue, timeComputed
@@ -625,6 +625,12 @@ weekend = interval' TTime.Open (fri, mon)
   where
     fri = intersect' (dayOfWeek 5, hour False 18)
     mon = intersect' (dayOfWeek 1, hour False 0)
+
+workweek :: TimeData
+workweek = interval' TTime.Open (mon, fri)
+  where
+    mon = intersect' (dayOfWeek 1, hour False 10)
+    fri = intersect' (dayOfWeek 5, hour False 18)
 
 -- Zero-indexed weeks, Monday is 1
 -- Use `predLastOf` for last day of week of month

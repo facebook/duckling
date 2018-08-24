@@ -208,7 +208,7 @@ ruleCAD :: Rule
 ruleCAD = Rule
   { name = "CAD"
   , pattern =
-    [ regex "(k|c)anadiske? dollars?|CAD"
+    [ regex "(?:k|c)anadiske? dollars?|CAD"
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly CAD
   }
@@ -226,7 +226,7 @@ ruleCNY :: Rule
 ruleCNY = Rule
   { name = "CNY"
   , pattern =
-    [ regex "(kinesiske? )?(yuan|renminbi)|CNY"
+    [ regex "(?:kinesiske? )?(?:yuan|renminbi)|CNY"
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly CNY
   }
@@ -235,7 +235,7 @@ ruleCZK :: Rule
 ruleCZK = Rule
   { name = "CZK"
   , pattern =
-    [ regex "(tsjekkiske? )?koruna|CZK"
+    [ regex "(?:tsjekkiske? )?koruna|CZK"
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly CZK
   }
@@ -271,7 +271,7 @@ ruleNZD :: Rule
 ruleNZD = Rule
   { name = "NZD"
   , pattern =
-    [ regex "(nz|new zealand(ske)?) dollars?|NZD"
+    [ regex "(?:nz|new zealand(?:ske)?) dollars?|NZD"
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly NZD
   }

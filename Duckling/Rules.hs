@@ -25,6 +25,7 @@ import Duckling.Types
 import qualified Duckling.Rules.AR as ARRules
 import qualified Duckling.Rules.Common as CommonRules
 import qualified Duckling.Rules.BG as BGRules
+import qualified Duckling.Rules.BN as BNRules
 import qualified Duckling.Rules.CS as CSRules
 import qualified Duckling.Rules.DA as DARules
 import qualified Duckling.Rules.DE as DERules
@@ -43,7 +44,9 @@ import qualified Duckling.Rules.ID as IDRules
 import qualified Duckling.Rules.IT as ITRules
 import qualified Duckling.Rules.JA as JARules
 import qualified Duckling.Rules.KA as KARules
+import qualified Duckling.Rules.KM as KMRules
 import qualified Duckling.Rules.KO as KORules
+import qualified Duckling.Rules.LO as LORules
 import qualified Duckling.Rules.MY as MYRules
 import qualified Duckling.Rules.NB as NBRules
 import qualified Duckling.Rules.NE as NERules
@@ -82,6 +85,7 @@ rulesFor' (Locale lang Nothing) dim =
 defaultRules :: Lang -> Some Dimension -> [Rule]
 defaultRules AR = ARRules.defaultRules
 defaultRules BG = BGRules.defaultRules
+defaultRules BN = BNRules.defaultRules
 defaultRules CS = CSRules.defaultRules
 defaultRules DA = DARules.defaultRules
 defaultRules DE = DERules.defaultRules
@@ -100,7 +104,9 @@ defaultRules ID = IDRules.defaultRules
 defaultRules IT = ITRules.defaultRules
 defaultRules JA = JARules.defaultRules
 defaultRules KA = KARules.defaultRules
+defaultRules KM = KMRules.defaultRules
 defaultRules KO = KORules.defaultRules
+defaultRules LO = LORules.defaultRules
 defaultRules MY = MYRules.defaultRules
 defaultRules NB = NBRules.defaultRules
 defaultRules NE = NERules.defaultRules
@@ -119,6 +125,7 @@ defaultRules ZH = ZHRules.defaultRules
 localeRules :: Lang -> Region -> Some Dimension -> [Rule]
 localeRules AR = ARRules.localeRules
 localeRules BG = BGRules.localeRules
+localeRules BN = BNRules.localeRules
 localeRules CS = CSRules.localeRules
 localeRules DA = DARules.localeRules
 localeRules DE = DERules.localeRules
@@ -137,7 +144,9 @@ localeRules ID = IDRules.localeRules
 localeRules IT = ITRules.localeRules
 localeRules JA = JARules.localeRules
 localeRules KA = KARules.localeRules
+localeRules KM = KMRules.localeRules
 localeRules KO = KORules.localeRules
+localeRules LO = LORules.localeRules
 localeRules MY = MYRules.localeRules
 localeRules NB = NBRules.localeRules
 localeRules NE = NERules.localeRules
@@ -156,6 +165,7 @@ localeRules ZH = ZHRules.localeRules
 langRules :: Lang -> Some Dimension -> [Rule]
 langRules AR = ARRules.langRules
 langRules BG = BGRules.langRules
+langRules BN = BNRules.langRules
 langRules CS = CSRules.langRules
 langRules DA = DARules.langRules
 langRules DE = DERules.langRules
@@ -174,7 +184,9 @@ langRules ID = IDRules.langRules
 langRules IT = ITRules.langRules
 langRules JA = JARules.langRules
 langRules KA = KARules.langRules
+langRules KM = KMRules.langRules
 langRules KO = KORules.langRules
+langRules LO = LORules.langRules
 langRules MY = MYRules.langRules
 langRules NB = NBRules.langRules
 langRules NE = NERules.langRules

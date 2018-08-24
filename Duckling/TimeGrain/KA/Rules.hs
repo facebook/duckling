@@ -21,14 +21,14 @@ import Duckling.TimeGrain.Types
 import Duckling.Types
 
 grains :: [(Text, String, Grain)]
-grains = [ ("second (grain) ", "წამ(ით|ი|ში|ს)?",   Second)
-         , ("minute (grain)" , "წუთ(ით|ი|ში|ს)?",    Minute)
-         , ("hour (grain)"   , "საათ(ით|ი|ში|ს)?",       Hour)
-         , ("day (grain)"    , "დღით|დღის|დღე?(ში)?ს?",       Day)
-         , ("week (grain)"   , "კვირ(აში)?(ას|ით|ის|ა)?",     Week)
-         , ("month (grain)"  , "თვ(ეში|ით|ის|ეს|ს|ე)?",        Month)
-         , ("quarter (grain)", "კვარტა?ლ(ით|ი|ში|ს)?",         Quarter)
-         , ("year (grain)"   , "წლით|წელიწადი?(ით|ი|ში|ის|ს)?|წე?ლი?(ით|ის|ში|ს|იდან)?",           Year)
+grains = [ ("second (grain)" , "წამ(ით|ი|ში|ს)?", Second)
+         , ("minute (grain)" , "წუთ(ით|ი|ში|ს)?", Minute)
+         , ("hour (grain)" , "საათ(ით|ი|ში|ს)?", Hour)
+         , ("day (grain)" , "დღით|დღის|დღე?(ში)?ს?", Day)
+         , ("week (grain)" , "კვირ(აში)?(ას|ით|ის|ა)?", Week)
+         , ("month (grain)" , "თვ(ეში|ით|ის|ეს|ს|ე)?", Month)
+         , ("quarter (grain)" , "კვარტა?ლ(ით|ი|ში|ს)?", Quarter)
+         , ("year (grain)" , "წლით|წელიწადი?(ით|ი|ში|ის|ს)?|წე?ლი?(ით|ის|ში|ს|იდან)?", Year)
          ]
 
 rules :: [Rule]
@@ -37,5 +37,5 @@ rules = map go grains
     go (name, regexPattern, grain) = Rule
       { name = name
       , pattern = [regex regexPattern]
-      , prod = \_ -> Just $ Token TimeGrain grain
+      , prod = const $ Just $ Token TimeGrain grain
       }

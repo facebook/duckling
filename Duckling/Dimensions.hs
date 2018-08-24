@@ -24,6 +24,7 @@ import Duckling.Types
 import qualified Duckling.Dimensions.Common as CommonDimensions
 import qualified Duckling.Dimensions.AR as ARDimensions
 import qualified Duckling.Dimensions.BG as BGDimensions
+import qualified Duckling.Dimensions.BN as BNDimensions
 import qualified Duckling.Dimensions.CS as CSDimensions
 import qualified Duckling.Dimensions.DA as DADimensions
 import qualified Duckling.Dimensions.DE as DEDimensions
@@ -42,7 +43,9 @@ import qualified Duckling.Dimensions.ID as IDDimensions
 import qualified Duckling.Dimensions.IT as ITDimensions
 import qualified Duckling.Dimensions.JA as JADimensions
 import qualified Duckling.Dimensions.KA as KADimensions
+import qualified Duckling.Dimensions.KM as KMDimensions
 import qualified Duckling.Dimensions.KO as KODimensions
+import qualified Duckling.Dimensions.LO as LODimensions
 import qualified Duckling.Dimensions.MY as MYDimensions
 import qualified Duckling.Dimensions.NB as NBDimensions
 import qualified Duckling.Dimensions.NE as NEDimensions
@@ -89,6 +92,7 @@ dependents (This (CustomDimension dim)) = dimDependents dim
 langDimensions :: Lang -> [Some Dimension]
 langDimensions AR = ARDimensions.allDimensions
 langDimensions BG = BGDimensions.allDimensions
+langDimensions BN = BNDimensions.allDimensions
 langDimensions CS = CSDimensions.allDimensions
 langDimensions DA = DADimensions.allDimensions
 langDimensions DE = DEDimensions.allDimensions
@@ -107,7 +111,9 @@ langDimensions ID = IDDimensions.allDimensions
 langDimensions IT = ITDimensions.allDimensions
 langDimensions JA = JADimensions.allDimensions
 langDimensions KA = KADimensions.allDimensions
+langDimensions KM = KMDimensions.allDimensions
 langDimensions KO = KODimensions.allDimensions
+langDimensions LO = LODimensions.allDimensions
 langDimensions MY = MYDimensions.allDimensions
 langDimensions NB = NBDimensions.allDimensions
 langDimensions NE = NEDimensions.allDimensions

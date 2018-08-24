@@ -14,6 +14,7 @@ import Test.Tasty
 
 import qualified Duckling.Numeral.AR.Tests as AR
 import qualified Duckling.Numeral.BG.Tests as BG
+import qualified Duckling.Numeral.BN.Tests as BN
 import qualified Duckling.Numeral.CS.Tests as CS
 import qualified Duckling.Numeral.DA.Tests as DA
 import qualified Duckling.Numeral.DE.Tests as DE
@@ -32,7 +33,9 @@ import qualified Duckling.Numeral.ID.Tests as ID
 import qualified Duckling.Numeral.IT.Tests as IT
 import qualified Duckling.Numeral.JA.Tests as JA
 import qualified Duckling.Numeral.KA.Tests as KA
+import qualified Duckling.Numeral.KM.Tests as KM
 import qualified Duckling.Numeral.KO.Tests as KO
+import qualified Duckling.Numeral.LO.Tests as LO
 import qualified Duckling.Numeral.MY.Tests as MY
 import qualified Duckling.Numeral.NB.Tests as NB
 import qualified Duckling.Numeral.NE.Tests as NE
@@ -52,6 +55,7 @@ tests :: TestTree
 tests = testGroup "Numeral Tests"
   [ AR.tests
   , BG.tests
+  , BN.tests
   , CS.tests
   , DA.tests
   , DE.tests
@@ -70,7 +74,9 @@ tests = testGroup "Numeral Tests"
   , IT.tests
   , JA.tests
   , KA.tests
+  , KM.tests
   , KO.tests
+  , LO.tests
   , MY.tests
   , NB.tests
   , NE.tests

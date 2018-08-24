@@ -23,7 +23,8 @@ import Duckling.Locale
 import Duckling.Resolve
 
 corpus :: Corpus
-corpus = (testContext {locale = makeLocale KA Nothing}, testOptions, allExamples)
+corpus = (testContext {locale = makeLocale KA Nothing},
+  testOptions, allExamples)
 
 allExamples :: [Example]
 allExamples = concat

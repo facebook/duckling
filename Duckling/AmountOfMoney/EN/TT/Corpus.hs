@@ -27,6 +27,26 @@ allExamples = concat
              ]
   , examples (simple TTD 10000)
              [ "10 grand"
+             , "two hundred thousand nickels"
+             ]
+  , examples (simple TTD 1)
+             [ "four quarters"
+             , "ten dimes"
+             , "twenty nickels"
+             ]
+  , examples (simple TTD 0.1)
+             [ "dime"
+             , "a dime"
+             , "two nickels"
+             ]
+  , examples (simple TTD 0.25)
+             [ "quarter"
+             , "a quarter"
+             , "five nickels"
+             ]
+  , examples (simple TTD 0.05)
+             [ "nickel"
+             , "a nickel"
              ]
   ]
 

@@ -96,7 +96,7 @@ parseHandler tzs = do
         options = Options {withLatent = parseLatent latent}
 
         dimParse = fromMaybe [] $ decode $ LBS.fromStrict $ fromMaybe "" ds
-        dims = mapMaybe fromName dimParse
+        dims = mapMaybe parseDimension dimParse
 
         parsedResult = parse (Text.decodeUtf8 tx) context options dims
 
@@ -106,6 +106,15 @@ parseHandler tzs = do
     defaultLocale = makeLocale defaultLang Nothing
     defaultTimeZone = "America/Los_Angeles"
     defaultLatent = False
+
+    parseDimension :: Text -> Maybe (Some Dimension)
+    parseDimension x = fromName x <|> fromCustomName x
+      where
+        fromCustomName :: Text -> Maybe (Some Dimension)
+        fromCustomName name = HashMap.lookup name m
+        m = HashMap.fromList
+          [ -- ("my-dimension", This (CustomDimension MyDimension))
+          ]
 
     parseTimeZone :: Maybe ByteString -> Text
     parseTimeZone = fromMaybe defaultTimeZone . fmap Text.decodeUtf8

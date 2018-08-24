@@ -27,6 +27,26 @@ allExamples = concat
              ]
   , examples (simple NZD 10000)
              [ "10 grand"
+             , "two hundred thousand nickels"
+             ]
+  , examples (simple NZD 1)
+             [ "four quarters"
+             , "ten dimes"
+             , "twenty nickels"
+             ]
+  , examples (simple NZD 0.1)
+             [ "dime"
+             , "a dime"
+             , "two nickels"
+             ]
+  , examples (simple NZD 0.25)
+             [ "quarter"
+             , "a quarter"
+             , "five nickels"
+             ]
+  , examples (simple NZD 0.05)
+             [ "nickel"
+             , "a nickel"
              ]
   ]
 

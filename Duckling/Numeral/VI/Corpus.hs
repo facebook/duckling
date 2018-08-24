@@ -58,7 +58,7 @@ allExamples = concat
              ]
   , examples (NumeralValue 100)
             [ "100"
-            , "tră"
+            , "trăm"
             ]
   , examples (NumeralValue 1.1)
              [ "1,1"
@@ -96,15 +96,22 @@ allExamples = concat
              , "-1200K"
              , "-,0012G"
              ]
+  , examples (NumeralValue 20)
+             [ "hai chục"
+             , "hai mươi"
+             ]
   , examples (NumeralValue 5000)
              [ "5 nghìn"
              , "năm nghìn"
+             , "năm ngàn"
              ]
   , examples (NumeralValue 200000)
              [ "hai trăm nghìn"
+             , "hai trăm ngàn"
              ]
   , examples (NumeralValue 1000000000)
              [ "một tỷ"
+             , "một tỉ"
              ]
   , examples (NumeralValue 21011)
              [ "hai mươi mốt nghìn không trăm mười một"

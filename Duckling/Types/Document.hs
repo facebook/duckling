@@ -136,7 +136,7 @@ isAdjacent Document{..} a b =
   b >= a && (firstNonAdjacent Array.! a >= b)
 
 isAdjacentSeparator :: Char -> Bool
-isAdjacentSeparator c = elem c [' ', '\t', '-']
+isAdjacentSeparator c = elem c [' ', '\t']
 
 (!) :: Document -> Int -> Char
 (!) Document { indexable = s } ix = s Array.! ix

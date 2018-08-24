@@ -45,7 +45,7 @@ ruleIntersect = Rule
     [ Predicate isNotLatent
     , Predicate $ or . sequence [isNotLatent, isGrainOfTime TG.Year]
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Time td1:Token Time td2:_) ->
         Token Time . notLatent <$> intersect td1 td2
       _ -> Nothing
@@ -58,30 +58,29 @@ ruleAbsorbInMonthYear = Rule
     [ Predicate $ or . sequence [isAMonth, isGrainOfTime TG.Year]
     , regex " ?წელს| ?წელი| ?წლის| ?თვეს| ?თვის| ?თვის|-ში|ში"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Time td:_) -> tt $ notLatent td
       _ -> Nothing
   }
 
 ruleInstants :: [Rule]
 ruleInstants = mkRuleInstants
-  [ ("ახლა"    , TG.Second, 0  , "ახლავე|ეხლავე|ეხლა|ახლა|ამ წამს|ამ წუთას|ამ მომენტისთვი")
-  , ("დღეს"        , TG.Day   , 0  , "დღეს"           )
-  , ("ხვალ"     , TG.Day   , 1  , "ხვალე?"            )
-  , ("ზეგ"     , TG.Day   , 2  , "ზეგე?"            )
-  , ("გუშინ"    , TG.Day   , - 1, "გუშინ?"                      )
-  , ("გუშინ წინ"    , TG.Day   , - 2, "გუშინ ?წინ"                      )
+  [ ("ახლა", TG.Second, 0, "ახლავე|ეხლავე|ეხლა|ახლა|ამ წამს|ამ წუთას|ამ მომენტისთვი")
+  , ("დღეს", TG.Day, 0, "დღეს")
+  , ("ხვალ", TG.Day, 1, "ხვალე?")
+  , ("გუშინ", TG.Day, -1, "გუშინ?")
+  , ("გუშინწინ", TG.Day, -2, "გუშინ ?წინ")
   ]
 
 ruleNow :: Rule
 ruleNow = Rule
   { name = "now"
   , pattern =
-    [ regex "ახლავე|ეხლავე|ახლა|ეხლა|ამ წუთას|ამ მომენტისთვის"
+    [ regex "ახლავე|ახლა|ამწუთას|ამ მომენტისთვის"
     ]
-  , prod = \_ -> tt now
+  , prod = const $ tt now
   }
-  
+
 ruleNextDOW :: Rule
 ruleNextDOW = Rule
   { name = "this|next <day-of-week>"
@@ -89,7 +88,7 @@ ruleNextDOW = Rule
     [ regex "შემდეგი|მომავალი"
     , Predicate isADayOfWeek
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (_:Token Time td:_) -> tt $ predNth 1 True td
       _ -> Nothing
   }
@@ -101,7 +100,7 @@ ruleThisTime = Rule
     [ regex "ამ|ეს|ახლანდელი|მიმდინარე"
     , Predicate isOkWithThisNext
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (_:Token Time td:_) -> tt $ predNth 0 False td
       _ -> Nothing
   }
@@ -113,7 +112,7 @@ ruleNextTime = Rule
     [ regex "შემდეგი?|მომავალი?"
     , Predicate isOkWithThisNext
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (_:Token Time td:_) -> tt $ predNth 1 True td
       _ -> Nothing
   }
@@ -125,7 +124,7 @@ ruleLastTime = Rule
     [ regex "(წინა|ბოლო|გასული?)"
     , Predicate isOkWithThisNext
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (_:Token Time td:_) -> tt $ predNth (- 1) False td
       _ -> Nothing
   }
@@ -137,7 +136,7 @@ ruleLastWeekendOfMonth = Rule
     [ regex "ბოლო უიქ?კ? ?ენდი|ვიქ?კ? ?ენდი|შაბ?ფ?ათკვირა|შაბ?ფ?ათ-კვირა|უქმეები"
     , Predicate isAMonth
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (_:Token Time td2:_) -> tt $ predLastOf weekend td2
       _ -> Nothing
   }
@@ -149,7 +148,7 @@ ruleLastWorkweekOfMonth = Rule
     [ regex "ბოლო სამუშაო ?კვირას?(ში)?"
     , Predicate isAMonth
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (_:Token Time td2:_) -> tt $ predLastOf workweek td2
       _ -> Nothing
   }
@@ -159,11 +158,10 @@ ruleLastWeekendOfMonth1 = Rule
   { name = "last weekend of <named-month>"
   , pattern =
     [ Predicate isAMonth
-    , regex "(ს? ?ბოლო უიქ?კ? ?ენდი ?|ს? ბოლო ?ვიქ?კ? ?ენდი ?|ს? ბოლო ?შაბ?ფ?ათკვირა ?|ს? ბოლო ?შაბ?ფ?ათ-კვირა ?)| ს?უქმეები ?" 
+    , regex "(ს? ?ბოლო უიქ?კ? ?ენდი ?|ს? ბოლო ?ვიქ?კ? ?ენდი ?|ს? ბოლო ?შაბ?ფ?ათკვირა ?|ს? ბოლო ?შაბ?ფ?ათ-კვირა ?)| ს?უქმეები ?"
     ]
-  , prod = \tokens -> case tokens of
-      (Token Time td2:Token RegexMatch (GroupMatch (match:_)):_) -> 
-        tt $ predLastOf weekend td2
+  , prod = \case
+      (Token Time td2:_) -> tt $ predLastOf weekend td2
       _ -> Nothing
   }
 
@@ -172,11 +170,10 @@ ruleLastWorkweekOfMonth1 = Rule
   { name = "last workweek of <named-month>"
   , pattern =
     [ Predicate isAMonth
-    , regex "(ს? ბოლო სამუშაო ?კვირას?(ში)?)" 
+    , regex "(ს? ბოლო სამუშაო ?კვირას?(ში)?)"
     ]
-  , prod = \tokens -> case tokens of
-      (Token Time td2:Token RegexMatch (GroupMatch (match:_)):_) -> 
-        tt $ predLastOf workweek td2
+  , prod = \case
+      (Token Time td2:_) -> tt $ predLastOf workweek td2
       _ -> Nothing
   }
 
@@ -187,7 +184,7 @@ ruleTimeAfterNext = Rule
     [ regex "(შემდეგის შემდეგი? ?)"
     , dimension Time
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token RegexMatch (GroupMatch (match:_)):Token Time td:_) ->
         tt $ predNth 2 (Text.toLower match == "შემდეგის შემდეგ") td
       _ -> Nothing
@@ -200,23 +197,9 @@ ruleTimeBeforeLast = Rule
     [ regex "(ბოლოს წინა ?|წინის წინა ?)"
     , dimension Time
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token RegexMatch (GroupMatch (match:_)):Token Time td:_) ->
         tt $ predNth (-2) (Text.toLower match == "ბოლოს წინა") td
-      _ -> Nothing
-  }
-
-ruleLastDOWOfTime :: Rule
-ruleLastDOWOfTime = Rule
-  { name = "last <day-of-week> of <time>"
-  , pattern =
-    [ dimension Time
-    , regex "ბოლო ?"
-    , Predicate isADayOfWeek
-    ]
-  , prod = \tokens -> case tokens of
-      (Token Time td2:_:Token Time td1:_) ->
-        tt $ predLastOf td1 td2
       _ -> Nothing
   }
 
@@ -228,7 +211,7 @@ ruleNthTimeOfTime = Rule
     , dimension Ordinal
     , dimension Time
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Time td1:Token Ordinal od:Token Time td2:_) -> Token Time .
         predNth (TOrdinal.value od - 1) False <$> intersect td2 td1
       _ -> Nothing
@@ -243,7 +226,7 @@ ruleNthTimeAfterTime = Rule
     , dimension Ordinal
     , dimension Time
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Ordinal od:Token Time td1:_:Token Time td2:_) ->
         tt $ predNthAfter (TOrdinal.value od - 1) td1 td2
       _ -> Nothing
@@ -256,7 +239,7 @@ ruleYearLatent = Rule
       [ Predicate $
         or . sequence [isIntegerBetween (- 10000) 0, isIntegerBetween 25 10000]
       ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (token:_) -> do
         n <- getIntValue token
         tt . mkLatent $ year n
@@ -269,22 +252,10 @@ ruleTheDOMNumeral = Rule
   , pattern =
     [ Predicate isDOMInteger
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (_:token:_) -> do
         n <- getIntValue token
         tt . mkLatent $ dayOfMonth n
-      _ -> Nothing
-  }
-
-ruleMonthDOMNumeral :: Rule
-ruleMonthDOMNumeral = Rule
-  { name = "<named-month> <day-of-month> (non ordinal)"
-  , pattern =
-    [ Predicate isAMonth
-    , Predicate isDOMOrdinal
-    ]
-  , prod = \tokens -> case tokens of
-      (Token Time td:token:_) -> Token Time <$> intersectDOM td token
       _ -> Nothing
   }
 
@@ -296,7 +267,7 @@ ruleMonthDOMNumeral1 = Rule
     , Predicate isDOMOrdinal
     , regex "( დღეს?)?"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Time td:token:_) -> Token Time <$> intersectDOM td token
       _ -> Nothing
   }
@@ -307,7 +278,7 @@ ruleTODLatent = Rule
   , pattern =
     [ Predicate $ isIntegerBetween 0 23
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (token:_) -> do
         n <- getIntValue token
         tt . mkLatent $ hour True n
@@ -319,9 +290,9 @@ ruleAtTOD = Rule
   { name = "at <time-of-day>"
   , pattern =
     [ Predicate isATimeOfDay
-    , regex "ს|-ს|-ზე|ზე| ზე" 
+    , regex "ს|-ს|-ზე|ზე| ზე"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Time td:_) -> tt $ notLatent td
       _ -> Nothing
   }
@@ -333,7 +304,7 @@ ruleTODOClock = Rule
     [ Predicate isATimeOfDay
     , regex "სა?ათი?ს?(ზე)?(ისთვის)?"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Time td:_) -> tt $ notLatent td
       _ -> Nothing
   }
@@ -342,7 +313,7 @@ ruleHHMM :: Rule
 ruleHHMM = Rule
   { name = "hh:mm"
   , pattern = [regex "((?:[01]?\\d)|(?:2[0-3]))[:.]([0-5]\\d)"]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token RegexMatch (GroupMatch (hh:mm:_)):_) -> do
         h <- parseInt hh
         m <- parseInt mm
@@ -356,7 +327,7 @@ ruleHHMMLatent = Rule
   , pattern =
     [ regex "((?:[01]?\\d)|(?:2[0-3]))([0-5]\\d)(?!.\\d)"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token RegexMatch (GroupMatch (hh:mm:_)):_) -> do
         h <- parseInt hh
         m <- parseInt mm
@@ -368,7 +339,7 @@ ruleHHMMSS :: Rule
 ruleHHMMSS = Rule
   { name = "hh:mm:ss"
   , pattern = [regex "((?:[01]?\\d)|(?:2[0-3]))[:.]([0-5]\\d)[:.]([0-5]\\d)"]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token RegexMatch (GroupMatch (hh:mm:ss:_)):_) -> do
         h <- parseInt hh
         m <- parseInt mm
@@ -384,7 +355,7 @@ ruleMilitaryAMPM = Rule
     [ regex "((?:1[012]|0?\\d))([0-5]\\d)"
     , regex "([ap])\\.?m?\\.?"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token RegexMatch (GroupMatch (hh:mm:_)):
        Token RegexMatch (GroupMatch (ap:_)):
        _) -> do
@@ -402,7 +373,7 @@ ruleMilitarySpelledOutAMPM = Rule
     , Predicate $ isIntegerBetween 1 59
     , regex "([ap])(\\s|\\.)?m?\\.?"
     ]
-    , prod = \tokens -> case tokens of
+    , prod = \case
         (h:m:Token RegexMatch (GroupMatch (_:ap:_)):_) -> do
           hh <- getIntValue h
           mm <- getIntValue m
@@ -417,7 +388,7 @@ ruleMilitarySpelledOutAMPM2 = Rule
     [ Predicate $ isIntegerBetween 110 999
     , regex "([ap])(\\s|\\.)?m?\\.?"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (token:Token RegexMatch (GroupMatch (_:ap:_)):_) -> do
         n <- getIntValue token
         m <- case mod n 100 of
@@ -435,28 +406,12 @@ ruleTODAMPM = Rule
     [ Predicate isATimeOfDay
     , regex "(in the )?([ap])(\\s|\\.)?(m?)\\.?"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Time td@TimeData {TTime.latent = True}:
        Token RegexMatch (GroupMatch (_:ap:_:"":_)):_) ->
         tt . mkLatent $ timeOfDayAMPM (Text.toLower ap == "a") td
       (Token Time td:Token RegexMatch (GroupMatch (_:ap:_)):_) ->
         tt $ timeOfDayAMPM (Text.toLower ap == "a") td
-      _ -> Nothing
-  }
-
-ruleHONumeral :: Rule
-ruleHONumeral = Rule
-  { name = "<hour-of-day> <integer>"
-  , pattern =
-    [ Predicate $ and . sequence [isNotLatent, isAnHourOfDay]
-    , Predicate $ isIntegerBetween 1 59
-    ]
-  , prod = \tokens -> case tokens of
-      (Token Time TimeData {TTime.form = Just (TTime.TimeOfDay (Just hours) is12H)}:
-       token:
-       _) -> do
-        n <- getIntValue token
-        tt $ hourMinute is12H hours n
       _ -> Nothing
   }
 
@@ -468,7 +423,7 @@ ruleNumeralToHOD = Rule
     , Predicate $ isIntegerBetween 1 59
     , regex "(წუთი ?)აკლ(ია)?(და)?|(წუთი ?)უკლია"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Time td:token:_) -> do
         n <- getIntValue token
         t <- minutesBefore n td
@@ -481,11 +436,11 @@ ruleNumeralToHOD1 = Rule
   { name = "<integer> to|till|before <hour-of-day>"
   , pattern =
     [ Predicate isAnHourOfDay
-    , regex "( ?რო ?)?"
+    , regex "რო"
     , Predicate $ isIntegerBetween 1 59
     , regex "(წუთი ?)აკლ(ია)?(და)?|(წუთი ?)უკლია"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Time td:_:token:_) -> do
         n <- getIntValue token
         t <- minutesBefore n td
@@ -500,7 +455,7 @@ ruleHalfToHOD = Rule
     [ Predicate isAnHourOfDay
     , regex "ის ნახევა?რი?(ზე)?|-ის ნახევა?რი?(ზე)?"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Time td:_) -> Token Time <$> minutesBefore 30 td
       _ -> Nothing
   }
@@ -511,9 +466,9 @@ ruleNumeralAfterHOD = Rule
   , pattern =
     [ Predicate isAnHourOfDay
     , Predicate $ isIntegerBetween 1 59
-    , regex "წუთი?(ზე)?(სთვის)?" 
+    , regex "წუთი?(ზე)?(სთვის)?"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Time td:token:_) -> do
         n <- getIntValue token
         t <- minutesBefore (60-n) td
@@ -528,9 +483,9 @@ ruleNumeralAfterHOD1 = Rule
     [ Predicate isAnHourOfDay
     , regex "-ის|ის|საათ(სა)?(ზე)?(და )?"
     , Predicate $ isIntegerBetween 1 59
-    , regex "წუთი?(ზე)?(სთვის)?" 
+    , regex "წუთი?(ზე)?(სთვის)?"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Time td:_:token:_) -> do
         n <- getIntValue token
         t <- minutesBefore (60-n) td
@@ -545,9 +500,9 @@ ruleNumeralAfterHOD2 = Rule
     [ Predicate isAnHourOfDay
     , regex "საათი?(სა)?(ზე)?( ?და ?)?"
     , Predicate $ isIntegerBetween 1 59
-    , regex "წუთი?(ზე)?(სთვის)?" 
+    , regex "წუთი?(ზე)?(სთვის)?"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Time td:_:token:_) -> do
         n <- getIntValue token
         t <- minutesAfter n td
@@ -561,7 +516,7 @@ ruleMMYYYY = Rule
   , pattern =
     [ regex "(0?[1-9]|1[0-2])[/-](\\d{4})"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token RegexMatch (GroupMatch (mm:yy:_)):_) -> do
         y <- parseInt yy
         m <- parseInt mm
@@ -575,24 +530,12 @@ ruleYYYYMMDD = Rule
   , pattern =
     [ regex "(\\d{2,4})-(0?[1-9]|1[0-2])-(3[01]|[12]\\d|0?[1-9])"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token RegexMatch (GroupMatch (yy:mm:dd:_)):_) -> do
         y <- parseInt yy
         m <- parseInt mm
         d <- parseInt dd
         tt $ yearMonthDay y m d
-      _ -> Nothing
-  }
-
-ruleNoonMidnightEOD :: Rule
-ruleNoonMidnightEOD = Rule
-  { name = "noon|midnight|EOD|end of day"
-  , pattern =
-    [ regex "((შუა)?ღამე?(ით)?ი?ს?)"
-    ]
-  , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> tt . hour False $
-        if Text.toLower match == "noon" then 12 else 0
       _ -> Nothing
   }
 
@@ -602,33 +545,33 @@ rulePartOfDays = Rule
   , pattern =
     [ regex "(გვიან ღამე?(ით)?|დილა?ს?(ის)?(ით)?|საღამოს?(თი)?|(შუა)?ღამე?(ით)?ი?ს?(ისას)?|შუადღის|შუადღით|დღის|დღით)"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token RegexMatch (GroupMatch (match:_)):_) -> do
         let (start, end) = case Text.toLower match of
-              "დილას"  -> (hour False 4, hour False 12)
-              "დილის"  -> (hour False 4, hour False 12)
-              "დილით"  -> (hour False 4, hour False 12)
-              "დილა"  -> (hour False 4, hour False 12)
-              "დილ"  -> (hour False 4, hour False 12)
-              "საღამოთი"  -> (hour False 18, hour False 0)
-              "საღამოს"  -> (hour False 18, hour False 0)
-              "საღამო"  -> (hour False 18, hour False 0)
-              "შუაღამით"    -> (hour False 18, hour False 0)
-              "შუაღამისას"    -> (hour False 18, hour False 0)
-              "შუაღამის"    -> (hour False 18, hour False 0)
-              "შუაღამე"    -> (hour False 18, hour False 0)
-              "ღამით"    -> (hour False 18, hour False 0)
-              "ღამის"    -> (hour False 18, hour False 0)
-              "ღამე"    -> (hour False 18, hour False 0)
-              "გვიან ღამე"    -> (hour False 21, hour False 0)
-              "გვიან ღამით"    -> (hour False 21, hour False 0)
-              "შუადღე"    -> (hour False 12, hour False 18)
-              "შუადღის"    -> (hour False 12, hour False 18)
-              "შუადღით"    -> (hour False 12, hour False 18)
-              "დღისით"    -> (hour False 12, hour False 18)
-              "დღით"    -> (hour False 12, hour False 18)
-              "დღის"    -> (hour False 12, hour False 18)
-              _          -> (hour False 12, hour False 19)
+              "დილას" -> (hour False 4, hour False 12)
+              "დილის" -> (hour False 4, hour False 12)
+              "დილით" -> (hour False 4, hour False 12)
+              "დილა" -> (hour False 4, hour False 12)
+              "დილ" -> (hour False 4, hour False 12)
+              "საღამოთი" -> (hour False 18, hour False 0)
+              "საღამოს" -> (hour False 18, hour False 0)
+              "საღამო" -> (hour False 18, hour False 0)
+              "შუაღამით" -> (hour False 18, hour False 0)
+              "შუაღამისას" -> (hour False 18, hour False 0)
+              "შუაღამის" -> (hour False 18, hour False 0)
+              "შუაღამე" -> (hour False 18, hour False 0)
+              "ღამით" -> (hour False 18, hour False 0)
+              "ღამის" -> (hour False 18, hour False 0)
+              "ღამე" -> (hour False 18, hour False 0)
+              "გვიან ღამე" -> (hour False 21, hour False 0)
+              "გვიან ღამით" -> (hour False 21, hour False 0)
+              "შუადღე" -> (hour False 12, hour False 18)
+              "შუადღის" -> (hour False 12, hour False 18)
+              "შუადღით" -> (hour False 12, hour False 18)
+              "დღისით" -> (hour False 12, hour False 18)
+              "დღით" -> (hour False 12, hour False 18)
+              "დღის" -> (hour False 12, hour False 18)
+              _ -> (hour False 12, hour False 19)
         td <- interval TTime.Open start end
         tt . partOfDay $ mkLatent td
       _ -> Nothing
@@ -638,7 +581,7 @@ ruleEarlyMorning :: Rule
 ruleEarlyMorning = Rule
   { name = "early morning"
   , pattern =
-    [ regex "დილაუთენია|დილა უთენია"
+    [ regex "დილაუთენია|დილაუთენია"
     ]
   , prod = \_ -> Token Time . partOfDay . mkLatent <$>
       interval TTime.Open (hour False 4) (hour False 9)
@@ -651,7 +594,7 @@ rulePODIn = Rule
     [ Predicate isAPartOfDay
     , regex "(-ის )?(ის )?განმავლობაში"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Time td:_) -> tt $ notLatent td
       _ -> Nothing
   }
@@ -663,7 +606,7 @@ rulePODThis = Rule
     [ regex "დღეს ?|ამ ?"
     , Predicate isAPartOfDay
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (_:Token Time td:_) -> Token Time . partOfDay . notLatent <$>
         intersect (cycleNth TG.Day 0) td
       _ -> Nothing
@@ -673,7 +616,7 @@ ruleTonight :: Rule
 ruleTonight = Rule
   { name = "tonight"
   , pattern = [regex "(დღეს )?(გვიან )?ღამე?(ით)?(ისას)?|(დღეს )?(შუა )?ღამე?(ით)?ი?ს?(ისას)?|საღამოს"]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token RegexMatch (GroupMatch (match:_)):_) -> do
         let today = cycleNth TG.Day 0
             h = if Text.toLower match == "გვიან " then 21 else 18
@@ -688,16 +631,16 @@ ruleAfterPartofday = Rule
   , pattern =
     [ regex "სკოლის მერე"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token RegexMatch (GroupMatch (match:_)):_) -> do
         (start, end) <- case Text.toLower match of
-          "ლანჩის მერე"  -> Just (hour False 13, hour False 17)
-          "ლანჩის შემდეგ"  -> Just (hour False 13, hour False 17)
-          "სამსახურის მერე"  -> Just (hour False 17, hour False 21)
-          "სამსახურის შემდეგ"  -> Just (hour False 17, hour False 21)
-          "სკოლის მერე"  -> Just (hour False 15, hour False 21)
-          "სკოლის შემდეგ"  -> Just (hour False 15, hour False 21)
-          _        -> Nothing
+          "ლანჩის მერე" -> Just (hour False 13, hour False 17)
+          "ლანჩის შემდეგ" -> Just (hour False 13, hour False 17)
+          "სამსახურის მერე" -> Just (hour False 17, hour False 21)
+          "სამსახურის შემდეგ" -> Just (hour False 17, hour False 21)
+          "სკოლის მერე" -> Just (hour False 15, hour False 21)
+          "სკოლის შემდეგ" -> Just (hour False 15, hour False 21)
+          _ -> Nothing
         td <- interval TTime.Open start end
         Token Time . partOfDay . notLatent <$>
           intersect (cycleNth TG.Day 0) td
@@ -712,7 +655,7 @@ ruleTimePOD = Rule
     [ dimension Time
     , Predicate isAPartOfDay
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Time td:Token Time pod:_) -> Token Time <$> intersect pod td
       _ -> Nothing
   }
@@ -724,7 +667,7 @@ rulePODofTime = Rule
     [ Predicate isAPartOfDay
     , dimension Time
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Time pod:Token Time td:_) -> Token Time <$> intersect pod td
       _ -> Nothing
   }
@@ -735,7 +678,7 @@ ruleWeekend = Rule
   , pattern =
     [ regex "(მიმდინარე )?ვიქ?კ? ?ენდი?(ზე)?(სას)?|(მიმდინარე )?უიქ?კ? ?ენდი?(ზე)?(სას)?|(მიმდინარე )?შაბ?ფ?ათ ?-?კვირას?|(მიმდინარე )?უქმეები?(ზე)?"
     ]
-  , prod = \_ -> tt $ mkOkForThisNext weekend
+  , prod = const $ tt $ mkOkForThisNext weekend
   }
 
 ruleworkweek :: Rule
@@ -744,7 +687,7 @@ ruleworkweek = Rule
   , pattern =
     [ regex "(მიმდინარე )?სამუშაო ?კვირას?(ში)?"
     ]
-  , prod = \_ -> tt $ mkOkForThisNext workweek
+  , prod = const $ tt $ mkOkForThisNext workweek
   }
 
 ruleSeason :: Rule
@@ -773,10 +716,10 @@ ruleSeason = Rule
 
 ruleSeasons :: [Rule]
 ruleSeasons = mkRuleSeasons
-  [ ( "ზაფხული", "ზაფხული?(ში)?ს?"     , monthDay  6 1, monthDay  8 31 )
-  , ( "შემოდგომა"  , "შემოდგომა?(ში)?ს?", monthDay  9 1, monthDay 11 30 )
-  , ( "ზამთარი", "ზამთარი?(ში)?ს?"     , monthDay 12 1, monthDay  2 28 )
-  , ( "გაზაფხული", "გაზაფხული?(ში)?ს?"     , monthDay  3 1, monthDay  5 31 )
+  [ ("ზაფხული", "ზაფხული?(ში)?ს?", monthDay 6 1, monthDay 8 31)
+  , ("შემოდგომა", "შემოდგომა?(ში)?ს?", monthDay 9 1, monthDay 11 30)
+  , ("ზამთარი", "ზამთარი?(ში)?ს?", monthDay 12 1, monthDay 2 28)
+  , ("გაზაფხული", "გაზაფხული?(ში)?ს?", monthDay 3 1, monthDay 5 31)
   ]
 
 ruleTODPrecision :: Rule
@@ -786,7 +729,7 @@ ruleTODPrecision = Rule
     [ regex "(ზუსტად|იმენა)"
     , Predicate isATimeOfDay
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (_:Token Time td:_) -> tt $ notLatent td
       _ -> Nothing
   }
@@ -795,10 +738,10 @@ rulePrecisionTOD :: Rule
 rulePrecisionTOD = Rule
   { name = "about|exactly <time-of-day>"
   , pattern =
-    [ regex "დაახლოებით|გძეტა"
+    [ regex "დაახლოებით"
     , Predicate $ isGrainFinerThan TG.Year
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (_:Token Time td:_) -> tt $ notLatent td
       _ -> Nothing
   }
@@ -813,12 +756,8 @@ ruleIntervalMonthDDDD = Rule
     , Predicate isDOMValue
     , regex "-მდე|მდე| მდე"
     ]
-  , prod = \tokens -> case tokens of
-      (Token Time td:
-       token1:
-       _:
-       token2:
-       _) -> do
+  , prod = \case
+      (Token Time td:token1:_:token2:_) -> do
         dom1 <- intersectDOM td token1
         dom2 <- intersectDOM td token2
         Token Time <$> interval TTime.Closed dom1 dom2
@@ -834,12 +773,8 @@ ruleIntervalMonthDDDD1 = Rule
     , regex "-"
     , Predicate isDOMValue
     ]
-  , prod = \tokens -> case tokens of
-      (Token Time td:
-       token1:
-       _:
-       token2:
-       _) -> do
+  , prod = \case
+      (Token Time td:token1:_:token2:_) -> do
         dom1 <- intersectDOM td token1
         dom2 <- intersectDOM td token2
         Token Time <$> interval TTime.Closed dom1 dom2
@@ -856,13 +791,8 @@ ruleIntervalDDDDMonth = Rule
     , regex "-მდე|მდე| მდე"
     , Predicate isAMonth
     ]
-  , prod = \tokens -> case tokens of
-      (token1:
-       _:
-       token2:
-       _:
-       Token Time td:
-       _) -> do
+  , prod = \case
+      (token1:_:token2:_:Token Time td:_) -> do
         dom1 <- intersectDOM td token1
         dom2 <- intersectDOM td token2
         Token Time <$> interval TTime.Closed dom1 dom2
@@ -878,12 +808,8 @@ ruleIntervalDDDDMonth1 = Rule
     , Predicate isDOMValue
     , Predicate isAMonth
     ]
-  , prod = \tokens -> case tokens of
-      (token1:
-       _:
-       token2:
-       Token Time td:
-       _) -> do
+  , prod = \case
+      (token1:_:token2:Token Time td:_) -> do
         dom1 <- intersectDOM td token1
         dom2 <- intersectDOM td token2
         Token Time <$> interval TTime.Closed dom1 dom2
@@ -900,7 +826,7 @@ ruleIntervalBetweenMM = Rule
     , Predicate isAMonth
     , regex "-ა?მდე ?|ა?მდე ?| ა?მდე ?"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (token1:_:token2:Token Time td:_) -> do
         start <- intersectDOM td token1
         end <- intersectDOM td token2
@@ -917,7 +843,7 @@ ruleIntervalBetween = Rule
     , dimension Time
     , regex "-ა?მდე ?|ა?მდე ?| ა?მდე ?"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Time td1:_:Token Time td2:_) ->
         Token Time <$> interval TTime.Closed td1 td2
       _ -> Nothing
@@ -931,8 +857,8 @@ ruleIntervalBetween1 = Rule
     , regex "-ი?დან ?|ი?დან ?| ი?დან ?"
     , regex "დღემდე|ამ წუთამდე|ახლამდე|ამ მომენტამდე"
     ]
-  , prod = \tokens -> case tokens of
-      (Token Time td1:_:_:_) ->
+  , prod = \case
+      (Token Time td1:_) ->
         Token Time <$> interval TTime.Closed td1 now
       _ -> Nothing
   }
@@ -948,7 +874,7 @@ ruleIntervalBetween2 = Rule
     , Predicate isAPartOfDay
     , regex "მდე|-ა?მდე ?|ა?მდე ?| ა?მდე ?"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Time td1:Token Time pod1:_:Token Time td2:Token Time pod2:_) -> do
         dom1 <- intersect pod1 td1
         dom2 <- intersect pod2 td2
@@ -966,7 +892,7 @@ ruleIntervalTODDash = Rule
     , Predicate isATimeOfDay
     , regex "მდე|-ა?მდე ?|ა?მდე ?| ა?მდე ?"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Time td1:_:Token Time td2:_) ->
         Token Time <$> interval TTime.Closed td1 td2
       _ -> Nothing
@@ -981,7 +907,7 @@ ruleIntervalTODFrom = Rule
     , Predicate isATimeOfDay
     , regex "მდე|-ა?მდე ?|ა?მდე ?| ა?მდე ?"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Time td1:_:Token Time td2:_) ->
         Token Time <$> interval TTime.Closed td1 td2
       _ -> Nothing
@@ -996,7 +922,7 @@ ruleIntervalTODBetween = Rule
     , Predicate isATimeOfDay
     , regex "შორის"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Time td1:_:Token Time td2:_) ->
         Token Time <$> interval TTime.Closed td1 td2
       _ -> Nothing
@@ -1009,7 +935,7 @@ ruleIntervalBy = Rule
     [ dimension Time
     , regex "მდე|-ა?მდე ?|ა?მდე ?| ა?მდე ?"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (_:Token Time td:_) ->
         Token Time <$> interval TTime.Open (cycleNth TG.Second 0) td
       _ -> Nothing
@@ -1017,29 +943,29 @@ ruleIntervalBy = Rule
 
 ruleDaysOfWeek :: [Rule]
 ruleDaysOfWeek = mkRuleDaysOfWeek
-  [ ( "ორშაბათი"   , "ორშაბათი?ს?|ორშ?\\.?"         )
-  , ( "სამშაბათი"  , "სამშაბათი?ს?|სამშ?\\.?"      )
-  , ( "ოთხშაბათი", "ოთხშაბათი?ს?|ოთხშ?\\.?"     )
-  , ( "ხუთშაბათი" , "ხუთშაბათი?ს?|ხუთშ?\\.?" )
-  , ( "პარასკევი"   , "პარასკევი?ს?|პარ\\.?"         )
-  , ( "შაბათი" , "შაბათი?ს?|შაბ\\.?"       )
-  , ( "კვირა"   , "კვირას?|კვირის|კვრ?\\.?"         )
+  [ ("ორშაბათი", "ორშაბათი?ს?|ორშ?\\.?")
+  , ("სამშაბათი", "სამშაბათი?ს?|სამშ?\\.?")
+  , ("ოთხშაბათი", "ოთხშაბათი?ს?|ოთხშ?\\.?")
+  , ("ხუთშაბათი", "ხუთშაბათი?ს?|ხუთშ?\\.?")
+  , ("პარასკევი", "პარასკევი?ს?|პარ\\.?")
+  , ("შაბათი", "შაბათი?ს?|შაბ\\.?")
+  , ("კვირა", "კვირას?|კვირის|კვრ?\\.?")
   ]
 
 ruleMonths :: [Rule]
 ruleMonths = mkRuleMonthsWithLatent
-  [ ( "იანვარი"  , "იანვა?რი?ს?(ის)?|იან\\.?"    , False )
-  , ( "თებერვალი" , "თებერვა?ლი?ს?(ის)?|თებ\\.?"   , False )
-  , ( "მარტი"    , "მარტი?ს?(ის)?|მარ\\.?"      , False )
-  , ( "აპრილი"    , "აპრილი?ს?(ის)?|აპრ\\.?"      , False )
-  , ( "მაისი"      , "მაისი?ს?(ის)?"                , False  )
-  , ( "ივნისი"     , "ივნისი?ს?(ის)? ?|ივნ\\.?"       , False )
-  , ( "ივლისი"     , "ივლისი?ს?(ის)?|ივლ\\.?"       , False )
-  , ( "აგვისტო"   , "აგვისტო?ს?|აგვ\\.?"     , False )
-  , ( "სექტემბერი", "სექტემბე?რის|სექტემბე?რი?ს?|სექტ?\\.?", False )
-  , ( "ოქტომბერი"  , "ოქტომბე?რის|ოქტომბე?რი?ს?|ოქტ\\.?"    , False )
-  , ( "ნოემბერი" , "ნოემბე?რის|ნოემბე?რი?ს?|ნოე\\.?"   , False )
-  , ( "დეკემბერი" , "დეკემბრის?|დეკემბე?რი?ს?|დეკ\\.?"   , False )
+  [ ("იანვარი", "იანვა?რი?ს?(ის)?|იან\\.?", False)
+  , ("თებერვალი", "თებერვა?ლი?ს?(ის)?|თებ\\.?", False)
+  , ("მარტი", "მარტი?ს?(ის)?|მარ\\.?", False)
+  , ("აპრილი", "აპრილი?ს?(ის)?|აპრ\\.?", False)
+  , ("მაისი", "მაისი?ს?(ის)?", False)
+  , ("ივნისი", "ივნისი?ს?(ის)? ?|ივნ\\.?", False)
+  , ("ივლისი", "ივლისი?ს?(ის)?|ივლ\\.?", False)
+  , ("აგვისტო", "აგვისტო?ს?|აგვ\\.?", False)
+  , ("სექტემბერი", "სექტემბე?რის|სექტემბე?რი?ს?|სექტ?\\.?", False)
+  , ("ოქტომბერი", "ოქტომბე?რის|ოქტომბე?რი?ს?|ოქტ\\.?", False)
+  , ("ნოემბერი", "ნოემბე?რის|ნოემბე?რი?ს?|ნოე\\.?", False)
+  , ("დეკემბერი", "დეკემბრის?|დეკემბე?რი?ს?|დეკ\\.?", False)
   ]
 
 ruleNamedMonth :: Rule
@@ -1047,10 +973,12 @@ ruleNamedMonth = Rule
   { name = "in <named-month>"
   , pattern =
     [ Predicate isAMonth
-    , regex " ?ში"
+    , regex "ში"
     ]
-  , prod = \tokens -> case tokens of
-      (Token Time td2:_) -> Token Time <$> interval TTime.Closed (cycleNthAfter False TG.Month (0) td2) (cycleNthAfter False TG.Month (0) td2)
+  , prod = \case
+      (Token Time td2:_) -> Token Time <$> interval TTime.Closed
+        (cycleNthAfter False TG.Month 0 td2)
+        (cycleNthAfter False TG.Month 0 td2)
       _ -> Nothing
   }
 
@@ -1061,7 +989,7 @@ rulePartOfMonth = Rule
     [ Predicate isAMonth
     , regex "(დასაწყისი?(ში)?(სას)?(სკენ)?|შუა?(ში)?(ისკენ)?|ბოლოს?(მდე)?(ში)?(სკენ)?)-?( of)?"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Time td:Token RegexMatch (GroupMatch (match:_)):_) -> do
         (sd, ed) <- case Text.toLower match of
           "დასაწყისისკენ" -> Just (1, 10)
@@ -1069,15 +997,15 @@ rulePartOfMonth = Rule
           "დასაწყისას" -> Just (1, 10)
           "დასაწყისში" -> Just (1, 10)
           "დასაწყისი" -> Just (1, 10)
-          "შუისკენ"   -> Just (11, 20)
-          "შუაში"   -> Just (11, 20)
-          "შუა"   -> Just (11, 20)
-          "ბოლომდე"  -> Just (21, -1)
-          "ბოლოსკენ"  -> Just (21, -1)
-          "ბოლოში"  -> Just (21, -1)
-          "ბოლოს"  -> Just (21, -1)
-          "ბოლო"  -> Just (21, -1)
-          _       -> Nothing
+          "შუისკენ" -> Just (11, 20)
+          "შუაში" -> Just (11, 20)
+          "შუა" -> Just (11, 20)
+          "ბოლომდე" -> Just (21, -1)
+          "ბოლოსკენ" -> Just (21, -1)
+          "ბოლოში" -> Just (21, -1)
+          "ბოლოს" -> Just (21, -1)
+          "ბოლო" -> Just (21, -1)
+          _  -> Nothing
         start <- intersect td $ dayOfMonth sd
         end <- if ed /= -1
           then intersect td $ dayOfMonth ed
@@ -1093,15 +1021,15 @@ rulePartOfMonth1 = Rule
     [ regex "(დასაწყისი?|შუა|ბოლოს?)-?( of)?"
     , Predicate isAMonth
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token RegexMatch (GroupMatch (match:_)):Token Time td:_) -> do
         (sd, ed) <- case Text.toLower match of
           "დასაწყისი" -> Just (1, 10)
           "დასაწყის" -> Just (1, 10)
-          "შუა"   -> Just (11, 20)
-          "ბოლო"  -> Just (21, -1)
-          "ბოლოს"  -> Just (21, -1)
-          _       -> Nothing
+          "შუა" -> Just (11, 20)
+          "ბოლო" -> Just (21, -1)
+          "ბოლოს" -> Just (21, -1)
+          _ -> Nothing
         start <- intersect td $ dayOfMonth sd
         end <- if ed /= -1
           then intersect td $ dayOfMonth ed
@@ -1117,15 +1045,15 @@ ruleEndOrBeginningOfMonth = Rule
     [ regex "(ის )?(დასაწყისშ?ი ?|ბოლოს? ?|ბოლოში ?)"
     , Predicate isAMonth
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token RegexMatch (GroupMatch (_:match:_)):Token Time td:_) -> do
         (sd, ed) <- case Text.toLower match of
           "დასაწყისი" -> Just (1, 10)
           "დასაწყისში" -> Just (1, 10)
-          "ბოლოს"       -> Just (21, -1)
-          "ბოლოში"       -> Just (21, -1)
-          "ბოლო"       -> Just (21, -1)
-          _           -> Nothing
+          "ბოლოს" -> Just (21, -1)
+          "ბოლოში" -> Just (21, -1)
+          "ბოლო" -> Just (21, -1)
+          _ -> Nothing
         start <- intersect td $ dayOfMonth sd
         end <- if ed /= -1
           then intersect td $ dayOfMonth ed
@@ -1137,8 +1065,10 @@ ruleEndOrBeginningOfMonth = Rule
 ruleEndOfMonth :: Rule
 ruleEndOfMonth = Rule
   { name = "end of month"
-  , pattern = [ regex "(ამ )?(მიმდინარე )?თვის ბოლოს?(კენ)?(თვის)?" ]
-  , prod = \tokens -> case tokens of
+  , pattern =
+    [ regex "(ამ )?(მიმდინარე )?თვის ბოლოს?(კენ)?(თვის)?"
+    ]
+  , prod = \case
       (Token RegexMatch (GroupMatch (match:_)):_)
         | (Just start, Just end) <- parsed ->
           Token Time <$> interval TTime.Open start end
@@ -1157,7 +1087,9 @@ ruleEndOfMonth = Rule
 ruleBeginningOfMonth :: Rule
 ruleBeginningOfMonth = Rule
   { name = "beginning of month"
-  , pattern = [ regex "(ამ )?(მიმდინარე )?თვის დასაწყისი?(ში)?(სკენ)?(სთვის)?" ]
+  , pattern =
+    [ regex "(ამ )?(მიმდინარე )?თვის დასაწყისი?(ში)?(სკენ)?(სთვის)?"
+    ]
   , prod = \_ -> do
       start <- intersect (dayOfMonth 1) $ cycleNth TG.Month 0
       end <- intersect (dayOfMonth 10) $ cycleNth TG.Month 0
@@ -1171,7 +1103,7 @@ ruleEndOrBeginningOfYear = Rule
     [ Predicate $ isGrainOfTime TG.Year
     , regex "(წლის )?დასაწყისი?(ისკენ)?(ში)? |ბოლოს?(კენ)?(ში)? "
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Time td:Token RegexMatch (GroupMatch (_:match:_)):_) -> do
         (sd, ed) <- case Text.toLower match of
           "დასაწყისისკენ" -> Just (1, 4)
@@ -1187,12 +1119,14 @@ ruleEndOrBeginningOfYear = Rule
         Token Time <$> interval TTime.Open start end
       _ -> Nothing
   }
-  
+
 ruleEndOfYear :: Rule
 ruleEndOfYear = Rule
   { name = "end of year"
-  , pattern = [ regex "((მიმდინარე )?(ამ )?წლის ბოლოს?(კენ)?(ში)?(თვის)?)" ]
-  , prod = \tokens -> case tokens of
+  , pattern =
+    [ regex "((მიმდინარე )?(ამ )?წლის ბოლოს?(კენ)?(ში)?(თვის)?)"
+    ]
+  , prod = \case
       (Token RegexMatch (GroupMatch (match:_)):_) -> do
         start <- std
         end <- intersect (month 1) $ cycleYear 1
@@ -1222,14 +1156,14 @@ ruleEndOrBeginningOfWeek = Rule
     [ Predicate $ isGrainOfTime TG.Week
     , regex "(დასაწყისი|დასაწყისში|ბოლოში|ბოლოს)"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Time td:Token RegexMatch (GroupMatch (_:match1:_)):_) -> do
         (sd, ed) <- case Text.toLower match1 of
           "დასაწყისი" -> Just (1, 3)
           "დასაწყისში" -> Just (1, 3)
-          "ბოლოში"   -> Just (5, 7)
-          "ბოლოს"    -> Just (5, 7)
-          _           -> Nothing
+          "ბოლოში" -> Just (5, 7)
+          "ბოლოს" -> Just (5, 7)
+          _ -> Nothing
         start <- intersect td $ dayOfWeek sd
         end <- intersect td $ dayOfWeek ed
         Token Time <$> interval TTime.Open start end
@@ -1239,31 +1173,31 @@ ruleEndOrBeginningOfWeek = Rule
 rulePeriodicHolidays :: [Rule]
 rulePeriodicHolidays = mkRuleHolidays
   -- Fixed dates, year over year
-  [ ( "ახალი წელი", "ახალი წე?ლი?ს?", monthDay 1 1 )
-  , ( "შობა", "შობა?(ის)?ს?", monthDay 1 7 )
-  , ( "ნათლისღება", "ნათლისღება?(ის)?ს?", monthDay 1 19 )
-  , ( "დედის დღე", "დედის დღე?ს?", monthDay 3 3 )
-  , ( "ქალთა საერთაშორისო დღე", "ქალთა (საერთაშორისო ?)?დღე?ს?", monthDay 3 8 )
-  , ( "საქართველოს დამოუკიდებლობის აღდგენის დღე", "საქართველოს (თავისუფლებისა და ერთიანობისთვის დაღუპულთა მოხსენიების )?(დამოუკიდებლობის აღდგენის )?დღეს?", monthDay 4 9 )
-  , ( "გამარჯვების დღე", "(ფაშიზმზე )?გამარჯვების დღეს?", monthDay 5 9 )
-  , ( "წმინდა ანდრია პირველწოდებულის ხსენების დღე", "(წმინდა )?ანდრია პირველწოდებულის ხსენების დღე?ს?", monthDay 5 12 )
-  , ( "დამოუკიდებლობის დღე", "(საქართველოს )?დამოუკიდებლობის დღე?ს?", monthDay 5 26 )
-  , ( "მცხეთობა", "მცხეთობა?ს?", monthDay 10 14 )
-  , ( "გიორგობა", "გიორგობა?ს?", monthDay 11 26 )
+  [ ("ახალი წელი", "ახალი წე?ლი?ს?", monthDay 1 1)
+  , ("შობა", "შობა?(ი)?ს?", monthDay 1 7 )
+  , ("ნათლისღება", "ნათლისღება?(ი)?ს?", monthDay 1 19 )
+  , ("დედის დღე", "დედის დღე?ს?", monthDay 3 3)
+  , ("ქალთა საერთაშორისო დღე", "ქალთა (საერთაშორისო )?დღე?ს?", monthDay 3 8 )
+  , ("საქართველოს დამოუკიდებლობის აღდგენის დღე", "საქართველოს (თავისუფლებისა და ერთიანობისთვის დაღუპულთა მოხსენიების)?(დამოუკიდებლობის აღდგენის )?დღეს?", monthDay 4 9 )
+  , ("გამარჯვების დღე", "(ფაშიზმზე)?გამარჯვების დღეს?", monthDay 5 9 )
+  , ("წმინდა ანდრია პირველწოდებულის ხსენების დღე", "(წმინდა)?ანდრია პირველწოდებულის ხსენების დღე?ს?", monthDay 5 12 )
+  , ("დამოუკიდებლობის დღე", "(საქართველოს)?დამოუკიდებლობის დღე?ს?", monthDay 5 26 )
+  , ("მცხეთობა", "მცხეთობა?ს?", monthDay 10 14)
+  , ("გიორგობა", "გიორგობა?ს?", monthDay 11 26)
   ]
 
 ruleComputedHolidays :: [Rule]
 ruleComputedHolidays = mkRuleHolidays
-  [ ( "Orthodox Easter Monday", "orthodox\\s+easter\\s+mon(day)?"
-    , cycleNthAfter False TG.Day 1 orthodoxEaster )
-  , ( "აღდგომა", "აღდგომი?ა?ს?(ისას)?"
-    , orthodoxEaster )
-  , ( "დიდი შაბათი", "დიდი? შაბათი?ს?(ისას)?"
-    , cycleNthAfter False TG.Day (-1) orthodoxEaster )
-  , ( "წითელი პარასკევი", "წითელი? პარასკევი?ს?(სას)?"
-    , cycleNthAfter False TG.Day (-2) orthodoxEaster )
-  , ( "დიდი ხუთშაბათი", "დიდი? ხუთშაბათი?ს?(ისას)?"
-    , cycleNthAfter False TG.Day (-7) orthodoxEaster )
+  [ ("Orthodox Easter Monday", "orthodox\\s+easter\\s+mon(day)?"
+    , cycleNthAfter False TG.Day 1 orthodoxEaster)
+  , ("აღდგომა", "აღდგომი?ა?ს?(ისას)?"
+    , orthodoxEaster)
+  , ("დიდი შაბათი", "დიდი? შაბათი?ს?(ისას)?"
+    , cycleNthAfter False TG.Day (-1) orthodoxEaster)
+  , ("წითელი პარასკევი", "წითელი? პარასკევი?ს?(სას)?"
+    , cycleNthAfter False TG.Day (-2) orthodoxEaster)
+  , ("დიდი ხუთშაბათი", "დიდი? ხუთშაბათი?ს?(ისას)?"
+    , cycleNthAfter False TG.Day (-7) orthodoxEaster)
   ]
 
 ruleCycleThisLastNext :: Rule
@@ -1273,21 +1207,21 @@ ruleCycleThisLastNext = Rule
     [ regex "(ეს|ამ|მიმდინარე|შემდეგი?|მომავალი?|წინა|წინის წინა?|გასული?)"
     , dimension TimeGrain
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token RegexMatch (GroupMatch (match:_)):Token TimeGrain grain:_) ->
         case Text.toLower match of
-          "ეს"          -> Token Time <$> interval TTime.Closed (cycleNth grain 0) now
-          "ამ"        -> Token Time <$> interval TTime.Closed (cycleNth grain 0) now
-          "მიმდინარე"       -> Token Time <$> interval TTime.Closed (cycleNth grain 0) now
-          "წინა"          -> Token Time <$> interval TTime.Open (cycleNth grain (-1)) (cycleNth grain 0)
+          "ეს" -> Token Time <$> interval TTime.Closed (cycleNth grain 0) now
+          "ამ" -> Token Time <$> interval TTime.Closed (cycleNth grain 0) now
+          "მიმდინარე" -> Token Time <$> interval TTime.Closed (cycleNth grain 0) now
+          "წინა" -> Token Time <$> interval TTime.Open (cycleNth grain (-1)) (cycleNth grain 0)
           "გასული" -> Token Time <$> interval TTime.Open (cycleNth grain (-1)) (cycleNth grain 0)
           "გასულ" -> Token Time <$> interval TTime.Open (cycleNth grain (-1)) (cycleNth grain 0)
-          "წინის წინ"          -> Token Time <$> interval TTime.Open (cycleNth grain (-2)) (cycleNth grain (-1))
-          "წინის წინა"          -> Token Time <$> interval TTime.Open (cycleNth grain (-2)) (cycleNth grain (-1))
-          "შემდეგ"          -> Token Time <$> interval TTime.Open (cycleNth grain 1) (cycleNth grain 2)
-          "შემდეგი"          -> Token Time <$> interval TTime.Open (cycleNth grain 1) (cycleNth grain 2)
-          "მომავალ"          -> Token Time <$> interval TTime.Open (cycleNth grain 1) (cycleNth grain 2)
-          "მომავალი"          -> Token Time <$> interval TTime.Open (cycleNth grain 1) (cycleNth grain 2)
+          "წინის წინ" -> Token Time <$> interval TTime.Open (cycleNth grain (-2)) (cycleNth grain (-1))
+          "წინის წინა" -> Token Time <$> interval TTime.Open (cycleNth grain (-2)) (cycleNth grain (-1))
+          "შემდეგ" -> Token Time <$> interval TTime.Open (cycleNth grain 1) (cycleNth grain 2)
+          "შემდეგი" -> Token Time <$> interval TTime.Open (cycleNth grain 1) (cycleNth grain 2)
+          "მომავალ" -> Token Time <$> interval TTime.Open (cycleNth grain 1) (cycleNth grain 2)
+          "მომავალი" -> Token Time <$> interval TTime.Open (cycleNth grain 1) (cycleNth grain 2)
           _ -> Nothing
       _ -> Nothing
   }
@@ -1299,7 +1233,7 @@ ruleDOMOfTimeMonth = Rule
     [ Predicate isDOMValue
     , Predicate $ isGrainOfTime TG.Month
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (token:Token Time td:_) -> Token Time <$> intersectDOM td token
       _ -> Nothing
   }
@@ -1309,10 +1243,10 @@ ruleCycleTheAfterBeforeTime = Rule
   { name = "the <cycle> after|before <time>"
   , pattern =
     [ dimension Time
-    , regex "(დან| ?ა?მდე ?)"
+    , regex "(დან|ა?მდე)"
     , dimension TimeGrain
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (  Token Time td
        : Token RegexMatch (GroupMatch (match:_))
        : Token TimeGrain grain
@@ -1332,11 +1266,11 @@ ruleCycleTheAfterBeforeTime1 = Rule
     , dimension TimeGrain
     , regex "ში|ის შემდეგ"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (  Token Time td
        : _
-       : token 
-       : Token TimeGrain grain 
+       : token
+       : Token TimeGrain grain
        : _) -> do
           n <- getIntValue token
           tt $ cycleNthAfter False grain n td
@@ -1352,7 +1286,7 @@ ruleCycleOrdinalOfTime = Rule
     , dimension Ordinal
     , dimension TimeGrain
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Time td:_:token:Token TimeGrain grain:_) -> do
         n <- getIntValue token
         tt $ cycleNthAfter True grain (n - 1) td
@@ -1368,10 +1302,11 @@ ruleCycleLastOrdinalOfTime = Rule
     , dimension Ordinal
     , dimension TimeGrain
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Time td:_:token:Token TimeGrain grain:_) -> do
         n <- getIntValue token
-        tt . cycleNthAfter True grain (-n) . cycleNthAfter True (timeGrain td) 1 $ td
+        tt . cycleNthAfter True grain (-n) . cycleNthAfter
+          True (timeGrain td) 1 $ td
       _ -> Nothing
   }
 
@@ -1382,7 +1317,7 @@ ruleDurationInWithinAfter = Rule
     [ dimension Duration
     , regex "(განმავლობაში|შემდეგ)"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Duration dd:
        Token RegexMatch (GroupMatch (match:_)):
        _) -> case Text.toLower match of
@@ -1400,7 +1335,7 @@ ruleDurationLastNext = Rule
     [ regex "(წინა|მომდევნო|გასული?)"
     , dimension Duration
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token RegexMatch (GroupMatch (match:_)):
        Token Duration DurationData{TDuration.grain, TDuration.value}:
        _) -> case Text.toLower match of
@@ -1410,7 +1345,7 @@ ruleDurationLastNext = Rule
          "გასულ" -> tt $ cycleN True grain (- value)
          _      -> Nothing
       _ -> Nothing
-  } 
+  }
 
 ruleNDOWago :: Rule
 ruleNDOWago = Rule
@@ -1420,7 +1355,7 @@ ruleNDOWago = Rule
     , Predicate isADayOfWeek
     , regex " ?დღის წინ| ?დღის უკან"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Numeral NumeralData{TNumeral.value = v}:Token Time td:_) ->
         tt $ predNth (- (floor v)) False td
       _ -> Nothing
@@ -1433,7 +1368,7 @@ ruleDurationHenceAgo = Rule
     [ dimension Duration
     , regex "წინ|უკან"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Duration dd:
        Token RegexMatch (GroupMatch (match:_)):
        _) -> case Text.toLower match of
@@ -1451,7 +1386,7 @@ ruleDayDurationHenceAgo = Rule
     , dimension Duration
     , regex "(წინ|უკან)"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Time td:
        Token Duration dd:
        Token RegexMatch (GroupMatch (match:_)):
@@ -1468,7 +1403,7 @@ ruleInNumeral = Rule
     [ Predicate $ isIntegerBetween 0 60
     , regex " ?წუთში"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Numeral NumeralData{TNumeral.value = v}:_) ->
         tt . inDuration . duration TG.Minute $ floor v
       _ -> Nothing
@@ -1482,8 +1417,8 @@ ruleDurationAfterBeforeTime = Rule
     , dimension Duration
     , regex "(წინ)"
     ]
-  , prod = \tokens -> case tokens of
-      (Token Time td: 
+  , prod = \case
+      (Token Time td:
        Token Duration dd:
        Token RegexMatch (GroupMatch (match:_)):
        _) -> case Text.toLower match of
@@ -1499,7 +1434,7 @@ ruleDurationAfterBeforeTime1 = Rule
     [ dimension Duration
     , regex "(წინ)"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Duration dd:
        Token RegexMatch (GroupMatch (match:_)):
        _) -> case Text.toLower match of
@@ -1515,27 +1450,32 @@ ruleDurationLastNext1 = Rule
     [ regex "ბოლო|უკანასკნელი?|გასული?"
     , dimension Duration
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (_:
        Token Duration dd:
        _) -> do
         Token Time <$> interval TTime.Closed (durationAgo dd) now
       _ -> Nothing
-  } 
+  }
 
 -- For example, Today(დღეს), This year(წელს)
 ruleGrainOfTime :: Rule
 ruleGrainOfTime = Rule
   { name = "<TimeGrain>"
   , pattern =
-    [ Predicate $ or . sequence [isGrainOfTime TG.Week, isGrainOfTime TG.Month, isGrainOfTime TG.Quarter, isGrainOfTime TG.Year]
+    [ Predicate $ or . sequence
+        [ isGrainOfTime TG.Week
+        , isGrainOfTime TG.Month
+        , isGrainOfTime TG.Quarter
+        , isGrainOfTime TG.Year
+        ]
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token TimeGrain grain:
        _) -> do
         Token Time <$> interval TTime.Closed (cycleNth grain 0) now
       _ -> Nothing
-  } 
+  }
 
 ruleYear :: Rule
 ruleYear = Rule
@@ -1543,18 +1483,18 @@ ruleYear = Rule
   , pattern =
     [ regex "(შარშან|შარშან ?წინ|შარშან ?წინის? ?წინ|გასული? წელი?ს?)"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token RegexMatch (GroupMatch (match:_)):_) ->
         case Text.toLower match of
-          "შარშან"          -> Token Time <$> interval TTime.Open (cycleNth TG.Year (-1)) (cycleNth TG.Year 0)
-          "გასული წელი"          -> Token Time <$> interval TTime.Open (cycleNth TG.Year (-1)) (cycleNth TG.Year 0)
-          "გასულ წელს"          -> Token Time <$> interval TTime.Open (cycleNth TG.Year (-1)) (cycleNth TG.Year 0)
-          "შარშან წინ"        -> Token Time <$> interval TTime.Open (cycleNth TG.Year (-2)) (cycleNth TG.Year (-1))
-          "შარშანწინ"       -> Token Time <$> interval TTime.Open (cycleNth TG.Year (-2)) (cycleNth TG.Year (-1))
-          "შარშან წინის წინ"          -> Token Time <$> interval TTime.Open (cycleNth TG.Year (-3)) (cycleNth TG.Year (-2))
-          "შარშანწინის წინ"          -> Token Time <$> interval TTime.Open (cycleNth TG.Year (-3)) (cycleNth TG.Year (-2))
-          "შარშან წინისწინ"          -> Token Time <$> interval TTime.Open (cycleNth TG.Year (-3)) (cycleNth TG.Year (-2))
-          "შარშანწინისწინ"          -> Token Time <$> interval TTime.Open (cycleNth TG.Year (-3)) (cycleNth TG.Year (-2))
+          "შარშან" -> Token Time <$> interval TTime.Open (cycleNth TG.Year (-1)) (cycleNth TG.Year 0)
+          "გასული წელი" -> Token Time <$> interval TTime.Open (cycleNth TG.Year (-1)) (cycleNth TG.Year 0)
+          "გასულ წელს" -> Token Time <$> interval TTime.Open (cycleNth TG.Year (-1)) (cycleNth TG.Year 0)
+          "შარშან წინ" -> Token Time <$> interval TTime.Open (cycleNth TG.Year (-2)) (cycleNth TG.Year (-1))
+          "შარშანწინ" -> Token Time <$> interval TTime.Open (cycleNth TG.Year (-2)) (cycleNth TG.Year (-1))
+          "შარშან წინის წინ" -> Token Time <$> interval TTime.Open (cycleNth TG.Year (-3)) (cycleNth TG.Year (-2))
+          "შარშანწინის წინ" -> Token Time <$> interval TTime.Open (cycleNth TG.Year (-3)) (cycleNth TG.Year (-2))
+          "შარშან წინისწინ" -> Token Time <$> interval TTime.Open (cycleNth TG.Year (-3)) (cycleNth TG.Year (-2))
+          "შარშანწინისწინ" -> Token Time <$> interval TTime.Open (cycleNth TG.Year (-3)) (cycleNth TG.Year (-2))
           _ -> Nothing
       _ -> Nothing
   }
@@ -1589,11 +1529,14 @@ rules =
   , ruleMilitarySpelledOutAMPM
   , ruleMilitarySpelledOutAMPM2
   , ruleTODAMPM
-  , ruleNumeralToHOD
   , ruleHalfToHOD
   , ruleNumeralAfterHOD
   , ruleNumeralAfterHOD1
   , ruleNumeralAfterHOD2
+  , ruleNumeralToHOD
+  , ruleNumeralToHOD1
+  , rulePODIn
+  , rulePODThis
   , ruleYYYYMMDD
   , ruleMMYYYY
   , rulePartOfDays
@@ -1614,6 +1557,9 @@ rules =
   , ruleIntervalBetween2
   , ruleIntervalTODDash
   , ruleIntervalTODBetween
+  , ruleIntervalTODFrom
+  , ruleIntervalBy
+  , ruleCycleTheAfterBeforeTime
   , ruleCycleTheAfterBeforeTime1
   , ruleCycleThisLastNext
   , ruleDOMOfTimeMonth
@@ -1621,6 +1567,7 @@ rules =
   , ruleCycleLastOrdinalOfTime
   , ruleDurationInWithinAfter
   , ruleNDOWago
+  , ruleDurationLastNext
   , ruleDurationHenceAgo
   , ruleDayDurationHenceAgo
   , ruleDurationAfterBeforeTime

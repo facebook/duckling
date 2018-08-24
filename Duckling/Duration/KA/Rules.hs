@@ -42,8 +42,7 @@ ruleCompositeDuration = Rule
     ]
   , prod = \case
       (Token Numeral NumeralData{TNumeral.value = v}:
-       Token TimeGrain g:
-       _:
+       Token TimeGrain g:_:
        Token Duration dd@DurationData{TDuration.grain = dg}:
        _) | g > dg -> Just . Token Duration $ duration g (floor v) <> dd
       _ -> Nothing
@@ -58,10 +57,9 @@ ruleCompositeDuration1 = Rule
     , dimension Duration
     ]
   , prod = \case
-      (Token TimeGrain g:
-       _:
+      (Token TimeGrain g:_:
        Token Duration dd@DurationData{TDuration.grain = dg}:
-       _) | g > dg -> Just . Token Duration $ duration g (floor 1) <> dd
+       _) | g > dg -> Just . Token Duration $ duration g 1 <> dd
       _ -> Nothing
   }
 
@@ -97,10 +95,7 @@ ruleDurationAndHalfYear1 = Rule
   , pattern =
     [ regex "წელიწადნახევა?(რის)?(რი)?(რში)?|წლინახევრ(ის)?(არში)?"
     ]
-  , prod = \case
-      (_:_) ->
-        Just . Token Duration . duration TG.Month $ 6 + 12 * floor 1
-      _ -> Nothing
+  , prod = const $ Just . Token Duration . duration TG.Month $ 18
   }
 
 ruleDurationAndHalfMonth :: Rule
@@ -122,10 +117,7 @@ ruleDurationAndHalfMonth1 = Rule
   , pattern =
     [ regex "თვენახევა?(რის)?(რი)?(რში)?"
     ]
-  , prod = \case
-      (_:_) ->
-        Just . Token Duration . duration TG.Day $ 15 + 30 * floor 1
-      _ -> Nothing
+  , prod = const $ Just . Token Duration . duration TG.Day $ 45
   }
 
 ruleDurationAndHalfWeek :: Rule
@@ -147,10 +139,7 @@ ruleDurationAndHalfWeek1 = Rule
   , pattern =
     [ regex "კვირანახევა?(რის)?(რი)?(რში)?"
     ]
-  , prod = \case
-      (_:_) ->
-        Just . Token Duration . duration TG.Day $ 3 + 7 * floor 1
-      _ -> Nothing
+  , prod = const $ Just . Token Duration . duration TG.Day $ 10
   }
 
 rules :: [Rule]
@@ -161,7 +150,7 @@ rules =
   , ruleDurationAndHalfYear1
   , ruleDurationAndHalfMonth
   , ruleDurationAndHalfMonth1
-  , ruleDurationAndHalfWeek1
+  , ruleDurationAndHalfWeek
   , ruleDurationAndHalfWeek1
   , ruleDurationYear
   ]

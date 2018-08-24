@@ -171,6 +171,7 @@ getDefaultCorpusForLang lang = getCorpusForLang lang
 getCorpusForLang :: Lang -> Corpus
 getCorpusForLang AR = ARTime.corpus
 getCorpusForLang BG = (testContext, testOptions, [])
+getCorpusForLang BN = (testContext, testOptions, [])
 getCorpusForLang CS = (testContext, testOptions, [])
 getCorpusForLang DA = DATime.corpus
 getCorpusForLang DE = DETime.corpus
@@ -189,7 +190,9 @@ getCorpusForLang ID = (testContext, testOptions, [])
 getCorpusForLang IT = ITTime.corpus
 getCorpusForLang JA = (testContext, testOptions, [])
 getCorpusForLang KA = (testContext, testOptions, [])
+getCorpusForLang KM = (testContext, testOptions, [])
 getCorpusForLang KO = KOTime.corpus
+getCorpusForLang LO = (testContext, testOptions, [])
 getCorpusForLang MY = (testContext, testOptions, [])
 getCorpusForLang NB = NBTime.corpus
 getCorpusForLang NE = (testContext, testOptions, [])

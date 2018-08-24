@@ -79,8 +79,7 @@ ruleRelativeMinutesTotillbeforeIntegerHourofday = Rule
   , prod = \tokens -> case tokens of
       (token:_:Token Time td:_) -> do
         n <- getIntValue token
-        t <- minutesBefore n td
-        Just $ Token Time t
+        Token Time <$> minutesBefore n td
       _ -> Nothing
   }
 
@@ -265,7 +264,7 @@ ruleNow = Rule
   , pattern =
     [ regex "(w)? ?(tym|tej)? ?(teraz|momencie|chwili|momeńcie)"
     ]
-  , prod = \_ -> tt $ cycleNth TG.Second 0
+  , prod = \_ -> tt now
   }
 
 ruleLastCycleOfTime :: Rule
@@ -400,7 +399,7 @@ ruleToday = Rule
   , pattern =
     [ regex "dzisiejszy|dzisiaj|dziś|dzis|w ten dzień|w ten dzien|w obecny dzień|w obecny dzien|obecnego dnia"
     ]
-  , prod = \_ -> tt $ cycleNth TG.Day 0
+  , prod = \_ -> tt today
   }
 
 ruleThisnextDayofweek :: Rule
@@ -818,8 +817,7 @@ ruleByTheEndOfTime = Rule
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td:_) -> Token Time <$>
-        interval TTime.Closed (cycleNth TG.Second 0) td
+      (_:Token Time td:_) -> Token Time <$> interval TTime.Closed now td
       _ -> Nothing
   }
 
@@ -868,9 +866,7 @@ ruleWithinDuration = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Duration dd:_) ->
-        let from = cycleNth TG.Second 0
-            to = inDuration dd
-        in Token Time <$> interval TTime.Open from to
+        Token Time <$> interval TTime.Open now (inDuration dd)
       _ -> Nothing
   }
 
@@ -1110,8 +1106,7 @@ ruleThisPartofday = Rule
     , Predicate isAPartOfDay
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td:_) ->
-        Token Time . partOfDay <$> intersect (cycleNth TG.Day 0) td
+      (_:Token Time td:_) -> Token Time . partOfDay <$> intersect today td
       _ -> Nothing
   }
 
@@ -1438,8 +1433,7 @@ ruleByTime = Rule
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td:_) ->
-        Token Time <$> interval TTime.Open (cycleNth TG.Second 0) td
+      (_:Token Time td:_) -> Token Time <$> interval TTime.Open now td
       _ -> Nothing
   }
 

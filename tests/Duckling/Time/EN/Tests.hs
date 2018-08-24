@@ -176,4 +176,5 @@ rangeTests = testCase "Range Test" $
          , ("thirteen fifty nine a m", Range 15 23) -- ruleMilitarySpelledOutAMPM
          , ("table Wednesday for 30 people", Range 6 15)
            -- do not parse "for 30" as year intersect
+         , ("house 1 on december 2013", Range 11 24) -- ruleAbsorbOnDay
          ]

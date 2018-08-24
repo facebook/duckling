@@ -7,7 +7,8 @@
 
 
 module Duckling.Time.KA.Tests
-  ( tests ) where
+  ( tests
+  ) where
 
 import Data.String
 import Prelude
@@ -20,5 +21,5 @@ import Duckling.Time.KA.Corpus
 tests :: TestTree
 tests = testGroup "KA Tests"
   [ makeCorpusTest [This Time] corpus
-  , makeNegativeCorpusTest [This Time] negativeCorpus
+  , makeCorpusTest [This Time] latentCorpus
   ]

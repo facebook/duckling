@@ -11,53 +11,42 @@
 module Duckling.Time.KA.Corpus
   ( corpus
   , defaultCorpus
-  , negativeCorpus
   , latentCorpus
   ) where
 
 import Data.String
 import Prelude
 
+import Duckling.Locale
 import Duckling.Resolve
 import Duckling.Testing.Types hiding (examples)
 import Duckling.Time.Corpus
 import Duckling.Time.Types hiding (Month)
-import Duckling.TimeGrain.Types hiding (add)
-
-import Duckling.Locale
+import Duckling.TimeGrain.Types
 import Duckling.Resolve
 
 corpus :: Corpus
-corpus = (testContext {locale = makeLocale KA Nothing}, testOptions, allExamples)
+corpus = (testContext {locale = makeLocale KA Nothing},
+  testOptions, allExamples)
 
 defaultCorpus :: Corpus
-defaultCorpus = (testContext {locale = makeLocale KA Nothing}, testOptions, allExamples ++ custom)
-  where
-    custom = concat
-      [ 
-      ]
-
-negativeCorpus :: NegativeCorpus
-negativeCorpus = (testContext {locale = makeLocale KA Nothing}, testOptions, examples)
-  where
-    examples =
-      [ 
-      ]
+defaultCorpus = (testContext {locale = makeLocale KA Nothing},
+  testOptions, allExamples)
 
 latentCorpus :: Corpus
-latentCorpus = (testContext {locale = makeLocale KA Nothing}, testOptions {withLatent = True}, xs)
+latentCorpus = (testContext {locale = makeLocale KA Nothing},
+  testOptions {withLatent = True}, xs)
   where
     xs = concat
-      [ 
-        examples (datetime (2013, 2, 24, 0, 0, 0) Day)
+      [ examples (datetime (2013, 2, 24, 0, 0, 0) Day)
                  [ "24 თებერვალს"
                  ]
       , examples (datetime (2013, 2, 12, 7, 0, 0) Hour)
                  [ "7 საათზე"
                  ]
       , examples (datetime (1954, 1, 1, 0, 0, 0) Year)
-                [ "1954 წელი"
-                ]
+                 [ "1954 წელი"
+                 ]
       , examples (datetime (2013, 5, 1, 0, 0, 0) Month)
                  [ "მაისი"
                  ]
@@ -148,7 +137,6 @@ allExamples = concat
              ]
   , examples (datetime (2013, 2, 26, 0, 0, 0) Day)
              [ "შემდეგ სამშაბათს"
-             , "გძეტა შემდეგ სამშაბათს"
              ]
   , examples (datetime (2013, 3, 1, 0, 0, 0) Day)
              [ "შემდეგის შემდეგი პარასკევი"
@@ -194,17 +182,11 @@ allExamples = concat
   , examples (datetime (2013, 3, 1, 0, 0, 0) Day)
              [ "შემდეგის შემდეგი პარასკევი"
              ]
-  , examples (datetime (2013, 2, 14, 0, 0, 0) Day)
-             [ "ზეგ"
-             ]
-  , examples (datetime (2013, 2, 14, 17, 0, 0) Hour)
-             [ "ზეგ 17 საათზე"
-             ]
   , examples (datetime (2013, 2, 10, 0, 0, 0) Day)
-             [ "გუშინ წინ"
+             [ "გუშინწინ"
              ]
   , examples (datetime (2013, 2, 10, 8, 0, 0) Hour)
-             [ "გუშინ წინ 8-ზე"
+             [ "გუშინწინ8-ზე"
              ]
   , examples (datetime (2013, 3, 25, 0, 0, 0) Day)
              [ "მარტის ბოლო ორშაბათი"
@@ -327,7 +309,6 @@ allExamples = concat
              ]
   , examples (datetimeInterval ((2013, 2, 8, 18, 0, 0), (2013, 2, 11, 0, 0, 0)) Hour)
              [ "გასულ უქმეებზე"
-             , "გასულ შაბათკვირას"
              , "გასულ შაბათ-კვირას"
              ]
   , examples (datetimeInterval ((2013, 2, 13, 18, 0, 0), (2013, 2, 14, 0, 0, 0)) Hour)
@@ -337,11 +318,7 @@ allExamples = concat
              [ "გუშინ საღამოს"
              ]
   , examples (datetimeInterval ((2013, 2, 15, 18, 0, 0), (2013, 2, 18, 0, 0, 0)) Hour)
-             [ "ამ უიქენდზე"
-             , "ამ ვიკენდზე"
-             , "ამ უიკენდზე"
-             , "ამ შაბათკვირას"
-             , "ამ შაფათკვირას"
+             [ "ამ შაბათკვირას"
              ]
   , examples (datetimeInterval ((2013, 2, 18, 4, 0, 0), (2013, 2, 18, 12, 0, 0)) Hour)
              [ "ორშაბათს დილას"
@@ -383,7 +360,6 @@ allExamples = concat
              [ "დღეს შუადღის 2-ზე"
              , "დღეს დღის 2-ზე"
              , "დღეს შუადღის ორზე"
-             , "დღეს დღის ორზე"
              ]
   , examples (datetime (2013, 2, 13, 15, 0, 0) Hour)
              [ "ხვალ დღის 3-ზე"
@@ -433,7 +409,7 @@ allExamples = concat
   , examples (datetime (2013, 2, 12, 10, 30, 0) Minute)
              [ "დილის 10:30"
              , "დილის 10 საათსა და 30 წუთზე"
-             , "დილის 10 საათი და 30 წუთის"
+             , "დილის 10 საათი და 30 წუთი"
              ]
   , examples (datetime (2013, 2, 12, 23, 0, 0) Hour)
              [ "დღეს ღამის 11"
@@ -456,42 +432,16 @@ allExamples = concat
              ]
   , examples (datetimeInterval ((2013, 10, 25, 18, 0, 0), (2013, 10, 28, 0, 0, 0)) Hour)
              [ "ოქტომბრის ბოლო უქმეები"
-             , "ოქტომბრის ბოლო შაბათკვირა"
              , "ოქტომბრის ბოლო შაბათ-კვირა"
-             , "ოქტომბრის ბოლო უიქენდი"
-             , "ოქტომბრის ბოლო უიკენდი"
-             , "ოქტომბრის ბოლო ვიკენდი"
-             , "ოქტომბრის ბოლო ვიქენდი"
-             , "ოქტომბრის ბოლო უიქ ენდი"
-             , "ოქტომბრის ბოლო უიკ ენდი"
-             , "ოქტომბრის ბოლო ვიკ ენდი"
-             , "ოქტომბრის ბოლო ვიქ ენდი"
              ]
   , examples (datetimeInterval ((2013, 7, 26, 18, 0, 0), (2013, 7, 29, 0, 0, 0)) Hour)
              [ "ივლისის ბოლო უქმეები"
-             , "ივლისის ბოლო შაბათკვირა"
              , "ივლისის ბოლო შაბათ-კვირა"
-             , "ივლისის ბოლო უიქენდი"
-             , "ივლისის ბოლო უიკენდი"
-             , "ივლისის ბოლო ვიკენდი"
-             , "ივლისის ბოლო ვიქენდი"
-             , "ივლისის ბოლო უიქ ენდი"
-             , "ივლისის ბოლო უიკ ენდი"
-             , "ივლისის ბოლო ვიკ ენდი"
-             , "ივლისის ბოლო ვიქ ენდი"
+             , "ივლისის ბოლო შაბათ-კვირა"
              ]
   , examples (datetimeInterval ((2017, 10, 27, 18, 0, 0), (2017, 10, 30, 0, 0, 0)) Hour)
              [ "2017 წლის ოქტომბრის ბოლო უქმეები"
-             , "2017 წლის ოქტომბრის ბოლო შაბათკვირა"
              , "2017 წლის ოქტომბრის ბოლო შაბათ-კვირა"
-             , "2017 წლის ოქტომბრის ბოლო უიქენდი"
-             , "2017 წლის ოქტომბრის ბოლო უიკენდი"
-             , "2017 წლის ოქტომბრის ბოლო ვიკენდი"
-             , "2017 წლის ოქტომბრის ბოლო ვიქენდი"
-             , "2017 წლის ოქტომბრის ბოლო უიქ ენდი"
-             , "2017 წლის ოქტომბრის ბოლო უიკ ენდი"
-             , "2017 წლის ოქტომბრის ბოლო ვიკ ენდი"
-             , "2017 წლის ოქტომბრის ბოლო ვიქ ენდი"
              ]
   , examples (datetimeInterval ((2013, 8, 27, 0, 0, 0), (2013, 8, 30, 0, 0, 0)) Day)
              [ "27-29 აგვ"

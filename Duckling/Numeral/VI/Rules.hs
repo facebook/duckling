@@ -28,21 +28,20 @@ import qualified Duckling.Numeral.Types as TNumeral
 
 powersOfTenMap :: HashMap.HashMap Text.Text (Double, Int)
 powersOfTenMap = HashMap.fromList
-  [ ( "tră",   (1e2, 2) )
+  [ ( "chục",  (1e1, 1) )
   , ( "trăm",  (1e2, 2) )
-  , ( "nghì",  (1e3, 3) )
   , ( "nghìn", (1e3, 3) )
-  , ( "triệ",  (1e6, 6) )
+  , ( "ngàn",  (1e3, 3) )
   , ( "triệu", (1e6, 6) )
-  , ( "t",     (1e9, 9) )
   , ( "tỷ",    (1e9, 9) )
+  , ( "tỉ",    (1e9, 9) )
   ]
 
 rulePowersOfTen :: Rule
 rulePowersOfTen = Rule
   { name = "powers of tens"
   , pattern =
-    [ regex "(trăm?|nghìn?|triệu?|tỷ?)"
+    [ regex "(chục|trăm|nghìn|ngàn|triệu|t(ỷ|ỉ))"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> do

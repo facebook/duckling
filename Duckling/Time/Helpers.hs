@@ -13,9 +13,9 @@
 module Duckling.Time.Helpers
   ( -- Patterns
     hasNoDirection, isADayOfWeek, isAMonth, isAnHourOfDay, isAPartOfDay
-  , isATimeOfDay, isDOMInteger, isDOMOrdinal, isDOMValue, isGrain
-  , isGrainFinerThan, isGrainOfTime, isIntegerBetween, isNotLatent
-  , isOrdinalBetween, isMidnightOrNoon, isOkWithThisNext
+  , isATimeOfDay, isDurationGreaterThan, isDOMInteger, isDOMOrdinal, isDOMValue
+  , isGrain, isGrainFinerThan, isGrainOfTime, isIntegerBetween, isNotLatent
+  , isOrdinalBetween, isMidnightOrNoon, isOkWithThisNext, sameGrain, today
     -- Production
   , cycleLastOf, cycleN, cycleNth, cycleNthAfter, dayOfMonth, dayOfWeek
   , durationAfter, durationAgo, durationBefore, mkOkForThisNext, form, hour
@@ -24,7 +24,7 @@ module Duckling.Time.Helpers
   , month, monthDay, notLatent, now, nthDOWOfMonth, partOfDay, predLastOf
   , predNth, predNthAfter, predNthClosest, season, second, timeOfDayAMPM
   , weekday, weekend, workweek, withDirection, year, yearMonthDay, tt, durationIntervalAgo
-  , inDurationInterval, intersectWithReplacement, yearADBC
+  , inDurationInterval, intersectWithReplacement, yearADBC, yearMonth
     -- Other
   , getIntValue, timeComputed
   -- Rule constructors
@@ -278,6 +278,9 @@ isGrainOfTime :: TG.Grain -> Predicate
 isGrainOfTime value (Token Time TimeData{TTime.timeGrain = g}) = g == value
 isGrainOfTime _ _ = False
 
+sameGrain :: TimeData -> TimeData -> Bool
+sameGrain TimeData{TTime.timeGrain = g} TimeData{TTime.timeGrain = h} = g == h
+
 isADayOfWeek :: Predicate
 isADayOfWeek (Token Time td) = case TTime.form td of
   Just TTime.DayOfWeek -> True
@@ -331,6 +334,10 @@ isOrdinalBetween :: Int -> Int -> Predicate
 isOrdinalBetween low high (Token Ordinal od) =
   TOrdinal.isBetween (TOrdinal.value od) low high
 isOrdinalBetween _ _ _ = False
+
+isDurationGreaterThan :: TG.Grain -> Predicate
+isDurationGreaterThan value (Token Duration DurationData{TDuration.grain = grain}) = grain > value
+isDurationGreaterThan _ _ = False
 
 isDOMOrdinal :: Predicate
 isDOMOrdinal = isOrdinalBetween 1 31
@@ -389,6 +396,9 @@ now = td {TTime.timeGrain = TG.NoGrain}
   where
     td = cycleNth TG.Second 0
 
+today :: TimeData
+today = cycleNth TG.Day 0
+
 hour :: Bool -> Int -> TimeData
 hour is12H n = timeOfDay (Just n) is12H $ TTime.timedata'
   {TTime.timePred = timeHour is12H n, TTime.timeGrain = TG.Hour}
@@ -426,8 +436,11 @@ yearADBC :: Int -> TimeData
 yearADBC n =
   TTime.timedata'{TTime.timePred = timeYear n, TTime.timeGrain = TG.Year}
 
+yearMonth :: Int -> Int -> TimeData
+yearMonth y m = intersect' (year y, month m)
+
 yearMonthDay :: Int -> Int -> Int -> TimeData
-yearMonthDay y m d = intersect' (intersect' (year y, month m), dayOfMonth d)
+yearMonthDay y m d = intersect' (yearMonth y m, dayOfMonth d)
 
 monthDay :: Int -> Int -> TimeData
 monthDay m d = intersect' (month m, dayOfMonth d)
@@ -618,7 +631,7 @@ workweek = interval' TTime.Open (mon, fri)
   where
     mon = intersect' (dayOfWeek 1, hour False 10)
     fri = intersect' (dayOfWeek 5, hour False 18)
-    
+
 -- Zero-indexed weeks, Monday is 1
 -- Use `predLastOf` for last day of week of month
 nthDOWOfMonth :: Int -> Int -> Int -> TimeData

@@ -7,6 +7,7 @@
 
 
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Volume.AR.Rules
@@ -19,8 +20,39 @@ import Prelude
 
 import Duckling.Dimensions.Types
 import Duckling.Types
+import Duckling.Regex.Types
 import Duckling.Volume.Helpers
+import Duckling.Numeral.Helpers (isPositive)
 import qualified Duckling.Volume.Types as TVolume
+import qualified Duckling.Numeral.Types as TNumeral
+
+volumes :: [(Text, String, TVolume.Unit)]
+volumes = [ ("<latent vol> ml"    , "مي?لي?( ?لي?تي?ر)?"  , TVolume.Millilitre)
+          , ("<vol> hectoliters"  , "(هي?كتو ?لي?تر)"     , TVolume.Hectolitre)
+          , ("<vol> liters"       , "لي?تي?ر(ات)?"        , TVolume.Litre)
+          , ("<latent vol> gallon", "[جغق]الون(ين|ان|ات)?", TVolume.Gallon)
+          ]
+
+rulesVolumes :: [Rule]
+rulesVolumes = map go volumes
+  where
+    go :: (Text, String, TVolume.Unit) -> Rule
+    go (name, regexPattern, u) = Rule
+      { name = name
+      , pattern =
+        [ regex regexPattern
+        ]
+      , prod = \_ -> Just . Token Volume $ unitOnly u
+      }
+
+ruleQuarterLiter :: Rule
+ruleQuarterLiter = Rule
+  { name = "quarter liter"
+  , pattern =
+    [ regex "ربع لي?تي?ر"
+    ]
+  , prod = \_ -> Just . Token Volume . withUnit TVolume.Litre $ valueOnly 0.25
+  }
 
 ruleHalfLiter :: Rule
 ruleHalfLiter = Rule
@@ -28,16 +60,16 @@ ruleHalfLiter = Rule
   , pattern =
     [ regex "نصف? لي?تي?ر"
     ]
-  , prod = \_ -> Just . Token Volume . withUnit TVolume.Litre $ volume 0.5
+  , prod = \_ -> Just . Token Volume . withUnit TVolume.Litre $ valueOnly 0.5
   }
 
-ruleQuartorOfLiter :: Rule
-ruleQuartorOfLiter = Rule
-  { name = "quartor of liter"
+ruleLiterAndQuarter :: Rule
+ruleLiterAndQuarter = Rule
+  { name = "liter and quarter"
   , pattern =
-    [ regex "ربع لي?تي?ر"
+    [ regex "لي?تي?ر و ?ربع"
     ]
-  , prod = \_ -> Just . Token Volume . withUnit TVolume.Litre $ volume 0.25
+  , prod = \_ -> Just . Token Volume . withUnit TVolume.Litre $ valueOnly 1.25
   }
 
 ruleLiterAndHalf :: Rule
@@ -46,7 +78,7 @@ ruleLiterAndHalf = Rule
   , pattern =
     [ regex "لي?تي?ر و ?نصف?"
     ]
-  , prod = \_ -> Just . Token Volume . withUnit TVolume.Litre $ volume 1.5
+  , prod = \_ -> Just . Token Volume . withUnit TVolume.Litre $ valueOnly 1.5
   }
 
 ruleTwoLiters :: Rule
@@ -55,44 +87,14 @@ ruleTwoLiters = Rule
   , pattern =
     [ regex "لي?تي?ر(ان|ين)"
     ]
-  , prod = \_ -> Just . Token Volume . withUnit TVolume.Litre $ volume 2
+  , prod = \_ -> Just . Token Volume . withUnit TVolume.Litre $ valueOnly 2
   }
-
-ruleLiterAndQuartor :: Rule
-ruleLiterAndQuartor = Rule
-  { name = "liter and quartor"
-  , pattern =
-    [ regex "لي?تي?ر و ?ربع"
-    ]
-  , prod = \_ -> Just . Token Volume . withUnit TVolume.Litre $ volume 1.25
-  }
-
-volumes :: [(Text, String, TVolume.Unit)]
-volumes =
-  [ ("<latent vol> ml"    , "مي?لي?( ?لي?تي?ر)?"  , TVolume.Millilitre)
-  , ("<vol> hectoliters"  , "هي?كتو ?لي?تر"       , TVolume.Hectolitre)
-  , ("<vol> liters"       , "لي?تي?ر(ات)?"        , TVolume.Litre)
-  , ("<latent vol> gallon", "[جغق]الون(ين|ان|ات)?", TVolume.Gallon)
-  ]
-
-ruleVolumes :: [Rule]
-ruleVolumes = map go volumes
-  where
-    go :: (Text, String, TVolume.Unit) -> Rule
-    go (name, regexPattern, u) = Rule
-      { name = name
-      , pattern = [ dimension Volume, regex regexPattern ]
-      , prod = \tokens -> case tokens of
-          (Token Volume vd:_) -> Just . Token Volume $ withUnit u vd
-          _ -> Nothing
-      }
 
 rules :: [Rule]
-rules =
-  [ ruleHalfLiter
-  , ruleTwoLiters
-  , ruleQuartorOfLiter
-  , ruleLiterAndHalf
-  , ruleLiterAndQuartor
-  ]
-  ++ ruleVolumes
+rules = [ ruleHalfLiter
+        , ruleQuarterLiter
+        , ruleTwoLiters
+        , ruleLiterAndHalf
+        , ruleLiterAndQuarter
+        ]
+        ++ rulesVolumes

@@ -1566,7 +1566,7 @@ rulePeriodicHolidays = mkRuleHolidays
   , ( "Orthodox New Year", "orthodox new year", monthDay 1 14 )
   , ( "Public Service Day", "public service day", monthDay 6 23 )
   , ( "St. George's Day", "(saint|st\\.?) george'?s day|feast of saint george", monthDay 4 23 )
-  , ( "St Patrick's Day", "st\\.? patrick'?s day", monthDay 3 17 )
+  , ( "St Patrick's Day", "st\\.? (patrick|paddy)'?s day", monthDay 3 17 )
   , ( "St. Stephen's Day", "st\\.? stephen'?s day", monthDay 12 26 )
   , ( "Time of Remembrance and Reconciliation for Those Who Lost Their Lives during the Second World War", "time of remembrance and reconciliation for those who lost their lives during the second world war", monthDay 5 8 )
   , ( "United Nations Day", "united nations day", monthDay 10 24 )
@@ -1764,7 +1764,7 @@ ruleComputedHolidays = mkRuleHolidays
   , ( "Raksha Bandhan", "raksha(\\s+)?bandhan|rakhi", rakshaBandhan )
   , ( "Shemini Atzeret", "shemini\\s+atzeret"
     , cycleNthAfter False TG.Day 21 roshHashana )
-  , ( "Shrove Tuesday", "pancake (tues)?day|shrove tuesday"
+  , ( "Shrove Tuesday", "pancake (tues)?day|shrove tuesday|mardi gras"
     , cycleNthAfter False TG.Day (-47) easterSunday )
   , ( "Shushan Purim", "shushan\\s+purim", cycleNthAfter False TG.Day 1 purim )
   , ( "Simchat Torah", "simc?hat\\s+torah"

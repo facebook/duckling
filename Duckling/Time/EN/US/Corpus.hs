@@ -83,6 +83,7 @@ allExamples = concat
              ]
   , examples (datetimeHoliday (2013, 11, 11, 0, 0, 0) Day "Veterans Day")
              [ "veterans day"
+             , "veteran day"
              ]
   , examples (datetimeHoliday (2013, 5, 1, 0, 0, 0) Day "Loyalty Day")
              [ "law day"

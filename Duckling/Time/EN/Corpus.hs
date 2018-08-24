@@ -965,6 +965,12 @@ allExamples = concat
   , examples (datetimeInterval ((2013, 2, 12, 9, 30, 0), (2013, 2, 12, 11, 1, 0)) Minute)
              [ "9:30 - 11:00"
              ]
+  , examples (datetimeInterval ((2013, 2, 12, 13, 30, 0), (2013, 2, 12, 15, 1, 0)) Minute)
+             [ "9:30 - 11:00 CST"
+             ]
+  , examples (datetimeInterval ((2013, 2, 12, 13, 0, 0), (2013, 2, 12, 16, 1, 0)) Minute)
+             [ "15:00 GMT - 18:00 GMT"
+             ]
   , examples (datetimeInterval
       ((2015, 3, 28, 17, 00, 0), (2015, 3, 29, 21, 0, 1)) Second)
              [ "2015-03-28 17:00:00/2015-03-29 21:00:00"
@@ -980,6 +986,14 @@ allExamples = concat
              , "between 9:30 and 11:00 on thursday"
              , "between 9:30 and 11:00 on thursday"
              , "between 9:30 and 11:00 on thursday"
+             , "9:30 - 11:00 on Thursday"
+             , "9:30 - 11:00 on Thursday"
+             , "9:30 - 11:00 on Thursday"
+             , "9:30 - 11:00 on Thursday"
+             , "9:30 - 11:00 on Thursday"
+             , "9:30 - 11:00 on Thursday"
+             , "9:30 - 11:00 on Thursday"
+             , "9:30 - 11:00 on Thursday"
              , "9:30 - 11:00 on Thursday"
              , "later than 9:30 but before 11:00 on Thursday"
              , "Thursday from 9:30 to 11:00"

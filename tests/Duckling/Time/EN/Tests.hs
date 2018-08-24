@@ -177,4 +177,8 @@ rangeTests = testCase "Range Test" $
          , ("table Wednesday for 30 people", Range 6 15)
            -- do not parse "for 30" as year intersect
          , ("house 1 on december 2013", Range 11 24) -- ruleAbsorbOnDay
+         , ("at 6pm GMT PDT", Range 0 10) -- ruleTimezone
+         , ("at 6pm (PDT) GMT", Range 0 12) -- ruleTimezoneBracket
+         , ("6pm GMT - 8pm GMT PDT", Range 0 17)
+           -- ruleTimezone will not match because TimeData hasTimezone.
          ]

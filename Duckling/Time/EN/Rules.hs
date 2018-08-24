@@ -2278,7 +2278,7 @@ ruleTimezone :: Rule
 ruleTimezone = Rule
   { name = "<time> timezone"
   , pattern =
-    [ Predicate $ and . sequence [isNotLatent, isATimeOfDay]
+    [ Predicate $ and . sequence [isNotLatent, isATimeOfDay, hasNoTimezone]
     , regex $ "\\b(" ++ timezoneName ++ ")\\b"
     ]
   , prod = \tokens -> case tokens of
@@ -2292,13 +2292,34 @@ ruleTimezoneBracket :: Rule
 ruleTimezoneBracket = Rule
   { name = "<time> (timezone)"
   , pattern =
-    [ Predicate $ and . sequence [isNotLatent, isATimeOfDay]
+    [ Predicate $ and . sequence [isNotLatent, isATimeOfDay, hasNoTimezone]
     , regex $ "\\((" ++ timezoneName ++ ")\\)"
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:
        Token RegexMatch (GroupMatch (tz:_)):
        _) -> Token Time <$> inTimezone (Text.toUpper tz) td
+      _ -> Nothing
+  }
+
+ruleIntervalDashTimezone :: Rule
+ruleIntervalDashTimezone = Rule
+  { name = "<datetime> - <datetime> (interval) timezone"
+  , pattern =
+    [ Predicate $ and . sequence [isATimeOfDay, hasNoTimezone]
+    , regex "\\-|to|th?ru|through|(un)?til(l)?"
+    , Predicate $ and . sequence [isATimeOfDay, hasNoTimezone]
+    , regex $ "\\b(" ++ timezoneName ++ ")\\b"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Time td1:
+       _:
+       Token Time td2:
+       Token RegexMatch (GroupMatch (tz:_)):
+       _) -> do
+        tdz1 <- inTimezone (Text.toUpper tz) td1
+        tdz2 <- inTimezone (Text.toUpper tz) td2
+        Token Time <$> interval TTime.Closed tdz1 tdz2
       _ -> Nothing
   }
 
@@ -2417,6 +2438,7 @@ rules =
   , ruleInNumeral
   , ruleTimezone
   , ruleTimezoneBracket
+  , ruleIntervalDashTimezone
   , rulePartOfMonth
   , ruleEndOrBeginningOfMonth
   , ruleEndOrBeginningOfYear

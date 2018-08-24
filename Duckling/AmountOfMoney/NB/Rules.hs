@@ -92,22 +92,6 @@ ruleIntersectXCents = Rule
       _ -> Nothing
   }
 
-ruleIntersectXCentsWithAnd :: Rule
-ruleIntersectXCentsWithAnd = Rule
-  { name = "intersect (X cents) with and"
-  , pattern =
-    [ Predicate isWithoutCents
-    , regex "og"
-    , Predicate isCents
-    ]
-  , prod = \tokens -> case tokens of
-      (Token AmountOfMoney fd:
-       _:
-       Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just c}:
-       _) -> Just . Token AmountOfMoney $ withCents c fd
-      _ -> Nothing
-  }
-
 ruleNok :: Rule
 ruleNok = Rule
   { name = "NOK"
@@ -175,7 +159,6 @@ rules =
   , ruleIntersectAndNumeral
   , ruleIntersectAndXCents
   , ruleIntersectXCents
-  , ruleIntersectXCentsWithAnd
   , ruleNok
   , rulePound
   ]

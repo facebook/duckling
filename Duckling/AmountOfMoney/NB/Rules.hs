@@ -73,7 +73,8 @@ ruleCent :: Rule
 ruleCent = Rule
   { name = "cent"
   , pattern =
-    [ regex "cents?|penn(y|ies)|(ø)re"
+    [ regex "cent(?:\\b|s)|\\bc\\b|pen(?:ce|ny|nies)|\\bp\\b|(?:ø|ö)rer?|fen|haleru|groszy|pais(?:e|a)\
+           \|centesim(?:o|i)|centimes?|\\bct?\\b|\\brp?\\b|rap(?:pen)?s?|satang"
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly Cent
   }
@@ -92,27 +93,11 @@ ruleIntersectXCents = Rule
       _ -> Nothing
   }
 
-ruleIntersectXCentsWithAnd :: Rule
-ruleIntersectXCentsWithAnd = Rule
-  { name = "intersect (X cents) with and"
-  , pattern =
-    [ Predicate isWithoutCents
-    , regex "og"
-    , Predicate isCents
-    ]
-  , prod = \tokens -> case tokens of
-      (Token AmountOfMoney fd:
-       _:
-       Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just c}:
-       _) -> Just . Token AmountOfMoney $ withCents c fd
-      _ -> Nothing
-  }
-
 ruleNok :: Rule
 ruleNok = Rule
   { name = "NOK"
   , pattern =
-    [ regex "kr(oner)?"
+    [ regex "(?:norske? ?)?kr(?:oner?)?|NOK"
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly NOK
   }
@@ -121,7 +106,7 @@ rulePound :: Rule
 rulePound = Rule
   { name = "£"
   , pattern =
-    [ regex "pund?"
+    [ regex "po?und?s?"
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly Pound
   }
@@ -160,9 +145,180 @@ ruleDirham :: Rule
 ruleDirham = Rule
   { name = "AED"
   , pattern =
-    [ regex "dirhams?"
+    [ regex "dirhams?|AED"
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly AED
+  }
+
+ruleDollar :: Rule
+ruleDollar = Rule
+  { name = "$"
+  , pattern =
+    [ regex "dollars?"
+    ]
+  , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly Dollar
+  }
+
+ruleSEK :: Rule
+ruleSEK = Rule
+  { name = "SEK"
+  , pattern =
+    [ regex "(?:svenske? )?kron(?:a|or)|svenske? kr(?:oner?)?|SEK"
+    ]
+  , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly SEK
+  }
+
+ruleGBP :: Rule
+ruleGBP = Rule
+  { name = "GBP"
+  , pattern =
+    [ regex "(?:britiske?|engelske?) po?unds?"
+    ]
+  , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly GBP
+  }
+
+ruleDKK :: Rule
+ruleDKK = Rule
+  { name = "DKK"
+  , pattern =
+    [ regex "danske? kr(?:oner?)?|DKK"
+    ]
+  , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly DKK
+  }
+
+ruleUSD :: Rule
+ruleUSD = Rule
+  { name = "USD"
+  , pattern =
+    [ regex "amerikanske? dollars?|USD"
+    ]
+  , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly USD
+  }
+
+ruleAUD :: Rule
+ruleAUD = Rule
+  { name = "AUD"
+  , pattern =
+    [ regex "australske? dollars?|AUD"
+    ]
+  , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly AUD
+  }
+
+ruleCAD :: Rule
+ruleCAD = Rule
+  { name = "CAD"
+  , pattern =
+    [ regex "(?:k|c)anadiske? dollars?|CAD"
+    ]
+  , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly CAD
+  }
+
+ruleCHF :: Rule
+ruleCHF = Rule
+  { name = "CHF"
+  , pattern =
+    [ regex "sveitsiske? francs?|CHF"
+    ]
+  , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly CHF
+  }
+
+ruleCNY :: Rule
+ruleCNY = Rule
+  { name = "CNY"
+  , pattern =
+    [ regex "(?:kinesiske? )?(?:yuan|renminbi)|CNY"
+    ]
+  , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly CNY
+  }
+
+ruleCZK :: Rule
+ruleCZK = Rule
+  { name = "CZK"
+  , pattern =
+    [ regex "(?:tsjekkiske? )?koruna|CZK"
+    ]
+  , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly CZK
+  }
+
+ruleHKD :: Rule
+ruleHKD = Rule
+  { name = "HKD"
+  , pattern =
+    [ regex "hong kong dollars?|HKD"
+    ]
+  , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly HKD
+  }
+
+ruleINR :: Rule
+ruleINR = Rule
+  { name = "INR"
+  , pattern =
+    [ regex "(?:indiske? )?rup(?:i(?:er)?|ees?)|INR"
+    ]
+  , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly INR
+  }
+
+ruleJPY :: Rule
+ruleJPY = Rule
+  { name = "JPY"
+  , pattern =
+    [ regex "(?:japanske? )?yen|JPY"
+    ]
+  , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly JPY
+  }
+
+ruleNZD :: Rule
+ruleNZD = Rule
+  { name = "NZD"
+  , pattern =
+    [ regex "(?:nz|new zealand(?:ske)?) dollars?|NZD"
+    ]
+  , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly NZD
+  }
+
+rulePKR :: Rule
+rulePKR = Rule
+  { name = "PKR"
+  , pattern =
+    [ regex "pakistanske? rup(?:i(?:er)?|ees?)|PKR"
+    ]
+  , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly PKR
+  }
+
+rulePLN :: Rule
+rulePLN = Rule
+  { name = "PLN"
+  , pattern =
+    [ regex "(?:polske? )?(?:z|s)?lotys?|PLN"
+    ]
+  , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly PLN
+  }
+
+ruleSGD :: Rule
+ruleSGD = Rule
+  { name = "SGD"
+  , pattern =
+    [ regex "singapor(?:e|ske?) dollars?|SGD"
+    ]
+  , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly SGD
+  }
+
+ruleTHB :: Rule
+ruleTHB = Rule
+  { name = "THB"
+  , pattern =
+    [ regex "(?:thai(?:land(?:ske?)?)? )?b(?:ah|ha)t|THB"
+    ]
+  , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly THB
+  }
+
+ruleZAR :: Rule
+ruleZAR = Rule
+  { name = "ZAR"
+  , pattern =
+    [ regex "(?:sør(?: |-)?afrika(?:nske?)? )?rand|ZAR"
+    ]
+  , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly ZAR
   }
 
 rules :: [Rule]
@@ -175,7 +331,25 @@ rules =
   , ruleIntersectAndNumeral
   , ruleIntersectAndXCents
   , ruleIntersectXCents
-  , ruleIntersectXCentsWithAnd
   , ruleNok
   , rulePound
+  , ruleDollar
+  , ruleSEK
+  , ruleDKK
+  , ruleUSD
+  , ruleAUD
+  , ruleCAD
+  , ruleGBP
+  , ruleCHF
+  , ruleCNY
+  , ruleCZK
+  , ruleHKD
+  , ruleINR
+  , ruleJPY
+  , ruleNZD
+  , rulePKR
+  , rulePLN
+  , ruleSGD
+  , ruleTHB
+  , ruleZAR
   ]

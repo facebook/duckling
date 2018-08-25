@@ -42,10 +42,14 @@ data Currency
   | BRL
   | BYN
   | CAD
+  | CHF
   | CNY
+  | CZK
+  | DKK
   | EGP
   | EUR
   | GBP
+  | HKD
   | HRK
   | IDR
   | ILS
@@ -61,6 +65,8 @@ data Currency
   | MYR
   | NOK
   | NZD
+  | PKR
+  | PLN
   | PTS
   | QAR
   | RON
@@ -68,9 +74,11 @@ data Currency
   | SAR
   | SEK
   | SGD
+  | THB
   | TTD
   | USD
   | VND
+  | ZAR
   deriving (Eq, Generic, Hashable, Show, Ord, NFData)
 
 instance ToJSON Currency where
@@ -88,10 +96,14 @@ instance ToJSON Currency where
   toJSON BRL     = "BRL"
   toJSON BYN     = "BYN"
   toJSON CAD     = "CAD"
+  toJSON CHF     = "CHF"
   toJSON CNY     = "CNY"
+  toJSON CZK     = "CZK"
+  toJSON DKK     = "DKK"
   toJSON EGP     = "EGP"
   toJSON EUR     = "EUR"
   toJSON GBP     = "GBP"
+  toJSON HKD     = "HKD"
   toJSON HRK     = "HRK"
   toJSON IDR     = "IDR"
   toJSON ILS     = "ILS"
@@ -108,15 +120,19 @@ instance ToJSON Currency where
   toJSON NOK     = "NOK"
   toJSON NZD     = "NZD"
   toJSON PTS     = "PTS"
+  toJSON PKR     = "PKR"
+  toJSON PLN     = "PLN"
   toJSON QAR     = "QAR"
   toJSON RON     = "RON"
   toJSON RUB     = "RUB"
   toJSON SAR     = "SAR"
   toJSON SEK     = "SEK"
   toJSON SGD     = "SGD"
+  toJSON THB     = "THB"
   toJSON TTD     = "TTD"
   toJSON USD     = "USD"
   toJSON VND     = "VND"
+  toJSON ZAR     = "ZAR"
 
 data AmountOfMoneyData = AmountOfMoneyData
   { value    :: Maybe Double

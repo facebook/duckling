@@ -42,11 +42,12 @@ ruleIntersect :: Rule
 ruleIntersect = Rule
   { name = "intersect"
   , pattern =
-    [ Predicate isNotLatent
+    [ Predicate $ isGrainFinerThan TG.Year
     , Predicate $ or . sequence [isNotLatent, isGrainOfTime TG.Year]
     ]
   , prod = \tokens -> case tokens of
-      (Token Time td1:Token Time td2:_) ->
+      (Token Time td1:Token Time td2:_)
+        | (not $ TTime.latent td1) || (not $ TTime.latent td2) ->
         Token Time . notLatent <$> intersect td1 td2
       _ -> Nothing
   }

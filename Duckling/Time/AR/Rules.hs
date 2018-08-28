@@ -691,8 +691,7 @@ ruleHODAndNumeralAfter = Rule
   , prod = \tokens -> case tokens of
       (Token Time td:token:_) -> do
         n <- getIntValue token
-        t <- minutesAfter n td
-        Just $ Token Time t
+        Token Time <$> minutesAfter n td
       _ -> Nothing
   }
 
@@ -707,8 +706,7 @@ ruleNumeralAfterHOD = Rule
   , prod = \tokens -> case tokens of
       (token:_:Token Time td:_) -> do
         n <- getIntValue token
-        t <- minutesAfter n td
-        Just $ Token Time t
+        Token Time <$> minutesAfter n td
       _ -> Nothing
   }
 
@@ -905,7 +903,7 @@ rulePODThis = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td:_) -> Token Time . partOfDay . notLatent <$>
-        intersect (cycleNth TG.Day 0) td
+        intersect today td
       _ -> Nothing
   }
 
@@ -914,7 +912,6 @@ ruleTonight = Rule
   { name = "tonight"
   , pattern = [regex "(هذه )?الليل[ةه]"]
   , prod = \_ -> do
-      let today = cycleNth TG.Day 0
       evening <- interval TTime.Open (hour False 18) (hour False 0)
       Token Time . partOfDay . notLatent <$> intersect today evening
   }
@@ -933,8 +930,7 @@ ruleAfterPartofday = Rule
           "(ال)?مدرس[ةه]" -> Just (hour False 15, hour False 21)
           _        -> Nothing
         td <- interval TTime.Open start end
-        Token Time . partOfDay . notLatent <$>
-          intersect (cycleNth TG.Day 0) td
+        Token Time . partOfDay . notLatent <$> intersect today td
       _ -> Nothing
   }
 
@@ -1216,8 +1212,7 @@ ruleIntervalBy = Rule
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td:_) ->
-        Token Time <$> interval TTime.Open (cycleNth TG.Second 0) td
+      (_:Token Time td:_) -> Token Time <$> interval TTime.Open now td
       _ -> Nothing
   }
 
@@ -1619,8 +1614,7 @@ ruleDurationInWithinAfter = Rule
       (Token RegexMatch (GroupMatch (match:_)):
        Token Duration dd:
        _) -> case Text.toLower match of
-         "خلال" -> Token Time <$>
-           interval TTime.Open (cycleNth TG.Second 0) (inDuration dd)
+         "خلال" -> Token Time <$> interval TTime.Open now (inDuration dd)
          "بعد" -> tt . withDirection TTime.After $ inDuration dd
          "في" -> tt $ inDuration dd
          _ -> Nothing

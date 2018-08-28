@@ -34,7 +34,7 @@ ruleAujourdhui = Rule
   , pattern =
     [ regex "(aujourd'? ?hui)|(ce jour)|(dans la journ(é|e)e?)|(en ce moment)"
     ]
-  , prod = \_ -> tt $ cycleNth TG.Day 0
+  , prod = \_ -> tt today
   }
 
 ruleDayofmonthNamedmonth :: Rule
@@ -220,7 +220,7 @@ ruleCePartofday = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td:_) -> Token Time . partOfDay . notLatent <$>
-        intersect (cycleNth TG.Day 0) td
+        intersect today td
       _ -> Nothing
   }
 
@@ -519,8 +519,7 @@ ruleDiciDuration = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Duration dd:_) ->
-        Token Time <$>
-          interval TTime.Open (cycleNth TG.Second 0) (inDuration dd)
+        Token Time <$> interval TTime.Open now (inDuration dd)
       _ -> Nothing
   }
 
@@ -766,8 +765,7 @@ ruleHourofdayMoinsIntegerAsRelativeMinutes = Rule
   , prod = \tokens -> case tokens of
       (Token Time td:_:token:_) -> do
         n <- getIntValue token
-        t <- minutesBefore n td
-        Just $ Token Time t
+        Token Time <$> minutesBefore n td
       _ -> Nothing
   }
 
@@ -779,9 +777,7 @@ ruleHourofdayMoinsQuart = Rule
     , regex "moins( le)? quart"
     ]
   , prod = \tokens -> case tokens of
-      (Token Time td:_) -> do
-        t <- minutesBefore 15 td
-        Just $ Token Time t
+      (Token Time td:_) -> Token Time <$> minutesBefore 15 td
       _ -> Nothing
   }
 
@@ -1124,9 +1120,8 @@ ruleAprsLeDjeuner = Rule
     [ regex "apr(e|è)s (le )?d(e|é|è)jeuner"
     ]
   , prod = \_ -> do
-      let td1 = cycleNth TG.Day 0
       td2 <- interval TTime.Open (hour False 13) (hour False 17)
-      Token Time . partOfDay <$> intersect td1 td2
+      Token Time . partOfDay <$> intersect today td2
   }
 
 ruleIntersect :: Rule
@@ -1210,9 +1205,8 @@ ruleAprsLeTravail = Rule
     [ regex "apr(e|è)s (le )?travail"
     ]
   , prod = \_ -> do
-      let td1 = cycleNth TG.Day 0
       td2 <- interval TTime.Open (hour False 17) (hour False 21)
-      Token Time . partOfDay <$> intersect td1 td2
+      Token Time . partOfDay <$> intersect today td2
   }
 
 ruleLeDayofmonthDatetime :: Rule
@@ -1289,9 +1283,8 @@ ruleAvantLeDjeuner = Rule
     [ regex "avant (le )?d(e|é|è)jeuner"
     ]
   , prod = \_ -> do
-      let td1 = cycleNth TG.Day 0
       td2 <- interval TTime.Open (hour False 10) (hour False 12)
-      Token Time . partOfDay <$> intersect td1 td2
+      Token Time . partOfDay <$> intersect today td2
   }
 
 ruleDernierWeekendDeTime :: Rule
@@ -1652,7 +1645,7 @@ ruleMaintenant = Rule
   , pattern =
     [ regex "maintenant|tout de suite"
     ]
-  , prod = \_ -> tt $ cycleNth TG.Second 0
+  , prod = \_ -> tt now
   }
 
 ruleDdmmyyyy :: Rule

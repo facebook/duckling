@@ -121,8 +121,7 @@ ruleRelativeMinutesTotillbeforeIntegerHourofday = Rule
   , prod = \tokens -> case tokens of
       (token:_:Token Time td:_) -> do
         n <- getIntValue token
-        t <- minutesBefore n td
-        Just $ Token Time t
+        Token Time <$> minutesBefore n td
       _ -> Nothing
   }
 
@@ -134,9 +133,7 @@ ruleQuarterTotillbeforeIntegerHourofday = Rule
     , Predicate isAnHourOfDay
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td:_) -> do
-        t <- minutesBefore 15 td
-        Just $ Token Time t
+      (_:Token Time td:_) -> Token Time <$> minutesBefore 15 td
       _ -> Nothing
   }
 
@@ -148,9 +145,7 @@ ruleHalfTotillbeforeIntegerHourofday = Rule
     , Predicate isAnHourOfDay
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td:_) -> do
-        t <- minutesBefore 30 td
-        Just $ Token Time t
+      (_:Token Time td:_) -> Token Time <$> minutesBefore 30 td
       _ -> Nothing
   }
 
@@ -827,8 +822,7 @@ ruleByTheEndOfTime = Rule
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td:_) -> Token Time <$>
-        interval TTime.Closed td (cycleNth TG.Second 0)
+      (_:Token Time td:_) -> Token Time <$> interval TTime.Closed td now
       _ -> Nothing
   }
 
@@ -839,9 +833,8 @@ ruleAfterWork = Rule
     [ regex "nach (der)? arbeit|(am)? feier ?abend"
     ]
   , prod = \_ -> do
-      let td1 = cycleNth TG.Day 0
       td2 <- interval TTime.Open (hour False 17) (hour False 21)
-      Token Time . partOfDay <$> intersect td1 td2
+      Token Time . partOfDay <$> intersect today td2
   }
 
 ruleLastNCycle :: Rule
@@ -880,7 +873,7 @@ ruleWithinDuration = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Duration dd:_) -> Token Time <$>
-        interval TTime.Open (cycleNth TG.Second 0) (inDuration dd)
+        interval TTime.Open now (inDuration dd)
       _ -> Nothing
   }
 
@@ -1147,8 +1140,7 @@ ruleThisPartofday = Rule
     , Predicate isAPartOfDay
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td:_) -> Token Time . partOfDay <$>
-        intersect (cycleNth TG.Day 0) td
+      (_:Token Time td:_) -> Token Time . partOfDay <$> intersect today td
       _ -> Nothing
   }
 
@@ -1211,9 +1203,8 @@ ruleAfterLunch = Rule
     [ regex "nach dem mittagessen|nachmittags?"
     ]
   , prod = \_ -> do
-      let td1 = cycleNth TG.Day 0
       td2 <- interval TTime.Open (hour False 13) (hour False 17)
-      Token Time . partOfDay <$> intersect td1 td2
+      Token Time . partOfDay <$> intersect today td2
   }
 
 ruleOnANamedday :: Rule
@@ -1299,9 +1290,7 @@ ruleHalfIntegerGermanStyleHourofday = Rule
     , Predicate isAnHourOfDay
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td:_) -> do
-        t <- minutesBefore 30 td
-        Just $ Token Time t
+      (_:Token Time td:_) -> Token Time <$> minutesBefore 30 td
       _ -> Nothing
   }
 
@@ -1369,9 +1358,8 @@ ruleTonight = Rule
     [ regex "heute? (am)? abends?"
     ]
   , prod = \_ -> do
-      let td1 = cycleNth TG.Day 0
       td2 <- interval TTime.Open (hour False 18) (hour False 0)
-      Token Time . partOfDay <$> intersect td1 td2
+      Token Time . partOfDay <$> intersect today td2
   }
 
 ruleYear :: Rule

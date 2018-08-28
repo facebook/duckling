@@ -6,24 +6,80 @@
 -- of patent rights can be found in the PATENTS file in the same directory.
 
 
+{-# LANGUAGE GADTs #-}
+
+
 module Duckling.Volume.Helpers
-  ( volume
+  ( isSimpleVolume
+  , isUnitOnly
+  , volume
+  , unitOnly
+  , valueOnly
   , withUnit
+  , withValue
+  , withInterval
+  , withMin
+  , withMax
   ) where
 
+import Data.Text (Text)
 import Prelude
 
-import Duckling.Volume.Types (VolumeData(..))
+import Duckling.Dimensions.Types
+import Duckling.Volume.Types (Unit(..), VolumeData(..))
+import Duckling.Types
 import qualified Duckling.Volume.Types as TVolume
 
 -- -----------------------------------------------------------------
 -- Patterns
 
+isSimpleVolume :: Predicate
+isSimpleVolume (Token Volume VolumeData {TVolume.value = Just _
+                                        , TVolume.minValue = Nothing
+                                        , TVolume.maxValue = Nothing}) = True
+isSimpleVolume _ = False
+
+isUnitOnly :: Predicate
+isUnitOnly (Token Volume VolumeData {TVolume.value = Nothing
+                                    , TVolume.unit = Just _
+                                    , TVolume.minValue = Nothing
+                                    , TVolume.maxValue = Nothing}) = True
+isUnitOnly _ = False
+
 -- -----------------------------------------------------------------
 -- Production
 
-volume :: Double -> VolumeData
-volume x = VolumeData {TVolume.value = x, TVolume.unit = Nothing}
+volume :: Unit -> Double -> VolumeData
+volume u v = VolumeData {TVolume.unit = Just u
+                        , TVolume.value = Just v
+                        , TVolume.minValue = Nothing
+                        , TVolume.maxValue = Nothing}
 
-withUnit :: TVolume.Unit -> VolumeData -> VolumeData
-withUnit value vd = vd {TVolume.unit = Just value}
+unitOnly :: Unit -> VolumeData
+unitOnly u = VolumeData {TVolume.unit = Just u
+                        , TVolume.value = Nothing
+                        , TVolume.minValue = Nothing
+                        , TVolume.maxValue = Nothing}
+
+valueOnly :: Double -> VolumeData
+valueOnly v = VolumeData {TVolume.unit = Nothing
+                        , TVolume.value = Just v
+                        , TVolume.minValue = Nothing
+                        , TVolume.maxValue = Nothing}
+
+withUnit :: Unit -> VolumeData -> VolumeData
+withUnit u vd = vd {TVolume.unit = Just u}
+
+withValue :: Double -> VolumeData -> VolumeData
+withValue v vd = vd {TVolume.value = Just v}
+
+withInterval :: (Double, Double) -> VolumeData -> VolumeData
+withInterval (from, to) vd = vd {TVolume.value = Nothing
+                                , TVolume.minValue = Just from
+                                , TVolume.maxValue = Just to}
+
+withMin :: Double -> VolumeData -> VolumeData
+withMin from vd = vd {TVolume.minValue = Just from}
+
+withMax :: Double -> VolumeData -> VolumeData
+withMax to vd = vd {TVolume.maxValue = Just to}

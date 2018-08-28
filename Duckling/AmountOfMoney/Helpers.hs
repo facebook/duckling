@@ -7,13 +7,14 @@
 
 
 {-# LANGUAGE GADTs #-}
-
+{-# LANGUAGE NamedFieldPuns #-}
 
 module Duckling.AmountOfMoney.Helpers
   ( currencyOnly
   , isSimpleAmountOfMoney
   , isCent
   , isCents
+  , isDollarCoin
   , isCurrencyOnly
   , isDime
   , isMoneyWithValue
@@ -23,16 +24,36 @@ module Duckling.AmountOfMoney.Helpers
   , withMax
   , withMin
   , withValue
+  , dollarCoins
   )
   where
 
+import Data.HashMap.Strict (HashMap)
 import Data.Maybe (isJust)
+import Data.String
+import Data.Text (Text)
 import Prelude
 
 import Duckling.AmountOfMoney.Types (Currency (..), AmountOfMoneyData (..))
 import Duckling.Numeral.Types (getIntValue, isInteger)
 import Duckling.Dimensions.Types
 import Duckling.Types hiding (Entity(..))
+
+import qualified Data.HashMap.Strict as HashMap
+import qualified Data.Text as Text
+
+-- -----------------------------------------------------------------
+-- Dollar coin Types
+
+dollarCoins :: HashMap Text Double
+dollarCoins = HashMap.fromList
+  [ ("nickel", 0.05)
+  , ("nickels", 0.05)
+  , ("dime", 0.1)
+  , ("dimes", 0.1)
+  , ("quarter", 0.25)
+  , ("quarters", 0.25)
+  ]
 
 -- -----------------------------------------------------------------
 -- Patterns
@@ -55,6 +76,12 @@ isCurrencyOnly :: Predicate
 isCurrencyOnly (Token AmountOfMoney AmountOfMoneyData
   {value = Nothing, minValue = Nothing, maxValue = Nothing}) = True
 isCurrencyOnly _ = False
+
+isDollarCoin :: Predicate
+isDollarCoin (Token AmountOfMoney AmountOfMoneyData{value = Just d, currency}) =
+  elem d [0.05, 0.1, 0.25] && elem currency [Dollar, AUD, CAD, JMD,
+                                             NZD,    SGD, TTD, USD]
+isDollarCoin _ = False
 
 isSimpleAmountOfMoney :: Predicate
 isSimpleAmountOfMoney (Token AmountOfMoney AmountOfMoneyData

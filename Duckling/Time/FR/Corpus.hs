@@ -735,16 +735,14 @@ allExamples = concat
              , "entre le 10 juin et le 1er juillet"
              , "du 10 juin au 1er juillet"
              ]
-  , examples (datetimeInterval ((2013, 2, 14, 9, 30, 0), (2013, 2, 14, 12, 0, 0)) Minute)
+  , examples (datetimeInterval ((2013, 2, 14, 9, 30, 0), (2013, 2, 14, 11, 1, 0)) Minute)
              [ "de 9h30 jusqu'à 11h jeudi"
              , "de 9 heures 30 à 11h jeudi"
              , "de 9 heures 30 a 11h jeudi"
              , "entre 9h30 et 11h jeudi"
              , "jeudi mais entre 9h30 et 11h"
              , "jeudi par exemple entre 9h30 et 11h"
-             ]
-  , examples (datetimeInterval ((2013, 2, 14, 9, 30, 0), (2013, 2, 14, 11, 1, 0)) Minute)
-             [ "9h30 - 11h00 Jeudi"
+             , "9h30 - 11h00 Jeudi"
              ]
   , examples (datetimeOpenInterval After (2013, 3, 8, 0, 0, 0) Day)
              [ "à partir du 8"

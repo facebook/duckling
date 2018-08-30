@@ -13,16 +13,21 @@ module Duckling.AmountOfMoney.EN.IN.Rules
   ( rules
   ) where
 
+import Data.HashMap.Strict (HashMap)
 import Data.String
+import Data.Text (Text)
 import Prelude
 
 import Duckling.AmountOfMoney.Helpers
 import Duckling.AmountOfMoney.Types (Currency(..))
 import Duckling.Numeral.Helpers (isPositive)
+import Duckling.Regex.Types
 import Duckling.Types
 
+import qualified Data.HashMap.Strict as HashMap
+import qualified Data.Text as Text
+import qualified Duckling.AmountOfMoney.Helpers as Helpers
 import qualified Duckling.Numeral.Types as TNumeral
-
 
 ruleAGrand :: Rule
 ruleAGrand = Rule
@@ -46,8 +51,22 @@ ruleGrand = Rule
       _ -> Nothing
   }
 
+ruleDollarCoin :: Rule
+ruleDollarCoin = Rule
+  { name = "dollar coin"
+  , pattern =
+    [ regex "(nickel|dime|quarter)s?"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (match:_)):_) -> do
+        c <- HashMap.lookup (Text.toLower match) Helpers.dollarCoins
+        Just . Token AmountOfMoney . withValue c $ currencyOnly Dollar
+      _ -> Nothing
+  }
+
 rules :: [Rule]
 rules =
   [ ruleAGrand
   , ruleGrand
+  , ruleDollarCoin
   ]

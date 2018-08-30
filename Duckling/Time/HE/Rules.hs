@@ -168,8 +168,7 @@ ruleIntegerTotillbeforeIntegerHourofday = Rule
   , prod = \tokens -> case tokens of
       (token:_:Token Time td:_) -> do
         n <- getIntValue token
-        t <- minutesBefore n td
-        tt t
+        Token Time <$> minutesBefore n td
       _ -> Nothing
   }
 
@@ -210,8 +209,7 @@ ruleIntegerAfterpastIntegerHourofday = Rule
   , prod = \tokens -> case tokens of
       (token:_:Token Time td:_) -> do
         n <- getIntValue token
-        t <- minutesAfter n td
-        tt t
+        Token Time <$> minutesAfter n td
       _ -> Nothing
   }
 
@@ -356,7 +354,7 @@ ruleNow = Rule
   , pattern =
     [ regex "עכשיו|מייד"
     ]
-  , prod = \_ -> tt $ cycleNth TG.Second 0
+  , prod = \_ -> tt now
   }
 
 ruleCurrentDayofweek :: Rule
@@ -468,7 +466,7 @@ ruleToday = Rule
   , pattern =
     [ regex "היום"
     ]
-  , prod = \_ -> tt $ cycleNth TG.Day 0
+  , prod = \_ -> tt today
   }
 
 ruleBetweenTimeofdayAndTimeofdayInterval :: Rule
@@ -678,7 +676,7 @@ ruleThisEvening = Rule
     ]
   , prod = \_ -> do
       td <- interval TTime.Open (hour False 18) (hour False 0)
-      Token Time . partOfDay <$> intersect (cycleNth TG.Day 0) td
+      Token Time . partOfDay <$> intersect today td
   }
 
 ruleBetweenDatetimeAndDatetimeInterval :: Rule

@@ -7,6 +7,7 @@
 
 
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Volume.TR.Rules
@@ -18,34 +19,56 @@ import Prelude
 
 import Duckling.Dimensions.Types
 import Duckling.Types
+import Duckling.Regex.Types
 import Duckling.Volume.Helpers
+import Duckling.Numeral.Helpers (isPositive)
 import qualified Duckling.Volume.Types as TVolume
-
-ruleHalfLiter :: Rule
-ruleHalfLiter = Rule
-  { name = "half liter"
-  , pattern = [ regex "yar\305m l(t|itre)" ]
-  , prod = \_ -> Just . Token Volume . withUnit TVolume.Litre $ volume 0.5
-  }
+import qualified Duckling.Numeral.Types as TNumeral
 
 volumes :: [(Text, String, TVolume.Unit)]
 volumes = [ ("<latent vol> ml"    , "m(l|ililitre)" , TVolume.Millilitre)
-          , ("<vol> hectoliters"  , "hektolitre"    , TVolume.Hectolitre)
+          , ("<vol> hectoliters"  , "(hektolitre)"  , TVolume.Hectolitre)
           , ("<vol> liters"       , "l(t|itre)"     , TVolume.Litre)
           , ("<latent vol> gallon", "gal(l?on?)?"   , TVolume.Gallon)
           ]
 
-ruleVolumes :: [Rule]
-ruleVolumes = map go volumes
+rulesVolumes :: [Rule]
+rulesVolumes = map go volumes
   where
     go :: (Text, String, TVolume.Unit) -> Rule
     go (name, regexPattern, u) = Rule
       { name = name
-      , pattern = [ dimension Volume, regex regexPattern ]
-      , prod = \tokens -> case tokens of
-          (Token Volume vd:_) -> Just . Token Volume $ withUnit u vd
-          _ -> Nothing
+      , pattern =
+        [ regex regexPattern
+        ]
+      , prod = \_ -> Just . Token Volume $ unitOnly u
+      }
+
+fractions :: [(Text, String, Double)]
+fractions = [ ("half", "yar\305m", 1/2)
+            ]
+
+rulesFractionalVolume :: [Rule]
+rulesFractionalVolume = map go fractions
+  where
+    go :: (Text, String, Double) -> Rule
+    go (name, regexPattern, f) = Rule
+      { name = name
+      , pattern =
+        [ regex regexPattern
+        , Predicate isUnitOnly
+        ]
+      , prod = \case
+        (_:
+         Token Volume TVolume.VolumeData{TVolume.unit = Just u}:
+         _) ->
+          Just . Token Volume $ volume u f
+        _ -> Nothing
       }
 
 rules :: [Rule]
-rules = ruleHalfLiter:ruleVolumes
+rules =
+  [
+  ]
+  ++ rulesVolumes
+  ++ rulesFractionalVolume

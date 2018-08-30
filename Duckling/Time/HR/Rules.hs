@@ -82,8 +82,7 @@ ruleNumeralTotillbeforeIntegerHourofday = Rule
   , prod = \tokens -> case tokens of
       (token:_:Token Time td:_) -> do
         n <- getIntValue token
-        t <- minutesBefore n td
-        Just $ Token Time t
+        Token Time <$> minutesBefore n td
       _ -> Nothing
   }
 
@@ -122,8 +121,7 @@ ruleNumeralAfterpastHourofday = Rule
   , prod = \tokens -> case tokens of
       (token:_:Token Time td:_) -> do
         n <- getIntValue token
-        t <- minutesAfter n td
-        Just $ Token Time t
+        Token Time <$> minutesAfter n td
       _ -> Nothing
   }
 
@@ -245,7 +243,7 @@ ruleValentinesDay = Rule
   , pattern =
     [ regex "valentinov(og?|a|)"
     ]
-  , prod = \_ -> Just . Token Time $ monthDay 2 14
+  , prod = \_ -> tt $ monthDay 2 14
   }
 
 ruleSinceTimeofday :: Rule
@@ -266,7 +264,7 @@ ruleNewYearsDay = Rule
   , pattern =
     [ regex "nov(a|u|e) godin(a|e|u)"
     ]
-  , prod = \_ -> Just . Token Time $ monthDay 1 1
+  , prod = \_ -> tt $ monthDay 1 1
   }
 
 ruleLastTime :: Rule
@@ -278,7 +276,7 @@ ruleLastTime = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td:_) ->
-        Just . Token Time $ predNth (-1) False td
+        tt $ predNth (-1) False td
       _ -> Nothing
   }
 
@@ -306,7 +304,7 @@ ruleCycleAfterTime = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token TimeGrain grain:_:Token Time td:_) ->
-        Just . Token Time $ cycleNthAfter False grain 1 td
+        tt $ cycleNthAfter False grain 1 td
       _ -> Nothing
   }
 
@@ -318,7 +316,7 @@ ruleInDuration = Rule
     , dimension Duration
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Duration dd:_) -> Just . Token Time $ inDuration dd
+      (_:Token Duration dd:_) -> tt $ inDuration dd
       _ -> Nothing
   }
 
@@ -328,7 +326,7 @@ ruleNow = Rule
   , pattern =
     [ regex "((upravo|ov(aj?|og?|e|i))? ?sada?|trenutak|upravo|trenutno)|(ov(aj|og) trena?)"
     ]
-  , prod = \_ -> Just . Token Time $ cycleNth TG.Second 0
+  , prod = \_ -> tt now
   }
 
 ruleLastCycleOfTime :: Rule
@@ -342,7 +340,7 @@ ruleLastCycleOfTime = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token TimeGrain grain:_:Token Time td:_) ->
-        Just . Token Time $ cycleLastOf grain td
+        tt $ cycleLastOf grain td
       _ -> Nothing
   }
 
@@ -415,7 +413,7 @@ ruleTimeAfterNext = Rule
     , regex "nakon sljede(ć|c)(i|e|a)(ga?)?"
     ]
   , prod = \tokens -> case tokens of
-      (Token Time td:_) -> Just . Token Time $ predNth 1 True td
+      (Token Time td:_) -> tt $ predNth 1 True td
       _ -> Nothing
   }
 
@@ -425,7 +423,7 @@ ruleNoon = Rule
   , pattern =
     [ regex "(u )?podne(va)?"
     ]
-  , prod = \_ -> Just . Token Time $ hour False 12
+  , prod = \_ -> tt $ hour False 12
   }
 
 ruleEarlyMorning :: Rule
@@ -444,7 +442,7 @@ ruleToday = Rule
   , pattern =
     [ regex "danas?|(dana(s|š)nj(i|eg) dana?) "
     ]
-  , prod = \_ -> Just . Token Time $ cycleNth TG.Day 0
+  , prod = \_ -> tt today
   }
 
 ruleThisnextDayofweek :: Rule
@@ -455,7 +453,7 @@ ruleThisnextDayofweek = Rule
     , Predicate isADayOfWeek
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td:_) -> Just . Token Time $ predNth 0 True td
+      (_:Token Time td:_) -> tt $ predNth 0 True td
       _ -> Nothing
   }
 
@@ -482,7 +480,7 @@ ruleNextCycle = Rule
     , dimension TimeGrain
     ]
   , prod = \tokens -> case tokens of
-      (_:Token TimeGrain grain:_) -> Just . Token Time $ cycleNth grain 1
+      (_:Token TimeGrain grain:_) -> tt $ cycleNth grain 1
       _ -> Nothing
   }
 
@@ -506,7 +504,7 @@ ruleForDuration = Rule
     , dimension Duration
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Duration dd:_) -> Just . Token Time $ inDuration dd
+      (_:Token Duration dd:_) -> tt $ inDuration dd
       _ -> Nothing
   }
 
@@ -521,7 +519,7 @@ ruleLastDayofweekTime = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td1:_:Token Time td2:_) ->
-        Just . Token Time $ predLastOf td1 td2
+        tt $ predLastOf td1 td2
       _ -> Nothing
   }
 
@@ -533,7 +531,7 @@ ruleDurationFromNow = Rule
     , regex "od (sada?|ovog trenutka|dana(s|š)nj(i|eg) dana?)"
     ]
   , prod = \tokens -> case tokens of
-      (Token Duration dd:_) -> Just . Token Time $ inDuration dd
+      (Token Duration dd:_) -> tt $ inDuration dd
       _ -> Nothing
   }
 
@@ -555,7 +553,7 @@ ruleLastCycle = Rule
     , dimension TimeGrain
     ]
   , prod = \tokens -> case tokens of
-      (_:Token TimeGrain grain:_) -> Just . Token Time . cycleNth grain $ - 1
+      (_:Token TimeGrain grain:_) -> tt . cycleNth grain $ - 1
       _ -> Nothing
   }
 
@@ -592,7 +590,7 @@ ruleTimeBeforeLast = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_) ->
-        Just . Token Time $ predNth (-2) False td
+        tt $ predNth (-2) False td
       _ -> Nothing
   }
 
@@ -624,7 +622,7 @@ ruleChristmasEve = Rule
   , pattern =
     [ regex "badnjaka?"
     ]
-  , prod = \_ -> Just . Token Time $ monthDay 12 24
+  , prod = \_ -> tt $ monthDay 12 24
   }
 
 ruleInduringThePartofday :: Rule
@@ -635,7 +633,7 @@ ruleInduringThePartofday = Rule
     , Predicate isAPartOfDay
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td:_) -> Just . Token Time $ notLatent td
+      (_:Token Time td:_) -> tt $ notLatent td
       _ -> Nothing
   }
 
@@ -797,7 +795,7 @@ ruleNewYearsEve = Rule
   , pattern =
     [ regex "star(a|u|e) godin(a|e|u)"
     ]
-  , prod = \_ -> Just . Token Time $ monthDay 12 31
+  , prod = \_ -> tt $ monthDay 12 31
   }
 
 ruleByTheEndOfTime :: Rule
@@ -808,8 +806,7 @@ ruleByTheEndOfTime = Rule
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td:_) ->
-        Token Time <$> interval TTime.Closed (cycleNth TG.Second 0) td
+      (_:Token Time td:_) -> Token Time <$> interval TTime.Closed now td
       _ -> Nothing
   }
 
@@ -821,8 +818,7 @@ ruleAfterWork = Rule
     ]
   , prod = \_ -> do
       td <- interval TTime.Open (hour False 17) (hour False 21)
-      Token Time . partOfDay . notLatent <$>
-        intersect (cycleNth TG.Day 0) td
+      Token Time . partOfDay . notLatent <$> intersect today td
   }
 
 ruleLastDayofweekTime2 :: Rule
@@ -835,7 +831,7 @@ ruleLastDayofweekTime2 = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td1:Token Time td2:_) ->
-        Just . Token Time $ predLastOf td1 td2
+        tt $ predLastOf td1 td2
       _ -> Nothing
   }
 
@@ -863,7 +859,7 @@ ruleWithinDuration = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Duration dd:_) -> Token Time <$>
-        interval TTime.Open (cycleNth TG.Second 0) (inDuration dd)
+        interval TTime.Open now (inDuration dd)
       _ -> Nothing
   }
 
@@ -873,7 +869,7 @@ ruleMidnighteodendOfDay = Rule
   , pattern =
     [ regex "(u )?pono(c|ć)i?|(the )?(EOD|((do )? kraja? dana))"
     ]
-  , prod = \_ -> Just . Token Time $ hour False 0
+  , prod = \_ -> tt $ hour False 0
   }
 
 ruleDayofmonthNonOrdinalNamedmonth :: Rule
@@ -920,7 +916,7 @@ ruleUntilTimeofday = Rule
     , Predicate isATimeOfDay
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td:_) -> Just . Token Time $ withDirection TTime.Before td
+      (_:Token Time td:_) -> tt $ withDirection TTime.Before td
       _ -> Nothing
   }
 
@@ -932,7 +928,7 @@ ruleAtTimeofday = Rule
     , Predicate isATimeOfDay
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td:_) -> Just . Token Time $ notLatent td
+      (_:Token Time td:_) -> tt $ notLatent td
       _ -> Nothing
   }
 
@@ -980,7 +976,7 @@ rulePrijeDuration = Rule
     , dimension Duration
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Duration dd:_) -> Just . Token Time $ durationAgo dd
+      (_:Token Duration dd:_) -> tt $ durationAgo dd
       _ -> Nothing
   }
 
@@ -992,7 +988,7 @@ ruleAboutDuration = Rule
     , dimension Duration
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Duration dd:_) -> Just . Token Time $ inDuration dd
+      (_:Token Duration dd:_) -> tt $ inDuration dd
       _ -> Nothing
   }
 
@@ -1002,7 +998,7 @@ ruleEomendOfMonth = Rule
   , pattern =
     [ regex "(the )?(EOM|(do )? kraja mjeseca)"
     ]
-  , prod = \_ -> Just . Token Time $ cycleNth TG.Month 1
+  , prod = \_ -> tt $ cycleNth TG.Month 1
   }
 
 ruleNameddayDayofmonthOrdinal :: Rule
@@ -1025,7 +1021,7 @@ ruleNextTime = Rule
     , Predicate isNotLatent
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td:_) -> Just . Token Time $ predNth 0 True td
+      (_:Token Time td:_) -> tt $ predNth 0 True td
       _ -> Nothing
   }
 
@@ -1093,7 +1089,7 @@ ruleThisPartofday = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td:_) -> Token Time . partOfDay . notLatent <$>
-        intersect (cycleNth TG.Day 0) td
+        intersect today td
       _ -> Nothing
   }
 
@@ -1105,7 +1101,7 @@ ruleThisCycle = Rule
     , dimension TimeGrain
     ]
   , prod = \tokens -> case tokens of
-      (_:Token TimeGrain grain:_) -> Just . Token Time $ cycleNth grain 0
+      (_:Token TimeGrain grain:_) -> tt $ cycleNth grain 0
       _ -> Nothing
   }
 
@@ -1129,7 +1125,7 @@ ruleThisTime = Rule
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td:_) -> Just . Token Time $ predNth 0 False td
+      (_:Token Time td:_) -> tt $ predNth 0 False td
       _ -> Nothing
   }
 
@@ -1166,7 +1162,7 @@ ruleDayBeforeYesterday = Rule
   , pattern =
     [ regex "(prekju(c|č)er)"
     ]
-  , prod = \_ -> Just . Token Time . cycleNth TG.Day $ - 2
+  , prod = \_ -> tt . cycleNth TG.Day $ - 2
   }
 
 ruleAfterLunch :: Rule
@@ -1177,8 +1173,7 @@ ruleAfterLunch = Rule
     ]
   , prod = \_ -> do
       td <- interval TTime.Open (hour False 13) (hour False 17)
-      Token Time . partOfDay . notLatent <$>
-        intersect (cycleNth TG.Day 0) td
+      Token Time . partOfDay . notLatent <$> intersect today td
   }
 
 ruleYearLatent :: Rule
@@ -1201,7 +1196,7 @@ ruleYesterday = Rule
   , pattern =
     [ regex "(ju(c|č)er)"
     ]
-  , prod = \_ -> Just . Token Time . cycleNth TG.Day $ - 1
+  , prod = \_ -> tt . cycleNth TG.Day $ - 1
   }
 
 ruleSeason2 :: Rule
@@ -1222,7 +1217,7 @@ ruleAfterTimeofday = Rule
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td:_) -> Just . Token Time $ withDirection TTime.After td
+      (_:Token Time td:_) -> tt $ withDirection TTime.After td
       _ -> Nothing
   }
 
@@ -1232,7 +1227,7 @@ ruleChristmas = Rule
   , pattern =
     [ regex "(zi(c|ć)bo|bo(z|ž)i(c|ć))(a|u|ni|na)?"
     ]
-  , prod = \_ -> Just . Token Time $ monthDay 12 25
+  , prod = \_ -> tt $ monthDay 12 25
   }
 
 ruleDayofmonthOrdinal :: Rule
@@ -1260,7 +1255,7 @@ ruleOrdinalCycleAfterTime = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Ordinal od:Token TimeGrain grain:_:Token Time td:_) ->
-        Just . Token Time $ cycleNthAfter True grain (TOrdinal.value od - 1) td
+        tt $ cycleNthAfter True grain (TOrdinal.value od - 1) td
       _ -> Nothing
   }
 
@@ -1275,7 +1270,7 @@ ruleOrdinalCycleOfTime = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Ordinal od:Token TimeGrain grain:_:Token Time td:_) ->
-        Just . Token Time $ cycleNthAfter True grain (TOrdinal.value od - 1) td
+        tt $ cycleNthAfter True grain (TOrdinal.value od - 1) td
       _ -> Nothing
   }
 
@@ -1287,7 +1282,7 @@ ruleAfterNextTime = Rule
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td:_) -> Just . Token Time $ predNth 1 True td
+      (_:Token Time td:_) -> tt $ predNth 1 True td
       _ -> Nothing
   }
 
@@ -1297,7 +1292,7 @@ ruleDayAfterTomorrow = Rule
   , pattern =
     [ regex "(preko?sutra)"
     ]
-  , prod = \_ -> Just . Token Time $ cycleNth TG.Day 2
+  , prod = \_ -> tt $ cycleNth TG.Day 2
   }
 
 ruleHhmm :: Rule
@@ -1321,7 +1316,6 @@ ruleTonight = Rule
     [ regex "(na)?ve(c|č)er(as)?"
     ]
   , prod = \_ -> do
-      let today = cycleNth TG.Day 0
       evening <- interval TTime.Open (hour False 18) (hour False 0)
       Token Time . partOfDay . notLatent <$> intersect today evening
   }
@@ -1334,7 +1328,7 @@ ruleBeforeLasttime = Rule
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td:_) -> Just . Token Time $ predNth (-2) False td
+      (_:Token Time td:_) -> tt $ predNth (-2) False td
       _ -> Nothing
   }
 
@@ -1371,7 +1365,7 @@ ruleHalloweenDay = Rule
   , pattern =
     [ regex "no(c|ć) vje(s|š)tica"
     ]
-  , prod = \_ -> Just . Token Time $ monthDay 10 31
+  , prod = \_ -> tt $ monthDay 10 31
   }
 
 ruleNamedmonthDayofmonthNonOrdinal :: Rule
@@ -1415,8 +1409,7 @@ ruleByTime = Rule
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td:_) ->
-        Token Time <$> interval TTime.Open (cycleNth TG.Second 0) td
+      (_:Token Time td:_) -> Token Time <$> interval TTime.Open now td
       _ -> Nothing
   }
 
@@ -1430,7 +1423,7 @@ ruleCycleBeforeTime = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token TimeGrain grain:_:Token Time td:_) ->
-        Just . Token Time $ cycleNthAfter False grain (-1) td
+        tt $ cycleNthAfter False grain (-1) td
       _ -> Nothing
   }
 
@@ -1473,7 +1466,7 @@ ruleDurationAfterTime = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Duration dd:_:Token Time td:_) ->
-        Just . Token Time $ durationAfter dd td
+        tt $ durationAfter dd td
       _ -> Nothing
   }
 
@@ -1508,7 +1501,7 @@ ruleDayBeforeDayBeforeYesterday = Rule
   , pattern =
     [ regex "(prek\\s?prekju(c|č)er)"
     ]
-  , prod = \_ -> Just . Token Time . cycleNth TG.Day $ - 3
+  , prod = \_ -> tt . cycleNth TG.Day $ - 3
   }
 
 ruleDurationBeforeTime :: Rule
@@ -1521,7 +1514,7 @@ ruleDurationBeforeTime = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Duration dd:_:Token Time td:_) ->
-        Just . Token Time $ durationBefore dd td
+        tt $ durationBefore dd td
       _ -> Nothing
   }
 
@@ -1531,7 +1524,7 @@ ruleEoyendOfYear = Rule
   , pattern =
     [ regex "(the )?(EOY|(do )? kraja? godine)"
     ]
-  , prod = \_ -> Just . Token Time $ cycleNth TG.Year 1
+  , prod = \_ -> tt $ cycleNth TG.Year 1
   }
 
 ruleTomorrow :: Rule
@@ -1540,7 +1533,7 @@ ruleTomorrow = Rule
   , pattern =
     [ regex "(sutra(dan)?)"
     ]
-  , prod = \_ -> Just . Token Time $ cycleNth TG.Day 1
+  , prod = \_ -> tt $ cycleNth TG.Day 1
   }
 
 ruleMothersDay :: Rule
@@ -1560,7 +1553,7 @@ ruleTimeofdayOclock = Rule
     , regex "sat(i|a)?"
     ]
   , prod = \tokens -> case tokens of
-      (Token Time td:_) -> Just . Token Time $ notLatent td
+      (Token Time td:_) -> tt $ notLatent td
       _ -> Nothing
   }
 

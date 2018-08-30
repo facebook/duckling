@@ -161,7 +161,7 @@ rulePowersOfTen :: Rule
 rulePowersOfTen = Rule
   { name = "powers of tens"
   , pattern =
-    [ regex "(hundre(de)?|tusen?|million(er)?)"
+    [ regex "(hundre(de)?|tusen?|million(er)?|milliard(?:er)?|billion(?:er)?|billiard(?:er)?|trillion(?:er)?|trilliard(?:er)?|kvadrillion(?:er)?|kvadrilliard(?:er)?)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
@@ -171,6 +171,20 @@ rulePowersOfTen = Rule
         "tusen"     -> double 1e3 >>= withGrain 3 >>= withMultipliable
         "million"   -> double 1e6 >>= withGrain 6 >>= withMultipliable
         "millioner" -> double 1e6 >>= withGrain 6 >>= withMultipliable
+        "milliard" -> double 1e9 >>= withGrain 9 >>= withMultipliable
+        "milliarder" -> double 1e9 >>= withGrain 9 >>= withMultipliable
+        "billion" -> double 1e12 >>= withGrain 12 >>= withMultipliable
+        "billioner" -> double 1e12 >>= withGrain 12 >>= withMultipliable
+        "billiard" -> double 1e15 >>= withGrain 15 >>= withMultipliable
+        "billiarder" -> double 1e15 >>= withGrain 15 >>= withMultipliable
+        "trillion" -> double 1e18 >>= withGrain 18 >>= withMultipliable
+        "trillioner" -> double 1e18 >>= withGrain 18 >>= withMultipliable
+        "trilliard" -> double 1e21 >>= withGrain 21 >>= withMultipliable
+        "trilliarder" -> double 1e21 >>= withGrain 21 >>= withMultipliable
+        "kvadrillion" -> double 1e24 >>= withGrain 24 >>= withMultipliable
+        "kvadrillioner" -> double 1e24 >>= withGrain 24 >>= withMultipliable
+        "kvadrilliard" -> double 1e27 >>= withGrain 27 >>= withMultipliable
+        "kvadrilliarder" -> double 1e27 >>= withGrain 27 >>= withMultipliable
         _           -> Nothing
       _ -> Nothing
   }
@@ -235,6 +249,132 @@ ruleInteger = Rule
       _ -> Nothing
   }
 
+
+twentyToHundredMap :: HashMap Text Integer
+twentyToHundredMap = HashMap.fromList
+  [ ( "tjueen" , 21 )
+  , ( "tjueén" , 21 )
+  , ( "tjueto" , 22 )
+  , ( "tjuetre" , 23 )
+  , ( "tjuefire" , 24 )
+  , ( "tjuefem" , 25 )
+  , ( "tjueseks" , 26 )
+  , ( "tjuesju" , 27 )
+  , ( "tjuesyv" , 27 )
+  , ( "tjueåtte" , 28 )
+  , ( "tjueni" , 29 )
+  , ( "trettien" , 31 )
+  , ( "trettién" , 31 )
+  , ( "trettito" , 32 )
+  , ( "trettitre" , 33 )
+  , ( "trettifire" , 34 )
+  , ( "trettifem" , 35 )
+  , ( "trettiseks" , 36 )
+  , ( "trettisju" , 37 )
+  , ( "trettisyv" , 37 )
+  , ( "trettiåtte" , 38 )
+  , ( "trettini" , 39 )
+  , ( "førtien" , 41 )
+  , ( "førtién" , 41 )
+  , ( "førtito" , 42 )
+  , ( "førtitre" , 43 )
+  , ( "førtifire" , 44 )
+  , ( "førtifem" , 45 )
+  , ( "førtiseks" , 46 )
+  , ( "førtisju" , 47 )
+  , ( "førtisyv" , 47 )
+  , ( "førtiåtte" , 48 )
+  , ( "førtini" , 49 )
+  , ( "femtien" , 51 )
+  , ( "femtién" , 51 )
+  , ( "femtito" , 52 )
+  , ( "femtitre" , 53 )
+  , ( "femtifire" , 54 )
+  , ( "femtifem" , 55 )
+  , ( "femtiseks" , 56 )
+  , ( "femtisju" , 57 )
+  , ( "femtisyv" , 57 )
+  , ( "femtiåtte" , 58 )
+  , ( "femtini" , 59 )
+  , ( "sekstien" , 61 )
+  , ( "sekstién" , 61 )
+  , ( "sekstito" , 62 )
+  , ( "sekstitre" , 63 )
+  , ( "sekstifire" , 64 )
+  , ( "sekstifem" , 65 )
+  , ( "sekstiseks" , 66 )
+  , ( "sekstisju" , 67 )
+  , ( "sekstisyv" , 67 )
+  , ( "sekstiåtte" , 68 )
+  , ( "sekstini" , 69 )
+  , ( "syttien" , 71 )
+  , ( "syttién" , 71 )
+  , ( "syttito" , 72 )
+  , ( "syttitre" , 73 )
+  , ( "syttifire" , 74 )
+  , ( "syttifem" , 75 )
+  , ( "syttiseks" , 76 )
+  , ( "syttisju" , 77 )
+  , ( "syttisyv" , 77 )
+  , ( "syttiåtte" , 78 )
+  , ( "syttini" , 79 )
+  , ( "søttien" , 71 )
+  , ( "søttién" , 71 )
+  , ( "søttito" , 72 )
+  , ( "søttitre" , 73 )
+  , ( "søttifire" , 74 )
+  , ( "søttifem" , 75 )
+  , ( "søttiseks" , 76 )
+  , ( "søttisju" , 77 )
+  , ( "søttisyv" , 77 )
+  , ( "søttiåtte" , 78 )
+  , ( "søttini" , 79 )
+  , ( "åttien" , 81 )
+  , ( "åttién" , 81 )
+  , ( "åttito" , 82 )
+  , ( "åttitre" , 83 )
+  , ( "åttifire" , 84 )
+  , ( "åttifem" , 85 )
+  , ( "åttiseks" , 86 )
+  , ( "åttisju" , 87 )
+  , ( "åttisyv" , 87 )
+  , ( "åttiåtte" , 88 )
+  , ( "åttini" , 89 )
+  , ( "nittien" , 91 )
+  , ( "nittién" , 91 )
+  , ( "nittito" , 92 )
+  , ( "nittitre" , 93 )
+  , ( "nittifire" , 94 )
+  , ( "nittifem" , 95 )
+  , ( "nittiseks" , 96 )
+  , ( "nittisju" , 97 )
+  , ( "nittisyv" , 97 )
+  , ( "nittiåtte" , 98 )
+  , ( "nittini" , 99 )
+  ]
+
+ruleInteger4 :: Rule
+ruleInteger4 = Rule
+  { name = "integer (21..99)"
+  , pattern =
+    [ regex "(tjueen|tjueén|tjueto|tjuetre|tjuefire|tjuefem|tjueseks|tjuesju|tjuesyv|tjueåtte|tjueni\
+            \|trettien|trettién|trettito|trettitre|trettifire|trettifem|trettiseks|trettisju|trettisyv|trettiåtte|trettini\
+            \|førtien|førtién|førtito|førtitre|førtifire|førtifem|førtiseks|førtisju|førtisyv|førtiåtte|førtini\
+            \|femtien|femtién|femtito|femtitre|femtifire|femtifem|femtiseks|femtisju|femtisyv|femtiåtte|femtini\
+            \|sekstien|sekstién|sekstito|sekstitre|sekstifire|sekstifem|sekstiseks|sekstisju|sekstisyv|sekstiåtte|sekstini\
+            \|syttien|syttién|syttito|syttitre|syttifire|syttifem|syttiseks|syttisju|syttisyv|syttiåtte|syttini\
+            \|søttien|søttién|søttito|søttitre|søttifire|søttifem|søttiseks|søttisju|søttisyv|søttiåtte|søttini\
+            \|åttien|åttién|åttito|åttitre|åttifire|åttifem|åttiseks|åttisju|åttisyv|åttiåtte|åttini\
+            \|nittien|nittién|nittito|nittitre|nittifire|nittifem|nittiseks|nittisju|nittisyv|nittiåtte|nittini\
+            \)"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        HashMap.lookup (Text.toLower match) twentyToHundredMap >>= integer
+      _ -> Nothing
+  }
+
+
 tensMap :: HashMap Text Integer
 tensMap = HashMap.fromList
   [ ( "tyve" , 20 )
@@ -280,11 +420,11 @@ ruleIntegerWithThousandsSeparator :: Rule
 ruleIntegerWithThousandsSeparator = Rule
   { name = "integer with thousands separator ."
   , pattern =
-    [ regex "(\\d{1,3}(\\.\\d\\d\\d){1,5})"
+    [ regex "(\\d{1,3}((?:\\.| )\\d\\d\\d){1,5})"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
-        parseDouble (Text.replace "." Text.empty match) >>= double
+        parseDouble (Text.replace " " Text.empty . Text.replace "." Text.empty $ match) >>= double
       _ -> Nothing
   }
 
@@ -298,6 +438,7 @@ rules =
   , ruleInteger
   , ruleInteger2
   , ruleInteger3
+  , ruleInteger4
   , ruleIntegerWithThousandsSeparator
   , ruleIntersect
   , ruleIntersectWithAnd

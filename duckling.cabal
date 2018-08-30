@@ -222,6 +222,8 @@ library
                      , Duckling.AmountOfMoney.HR.Rules
                      , Duckling.AmountOfMoney.ID.Corpus
                      , Duckling.AmountOfMoney.ID.Rules
+                     , Duckling.AmountOfMoney.KA.Corpus
+                     , Duckling.AmountOfMoney.KA.Rules
                      , Duckling.AmountOfMoney.KO.Corpus
                      , Duckling.AmountOfMoney.KO.Rules
                      , Duckling.AmountOfMoney.NB.Corpus
@@ -756,6 +758,7 @@ test-suite duckling-test
                      , Duckling.AmountOfMoney.GA.Tests
                      , Duckling.AmountOfMoney.HR.Tests
                      , Duckling.AmountOfMoney.ID.Tests
+                     , Duckling.AmountOfMoney.KA.Tests
                      , Duckling.AmountOfMoney.KO.Tests
                      , Duckling.AmountOfMoney.NB.Tests
                      , Duckling.AmountOfMoney.PT.Tests

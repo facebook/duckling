@@ -1155,6 +1155,13 @@ allExamples = concat
              [ "at 12am"
              , "at midnight"
              ]
+  , examples (datetime (2013, 2, 13, 9, 0, 0) Hour)
+             [ "9 tomorrow morning"
+             , "9 tomorrow"
+             ]
+  , examples (datetime (2013, 2, 13, 21, 0, 0) Hour)
+             [ "9 tomorrow evening"
+             ]
   , examples (datetime (2013, 3, 1, 0, 0, 0) Month)
              [ "March"
              , "in March"

@@ -443,6 +443,8 @@ library
                      , Duckling.Ordinal.IT.Rules
                      , Duckling.Ordinal.JA.Corpus
                      , Duckling.Ordinal.JA.Rules
+                     , Duckling.Ordinal.KM.Corpus
+                     , Duckling.Ordinal.KM.Rules
                      , Duckling.Ordinal.KO.Corpus
                      , Duckling.Ordinal.KO.Rules
                      , Duckling.Ordinal.NB.Corpus
@@ -488,6 +490,8 @@ library
                      , Duckling.Quantity.FR.Rules
                      , Duckling.Quantity.HR.Corpus
                      , Duckling.Quantity.HR.Rules
+                     , Duckling.Quantity.KM.Corpus
+                     , Duckling.Quantity.KM.Rules
                      , Duckling.Quantity.KO.Corpus
                      , Duckling.Quantity.KO.Rules
                      , Duckling.Quantity.PT.Corpus
@@ -523,6 +527,8 @@ library
                      , Duckling.Temperature.IT.Rules
                      , Duckling.Temperature.JA.Corpus
                      , Duckling.Temperature.JA.Rules
+                     , Duckling.Temperature.KM.Corpus
+                     , Duckling.Temperature.KM.Rules
                      , Duckling.Temperature.KO.Corpus
                      , Duckling.Temperature.KO.Rules
                      , Duckling.Temperature.PT.Corpus
@@ -854,6 +860,7 @@ test-suite duckling-test
                      , Duckling.Ordinal.ID.Tests
                      , Duckling.Ordinal.IT.Tests
                      , Duckling.Ordinal.JA.Tests
+                     , Duckling.Ordinal.KM.Tests
                      , Duckling.Ordinal.KO.Tests
                      , Duckling.Ordinal.NB.Tests
                      , Duckling.Ordinal.NL.Tests
@@ -878,6 +885,7 @@ test-suite duckling-test
                      , Duckling.Quantity.EN.Tests
                      , Duckling.Quantity.FR.Tests
                      , Duckling.Quantity.HR.Tests
+                     , Duckling.Quantity.KM.Tests
                      , Duckling.Quantity.KO.Tests
                      , Duckling.Quantity.PT.Tests
                      , Duckling.Quantity.RO.Tests
@@ -895,6 +903,7 @@ test-suite duckling-test
                      , Duckling.Temperature.HR.Tests
                      , Duckling.Temperature.IT.Tests
                      , Duckling.Temperature.JA.Tests
+                     , Duckling.Temperature.KM.Tests
                      , Duckling.Temperature.KO.Tests
                      , Duckling.Temperature.PT.Tests
                      , Duckling.Temperature.RO.Tests

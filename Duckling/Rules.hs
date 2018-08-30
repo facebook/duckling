@@ -142,6 +142,7 @@ localeRules ID = IDRules.localeRules
 localeRules IT = ITRules.localeRules
 localeRules JA = JARules.localeRules
 localeRules KA = KARules.localeRules
+localeRules KM = KMRules.localeRules
 localeRules KO = KORules.localeRules
 localeRules MY = MYRules.localeRules
 localeRules NB = NBRules.localeRules

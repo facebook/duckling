@@ -9,7 +9,7 @@
  {-# LANGUAGE GADTs #-}
  {-# LANGUAGE OverloadedStrings #-}
 
- module Duckling.Rules.HU
+ module Duckling.Rules.IS
    ( rules
    ) where
 

@@ -26,7 +26,8 @@ allExamples :: [Example]
 allExamples = concat
   [ examples (NumeralValue 0)
              [ "0"
-             , "núll"            
+             , "núll" 
+             , "null"           
              ]
   , examples (NumeralValue 1)
              [ "1"

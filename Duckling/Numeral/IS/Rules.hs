@@ -32,6 +32,7 @@ import qualified Duckling.Numeral.Types as TNumeral
 ruleNumeralMap :: HashMap Text Integer
 ruleNumeralMap = HashMap.fromList
   [ ( "null", 0 )
+  , ( "null", 0)
   , ( "einn", 1 )
   , ( "tveir", 2 )
   , ( "þrír", 3 )
@@ -48,7 +49,7 @@ ruleNumeral :: Rule
 ruleNumeral = Rule
   { name = "number (0..10)"
   , pattern =
-    [ regex "(núll|einn|tveir|þrír|fjórir|fimm|sex|sjö|átta|níu|tíu)"
+    [ regex "(núll|null|einn|tveir|þrír|fjórir|fimm|sex|sjö|átta|níu|tíu)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->

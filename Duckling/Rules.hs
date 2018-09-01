@@ -41,7 +41,7 @@ import qualified Duckling.Rules.HI as HIRules
 import qualified Duckling.Rules.HR as HRRules
 import qualified Duckling.Rules.HU as HURules
 import qualified Duckling.Rules.ID as IDRules
-import qualified Duckling.Rules.IS as IDRules
+import qualified Duckling.Rules.IS as ISRules
 import qualified Duckling.Rules.IT as ITRules
 import qualified Duckling.Rules.JA as JARules
 import qualified Duckling.Rules.KA as KARules

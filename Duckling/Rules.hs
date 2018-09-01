@@ -1,4 +1,4 @@
--- Copyright (c) 2016-present, Facebook, Inc.
+	-- Copyright (c) 2016-present, Facebook, Inc.
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
@@ -102,6 +102,7 @@ defaultRules HI = HIRules.defaultRules
 defaultRules HR = HRRules.defaultRules
 defaultRules HU = HURules.defaultRules
 defaultRules ID = IDRules.defaultRules
+defaultRules IS = ISRules.defaultRules
 defaultRules IT = ITRules.defaultRules
 defaultRules JA = JARules.defaultRules
 defaultRules KA = KARules.defaultRules

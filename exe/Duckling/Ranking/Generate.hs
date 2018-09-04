@@ -187,6 +187,7 @@ getCorpusForLang HE = HETime.corpus
 getCorpusForLang HU = HUTime.corpus
 getCorpusForLang HI = (testContext, testOptions, [])
 getCorpusForLang ID = (testContext, testOptions, [])
+getCorpusForLang IS = (testContext, testOptions, [])
 getCorpusForLang IT = ITTime.corpus
 getCorpusForLang JA = (testContext, testOptions, [])
 getCorpusForLang KA = (testContext, testOptions, [])

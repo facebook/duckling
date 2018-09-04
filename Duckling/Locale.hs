@@ -52,6 +52,7 @@ data Lang
   | HR
   | HU
   | ID
+  | IS
   | IT
   | JA
   | KA

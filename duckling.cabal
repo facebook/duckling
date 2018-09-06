@@ -59,6 +59,7 @@ library
                      , Duckling.Rules.HR
                      , Duckling.Rules.HU
                      , Duckling.Rules.ID
+                     , Duckling.Rules.IS
                      , Duckling.Rules.IT
                      , Duckling.Rules.JA
                      , Duckling.Rules.KA
@@ -107,6 +108,7 @@ library
                      , Duckling.Ranking.Classifiers.HR_XX
                      , Duckling.Ranking.Classifiers.HU_XX
                      , Duckling.Ranking.Classifiers.ID_XX
+                     , Duckling.Ranking.Classifiers.IS_XX
                      , Duckling.Ranking.Classifiers.IT_XX
                      , Duckling.Ranking.Classifiers.JA_XX
                      , Duckling.Ranking.Classifiers.KA_XX
@@ -157,6 +159,7 @@ library
                      , Duckling.Dimensions.HR
                      , Duckling.Dimensions.HU
                      , Duckling.Dimensions.ID
+                     , Duckling.Dimensions.IS
                      , Duckling.Dimensions.IT
                      , Duckling.Dimensions.JA
                      , Duckling.Dimensions.KA
@@ -373,6 +376,8 @@ library
                      , Duckling.Numeral.HU.Rules
                      , Duckling.Numeral.ID.Corpus
                      , Duckling.Numeral.ID.Rules
+                     , Duckling.Numeral.IS.Corpus
+                     , Duckling.Numeral.IS.Rules
                      , Duckling.Numeral.IT.Corpus
                      , Duckling.Numeral.IT.Rules
                      , Duckling.Numeral.JA.Corpus
@@ -831,6 +836,7 @@ test-suite duckling-test
                      , Duckling.Numeral.HR.Tests
                      , Duckling.Numeral.HU.Tests
                      , Duckling.Numeral.ID.Tests
+                     , Duckling.Numeral.IS.Tests
                      , Duckling.Numeral.IT.Tests
                      , Duckling.Numeral.JA.Tests
                      , Duckling.Numeral.KA.Tests

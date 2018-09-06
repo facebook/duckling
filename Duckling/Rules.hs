@@ -41,6 +41,7 @@ import qualified Duckling.Rules.HI as HIRules
 import qualified Duckling.Rules.HR as HRRules
 import qualified Duckling.Rules.HU as HURules
 import qualified Duckling.Rules.ID as IDRules
+import qualified Duckling.Rules.IS as ISRules
 import qualified Duckling.Rules.IT as ITRules
 import qualified Duckling.Rules.JA as JARules
 import qualified Duckling.Rules.KA as KARules
@@ -101,6 +102,7 @@ defaultRules HI = HIRules.defaultRules
 defaultRules HR = HRRules.defaultRules
 defaultRules HU = HURules.defaultRules
 defaultRules ID = IDRules.defaultRules
+defaultRules IS = ISRules.defaultRules
 defaultRules IT = ITRules.defaultRules
 defaultRules JA = JARules.defaultRules
 defaultRules KA = KARules.defaultRules
@@ -141,6 +143,7 @@ localeRules HI = HIRules.localeRules
 localeRules HR = HRRules.localeRules
 localeRules HU = HURules.localeRules
 localeRules ID = IDRules.localeRules
+localeRules IS = ISRules.localeRules
 localeRules IT = ITRules.localeRules
 localeRules JA = JARules.localeRules
 localeRules KA = KARules.localeRules
@@ -181,6 +184,7 @@ langRules HI = HIRules.langRules
 langRules HR = HRRules.langRules
 langRules HU = HURules.langRules
 langRules ID = IDRules.langRules
+langRules IS = ISRules.langRules
 langRules IT = ITRules.langRules
 langRules JA = JARules.langRules
 langRules KA = KARules.langRules

@@ -40,6 +40,7 @@ import qualified Duckling.Dimensions.HI as HIDimensions
 import qualified Duckling.Dimensions.HR as HRDimensions
 import qualified Duckling.Dimensions.HU as HUDimensions
 import qualified Duckling.Dimensions.ID as IDDimensions
+import qualified Duckling.Dimensions.IS as ISDimensions
 import qualified Duckling.Dimensions.IT as ITDimensions
 import qualified Duckling.Dimensions.JA as JADimensions
 import qualified Duckling.Dimensions.KA as KADimensions
@@ -108,6 +109,7 @@ langDimensions HI = HIDimensions.allDimensions
 langDimensions HR = HRDimensions.allDimensions
 langDimensions HU = HUDimensions.allDimensions
 langDimensions ID = IDDimensions.allDimensions
+langDimensions IS = ISDimensions.allDimensions
 langDimensions IT = ITDimensions.allDimensions
 langDimensions JA = JADimensions.allDimensions
 langDimensions KA = KADimensions.allDimensions

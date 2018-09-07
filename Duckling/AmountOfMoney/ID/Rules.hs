@@ -91,6 +91,126 @@ ruleJpy = Rule
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly JPY
   }
 
+rulePrecision :: Rule
+rulePrecision = Rule
+  { name = "about|exactly <amount-of-money>"
+  , pattern =
+    [ regex "tepatnya|kira-kira|sekitar|hampir"
+    , Predicate isMoneyWithValue
+    ]
+  , prod = \case
+      (_:token:_) -> Just token
+      _ -> Nothing
+  }
+
+ruleIntervalBetweenNumeral :: Rule
+ruleIntervalBetweenNumeral = Rule
+  { name = "between|from <numeral> to|and <amount-of-money>"
+  , pattern =
+    [ regex "sekitar|dari|antara"
+    , Predicate isPositive
+    , regex "sampai|hingga"
+    , Predicate isSimpleAmountOfMoney
+    ]
+  , prod = \case
+      (_:
+       Token Numeral NumeralData{TNumeral.value = from}:
+       _:
+       Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just to,
+                  TAmountOfMoney.currency = c}:
+       _) | from < to ->
+        Just . Token AmountOfMoney . withInterval (from, to) $ currencyOnly c
+      _ -> Nothing
+  }
+
+ruleIntervalBetween :: Rule
+ruleIntervalBetween = Rule
+  { name = "between|from <amount-of-money> to|and <amount-of-money>"
+  , pattern =
+    [ regex "sekitar|dari|antara|kira-kira"
+    , Predicate isSimpleAmountOfMoney
+    , regex "sampai|hingga"
+    , Predicate isSimpleAmountOfMoney
+    ]
+  , prod = \case
+      (_:
+       Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just from,
+                  TAmountOfMoney.currency = c1}:
+       _:
+       Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just to,
+                  TAmountOfMoney.currency = c2}:
+       _) | from < to && c1 == c2 ->
+        Just . Token AmountOfMoney . withInterval (from, to) $ currencyOnly c1
+      _ -> Nothing
+  }
+
+ruleIntervalNumeralDash :: Rule
+ruleIntervalNumeralDash = Rule
+  { name = "<numeral> - <amount-of-money>"
+  , pattern =
+    [ Predicate isNatural
+    , regex "\\-"
+    , Predicate isSimpleAmountOfMoney
+    ]
+  , prod = \case
+      (Token Numeral NumeralData{TNumeral.value = from}:
+       _:
+       Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just to,
+                  TAmountOfMoney.currency = c}:
+       _) | from < to ->
+         Just . Token AmountOfMoney . withInterval (from, to) $ currencyOnly c
+      _ -> Nothing
+  }
+
+ruleIntervalDash :: Rule
+ruleIntervalDash = Rule
+  { name = "<amount-of-money> - <amount-of-money>"
+  , pattern =
+    [ Predicate isSimpleAmountOfMoney
+    , regex "\\-"
+    , Predicate isSimpleAmountOfMoney
+    ]
+  , prod = \case
+      (Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just from,
+                  TAmountOfMoney.currency = c1}:
+       _:
+       Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just to,
+                  TAmountOfMoney.currency = c2}:
+       _) | from < to && c1 == c2 ->
+        Just . Token AmountOfMoney . withInterval (from, to) $ currencyOnly c1
+      _ -> Nothing
+  }
+
+ruleIntervalMax :: Rule
+ruleIntervalMax = Rule
+  { name = "under/less/lower/no more than <amount-of-money>"
+  , pattern =
+    [ regex "(kurang|lebih murah) dari|tidak sampai|di bawah"
+    , Predicate isSimpleAmountOfMoney
+    ]
+  , prod = \case
+      (_:
+       Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just to,
+                  TAmountOfMoney.currency = c}:
+       _) -> Just . Token AmountOfMoney . withMax to $ currencyOnly c
+      _ -> Nothing
+  }
+
+ruleIntervalMin :: Rule
+ruleIntervalMin = Rule
+  { name = "over/above/at least/more than <amount-of-money>"
+  , pattern =
+    [ regex "di atas|lebih dari|melebihi|melewati"
+    , Predicate isSimpleAmountOfMoney
+    ]
+  , prod = \case
+      (_:
+       Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just to,
+                  TAmountOfMoney.currency = c}:
+       _) -> Just . Token AmountOfMoney . withMin to $ currencyOnly c
+      _ -> Nothing
+  }
+
 rules :: [Rule]
 rules =
   [ ruleUnitAmount
@@ -99,4 +219,11 @@ rules =
   , ruleIntersect
   , ruleJpy
   , rulePounds
+  , rulePrecision
+  , ruleIntervalBetweenNumeral
+  , ruleIntervalBetween
+  , ruleIntervalMax
+  , ruleIntervalMin
+  , ruleIntervalNumeralDash
+  , ruleIntervalDash
   ]

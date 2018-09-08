@@ -35,6 +35,29 @@ allExamples = concat
              [ "១ចាន"
              ]
   , examples (simple Pint 15 Nothing)
-             [ "ដប់៥ថូ"
+             [ "ដប់ប្រាំថូ"
+             ]
+  , examples (simple (Custom "For Persons") 2 (Just "មនុស្ស"))
+             [ "មនុស្ស២នាក់"
+             , "មនុស្សពីរនាក់"
+             ]
+  , examples (simple (Custom "For Buildings") 8 (Just "ផ្ទះ"))
+             [ "ផ្ទះ៨ខ្នង"
+             , "ផ្ទះប្រាំបីខ្នង"
+             ]
+  , examples (simple Gram 1000 Nothing)
+             [ "មួយពាន់ក្រាម"
+             , "មួយគីឡូក្រាម"
+             , "មួយលានមីលីក្រាម"
+             ]
+  , examples (simple (Custom "Meters") 1000 Nothing)
+             [ "មួយពាន់ម៉ែត្រ"
+             , "មួយគីឡូម៉ែត្រ"
+             , "មួយលានមីលីម៉ែត្រ"
+             ]
+  , examples (simple (Custom "Liters") 5 Nothing)
+             [ "៥លីត្រ"
+             , "ប្រាំលីត្រ"
+             , "ប្រាំពាន់មីលីលីត្រ"
              ]
   ]

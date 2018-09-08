@@ -13,10 +13,10 @@
 -----------------------------------------------------------------
 {-# LANGUAGE OverloadedStrings #-}
 module Duckling.Ranking.Classifiers.IS_XX (classifiers) where
-import Prelude
-import Duckling.Ranking.Types
-import qualified Data.HashMap.Strict as HashMap
 import Data.String
+import Prelude
+import qualified Data.HashMap.Strict as HashMap
+import Duckling.Ranking.Types
 
 classifiers :: Classifiers
 classifiers = HashMap.fromList []

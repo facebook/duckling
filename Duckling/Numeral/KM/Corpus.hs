@@ -9,12 +9,8 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Numeral.KM.Corpus
-<<<<<<< HEAD
-  ( corpus ) where
-=======
   ( corpus
   ) where
->>>>>>> upstream/master
 
 import Data.String
 import Prelude

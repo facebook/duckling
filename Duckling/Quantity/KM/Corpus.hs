@@ -9,34 +9,32 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Quantity.KM.Corpus
-  ( corpus ) where
+  ( corpus
+  ) where
 
-import Prelude
 import Data.String
+import Prelude
 
 import Duckling.Locale
 import Duckling.Quantity.Types
 import Duckling.Resolve
 import Duckling.Testing.Types
 
+context :: Context
+context = testContext{locale = makeLocale KM Nothing}
+
 corpus :: Corpus
-corpus = (testContext {locale = makeLocale KM Nothing}, testOptions, allExamples)
+corpus = (context, testOptions, allExamples)
 
 allExamples :: [Example]
 allExamples = concat
   [ examples (simple Cup 3 Nothing)
              [ "បីកែវ"
              ]
-  , examples (simple (Custom "Person") 1 Nothing)
-             [ "មួយនាក់"
+  , examples (simple Bowl 1 Nothing)
+             [ "១ចាន"
              ]
-  , examples (simple (Custom "Flower") 1 (Just "កុលាប"))
-             [ "កុលាប១ទង"
-             ]
-  , examples (simple (Custom "Building") 15 (Just "ផ្ទះ"))
-             [ "ផ្ទះដប់ប្រាំខ្នង"
-             ]
-  , examples (simple (Custom "Person") 8 (Just "បងប្អូន"))
-             [ "បងប្អូន៨នាក់"
+  , examples (simple Pint 15 Nothing)
+             [ "ដប់៥ថូ"
              ]
   ]

@@ -152,7 +152,7 @@ rulePeriodicHolidays = mkRuleHolidays
   , ( "Texas Independence Day", "texas independence day", monthDay 3 2 )
   , ( "Thomas Jefferson's Birthday", "thomas jefferson'?s birthday", monthDay 4 13 )
   , ( "Truman Day", "truman day", monthDay 5 8 )
-  , ( "Veterans Day", "veterans day", monthDay 11 11 )
+  , ( "Veterans Day", "veterans? day", monthDay 11 11 )
   , ( "West Virginia Day", "west virginia day", monthDay 6 20 )
   , ( "White Cane Safety Day", "white cane safety day", monthDay 10 15 )
   , ( "Women's Equality Day", "women'?s equality day", monthDay 8 26 )
@@ -164,6 +164,9 @@ rulePeriodicHolidays = mkRuleHolidays
   , ( "Casimir Pulaski Day", "casimir pulaski day", nthDOWOfMonth 1 1 3 )
   , ( "Child Health Day", "child health day", nthDOWOfMonth 1 1 10 )
   , ( "Columbus Day", "columbus day", nthDOWOfMonth 2 1 10 )
+  , ( "Daylight Saving Start Day", "daylight savings? start( day)?", nthDOWOfMonth 2 7 3 )
+  , ( "Daylight Saving End Day", "daylight savings? end( day)?", nthDOWOfMonth 1 7 11 )
+
   -- Saturday after Labor Day
   , ( "Carl Garner Federal Lands Cleanup Day"
     , "carl garner federal lands cleanup day"

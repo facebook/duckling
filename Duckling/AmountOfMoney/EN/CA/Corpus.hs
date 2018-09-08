@@ -27,6 +27,26 @@ allExamples = concat
              ]
   , examples (simple CAD 10000)
              [ "10 grand"
+             , "two hundred thousand nickels"
+             ]
+  , examples (simple CAD 1)
+             [ "four quarters"
+             , "ten dimes"
+             , "twenty nickels"
+             ]
+  , examples (simple CAD 0.1)
+             [ "dime"
+             , "a dime"
+             , "two nickels"
+             ]
+  , examples (simple CAD 0.25)
+             [ "quarter"
+             , "a quarter"
+             , "five nickels"
+             ]
+  , examples (simple CAD 0.05)
+             [ "nickel"
+             , "a nickel"
              ]
   ]
 

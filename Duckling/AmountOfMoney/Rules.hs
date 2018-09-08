@@ -41,12 +41,15 @@ currencies = HashMap.fromList
   , ("cad", CAD)
   , ("¢", Cent)
   , ("c", Cent)
+  , ("chf", CHF)
   , ("cny", CNY)
+  , ("czk", CZK)
   , ("rmb", CNY)
   , ("yuan", CNY)
   , ("$", Dollar)
   , ("dinar", Dinar)
   , ("dinars", Dinar)
+  , ("dkk", DKK)
   , ("dollar", Dollar)
   , ("dollars", Dollar)
   , ("egp", EGP)
@@ -60,6 +63,8 @@ currencies = HashMap.fromList
   , ("€uros", EUR)
   , ("€urs", EUR)
   , ("gbp", GBP)
+  , ("gel", GEL)
+  , ("hkd", HKD)
   , ("hrk", HRK)
   , ("idr", IDR)
   , ("ils", ILS)
@@ -73,6 +78,8 @@ currencies = HashMap.fromList
   , ("jod", JOD)
   , ("¥", JPY)
   , ("jpy", JPY)
+  , ("lari", GEL)
+  , ("\x20BE", GEL)
   , ("yen", JPY)
   , ("krw", KRW)
   , ("kwd", KWD)
@@ -82,6 +89,8 @@ currencies = HashMap.fromList
   , ("rm", MYR)
   , ("nok", NOK)
   , ("nzd", NZD)
+  , ("pkr", PKR)
+  , ("pln", PLN)
   , ("£", Pound)
   , ("pt", PTS)
   , ("pta", PTS)
@@ -100,17 +109,19 @@ currencies = HashMap.fromList
   , ("sgd", SGD)
   , ("shekel", ILS)
   , ("shekels", ILS)
+  , ("thb", THB)
   , ("ttd", TTD)
   , ("usd", USD)
   , ("us$", USD)
   , ("vnd", VND)
+  , ("zar", ZAR)
   ]
 
 ruleCurrencies :: Rule
 ruleCurrencies = Rule
   { name = "currencies"
   , pattern =
-    [ regex "(aed|aud|bgn|brl|byn|¢|c|cad|cny|\\$|dinars?|dollars?|egp|(e|€)uro?s?|€|gbp|hrk|idr|ils|inr|iqd|jmd|jod|¥|jpy|krw|kwd|lbp|mad|myr|rm|nok|nzd|£|pta?s?|qar|₽|rs\\.?|riy?als?|ron|rub|rupees?|sar|sek|sgb|shekels?|ttd|us(d|\\$)|vnd|yen|yuan)"
+    [ regex "(aed|aud|bgn|brl|byn|¢|c|cad|chf|cny|\\$|dinars?|dkk|dollars?|egp|(e|€)uro?s?|€|gbp|gel|\x20BE|hrk|idr|ils|inr|iqd|jmd|jod|¥|jpy|lari|krw|kwd|lbp|mad|myr|rm|nok|nzd|£|pkr|pln|pta?s?|qar|₽|rs\\.?|riy?als?|ron|rub|rupees?|sar|sek|sgb|shekels?|thb|ttd|us(d|\\$)|vnd|yen|yuan|zar)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> do

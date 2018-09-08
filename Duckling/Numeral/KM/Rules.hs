@@ -11,7 +11,8 @@
 {-# LANGUAGE NoRebindableSyntax #-}
 
 module Duckling.Numeral.KM.Rules
-  ( rules ) where
+  ( rules
+  ) where
 
 import Data.HashMap.Strict (HashMap)
 import Data.Maybe
@@ -151,7 +152,7 @@ ruleMultiply = Rule
       (token1:token2:_) -> multiply token1 token2
       _ -> Nothing
   }
-  
+
 rules :: [Rule]
 rules =
   [ ruleNumeral

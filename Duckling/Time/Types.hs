@@ -65,18 +65,19 @@ data TimeData = TimeData
   , direction :: Maybe IntervalDirection
   , okForThisNext :: Bool -- allows specific this+Time
   , holiday :: Maybe Text
+  , hasTimezone :: Bool -- hack to prevent double timezone parsing
   }
 
 instance Eq TimeData where
-  (==) (TimeData _ l1 g1 n1 f1 d1 _ _) (TimeData _ l2 g2 n2 f2 d2 _ _) =
-    l1 == l2 && g1 == g2 && n1 == n2 && f1 == f2 && d1 == d2
+  (==) (TimeData _ l1 g1 n1 f1 d1 _ _ t1) (TimeData _ l2 g2 n2 f2 d2 _ _ t2) =
+    l1 == l2 && g1 == g2 && n1 == n2 && f1 == f2 && d1 == d2 && t1 == t2
 
 instance Hashable TimeData where
-  hashWithSalt s (TimeData _ latent grain imm form dir _ _) = hashWithSalt s
+  hashWithSalt s (TimeData _ latent grain imm form dir _ _ _) = hashWithSalt s
     (0::Int, (latent, grain, imm, form, dir))
 
 instance Ord TimeData where
-  compare (TimeData _ l1 g1 n1 f1 d1 _ _) (TimeData _ l2 g2 n2 f2 d2 _ _) =
+  compare (TimeData _ l1 g1 n1 f1 d1 _ _ _) (TimeData _ l2 g2 n2 f2 d2 _ _ _) =
     case compare g1 g2 of
       EQ -> case compare f1 f2 of
         EQ -> case compare l1 l2 of
@@ -88,13 +89,14 @@ instance Ord TimeData where
       z -> z
 
 instance Show TimeData where
-  show (TimeData _ latent grain _ form dir _ holiday) =
+  show (TimeData _ latent grain _ form dir _ holiday tz) =
     "TimeData{" ++
     "latent=" ++ show latent ++
     ", grain=" ++ show grain ++
     ", form=" ++ show form ++
     ", direction=" ++ show dir ++
     ", holiday=" ++ show holiday ++
+    ", hasTimezone=" ++ show tz ++
     "}"
 
 instance NFData TimeData where
@@ -140,6 +142,7 @@ timedata' = TimeData
   , direction = Nothing
   , okForThisNext = False
   , holiday = Nothing
+  , hasTimezone = False
   }
 
 data TimeContext = TimeContext
@@ -815,13 +818,21 @@ data TimeIntervalType = Open | Closed
   deriving (Eq, Show)
 
 timeInterval :: TimeIntervalType -> TimeObject -> TimeObject -> TimeObject
-timeInterval intervalType t1 t2 = TimeObject
-  { start = start t1
-  , grain = min (grain t1) (grain t2)
+timeInterval
+  intervalType
+  TimeObject{start = s1, grain = g1}
+  TimeObject{start = s2, end = e2, grain = g2} = TimeObject
+  { start = s1
+  , grain = g'
   , end = Just $ case intervalType of
-                   Open -> start t2
-                   Closed -> timeEnd t2
+      Open -> s2
+      Closed -> fromMaybe (TG.add s2 g2' 1) e2
   }
+  where
+    g' = min g1 g2
+    g2'
+      | g1 < TG.Day && g2 < TG.Day = g'
+      | otherwise = g2
 
 timeStartsBeforeTheEndOf :: TimeObject -> TimeObject -> Bool
 timeStartsBeforeTheEndOf t1 t2 = start t1 < timeEnd t2

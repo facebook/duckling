@@ -7,13 +7,15 @@
 
 
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Temperature.KM.Rules
-  ( rules ) where
+  ( rules
+  ) where
 
-import Prelude
 import Data.String
+import Prelude
 
 import Duckling.Dimensions.Types
 import Duckling.Temperature.Helpers
@@ -27,7 +29,7 @@ ruleLatentTempDegrees = Rule
     [ Predicate $ isValueOnly False
     , regex "ដឺក្រេ|°"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Temperature td:_) -> Just . Token Temperature $
         withUnit TTemperature.Degree td
       _ -> Nothing
@@ -40,7 +42,7 @@ ruleTempCelcius = Rule
     [ Predicate $ isValueOnly True
     , regex "អង្សា(សេ)?"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Temperature td:_) -> Just . Token Temperature $
         withUnit TTemperature.Celsius td
       _ -> Nothing

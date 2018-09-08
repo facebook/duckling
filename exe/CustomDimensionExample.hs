@@ -11,6 +11,8 @@
 {-# LANGUAGE NoRebindableSyntax #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE RecordWildCards #-}
+{-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE TypeApplications #-}
 {-# LANGUAGE TypeFamilies #-}
 
 module Main (main) where
@@ -30,6 +32,7 @@ import qualified TextShow as TS
 
 import Duckling.Debug
 import Duckling.Locale
+import Duckling.Regex.Types (GroupMatch(..))
 import Duckling.Resolve (Resolve(..))
 import Duckling.Types
 
@@ -37,7 +40,7 @@ data MyDimension = MyDimension deriving (Eq, Show, Typeable)
 
 instance CustomDimension MyDimension where
   type DimensionData MyDimension = MyData
-  dimRules _ = [myRule]
+  dimRules _ = [myDimensionRule, myDimensionRule']
   dimLangRules _ _ = []
   dimLocaleRules _ _ = []
   dimDependents _ = HashSet.empty
@@ -61,9 +64,15 @@ newtype MyValue = MyValue { value :: Text }
 instance ToJSON MyValue where
   toJSON (MyValue value) = object [ "value" .= value ]
 
-myRule :: Rule
-myRule = Rule
-  { name = "my dimension"
+myDimensionPredicate :: Predicate
+myDimensionPredicate (Token (CustomDimension (dim :: a)) dimData)
+  | Just Refl <- eqT @a @MyDimension, MyData{..} <- dimData =
+      iField == 42 && bField
+myDimensionPredicate _ = False
+
+myDimensionRule :: Rule
+myDimensionRule = Rule
+  { name = "my dimension (simple)"
   , pattern =
     [ regex "my dimension"
     ]
@@ -76,7 +85,28 @@ myRule = Rule
       _ -> Nothing
   }
 
+myDimensionRule' :: Rule
+myDimensionRule' = Rule
+  { name = "my dimension (pattern match)"
+  , pattern =
+    [ Predicate myDimensionPredicate
+    , regex "pattern match"
+    ]
+  , prod = \case
+      ((Token (CustomDimension (dim :: a)) dimData):
+       Token RegexMatch (GroupMatch _):
+       _)
+        | Just Refl <- eqT @a @MyDimension, MyData{..} <- dimData ->
+            Just . Token (CustomDimension MyDimension) $ MyData
+              { iField = iField * 10
+              , bField = not bField
+              , tField = "goodnight moon"
+              }
+      _ -> Nothing
+  }
+
 main :: IO ()
 main = do
   let en = makeLocale EN Nothing
-  debug en "input for my dimension" [This (CustomDimension MyDimension)] >>= print
+  debug en "testing my dimension" [This (CustomDimension MyDimension)] >>= print
+  debug en "testing my dimension pattern match" [This (CustomDimension MyDimension)] >>= print

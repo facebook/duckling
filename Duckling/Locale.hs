@@ -52,11 +52,13 @@ data Lang
   | HR
   | HU
   | ID
+  | IS
   | IT
   | JA
   | KA
   | KM
   | KO
+  | LO
   | MY
   | NB
   | NE

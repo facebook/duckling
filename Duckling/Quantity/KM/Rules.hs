@@ -7,21 +7,27 @@
 
 
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Quantity.KM.Rules
-  ( rules ) where
+  ( rules
+  ) where
 
-import Prelude
+import Data.HashMap.Strict (HashMap)
+import Data.Text (Text)
 import Data.String
+import Prelude
+import qualified Data.HashMap.Strict as HashMap
+import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
 import Duckling.Numeral.Types (NumeralData (..))
-import qualified Duckling.Numeral.Types as TNumeral
 import Duckling.Quantity.Helpers
-import qualified Duckling.Quantity.Types as TQuantity
 import Duckling.Regex.Types
 import Duckling.Types
+import qualified Duckling.Numeral.Types as TNumeral
+import qualified Duckling.Quantity.Types as TQuantity
 
 ruleQuantityOfProduct :: Rule
 ruleQuantityOfProduct = Rule
@@ -30,35 +36,34 @@ ruleQuantityOfProduct = Rule
     [ regex "(មនុស្ស|បងប្អូន|សត្វ|ឆ្កែ|ឆ្មា|ដើមឈើ|ផ្កា|កុលាប|ផ្ទះ)"
     , dimension Quantity
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token RegexMatch (GroupMatch (match:_)):
        Token Quantity qd:
-       _) -> Just . Token Quantity $ withProduct match qd
+       _) -> Just . Token Quantity $ withProduct (Text.toLower match) qd
       _ -> Nothing
   }
+
+unitsMap :: HashMap Text TQuantity.Unit
+unitsMap = HashMap.fromList
+  [ ("ចាន", TQuantity.Bowl)
+  , ("ពែង", TQuantity.Cup)
+  , ("កែវ", TQuantity.Cup)
+  , ("ថូ", TQuantity.Pint)
+  ]
 
 ruleNumeralUnits :: Rule
 ruleNumeralUnits = Rule
   { name = "<number><units>"
   , pattern =
     [ dimension Numeral
-    , regex "(នាក់|ក្បាល|ដើម|ទង|ខ្នង|មុខ|ចាន|ពែង|កែវ|ថូ)"
+    , regex "(ចាន|ពែង|កែវ|ថូ)"
     ]
-  , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData {TNumeral.value = v}:
+  , prod = \case
+      (Token Numeral NumeralData{TNumeral.value = v}:
        Token RegexMatch (GroupMatch (match:_)):
-       _) -> case match of
-         "នាក់" -> Just . Token Quantity $ quantity (TQuantity.Custom "Person") v
-         "ក្បាល" -> Just . Token Quantity $ quantity (TQuantity.Custom "Animal") v
-         "ដើម" -> Just . Token Quantity $ quantity (TQuantity.Custom "Tree") v
-         "ទង" -> Just . Token Quantity $ quantity (TQuantity.Custom "Flower") v
-         "ខ្នង" -> Just . Token Quantity $ quantity (TQuantity.Custom "Building") v
-         "មុខ" -> Just . Token Quantity $ quantity (TQuantity.Custom "Food/things") v
-         "ចាន" -> Just . Token Quantity $ quantity TQuantity.Bowl v
-         "ពែង" -> Just . Token Quantity $ quantity TQuantity.Cup v
-         "កែវ" -> Just . Token Quantity $ quantity TQuantity.Cup v
-         "ថូ" -> Just . Token Quantity $ quantity TQuantity.Pint v
-         _ -> Nothing
+       _) -> do
+         unit <- HashMap.lookup (Text.toLower match) unitsMap
+         Just . Token Quantity $ quantity unit v
       _ -> Nothing
   }
 

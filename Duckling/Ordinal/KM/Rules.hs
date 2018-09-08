@@ -7,19 +7,21 @@
 
 
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Ordinal.KM.Rules
-  ( rules ) where
+  ( rules
+  ) where
 
-import Prelude
 import Data.String
+import Prelude
 
 import Duckling.Dimensions.Types
-import Duckling.Ordinal.Helpers
 import Duckling.Numeral.Types (NumeralData (..))
-import qualified Duckling.Numeral.Types as TNumeral
+import Duckling.Ordinal.Helpers
 import Duckling.Types
+import qualified Duckling.Numeral.Types as TNumeral
 
 ruleOrdinalDigits :: Rule
 ruleOrdinalDigits = Rule
@@ -28,12 +30,12 @@ ruleOrdinalDigits = Rule
     [ regex "ទី"
     , dimension Numeral
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (_:Token Numeral NumeralData{TNumeral.value = x}:_) ->
         Just . ordinal $ floor x
       _ -> Nothing
   }
-  
+
 rules :: [Rule]
 rules =
   [ ruleOrdinalDigits

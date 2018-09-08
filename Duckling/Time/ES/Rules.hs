@@ -157,7 +157,7 @@ ruleNow = Rule
   , pattern =
     [ regex "(hoy)|(en este momento)"
     ]
-  , prod = \_ -> tt $ cycleNth TG.Day 0
+  , prod = \_ -> tt today
   }
 
 ruleUltimoDayofweekDeTime :: Rule
@@ -342,8 +342,7 @@ ruleHourofdayMinusIntegerAsRelativeMinutes = Rule
   , prod = \tokens -> case tokens of
       (Token Time td:_:token:_) -> do
         n <- getIntValue token
-        t <- minutesBefore n td
-        Just $ Token Time t
+        Token Time <$> minutesBefore n td
       _ -> Nothing
   }
 
@@ -359,8 +358,7 @@ ruleHourofdayMinusIntegerAsRelativeMinutes2 = Rule
   , prod = \tokens -> case tokens of
       (Token Time td:_:token:_) -> do
         n <- getIntValue token
-        t <- minutesBefore n td
-        Just $ Token Time t
+        Token Time <$> minutesBefore n td
       _ -> Nothing
   }
 
@@ -372,9 +370,7 @@ ruleHourofdayMinusQuarter = Rule
     , regex "menos\\s? cuarto"
     ]
   , prod = \tokens -> case tokens of
-      (Token Time td:_) -> do
-        t <- minutesBefore 15 td
-        Just $ Token Time t
+      (Token Time td:_) -> Token Time <$> minutesBefore 15 td
       _ -> Nothing
   }
 
@@ -386,9 +382,7 @@ ruleHourofdayMinusHalf = Rule
     , regex "menos\\s? media"
     ]
   , prod = \tokens -> case tokens of
-      (Token Time td:_) -> do
-        t <- minutesBefore 30 td
-        Just $ Token Time t
+      (Token Time td:_) -> Token Time <$> minutesBefore 30 td
       _ -> Nothing
   }
 
@@ -400,9 +394,7 @@ ruleHourofdayMinusThreeQuarter = Rule
     , regex "menos\\s? (3|tres) cuartos?"
     ]
   , prod = \tokens -> case tokens of
-      (Token Time td:_) -> do
-        t <- minutesBefore 45 td
-        Just $ Token Time t
+      (Token Time td:_) -> Token Time <$> minutesBefore 45 td
       _ -> Nothing
   }
 
@@ -691,7 +683,7 @@ ruleRightNow = Rule
   , pattern =
     [ regex "ahor(it)?a|ya|en\\s?seguida|cuanto antes"
     ]
-  , prod = \_ -> tt $ cycleNth TG.Second 0
+  , prod = \_ -> tt now
   }
 
 ruleDimTimeDeLaTarde :: Rule
@@ -834,8 +826,7 @@ ruleDentroDeDuration = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Duration dd:_) ->
-        Token Time <$>
-          interval TTime.Open (cycleNth TG.Second 0) (inDuration dd)
+        Token Time <$> interval TTime.Open now (inDuration dd)
       _ -> Nothing
   }
 
@@ -963,8 +954,7 @@ ruleThisPartofday = Rule
     , Predicate isAPartOfDay
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td:_) -> Token Time . partOfDay <$>
-        intersect (cycleNth TG.Day 0) td
+      (_:Token Time td:_) -> Token Time . partOfDay <$> intersect today td
       _ -> Nothing
   }
 

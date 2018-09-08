@@ -24,26 +24,26 @@ corpus = (testContext {locale = makeLocale KO Nothing}, testOptions, allExamples
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (VolumeValue Millilitre 250)
+  [ examples (simple Millilitre 250)
              [ "250 밀리리터"
              , "250 미리리터"
              , "이백오십미리리터"
              , "250ml"
              , "250 ml"
              ]
-  , examples (VolumeValue Litre 2)
+  , examples (simple Litre 2)
              [ "2 리터"
              , "이리터"
              ]
-  , examples (VolumeValue Gallon 3)
+  , examples (simple Gallon 3)
              [ "3 갤론"
              , "삼 갤론"
              ]
-  , examples (VolumeValue Hectolitre 3)
+  , examples (simple Hectolitre 3)
              [ "3 헥토리터"
              , "삼 헥토리터"
              ]
-  , examples (VolumeValue Litre 0.5)
+  , examples (simple Litre 0.5)
              [ "반 리터"
              ]
   ]

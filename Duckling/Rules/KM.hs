@@ -22,6 +22,8 @@ import qualified Duckling.Numeral.KM.Rules as Numeral
 import qualified Duckling.Ordinal.KM.Rules as Ordinal
 import qualified Duckling.Quantity.KM.Rules as Quantity
 import qualified Duckling.Temperature.KM.Rules as Temperature
+import qualified Duckling.Time.KM.Rules as Time
+import qualified Duckling.TimeGrain.KM.Rules as TimeGrain
 import qualified Duckling.Volume.KM.Rules as Volume
 
 defaultRules :: Some Dimension -> [Rule]
@@ -42,8 +44,8 @@ langRules (This PhoneNumber) = []
 langRules (This Quantity) = Quantity.rules
 langRules (This RegexMatch) = []
 langRules (This Temperature) = Temperature.rules
-langRules (This Time) = []
-langRules (This TimeGrain) = []
+langRules (This Time) = Time.rules
+langRules (This TimeGrain) = TimeGrain.rules
 langRules (This Url) = []
 langRules (This Volume) = Volume.rules
 langRules (This (CustomDimension dim)) = dimLangRules KM dim

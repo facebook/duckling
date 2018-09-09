@@ -610,6 +610,8 @@ library
                      , Duckling.Time.IT.Rules
                      , Duckling.Time.KA.Corpus
                      , Duckling.Time.KA.Rules
+                     , Duckling.Time.KM.Corpus
+                     , Duckling.Time.KM.Rules
                      , Duckling.Time.KO.Corpus
                      , Duckling.Time.KO.Rules
                      , Duckling.Time.NB.Corpus
@@ -664,6 +666,7 @@ library
                      , Duckling.TimeGrain.IT.Rules
                      , Duckling.TimeGrain.JA.Rules
                      , Duckling.TimeGrain.KA.Rules
+                     , Duckling.TimeGrain.KM.Rules
                      , Duckling.TimeGrain.KO.Rules
                      , Duckling.TimeGrain.NB.Rules
                      , Duckling.TimeGrain.NL.Rules
@@ -951,6 +954,7 @@ test-suite duckling-test
                      , Duckling.Time.HU.Tests
                      , Duckling.Time.IT.Tests
                      , Duckling.Time.KA.Tests
+                     , Duckling.Time.KM.Tests
                      , Duckling.Time.KO.Tests
                      , Duckling.Time.NB.Tests
                      , Duckling.Time.NL.Tests

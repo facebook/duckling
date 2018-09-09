@@ -18,6 +18,7 @@ module Duckling.Rules.KM
 import Duckling.Dimensions.Types
 import Duckling.Locale
 import Duckling.Types
+import qualified Duckling.Distance.KM.Rules as Distance
 import qualified Duckling.Numeral.KM.Rules as Numeral
 import qualified Duckling.Ordinal.KM.Rules as Ordinal
 import qualified Duckling.Quantity.KM.Rules as Quantity
@@ -35,7 +36,7 @@ localeRules _ _ = []
 
 langRules :: Some Dimension -> [Rule]
 langRules (This AmountOfMoney) = []
-langRules (This Distance) = []
+langRules (This Distance) = Distance.rules
 langRules (This Duration) = []
 langRules (This Email) = []
 langRules (This Numeral) = Numeral.rules

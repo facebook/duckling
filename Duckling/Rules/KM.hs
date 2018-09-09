@@ -22,6 +22,7 @@ import qualified Duckling.Numeral.KM.Rules as Numeral
 import qualified Duckling.Ordinal.KM.Rules as Ordinal
 import qualified Duckling.Quantity.KM.Rules as Quantity
 import qualified Duckling.Temperature.KM.Rules as Temperature
+import qualified Duckling.Volume.KM.Rules as Volume
 
 defaultRules :: Some Dimension -> [Rule]
 defaultRules = langRules
@@ -44,5 +45,5 @@ langRules (This Temperature) = Temperature.rules
 langRules (This Time) = []
 langRules (This TimeGrain) = []
 langRules (This Url) = []
-langRules (This Volume) = []
+langRules (This Volume) = Volume.rules
 langRules (This (CustomDimension dim)) = dimLangRules KM dim

@@ -144,8 +144,21 @@ ruleAmountUnit = Rule
       _ -> Nothing
   }
 
+ruleAmountLatent :: Rule
+ruleAmountLatent = Rule
+  { name = "<amount> (latent)"
+  , pattern =
+    [ Predicate isPositive
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Numeral NumeralData{TNumeral.value = v}:_) ->
+        Just . Token AmountOfMoney . mkLatent $ valueOnly v
+      _ -> Nothing
+  }
+
 rules :: [Rule]
 rules =
   [ ruleAmountUnit
+  , ruleAmountLatent
   , ruleCurrencies
   ]

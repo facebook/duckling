@@ -11,12 +11,14 @@
 module Duckling.AmountOfMoney.EN.Corpus
   ( corpus
   , negativeCorpus
+  , latentCorpus
   ) where
 
 import Data.String
 import Prelude
 
 import Duckling.AmountOfMoney.Types
+import Duckling.Resolve (Options(..))
 import Duckling.Testing.Types
 
 negativeCorpus :: NegativeCorpus
@@ -28,6 +30,21 @@ negativeCorpus = (testContext, testOptions, examples)
 
 corpus :: Corpus
 corpus = (testContext, testOptions, allExamples)
+
+latentCorpus :: Corpus
+latentCorpus = (testContext, testOptions {withLatent = True}, xs)
+  where
+    xs = concat
+      [ examples (simple Unnamed 5)
+                 [ "five"
+                 , "5"
+                 , "about 5"
+                 ]
+      , examples (simple Unnamed 7.2)
+                 [ "7.2"
+                 , "7.20000"
+                 ]
+      ]
 
 allExamples :: [Example]
 allExamples = concat

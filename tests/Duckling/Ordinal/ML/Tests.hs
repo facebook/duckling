@@ -5,15 +5,19 @@
 -- LICENSE file in the root directory of this source tree. An additional grant
 -- of patent rights can be found in the PATENTS file in the same directory.
 
-
-module Duckling.Dimensions.ML
-  ( allDimensions
+module Duckling.Ordinal.ML.Tests
+  ( tests
   ) where
 
-import Duckling.Dimensions.Types
+import Data.String
+import Prelude
+import Test.Tasty
 
-allDimensions :: [Some Dimension]
-allDimensions =
-  [ This Numeral,
-    This Ordinal
+import Duckling.Dimensions.Types
+import Duckling.Ordinal.ML.Corpus
+import Duckling.Testing.Asserts
+
+tests :: TestTree
+tests = testGroup "ML Tests"
+  [ makeCorpusTest [This Ordinal] corpus
   ]

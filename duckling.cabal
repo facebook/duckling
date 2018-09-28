@@ -468,6 +468,8 @@ library
                      , Duckling.Ordinal.KM.Rules
                      , Duckling.Ordinal.KO.Corpus
                      , Duckling.Ordinal.KO.Rules
+                     , Duckling.Ordinal.ML.Corpus
+                     , Duckling.Ordinal.ML.Rules
                      , Duckling.Ordinal.NB.Corpus
                      , Duckling.Ordinal.NB.Rules
                      , Duckling.Ordinal.NL.Corpus
@@ -892,6 +894,7 @@ test-suite duckling-test
                      , Duckling.Ordinal.KA.Tests
                      , Duckling.Ordinal.KM.Tests
                      , Duckling.Ordinal.KO.Tests
+                     , Duckling.Ordinal.ML.Tests
                      , Duckling.Ordinal.NB.Tests
                      , Duckling.Ordinal.NL.Tests
                      , Duckling.Ordinal.PL.Tests

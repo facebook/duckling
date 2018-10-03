@@ -1536,4 +1536,10 @@ allExamples = concat
   , examples (datetimeHoliday (2013, 2, 24, 0, 0, 0) Day "Shushan Purim")
              [ "Shushan Purim"
              ]
+  , examples (datetimeHoliday (2014, 1, 7, 0, 0, 0) Day "Guru Gobind Singh Jayanti")
+             [ "guru gobind singh birthday"
+             , "guru gobind singh jayanti 2014"
+             , "guru gobind singh jayanti"
+             , "Guru Govind Singh Jayanti"
+             ]
   ]

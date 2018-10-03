@@ -2175,6 +2175,13 @@ classifiers
                                    [("hour", -1.3397743454849977),
                                     ("integer (numeric)hour (grain)", -1.3397743454849977)],
                                n = 10}}),
+       ("Guru Gobind Singh Jayanti",
+        Classifier{okData =
+                     ClassData{prior = -infinity, unseen = -0.6931471805599453,
+                               likelihoods = HashMap.fromList [], n = 0},
+                   koData =
+                     ClassData{prior = 0.0, unseen = -1.9459101490553135,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 5}}),
        ("hhmm (latent)",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -2.0794415416798357,

@@ -1710,6 +1710,9 @@ ruleComputedHolidays = mkRuleHolidays
     , cycleNthAfter False TG.Day 3 dhanteras )
   , ( "Good Friday", "(good|great|holy)\\s+fri(day)?"
     , cycleNthAfter False TG.Day (-2) easterSunday )
+  , ( "Guru Gobind Singh Jayanti"
+    , "guru\\s+(gobind|govind)\\s+singh\\s+(birthday|jayanti)"
+    , guruGobindSinghJayanti )
   , ( "Holi", "(rangwali )?holi|dhuleti|dhulandi|phagwah"
     , cycleNthAfter False TG.Day 39 vasantPanchami )
   , ( "Holika Dahan", "holika dahan|kamudu pyre|chhoti holi"

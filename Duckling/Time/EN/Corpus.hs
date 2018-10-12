@@ -1391,6 +1391,15 @@ allExamples = concat
   , examples (datetimeHoliday (2018, 6, 15, 0, 0, 0) Day "Eid al-Fitr")
              [ "Eid al-Fitr 2018"
              ]
+  , examples (datetimeHoliday (2034, 12, 12, 0, 0, 0) Day "Eid al-Fitr")
+             [ "Eid al-Fitr 2034"
+             ]
+  , examples (datetimeHoliday (2046, 8, 4, 0, 0, 0) Day "Eid al-Fitr")
+             [ "Eid al-Fitr 2046"
+             ]
+  , examples (datetimeHoliday (2050, 6, 21, 0, 0, 0) Day "Eid al-Fitr")
+             [ "Eid al-Fitr 2050"
+             ]
   , examples (datetimeHoliday (2018, 8, 21, 0, 0, 0) Day "Eid al-Adha")
              [ "Eid al-Adha 2018"
              , "id ul-adha 2018"
@@ -1433,6 +1442,15 @@ allExamples = concat
              ]
   , examples (datetimeIntervalHoliday ((2018, 5, 16, 0, 0, 0), (2018, 6, 15, 0, 0, 0)) Day "Ramadan")
              [ "Ramadan 2018"
+             ]
+ , examples (datetimeIntervalHoliday ((2034, 11, 12, 0, 0, 0), (2034, 12, 12, 0, 0, 0)) Day "Ramadan")
+             [ "Ramadan 2034"
+             ]
+ , examples (datetimeIntervalHoliday ((2046, 7, 5, 0, 0, 0), (2046, 8, 4, 0, 0, 0)) Day "Ramadan")
+             [ "Ramadan 2046"
+             ]
+ , examples (datetimeIntervalHoliday ((2050, 5, 22, 0, 0, 0), (2050, 6, 21, 0, 0, 0)) Day "Ramadan")
+             [ "Ramadan 2050"
              ]
   , examples (datetimeHoliday (2017, 10, 17, 0, 0, 0) Day "Dhanteras")
              [ "dhanatrayodashi in 2017"

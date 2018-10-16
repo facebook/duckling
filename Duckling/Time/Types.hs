@@ -430,6 +430,21 @@ weekdayPredicate = mkSeriesPredicate series
       | dow == 7 = (Time.addDays (-2) d, 5)
       | otherwise = (Time.addDays (-1) d, dow-1)
 
+-- Predicate for periodic events with known `given`
+periodicPredicate :: TG.Grain -> Int -> TimeObject -> Predicate
+periodicPredicate grain delta given = mkSeriesPredicate series
+  where
+  series t _ = (past', future')
+    where
+    (past, future) = timeSequence grain delta given
+    (past', future') = if timeBefore t given
+      then
+        let (newer, older) = span (timeBefore t) past
+        in (older, reverse newer ++ future)
+      else
+        let (older, newer) = span (`timeBefore` t) future
+        in (reverse older ++ past, newer)
+
 toMidnight :: Time.Day -> Time.UTCTime
 toMidnight = flip Time.UTCTime (Time.timeOfDayToTime Time.midnight)
 

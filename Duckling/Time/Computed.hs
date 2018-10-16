@@ -15,20 +15,10 @@ module Duckling.Time.Computed
 
 import Data.Maybe
 import Prelude
-import qualified Data.Time as Time
 
-import Duckling.Time.Helpers (timeComputed)
+import Duckling.Time.Helpers (timeComputed, toTimeObjectM)
 import Duckling.Time.Types (TimeData(..), TimeObject(..), timedata')
 import qualified Duckling.TimeGrain.Types as TG
-
-toTimeObjectM :: (Integer, Int, Int) -> Maybe TimeObject
-toTimeObjectM (year, month, day) = do
-  day <- Time.fromGregorianValid year month day
-  return TimeObject
-    { start = Time.UTCTime day 0
-    , grain = TG.Day
-    , end = Nothing
-    }
 
 computedDays :: [TimeObject] -> TimeData
 computedDays xs = timedata'

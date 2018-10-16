@@ -1532,6 +1532,14 @@ allExamples = concat
              , "dhulandi 2019"
              , "phagwah 2019"
              ]
+  , examples (datetimeHoliday (2018, 8, 17, 0, 0, 0) Day "Parsi New Year")
+             [ "Parsi New Year 2018"
+             , "Jamshedi Navroz 2018"
+             ]
+  , examples (datetimeHoliday (2022, 8, 16, 0, 0, 0) Day "Parsi New Year")
+             [ "jamshedi Navroz 2022"
+             , "parsi new year 2022"
+             ]
   , examples (datetimeIntervalHoliday ((2013, 4, 26, 0, 0, 0), (2013, 4, 29, 0, 0, 0)) Day "Global Youth Service Day")
              [ "GYSD 2013"
              , "global youth service day"

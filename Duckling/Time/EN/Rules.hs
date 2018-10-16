@@ -1850,6 +1850,10 @@ ruleComputedHolidays' = mkRuleHolidays'
           day <- intersectWithReplacement holySaturday tentative alternative
           start <- intersect day $ hourMinute True 20 30
           interval TTime.Closed start $ cycleNthAfter False TG.Minute 60 start )
+  -- Does not account for leap years, so every 365 days.
+  , ( "Parsi New Year", "parsi new year|jamshedi navroz"
+    , predEveryNDaysFrom 365 (2020, 8, 16)
+    )
   ]
 
 ruleCycleThisLastNext :: Rule

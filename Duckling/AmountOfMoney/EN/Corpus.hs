@@ -210,4 +210,15 @@ allExamples = concat
              , "over 1.42 dollars"
              , "above a dollar and 42 cents"
              ]
+   , examples (simple INR 5e5)
+              [ "5 lakh rupees"
+              , "five lakhs rupees"
+              ]
+   , examples (between INR (7, 9e5))
+              [ "7-9 lakh rupees"
+              ]
+   , examples (simple INR 4e7)
+              [ "four crore rupees"
+              , "4 crores rupees"
+              ]
   ]

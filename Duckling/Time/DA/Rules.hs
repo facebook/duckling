@@ -1007,7 +1007,7 @@ ruleAtTimeofday :: Rule
 ruleAtTimeofday = Rule
   { name = "at <time-of-day>"
   , pattern =
-    [ regex "klokken|kl|kl\\.|@"
+    [ regex "klokken|kl |kl\\. |@"
     , Predicate isATimeOfDay
     ]
   , prod = \tokens -> case tokens of

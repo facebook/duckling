@@ -1097,12 +1097,36 @@ ruleIntervalFromMonthDDDD = Rule
 
 ruleIntervalFromDDDDMonth :: Rule
 ruleIntervalFromDDDDMonth = Rule
-  { name = "from <day-of-month> (ordinal or number) to <day-of-month> (ordinal or number) <named-month> (interval)"
+  { name = "from the <day-of-month> (ordinal or number) to the <day-of-month> (ordinal or number) <named-month> (interval)"
   , pattern =
-    [ regex "from"
+    [ regex "from( the)?"
     , Predicate isDOMValue
-    , regex "\\-|to|th?ru|through|(un)?til(l)?"
+    , regex "\\-|to( the)?|th?ru|through|(un)?til(l)?"
     , Predicate isDOMValue
+    , Predicate isAMonth
+    ]
+  , prod = \tokens -> case tokens of
+      (_:
+       token1:
+       _:
+       token2:
+       Token Time td:
+       _) -> do
+        dom1 <- intersectDOM td token1
+        dom2 <- intersectDOM td token2
+        Token Time <$> interval TTime.Closed dom1 dom2
+      _ -> Nothing
+  }
+
+ruleIntervalFromDDDDOfMonth :: Rule
+ruleIntervalFromDDDDOfMonth = Rule
+  { name = "from the <day-of-month> (ordinal or number) to the <day-of-month> (ordinal or number) of <named-month> (interval)"
+  , pattern =
+    [ regex "from( the)?"
+    , Predicate isDOMValue
+    , regex "\\-|to( the)?|th?ru|through|(un)?til(l)?"
+    , Predicate isDOMValue
+    , regex "of"
     , Predicate isAMonth
     ]
   , prod = \tokens -> case tokens of
@@ -2404,6 +2428,7 @@ rules =
   , rulePrecisionTOD
   , ruleIntervalFromMonthDDDD
   , ruleIntervalFromDDDDMonth
+  , ruleIntervalFromDDDDOfMonth
   , ruleIntervalMonthDDDD
   , ruleIntervalDDDDMonth
   , ruleIntervalDash

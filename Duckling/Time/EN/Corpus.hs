@@ -958,6 +958,10 @@ allExamples = concat
              , "from July 13-15"
              , "from 13 to 15 July"
              , "from 13th to 15th July"
+             , "from the 13th to 15th July"
+             , "from the 13th to the 15th July"
+             , "from the 13th to the 15th of July"
+             , "from the 13 to the 15th of July"
              ]
   , examples (datetimeInterval ((2013, 8, 8, 0, 0, 0), (2013, 8, 13, 0, 0, 0)) Day)
              [ "Aug 8 - Aug 12"

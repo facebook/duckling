@@ -329,6 +329,8 @@ library
                      , Duckling.Duration.Types
 
                      -- Email
+                     , Duckling.Email.DE.Corpus
+                     , Duckling.Email.DE.Rules
                      , Duckling.Email.EN.Corpus
                      , Duckling.Email.EN.Rules
                      , Duckling.Email.FR.Corpus

@@ -194,6 +194,7 @@ getCorpusForLang KA = (testContext, testOptions, [])
 getCorpusForLang KM = (testContext, testOptions, [])
 getCorpusForLang KO = KOTime.corpus
 getCorpusForLang LO = (testContext, testOptions, [])
+getCorpusForLang ML = (testContext, testOptions, [])
 getCorpusForLang MY = (testContext, testOptions, [])
 getCorpusForLang NB = NBTime.corpus
 getCorpusForLang NE = (testContext, testOptions, [])

@@ -8,6 +8,9 @@
 
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE OverloadedStrings #-}
+
+{-# LANGUAGE LambdaCase #-}
+
 {-# LANGUAGE NoRebindableSyntax #-}
 
 module Duckling.Numeral.IS.Rules
@@ -29,35 +32,49 @@ import Duckling.Regex.Types
 import Duckling.Types
 import qualified Duckling.Numeral.Types as TNumeral
 
-ruleNumeralMap :: HashMap Text Integer
-ruleNumeralMap = HashMap.fromList
-  [ ( "null", 0 )
-  , ( "null", 0)
+
+zeroToTwentyMap:: HashMap Text Integer
+zeroToTwentyMap = HashMap.fromList
+  [ ( "núll", 0 )
+  , ( "null", 0 )
   , ( "einn", 1 )
   , ( "tveir", 2 )
   , ( "þrír", 3 )
   , ( "fjórir", 4 )
-  , ( "fimm", 5)
-  , ( "sex", 6)
-  , ( "sjö", 7)
-  , ( "átta", 8)
-  , ( "níu", 9)
-  , ( "tíu", 10)
+  , ( "fimm", 5 )
+  , ( "sex", 6 )
+  , ( "sjö", 7 )
+  , ( "átta", 8 )
+  , ( "níu", 9 )
+  , ( "tíu", 10 )
+  , ( "ellefu", 11 )
+  , ( "tólf", 12 )
+  , ( "þrettán", 13 )
+  , ( "fjórtán", 14 )
+  , ( "fimmtán", 15 )
+  , ( "sextán", 16 )
+  , ( "sautján", 17 )
+  , ( "átján", 18 )
+  , ( "nítján", 19 )
+  , ( "tuttugu", 20 )
   ]
 
-ruleNumeral :: Rule
-ruleNumeral = Rule
-  { name = "number (0..10)"
+ruleZeroToTwenty :: Rule
+ruleZeroToTwenty = Rule
+  { name = "number (0..20)"
   , pattern =
-    [ regex "(núll|null|einn|tveir|þrír|fjórir|fimm|sex|sjö|átta|níu|tíu)"
+    [ regex "(n[úu]ll|einn|tveir|þrír|fjórir|fimm(tán)?|sex(tán)?|sjö|átta|níu|tíu|ellefu|tólf|þrettán|fjórtán|sautján|átján|nítján|tuttugu)"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token RegexMatch (GroupMatch (match:_)):_) ->
-        HashMap.lookup (Text.toLower match) ruleNumeralMap >>= integer
+        HashMap.lookup (Text.toLower match) zeroToTwentyMap >>= integer
+
       _ -> Nothing
   }
 
 rules :: [Rule]
 rules =
-  [ ruleNumeral
+
+  [ ruleZeroToTwenty
+
   ]

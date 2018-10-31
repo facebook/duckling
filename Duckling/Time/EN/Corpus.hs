@@ -1391,6 +1391,15 @@ allExamples = concat
   , examples (datetimeHoliday (2018, 6, 15, 0, 0, 0) Day "Eid al-Fitr")
              [ "Eid al-Fitr 2018"
              ]
+  , examples (datetimeHoliday (2034, 12, 12, 0, 0, 0) Day "Eid al-Fitr")
+             [ "Eid al-Fitr 2034"
+             ]
+  , examples (datetimeHoliday (2046, 8, 4, 0, 0, 0) Day "Eid al-Fitr")
+             [ "Eid al-Fitr 2046"
+             ]
+  , examples (datetimeHoliday (2050, 6, 21, 0, 0, 0) Day "Eid al-Fitr")
+             [ "Eid al-Fitr 2050"
+             ]
   , examples (datetimeHoliday (2018, 8, 21, 0, 0, 0) Day "Eid al-Adha")
              [ "Eid al-Adha 2018"
              , "id ul-adha 2018"
@@ -1433,6 +1442,15 @@ allExamples = concat
              ]
   , examples (datetimeIntervalHoliday ((2018, 5, 16, 0, 0, 0), (2018, 6, 15, 0, 0, 0)) Day "Ramadan")
              [ "Ramadan 2018"
+             ]
+ , examples (datetimeIntervalHoliday ((2034, 11, 12, 0, 0, 0), (2034, 12, 12, 0, 0, 0)) Day "Ramadan")
+             [ "Ramadan 2034"
+             ]
+ , examples (datetimeIntervalHoliday ((2046, 7, 5, 0, 0, 0), (2046, 8, 4, 0, 0, 0)) Day "Ramadan")
+             [ "Ramadan 2046"
+             ]
+ , examples (datetimeIntervalHoliday ((2050, 5, 22, 0, 0, 0), (2050, 6, 21, 0, 0, 0)) Day "Ramadan")
+             [ "Ramadan 2050"
              ]
   , examples (datetimeHoliday (2017, 10, 17, 0, 0, 0) Day "Dhanteras")
              [ "dhanatrayodashi in 2017"
@@ -1514,6 +1532,14 @@ allExamples = concat
              , "dhulandi 2019"
              , "phagwah 2019"
              ]
+  , examples (datetimeHoliday (2018, 8, 17, 0, 0, 0) Day "Parsi New Year")
+             [ "Parsi New Year 2018"
+             , "Jamshedi Navroz 2018"
+             ]
+  , examples (datetimeHoliday (2022, 8, 16, 0, 0, 0) Day "Parsi New Year")
+             [ "jamshedi Navroz 2022"
+             , "parsi new year 2022"
+             ]
   , examples (datetimeIntervalHoliday ((2013, 4, 26, 0, 0, 0), (2013, 4, 29, 0, 0, 0)) Day "Global Youth Service Day")
              [ "GYSD 2013"
              , "global youth service day"
@@ -1535,5 +1561,11 @@ allExamples = concat
              ]
   , examples (datetimeHoliday (2013, 2, 24, 0, 0, 0) Day "Shushan Purim")
              [ "Shushan Purim"
+             ]
+  , examples (datetimeHoliday (2014, 1, 7, 0, 0, 0) Day "Guru Gobind Singh Jayanti")
+             [ "guru gobind singh birthday"
+             , "guru gobind singh jayanti 2014"
+             , "guru gobind singh jayanti"
+             , "Guru Govind Singh Jayanti"
              ]
   ]

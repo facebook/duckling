@@ -59,6 +59,10 @@ allExamples = concat
              [ "14"
              , "vierzehn"
              ]
+  , examples (NumeralValue 15)
+             [ "15"
+             , "fünfzehn"
+             ]
   , examples (NumeralValue 16)
              [ "16"
              , "sechzehn"

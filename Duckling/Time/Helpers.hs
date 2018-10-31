@@ -26,8 +26,9 @@ module Duckling.Time.Helpers
   , predNth, predNthAfter, predNthClosest, season, second, timeOfDayAMPM
   , weekday, weekend, workweek, withDirection, year, yearMonthDay, tt, durationIntervalAgo
   , inDurationInterval, intersectWithReplacement, yearADBC, yearMonth
+  , predEveryNDaysFrom
     -- Other
-  , getIntValue, timeComputed
+  , getIntValue, timeComputed, toTimeObjectM
   -- Rule constructors
   , mkRuleInstants, mkRuleDaysOfWeek, mkRuleMonths, mkRuleMonthsWithLatent
   , mkRuleSeasons, mkRuleHolidays, mkRuleHolidays'
@@ -532,6 +533,30 @@ predNthClosest n TimeData
     { TTime.timePred = takeNthClosest n p $ TTime.timePred base
     , TTime.timeGrain = g
     , TTime.holiday = h
+    }
+
+-- This function is used for periodic events, for example,
+-- "every 365 days" or "every 8 years".
+-- `given` is a known example of the event.
+-- Do not export
+predEveryFrom :: TG.Grain -> Int -> TTime.TimeObject -> TimeData
+predEveryFrom periodGrain period given = TTime.timedata'
+    { TTime.timePred = TTime.periodicPredicate periodGrain period given
+    , TTime.timeGrain = TTime.grain given
+    }
+
+predEveryNDaysFrom :: Int -> (Integer, Int, Int) -> Maybe TimeData
+predEveryNDaysFrom period given = do
+  date <- toTimeObjectM given
+  return $ predEveryFrom TG.Day period date
+
+toTimeObjectM :: (Integer, Int, Int) -> Maybe TTime.TimeObject
+toTimeObjectM (year, month, day) = do
+  day <- Time.fromGregorianValid year month day
+  return TTime.TimeObject
+    { TTime.start = Time.UTCTime day 0
+    , TTime.grain = TG.Day
+    , TTime.end = Nothing
     }
 
 interval' :: TTime.TimeIntervalType -> (TimeData, TimeData) -> TimeData

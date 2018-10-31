@@ -11,12 +11,14 @@
 module Duckling.AmountOfMoney.EN.Corpus
   ( corpus
   , negativeCorpus
+  , latentCorpus
   ) where
 
 import Data.String
 import Prelude
 
 import Duckling.AmountOfMoney.Types
+import Duckling.Resolve (Options(..))
 import Duckling.Testing.Types
 
 negativeCorpus :: NegativeCorpus
@@ -28,6 +30,21 @@ negativeCorpus = (testContext, testOptions, examples)
 
 corpus :: Corpus
 corpus = (testContext, testOptions, allExamples)
+
+latentCorpus :: Corpus
+latentCorpus = (testContext, testOptions {withLatent = True}, xs)
+  where
+    xs = concat
+      [ examples (simple Unnamed 5)
+                 [ "five"
+                 , "5"
+                 , "about 5"
+                 ]
+      , examples (simple Unnamed 7.2)
+                 [ "7.2"
+                 , "7.20000"
+                 ]
+      ]
 
 allExamples :: [Example]
 allExamples = concat
@@ -193,4 +210,15 @@ allExamples = concat
              , "over 1.42 dollars"
              , "above a dollar and 42 cents"
              ]
+   , examples (simple INR 5e5)
+              [ "5 lakh rupees"
+              , "five lakhs rupees"
+              ]
+   , examples (between INR (7, 9e5))
+              [ "7-9 lakh rupees"
+              ]
+   , examples (simple INR 4e7)
+              [ "four crore rupees"
+              , "4 crores rupees"
+              ]
   ]

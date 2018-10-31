@@ -1710,6 +1710,9 @@ ruleComputedHolidays = mkRuleHolidays
     , cycleNthAfter False TG.Day 3 dhanteras )
   , ( "Good Friday", "(good|great|holy)\\s+fri(day)?"
     , cycleNthAfter False TG.Day (-2) easterSunday )
+  , ( "Guru Gobind Singh Jayanti"
+    , "guru\\s+(gobind|govind)\\s+singh\\s+(birthday|jayanti)"
+    , guruGobindSinghJayanti )
   , ( "Holi", "(rangwali )?holi|dhuleti|dhulandi|phagwah"
     , cycleNthAfter False TG.Day 39 vasantPanchami )
   , ( "Holika Dahan", "holika dahan|kamudu pyre|chhoti holi"
@@ -1847,6 +1850,10 @@ ruleComputedHolidays' = mkRuleHolidays'
           day <- intersectWithReplacement holySaturday tentative alternative
           start <- intersect day $ hourMinute True 20 30
           interval TTime.Closed start $ cycleNthAfter False TG.Minute 60 start )
+  -- Does not account for leap years, so every 365 days.
+  , ( "Parsi New Year", "parsi new year|jamshedi navroz"
+    , predEveryNDaysFrom 365 (2020, 8, 16)
+    )
   ]
 
 ruleCycleThisLastNext :: Rule

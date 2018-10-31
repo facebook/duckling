@@ -19,6 +19,9 @@ import Duckling.Dimensions.Types
 import Duckling.Locale
 import Duckling.Types
 import qualified Duckling.Numeral.KM.Rules as Numeral
+import qualified Duckling.Ordinal.KM.Rules as Ordinal
+import qualified Duckling.Quantity.KM.Rules as Quantity
+import qualified Duckling.Temperature.KM.Rules as Temperature
 
 defaultRules :: Some Dimension -> [Rule]
 defaultRules = langRules
@@ -33,11 +36,11 @@ langRules (This Distance) = []
 langRules (This Duration) = []
 langRules (This Email) = []
 langRules (This Numeral) = Numeral.rules
-langRules (This Ordinal) = []
+langRules (This Ordinal) = Ordinal.rules
 langRules (This PhoneNumber) = []
-langRules (This Quantity) = []
+langRules (This Quantity) = Quantity.rules
 langRules (This RegexMatch) = []
-langRules (This Temperature) = []
+langRules (This Temperature) = Temperature.rules
 langRules (This Time) = []
 langRules (This TimeGrain) = []
 langRules (This Url) = []

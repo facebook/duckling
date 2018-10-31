@@ -48,6 +48,7 @@ import qualified Duckling.Rules.KA as KARules
 import qualified Duckling.Rules.KM as KMRules
 import qualified Duckling.Rules.KO as KORules
 import qualified Duckling.Rules.LO as LORules
+import qualified Duckling.Rules.ML as MLRules
 import qualified Duckling.Rules.MY as MYRules
 import qualified Duckling.Rules.NB as NBRules
 import qualified Duckling.Rules.NE as NERules
@@ -102,13 +103,14 @@ defaultRules HI = HIRules.defaultRules
 defaultRules HR = HRRules.defaultRules
 defaultRules HU = HURules.defaultRules
 defaultRules ID = IDRules.defaultRules
-defaultRules IS = ENRules.defaultRules
+defaultRules IS = ISRules.defaultRules
 defaultRules IT = ITRules.defaultRules
 defaultRules JA = JARules.defaultRules
 defaultRules KA = KARules.defaultRules
 defaultRules KM = KMRules.defaultRules
 defaultRules KO = KORules.defaultRules
 defaultRules LO = LORules.defaultRules
+defaultRules ML = MLRules.defaultRules
 defaultRules MY = MYRules.defaultRules
 defaultRules NB = NBRules.defaultRules
 defaultRules NE = NERules.defaultRules
@@ -143,12 +145,14 @@ localeRules HI = HIRules.localeRules
 localeRules HR = HRRules.localeRules
 localeRules HU = HURules.localeRules
 localeRules ID = IDRules.localeRules
+localeRules IS = ISRules.localeRules
 localeRules IT = ITRules.localeRules
 localeRules JA = JARules.localeRules
 localeRules KA = KARules.localeRules
 localeRules KM = KMRules.localeRules
 localeRules KO = KORules.localeRules
 localeRules LO = LORules.localeRules
+localeRules ML = MLRules.localeRules
 localeRules MY = MYRules.localeRules
 localeRules NB = NBRules.localeRules
 localeRules NE = NERules.localeRules
@@ -183,12 +187,14 @@ langRules HI = HIRules.langRules
 langRules HR = HRRules.langRules
 langRules HU = HURules.langRules
 langRules ID = IDRules.langRules
+langRules IS = ISRules.langRules
 langRules IT = ITRules.langRules
 langRules JA = JARules.langRules
 langRules KA = KARules.langRules
 langRules KM = KMRules.langRules
 langRules KO = KORules.langRules
 langRules LO = LORules.langRules
+langRules ML = MLRules.langRules
 langRules MY = MYRules.langRules
 langRules NB = NBRules.langRules
 langRules NE = NERules.langRules

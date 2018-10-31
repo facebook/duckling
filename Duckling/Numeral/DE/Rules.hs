@@ -255,7 +255,7 @@ ruleZeroToNineteen :: Rule
 ruleZeroToNineteen = Rule
   { name = "integer (0..19)"
   , pattern =
-    [ regex "(keine[rn]|keine?s?|null|nichts|eins?(er)?|zwei|dreizehn|drei|vierzehn|vier|fünf|sechzehn|sechs|siebzehn|sieben|achtzehn|acht|neunzehn|neun|elf|zwölf|füfzehn)"
+    [ regex "(keine[rn]|keine?s?|null|nichts|eins?(er)?|zwei|dreizehn|drei|vierzehn|vier|fünfzehn|fünf|sechzehn|sechs|siebzehn|sieben|achtzehn|acht|neunzehn|neun|elf|zwölf)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->

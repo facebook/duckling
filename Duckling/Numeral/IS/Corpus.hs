@@ -9,7 +9,9 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Numeral.IS.Corpus
+
   ( corpus ) where
+
 
 import Data.String
 import Prelude
@@ -19,15 +21,22 @@ import Duckling.Numeral.Types
 import Duckling.Resolve
 import Duckling.Testing.Types
 
+
+context :: Context
+context = testContext{locale = makeLocale IS Nothing}
+
 corpus :: Corpus
-corpus = (testContext {locale = makeLocale IS Nothing}, testOptions, allExamples)
+corpus = (context, testOptions, allExamples)
+
 
 allExamples :: [Example]
 allExamples = concat
   [ examples (NumeralValue 0)
              [ "0"
-             , "núll" 
-             , "null"           
+
+             , "núll"
+             , "null"
+
              ]
   , examples (NumeralValue 1)
              [ "1"
@@ -57,6 +66,11 @@ allExamples = concat
   , examples (NumeralValue 9)
              [ "níu"
              ]
+
+  , examples (NumeralValue 10)
+             [ "tíu"
+             ]
+
   , examples (NumeralValue 11)
              [ "ellefu"
              ]
@@ -70,10 +84,12 @@ allExamples = concat
              [ "20"
              , "tuttugu"
              ]
+
   , examples (NumeralValue 10)
              [ "tíz"
              ]
   , examples (NumeralValue 20)
              [ "tuttugu"
              ]
+
   ]

@@ -272,6 +272,8 @@ library
                      , Duckling.Distance.GA.Rules
                      , Duckling.Distance.HR.Corpus
                      , Duckling.Distance.HR.Rules
+                     , Duckling.Distance.KM.Corpus
+                     , Duckling.Distance.KM.Rules
                      , Duckling.Distance.KO.Corpus
                      , Duckling.Distance.KO.Rules
                      , Duckling.Distance.PT.Corpus
@@ -713,6 +715,8 @@ library
                      , Duckling.Volume.HR.Rules
                      , Duckling.Volume.IT.Corpus
                      , Duckling.Volume.IT.Rules
+                     , Duckling.Volume.KM.Corpus
+                     , Duckling.Volume.KM.Rules
                      , Duckling.Volume.KO.Corpus
                      , Duckling.Volume.KO.Rules
                      , Duckling.Volume.PT.Corpus
@@ -799,6 +803,7 @@ test-suite duckling-test
                      , Duckling.Distance.FR.Tests
                      , Duckling.Distance.GA.Tests
                      , Duckling.Distance.HR.Tests
+                     , Duckling.Distance.KM.Tests
                      , Duckling.Distance.KO.Tests
                      , Duckling.Distance.NL.Tests
                      , Duckling.Distance.PT.Tests
@@ -988,6 +993,7 @@ test-suite duckling-test
                      , Duckling.Volume.GA.Tests
                      , Duckling.Volume.HR.Tests
                      , Duckling.Volume.IT.Tests
+                     , Duckling.Volume.KM.Tests
                      , Duckling.Volume.KO.Tests
                      , Duckling.Volume.PT.Tests
                      , Duckling.Volume.NL.Tests

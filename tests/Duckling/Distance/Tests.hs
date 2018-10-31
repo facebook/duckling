@@ -21,6 +21,7 @@ import qualified Duckling.Distance.ES.Tests as ES
 import qualified Duckling.Distance.FR.Tests as FR
 import qualified Duckling.Distance.GA.Tests as GA
 import qualified Duckling.Distance.HR.Tests as HR
+import qualified Duckling.Distance.KM.Tests as KM
 import qualified Duckling.Distance.KO.Tests as KO
 import qualified Duckling.Distance.NL.Tests as NL
 import qualified Duckling.Distance.PT.Tests as PT
@@ -39,6 +40,7 @@ tests = testGroup "Distance Tests"
   , FR.tests
   , GA.tests
   , HR.tests
+  , KM.tests
   , KO.tests
   , NL.tests
   , PT.tests

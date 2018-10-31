@@ -35,6 +35,38 @@ allExamples = concat
              [ "១ចាន"
              ]
   , examples (simple Pint 15 Nothing)
-             [ "ដប់៥ថូ"
+             [ "ដប់ប្រាំថូ"
+             ]
+  , examples (simple (Custom "For Persons") 2 (Just "មនុស្ស"))
+             [ "មនុស្ស២នាក់"
+             , "មនុស្សពីរនាក់"
+             ]
+  , examples (simple (Custom "For Buildings") 8 (Just "ផ្ទះ"))
+             [ "ផ្ទះ៨ខ្នង"
+             , "ផ្ទះប្រាំបីខ្នង"
+             ]
+  , examples (simple Gram 1000 Nothing)
+             [ "មួយពាន់ក្រាម"
+             , "មួយគីឡូក្រាម"
+             , "មួយលានមីលីក្រាម"
+             ]
+  , examples (between Gram (2,7) Nothing)
+             [ "ចាប់ពី 2 ដល់ 7 ក្រាម"
+             , "ចន្លោះពី ២ ដល់ ៧ក្រាម"
+             , "ចន្លោះ ២ក្រាម និង ៧ក្រាម"
+             , "ប្រហែល ២-៧ ក្រាម"
+             , "~2-7ក្រាម"
+             ]
+  , examples (under Tablespoon 4 Nothing)
+             [ "តិចជាងបួនស្លាបព្រា"
+             , "មិនលើស៤ស្លាបព្រា"
+             , "ក្រោម៤ស្លាបព្រា"
+             , "យ៉ាងច្រើន៤ស្លាបព្រា"
+             ]
+  , examples (above Bowl 10 Nothing)
+             [ "ច្រើនជាងដប់ចាន"
+             , "មិនតិចជាងដប់ចាន"
+             , "លើសពីដប់ចាន"
+             , "យ៉ាងតិចដប់ចាន"
              ]
   ]

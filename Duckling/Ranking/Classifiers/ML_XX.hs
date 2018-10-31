@@ -12,7 +12,7 @@
 --  @generated
 -----------------------------------------------------------------
 {-# LANGUAGE OverloadedStrings #-}
-module Duckling.Ranking.Classifiers.IS_XX (classifiers) where
+module Duckling.Ranking.Classifiers.ML_XX (classifiers) where
 import Data.String
 import Prelude
 import qualified Data.HashMap.Strict as HashMap

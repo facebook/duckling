@@ -18,6 +18,6 @@ import Duckling.Email.IT.Corpus
 import Duckling.Testing.Asserts
 
 tests :: TestTree
-tests = testGroup "Email Tests"
+tests = testGroup "IT Tests"
   [ makeCorpusTest [This Email] corpus
   ]

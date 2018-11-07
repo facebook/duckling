@@ -17,6 +17,7 @@ module Duckling.Rules.IS
 import Duckling.Dimensions.Types
 import Duckling.Locale
 import Duckling.Types
+import qualified Duckling.Email.IS.Rules as Email
 import qualified Duckling.Numeral.IS.Rules as Numeral
 
 defaultRules :: Some Dimension -> [Rule]
@@ -30,7 +31,7 @@ langRules :: Some Dimension -> [Rule]
 langRules (This Distance) = []
 langRules (This Duration) = []
 langRules (This Numeral) = Numeral.rules
-langRules (This Email) = []
+langRules (This Email) = Email.rules
 langRules (This AmountOfMoney) = []
 langRules (This Ordinal) = []
 langRules (This PhoneNumber) = []

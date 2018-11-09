@@ -88,4 +88,7 @@ allExamples = concat
   , examples (NumeralValue 34)
              [ "гучин дөрөв"
              ]
+  , examples (NumeralValue 99)
+             [ "ерэн ес"
+             ]             
   ]

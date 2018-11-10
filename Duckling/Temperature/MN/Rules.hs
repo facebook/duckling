@@ -78,45 +78,7 @@ ruleTemperatureBelowZero = Rule
       _ -> Nothing
   }
 
-ruleIntervalBetween :: Rule
-ruleIntervalBetween = Rule
-  { name = "between|from <temp> and|to <temp>"
-  , pattern =
-    [ regex "хооронд|аас"
-    , Predicate isSimpleTemperature
-    , regex "хүртэл|мөн"
-    , Predicate isSimpleTemperature
-    ]
-  , prod = \case
-      (_:
-       Token Temperature TemperatureData
-        {TTemperature.unit = u1 , TTemperature.value = Just from}:
-       _:
-       Token Temperature TemperatureData
-        {TTemperature.unit = Just u2, TTemperature.value = Just to}:
-       _) | from < to && unitsAreCompatible u1 u2 ->
-        Just . Token Temperature . withInterval (from, to) $ unitOnly u2
-      _ -> Nothing
-  }
 
-ruleIntervalDash :: Rule
-ruleIntervalDash = Rule
-  { name = "<temp> - <temp>"
-  , pattern =
-    [ Predicate isSimpleTemperature
-    , regex "-"
-    , Predicate isSimpleTemperature
-    ]
-  , prod = \case
-      (Token Temperature TemperatureData
-        {TTemperature.unit = u1, TTemperature.value = Just from}:
-       _:
-       Token Temperature TemperatureData
-        {TTemperature.unit = Just u2, TTemperature.value = Just to}:
-       _) | from < to && unitsAreCompatible u1 u2 ->
-        Just . Token Temperature . withInterval (from, to) $ unitOnly u2
-      _ -> Nothing
-  }
 
 ruleIntervalMax :: Rule
 ruleIntervalMax = Rule
@@ -154,8 +116,6 @@ rules =
   , ruleTemperatureCelsius
   , ruleTemperatureFahrenheit
   , ruleTemperatureBelowZero
-  , ruleIntervalBetween
-  , ruleIntervalDash
   , ruleIntervalMin
   , ruleIntervalMax
   ]

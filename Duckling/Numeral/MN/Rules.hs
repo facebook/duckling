@@ -49,7 +49,7 @@ ruleNumeral = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
-        HashMap.lookup (Text.toLower match) tensMap >>= integer
+        HashMap.lookup (Text.toLower match) ruleNumeralMap >>= integer
       _ -> Nothing
   }
 

@@ -13,7 +13,7 @@
 module Duckling.Locale
   ( Lang(..)
   , Locale(..)
-  , Region(AU,BE,BZ,CA,CN,GB,HK,IE,IN,JM,MO,NZ,PH,TT,TW,US,ZA)
+  , Region(AU,BE,BZ,CA,CN,GB,HK,IE,IN,JM,MN,MO,NZ,PH,TT,TW,US,ZA)
   , allLocales
   , makeLocale
   ) where

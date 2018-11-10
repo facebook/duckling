@@ -979,7 +979,6 @@ test-suite duckling-test
                      , Duckling.Temperature.JA.Tests
                      , Duckling.Temperature.KM.Tests
                      , Duckling.Temperature.KO.Tests
-                     , Duckling.Temperature.MN.Tests
                      , Duckling.Temperature.PT.Tests
                      , Duckling.Temperature.RO.Tests
                      , Duckling.Temperature.TR.Tests

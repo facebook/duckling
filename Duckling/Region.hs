@@ -33,6 +33,7 @@ data Region
   | IE
   | IN
   | JM
+  | MN
   | MO
   | NL
   | NZ

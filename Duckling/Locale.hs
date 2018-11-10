@@ -60,6 +60,7 @@ data Lang
   | KO
   | LO
   | ML
+  | MN
   | MY
   | NB
   | NE

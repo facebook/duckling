@@ -13,9 +13,9 @@ import Duckling.Lang
 import Duckling.Numeral.Types
 import Duckling.Resolve
 import Duckling.Testing.Types
- corpus :: Corpus
+corpus :: Corpus
 corpus = (testContext {lang = MN}, allExamples)
- allExamples :: [Example]
+allExamples :: [Example]
 allExamples = concat
   [ examples (NumeralValue 0)
              [ "0"

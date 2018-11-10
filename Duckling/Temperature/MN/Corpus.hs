@@ -9,17 +9,18 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Temperature.MN.Corpus
-  ( corpus
-  ) where
+  ( corpus ) where
 
-import Data.String
 import Prelude
+import Data.String
 
+import Duckling.Locale
+import Duckling.Resolve
 import Duckling.Temperature.Types
 import Duckling.Testing.Types
 
 corpus :: Corpus
-corpus = (testContext, testOptions, allExamples)
+corpus = (testContext {locale = makeLocale MN Nothing}, testOptions, allExamples)
 
 allExamples :: [Example]
 allExamples = concat

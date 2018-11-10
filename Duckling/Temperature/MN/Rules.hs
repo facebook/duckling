@@ -11,18 +11,17 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Temperature.MN.Rules
-  ( rules
-  ) where
+  ( rules ) where
 
 import Data.Maybe
-import Data.String
 import Prelude
+import Data.String
 
 import Duckling.Dimensions.Types
 import Duckling.Temperature.Helpers
-import Duckling.Temperature.Types (TemperatureData(..), unitsAreCompatible)
-import Duckling.Types
 import qualified Duckling.Temperature.Types as TTemperature
+import Duckling.Temperature.Types (TemperatureData(..))
+import Duckling.Types
 
 ruleTemperatureDegrees :: Rule
 ruleTemperatureDegrees = Rule

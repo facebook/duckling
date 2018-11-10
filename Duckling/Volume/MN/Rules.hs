@@ -27,10 +27,10 @@ import qualified Duckling.Volume.Types as TVolume
 import qualified Duckling.Numeral.Types as TNumeral
 
 volumes :: [(Text, String, TVolume.Unit)]
-volumes = [ ("<latent vol> ml"    , "мл|миллилитр?" , TVolume.Millilitre)
-          , ("<vol> hectoliters"  , "гл|гектолитр?" , TVolume.Hectolitre)
-          , ("<vol> liters"       , "л(итр?)?"      , TVolume.Litre)
-          , ("<latent vol> gallon", "галлон?"       , TVolume.Gallon)
+volumes = [ ("<latent vol> ml"    , "мл|миллилитр" , TVolume.Millilitre)
+          , ("<vol> hectoliters"  , "гл|гектолитр" , TVolume.Hectolitre)
+          , ("<vol> liters"       , "л(итр)"      , TVolume.Litre)
+          , ("<latent vol> gallon", "галлон"       , TVolume.Gallon)
           ]
 
 rulesVolumes :: [Rule]
@@ -46,7 +46,7 @@ rulesVolumes = map go volumes
       }
 
 fractions :: [(Text, String, Double)]
-fractions = [ ("half", "хагас[-\\s]?", 1/2)
+fractions = [ ("half", "хагас[-\\s]", 1/2)
             ]
 
 rulesFractionalVolume :: [Rule]

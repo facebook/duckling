@@ -28,10 +28,10 @@ import qualified Duckling.Quantity.Types as TQuantity
 
 quantities :: [(Text, String, TQuantity.Unit, Double -> Double)]
 quantities =
-  [ ("<quantity> milligrams", "(мг|миллиграмм?)", TQuantity.Gram, (/ 1000))
-  , ("<quantity> grams", "г(рамм?)?", TQuantity.Gram, id)
-  , ("<quantity> kilograms", "(кг|килограмм?)", TQuantity.Gram, (* 1000))
-  , ("<quantity> lb", "фунт?", TQuantity.Pound, id)
+  [ ("<quantity> milligrams", "(мг|миллиграмм)", TQuantity.Gram, (/ 1000))
+  , ("<quantity> grams", "г(рамм)", TQuantity.Gram, id)
+  , ("<quantity> kilograms", "(кг|килограмм)", TQuantity.Gram, (* 1000))
+  , ("<quantity> lb", "фунт", TQuantity.Pound, id)
   , ("<quantity> oz", "унц", TQuantity.Ounce, id)
   ]
 

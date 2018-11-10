@@ -29,16 +29,15 @@ allExamples = concat
              [ "3 километр"
              , "3 км"
              , "3км"
-             , "3.0 км"
              ]
   , examples (simple Mile 8)
              [ "8 миль"
              , "найман миль"
              ]
   , examples (simple Metre 1)
-             [ "1 м",
-               "1 метр",
-               "нэг метр"
+             [ "1 м"
+             , "1 метр"
+             , "нэг метр"
              ]
   , examples (simple Centimetre 2)
              [ "2см"
@@ -50,7 +49,6 @@ allExamples = concat
              ]
   , examples (simple Inch 5)
              [ "5 инч"
-             , "5''"
              , "таван инч"
              , "5\""
              ]

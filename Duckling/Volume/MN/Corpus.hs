@@ -50,7 +50,7 @@ allExamples = concat
              ]
   , examples (simple Litre 0.5)
              [ "хагас-литр"
-             , "хагаслитр"
+             , "хагас литр"
              , "литрийн тал"
              ]
   , examples (simple Litre 1.5)

@@ -42,6 +42,7 @@ allExamples = concat
   , examples (simple Gram 2000 Nothing)
              [ "2 килограмм"
              , "2 кг"
+             , "2000 грамм"
              ]
   , examples (simple Pound 1 Nothing)
              [ "фунт"

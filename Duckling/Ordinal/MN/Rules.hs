@@ -7,6 +7,7 @@
 
 
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE NoRebindableSyntax #-}
 
@@ -16,6 +17,7 @@ module Duckling.Ordinal.MN.Rules
 
 import Data.HashMap.Strict (HashMap)
 import Data.String
+import Data.Text (Text)
 import Prelude
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Text as Text
@@ -66,7 +68,7 @@ ruleOrdinalsFirstth :: Rule
 ruleOrdinalsFirstth = Rule
   { name = "ordinals (first..19th)"
   , pattern =
-    [ regex "(нэг|хоёр|гурав|дөрөв|тав|зургаа|долоо|найм|ес|арав|арван нэг|арван хоёр|арван гурав|арван дөрөв|арван тав|арван зургаа|арван долоо|арван найм|арван ес|хорь)((дугаар|дүгээр| дахь| дэх)"
+    [ regex "(нэг|хоёр|гурав|дөрөв|тав|зургаа|долоо|найм|ес|арав|арван нэг|арван хоёр|арван гурав|арван дөрөв|арван тав|арван зургаа|арван долоо|арван найм|арван ес|хорь)(дугаар|дүгээр| дахь| дэх)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
@@ -79,7 +81,7 @@ ruleOrdinal = Rule
   { name = "ordinal 21..99"
   , pattern =
     [ regex "(хорин|гучин|дөчин|тавин|жаран|далан|наян|ерэн)"
-    , regex "нэг|хоёр|гурав|дөрөв|тав|зургаа|долоо|найм|ес)((дугаар|дүгээр| дахь)"
+    , regex "(нэг|хоёр|гурав|дөрөв|тав|зургаа|долоо|найм|ес)(дугаар|дүгээр| дахь)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (m1:_)):
@@ -95,7 +97,7 @@ ruleOrdinalDigits :: Rule
 ruleOrdinalDigits = Rule
   { name = "ordinal (digits)"
   , pattern =
-    [ regex "0*(\\d+)-?((ын|ийн|р|с|))"
+    [ regex "0*(\\d+)-?(ын|ийн|р|с|)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> ordinal <$> parseInt match

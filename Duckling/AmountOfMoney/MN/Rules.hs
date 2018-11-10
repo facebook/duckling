@@ -56,7 +56,7 @@ rulePounds :: Rule
 rulePounds = Rule
   { name = "£"
   , pattern =
-    [ regex "фунт(ами|ам|ах|а|у|ом|е|ы|ов)?"
+    [ regex "фунт(аар|тай|аас)?"
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly Pound
   }
@@ -65,7 +65,7 @@ ruleDollar :: Rule
 ruleDollar = Rule
   { name = "$"
   , pattern =
-    [ regex "долл?ар(ами|ам|ах|а|у|ом|е|ы|ов)?"
+    [ regex "доллар(ын|оор|оос|той)?"
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly Dollar
   }
@@ -74,7 +74,7 @@ ruleCent :: Rule
 ruleCent = Rule
   { name = "cent"
   , pattern =
-    [ regex "цент(ами|ам|ах|а|у|ом|е|ы|ов)?|пени|пенс(ами|ам|ах|а|у|ом|е|ы|ов)?|ц"
+    [ regex "цент(ийн|ээс|ээр|тэй)?|пени|пенс(ээр|гээр|тэй|ээс|гээс)?|ц"
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly Cent
   }
@@ -92,7 +92,7 @@ ruleBucks :: Rule
 ruleBucks = Rule
   { name = "bucks"
   , pattern =
-    [ regex "бакс(ами|ам|ах|а|у|ом|ах|ы|ов)?"
+    [ regex "бакс(аар|тай|аас)?"
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly Unnamed
   }

@@ -7,9 +7,11 @@
  {-# LANGUAGE OverloadedStrings #-}
  module Duckling.Numeral.MN.Corpus
   ( corpus ) where
-import Data.String
+
 import Prelude
-import Duckling.Lang
+import Data.String
+
+import Duckling.Locale
 import Duckling.Numeral.Types
 import Duckling.Resolve
 import Duckling.Testing.Types

@@ -1025,6 +1025,7 @@ test-suite duckling-test
                      , Duckling.Volume.KM.Tests
                      , Duckling.Volume.KO.Tests
                      , Duckling.Volume.PT.Tests
+                     , Duckling.Volume.MN.Tests
                      , Duckling.Volume.NL.Tests
                      , Duckling.Volume.RO.Tests
                      , Duckling.Volume.RU.Tests

@@ -15,8 +15,10 @@ import Duckling.Locale
 import Duckling.Numeral.Types
 import Duckling.Resolve
 import Duckling.Testing.Types
+
 corpus :: Corpus
-corpus = (testContext {lang = MN}, allExamples)
+corpus = (testContext {locale = makeLocale RU Nothing}, testOptions, allExamples)
+
 allExamples :: [Example]
 allExamples = concat
   [ examples (NumeralValue 0)

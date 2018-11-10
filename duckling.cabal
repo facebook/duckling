@@ -583,6 +583,8 @@ library
                      , Duckling.Temperature.KM.Rules
                      , Duckling.Temperature.KO.Corpus
                      , Duckling.Temperature.KO.Rules
+                     , Duckling.Temperature.MN.Rules
+                     , Duckling.Temperature.MN.Corpus
                      , Duckling.Temperature.PT.Corpus
                      , Duckling.Temperature.PT.Rules
                      , Duckling.Temperature.RO.Corpus
@@ -977,6 +979,7 @@ test-suite duckling-test
                      , Duckling.Temperature.HR.Tests
                      , Duckling.Temperature.IT.Tests
                      , Duckling.Temperature.JA.Tests
+                     , Duckling.Temperature.MN.Tests
                      , Duckling.Temperature.KM.Tests
                      , Duckling.Temperature.KO.Tests
                      , Duckling.Temperature.PT.Tests

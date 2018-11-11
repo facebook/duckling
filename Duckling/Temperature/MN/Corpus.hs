@@ -26,8 +26,8 @@ corpus = (testContext {locale = makeLocale MN Nothing}, testOptions, allExamples
 allExamples :: [Example]
 allExamples = concat
   [ examples (simple Celsius 37)
-             [ "37 цельсийн хэм"
-             , "гучин долоон хэм"
+             [ "37 градус"
+             , "гучин долоон град."
              ]
   , examples (simple Fahrenheit 70)
              [ "70°F"

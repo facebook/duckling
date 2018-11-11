@@ -67,17 +67,9 @@ rulesFractionalVolume = map go fractions
         _ -> Nothing
       }
 
-ruleHalfLiter :: Rule
-ruleHalfLiter = Rule
-  { name = "half liter"
-  , pattern =
-    [ regex "хагас литр"
-    ]
-  , prod = \_ -> Just . Token Volume . withUnit TVolume.Litre $ valueOnly 0.5
-  }
 
 rules :: [Rule]
-rules = [ ruleHalfLiter
+rules = [ 
         ]
         ++ rulesVolumes
         ++ rulesFractionalVolume

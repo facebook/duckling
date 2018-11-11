@@ -40,8 +40,7 @@ allExamples = concat
              [ "30 минут"
              ]
   , examples (DurationData 5400 Second)
-             [ "1.5 цаг"
-             , "5400 секунд"
+             [ "5400 секунд"
              ]
   , examples (DurationData 8 Hour)
              [ "8 цаг"

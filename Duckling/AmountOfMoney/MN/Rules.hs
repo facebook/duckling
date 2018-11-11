@@ -46,7 +46,7 @@ ruleTugriks :: Rule
 ruleTugriks = Rule
   { name = "төг"
   , pattern =
-    [ regex "төг(рөг|ргийн)?"
+    [ regex "MNT|төг(рөг|ргийн)?"
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly MNT
   }

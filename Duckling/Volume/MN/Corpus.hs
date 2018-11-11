@@ -52,7 +52,4 @@ allExamples = concat
              [ "хагас-литр"
              , "хагас литр"
              ]
-  , examples (simple Litre 1.5)
-             [ "литр хагас"
-             ]
   ]

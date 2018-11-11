@@ -30,10 +30,6 @@ import Duckling.Types
 import qualified Duckling.Numeral.Types as TNumeral
 
 
-
-
-
-
 ruleNumeralMap :: HashMap Text Integer
 ruleNumeralMap = HashMap.fromList
   [ ( "хорь", 20)
@@ -80,31 +76,6 @@ ruleElevenToNineteen = Rule
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
         HashMap.lookup (Text.toLower match) elevenToNineteenMap >>= integer
-      _ -> Nothing
-  }
-
-twentyoneToTwentynineMap :: HashMap Text Integer
-twentyoneToTwentynineMap = HashMap.fromList
-  [ ( "хорин нэг", 21 )
-  , ( "хорин хоёр", 22 )
-  , ( "хорин гурав", 23 )
-  , ( "хорин дөрөв", 24 )
-  , ( "хорин тав", 25 )
-  , ( "хорин зургаа", 26 )
-  , ( "хорин долоо", 27 )
-  , ( "хорин найм", 28 )
-  , ( "хорин ес", 29 )
-  ]
-
-ruleTwentyoneToTwentynine :: Rule
-ruleTwentyoneToTwentynine = Rule
-  { name = "number (21..29)"
-  , pattern =
-    [ regex "(хорин нэг|хорин хоёр|хорин гурав|хорин дөрөв|хорин тав|хорин зургаа|хорин долоо|хорин найм|хорин ес)"
-    ]
-  , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) ->
-        HashMap.lookup (Text.toLower match) twentyoneToTwentynineMap >>= integer
       _ -> Nothing
   }
 
@@ -202,15 +173,82 @@ ruleIntegerWithThousandsSeparator = Rule
         parseDouble (Text.replace "," Text.empty match) >>= double
       _ -> Nothing
   }
+
+ruleInteger7 :: Rule
+ruleInteger7 = Rule
+  { name = "integer 21..99"
+  , pattern =
+    [ oneOf [70, 20, 60, 50, 40, 90, 30, 80]
+    , numberBetween 1 10
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Numeral NumeralData{TNumeral.value = v1}:
+       Token Numeral NumeralData{TNumeral.value = v2}:
+       _) -> double $ v1 + v2
+      _ -> Nothing
+  }
+
+ruleInteger8 :: Rule
+ruleInteger8 = Rule
+  { name = "integer 101..999"
+  , pattern =
+    [ oneOf [300, 600, 500, 100, 800, 200, 900, 700, 400]
+    , numberBetween 1 100
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Numeral NumeralData{TNumeral.value = v1}:
+       Token Numeral NumeralData{TNumeral.value = v2}:
+       _) -> double $ v1 + v2
+      _ -> Nothing
+  }
+
+ruleNumeralDotNumeral :: Rule
+ruleNumeralDotNumeral = Rule
+  { name = "number dot number"
+  , pattern =
+    [ dimension Numeral
+    , regex "цэг"
+    , Predicate $ not . hasGrain
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Numeral nd1:_:Token Numeral nd2:_) ->
+        double $ TNumeral.value nd1 + decimalsToDouble (TNumeral.value nd2)
+      _ -> Nothing
+  }
+
+ruleNumeralsSuffixesKMG :: Rule
+ruleNumeralsSuffixesKMG = Rule
+  { name = "numbers suffixes (K, M, G)"
+  , pattern =
+    [ dimension Numeral
+    , regex "((к|м|г)|(К|М|Г))(?=[\\W\\$€]|$)"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Numeral NumeralData{TNumeral.value = v}:
+       Token RegexMatch (GroupMatch (match:_)):
+       _) -> case Text.toLower match of
+         "к" -> double $ v * 1e3
+         "К" -> double $ v * 1e3
+         "м" -> double $ v * 1e6
+         "М" -> double $ v * 1e6
+         "г" -> double $ v * 1e9
+         "Г" -> double $ v * 1e9
+         _   -> Nothing
+      _ -> Nothing
+  }
+
 rules :: [Rule]
 rules =
   [ ruleNumeral
   , ruleElevenToNineteen
-  , ruleTwentyoneToTwentynine
-  , ruleInteger6
   , ruleInteger
   , ruleInteger2
   , ruleInteger3
   , ruleInteger4
+  , ruleInteger6
+  , ruleInteger7
+  , ruleInteger8
   , ruleIntegerWithThousandsSeparator
+  , ruleNumeralDotNumeral
+  , ruleNumeralsSuffixesKMG
   ]

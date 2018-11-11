@@ -30,7 +30,8 @@ import qualified Duckling.Numeral.Types as TNumeral
 
 tensMap :: HashMap Text Integer
 tensMap = HashMap.fromList
-  [ ( "хорин", 20)
+  [ ( "арван", 10)
+  , ( "хорин", 20)
   , ( "гучин", 30)
   , ( "дөчин", 40)
   , ( "тавин", 50)
@@ -42,9 +43,9 @@ tensMap = HashMap.fromList
 
 ruleInteger5 :: Rule
 ruleInteger5 = Rule
-  { name = "integer (20..90)"
+  { name = "integer (10..90)"
   , pattern =
-    [ regex "(хорин|гучин|дөчин|тавин|жаран|далан|наян|ерэн)"
+    [ regex "(арван|хорин|гучин|дөчин|тавин|жаран|далан|наян|ерэн)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
@@ -209,7 +210,7 @@ threeToNineteenMap = HashMap.fromList
   , ( "долоо", 7)
   , ( "найм", 8)
   , ( "ес", 9)
-  , ( "арав|арван", 10)
+  , ( "арав", 10)
   , ( "арваннэг", 11)
   , ( "арванхоёр", 12)
   , ( "арвангурав", 13)

@@ -46,7 +46,7 @@ rulesVolumes = map go volumes
       }
 
 fractions :: [(Text, String, Double)]
-fractions = [ ("half", "хагас[-\\s]", 1/2)
+fractions = [ ("half", "хагас", 1/2)
             ]
 
 rulesFractionalVolume :: [Rule]

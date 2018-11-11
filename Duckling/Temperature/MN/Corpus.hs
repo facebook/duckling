@@ -9,7 +9,8 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Temperature.MN.Corpus
-  ( corpus ) where
+  ( corpus 
+  ) where
 
 import Prelude
 import Data.String
@@ -25,9 +26,7 @@ corpus = (testContext {locale = makeLocale MN Nothing}, testOptions, allExamples
 allExamples :: [Example]
 allExamples = concat
   [ examples (simple Celsius 37)
-             [ 
-               "37 °"
-             , "37 цельсийн хэм"
+             [ "37 цельсийн хэм"
              , "гучин долоон хэм"
              ]
   , examples (simple Fahrenheit 70)

@@ -28,7 +28,7 @@ ruleTemperatureDegrees = Rule
   { name = "<latent temp> degrees"
   , pattern =
     [ Predicate $ isValueOnly False
-    , regex "(град(ус?)?\\.?)|°|хэм"
+    , regex "(град(ус?)?)|°|хэм"
     ]
   , prod = \case
       (Token Temperature td:_) -> Just . Token Temperature $

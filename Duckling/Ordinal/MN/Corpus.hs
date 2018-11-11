@@ -40,7 +40,7 @@ allExamples = concat
              ]
   , examples (OrdinalData 15)
              [ "арван тав дахь"
-             ,"арван тав дугаар"
+             , "арван тав дугаар"
              , "15-р"
              ]
   , examples (OrdinalData 21)

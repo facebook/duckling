@@ -85,42 +85,6 @@ allExamples = concat
   , examples (simple GBP 3.01)
              [ "GBP3.01"
              , "GBP 3.01"
-             , "3 GBP 1 пенс"
              ]
-  , examples (simple Unnamed 42)
-             [ "42 бакс"
-             , "бакс 42"
-             , "42 бакс"
-             ]
-  , examples (simple BYN 42)
-             [ "42 BYN"
-             ]
-  , examples (simple KWD 42)
-             [ "42 KWD"
-             ]
-  , examples (simple LBP 42)
-             [ "42 LBP"
-             ]
-  , examples (simple EGP 42)
-             [ "42 EGP"
-             ]
-  , examples (simple QAR 42)
-             [ "42 QAR"
-             ]
-  , examples (simple SAR 42)
-             [ "42 SAR"
-             ]
-  , examples (simple BGN 42)
-             [ "42 BGN"
-             ]
-  , examples (simple MYR 42)
-             [ "42 MYR"
-             , "42 RM"
-             , "RM 42"
-             , "MYR 42"
-             , "42MYR"
-             , "42RM"
-             , "RM42"
-             , "MYR42"
-             ]
+
   ]

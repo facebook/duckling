@@ -45,31 +45,8 @@ rulesVolumes = map go volumes
       , prod = \_ -> Just . Token Volume $ unitOnly u
       }
 
-fractions :: [(Text, String, Double)]
-fractions = [ ("half", "хагас", 1/2)
-            ]
-
-rulesFractionalVolume :: [Rule]
-rulesFractionalVolume = map go fractions
-  where
-    go :: (Text, String, Double) -> Rule
-    go (name, regexPattern, f) = Rule
-      { name = name
-      , pattern =
-        [ regex regexPattern
-        , Predicate isUnitOnly
-        ]
-      , prod = \case
-        (_:
-         Token Volume TVolume.VolumeData{TVolume.unit = Just u}:
-         _) ->
-          Just . Token Volume $ volume u f
-        _ -> Nothing
-      }
-
-
 rules :: [Rule]
 rules = [ 
         ]
         ++ rulesVolumes
-        ++ rulesFractionalVolume
+

@@ -48,7 +48,4 @@ allExamples = concat
              , "3 гл"
              , "3гл"
              ]
-  , examples (simple Litre 0.5)
-             [ "хагас литр"
-             ]
   ]

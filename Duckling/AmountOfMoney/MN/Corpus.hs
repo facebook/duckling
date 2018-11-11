@@ -39,7 +39,6 @@ allExamples = concat
              , "10төг"
              , "10 төгрөг"
              , "төгрөг 10"
-             , "10 төгрөгөөр"
              ]
   , examples (simple Dollar 1)
              [ "$1"

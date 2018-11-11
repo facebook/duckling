@@ -26,14 +26,12 @@ allExamples :: [Example]
 allExamples = concat
   [ examples (simple Celsius 37)
              [ 
-               "37 ° цельс"
+               "37 °"
              , "37 цельсийн хэм"
              , "гучин долоон хэм"
              ]
   , examples (simple Fahrenheit 70)
              [ "70°F"
-             , "70 ° фарангейт"
-             , "70 хэм F"
              , "далан фарангейт"
              ]
   , examples (simple Degree 45)

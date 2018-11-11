@@ -31,7 +31,6 @@ allExamples = concat
   , examples (simple Gram 2 Nothing)
              [ "2 грамм"
              , "хоёр грамм"
-             , "0.002 кг"
              , "2000 миллиграмм"
              , "2000 мг"
              ]

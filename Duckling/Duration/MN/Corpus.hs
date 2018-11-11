@@ -59,9 +59,6 @@ allExamples = concat
   , examples (DurationData 6 Month)
              [ "6 сар"
              ]
-  , examples (DurationData 9072000 Second)
-             [ "3.5 сар"
-             ]
   , examples (DurationData 3 Quarter)
              [ "3 квартал"
              ]

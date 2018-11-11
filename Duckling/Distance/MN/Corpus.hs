@@ -32,16 +32,13 @@ allExamples = concat
              ]
   , examples (simple Mile 8)
              [ "8 миль"
-             , "найман миль"
              ]
   , examples (simple Metre 1)
              [ "1 м"
              , "1 метр"
-             , "нэг метр"
              ]
   , examples (simple Centimetre 2)
              [ "2см"
-             , "2 сантиметр"
              ]
   , examples (simple Millimetre 4)
              [ "4мм"
@@ -49,16 +46,13 @@ allExamples = concat
              ]
   , examples (simple Inch 5)
              [ "5 инч"
-             , "таван инч"
              , "5\""
              ]
   , examples (simple Foot 35)
              [ "35 фут"
              , "35'"
-             , "гучин таван фут"
              ]
   , examples (simple Yard 47)
              [ "47 яард"
-             , "дөчин долоон яард"
              ]
   ]

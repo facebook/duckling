@@ -9,7 +9,8 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.AmountOfMoney.MN.Corpus
-  ( corpus ) where
+  ( corpus 
+  ) where
 
 import Data.String
 import Prelude
@@ -83,8 +84,7 @@ allExamples = concat
              , "Rs20"
              ]
   , examples (simple Dollar 20.43)
-             [ "$20 и 43ц"
-             , "$20 43"
+             [ "$20 43"
              , "20 доллар 43ц"
              , "20 доллар 43 центийн"
              , "20 доллар 43 центээр"

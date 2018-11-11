@@ -28,7 +28,7 @@ ruleTemperatureDegrees = Rule
   { name = "<latent temp> degrees"
   , pattern =
     [ Predicate $ isValueOnly False
-    , regex "(град(ус?)?\\.?)|°"
+    , regex "(град(ус?)?\\.?)|°|хэм"
     ]
   , prod = \case
       (Token Temperature td:_) -> Just . Token Temperature $
@@ -48,13 +48,25 @@ ruleTemperatureCelsius = Rule
         withUnit TTemperature.Celsius td
       _ -> Nothing
   }
+ruleTempC :: Rule
+ruleTempC = Rule
+  { name = "<temp> °C"
+  , pattern =
+    [ Predicate $ isValueOnly True
+    , regex "c"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Temperature td:_) -> Just . Token Temperature $
+        withUnit TTemperature.Celsius td
+      _ -> Nothing
+  }
 
 ruleTemperatureFahrenheit :: Rule
 ruleTemperatureFahrenheit = Rule
   { name = "<temp> Fahrenheit"
   , pattern =
     [ Predicate $ isValueOnly True
-    , regex "f(ah?rh?eh?n(h?eit)?)?\\.?"
+    , regex "((f(ah?rh?eh?n(h?eit)?)?\\.?)|фарангейт)"
     ]
   , prod = \case
       (Token Temperature td:_) -> Just . Token Temperature $
@@ -116,6 +128,7 @@ rules =
   , ruleTemperatureCelsius
   , ruleTemperatureFahrenheit
   , ruleTemperatureBelowZero
+  , ruleTempC
   , ruleIntervalMin
   , ruleIntervalMax
   ]

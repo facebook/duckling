@@ -26,7 +26,7 @@ import qualified Duckling.Distance.Types as TDistance
 distances :: [(Text, String, TDistance.Unit)]
 distances = [ ("<latent dist> km", "км|километр", TDistance.Kilometre)
             , ("<latent dist> feet", "('|фут)", TDistance.Foot)
-            , ("<latent dist> inch", "(\"|''|дюйм)", TDistance.Inch)
+            , ("<latent dist> inch", "(\"|''|дюйм|инч)", TDistance.Inch)
             , ("<latent dist> yard", "яард", TDistance.Yard)
             , ("<dist> meters", "метр", TDistance.Metre)
             , ("<dist> centimeters", "см|сантиметр", TDistance.Centimetre)

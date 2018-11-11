@@ -34,60 +34,42 @@ allExamples = concat
              ]
   , examples (DurationData 15 Minute)
              [ "15 мин"
-             , "арван таван минут"
              , "15'"
              ]
   , examples (DurationData 30 Minute)
              [ "30 минут"
-             , "хагас цаг"
-             , "гучин минут"
              ]
   , examples (DurationData 5400 Second)
-             [ "цаг хагас"
-             , "1.5 цаг"
+             [ "1.5 цаг"
              , "5400 секунд"
              ]
   , examples (DurationData 8 Hour)
              [ "8 цаг"
              , "8 ц"
-             , "найман цаг"
              ]
   , examples (DurationData 15 Day)
              [ "15 өдөр"
-             , "арван таван өдөр"
-             , "хагас сар"
              ]
   , examples (DurationData 7 Week)
              [ "7 долоо хоног"
-             , "долоон долоо хоног"
              ]
   , examples (DurationData 1 Month)
              [ "1 сар"
              , "сар"
-             , "яг сар"
              ]
   , examples (DurationData 6 Month)
              [ "6 сар"
-             , "зургаан сар"
-             , "хагас жил"
              ]
   , examples (DurationData 9072000 Second)
              [ "3.5 сар"
-             , "гурван сар хагас"
-             , "ойролцоогоор 3.5 сар"
              ]
   , examples (DurationData 3 Quarter)
              [ "3 квартал"
              ]
   , examples (DurationData 2 Year)
              [ "2 жил"
-             , "хоёр жил"
-             , "ойролцоогоор хоёр жил"
              ]
   , examples (DurationData 12 Hour)
              [ "12 цаг"
-             , "арван хоёр цаг"
-             , "үд дунд"
-             , "ойролцоогоор үд дунд"
              ]
   ]

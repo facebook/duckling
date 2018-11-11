@@ -29,7 +29,7 @@ import qualified Duckling.Numeral.Types as TNumeral
 volumes :: [(Text, String, TVolume.Unit)]
 volumes = [ ("<latent vol> ml"    , "мл|миллилитр" , TVolume.Millilitre)
           , ("<vol> hectoliters"  , "гл|гектолитр" , TVolume.Hectolitre)
-          , ("<vol> liters"       , "л(итр)"      , TVolume.Litre)
+          , ("<vol> liters"       , "л(итр(ийн|ээр)?)?"      , TVolume.Litre)
           , ("<latent vol> gallon", "галлон"       , TVolume.Gallon)
           ]
 

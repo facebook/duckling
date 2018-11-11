@@ -29,6 +29,11 @@ import Duckling.Regex.Types
 import Duckling.Types
 import qualified Duckling.Numeral.Types as TNumeral
 
+
+
+
+
+
 ruleNumeralMap :: HashMap Text Integer
 ruleNumeralMap = HashMap.fromList
   [ ( "хорь", 20)
@@ -45,7 +50,7 @@ ruleNumeral :: Rule
 ruleNumeral = Rule
   {  name = "integer (20..90)"
   , pattern =
-    [ regex "(хорь|гуч|дөч|тавь|жар|дал|ная|ер)"
+    [ regex "(хорь|гуч|дөч|тавь|жар|дал|ная|ер|хорин|гучин|дөчин|тавин|жаран|далан|наян|ерэн|)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
@@ -128,6 +133,63 @@ ruleInteger6 = Rule
         HashMap.lookup (Text.toLower match) hundredsMap >>= integer
       _ -> Nothing
   }
+ruleInteger :: Rule
+ruleInteger = Rule
+  { name = "integer 0"
+  , pattern =
+    [ regex "(нойл|ноль|тэг)"
+    ]
+  , prod = \_ -> integer 0
+  }
+ruleInteger2 :: Rule
+ruleInteger2 = Rule
+  { name = "integer 1"
+  , pattern =
+    [ regex "(нэг|ганц)"
+    ]
+  , prod = \_ -> integer 1
+  }
+
+ruleInteger3 :: Rule
+ruleInteger3 = Rule
+  { name = "integer 2"
+  , pattern =
+    [ regex "(хоёр|хос)"
+    ]
+  , prod = \_ -> integer 2
+  }
+
+threeToNineteenMap:: HashMap Text Integer
+threeToNineteenMap = HashMap.fromList
+  [ ( "гурав", 3)
+  , ( "дөрөв", 4)
+  , ( "тав", 5)
+  , ( "зургаа", 6)
+  , ( "долоо", 7)
+  , ( "найм", 8)
+  , ( "ес", 9)
+  , ( "арав", 10)
+  , ( "арваннэг", 11)
+  , ( "арванхоёр", 12)
+  , ( "арвангурав", 13)
+  , ( "арвандөрөв", 14)
+  , ( "арвантав", 15)
+  , ( "арванзургаа", 16)
+  , ( "арвандолоо", 17)
+  , ( "арваннайм", 18)
+  , ( "арванес", 19)
+  ]
+ruleInteger4 :: Rule
+ruleInteger4 = Rule
+  { name = "integer (3..19)"
+  , pattern =
+    [ regex "(гурав|дөрөв|тав|зургаа|долоо|найм|ес|арав|арваннэг|арванхоёр|арвангурав|арвандөрөв|арвантав|арванзургаа|арвандолоо|арваннайм|арванес)"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        HashMap.lookup (Text.toLower match) threeToNineteenMap >>= integer
+      _ -> Nothing
+  } 
 
 ruleIntegerWithThousandsSeparator :: Rule
 ruleIntegerWithThousandsSeparator = Rule
@@ -146,5 +208,9 @@ rules =
   , ruleElevenToNineteen
   , ruleTwentyoneToTwentynine
   , ruleInteger6
+  , ruleInteger
+  , ruleInteger2
+  , ruleInteger3
+  , ruleInteger4
   , ruleIntegerWithThousandsSeparator
   ]

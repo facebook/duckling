@@ -17,10 +17,9 @@ module Duckling.AmountOfMoney.MN.Rules
 import Data.Maybe
 import Data.String
 import Prelude
-import qualified Data.Text as Text
 
 import Duckling.AmountOfMoney.Helpers
-import Duckling.AmountOfMoney.Types (Currency(..), AmountOfMoneyData (..))
+import Duckling.AmountOfMoney.Types (Currency(..), AmountOfMoneyData(..))
 import Duckling.Dimensions.Types
 import Duckling.Numeral.Helpers (isNatural, isPositive)
 import Duckling.Numeral.Types (NumeralData (..))
@@ -43,13 +42,13 @@ ruleUnitAmount = Rule
       _ -> Nothing
   }
 
-ruleRuble :: Rule
-ruleRuble = Rule
+ruleTugriks :: Rule
+ruleTugriks = Rule
   { name = "төг"
   , pattern =
-    [ regex "төг((рөг|ргийн))?"
+    [ regex "төг(рөг|ргийн)"
     ]
-  , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly RUB
+  , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly MNT
   }
 
 rulePounds :: Rule
@@ -65,7 +64,7 @@ ruleDollar :: Rule
 ruleDollar = Rule
   { name = "$"
   , pattern =
-    [ regex "доллар(ын|оор|оос|той)?"
+    [ regex "доллар(ын|оор|оос|той)"
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly Dollar
   }
@@ -74,7 +73,7 @@ ruleCent :: Rule
 ruleCent = Rule
   { name = "cent"
   , pattern =
-    [ regex "цент(ийн|ээс|ээр|тэй)?|пени|пенс(ээр|гээр|тэй|ээс|гээс)?|ц"
+    [ regex "цент(ийн|ээс|ээр|тэй)?|пени|пенс(ээр|гээр|тэй|ээс|гээс)|ц"
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly Cent
   }
@@ -97,65 +96,7 @@ ruleBucks = Rule
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly Unnamed
   }
 
-ruleIntersectAndXCents :: Rule
-ruleIntersectAndXCents = Rule
-  { name = "intersect (and X cents)"
-  , pattern =
-    [ Predicate isWithoutCents
-    , regex "и"
-    , Predicate isCents
-    ]
-  , prod = \tokens -> case tokens of
-      (Token AmountOfMoney fd:
-       _:
-       Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just c}:
-       _) -> Just . Token AmountOfMoney $ withCents c fd
-      _ -> Nothing
-  }
 
-ruleIntersect :: Rule
-ruleIntersect = Rule
-  { name = "intersect"
-  , pattern =
-    [ Predicate isWithoutCents
-    , Predicate isNatural
-    ]
-  , prod = \tokens -> case tokens of
-      (Token AmountOfMoney fd:
-       Token Numeral NumeralData{TNumeral.value = c}:
-       _) -> Just . Token AmountOfMoney $ withCents c fd
-      _ -> Nothing
-  }
-
-ruleIntersectAndNumeral :: Rule
-ruleIntersectAndNumeral = Rule
-  { name = "intersect (and number)"
-  , pattern =
-    [ Predicate isWithoutCents
-    , regex "и"
-    , Predicate isNatural
-    ]
-  , prod = \tokens -> case tokens of
-      (Token AmountOfMoney fd:
-       _:
-       Token Numeral NumeralData{TNumeral.value = c}:
-       _) -> Just . Token AmountOfMoney $ withCents c fd
-      _ -> Nothing
-  }
-
-ruleIntersectXCents :: Rule
-ruleIntersectXCents = Rule
-  { name = "intersect (X cents)"
-  , pattern =
-    [ Predicate isWithoutCents
-    , Predicate isCents
-    ]
-  , prod = \tokens -> case tokens of
-      (Token AmountOfMoney fd:
-       Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just c}:
-       _) -> Just . Token AmountOfMoney $ withCents c fd
-      _ -> Nothing
-  }
 
 rulePrecision :: Rule
 rulePrecision = Rule
@@ -271,7 +212,7 @@ ruleIntervalMax :: Rule
 ruleIntervalMax = Rule
   { name = "under/less/lower/no more than <amount-of-money>"
   , pattern =
-    [ regex "?( аас)((бага|доогуур|ихгүй))"
+    [ regex "( аас)((бага|доогуур|ихгүй))"
     , Predicate isSimpleAmountOfMoney
     ]
   , prod = \tokens -> case tokens of
@@ -286,7 +227,7 @@ ruleIntervalMin :: Rule
 ruleIntervalMin = Rule
   { name = "over/above/at least/more than <amount-of-money>"
   , pattern =
-    [ regex "?( аас)((их|дээгүүр|илүү))"
+    [ regex "( аас)((их|дээгүүр|илүү))"
     , Predicate isSimpleAmountOfMoney
     ]
   , prod = \tokens -> case tokens of
@@ -304,10 +245,6 @@ rules =
   , ruleCent
   , ruleDollar
   , ruleEUR
-  , ruleIntersect
-  , ruleIntersectAndNumeral
-  , ruleIntersectAndXCents
-  , ruleIntersectXCents
   , ruleIntervalBetweenNumeral
   , ruleIntervalBetweenNumeral2
   , ruleIntervalBetween
@@ -317,5 +254,5 @@ rules =
   , ruleIntervalDash
   , rulePounds
   , rulePrecision
-  , ruleRuble
+  , ruleTugriks
   ]

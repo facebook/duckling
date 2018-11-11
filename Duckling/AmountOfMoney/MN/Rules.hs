@@ -46,7 +46,7 @@ ruleTugriks :: Rule
 ruleTugriks = Rule
   { name = "төг"
   , pattern =
-    [ regex "төг(рөг|ргийн)"
+    [ regex "төг(рөг|ргийн)?"
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly MNT
   }
@@ -64,7 +64,7 @@ ruleDollar :: Rule
 ruleDollar = Rule
   { name = "$"
   , pattern =
-    [ regex "доллар(ын|оор|оос|той)"
+    [ regex "доллар(ын|оор|оос|той)?"
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly Dollar
   }
@@ -73,7 +73,7 @@ ruleCent :: Rule
 ruleCent = Rule
   { name = "cent"
   , pattern =
-    [ regex "цент(ийн|ээс|ээр|тэй)?|пени|пенс(ээр|гээр|тэй|ээс|гээс)|ц"
+    [ regex "цент(ийн|ээс|ээр|тэй)?|пени|пенс(ээр|гээр|тэй|ээс|гээс)?|ц"
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly Cent
   }

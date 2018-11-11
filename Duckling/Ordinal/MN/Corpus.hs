@@ -25,7 +25,7 @@ corpus = (testContext {locale = makeLocale MN Nothing}, testOptions, allExamples
 allExamples :: [Example]
 allExamples = concat
   [ examples (OrdinalData 1)
-             [ "нэгдүгээр"
+             [ "нэг дүгээр"
              , "нэг дэх"
              , "1-р"
              ]

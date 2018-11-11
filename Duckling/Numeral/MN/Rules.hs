@@ -50,7 +50,7 @@ ruleNumeral :: Rule
 ruleNumeral = Rule
   {  name = "integer (20..90)"
   , pattern =
-    [ regex "(хорь|гуч|дөч|тавь|жар|дал|ная|ер|хорин|гучин|дөчин|тавин|жаран|далан|наян|ерэн|)"
+    [ regex "(хорь|гуч|дөч|тавь|жар|дал|ная|ер|хорин|гучин|дөчин|тавин|жаран|далан|наян|ерэн)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->

@@ -28,7 +28,7 @@ ruleTemperatureDegrees = Rule
   { name = "<latent temp> degrees"
   , pattern =
     [ Predicate $ isValueOnly False
-    , regex "(град(ус?)?\\.?)|°|хэм"
+    , regex "(град(ус?)?\\.?)|°|хэм|°C"
     ]
   , prod = \case
       (Token Temperature td:_) -> Just . Token Temperature $
@@ -50,7 +50,7 @@ ruleTemperatureCelsius = Rule
   }
 ruleTempC :: Rule
 ruleTempC = Rule
-  { name = "<temp> °C"
+  { name = "<temp>°C"
   , pattern =
     [ Predicate $ isValueOnly True
     , regex "c"

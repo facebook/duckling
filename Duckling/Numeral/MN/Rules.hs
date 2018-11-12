@@ -45,25 +45,40 @@ ruleInteger99 = Rule
           "тавин" -> Just 50
           "жаран" -> Just 60
           "далан" -> Just 70
-          "наян" -> Just 80
-          "ерэн" -> Just 90
+          "наян"  -> Just 80
+          "ерэн"  -> Just 90
           _ -> Nothing
-        v2 <- case Text.toLower m2 of
-          "нэг" -> Just 1
-          "хоёр" -> Just 2
-          "гурав" -> Just 3
-          "дөрөв" -> Just 4
-          "тав" -> Just 5
+         v2 <- case Text.toLower m2 of
+          "нэг"    -> Just 1
+          "хоёр"   -> Just 2
+          "гурав"  -> Just 3
+          "дөрөв"  -> Just 4
+          "тав"    -> Just 5
           "зургаа" -> Just 6
-          "долоо" -> Just 7
-          "найм" -> Just 8
-          "ес" -> Just 9
+          "долоо"  -> Just 7
+          "найм"   -> Just 8
+          "ес"     -> Just 9
           _ -> Nothing
        
         integer $ v1 + v2
         _ -> Nothing
   }
 
+ruleNumeralsUnd :: Rule
+ruleNumeralsUnd = Rule
+  { name = "numbers und"
+  , pattern =
+    [ oneOf [20, 30 .. 90]
+    , regex " "
+    , numberBetween 1 10
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Numeral NumeralData{TNumeral.value = v1}:
+       _:
+       Token Numeral NumeralData{TNumeral.value = v2}:
+       _) -> double $ v1 + v2
+      _ -> Nothing
+  }
 
 ruleDecimalWithThousandsSeparator :: Rule
 ruleDecimalWithThousandsSeparator = Rule
@@ -278,6 +293,7 @@ rules =
   , ruleDecimalWithThousandsSeparator
   , ruleInteger99
   , ruleInteger
+  , ruleNumeralsUnd
   , ruleInteger2
   , ruleInteger3
   , ruleInteger4

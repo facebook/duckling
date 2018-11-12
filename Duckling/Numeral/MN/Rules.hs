@@ -28,30 +28,42 @@ import Duckling.Regex.Types
 import Duckling.Types
 import qualified Duckling.Numeral.Types as TNumeral
 
-tensMap :: HashMap Text Integer
-tensMap = HashMap.fromList
-  [ ( "арван", 10)
-  , ( "хорин", 20)
-  , ( "гучин", 30)
-  , ( "дөчин", 40)
-  , ( "тавин", 50)
-  , ( "жаран", 60)
-  , ( "далан", 70)
-  , ( "наян", 80)
-  , ( "ерэн", 90)
-  ]
 
-ruleInteger5 :: Rule
-ruleInteger5 = Rule
-  { name = "integer (10..90)"
+ruleInteger99 :: Rule
+ruleInteger99 = Rule
+  { name = "integer ([1-9][1-9])"
   , pattern =
-    [ regex "(арван|хорин|гучин|дөчин|тавин|жаран|далан|наян|ерэн)"
+    [ regex "(арван|хорин|гучин|дөчин|тавин|жаран|далан|наян|ерэн)( ?)(нэг|хоёр|гурав|дөрөв|тав|зургаа|долоо|найм|ес)"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) ->
-        HashMap.lookup (Text.toLower match) tensMap >>= integer
-      _ -> Nothing
+      (Token RegexMatch (GroupMatch (m1:m2:_)):_) -> do
+         v1 <- case Text.toLower m1 of
+          "арван" -> Just 10
+          "хорин" -> Just 20
+          "гучин" -> Just 30
+          "дөчин" -> Just 40
+          "тавин" -> Just 50
+          "жаран" -> Just 60
+          "далан" -> Just 70
+          "наян" -> Just 80
+          "ерэн" -> Just 90
+          _ -> Nothing
+        v2 <- case Text.toLower m2 of
+          "нэг" -> Just 1
+          "хоёр" -> Just 2
+          "гурав" -> Just 3
+          "дөрөв" -> Just 4
+          "тав" -> Just 5
+          "зургаа" -> Just 6
+          "долоо" -> Just 7
+          "найм" -> Just 8
+          "ес" -> Just 9
+          _ -> Nothing
+       
+        integer $ v1 + v2
+        _ -> Nothing
   }
+
 
 ruleDecimalWithThousandsSeparator :: Rule
 ruleDecimalWithThousandsSeparator = Rule
@@ -264,11 +276,11 @@ rules :: [Rule]
 rules =
   [ ruleDecimalNumeral
   , ruleDecimalWithThousandsSeparator
+  , ruleInteger99
   , ruleInteger
   , ruleInteger2
   , ruleInteger3
   , ruleInteger4
-  , ruleInteger5
   , ruleInteger6
   , ruleInteger7
   , ruleInteger8

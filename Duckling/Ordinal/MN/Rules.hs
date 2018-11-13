@@ -54,21 +54,21 @@ ordinalsFirstthMap = HashMap.fromList
 
 cardinalsMap :: HashMap Text.Text Int
 cardinalsMap = HashMap.fromList
-  [ ( "хорь", 20 )
-  , ( "гуч", 30 )
-  , ( "дөч", 40 )
-  , ( "тавь", 50 )
-  , ( "жар", 60 )
-  , ( "дал", 70 )
-  , ( "ная", 80 )
-  , ( "ер", 90 )
+  [ ( "хорин", 20 )
+  , ( "гучин", 30 )
+  , ( "дөчин", 40 )
+  , ( "тавин", 50 )
+  , ( "жаран", 60 )
+  , ( "далан", 70 )
+  , ( "наян", 80 )
+  , ( "ерэн", 90 )
   ]
 
 ruleOrdinalsFirstth :: Rule
 ruleOrdinalsFirstth = Rule
   { name = "ordinals (first..19th)"
   , pattern =
-    [ regex "(нэг|хоёр|гурав|дөрөв|тав|зургаа|долоо|найм|ес|арав|арван( ?нэг)|арван( ?хоёр)|арван( ?гурав)|арван( ?дөрөв)|арван( ?тав)|арван( ?зургаа)|арван( ?долоо)|арван( ?найм)|арван( ?ес))(( ?дугаар)|( ?дүгээр)|( ?дахь)|( ?дэх))"
+    [ regex "(нэг|хоёр|гурав|дөрөв|тав|зургаа|долоо|найм|ес|арав|(арван ?(нэг|хоёр|гурав|дөрөв|тав|зургаа|долоо|найм|ес))) ?(дугаар|дүгээр|дахь|дэх)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
@@ -78,10 +78,9 @@ ruleOrdinalsFirstth = Rule
 
 ruleOrdinal :: Rule
 ruleOrdinal = Rule
-  { name = "ordinal 21..99"
+  { name = "ordinal 20..99"
   , pattern =
-    [ regex "(хорин|гучин|дөчин|тавин|жаран|далан|наян|ерэн)"
-    , regex "(нэг|хоёр|гурав|дөрөв|тав|зургаа|долоо|найм|ес)(( ?дугаар)|( ?дүгээр)|( ?дахь))"
+    [ regex "(хорин|гучин|дөчин|тавин|жаран|далан|наян|ерэн) ?(нэг|хоёр|гурав|дөрөв|тав|зургаа|долоо|найм|ес) ?(дугаар|дүгээр|дахь|дэх)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (m1:_)):
@@ -90,6 +89,19 @@ ruleOrdinal = Rule
          dozen <- HashMap.lookup (Text.toLower m1) cardinalsMap
          unit <- HashMap.lookup (Text.toLower m2) ordinalsFirstthMap
          Just . ordinal $ dozen + unit
+      _ -> Nothing
+  }
+
+ -- TODO: Single-word composition (#110)
+ruleInteger2 :: Rule
+ruleInteger2 = Rule
+  { name = "integer (20..90)"
+  , pattern =
+    [ regex "(хорь|гуч|дөч|тавь|жар|дал|ная|ер) ?(дугаар|дүгээр|дахь|дэх)"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        HashMap.lookup (Text.toLower match) tensMap >>= integer
       _ -> Nothing
   }
 
@@ -104,9 +116,24 @@ ruleOrdinalDigits = Rule
       _ -> Nothing
   }
 
+ruleOrdinalDigits2 :: Rule
+ruleOrdinalDigits2 = Rule
+  { name = "ordinal (digits)"
+  , pattern =
+    [ regex "(?<!\\d|\\.)0*(\\d+)(\\.(?!\\d)| ?(дугаар|дүгээр|дахь|дэх))"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (match:_)):_) -> do
+        v <- parseInt match
+        Just $ ordinal v
+      _ -> Nothing
+  }
+
 rules :: [Rule]
 rules =
-  [ ruleOrdinal
-  , ruleOrdinalDigits
+  [ ruleOrdinalDigits
+  , ruleOrdinal
+  , ruleInteger2
+  , ruleOrdinalDigits2
   , ruleOrdinalsFirstth
   ]

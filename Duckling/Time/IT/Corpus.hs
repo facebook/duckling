@@ -826,4 +826,23 @@ allExamples = concat
   , examples (datetime (2013, 8, 15, 0, 0, 0) Day)
              [ "gio 15"
              ]
+  , examples (datetime (2013, 2, 5, 4, 0, 0) Hour)
+             [ "7 giorni fa"
+             ]
+  , examples (datetime (2013, 2, 5, 0, 0, 0) Day)
+             [ "una settimana fa"
+             , "1 settimana fa"
+             ]
+  , examples (datetime (2013, 1, 22, 0, 0, 0) Day)
+             [ "tre settimane fa"
+             , "3 settimane fa"
+             ]
+  , examples (datetime (2012, 11, 12, 0, 0, 0) Day)
+             [ "tre mesi fa"
+             , "3 mesi fa"
+             ]
+  , examples (datetime (2011, 2, 1, 0, 0, 0) Month)
+             [ "due anni fa"
+             , "2 anni fa"
+             ]
   ]

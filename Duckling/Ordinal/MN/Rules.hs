@@ -55,14 +55,24 @@ ordinalsFirstthMap = HashMap.fromList
 cardinalsMap :: HashMap Text.Text Int
 cardinalsMap = HashMap.fromList
   [ ( "хорин", 20 )
+  , ( "хорь", 20 )
   , ( "гучин", 30 )
+  , ( "гуч", 30 )
   , ( "дөчин", 40 )
+  , ( "дөч", 40 )
   , ( "тавин", 50 )
+  , ( "тавь", 50 )
   , ( "жаран", 60 )
+  , ( "жар", 60 )
   , ( "далан", 70 )
+  , ( "дал", 70 )
   , ( "наян", 80 )
+  , ( "ная", 80 )
   , ( "ерэн", 90 )
+  , ( "ер", 90 )
   ]
+
+
 
 ruleOrdinalsFirstth :: Rule
 ruleOrdinalsFirstth = Rule
@@ -101,7 +111,7 @@ ruleInteger2 = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
-        HashMap.lookup (Text.toLower match) tensMap >>= integer
+        HashMap.lookup (Text.toLower match) cardinalsMap >>= integer
       _ -> Nothing
   }
 

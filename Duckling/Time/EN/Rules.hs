@@ -1134,6 +1134,7 @@ ruleIntervalFromDDDDOfMonth = Rule
        token1:
        _:
        token2:
+       _:
        Token Time td:
        _) -> do
         dom1 <- intersectDOM td token1

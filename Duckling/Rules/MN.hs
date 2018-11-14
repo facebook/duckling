@@ -26,6 +26,7 @@ import qualified Duckling.Ordinal.MN.Rules as Ordinal
 import qualified Duckling.Quantity.MN.Rules as Quantity
 import qualified Duckling.TimeGrain.MN.Rules as TimeGrain
 import qualified Duckling.Volume.MN.Rules as Volume
+import qualified Duckling.Temperature.MN.Rules as Temperature
 
 defaultRules :: Some Dimension -> [Rule]
 defaultRules = langRules
@@ -44,7 +45,7 @@ langRules (This Ordinal) = Ordinal.rules
 langRules (This PhoneNumber) = []
 langRules (This Quantity) = Quantity.rules
 langRules (This RegexMatch) = []
-langRules (This Temperature) = []
+langRules (This Temperature) = Temperature.rules
 langRules (This Time) = []
 langRules (This TimeGrain) = TimeGrain.rules
 langRules (This Url) = []

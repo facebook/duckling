@@ -19,5 +19,6 @@ allDimensions =
   , This Numeral
   , This Ordinal
   , This Quantity
+  , This Temperature
   , This Volume
   ]

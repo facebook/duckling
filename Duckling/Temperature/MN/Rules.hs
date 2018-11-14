@@ -13,22 +13,21 @@
 module Duckling.Temperature.MN.Rules
   ( rules ) where
 
-import Data.Maybe
 import Prelude
 import Data.String
 
 import Duckling.Dimensions.Types
 import Duckling.Temperature.Helpers
-import qualified Duckling.Temperature.Types as TTemperature
 import Duckling.Temperature.Types (TemperatureData(..))
+import qualified Duckling.Temperature.Types as TTemperature
 import Duckling.Types
 
 ruleTemperatureDegrees :: Rule
 ruleTemperatureDegrees = Rule
-  { name = "<latent temp> degrees"
+  { name = "<latent temp> градус"
   , pattern =
     [ Predicate $ isValueOnly False
-    , regex "((град(ус?)?\\.?)|°|хэм)"
+    , regex "градус|°|хэм"
     ]
   , prod = \case
       (Token Temperature td:_) -> Just . Token Temperature $
@@ -48,6 +47,7 @@ ruleTemperatureCelsius = Rule
         withUnit TTemperature.Celsius td
       _ -> Nothing
   }
+
 ruleTempC :: Rule
 ruleTempC = Rule
   { name = "<temp> °C"

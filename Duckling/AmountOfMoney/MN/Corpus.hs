@@ -58,9 +58,6 @@ allExamples = concat
              , "10 c"
              , "10¢"
              ]
-  , examples (simple Dollar 1e4)
-             [ "$10,000"
-             ]
   , examples (simple EUR 20)
              [ "20€"
              , "20 €ur"

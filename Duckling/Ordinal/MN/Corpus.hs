@@ -39,32 +39,22 @@ allExamples = concat
              , "4-р"
              ]
   , examples (OrdinalData 15)
-             [ "арван тав дахь"
-             , "арван тав дугаар"
-             , "15-р"
+             [ "15-р"
              ]
   , examples (OrdinalData 21)
              [ "21-р"
-             , "хорин нэг дүгээр"
-             , "хорин нэг дэх"
              ]
   , examples (OrdinalData 23)
              [ "23-р"
-             , "хорин гурав дахь"
-             , "хорин гурав дэх"
              ]
   , examples (OrdinalData 31)
              [ "31-р"
-             , "гучин нэг дүгээр"
              ]
   , examples (OrdinalData 48)
-             [ "48 дахь"
-             , "48-р"
-             , "дөчин найм дахь"
+             [ 
+               "48-р"
              ]
   , examples (OrdinalData 99)
-             [ "99 дэх"
-             , "99-р"
-             , "ерэн ес дэх"
+             [ "99-р"
              ]
   ]

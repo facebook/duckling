@@ -47,7 +47,6 @@ allExamples = concat
              [ "21-р"
              , "хорин нэг дүгээр"
              , "хорин нэг дэх"
-             , "хорин нэг дэх"
              ]
   , examples (OrdinalData 23)
              [ "23-р"

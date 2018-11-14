@@ -42,9 +42,7 @@ ruleNumeralQuantities = map go quantities
     go (name, regexPattern, u, convert) = Rule
       { name = name
       , pattern =
-        [ numberWith TNumeral.value (> 0)
-        , regex regexPattern
-        ]
+        [ numberWith TNumeral.value (> 0), regex regexPattern ]
       , prod = \tokens -> case tokens of
         (Token Numeral nd:_) ->
           Just . Token Quantity . quantity u . convert $ TNumeral.value nd

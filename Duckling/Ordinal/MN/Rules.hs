@@ -40,21 +40,12 @@ ordinalsFirstthMap = HashMap.fromList
   , ( "найм", 8 )
   , ( "ес", 9 )
   , ( "арав", 10 )
-  , ( "арван нэг", 11 )
-  , ( "арван хоёр", 12 )
-  , ( "арван гурав", 13 )
-  , ( "арван дөрөв", 14 )
-  , ( "арван тав", 15 )
-  , ( "арван зургаа", 16 )
-  , ( "арван долоо", 17 )
-  , ( "арван найм", 18 )
-  , ( "арван ес", 19 )
-  , ( "хорь", 20 )
-  ]
+   ]
 
 cardinalsMap :: HashMap Text.Text Int
 cardinalsMap = HashMap.fromList
-  [ ( "хорин", 20 )
+  [ ( "арван", 10 )
+  , ( "хорин", 20 )
   , ( "хорь", 20 )
   , ( "гучин", 30 )
   , ( "гуч", 30 )
@@ -78,7 +69,7 @@ ruleOrdinalsFirstth :: Rule
 ruleOrdinalsFirstth = Rule
   { name = "ordinals (first..19th)"
   , pattern =
-    [ regex "(нэг|хоёр|гурав|дөрөв|тав|зургаа|долоо|найм|ес|арав|(арван ?(нэг|хоёр|гурав|дөрөв|тав|зургаа|долоо|найм|ес))) ?(дугаар|дүгээр|дахь|дэх)"
+    [ regex "(нэг|хоёр|гурав|дөрөв|тав|зургаа|долоо|найм|ес|арав) ?(дугаар|дүгээр|дахь|дэх)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
@@ -88,9 +79,9 @@ ruleOrdinalsFirstth = Rule
 
 ruleOrdinal :: Rule
 ruleOrdinal = Rule
-  { name = "ordinal 20..99"
+  { name = "ordinal 10..99"
   , pattern =
-    [ regex "(хорин|гучин|дөчин|тавин|жаран|далан|наян|ерэн) ?(нэг|хоёр|гурав|дөрөв|тав|зургаа|долоо|найм|ес) ?(дугаар|дүгээр|дахь|дэх)"
+    [ regex "(арван|хорин|гучин|дөчин|тавин|жаран|далан|наян|ерэн) ?(нэг|хоёр|гурав|дөрөв|тав|зургаа|долоо|найм|ес) ?(дугаар|дүгээр|дахь|дэх)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (m1:_)):
@@ -142,8 +133,8 @@ ruleOrdinalDigits2 = Rule
 rules :: [Rule]
 rules =
   [ ruleOrdinalDigits
+  , ruleOrdinalDigits2
   , ruleOrdinal
   , ruleInteger2
-  , ruleOrdinalDigits2
   , ruleOrdinalsFirstth
   ]

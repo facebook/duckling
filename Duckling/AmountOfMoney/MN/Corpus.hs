@@ -59,14 +59,8 @@ allExamples = concat
              , "10¢"
              ]
   , examples (simple Dollar 1e4)
-             [ "$10К"
-             , "10к$"
+             [ 
              , "$10,000"
-             ]
-  , examples (simple USD 3.14)
-             [ "USD3.14"
-             , "3.14US$"
-             , "US$ 3.14"
              ]
   , examples (simple EUR 20)
              [ "20€"

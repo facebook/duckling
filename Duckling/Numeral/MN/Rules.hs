@@ -73,17 +73,6 @@ ruleDecimalWithThousandsSeparator = Rule
       _ -> Nothing
   }
 
-ruleDecimalNumeral :: Rule
-ruleDecimalNumeral = Rule
-  { name = "decimal number"
-  , pattern =
-    [ regex "(\\d*,\\d+)"
-    ]
-  , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) ->
-        parseDecimal False match
-      _ -> Nothing
-  }
 
 -- TODO: Single-word composition (#110)
 ruleInteger3 :: Rule
@@ -286,6 +275,17 @@ ruleNumeralDotNumeral = Rule
        _:
        Token Numeral NumeralData{TNumeral.value = v2}:
        _) -> double $ v1 + decimalsToDouble v2
+      _ -> Nothing
+  }
+
+ruleDecimalNumeral :: Rule
+ruleDecimalNumeral = Rule
+  { name = "decimal number"
+  , pattern =
+    [ regex "(\\d*\\.\\d+)"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (match:_)):_) -> parseDecimal True match
       _ -> Nothing
   }
 

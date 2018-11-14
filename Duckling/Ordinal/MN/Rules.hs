@@ -111,7 +111,7 @@ ruleInteger2 = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
-        HashMap.lookup (Text.toLower match) cardinalsMap >>= integer
+         ordinal <$> HashMap.lookup (Text.toLower match) cardinalsMap
       _ -> Nothing
   }
 

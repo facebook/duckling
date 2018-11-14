@@ -74,6 +74,7 @@ explicitDimensions targets = HashSet.union targets deps
 
 -- | Ordinal depends on Numeral for JA, KO, and ZH.
 dependents :: Some Dimension -> HashSet (Some Dimension)
+dependents (This CreditCardNumber) = HashSet.empty
 dependents (This Distance) = HashSet.singleton (This Numeral)
 dependents (This Duration) = HashSet.fromList [This Numeral, This TimeGrain]
 dependents (This Numeral) = HashSet.empty

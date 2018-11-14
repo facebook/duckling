@@ -29,6 +29,7 @@ import Duckling.Types
 
 toName :: Dimension a -> Text
 toName RegexMatch = "regex"
+toName CreditCardNumber = "credit-card-number"
 toName Distance = "distance"
 toName Duration = "duration"
 toName Email = "email"

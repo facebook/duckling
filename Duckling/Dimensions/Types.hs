@@ -50,6 +50,7 @@ fromName name = HashMap.lookup name m
   where
     m = HashMap.fromList
       [ ("amount-of-money", This AmountOfMoney)
+      , ("credit-card-number", This CreditCardNumber)
       , ("distance", This Distance)
       , ("duration", This Duration)
       , ("email", This Email)

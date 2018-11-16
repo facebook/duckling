@@ -121,7 +121,7 @@ parseHandler tzs = do
           ]
 
     parseTimeZone :: Maybe ByteString -> Text
-    parseTimeZone = fromMaybe defaultTimeZone . fmap Text.decodeUtf8
+    parseTimeZone = maybe defaultTimeZone Text.decodeUtf8
 
     parseLocale :: ByteString -> Locale
     parseLocale x = maybe defaultLocale (`makeLocale` mregion) mlang

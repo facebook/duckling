@@ -20,7 +20,7 @@ import qualified Data.Text as Text
 import Duckling.Dimensions.Types
 import Duckling.Numeral.Helpers (parseInt)
 import Duckling.Ordinal.Types (OrdinalData (..))
-import Duckling.Regex.Types
+import Duckling.Regex.Types (GroupMatch(..))
 import Duckling.Time.Helpers
 import Duckling.Time.Types (TimeData (..))
 import Duckling.Types
@@ -1050,7 +1050,7 @@ ruleYyyymmdd :: Rule
 ruleYyyymmdd = Rule
   { name = "yyyy-mm-dd"
   , pattern =
-    [ regex "(\\d{2,4})-(0?[1-9]|10|11|12)-([012]?[1-9]|10|20|30|31)"
+    [ regex "(\\d{2,4})-(0?[1-9]|1[0-2])-(3[01]|[12]\\d|0?[1-9])"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (m1:m2:m3:_)):_) -> do

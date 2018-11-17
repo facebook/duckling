@@ -15,6 +15,7 @@ module Duckling.Time.DE.Corpus
 
 import Data.String
 import Prelude
+import Data.Time
 
 import Duckling.Locale
 import Duckling.Resolve
@@ -36,7 +37,7 @@ negativeCorpus = (testContext {locale = makeLocale DE Nothing}, testOptions, exa
       ]
 
 allExamples :: [Example]
-allExamples = concat
+allExamples = concat $
   [ examples (datetime (2013, 2, 12, 4, 30, 0) Second)
              [ "jetzt"
              , "genau jetzt"
@@ -631,7 +632,7 @@ allExamples = concat
   , examples (datetime (2013, 12, 10, 0, 0, 0) Day)
              [ "10.12."
              ]
-  , examples (datetimeInterval ((2013, 2, 12, 18, 30, 0), (2013, 2, 12, 19, 1, 0)) Minute)
+  , examples (datetimeInterval ((2013, 2, 12, 18, 30, 0), (2013, 2, 12, 19, 1, 0)) Minute)
              [ "18:30h - 19:00h"
              , "18:30h/19:00h"
              ]
@@ -666,4 +667,8 @@ allExamples = concat
   , examples (datetime (2013, 2, 12, 17, 10, 0) Minute)
              [ "17h10"
              ]
+  ]++
+  [ examples (datetime (yyyy, mm, dd, 0, 0, 0) Day) [fromString $ show day]
+  | day <- [fromGregorian 2016 1 1..fromGregorian 2018 12 31]
+  , let (yyyy,mm,dd) = toGregorian day
   ]

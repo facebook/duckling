@@ -17,6 +17,8 @@ import Prelude
 import Data.String
 import Data.Text (Text)
 import Data.Bool
+import qualified Data.Text as T
+import qualified Data.Char as C
 
 import Duckling.Dimensions.Types
 import Duckling.CreditCardNumber.Helpers
@@ -60,10 +62,12 @@ rules = map go creditCards
       { name = name
       , pattern = [ regexPattern ]
       , prod = \case
-          (Token RegexMatch (GroupMatch (ccNum:_)):_) ->
+          (Token RegexMatch (GroupMatch (ccNumGroup:_)):_) ->
             bool
               Nothing
               (Just $ Token CreditCardNumber $ creditCard ccNum i)
               (isValidCreditCardNumber ccNum)
+            where
+              ccNum = T.filter C.isDigit ccNumGroup
           _ -> Nothing
       }

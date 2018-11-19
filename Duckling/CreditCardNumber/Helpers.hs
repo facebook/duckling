@@ -46,23 +46,39 @@ otherCreditCardNumberRegex =
 
 -- | Visa credit card regex informed by latest BIN info
 visaCreditCardNumberRegex :: String
-visaCreditCardNumberRegex = "(4[0-9]{12}(?:[0-9]{3}))"
+visaCreditCardNumberRegex = "(" ++ withoutDashes ++ "|" ++ withDashes ++")"
+  where
+    withoutDashes = "4[0-9]{15}"
+    withDashes = "4[0-9]{3}-[0-9]{4}-[0-9]{4}-[0-9]{4}"
 
 -- | American Express credit card regex informed by latest BIN info
 amexCreditCardNumberRegex :: String
-amexCreditCardNumberRegex = "(3[47][0-9]{13})"
+amexCreditCardNumberRegex = "(" ++ withoutDashes ++ "|" ++ withDashes ++")"
+  where
+    withoutDashes = "3[47][0-9]{13}"
+    withDashes = "3[47][0-9]{2}-[0-9]{6}-[0-9]{5}"
 
 -- | Discover credit card regex informed by latest BIN info
 discoverCreditCardNumberRegex :: String
-discoverCreditCardNumberRegex = "(6(?:011|5[0-9]{2})[0-9]{12})"
+discoverCreditCardNumberRegex = "(" ++ withoutDashes ++ "|" ++ withDashes ++")"
+  where
+    withoutDashes = "6(?:011|[45][0-9]{2})[0-9]{12}"
+    withDashes = "6(?:011|[45][0-9]{2})-[0-9]{4}-[0-9]{4}-[0-9]{4}"
 
 -- | Mastercard credit card regex informed by latest BIN info
 mastercardCreditCardNumberRegex :: String
-mastercardCreditCardNumberRegex = "(5[1-5][0-9]{14})"
+mastercardCreditCardNumberRegex =
+  "(" ++ withoutDashes ++ "|" ++ withDashes ++")"
+  where
+    withoutDashes = "5[1-5][0-9]{14}"
+    withDashes = "5[1-5][0-9]{2}-[0-9]{4}-[0-9]{4}-[0-9]{4}"
 
 -- | Diner Club credit card regex informed by latest BIN info
 dinerClubCreditCardNumberRegex :: String
-dinerClubCreditCardNumberRegex = "(3(?:0[0-5]|[68][0-9])[0-9]{11})"
+dinerClubCreditCardNumberRegex = "(" ++ withoutDashes ++ "|" ++ withDashes ++")"
+  where
+    withoutDashes = "3(?:0[0-5]|[68][0-9])[0-9]{11}"
+    withDashes = "3(?:0[0-5]|[68][0-9])[0-9]-[0-9]{6}-[0-9]{4}"
 
 -- -----------------------------------------------------------------
 -- Validation

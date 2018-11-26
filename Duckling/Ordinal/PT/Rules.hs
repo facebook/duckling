@@ -25,7 +25,7 @@ ruleOrdinalsPrimeiro :: Rule
 ruleOrdinalsPrimeiro = Rule
   { name = "ordinals (primeiro..10)"
   , pattern =
-    [ regex "((primeir|segund|quart|quint|sext|s(e|é)tim|oitav|non|d(e|é)cim)(os?|as?))"
+    [ regex "((((d(e|é)cim)(os?|as?)) ((primeir|segund|terceir|quart|quint|sext|s(e|é)tim|oitav|non)(os?|as?)))|(((primeir|segund|terceir|quart|quint|sext|s(e|é)tim|oitav|non|d(e|é)cim)(os?|as?))))"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
@@ -77,6 +77,22 @@ ruleOrdinalsPrimeiro = Rule
         "décima" -> Just $ ordinal 10
         "decima" -> Just $ ordinal 10
         "décimas" -> Just $ ordinal 10
+        "décimos primeiros" -> Just $ ordinal 11
+        "decimo primeiro" -> Just $ ordinal 11
+        "decimos primeiros" -> Just $ ordinal 11
+        "décimo primeiro" -> Just $ ordinal 11
+        "decimas primeiras" -> Just $ ordinal 11
+        "décima primeira" -> Just $ ordinal 11
+        "decima primeira" -> Just $ ordinal 11
+        "décimas primeiras" -> Just $ ordinal 11
+        "décimos segundos" -> Just $ ordinal 12
+        "decimo segundo" -> Just $ ordinal 12
+        "decimos segundos" -> Just $ ordinal 12
+        "décimo segundo" -> Just $ ordinal 12
+        "decimas segundas" -> Just $ ordinal 12
+        "décima segunda" -> Just $ ordinal 12
+        "decima segunda" -> Just $ ordinal 12
+        "décimas segundas" -> Just $ ordinal 12
         _ -> Nothing
       _ -> Nothing
   }

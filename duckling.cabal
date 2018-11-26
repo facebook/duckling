@@ -233,6 +233,8 @@ library
                      , Duckling.AmountOfMoney.HR.Rules
                      , Duckling.AmountOfMoney.ID.Corpus
                      , Duckling.AmountOfMoney.ID.Rules
+                     , Duckling.AmountOfMoney.IT.Rules
+                     , Duckling.AmountOfMoney.IT.Corpus
                      , Duckling.AmountOfMoney.KA.Corpus
                      , Duckling.AmountOfMoney.KA.Rules
                      , Duckling.AmountOfMoney.KO.Corpus
@@ -798,6 +800,7 @@ test-suite duckling-test
                      , Duckling.AmountOfMoney.GA.Tests
                      , Duckling.AmountOfMoney.HR.Tests
                      , Duckling.AmountOfMoney.ID.Tests
+                     , Duckling.AmountOfMoney.IT.Tests
                      , Duckling.AmountOfMoney.KA.Tests
                      , Duckling.AmountOfMoney.KO.Tests
                      , Duckling.AmountOfMoney.NB.Tests

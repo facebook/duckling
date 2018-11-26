@@ -32,6 +32,7 @@ import qualified Duckling.Ordinal.JA.Tests as JA
 import qualified Duckling.Ordinal.KA.Tests as KA
 import qualified Duckling.Ordinal.KM.Tests as KM
 import qualified Duckling.Ordinal.KO.Tests as KO
+import qualified Duckling.Ordinal.MN.Tests as MN
 import qualified Duckling.Ordinal.ML.Tests as ML
 import qualified Duckling.Ordinal.NB.Tests as NB
 import qualified Duckling.Ordinal.NL.Tests as NL
@@ -68,6 +69,7 @@ tests = testGroup "Ordinal Tests"
   , KA.tests
   , KM.tests
   , KO.tests
+  , MN.tests
   , ML.tests
   , NB.tests
   , NL.tests

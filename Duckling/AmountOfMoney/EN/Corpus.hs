@@ -221,4 +221,9 @@ allExamples = concat
               [ "four crore rupees"
               , "4 crores rupees"
               ]
+   , examples (simple MNT 10)
+              [ "ten tugriks"
+              , "10 Tugrik"
+              , "10MNT"
+              ]
   ]

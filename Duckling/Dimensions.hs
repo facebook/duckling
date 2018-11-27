@@ -48,6 +48,7 @@ import qualified Duckling.Dimensions.KM as KMDimensions
 import qualified Duckling.Dimensions.KO as KODimensions
 import qualified Duckling.Dimensions.LO as LODimensions
 import qualified Duckling.Dimensions.ML as MLDimensions
+import qualified Duckling.Dimensions.MN as MNDimensions
 import qualified Duckling.Dimensions.MY as MYDimensions
 import qualified Duckling.Dimensions.NB as NBDimensions
 import qualified Duckling.Dimensions.NE as NEDimensions
@@ -62,6 +63,7 @@ import qualified Duckling.Dimensions.TR as TRDimensions
 import qualified Duckling.Dimensions.UK as UKDimensions
 import qualified Duckling.Dimensions.VI as VIDimensions
 import qualified Duckling.Dimensions.ZH as ZHDimensions
+
 
 allDimensions :: Lang -> [Some Dimension]
 allDimensions lang = CommonDimensions.allDimensions ++ langDimensions lang
@@ -119,6 +121,7 @@ langDimensions KM = KMDimensions.allDimensions
 langDimensions KO = KODimensions.allDimensions
 langDimensions LO = LODimensions.allDimensions
 langDimensions ML = MLDimensions.allDimensions
+langDimensions MN = MNDimensions.allDimensions
 langDimensions MY = MYDimensions.allDimensions
 langDimensions NB = NBDimensions.allDimensions
 langDimensions NE = NEDimensions.allDimensions

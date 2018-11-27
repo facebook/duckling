@@ -75,6 +75,7 @@ library
                      , Duckling.Rules.KO
                      , Duckling.Rules.LO
                      , Duckling.Rules.ML
+                     , Duckling.Rules.MN
                      , Duckling.Rules.MY
                      , Duckling.Rules.NB
                      , Duckling.Rules.NE
@@ -125,6 +126,7 @@ library
                      , Duckling.Ranking.Classifiers.KO_XX
                      , Duckling.Ranking.Classifiers.LO_XX
                      , Duckling.Ranking.Classifiers.ML_XX
+                     , Duckling.Ranking.Classifiers.MN_XX
                      , Duckling.Ranking.Classifiers.MY_XX
                      , Duckling.Ranking.Classifiers.NB_XX
                      , Duckling.Ranking.Classifiers.NE_XX
@@ -177,6 +179,7 @@ library
                      , Duckling.Dimensions.KO
                      , Duckling.Dimensions.LO
                      , Duckling.Dimensions.ML
+                     , Duckling.Dimensions.MN
                      , Duckling.Dimensions.MY
                      , Duckling.Dimensions.NB
                      , Duckling.Dimensions.NE
@@ -195,6 +198,8 @@ library
                      -- AmountOfMoney
                      , Duckling.AmountOfMoney.AR.Corpus
                      , Duckling.AmountOfMoney.AR.Rules
+                     , Duckling.AmountOfMoney.BG.Corpus
+                     , Duckling.AmountOfMoney.BG.Rules
                      , Duckling.AmountOfMoney.EN.AU.Corpus
                      , Duckling.AmountOfMoney.EN.AU.Rules
                      , Duckling.AmountOfMoney.EN.BZ.Corpus
@@ -221,8 +226,6 @@ library
                      , Duckling.AmountOfMoney.EN.US.Rules
                      , Duckling.AmountOfMoney.EN.ZA.Corpus
                      , Duckling.AmountOfMoney.EN.ZA.Rules
-                     , Duckling.AmountOfMoney.BG.Corpus
-                     , Duckling.AmountOfMoney.BG.Rules
                      , Duckling.AmountOfMoney.ES.Corpus
                      , Duckling.AmountOfMoney.ES.Rules
                      , Duckling.AmountOfMoney.FR.Corpus
@@ -237,8 +240,12 @@ library
                      , Duckling.AmountOfMoney.KA.Rules
                      , Duckling.AmountOfMoney.KO.Corpus
                      , Duckling.AmountOfMoney.KO.Rules
+                     , Duckling.AmountOfMoney.MN.Corpus
+                     , Duckling.AmountOfMoney.MN.Rules
                      , Duckling.AmountOfMoney.NB.Corpus
                      , Duckling.AmountOfMoney.NB.Rules
+                     , Duckling.AmountOfMoney.NL.Corpus
+                     , Duckling.AmountOfMoney.NL.Rules
                      , Duckling.AmountOfMoney.PT.Corpus
                      , Duckling.AmountOfMoney.PT.Rules
                      , Duckling.AmountOfMoney.RO.Corpus
@@ -249,8 +256,6 @@ library
                      , Duckling.AmountOfMoney.SV.Rules
                      , Duckling.AmountOfMoney.VI.Corpus
                      , Duckling.AmountOfMoney.VI.Rules
-                     , Duckling.AmountOfMoney.NL.Corpus
-                     , Duckling.AmountOfMoney.NL.Rules
                      , Duckling.AmountOfMoney.ZH.Corpus
                      , Duckling.AmountOfMoney.ZH.Rules
                      , Duckling.AmountOfMoney.Helpers
@@ -276,18 +281,20 @@ library
                      , Duckling.Distance.KM.Rules
                      , Duckling.Distance.KO.Corpus
                      , Duckling.Distance.KO.Rules
-                     , Duckling.Distance.PT.Corpus
-                     , Duckling.Distance.PT.Rules
+                     , Duckling.Distance.MN.Corpus
+                     , Duckling.Distance.MN.Rules
                      , Duckling.Distance.NL.Corpus
                      , Duckling.Distance.NL.Rules
+                     , Duckling.Distance.PT.Corpus
+                     , Duckling.Distance.PT.Rules
                      , Duckling.Distance.RO.Corpus
                      , Duckling.Distance.RO.Rules
                      , Duckling.Distance.RU.Corpus
                      , Duckling.Distance.RU.Rules
-                     , Duckling.Distance.TR.Corpus
-                     , Duckling.Distance.TR.Rules
                      , Duckling.Distance.SV.Corpus
                      , Duckling.Distance.SV.Rules
+                     , Duckling.Distance.TR.Corpus
+                     , Duckling.Distance.TR.Rules
                      , Duckling.Distance.ZH.Corpus
                      , Duckling.Distance.ZH.Rules
                      , Duckling.Distance.Helpers
@@ -321,6 +328,8 @@ library
                      , Duckling.Duration.KA.Rules
                      , Duckling.Duration.KO.Corpus
                      , Duckling.Duration.KO.Rules
+                     , Duckling.Duration.MN.Corpus
+                     , Duckling.Duration.MN.Rules
                      , Duckling.Duration.NB.Corpus
                      , Duckling.Duration.NB.Rules
                      , Duckling.Duration.NL.Corpus
@@ -328,17 +337,17 @@ library
                      , Duckling.Duration.PL.Corpus
                      , Duckling.Duration.PL.Rules
                      , Duckling.Duration.PT.Corpus
-                     , Duckling.Duration.SV.Corpus
-                     , Duckling.Duration.SV.Rules
-                     , Duckling.Duration.ZH.Corpus
                      , Duckling.Duration.RO.Corpus
                      , Duckling.Duration.RO.Rules
                      , Duckling.Duration.RU.Corpus
                      , Duckling.Duration.RU.Rules
+                     , Duckling.Duration.SV.Corpus
+                     , Duckling.Duration.SV.Rules
                      , Duckling.Duration.TR.Corpus
                      , Duckling.Duration.TR.Rules
                      , Duckling.Duration.UK.Corpus
                      , Duckling.Duration.UK.Rules
+                     , Duckling.Duration.ZH.Corpus
                      , Duckling.Duration.Helpers
                      , Duckling.Duration.Rules
                      , Duckling.Duration.Types
@@ -411,6 +420,8 @@ library
                      , Duckling.Numeral.LO.Rules
                      , Duckling.Numeral.ML.Corpus
                      , Duckling.Numeral.ML.Rules
+                     , Duckling.Numeral.MN.Corpus
+                     , Duckling.Numeral.MN.Rules
                      , Duckling.Numeral.MY.Corpus
                      , Duckling.Numeral.MY.Rules
                      , Duckling.Numeral.NB.Corpus
@@ -423,6 +434,8 @@ library
                      , Duckling.Numeral.PL.Rules
                      , Duckling.Numeral.PT.Corpus
                      , Duckling.Numeral.PT.Rules
+                     , Duckling.Numeral.RO.Corpus
+                     , Duckling.Numeral.RO.Rules
                      , Duckling.Numeral.RU.Corpus
                      , Duckling.Numeral.RU.Rules
                      , Duckling.Numeral.SV.Corpus
@@ -437,8 +450,6 @@ library
                      , Duckling.Numeral.VI.Rules
                      , Duckling.Numeral.ZH.Corpus
                      , Duckling.Numeral.ZH.Rules
-                     , Duckling.Numeral.RO.Corpus
-                     , Duckling.Numeral.RO.Rules
                      , Duckling.Numeral.Helpers
                      , Duckling.Numeral.Rules
                      , Duckling.Numeral.Types
@@ -486,6 +497,8 @@ library
                      , Duckling.Ordinal.KO.Rules
                      , Duckling.Ordinal.ML.Corpus
                      , Duckling.Ordinal.ML.Rules
+                     , Duckling.Ordinal.MN.Corpus
+                     , Duckling.Ordinal.MN.Rules
                      , Duckling.Ordinal.NB.Corpus
                      , Duckling.Ordinal.NB.Rules
                      , Duckling.Ordinal.NL.Corpus
@@ -533,6 +546,8 @@ library
                      , Duckling.Quantity.KM.Rules
                      , Duckling.Quantity.KO.Corpus
                      , Duckling.Quantity.KO.Rules
+                     , Duckling.Quantity.MN.Corpus
+                     , Duckling.Quantity.MN.Rules
                      , Duckling.Quantity.PT.Corpus
                      , Duckling.Quantity.PT.Rules
                      , Duckling.Quantity.RO.Corpus
@@ -570,6 +585,8 @@ library
                      , Duckling.Temperature.KM.Rules
                      , Duckling.Temperature.KO.Corpus
                      , Duckling.Temperature.KO.Rules
+                     , Duckling.Temperature.MN.Rules
+                     , Duckling.Temperature.MN.Corpus
                      , Duckling.Temperature.PT.Corpus
                      , Duckling.Temperature.PT.Rules
                      , Duckling.Temperature.RO.Corpus
@@ -690,6 +707,7 @@ library
                      , Duckling.TimeGrain.JA.Rules
                      , Duckling.TimeGrain.KA.Rules
                      , Duckling.TimeGrain.KO.Rules
+                     , Duckling.TimeGrain.MN.Rules
                      , Duckling.TimeGrain.NB.Rules
                      , Duckling.TimeGrain.NL.Rules
                      , Duckling.TimeGrain.PL.Rules
@@ -730,6 +748,8 @@ library
                      , Duckling.Volume.KO.Rules
                      , Duckling.Volume.PT.Corpus
                      , Duckling.Volume.PT.Rules
+                     , Duckling.Volume.MN.Corpus
+                     , Duckling.Volume.MN.Rules
                      , Duckling.Volume.NL.Corpus
                      , Duckling.Volume.NL.Rules
                      , Duckling.Volume.RO.Corpus
@@ -800,6 +820,7 @@ test-suite duckling-test
                      , Duckling.AmountOfMoney.ID.Tests
                      , Duckling.AmountOfMoney.KA.Tests
                      , Duckling.AmountOfMoney.KO.Tests
+                     , Duckling.AmountOfMoney.MN.Tests
                      , Duckling.AmountOfMoney.NB.Tests
                      , Duckling.AmountOfMoney.PT.Tests
                      , Duckling.AmountOfMoney.RO.Tests
@@ -820,6 +841,7 @@ test-suite duckling-test
                      , Duckling.Distance.HR.Tests
                      , Duckling.Distance.KM.Tests
                      , Duckling.Distance.KO.Tests
+                     , Duckling.Distance.MN.Tests
                      , Duckling.Distance.NL.Tests
                      , Duckling.Distance.PT.Tests
                      , Duckling.Distance.RO.Tests
@@ -841,6 +863,7 @@ test-suite duckling-test
                      , Duckling.Duration.JA.Tests
                      , Duckling.Duration.KA.Tests
                      , Duckling.Duration.KO.Tests
+                     , Duckling.Duration.MN.Tests
                      , Duckling.Duration.NB.Tests
                      , Duckling.Duration.NL.Tests
                      , Duckling.Duration.PL.Tests
@@ -886,6 +909,7 @@ test-suite duckling-test
                      , Duckling.Numeral.KO.Tests
                      , Duckling.Numeral.LO.Tests
                      , Duckling.Numeral.ML.Tests
+                     , Duckling.Numeral.MN.Tests
                      , Duckling.Numeral.MY.Tests
                      , Duckling.Numeral.NB.Tests
                      , Duckling.Numeral.NE.Tests
@@ -923,6 +947,7 @@ test-suite duckling-test
                      , Duckling.Ordinal.KA.Tests
                      , Duckling.Ordinal.KM.Tests
                      , Duckling.Ordinal.KO.Tests
+                     , Duckling.Ordinal.MN.Tests
                      , Duckling.Ordinal.ML.Tests
                      , Duckling.Ordinal.NB.Tests
                      , Duckling.Ordinal.NL.Tests
@@ -949,6 +974,7 @@ test-suite duckling-test
                      , Duckling.Quantity.HR.Tests
                      , Duckling.Quantity.KM.Tests
                      , Duckling.Quantity.KO.Tests
+                     , Duckling.Quantity.MN.Tests
                      , Duckling.Quantity.PT.Tests
                      , Duckling.Quantity.RO.Tests
                      , Duckling.Quantity.RU.Tests
@@ -965,6 +991,7 @@ test-suite duckling-test
                      , Duckling.Temperature.HR.Tests
                      , Duckling.Temperature.IT.Tests
                      , Duckling.Temperature.JA.Tests
+                     , Duckling.Temperature.MN.Tests
                      , Duckling.Temperature.KM.Tests
                      , Duckling.Temperature.KO.Tests
                      , Duckling.Temperature.PT.Tests
@@ -1013,6 +1040,7 @@ test-suite duckling-test
                      , Duckling.Volume.KM.Tests
                      , Duckling.Volume.KO.Tests
                      , Duckling.Volume.PT.Tests
+                     , Duckling.Volume.MN.Tests
                      , Duckling.Volume.NL.Tests
                      , Duckling.Volume.RO.Tests
                      , Duckling.Volume.RU.Tests

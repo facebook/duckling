@@ -23,8 +23,10 @@ import Duckling.Regex.Types
 import Duckling.Time.Helpers
 import Duckling.Time.Types (TimeData (..))
 import Duckling.Types
+import Duckling.Ordinal.Types (OrdinalData (..))
 import qualified Duckling.Time.Types as TTime
 import qualified Duckling.TimeGrain.Types as TG
+import qualified Duckling.Ordinal.Types as TOrdinal
 
 ruleSHourmintimeofday :: Rule
 ruleSHourmintimeofday = Rule
@@ -86,7 +88,7 @@ rulePassadosNCycle :: Rule
 rulePassadosNCycle = Rule
   { name = "passados n <cycle>"
   , pattern =
-    [ regex "passad(a|o)s?"
+    [ regex "passad(a|o)s?|([úu]ltim[ao](s)?)"
     , Predicate $ isIntegerBetween 2 9999
     , dimension TimeGrain
     ]
@@ -976,11 +978,26 @@ ruleNPassadosCycle = Rule
   { name = "n passados <cycle>"
   , pattern =
     [ Predicate $ isIntegerBetween 2 9999
-    , regex "passad(a|o)s?"
+    , regex "passad(a|o)s?|([úu]ltim[ao](s)?)|(anterior(es)?)"
     , dimension TimeGrain
     ]
   , prod = \tokens -> case tokens of
       (token:_:Token TimeGrain grain:_) -> do
+        v <- getIntValue token
+        tt $ cycleN True grain (- v)
+      _ -> Nothing
+  }
+
+ruleNCyclePassados :: Rule
+ruleNCyclePassados = Rule
+  { name = "n <cycle> passados"
+  , pattern =
+    [ Predicate $ isIntegerBetween 2 9999
+    , dimension TimeGrain
+    , regex "passad(a|o)s?|([úu]ltim[ao](s)?)|(anterior(es)?)"
+    ]
+  , prod = \tokens -> case tokens of
+      (token: Token TimeGrain grain:_) -> do
         v <- getIntValue token
         tt $ cycleN True grain (- v)
       _ -> Nothing
@@ -1234,10 +1251,23 @@ ruleCyclePassado = Rule
   { name = "<cycle> passado"
   , pattern =
     [ dimension TimeGrain
-    , regex "passad(a|o)s?"
+    , regex "(passad[ao](s)?)|(anterior(es)?)"
     ]
   , prod = \tokens -> case tokens of
       (Token TimeGrain grain:_) ->
+        tt . cycleNth grain $ - 1
+      _ -> Nothing
+  }
+
+rulePassadoCycle :: Rule
+rulePassadoCycle = Rule
+  { name = "passado <cycle>"
+  , pattern =
+    [ regex "(passad[ao](s)?)|([úu]ltim[ao](s)?)|(anterior(es)?)"
+    , dimension TimeGrain
+    ]
+  , prod = \tokens -> case tokens of
+      (_:Token TimeGrain grain:_) ->
         tt . cycleNth grain $ - 1
       _ -> Nothing
   }
@@ -1348,6 +1378,100 @@ ruleTimezone = Rule
       _ -> Nothing
   }
 
+ruleCycleOrdinalOfTime :: Rule
+ruleCycleOrdinalOfTime = Rule
+    { name = "<ordinal> <cycle> de <time>"
+    , pattern =
+      [ dimension Ordinal
+      , dimension TimeGrain
+      , regex "de|em"
+      , dimension Time
+      ]
+    , prod = \tokens -> case tokens of
+        (token:Token TimeGrain grain:_:Token Time td:_) -> do
+          n <- getIntValue token
+          tt $ cycleNthAfter True grain (n - 1) td
+        _ -> Nothing
+    }
+
+ruleCycleTheOrdinalOfTime :: Rule
+ruleCycleTheOrdinalOfTime = Rule
+    { name = "o <ordinal> <cycle> de <time>"
+    , pattern =
+      [ regex "o|a"
+      , dimension Ordinal
+      , dimension TimeGrain
+      , regex "de|em"
+      , dimension Time
+      ]
+    , prod = \tokens -> case tokens of
+        (_:token:Token TimeGrain grain:_:Token Time td:_) -> do
+          n <- getIntValue token
+          tt $ cycleNthAfter True grain (n - 1) td
+        _ -> Nothing
+    }
+
+ruleCycleOrdinalTrimestre :: Rule
+ruleCycleOrdinalTrimestre = Rule
+  { name = "<ordinal> trimestre"
+  , pattern =
+    [ dimension Ordinal
+    , Predicate $ isGrain TG.Quarter
+    ]
+  , prod = \tokens -> case tokens of
+      (token:_) -> do
+        n <- getIntValue token
+        tt . cycleNthAfter True TG.Quarter (n - 1) $
+          cycleNth TG.Year 0
+      _ -> Nothing
+  }
+
+ruleCycleTheOrdinalTrimestre :: Rule
+ruleCycleTheOrdinalTrimestre = Rule
+  { name = "o <ordinal> trimestre"
+  , pattern =
+    [ regex "o|a"
+    , dimension Ordinal
+    , Predicate $ isGrain TG.Quarter
+    ]
+  , prod = \tokens -> case tokens of
+      (_:token:_) -> do
+        n <- getIntValue token
+        tt . cycleNthAfter True TG.Quarter (n - 1) $
+          cycleNth TG.Year 0
+      _ -> Nothing
+  }
+
+ruleCycleOrdinalTrimestreYear :: Rule
+ruleCycleOrdinalTrimestreYear = Rule
+  { name = "<ordinal> trimestre <year>"
+  , pattern =
+    [ dimension Ordinal
+    , Predicate $ isGrain TG.Quarter
+    , dimension Time
+    ]
+  , prod = \tokens -> case tokens of
+      (token:_:Token Time td:_) -> do
+        n <- getIntValue token
+        tt $ cycleNthAfter False TG.Quarter (n - 1) td
+      _ -> Nothing
+  }
+
+ruleLastCycleOfTime :: Rule
+ruleLastCycleOfTime = Rule
+    { name = "último <cycle> de <time>"
+    , pattern =
+      [ regex "([úu]ltim[ao](s)?)"
+      , dimension TimeGrain
+      , regex "de|em"
+      , dimension Time
+      ]
+    , prod = \tokens -> case tokens of
+        (_:Token TimeGrain grain:_:Token Time td:_) ->
+          tt $ cycleLastOf grain td
+        _ -> Nothing
+    }
+
 daysOfWeek :: [(Text, String)]
 daysOfWeek =
   [ ( "Segunda-feira", "segunda((\\s|\\-)feira)?|seg\\.?" )
@@ -1451,8 +1575,10 @@ rules =
   , ruleNow
   , ruleCycleAntesDeTime
   , ruleCyclePassado
+  , rulePassadoCycle
   , rulePartofdayDessaSemana
   , rulePassadosNCycle
+  , ruleNCyclePassados
   , ruleProclamaoDaRepblica
   , ruleProximasNCycle
   , ruleRightNow
@@ -1485,6 +1611,13 @@ rules =
   , ruleYesterday
   , ruleYyyymmdd
   , ruleTimezone
+  , ruleCycleOrdinalOfTime
+  , ruleCycleTheOrdinalOfTime
+  , ruleCycleOrdinalTrimestre
+  , ruleCycleTheOrdinalTrimestre
+  , ruleCycleOrdinalTrimestreYear
+  , ruleLastCycleOfTime
+  , ruleLastCycleOfTime
   ]
   ++ ruleMonths
   ++ ruleDaysOfWeek

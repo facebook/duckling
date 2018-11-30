@@ -225,6 +225,19 @@ ruleEsteCycle = Rule
       _ -> Nothing
   }
 
+ruleCycleActual :: Rule
+ruleCycleActual = Rule
+  { name = "<cycle> actual"
+  , pattern =
+    [ dimension TimeGrain
+    , regex "a(c)?tual"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token TimeGrain grain:_) ->
+        tt $ cycleNth grain 0
+      _ -> Nothing
+  }
+
 ruleSHourminTimeofday :: Rule
 ruleSHourminTimeofday = Rule
   { name = "às <hour-min> <time-of-day>"
@@ -1403,7 +1416,7 @@ ruleCycleOrdinalTime = Rule
       , dimension Time
       ]
     , prod = \tokens -> case tokens of
-        (token:Token TimeGrain grain:_:Token Time td:_) -> do
+        (token:Token TimeGrain grain: Token Time td:_) -> do
           n <- getIntValue token
           tt $ cycleNthAfter True grain (n - 1) td
         _ -> Nothing
@@ -1496,7 +1509,7 @@ ruleLastCycleTime = Rule
       , dimension Time
       ]
     , prod = \tokens -> case tokens of
-        (_:Token TimeGrain grain:_:Token Time td:_) ->
+        (_:Token TimeGrain grain: Token Time td:_) ->
           tt $ cycleLastOf grain td
         _ -> Nothing
     }
@@ -1608,7 +1621,7 @@ ruleOrdinalCycleOfYearOrdinalCycleOfYear = Rule
       , dimension Time
       ]
     , prod = \tokens -> case tokens of
-        (token1:_:Token TimeGrain grain1:_:Token Time td1:_:token2:_:Token TimeGrain grain2:_:Token Time td2:_ ) -> do
+        (token1:Token TimeGrain grain1:_:Token Time td1:_:token2:Token TimeGrain grain2:_:Token Time td2:_) -> do
           n1 <- getIntValue token1
           n2 <- getIntValue token2
           Token Time <$> interval TTime.Closed ( cycleNthAfter False grain1 (n1 - 1) td1 ) ( cycleNthAfter  False grain2 (n2 - 1) td2 )
@@ -1617,6 +1630,26 @@ ruleOrdinalCycleOfYearOrdinalCycleOfYear = Rule
 
 ruleOrdinalCycleYearOrdinalCycleYear :: Rule
 ruleOrdinalCycleYearOrdinalCycleYear = Rule
+    { name = "<ordinal> <cycle> <year> - <ordinal> <cycle> <year>"
+    , pattern =
+      [ dimension Ordinal
+      , dimension TimeGrain
+      , dimension Time
+      , regex "\\-|até|a"
+      , dimension Ordinal
+      , dimension TimeGrain
+      , dimension Time
+      ]
+    , prod = \tokens -> case tokens of
+        (token1:Token TimeGrain grain1: Token Time td1:_:token2:Token TimeGrain grain2: Token Time td2:_) -> do
+          n1 <- getIntValue token1
+          n2 <- getIntValue token2
+          Token Time <$> interval TTime.Closed ( cycleNthAfter False grain1 (n1 - 1) td1 ) ( cycleNthAfter  False grain2 (n2 - 1) td2 )
+        _ -> Nothing
+    }
+
+ruleOrdinalQuarterYearOrdinalQuarterYear :: Rule
+ruleOrdinalQuarterYearOrdinalQuarterYear = Rule
     { name = "<ordinal> trimestre <year> - <ordinal> trimestre <year>"
     , pattern =
       [ dimension Ordinal
@@ -1696,6 +1729,7 @@ rules =
   , ruleEntreDatetimeEDatetimeInterval
   , ruleEntreDdEtDdMonthinterval
   , ruleEsteCycle
+  , ruleCycleActual
   , ruleEvening
   , ruleFazemDuration
   , ruleFinados
@@ -1789,6 +1823,7 @@ rules =
   , ruleIntervalDDDDMonth
   , ruleOrdinalCycleOfYearOrdinalCycleOfYear
   , ruleOrdinalCycleYearOrdinalCycleYear
+  , ruleOrdinalQuarterYearOrdinalQuarterYear
   ]
   ++ ruleMonths
   ++ ruleDaysOfWeek

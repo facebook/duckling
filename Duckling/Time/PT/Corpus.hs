@@ -496,9 +496,12 @@ allExamples = concat
              ]
   , examples (datetime (2013, 1, 1, 0, 0, 0) Quarter)
              [ "este trimestre"
+             , "trimestre actual"
+             , "trimestre atual"
              ]
   , examples (datetime (2013, 1, 1, 0, 0, 0) Month)
              [ "primeiro mês de 2013"
+             , "primeiro mês 2013"
              ]
   , examples (datetime (2013, 4, 1, 0, 0, 0) Quarter)
              [ "próximo trimestre"
@@ -521,11 +524,11 @@ allExamples = concat
   , examples (datetime (2013, 12, 1, 0, 0, 0) Month)
              [ "décimo segundo mês de 2013"
              , "último mês de 2013"
-             --, "último mês 2013"
+             , "último mês 2013"
              ]
   , examples (datetime (2015, 10, 1, 0, 0, 0) Quarter)
              [ "último trimestre de 2015"
-             --, "último trimestre 2015"
+             , "último trimestre 2015"
              ]
   , examples (datetimeInterval ((2013, 7, 13, 0, 0, 0), (2013, 7, 16, 0, 0, 0)) Day)
              [ "desde 13 a 15 de Julho"
@@ -554,7 +557,7 @@ allExamples = concat
              , "primeiro trimestre 2017 até terceiro trimestre 2017"
              , "entre primeiro trimestre 2017 e terceiro trimestre 2017"
              ]
-  , examples (datetimeInterval ((2017, 3, 1, 0, 0, 0), (2017, 9, 1, 0, 0, 0)) Month)
+  , examples (datetimeInterval ((2017, 3, 1, 0, 0, 0), (2017, 10, 1, 0, 0, 0)) Month)
               [ "de terceiro mês de 2017 até nono mês de 2017"
               , "desde terceiro mês de 2017 até nono mês de 2017"
               , "a partir do terceiro mês de 2017 até nono mês de 2017"

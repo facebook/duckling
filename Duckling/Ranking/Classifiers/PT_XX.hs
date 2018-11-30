@@ -765,20 +765,6 @@ classifiers
                    koData =
                      ClassData{prior = -infinity, unseen = -0.6931471805599453,
                                likelihoods = HashMap.fromList [], n = 0}}),
-       ("<ordinal> trimestre <year> - <ordinal> trimestre <year>",
-        Classifier{okData =
-                     ClassData{prior = 0.0, unseen = -3.0910424533583156,
-                               likelihoods =
-                                 HashMap.fromList
-                                   [("ordinals (primeiro..10)trimestre (grain)yearordinals (primeiro..10)trimestre (grain)year",
-                                     -1.6582280766035324),
-                                    ("ordinals (primeiro..10)trimestre (grain)de <year>ordinals (primeiro..10)trimestre (grain)de <year>",
-                                     -1.0986122886681098),
-                                    ("quarteryearquarteryear", -0.7419373447293773)],
-                               n = 9},
-                   koData =
-                     ClassData{prior = -infinity, unseen = -1.3862943611198906,
-                               likelihoods = HashMap.fromList [], n = 0}}),
        ("two time tokens separated by \",\"2",
         Classifier{okData =
                      ClassData{prior = -1.0360919316867756,

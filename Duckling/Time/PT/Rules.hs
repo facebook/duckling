@@ -1648,26 +1648,6 @@ ruleOrdinalCycleYearOrdinalCycleYear = Rule
         _ -> Nothing
     }
 
-ruleOrdinalQuarterYearOrdinalQuarterYear :: Rule
-ruleOrdinalQuarterYearOrdinalQuarterYear = Rule
-    { name = "<ordinal> trimestre <year> - <ordinal> trimestre <year>"
-    , pattern =
-      [ dimension Ordinal
-      , Predicate $ isGrain TG.Quarter
-      , dimension Time
-      , regex "\\-|até|a"
-      , dimension Ordinal
-      , Predicate $ isGrain TG.Quarter
-      , dimension Time
-      ]
-    , prod = \tokens -> case tokens of
-        (token1:_:Token Time td1:_:token2:_:Token Time td2:_ ) -> do
-          n1 <- getIntValue token1
-          n2 <- getIntValue token2
-          Token Time <$> interval TTime.Closed ( cycleNthAfter False TG.Quarter (n1 - 1) td1 ) ( cycleNthAfter  False TG.Quarter (n2 - 1) td2 )
-        _ -> Nothing
-    }
-
 
 daysOfWeek :: [(Text, String)]
 daysOfWeek =
@@ -1823,7 +1803,6 @@ rules =
   , ruleIntervalDDDDMonth
   , ruleOrdinalCycleOfYearOrdinalCycleOfYear
   , ruleOrdinalCycleYearOrdinalCycleYear
-  , ruleOrdinalQuarterYearOrdinalQuarterYear
   ]
   ++ ruleMonths
   ++ ruleDaysOfWeek

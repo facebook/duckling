@@ -1509,6 +1509,9 @@ allExamples = concat
   , examples (datetimeHoliday (2018, 8, 26, 0, 0, 0) Day "Raksha Bandhan")
              [ "rakhi 2018"
              ]
+  , examples (datetimeHoliday (2018, 2, 10, 0, 0, 0) Day "Dayananda Saraswati Jayanti")
+             [ "saraswati jayanti 2018"
+             ]
   , examples (datetimeHoliday (2018, 1, 14, 0, 0, 0) Day "Thai Pongal")
              [ "pongal 2018"
              , "makara sankranthi 2018"

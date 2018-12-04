@@ -12,9 +12,7 @@
 {-# LANGUAGE NoRebindableSyntax #-}
 {-# LANGUAGE OverloadedStrings #-}
 
-module Duckling.Time.EN.Rules
-  ( rules
-  ) where
+module Duckling.Time.EN.Rules where
 
 import Data.Maybe
 import Data.Text (Text)

@@ -116,7 +116,7 @@ ruleDatetimeDatetimeInterval = Rule
   { name = "<datetime> - <datetime> (interval)"
   , pattern =
     [ Predicate isNotLatent
-    , regex "\\-|até|a"
+    , regex "\\-|até (ao|a)|até|(ao|a)"
     , Predicate isNotLatent
     ]
   , prod = \tokens -> case tokens of
@@ -853,7 +853,7 @@ ruleDeDatetimeDatetimeInterval = Rule
   , pattern =
     [ regex "de?"
     , dimension Time
-    , regex "\\-|até|a"
+    , regex "\\-|até (ao|a)|até|(ao|a)"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -1221,9 +1221,9 @@ ruleEntreDatetimeEDatetimeInterval :: Rule
 ruleEntreDatetimeEDatetimeInterval = Rule
   { name = "entre <datetime> e <datetime> (interval)"
   , pattern =
-    [ regex "entre|desde|((a partir )?d(e|o))"
+    [ regex "entre( o| a)?|desde|((a partir )?d(e|o))"
     , dimension Time
-    , regex "e|\\-|até|a"
+    , regex "e|\\-|até (ao|a)|até|(ao|a)"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -1397,7 +1397,7 @@ ruleCycleOrdinalOfTime = Rule
     , pattern =
       [ dimension Ordinal
       , dimension TimeGrain
-      , regex "de|em"
+      , regex "d[eo]|em"
       , dimension Time
       ]
     , prod = \tokens -> case tokens of
@@ -1429,7 +1429,7 @@ ruleCycleTheOrdinalOfTime = Rule
       [ regex "o|a"
       , dimension Ordinal
       , dimension TimeGrain
-      , regex "de|em"
+      , regex "d[eo]|em"
       , dimension Time
       ]
     , prod = \tokens -> case tokens of
@@ -1491,7 +1491,7 @@ ruleLastCycleOfTime = Rule
     , pattern =
       [ regex "([úu]ltim[ao](s)?)"
       , dimension TimeGrain
-      , regex "de|em"
+      , regex "d[eo]|em"
       , dimension Time
       ]
     , prod = \tokens -> case tokens of
@@ -1518,11 +1518,11 @@ ruleIntervalFromMonthDDDDOf :: Rule
 ruleIntervalFromMonthDDDDOf = Rule
   { name = "desde <month> dd-dd de (interval)"
   , pattern =
-    [ regex "desde|a partir de"
+    [ regex "desde|a partir d[eo]"
     , Predicate isDOMValue
-    , regex "até|a"
+    , regex "até (ao|a)|até|(ao|a)"
     , Predicate isDOMValue
-    , regex "de|em"
+    , regex "d[eo]|em"
     , Predicate isAMonth
     ]
   , prod = \tokens -> case tokens of
@@ -1546,7 +1546,7 @@ ruleIntervalDDDDMonthOf = Rule
       [ Predicate isDOMValue
       , regex "\\-|até|a"
       , Predicate isDOMValue
-      , regex "de|em"
+      , regex "d[eo]|em"
       , Predicate isAMonth
       ]
     , prod = \tokens -> case tokens of
@@ -1566,9 +1566,9 @@ ruleIntervalFromMonthDDDD :: Rule
 ruleIntervalFromMonthDDDD = Rule
   { name = "desde <month> dd-dd (interval)"
   , pattern =
-    [ regex "desde|a partir de"
+    [ regex "desde|a partir d[eo]"
     , Predicate isDOMValue
-    , regex "até|a"
+    , regex "até (ao|a)|até|(ao|a)"
     , Predicate isDOMValue
     , Predicate isAMonth
     ]
@@ -1612,12 +1612,12 @@ ruleOrdinalCycleOfYearOrdinalCycleOfYear = Rule
     , pattern =
       [ dimension Ordinal
       , dimension TimeGrain
-      , regex "de|em"
+      , regex "d[eo]|em"
       , dimension Time
-      , regex "\\-|até|a"
+      , regex "\\-|até (ao|a)|até|(ao|a)"
       , dimension Ordinal
       , dimension TimeGrain
-      , regex "de|em"
+      , regex "d[eo]|em"
       , dimension Time
       ]
     , prod = \tokens -> case tokens of
@@ -1635,7 +1635,7 @@ ruleOrdinalCycleYearOrdinalCycleYear = Rule
       [ dimension Ordinal
       , dimension TimeGrain
       , dimension Time
-      , regex "\\-|até|a"
+      , regex "\\-|até (ao|a)|até|(ao|a)"
       , dimension Ordinal
       , dimension TimeGrain
       , dimension Time

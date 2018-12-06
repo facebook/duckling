@@ -52,6 +52,7 @@ allExamples = concat
              [ "dziś"
              , "dzis"
              , "dzisiaj"
+             , "w dniu dzisiejszym"
              , "obecnego dnia"
              , "tego dnia"
              ]
@@ -60,6 +61,7 @@ allExamples = concat
              ]
   , examples (datetime (2013, 2, 13, 0, 0, 0) Day)
              [ "jutro"
+             , "w dniu jutrzejszym"
              ]
   , examples (datetime (2013, 2, 14, 0, 0, 0) Day)
              [ "pojutrze"
@@ -744,6 +746,10 @@ allExamples = concat
              ]
   , examples (datetimeInterval ((2013, 2, 12, 11, 30, 0), (2013, 2, 12, 13, 31, 0)) Minute)
              [ "11:30-1:30"
+             ]
+  , examples (datetimeInterval ((2013, 2, 12, 18, 0, 0), (2013, 2, 13, 0, 0, 0)) Hour)
+             [ "dziś wieczorem"
+             , "wieczorem"
              ]
   , examples (datetimeInterval ((2013, 2, 12, 4, 30, 0), (2013, 2, 26, 0, 0, 0)) Second)
              [ "w ciągu 2 tygodni"

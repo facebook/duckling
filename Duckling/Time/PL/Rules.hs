@@ -397,7 +397,7 @@ ruleToday :: Rule
 ruleToday = Rule
   { name = "today"
   , pattern =
-    [ regex "dzisiejszy|dzisiaj|dziś|dzis|w ten dzień|w ten dzien|w obecny dzień|w obecny dzien|obecnego dnia"
+    [ regex "dzisiejszy|dzisiaj|dziś|dzis|w dniu dzisiejszym|w ten dzień|w ten dzien|w obecny dzień|w obecny dzien|obecnego dnia"
     ]
   , prod = \_ -> tt today
   }
@@ -1566,7 +1566,7 @@ ruleTomorrow :: Rule
 ruleTomorrow = Rule
   { name = "tomorrow"
   , pattern =
-    [ regex "jutr(o|a|u|em|ze(jszy|jsza)?)|jtr|jutr"
+    [ regex "jutr(o|a|u|em|ze(jszy|jsza)?)|jtr|jutr|w dniu jutrzejszym"
     ]
   , prod = \_ -> tt $ cycleNth TG.Day 1
   }

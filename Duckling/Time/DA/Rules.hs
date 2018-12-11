@@ -799,7 +799,7 @@ ruleExactlyTimeofday :: Rule
 ruleExactlyTimeofday = Rule
   { name = "exactly <time-of-day>"
   , pattern =
-    [ regex "pr(æ)cis( kl\\.| klokken)?"
+    [ regex "pr(æ)cis( klokken| kl\\.?)?"
     , Predicate isATimeOfDay
     ]
   , prod = \tokens -> case tokens of
@@ -983,7 +983,7 @@ ruleAboutTimeofday :: Rule
 ruleAboutTimeofday = Rule
   { name = "about <time-of-day>"
   , pattern =
-    [ regex "(omkring|cirka|ca\\.)( kl\\.| klokken)?"
+    [ regex "(omkring|cirka|ca\\.)( klokken| kl\\.?)?"
     , Predicate isATimeOfDay
     ]
   , prod = \tokens -> case tokens of
@@ -1007,7 +1007,7 @@ ruleAtTimeofday :: Rule
 ruleAtTimeofday = Rule
   { name = "at <time-of-day>"
   , pattern =
-    [ regex "klokken|kl\\.|@"
+    [ regex "klokken|kl\\.?|@"
     , Predicate isATimeOfDay
     ]
   , prod = \tokens -> case tokens of

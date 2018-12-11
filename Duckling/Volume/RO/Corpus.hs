@@ -25,30 +25,30 @@ corpus = (testContext {locale = makeLocale RO Nothing}, testOptions, allExamples
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (VolumeValue Millilitre 250)
+  [ examples (simple Millilitre 250)
              [ "250 mililitri"
              , "250 de mililitri"
              , "250ml"
              , "250 ml"
              , "250 de ml"
              ]
-  , examples (VolumeValue Litre 2)
+  , examples (simple Litre 2)
              [ "2 litri"
              , "2 l"
              , "2l"
              ]
-  , examples (VolumeValue Gallon 3)
+  , examples (simple Gallon 3)
              [ "3 galoane"
              , "3 gal"
              ]
-  , examples (VolumeValue Hectolitre 3)
+  , examples (simple Hectolitre 3)
              [ "3 hectolitri"
              ]
-  , examples (VolumeValue Litre 0.5)
+  , examples (simple Litre 0.5)
              [ "jumatate de litru"
              , "jumătate de litru"
              ]
-  , examples (VolumeValue Gallon 20)
+  , examples (simple Gallon 20)
              [ "douazeci de galoane"
              ]
   ]

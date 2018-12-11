@@ -7,22 +7,24 @@
 
 
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Quantity.FR.Rules
-  ( rules ) where
+  ( rules
+  ) where
 
-import qualified Data.Text as Text
-import Prelude
 import Data.String
+import Prelude
+import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
 import Duckling.Quantity.Helpers
-import qualified Duckling.Quantity.Types as TQuantity
 import Duckling.Numeral.Types (NumeralData (..))
-import qualified Duckling.Numeral.Types as TNumeral
 import Duckling.Regex.Types
 import Duckling.Types
+import qualified Duckling.Numeral.Types as TNumeral
+import qualified Duckling.Quantity.Types as TQuantity
 
 ruleNumeralUnits :: Rule
 ruleNumeralUnits = Rule
@@ -31,7 +33,7 @@ ruleNumeralUnits = Rule
     [ dimension Numeral
     , regex "(tasses?|cuill?(e|è)res? (a|à) soupe?)"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Numeral NumeralData {TNumeral.value = v}:
        Token RegexMatch (GroupMatch (match:_)):
        _) -> case Text.toLower match of
@@ -48,7 +50,7 @@ ruleQuantityOfProduct = Rule
     [ dimension Quantity
     , regex "de (caf(e|é)|sucre)"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Quantity qd:
        Token RegexMatch (GroupMatch (match:_)):
        _) -> Just . Token Quantity $ withProduct match qd

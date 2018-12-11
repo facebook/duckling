@@ -7,28 +7,18 @@
 
 module Duckling.Time.Computed
   ( chanukah, chineseNewYear, dhanteras, easterSunday, eidalAdha, eidalFitr
-  , globalYouthServiceDay, lagBaOmer, mawlid, muharram, navaratri
-  , orthodoxEaster, passover, rajab, rakshaBandhan, ramadan, roshHashana
-  , thaiPongal, thiruOnam, tishaBAv, tuBishvat, vasantPanchami, vesak
-  , yomHaatzmaut, vaisakhi, purim
+  , globalYouthServiceDay, guruGobindSinghJayanti, lagBaOmer, mawlid, muharram
+  , navaratri, orthodoxEaster, passover, rajab, rakshaBandhan, ramadan
+  , roshHashana, thaiPongal, thiruOnam, tishaBAv, tuBishvat, vasantPanchami
+  , vesak, yomHaatzmaut, vaisakhi, purim, saraswatiJayanti
   ) where
 
 import Data.Maybe
 import Prelude
-import qualified Data.Time as Time
 
-import Duckling.Time.Helpers (timeComputed)
+import Duckling.Time.Helpers (timeComputed, toTimeObjectM)
 import Duckling.Time.Types (TimeData(..), TimeObject(..), timedata')
 import qualified Duckling.TimeGrain.Types as TG
-
-toTimeObjectM :: (Integer, Int, Int) -> Maybe TimeObject
-toTimeObjectM (year, month, day) = do
-  day <- Time.fromGregorianValid year month day
-  return TimeObject
-    { start = Time.UTCTime day 0
-    , grain = TG.Day
-    , end = Nothing
-    }
 
 computedDays :: [TimeObject] -> TimeData
 computedDays xs = timedata'
@@ -1081,6 +1071,28 @@ eidalFitr' = mapMaybe toTimeObjectM
   , (2027, 3, 9)
   , (2028, 2, 26)
   , (2029, 2, 14)
+  , (2030, 2, 05)
+  , (2031, 1, 25)
+  , (2032, 1, 14)
+  , (2033, 1, 3)
+  , (2033, 12, 23)
+  , (2034, 12, 12)
+  , (2035, 12, 2)
+  , (2036, 11, 20)
+  , (2037, 11, 10)
+  , (2038, 10, 30)
+  , (2039, 10, 19)
+  , (2040, 10, 8)
+  , (2041, 9, 27)
+  , (2042, 9, 16)
+  , (2043, 9, 6)
+  , (2044, 8, 25)
+  , (2045, 8, 15)
+  , (2046, 8, 4)
+  , (2047, 7, 24)
+  , (2048, 7, 13)
+  , (2049, 7, 2)
+  , (2050, 6, 21)
   ]
 
 rajab :: TimeData
@@ -1195,6 +1207,28 @@ ramadan' = mapMaybe toTimeObjectM
   , (2027, 2, 8)
   , (2028, 1, 28)
   , (2029, 1, 16)
+  , (2030, 1, 6)
+  , (2030, 12, 26)
+  , (2031, 12, 15)
+  , (2032, 12, 4)
+  , (2033, 11, 23)
+  , (2034, 11, 12)
+  , (2035, 11, 2)
+  , (2036, 10, 21)
+  , (2037, 10, 11)
+  , (2038, 9, 30)
+  , (2039, 9, 19)
+  , (2040, 9, 8)
+  , (2041, 8, 28)
+  , (2042, 8, 17)
+  , (2043, 8, 7)
+  , (2044, 7, 26)
+  , (2045, 7, 16)
+  , (2046, 7, 5)
+  , (2047, 6, 24)
+  , (2048, 6, 13)
+  , (2049, 6, 2)
+  , (2050, 5, 22)
   ]
 
 mawlid :: TimeData
@@ -1585,6 +1619,44 @@ globalYouthServiceDay' = mapMaybe toTimeObjectM
   , (2018, 4, 20)
   ]
 
+guruGobindSinghJayanti :: TimeData
+guruGobindSinghJayanti = computedDays guruGobindSinghJayanti'
+
+guruGobindSinghJayanti' :: [TimeObject]
+guruGobindSinghJayanti' = mapMaybe toTimeObjectM
+  [ (2000, 1, 14)
+  , (2001, 1, 2)
+  , (2002, 1, 21)
+  , (2003, 12, 29)
+  , (2004, 1, 5)
+  , (2005, 1, 16)
+  , (2006, 12, 27)
+  , (2007, 1, 5)
+  , (2008, 1, 14)
+  , (2009, 12, 23)
+  , (2010, 1, 5)
+  , (2011, 1, 5)
+  , (2012, 1, 5)
+  , (2013, 1, 18)
+  , (2014, 1, 7)
+  , (2015, 1, 5)
+  , (2016, 1, 16)
+  , (2017, 12, 25)
+  , (2018, 1, 5)
+  , (2019, 1, 13)
+  , (2020, 2, 1)
+  , (2021, 1, 19)
+  , (2022, 1, 8)
+  , (2023, 1, 5)
+  , (2024, 1, 17)
+  , (2025, 1, 5)
+  , (2026, 1, 5)
+  , (2027, 1, 14)
+  , (2028, 1, 3)
+  , (2029, 1, 5)
+  , (2030, 1, 10)
+  ]
+
 vesak :: TimeData
 vesak = computedDays vesak'
 
@@ -1767,4 +1839,42 @@ purim' = mapMaybe toTimeObjectM
   , (2048, 2, 27)
   , (2049, 3, 17)
   , (2050, 3, 7)
+  ]
+
+saraswatiJayanti :: TimeData
+saraswatiJayanti = computedDays saraswatiJayanti'
+
+saraswatiJayanti' :: [TimeObject]
+saraswatiJayanti' = mapMaybe toTimeObjectM
+  [ (2000, 2, 29)
+  , (2001, 2, 17)
+  , (2002, 3, 8)
+  , (2003, 2, 26)
+  , (2004, 2, 15)
+  , (2005, 3, 5)
+  , (2006, 2, 23)
+  , (2007, 2, 12)
+  , (2008, 3, 2)
+  , (2009, 2, 19)
+  , (2010, 2, 8)
+  , (2011, 2, 27)
+  , (2012, 2, 16)
+  , (2013, 3, 7)
+  , (2014, 2, 24)
+  , (2015, 2, 14)
+  , (2016, 3, 4)
+  , (2017, 2, 21)
+  , (2018, 2, 10)
+  , (2019, 2, 28)
+  , (2020, 2, 18)
+  , (2021, 3, 8)
+  , (2022, 2, 26)
+  , (2023, 2, 15)
+  , (2024, 3, 5)
+  , (2025, 2, 23)
+  , (2026, 2, 12)
+  , (2027, 3 , 2)
+  , (2028, 2, 19)
+  , (2029, 2, 8)
+  , (2030, 2, 27)
   ]

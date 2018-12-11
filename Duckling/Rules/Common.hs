@@ -16,6 +16,7 @@ module Duckling.Rules.Common
 import Duckling.Dimensions.Types
 import Duckling.Types
 import qualified Duckling.AmountOfMoney.Rules as AmountOfMoney
+import qualified Duckling.CreditCardNumber.Rules as CreditCardNumber
 import qualified Duckling.Distance.Rules as Distance
 import qualified Duckling.Duration.Rules as Duration
 import qualified Duckling.Email.Rules as Email
@@ -27,6 +28,7 @@ import qualified Duckling.Volume.Rules as Volume
 
 rules :: Some Dimension -> [Rule]
 rules (This AmountOfMoney) = AmountOfMoney.rules
+rules (This CreditCardNumber) = CreditCardNumber.rules
 rules (This Distance) = Distance.rules
 rules (This Duration) = Duration.rules
 rules (This Email) = Email.rules

@@ -21,7 +21,9 @@ import qualified Duckling.Volume.FR.Tests as FR
 import qualified Duckling.Volume.GA.Tests as GA
 import qualified Duckling.Volume.HR.Tests as HR
 import qualified Duckling.Volume.IT.Tests as IT
+import qualified Duckling.Volume.KM.Tests as KM
 import qualified Duckling.Volume.KO.Tests as KO
+import qualified Duckling.Volume.MN.Tests as MN
 import qualified Duckling.Volume.NL.Tests as NL
 import qualified Duckling.Volume.PT.Tests as PT
 import qualified Duckling.Volume.RO.Tests as RO
@@ -37,7 +39,9 @@ tests = testGroup "Volume Tests"
   , GA.tests
   , HR.tests
   , IT.tests
+  , KM.tests
   , KO.tests
+  , MN.tests
   , NL.tests
   , PT.tests
   , RO.tests

@@ -24,41 +24,41 @@ corpus = (testContext {locale = makeLocale AR Nothing}, testOptions, allExamples
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (VolumeValue Millilitre 250)
+  [ examples (simple Millilitre 250)
              [ "250 مل"
              , "250مل"
              , "250 ميليلتر"
              , "250 ملي لتر"
              ]
-  , examples (VolumeValue Litre 2)
+  , examples (simple Litre 2)
              [ "2 لتر"
              , "لتران"
              , "لترين"
              ]
-  , examples (VolumeValue Gallon 3)
+  , examples (simple Gallon 3)
              [ "3 غالون"
              , "3 جالون"
              , "3 غالونات"
              , "3 جالونات"
              ]
-  , examples (VolumeValue Hectolitre 3)
+  , examples (simple Hectolitre 3)
              [ "3 هكتوليتر"
              , "3 هكتو ليتر"
              ]
-  , examples (VolumeValue Litre 0.5)
+  , examples (simple Litre 0.5)
              [ "نصف لتر"
              , "نص لتر"
              ]
-  , examples (VolumeValue Litre 0.25)
+  , examples (simple Litre 0.25)
              [ "ربع لتر"
              ]
-  , examples (VolumeValue Litre 1.5)
+  , examples (simple Litre 1.5)
              [ "لتر ونصف"
              , "لتر و نص"
              , "لتر و نصف"
              , "لتر ونص"
              ]
-  , examples (VolumeValue Litre 1.25)
+  , examples (simple Litre 1.25)
              [ "لتر وربع"
              , "لتر و ربع"
              ]

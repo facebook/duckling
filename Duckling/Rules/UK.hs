@@ -18,8 +18,11 @@ module Duckling.Rules.UK
 import Duckling.Dimensions.Types
 import Duckling.Locale
 import Duckling.Types
+import qualified Duckling.Duration.UK.Rules as Duration
 import qualified Duckling.Numeral.UK.Rules as Numeral
 import qualified Duckling.Ordinal.UK.Rules as Ordinal
+import qualified Duckling.Time.UK.Rules as Time
+import qualified Duckling.TimeGrain.UK.Rules as TimeGrain
 
 defaultRules :: Some Dimension -> [Rule]
 defaultRules = langRules
@@ -30,8 +33,9 @@ localeRules _ _ = []
 
 langRules :: Some Dimension -> [Rule]
 langRules (This AmountOfMoney) = []
+langRules (This CreditCardNumber) = []
 langRules (This Distance) = []
-langRules (This Duration) = []
+langRules (This Duration) = Duration.rules
 langRules (This Email) = []
 langRules (This Numeral) = Numeral.rules
 langRules (This Ordinal) = Ordinal.rules
@@ -39,8 +43,8 @@ langRules (This PhoneNumber) = []
 langRules (This Quantity) = []
 langRules (This RegexMatch) = []
 langRules (This Temperature) = []
-langRules (This Time) = []
-langRules (This TimeGrain) = []
+langRules (This Time) = Time.rules
+langRules (This TimeGrain) = TimeGrain.rules
 langRules (This Url) = []
 langRules (This Volume) = []
 langRules (This (CustomDimension dim)) = dimLangRules UK dim

@@ -12,9 +12,7 @@
 {-# LANGUAGE NoRebindableSyntax #-}
 {-# LANGUAGE OverloadedStrings #-}
 
-module Duckling.Time.EN.Rules
-  ( rules
-  ) where
+module Duckling.Time.EN.Rules where
 
 import Data.Maybe
 import Data.Text (Text)
@@ -42,11 +40,12 @@ ruleIntersect :: Rule
 ruleIntersect = Rule
   { name = "intersect"
   , pattern =
-    [ Predicate isNotLatent
+    [ Predicate $ isGrainFinerThan TG.Year
     , Predicate $ or . sequence [isNotLatent, isGrainOfTime TG.Year]
     ]
   , prod = \tokens -> case tokens of
-      (Token Time td1:Token Time td2:_) ->
+      (Token Time td1:Token Time td2:_)
+        | (not $ TTime.latent td1) || (not $ TTime.latent td2) ->
         Token Time . notLatent <$> intersect td1 td2
       _ -> Nothing
   }
@@ -1096,11 +1095,11 @@ ruleIntervalFromMonthDDDD = Rule
 
 ruleIntervalFromDDDDMonth :: Rule
 ruleIntervalFromDDDDMonth = Rule
-  { name = "from <day-of-month> (ordinal or number) to <day-of-month> (ordinal or number) <named-month> (interval)"
+  { name = "from the <day-of-month> (ordinal or number) to the <day-of-month> (ordinal or number) <named-month> (interval)"
   , pattern =
-    [ regex "from"
+    [ regex "from( the)?"
     , Predicate isDOMValue
-    , regex "\\-|to|th?ru|through|(un)?til(l)?"
+    , regex "\\-|to( the)?|th?ru|through|(un)?til(l)?"
     , Predicate isDOMValue
     , Predicate isAMonth
     ]
@@ -1109,6 +1108,31 @@ ruleIntervalFromDDDDMonth = Rule
        token1:
        _:
        token2:
+       Token Time td:
+       _) -> do
+        dom1 <- intersectDOM td token1
+        dom2 <- intersectDOM td token2
+        Token Time <$> interval TTime.Closed dom1 dom2
+      _ -> Nothing
+  }
+
+ruleIntervalFromDDDDOfMonth :: Rule
+ruleIntervalFromDDDDOfMonth = Rule
+  { name = "from the <day-of-month> (ordinal or number) to the <day-of-month> (ordinal or number) of <named-month> (interval)"
+  , pattern =
+    [ regex "from( the)?"
+    , Predicate isDOMValue
+    , regex "\\-|to( the)?|th?ru|through|(un)?til(l)?"
+    , Predicate isDOMValue
+    , regex "of"
+    , Predicate isAMonth
+    ]
+  , prod = \tokens -> case tokens of
+      (_:
+       token1:
+       _:
+       token2:
+       _:
        Token Time td:
        _) -> do
         dom1 <- intersectDOM td token1
@@ -1566,7 +1590,7 @@ rulePeriodicHolidays = mkRuleHolidays
   , ( "Orthodox New Year", "orthodox new year", monthDay 1 14 )
   , ( "Public Service Day", "public service day", monthDay 6 23 )
   , ( "St. George's Day", "(saint|st\\.?) george'?s day|feast of saint george", monthDay 4 23 )
-  , ( "St Patrick's Day", "st\\.? patrick'?s day", monthDay 3 17 )
+  , ( "St Patrick's Day", "st\\.? (patrick|paddy)'?s day", monthDay 3 17 )
   , ( "St. Stephen's Day", "st\\.? stephen'?s day", monthDay 12 26 )
   , ( "Time of Remembrance and Reconciliation for Those Who Lost Their Lives during the Second World War", "time of remembrance and reconciliation for those who lost their lives during the second world war", monthDay 5 8 )
   , ( "United Nations Day", "united nations day", monthDay 10 24 )
@@ -1709,6 +1733,9 @@ ruleComputedHolidays = mkRuleHolidays
     , cycleNthAfter False TG.Day 3 dhanteras )
   , ( "Good Friday", "(good|great|holy)\\s+fri(day)?"
     , cycleNthAfter False TG.Day (-2) easterSunday )
+  , ( "Guru Gobind Singh Jayanti"
+    , "guru\\s+(gobind|govind)\\s+singh\\s+(birthday|jayanti)"
+    , guruGobindSinghJayanti )
   , ( "Holi", "(rangwali )?holi|dhuleti|dhulandi|phagwah"
     , cycleNthAfter False TG.Day 39 vasantPanchami )
   , ( "Holika Dahan", "holika dahan|kamudu pyre|chhoti holi"
@@ -1762,9 +1789,10 @@ ruleComputedHolidays = mkRuleHolidays
     , cycleNthAfter False TG.Day 49 easterSunday )
   , ( "Purim", "purim", purim )
   , ( "Raksha Bandhan", "raksha(\\s+)?bandhan|rakhi", rakshaBandhan )
+  , ( "Dayananda Saraswati Jayanti","((maharishi|swami) )?(dayananda )?saraswati jayanti", saraswatiJayanti )
   , ( "Shemini Atzeret", "shemini\\s+atzeret"
     , cycleNthAfter False TG.Day 21 roshHashana )
-  , ( "Shrove Tuesday", "pancake (tues)?day|shrove tuesday"
+  , ( "Shrove Tuesday", "pancake (tues)?day|shrove tuesday|mardi gras"
     , cycleNthAfter False TG.Day (-47) easterSunday )
   , ( "Shushan Purim", "shushan\\s+purim", cycleNthAfter False TG.Day 1 purim )
   , ( "Simchat Torah", "simc?hat\\s+torah"
@@ -1846,6 +1874,10 @@ ruleComputedHolidays' = mkRuleHolidays'
           day <- intersectWithReplacement holySaturday tentative alternative
           start <- intersect day $ hourMinute True 20 30
           interval TTime.Closed start $ cycleNthAfter False TG.Minute 60 start )
+  -- Does not account for leap years, so every 365 days.
+  , ( "Parsi New Year", "parsi new year|jamshedi navroz"
+    , predEveryNDaysFrom 365 (2020, 8, 16)
+    )
   ]
 
 ruleCycleThisLastNext :: Rule
@@ -2278,7 +2310,7 @@ ruleTimezone :: Rule
 ruleTimezone = Rule
   { name = "<time> timezone"
   , pattern =
-    [ Predicate $ and . sequence [isNotLatent, isATimeOfDay]
+    [ Predicate $ and . sequence [isNotLatent, isATimeOfDay, hasNoTimezone]
     , regex $ "\\b(" ++ timezoneName ++ ")\\b"
     ]
   , prod = \tokens -> case tokens of
@@ -2292,13 +2324,34 @@ ruleTimezoneBracket :: Rule
 ruleTimezoneBracket = Rule
   { name = "<time> (timezone)"
   , pattern =
-    [ Predicate $ and . sequence [isNotLatent, isATimeOfDay]
+    [ Predicate $ and . sequence [isNotLatent, isATimeOfDay, hasNoTimezone]
     , regex $ "\\((" ++ timezoneName ++ ")\\)"
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:
        Token RegexMatch (GroupMatch (tz:_)):
        _) -> Token Time <$> inTimezone (Text.toUpper tz) td
+      _ -> Nothing
+  }
+
+ruleIntervalDashTimezone :: Rule
+ruleIntervalDashTimezone = Rule
+  { name = "<datetime> - <datetime> (interval) timezone"
+  , pattern =
+    [ Predicate $ and . sequence [isATimeOfDay, hasNoTimezone]
+    , regex "\\-|to|th?ru|through|(un)?til(l)?"
+    , Predicate $ and . sequence [isATimeOfDay, hasNoTimezone]
+    , regex $ "\\b(" ++ timezoneName ++ ")\\b"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Time td1:
+       _:
+       Token Time td2:
+       Token RegexMatch (GroupMatch (tz:_)):
+       _) -> do
+        tdz1 <- inTimezone (Text.toUpper tz) td1
+        tdz2 <- inTimezone (Text.toUpper tz) td2
+        Token Time <$> interval TTime.Closed tdz1 tdz2
       _ -> Nothing
   }
 
@@ -2375,6 +2428,7 @@ rules =
   , rulePrecisionTOD
   , ruleIntervalFromMonthDDDD
   , ruleIntervalFromDDDDMonth
+  , ruleIntervalFromDDDDOfMonth
   , ruleIntervalMonthDDDD
   , ruleIntervalDDDDMonth
   , ruleIntervalDash
@@ -2417,6 +2471,7 @@ rules =
   , ruleInNumeral
   , ruleTimezone
   , ruleTimezoneBracket
+  , ruleIntervalDashTimezone
   , rulePartOfMonth
   , ruleEndOrBeginningOfMonth
   , ruleEndOrBeginningOfYear

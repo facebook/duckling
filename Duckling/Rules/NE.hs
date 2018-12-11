@@ -28,6 +28,7 @@ localeRules _ _ = []
 
 langRules :: Some Dimension -> [Rule]
 langRules (This AmountOfMoney) = []
+langRules (This CreditCardNumber) = []
 langRules (This Distance) = []
 langRules (This Duration) = []
 langRules (This Numeral) = Numeral.rules

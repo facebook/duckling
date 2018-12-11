@@ -7,89 +7,62 @@
 
 
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Volume.GA.Rules
   ( rules ) where
 
-import Prelude
 import Data.String
+import Data.Text (Text)
+import Prelude
 
 import Duckling.Dimensions.Types
 import Duckling.Types
+import Duckling.Regex.Types
 import Duckling.Volume.Helpers
+import Duckling.Numeral.Helpers (isPositive)
 import qualified Duckling.Volume.Types as TVolume
+import qualified Duckling.Numeral.Types as TNumeral
 
-ruleLatentVolMl :: Rule
-ruleLatentVolMl = Rule
-  { name = "<latent vol> ml"
-  , pattern =
-    [ dimension Volume
-    , regex "m(l\\.?|h?illil(í|i)t(ea|i)r)"
-    ]
-  , prod = \tokens -> case tokens of
-      (Token Volume vd:_) ->
-        Just . Token Volume $ withUnit TVolume.Millilitre vd
-      _ -> Nothing
-  }
+volumes :: [(Text, String, TVolume.Unit)]
+volumes = [ ("<latent vol> ml", "m(l\\.?|h?illil(í|i)t(ea|i)r)"
+            , TVolume.Millilitre)
+          , ("<vol> hectoliters" , "heictil(í|i)t(ea|i)r"
+            , TVolume.Hectolitre)
+          , ("<vol> liters", "(l(í|i)t(ea|i)r|l\\.?)"
+            , TVolume.Litre)
+          , ("<latent vol> gallon", "n?gh?al(ú|u)i?n"
+            , TVolume.Gallon)
+          ]
 
-ruleLatentVolKl :: Rule
-ruleLatentVolKl = Rule
-  { name = "<latent vol> kl"
+rulesVolumes :: [Rule]
+rulesVolumes = map go volumes
+  where
+    go :: (Text, String, TVolume.Unit) -> Rule
+    go (name, regexPattern, u) = Rule
+      { name = name
+      , pattern =
+        [ regex regexPattern
+        ]
+      , prod = \_ -> Just . Token Volume $ unitOnly u
+      }
+
+ruleKiloliter :: Rule
+ruleKiloliter = Rule
+  { name = "kiloliter"
   , pattern =
-    [ dimension Volume
+    [ Predicate isPositive
     , regex "(kl\\.?|g?ch?illil(í|i)t(ea|i)r)"
     ]
-  , prod = \tokens -> case tokens of
-      (Token Volume vd:_) ->
-        Just . Token Volume $ withUnit TVolume.Millilitre vd
-      _ -> Nothing
-  }
-
-ruleVolHeictiltir :: Rule
-ruleVolHeictiltir = Rule
-  { name = "<vol> heictilítir"
-  , pattern =
-    [ dimension Volume
-    , regex "heictil(í|i)t(ea|i)r"
-    ]
-  , prod = \tokens -> case tokens of
-      (Token Volume vd:_) ->
-        Just . Token Volume $ withUnit TVolume.Hectolitre vd
-      _ -> Nothing
-  }
-
-ruleVolLtear :: Rule
-ruleVolLtear = Rule
-  { name = "<vol> lítear"
-  , pattern =
-    [ dimension Volume
-    , regex "(l(í|i)t(ea|i)r|l\\.?)"
-    ]
-  , prod = \tokens -> case tokens of
-      (Token Volume vd:_) ->
-        Just . Token Volume $ withUnit TVolume.Litre vd
-      _ -> Nothing
-  }
-
-ruleLatentVolGaln :: Rule
-ruleLatentVolGaln = Rule
-  { name = "<latent vol> galún"
-  , pattern =
-    [ dimension Volume
-    , regex "n?gh?al(ú|u)i?n"
-    ]
-  , prod = \tokens -> case tokens of
-      (Token Volume vd:_) ->
-        Just . Token Volume $ withUnit TVolume.Gallon vd
-      _ -> Nothing
+  , prod = \case
+    (Token Numeral TNumeral.NumeralData{TNumeral.value = v}:
+     _:_) ->
+      Just . Token Volume . withUnit TVolume.Hectolitre $ valueOnly (10.0 * v)
+    _ -> Nothing
   }
 
 rules :: [Rule]
-rules =
-  [ ruleLatentVolGaln
-  , ruleLatentVolKl
-  , ruleLatentVolMl
-  , ruleVolHeictiltir
-  , ruleVolLtear
-  ]
+rules = [ ruleKiloliter
+        ]
+        ++ rulesVolumes

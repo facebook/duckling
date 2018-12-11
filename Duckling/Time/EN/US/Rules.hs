@@ -152,7 +152,7 @@ rulePeriodicHolidays = mkRuleHolidays
   , ( "Texas Independence Day", "texas independence day", monthDay 3 2 )
   , ( "Thomas Jefferson's Birthday", "thomas jefferson'?s birthday", monthDay 4 13 )
   , ( "Truman Day", "truman day", monthDay 5 8 )
-  , ( "Veterans Day", "veterans day", monthDay 11 11 )
+  , ( "Veterans Day", "veterans? day", monthDay 11 11 )
   , ( "West Virginia Day", "west virginia day", monthDay 6 20 )
   , ( "White Cane Safety Day", "white cane safety day", monthDay 10 15 )
   , ( "Women's Equality Day", "women'?s equality day", monthDay 8 26 )

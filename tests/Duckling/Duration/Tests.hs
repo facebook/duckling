@@ -25,6 +25,7 @@ import qualified Duckling.Duration.HU.Tests as HU
 import qualified Duckling.Duration.JA.Tests as JA
 import qualified Duckling.Duration.KA.Tests as KA
 import qualified Duckling.Duration.KO.Tests as KO
+import qualified Duckling.Duration.MN.Tests as MN
 import qualified Duckling.Duration.NB.Tests as NB
 import qualified Duckling.Duration.NL.Tests as NL
 import qualified Duckling.Duration.PL.Tests as PL
@@ -33,6 +34,7 @@ import qualified Duckling.Duration.RO.Tests as RO
 import qualified Duckling.Duration.RU.Tests as RU
 import qualified Duckling.Duration.SV.Tests as SV
 import qualified Duckling.Duration.TR.Tests as TR
+import qualified Duckling.Duration.UK.Tests as UK
 import qualified Duckling.Duration.ZH.Tests as ZH
 
 tests :: TestTree
@@ -48,6 +50,7 @@ tests = testGroup "Duration Tests"
   , JA.tests
   , KA.tests
   , KO.tests
+  , MN.tests
   , NB.tests
   , NL.tests
   , PL.tests
@@ -56,5 +59,6 @@ tests = testGroup "Duration Tests"
   , RU.tests
   , SV.tests
   , TR.tests
+  , UK.tests
   , ZH.tests
   ]

@@ -1384,7 +1384,7 @@ ruleDurationAgo = Rule
     , regex "fa"
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Duration dd:_) ->
+      (Token Duration dd:_) ->
         tt $ durationAgo dd
       _ -> Nothing
   }

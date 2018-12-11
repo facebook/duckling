@@ -40,12 +40,15 @@ import qualified Duckling.Dimensions.HI as HIDimensions
 import qualified Duckling.Dimensions.HR as HRDimensions
 import qualified Duckling.Dimensions.HU as HUDimensions
 import qualified Duckling.Dimensions.ID as IDDimensions
+import qualified Duckling.Dimensions.IS as ISDimensions
 import qualified Duckling.Dimensions.IT as ITDimensions
 import qualified Duckling.Dimensions.JA as JADimensions
 import qualified Duckling.Dimensions.KA as KADimensions
 import qualified Duckling.Dimensions.KM as KMDimensions
 import qualified Duckling.Dimensions.KO as KODimensions
 import qualified Duckling.Dimensions.LO as LODimensions
+import qualified Duckling.Dimensions.ML as MLDimensions
+import qualified Duckling.Dimensions.MN as MNDimensions
 import qualified Duckling.Dimensions.MY as MYDimensions
 import qualified Duckling.Dimensions.NB as NBDimensions
 import qualified Duckling.Dimensions.NE as NEDimensions
@@ -61,6 +64,7 @@ import qualified Duckling.Dimensions.UK as UKDimensions
 import qualified Duckling.Dimensions.VI as VIDimensions
 import qualified Duckling.Dimensions.ZH as ZHDimensions
 
+
 allDimensions :: Lang -> [Some Dimension]
 allDimensions lang = CommonDimensions.allDimensions ++ langDimensions lang
 
@@ -72,6 +76,7 @@ explicitDimensions targets = HashSet.union targets deps
 
 -- | Ordinal depends on Numeral for JA, KO, and ZH.
 dependents :: Some Dimension -> HashSet (Some Dimension)
+dependents (This CreditCardNumber) = HashSet.empty
 dependents (This Distance) = HashSet.singleton (This Numeral)
 dependents (This Duration) = HashSet.fromList [This Numeral, This TimeGrain]
 dependents (This Numeral) = HashSet.empty
@@ -108,12 +113,15 @@ langDimensions HI = HIDimensions.allDimensions
 langDimensions HR = HRDimensions.allDimensions
 langDimensions HU = HUDimensions.allDimensions
 langDimensions ID = IDDimensions.allDimensions
+langDimensions IS = ISDimensions.allDimensions
 langDimensions IT = ITDimensions.allDimensions
 langDimensions JA = JADimensions.allDimensions
 langDimensions KA = KADimensions.allDimensions
 langDimensions KM = KMDimensions.allDimensions
 langDimensions KO = KODimensions.allDimensions
 langDimensions LO = LODimensions.allDimensions
+langDimensions ML = MLDimensions.allDimensions
+langDimensions MN = MNDimensions.allDimensions
 langDimensions MY = MYDimensions.allDimensions
 langDimensions NB = NBDimensions.allDimensions
 langDimensions NE = NEDimensions.allDimensions

@@ -58,15 +58,23 @@ zeroNineteenMap = HashMap.fromList
   , ( "ათი"      , 10 )
   , ( "აათი"      , 10 )
   , ( "თერთმეტი"   , 11 )
+  , ( "თერთმეტ"   , 11 )
   , ( "თორმეტი"   , 12 )
+  , ( "თორმეტ"   , 12 )
   , ( "ცამეტი" , 13 )
+  , ( "ცამეტ" , 13 )
   , ( "თოთხმეტი" , 14 )
+  , ( "თოთხმეტ" , 14 )
   , ( "თხუთმეტი"  , 15 )
-  , ( "თხუთმეტი"  , 15 )
+  , ( "თხუთმეტ"  , 15 )
   , ( "თექვსმეტი"  , 16 )
+  , ( "თექვსმეტ"  , 16 )
   , ( "ჩვიდმეტი", 17 )
+  , ( "ჩვიდმეტ", 17 )
   , ( "თვრამეტი" , 18 )
+  , ( "თვრამეტ" , 18 )
   , ( "ცხრამეტი" , 19 )
+  , ( "ცხრამეტ" , 19 )
   ]
 
 informalMap :: HashMap Text Integer
@@ -83,7 +91,7 @@ ruleToNineteen :: Rule
 ruleToNineteen = Rule
   { name = "integer (0..19)"
   , pattern =
-    [ regex "(წყვილ(ებ)?ი|ცოტა|რამდენიმე|რამოდენიმე|ნოლი?|ნული?|ერთი|ორი?|სამი?|ოთხი?|ხუთი?|ექვსი?|შვიდი?|რვა|თერთმეტი|თორმეტი|ცამეტი|თოთხმეტი|თხუთმეტი|თექვსმეტი|ჩვიდმეტი|თვრამეტი|ცხრამეტი|ცხრა|ა?ათი)"
+    [ regex "(წყვილ(ებ)?ი|ცოტა|რამდენიმე|რამოდენიმე|ნოლი?|ნული?|ერთი|ორი?|სამი?|ოთხი?|ხუთი?|ექვსი?|შვიდი?|რვა|თერთმეტი?|თორმეტი?|ცამეტი?|თოთხმეტი?|თხუთმეტი?|თექვსმეტი?|ჩვიდმეტი?|თვრამეტი?|ცხრამეტი?|ცხრა|ა?ათი)"
     ]
   , prod = \case
       (Token RegexMatch (GroupMatch (match:_)):_) ->
@@ -123,7 +131,7 @@ ruleTens = Rule
   , pattern =
     [ regex "(ოცდაათი?|ორმოცდაათი?|სამოცდაათი?|ოთხმოცდაათი?|ოცდა|ორმოცდა|სამოცდა|ოთხმოცდა|ოცი?|ორმოცი?|სამოცი?|ოთხმოცი?)"
     ]
-  , prod = \case
+  , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
         HashMap.lookup (Text.toLower match) tensMap >>= integer
       _ -> Nothing
@@ -204,7 +212,7 @@ ruleCompositeTens = Rule
     [ oneOf [20,40..90]
     , numberBetween 1 20
     ]
-  , prod = \case
+  , prod = \tokens -> case tokens of
       (Token Numeral NumeralData{TNumeral.value = tens}:
        Token Numeral NumeralData{TNumeral.value = units}:
        _) -> double $ tens + units

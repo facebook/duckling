@@ -143,7 +143,7 @@ ruleDurationAndHalfWeek1 = Rule
   }
 
 rules :: [Rule]
-rules =
+rules = 
   [ ruleCompositeDuration
   , ruleCompositeDuration1
   , ruleDurationAndHalfYear

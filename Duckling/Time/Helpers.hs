@@ -31,7 +31,7 @@ module Duckling.Time.Helpers
   , getIntValue, timeComputed, toTimeObjectM
   -- Rule constructors
   , mkRuleInstants, mkRuleDaysOfWeek, mkRuleMonths, mkRuleMonthsWithLatent
-  , mkRuleSeasons, mkRuleHolidays, mkRuleHolidays'
+  , mkRuleSeasons, mkRuleHolidays, mkRuleHolidays', interval'
   ) where
 
 import Control.Applicative ((<|>))

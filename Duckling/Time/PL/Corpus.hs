@@ -128,6 +128,11 @@ allExamples = concat
              , "marzec 3ci"
              , "3go marca"
              ]
+  , examples (datetime (2013, 3, 3, 0, 0, 0) Day)
+             [ "3.3.2013"
+             , "3-3-2013"
+             , "3/3/2013"
+             ]
   , examples (datetime (2015, 3, 3, 0, 0, 0) Day)
              [ "3ci marca 2015"
              , "marzec 3ci 2015"

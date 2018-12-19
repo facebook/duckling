@@ -26,10 +26,9 @@ import qualified Duckling.Volume.Types as TVolume
 import qualified Duckling.Numeral.Types as TNumeral
 
 volumes :: [(Text, String, TVolume.Unit)]
-volumes = [ ("<latent vol> ml"    , "m(ili)?l(iter)?" , TVolume.Millilitre)
-          , ("<vol> hectoliters"  , "(hectoliter?)"   , TVolume.Hectolitre)
-          , ("<vol> liters"       , "l(iter)?"    , TVolume.Litre)
-          , ("<latent vol> gallon", "(gallon?)"   , TVolume.Gallon)
+volumes = [ ("<latent vol> ml"    , "m(illi)?l(iter)?" , TVolume.Millilitre)
+          , ("<vol> hl"           , "h(ecto)?l(iter)?"   , TVolume.Hectolitre)
+          , ("<vol> liters"       , "l(iter(s)?)?"    , TVolume.Litre)
           ]
 
 rulesVolumes :: [Rule]

@@ -894,18 +894,18 @@ ruleDaysOfWeek = mkRuleDaysOfWeek
 
 ruleMonths :: [Rule]
 ruleMonths = mkRuleMonths
-  [ ( "January", "一月(份)?" )
-  , ( "February", "二月(份)?" )
-  , ( "March", "三月(份)?" )
-  , ( "April", "四月(份)?" )
-  , ( "May", "五月(份)?" )
-  , ( "June", "六月(份)?" )
-  , ( "July", "七月(份)?" )
-  , ( "August", "八月(份)?" )
-  , ( "September", "九月(份)?" )
-  , ( "October", "十月(份)?" )
-  , ( "November", "十一月(份)?" )
-  , ( "December", "十二月(份)?" )
+  [ ( "January", "(一|1|01)月(份)?" )
+  , ( "February", "(二|2|02)月(份)?" )
+  , ( "March", "(三|3|03)月(份)?" )
+  , ( "April", "(四|4|04)月(份)?" )
+  , ( "May", "(五|5|05)月(份)?" )
+  , ( "June", "(六|6|06)月(份)?" )
+  , ( "July", "(七|7|07)月(份)?" )
+  , ( "August", "(八|8|08)月(份)?" )
+  , ( "September", "(九|9|09)月(份)?" )
+  , ( "October", "(十|10)月(份)?" )
+  , ( "November", "(十一|11)月(份)?" )
+  , ( "December", "(十二|12)月(份)?" )
   ]
 
 rulePeriodicHolidays :: [Rule]

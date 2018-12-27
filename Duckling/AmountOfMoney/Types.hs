@@ -63,6 +63,7 @@ data Currency
   | KWD
   | LBP
   | MAD
+  | MNT
   | MYR
   | NOK
   | NZD
@@ -118,6 +119,7 @@ instance ToJSON Currency where
   toJSON KWD     = "KWD"
   toJSON LBP     = "LBP"
   toJSON MAD     = "MAD"
+  toJSON MNT     = "MNT"
   toJSON MYR     = "MYR"
   toJSON NOK     = "NOK"
   toJSON NZD     = "NZD"

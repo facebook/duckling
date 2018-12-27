@@ -12,9 +12,7 @@
 {-# LANGUAGE NoRebindableSyntax #-}
 {-# LANGUAGE OverloadedStrings #-}
 
-module Duckling.Time.EN.Rules
-  ( rules
-  ) where
+module Duckling.Time.EN.Rules where
 
 import Data.Maybe
 import Data.Text (Text)
@@ -1791,6 +1789,7 @@ ruleComputedHolidays = mkRuleHolidays
     , cycleNthAfter False TG.Day 49 easterSunday )
   , ( "Purim", "purim", purim )
   , ( "Raksha Bandhan", "raksha(\\s+)?bandhan|rakhi", rakshaBandhan )
+  , ( "Dayananda Saraswati Jayanti","((maharishi|swami) )?(dayananda )?saraswati jayanti", saraswatiJayanti )
   , ( "Shemini Atzeret", "shemini\\s+atzeret"
     , cycleNthAfter False TG.Day 21 roshHashana )
   , ( "Shrove Tuesday", "pancake (tues)?day|shrove tuesday|mardi gras"

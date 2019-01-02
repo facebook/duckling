@@ -18,6 +18,7 @@ module Duckling.Rules.IT
 import Duckling.Dimensions.Types
 import Duckling.Locale
 import Duckling.Types
+import qualified Duckling.AmountOfMoney.IT.Rules as AmountOfMoney
 import qualified Duckling.Duration.IT.Rules as Duration
 import qualified Duckling.Email.IT.Rules as Email
 import qualified Duckling.Numeral.IT.Rules as Numeral
@@ -35,7 +36,7 @@ localeRules region (This (CustomDimension dim)) = dimLocaleRules region dim
 localeRules _ _ = []
 
 langRules :: Some Dimension -> [Rule]
-langRules (This AmountOfMoney) = []
+langRules (This AmountOfMoney) = AmountOfMoney.rules
 langRules (This CreditCardNumber) = []
 langRules (This Distance) = []
 langRules (This Duration) = Duration.rules

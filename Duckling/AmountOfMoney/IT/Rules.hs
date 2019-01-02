@@ -10,19 +10,21 @@
 {-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
 
-module Duckling.AmountOfMoney.FR.Rules
+module Duckling.AmountOfMoney.IT.Rules
   ( rules
   ) where
 
 import Data.Maybe
 import Data.String
 import Prelude
+import qualified Data.Text as Text
 
 import Duckling.AmountOfMoney.Helpers
 import Duckling.AmountOfMoney.Types (Currency (..), AmountOfMoneyData (..))
 import Duckling.Dimensions.Types
 import Duckling.Numeral.Helpers (isNatural, isPositive)
 import Duckling.Numeral.Types (NumeralData (..))
+import Duckling.Regex.Types (GroupMatch (..))
 import Duckling.Types
 import qualified Duckling.AmountOfMoney.Types as TAmountOfMoney
 import qualified Duckling.Numeral.Types as TNumeral
@@ -46,7 +48,7 @@ ruleIntersectAndNumeral = Rule
   { name = "intersect (and number)"
   , pattern =
     [ Predicate isWithoutCents
-    , regex "et"
+    , regex "e"
     , Predicate isNatural
     ]
   , prod = \tokens -> case tokens of
@@ -61,7 +63,7 @@ rulePrecision :: Rule
 rulePrecision = Rule
   { name = "precision"
   , pattern =
-    [ regex "exactement|quasi|plus ou moins|environ|autour de|(a|à) peu pr(e|è)s"
+    [ regex "esattamente|quasi|più o meno|circa"
     , Predicate isMoneyWithValue
     ]
   , prod = \tokens -> case tokens of
@@ -73,7 +75,7 @@ ruleCent :: Rule
 ruleCent = Rule
   { name = "cent"
   , pattern =
-    [ regex "cent(ime)?s?"
+    [ regex "cent(esim)i?o?"
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly Cent
   }
@@ -96,9 +98,9 @@ ruleIntervalBetweenNumeral :: Rule
 ruleIntervalBetweenNumeral = Rule
   { name = "between|from <numeral> to|and <amount-of-money>"
   , pattern =
-    [ regex "entre"
+    [ regex "tra"
     , Predicate isPositive
-    , regex "et"
+    , regex "e"
     , Predicate isSimpleAmountOfMoney
     ]
   , prod = \tokens -> case tokens of
@@ -117,9 +119,9 @@ ruleIntervalBetween :: Rule
 ruleIntervalBetween = Rule
   { name = "between|from <amount-of-money> to|and <amount-of-money>"
   , pattern =
-    [ regex "entre"
+    [ regex "tra"
     , Predicate isSimpleAmountOfMoney
-    , regex "et"
+    , regex "e"
     , Predicate isSimpleAmountOfMoney
     ]
   , prod = \tokens -> case tokens of
@@ -180,7 +182,7 @@ ruleIntervalMax :: Rule
 ruleIntervalMax = Rule
   { name = "under/less/lower/no more than <amount-of-money>"
   , pattern =
-    [ regex "(moins|pas plus|en-dessous) de"
+    [ regex "(meno|non più) di"
     , Predicate isSimpleAmountOfMoney
     ]
   , prod = \tokens -> case tokens of
@@ -195,7 +197,7 @@ ruleIntervalMin :: Rule
 ruleIntervalMin = Rule
   { name = "over/above/at least/more than <amount-of-money>"
   , pattern =
-    [ regex "plus (que|de)|au moins"
+    [ regex "più di|almeno"
     , Predicate isSimpleAmountOfMoney
     ]
   , prod = \tokens -> case tokens of
@@ -206,13 +208,18 @@ ruleIntervalMin = Rule
       _ -> Nothing
   }
 
-rulePounds :: Rule
-rulePounds = Rule
-  { name = "£"
+ruleCurrencies :: Rule
+ruleCurrencies = Rule
+  { name = "£, $"
   , pattern =
-    [ regex "(livre|pound)s?"
+    [ regex "(dollari|sterline)"
     ]
-  , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly Pound
+  , prod = \case
+      (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
+        "dollari"  -> Just . Token AmountOfMoney $ currencyOnly Dollar
+        "sterline" -> Just . Token AmountOfMoney $ currencyOnly Pound
+        _          -> Nothing
+      _ -> Nothing
   }
 
 ruleIntersectAndXCents :: Rule
@@ -220,7 +227,7 @@ ruleIntersectAndXCents = Rule
   { name = "intersect (and X cents)"
   , pattern =
     [ Predicate isWithoutCents
-    , regex "et"
+    , regex "e"
     , Predicate isCents
     ]
   , prod = \tokens -> case tokens of
@@ -245,15 +252,6 @@ ruleIntersect = Rule
       _ -> Nothing
   }
 
-ruleUnnamedCurrency :: Rule
-ruleUnnamedCurrency = Rule
-  { name = "unnamed currencyOnly"
-  , pattern =
-    [ regex "(balle|pouloute)s?"
-    ]
-  , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly Unnamed
-  }
-
 rules :: [Rule]
 rules =
   [ ruleUnitAmount
@@ -268,7 +266,6 @@ rules =
   , ruleIntervalMax
   , ruleIntervalMin
   , ruleIntervalNumeralDash
-  , rulePounds
+  , ruleCurrencies
   , rulePrecision
-  , ruleUnnamedCurrency
   ]

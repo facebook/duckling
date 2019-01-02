@@ -7,16 +7,16 @@
 
 
 {-# LANGUAGE GADTs #-}
-{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE LambdaCase #-}
 
-module Duckling.Quantity.KM.Rules
+module Duckling.Quantity.NL.Rules
   ( rules
   ) where
 
 import Data.HashMap.Strict (HashMap)
-import Data.Text (Text, toLower)
 import Data.String
+import Data.Text (Text)
 import Prelude
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Text as Text
@@ -24,80 +24,41 @@ import qualified Data.Text as Text
 import Duckling.Dimensions.Types
 import Duckling.Numeral.Helpers
 import Duckling.Quantity.Helpers
-import Duckling.Regex.Types
+import Duckling.Regex.Types (GroupMatch (..))
 import Duckling.Types
 import Duckling.Numeral.Types (NumeralData (..))
 import Duckling.Quantity.Types (QuantityData(..))
 import qualified Duckling.Numeral.Types as TNumeral
 import qualified Duckling.Quantity.Types as TQuantity
 
-ruleQuantityOfProduct :: Rule
-ruleQuantityOfProduct = Rule
-  { name = "<quantity> of product"
-  , pattern =
-    [ regex "(មនុស្ស|បងប្អូន|សត្វ|ឆ្កែ|ឆ្មា|ដើមឈើ|ផ្កា|កុលាប|ផ្ទះ)"
-    , dimension Quantity
-    ]
-  , prod = \case
-      (Token RegexMatch (GroupMatch (match:_)):
-       Token Quantity qd:
-       _) -> Just . Token Quantity $ withProduct match qd
-      _ -> Nothing
-  }
-
-unitsMap :: HashMap Text TQuantity.Unit
-unitsMap = HashMap.fromList
-  [ ("ចាន", TQuantity.Bowl)
-  , ("ពែង", TQuantity.Cup)
-  , ("កែវ", TQuantity.Cup)
-  , ("ថូ", TQuantity.Pint)
-  , ("ស្លាបព្រា", TQuantity.Tablespoon)
-  , ("ស្លាបព្រាបាយ", TQuantity.Tablespoon)
-  , ("ស្លាបព្រាកាហ្វេ", TQuantity.Teaspoon)
-  , ("នាក់", TQuantity.Custom "For Persons")
-  , ("ក្បាល", TQuantity.Custom "For Animals")
-  , ("ដើម", TQuantity.Custom "For Trees")
-  , ("ទង", TQuantity.Custom "For Flowers")
-  , ("ខ្នង", TQuantity.Custom "For Buildings")
-  , ("គ្រឿង", TQuantity.Custom "For Vehicles/Devices")
-  , ("កញ្ចប់", TQuantity.Custom "For Packages")
-  , ("ឈុត", TQuantity.Custom "Sets")
-  ]
-
-ruleNumeralUnits :: Rule
-ruleNumeralUnits = Rule
-  { name = "<number><units>"
-  , pattern =
-    [ dimension Numeral
-    , regex "(ចាន|ពែង|កែវ|ថូ|ស្លាបព្រា|ស្លាបព្រាបាយ|ស្លាបព្រាកាហ្វេ|នាក់|ក្បាល|ដើម|ទង|ខ្នង|គ្រឿង|កញ្ចប់|ឈុត)"
-    ]
-  , prod = \case
-      (Token Numeral NumeralData{TNumeral.value = v}:
-       Token RegexMatch (GroupMatch (match:_)):
-       _) -> do
-         unit <- HashMap.lookup match unitsMap
-         Just . Token Quantity $ quantity unit v
-      _ -> Nothing
-  }
-
 quantities :: [(Text, String, TQuantity.Unit)]
 quantities =
-  [ ("<quantity> grams", "((មីលី|គីឡូ)?ក្រាម)", TQuantity.Gram)
+  [ ("<quantity> kopje",        "(kopjes?)", TQuantity.Cup)
+  , ("<quantity> grams",        "(g((r)?(am)?)?)", TQuantity.Gram)
+  , ("<quantity> milligrams",   "((m(illi)?)(g(ram)?))", TQuantity.Gram)
+  , ("<quantity> kilograms",    "((k(ilo)?)(g(ram)?)?)", TQuantity.Gram)
+  , ("<quantity> pond",         "(pond(je(s)?)?)", TQuantity.Gram)
+  , ("<quantity> ons",          "(ons(je(s)?)?)", TQuantity.Gram)
   ]
 
 opsMap :: HashMap Text (Double -> Double)
 opsMap = HashMap.fromList
-  [ ( "មីលីក្រាម" , (/ 1000))
-  , ( "គីឡូក្រាម" , (* 1000))
+  [ ( "milligram"   , (/ 1000))
+  , ( "mg"          , (/ 1000))
+  , ( "kilo"        , (* 1000))
+  , ( "kilogram"    , (* 1000))
+  , ( "kg"          , (* 1000))
+  , ( "pond"        , (* 500))
+  , ( "ons"         , (* 100))
   ]
 
-ruleNumeralUnits2 :: [Rule]
-ruleNumeralUnits2 = map go quantities
+ruleNumeralQuantities :: [Rule]
+ruleNumeralQuantities = map go quantities
   where
     go :: (Text, String, TQuantity.Unit) -> Rule
     go (name, regexPattern, u) = Rule
       { name = name
-      , pattern = [dimension Numeral, regex regexPattern]
+      , pattern = [Predicate isPositive, regex regexPattern]
       , prod = \case
         (Token Numeral nd:
          Token RegexMatch (GroupMatch (match:_)):
@@ -106,25 +67,51 @@ ruleNumeralUnits2 = map go quantities
         _ -> Nothing
       }
 
+ruleAQuantity :: [Rule]
+ruleAQuantity = map go quantities
+  where
+    go :: (Text, String, TQuantity.Unit) -> Rule
+    go (name, regexPattern, u) = Rule
+      { name = name
+      , pattern = [ regex ("een? " ++ regexPattern) ]
+      , prod = \case
+        (Token RegexMatch (GroupMatch (match:_)):
+         _) -> Just . Token Quantity $ quantity u $ getValue opsMap match 1
+        _ -> Nothing
+      }
+
+ruleQuantityOfProduct :: Rule
+ruleQuantityOfProduct = Rule
+  { name = "<quantity> product"
+  , pattern =
+    [ dimension Quantity
+    , regex "(\\w+)"
+    ]
+  , prod = \case
+    (Token Quantity qd:Token RegexMatch (GroupMatch (product:_)):_) ->
+      Just . Token Quantity $ withProduct (Text.toLower product) qd
+    _ -> Nothing
+  }
+
 rulePrecision :: Rule
 rulePrecision = Rule
-    { name = "about|exactly <quantity>"
+    { name = "ongeveer|plm|plusminus <quantity>"
     , pattern =
-      [ regex "\\~|ប្រហែល"
+      [ regex "\\~|precies|exact|ongeveer|bijna|ongeveer"
       , dimension Quantity
       ]
       , prod = \case
         (_:token:_) -> Just token
         _ -> Nothing
-    }
+  }
 
 ruleIntervalBetweenNumeral :: Rule
 ruleIntervalBetweenNumeral = Rule
-    { name = "between|from <numeral> and|to <quantity>"
+    { name = "tussen|van <numeral> en|tot <quantity>"
     , pattern =
-      [ regex "ចន្លោះ(ពី)?|ចាប់ពី"
+      [ regex "tussen|van"
       , Predicate isPositive
-      , regex "និង|ដល់"
+      , regex "tot|en"
       , Predicate isSimpleQuantity
       ]
     , prod = \case
@@ -141,11 +128,11 @@ ruleIntervalBetweenNumeral = Rule
 
 ruleIntervalBetween :: Rule
 ruleIntervalBetween = Rule
-    { name = "between|from <quantity> to|and <quantity>"
+    { name = "rond|tussen|van <quantity> tot|en <quantity>"
     , pattern =
-      [ regex "ចន្លោះ(ពី)?|ចាប់ពី"
+      [ regex "tussen|van"
       , Predicate isSimpleQuantity
-      , regex "និង|ដល់"
+      , regex "en|tot"
       , Predicate isSimpleQuantity
       ]
     , prod = \case
@@ -204,9 +191,9 @@ ruleIntervalDash = Rule
 
 ruleIntervalMax :: Rule
 ruleIntervalMax = Rule
-    { name = "Max Rule"
+    { name = "minder dan/hoogstens/op zijn hoogst/maximaal/hooguit <quantity>"
     , pattern =
-      [ regex "ក្រោម|តិចជាង|មិនដល់|យ៉ាងច្រើន|មិនលើស"
+      [ regex "minder dan|hoogstens|hooguit|maximaal|op zijn hoogst"
       , Predicate isSimpleQuantity
       ]
     , prod = \case
@@ -220,9 +207,9 @@ ruleIntervalMax = Rule
 
 ruleIntervalMin :: Rule
 ruleIntervalMin = Rule
-  { name = "Min Rule"
+  { name = "meer dan/minstens/op zijn minst <quantity>"
   , pattern =
-      [ regex "លើស(ពី)?|មិនតិចជាង|លើ|ច្រើនជាង|យ៉ាងតិច|យ៉ាងហោច"
+      [ regex "meer dan|minstens|minimaal|op zijn minst|minder dan"
       , Predicate isSimpleQuantity
       ]
     , prod = \case
@@ -236,14 +223,14 @@ ruleIntervalMin = Rule
 
 rules :: [Rule]
 rules =
-  [ ruleNumeralUnits
-  , ruleQuantityOfProduct
-  , rulePrecision
+  [ ruleQuantityOfProduct
+  , ruleIntervalMin
+  , ruleIntervalMax
   , ruleIntervalBetweenNumeral
   , ruleIntervalBetween
   , ruleIntervalNumeralDash
   , ruleIntervalDash
-  , ruleIntervalMax
-  , ruleIntervalMin
+  , rulePrecision
   ]
-  ++ruleNumeralUnits2
+  ++ ruleNumeralQuantities
+  ++ ruleAQuantity

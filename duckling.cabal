@@ -550,6 +550,8 @@ library
                      , Duckling.Quantity.KO.Rules
                      , Duckling.Quantity.MN.Corpus
                      , Duckling.Quantity.MN.Rules
+                     , Duckling.Quantity.NL.Corpus
+                     , Duckling.Quantity.NL.Rules
                      , Duckling.Quantity.PT.Corpus
                      , Duckling.Quantity.PT.Rules
                      , Duckling.Quantity.RO.Corpus
@@ -978,6 +980,7 @@ test-suite duckling-test
                      , Duckling.Quantity.KM.Tests
                      , Duckling.Quantity.KO.Tests
                      , Duckling.Quantity.MN.Tests
+                     , Duckling.Quantity.NL.Tests
                      , Duckling.Quantity.PT.Tests
                      , Duckling.Quantity.RO.Tests
                      , Duckling.Quantity.RU.Tests

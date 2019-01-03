@@ -129,12 +129,14 @@ allExamples = concat
              , "100000"
              , "100K"
              , "100k"
+             , "100 000"
              ]
   , examples (NumeralValue 3000000)
              [ "3M"
              , "3000K"
              , "3000000"
              , "3.000.000"
+             , "3 000 000"
              ]
   , examples (NumeralValue 1200000)
              [ "1.200.000"
@@ -151,5 +153,12 @@ allExamples = concat
              , "-1,2M"
              , "-1200K"
              , "-,0012G"
+             ]
+  , examples (NumeralValue 6.7)
+             [ "6,7"
+             ]
+  , examples (NumeralValue 6700.54)
+             [ "6.700,54"
+             , "6 700,54"
              ]
   ]

@@ -6,7 +6,7 @@
 -- of patent rights can be found in the PATENTS file in the same directory.
 
 
-module Duckling.AmountOfMoney.IT.Tests
+module Duckling.Quantity.NL.Tests
   ( tests
   ) where
 
@@ -14,11 +14,11 @@ import Data.String
 import Prelude
 import Test.Tasty
 
-import Duckling.AmountOfMoney.IT.Corpus
 import Duckling.Dimensions.Types
+import Duckling.Quantity.NL.Corpus
 import Duckling.Testing.Asserts
 
 tests :: TestTree
-tests = testGroup "IT Tests"
-  [ makeCorpusTest [This AmountOfMoney] corpus
+tests = testGroup "NL Tests"
+  [ makeCorpusTest [This Quantity] corpus
   ]

@@ -9,7 +9,8 @@
 
 
 module Duckling.Quantity.Helpers
-  ( isSimpleQuantity
+  ( getValue
+  , isSimpleQuantity
   , quantity
   , unitOnly
   , withProduct
@@ -20,22 +21,29 @@ module Duckling.Quantity.Helpers
   , withMax
   ) where
 
+import Data.HashMap.Strict (HashMap)
 import Data.Text (Text)
 import Prelude
+import qualified Data.HashMap.Strict as HashMap
+import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
 import Duckling.Quantity.Types (QuantityData(..))
 import Duckling.Types
 import qualified Duckling.Quantity.Types as TQuantity
 
+getValue :: HashMap Text (Double -> Double) -> Text -> Double -> Double
+getValue opsMap match = HashMap.lookupDefault id (Text.toLower match) opsMap
 
 -- -----------------------------------------------------------------
 -- Patterns
+
 isSimpleQuantity :: Predicate
 isSimpleQuantity (Token Quantity QuantityData {TQuantity.unit = Just _
                                               , TQuantity.value = Just _})
  = True
 isSimpleQuantity _ = False
+
 -- -----------------------------------------------------------------
 -- Production
 

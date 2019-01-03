@@ -12,8 +12,8 @@ module Duckling.Ordinal.PT.Corpus
   ( corpus
   ) where
 
-import Prelude
 import Data.String
+import Prelude
 
 import Duckling.Locale
 import Duckling.Ordinal.Types
@@ -36,5 +36,33 @@ allExamples = concat
   , examples (OrdinalData 7)
              [ "setimo"
              , "sétimas"
+             ]
+  , examples (OrdinalData 10)
+             [ "décimos"
+             , "decimos"
+             , "décima"
+             , "decimas"
+             ]
+  , examples (OrdinalData 11)
+             [ "décimos primeiros"
+             , "decimo primeiro"
+             , "décimas primeiras"
+             , "decima primeira"
+             ]
+  , examples (OrdinalData 12)
+             [ "décimos segundos"
+             , "decimo segundo"
+             , "décimas segundas"
+             , "decima segunda"
+             ]
+  , examples (OrdinalData 17)
+             [ "décimos setimos"
+             , "decimo sétimo"
+             , "decimas sétimas"
+             , "decima setima"
+             ]
+  , examples (OrdinalData 58)
+             [ "quinquagesimas oitavas"
+             , "qüinquagesimo oitavo"
              ]
   ]

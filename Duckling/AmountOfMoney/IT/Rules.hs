@@ -17,12 +17,14 @@ module Duckling.AmountOfMoney.IT.Rules
 import Data.Maybe
 import Data.String
 import Prelude
+import qualified Data.Text as Text
 
 import Duckling.AmountOfMoney.Helpers
 import Duckling.AmountOfMoney.Types (Currency (..), AmountOfMoneyData (..))
 import Duckling.Dimensions.Types
 import Duckling.Numeral.Helpers (isNatural, isPositive)
 import Duckling.Numeral.Types (NumeralData (..))
+import Duckling.Regex.Types (GroupMatch (..))
 import Duckling.Types
 import qualified Duckling.AmountOfMoney.Types as TAmountOfMoney
 import qualified Duckling.Numeral.Types as TNumeral
@@ -206,14 +208,18 @@ ruleIntervalMin = Rule
       _ -> Nothing
   }
 
-
-rulePounds :: Rule
-rulePounds = Rule
-  { name = "£"
+ruleCurrencies :: Rule
+ruleCurrencies = Rule
+  { name = "£, $"
   , pattern =
-    [ regex "sterline"
+    [ regex "(dollari|sterline)"
     ]
-  , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly Pound
+  , prod = \case
+      (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
+        "dollari"  -> Just . Token AmountOfMoney $ currencyOnly Dollar
+        "sterline" -> Just . Token AmountOfMoney $ currencyOnly Pound
+        _          -> Nothing
+      _ -> Nothing
   }
 
 ruleIntersectAndXCents :: Rule
@@ -260,6 +266,6 @@ rules =
   , ruleIntervalMax
   , ruleIntervalMin
   , ruleIntervalNumeralDash
-  , rulePounds
+  , ruleCurrencies
   , rulePrecision
   ]

@@ -206,7 +206,6 @@ ruleIntervalMin = Rule
       _ -> Nothing
   }
 
-
 rulePounds :: Rule
 rulePounds = Rule
   { name = "£"

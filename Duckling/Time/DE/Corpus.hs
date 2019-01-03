@@ -23,11 +23,14 @@ import Duckling.Time.Corpus
 import Duckling.Time.Types hiding (Month)
 import Duckling.TimeGrain.Types hiding (add)
 
+context :: Context
+context = testContext {locale = makeLocale DE Nothing}
+
 corpus :: Corpus
-corpus = (testContext {locale = makeLocale DE Nothing}, testOptions, allExamples)
+corpus = (context, testOptions, allExamples)
 
 negativeCorpus :: NegativeCorpus
-negativeCorpus = (testContext {locale = makeLocale DE Nothing}, testOptions, examples)
+negativeCorpus = (context, testOptions, examples)
   where
     examples =
       [ "ein Hotel"
@@ -631,7 +634,7 @@ allExamples = concat
   , examples (datetime (2013, 12, 10, 0, 0, 0) Day)
              [ "10.12."
              ]
-  , examples (datetimeInterval ((2013, 2, 12, 18, 30, 0), (2013, 2, 12, 19, 1, 0)) Minute)
+  , examples (datetimeInterval ((2013, 2, 12, 18, 30, 0), (2013, 2, 12, 19, 1, 0)) Minute)
              [ "18:30h - 19:00h"
              , "18:30h/19:00h"
              ]
@@ -665,5 +668,9 @@ allExamples = concat
              ]
   , examples (datetime (2013, 2, 12, 17, 10, 0) Minute)
              [ "17h10"
+             ]
+  , examples (datetime (2018, 8, 31, 0, 0, 0) Day)
+             [ "2018-08-31"
+             , "2018-8-31"
              ]
   ]

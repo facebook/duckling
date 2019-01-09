@@ -45,6 +45,7 @@ Please look into [this directory](https://github.com/facebook/duckling/blob/mast
 | Dimension | Example input | Example value output
 | --------- | ------------- | --------------------
 | `AmountOfMoney` | "42€" | `{"value":42,"type":"value","unit":"EUR"}`
+| `CreditCardNumber` | "4111-1111-1111-1111" | `{"value":"4111111111111111","issuer":"visa"}`
 | `Distance` | "6 miles" | `{"value":6,"type":"value","unit":"mile"}`
 | `Duration` | "3 mins" | `{"value":3,"minute":3,"unit":"minute","normalized":{"value":180,"unit":"second"}}`
 | `Email` | "duckling-team@fb.com" | `{"value":"duckling-team@fb.com"}`

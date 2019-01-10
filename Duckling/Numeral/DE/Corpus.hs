@@ -103,6 +103,8 @@ allExamples = concat
              [ "3M"
              , "3000K"
              , "3000000"
+             , "3'000'000"
+             , "3 000 000"             
              , "3.000.000"
              ]
   , examples (NumeralValue 1200000)

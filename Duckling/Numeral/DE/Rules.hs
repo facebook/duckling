@@ -46,7 +46,7 @@ ruleFew :: Rule
 ruleFew = Rule
   { name = "few"
   , pattern =
-    [ regex "(mehrere|wenige)"
+    [ regex "mehrere"
     ]
   , prod = \_ -> integer 3
   }
@@ -90,7 +90,7 @@ ruleInteger3 :: Rule
 ruleInteger3 = Rule
   { name = "integer ([2-9][1-9])"
   , pattern =
-    [ regex "(ein|zwei|drei|vier|fünf|sechs|sieben|acht|neun)und(zwanzig|drei(ss|ß)ig|vierzig|fünfzig|sechzig|siebzig|achtzig|neunzig)"
+    [ regex "(ein|zwei|drei|vier|fünf|sechs|sieben|acht|neun)und(zwanzig|dreissig|vierzig|fünfzig|sechzig|siebzig|achtzig|neunzig)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (m1:m2:_)):_) -> do
@@ -108,7 +108,6 @@ ruleInteger3 = Rule
         v2 <- case Text.toLower m2 of
           "zwanzig" -> Just 20
           "dreissig" -> Just 30
-          "dreißig" -> Just 30          
           "vierzig" -> Just 40
           "fünfzig" -> Just 50
           "sechzig" -> Just 60
@@ -268,7 +267,6 @@ tensMap :: HashMap Text Integer
 tensMap = HashMap.fromList
   [ ( "zwanzig" , 20 )
   , ( "dreissig", 30 )
-  , ( "dreißig", 30 )
   , ( "vierzig" , 40 )
   , ( "fünfzig" , 50 )
   , ( "sechzig" , 60 )
@@ -310,11 +308,11 @@ ruleIntegerWithThousandsSeparator :: Rule
 ruleIntegerWithThousandsSeparator = Rule
   { name = "integer with thousands separator ."
   , pattern =
-    [ regex "(\\d{1,3}((\\.\\d\\d\\d){1,5}|(['`]\\d\\d\\d){1,5}|([  ]\\d\\d\\d){1,5}))"
+    [ regex "(\\d{1,3}(\\.\\d\\d\\d){1,5})"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
-        parseDouble (foldr (\r i -> Text.replace r Text.empty i) match [".","'","`"," "," "])  >>= double
+        parseDouble (Text.replace "." Text.empty match) >>= double
       _ -> Nothing
   }
 

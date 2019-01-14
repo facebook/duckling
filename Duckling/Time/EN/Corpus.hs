@@ -1591,4 +1591,16 @@ allExamples = concat
              , "guru gobind singh jayanti"
              , "Guru Govind Singh Jayanti"
              ]
+  , examples (datetimeHoliday (2018, 4, 27, 0, 0, 0) Day "King's Day")
+            [ "Koningsdag 2018"
+            , "koningsdag 2018"
+            , "king's day 2018"
+            , "King's Day 2018"
+            ]
+  , examples (datetimeHoliday (2014, 4, 26, 0, 0, 0) Day "King's Day")
+            [ "Koningsdag 2014"
+            , "koningsdag 2014"
+            , "King's Day 2014"
+            , "king's day 2014"
+            ]
   ]

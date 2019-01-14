@@ -453,9 +453,6 @@ allExamples = concat
   , examples (datetimeHoliday (2013, 6, 16, 0, 0, 0) Day "Vaderdag")
              [ "vaderdag"
              ]
-  , examples (datetimeHoliday (2017, 04, 27, 0, 0, 0) Day "Koningsdag")
-             [ "Koningsdag 2017"
-             ]
   , examples (datetimeHoliday (2013, 10, 31, 0, 0, 0) Day "Halloween")
              [ "Halloween"
              ]
@@ -675,4 +672,16 @@ allExamples = concat
              [ "17h10"
              , "17u10"
              ]
+  , examples (datetimeHoliday (2018, 4, 27, 0, 0, 0) Day "Koningsdag")
+           [ "Koningsdag 2018"
+           , "koningsdag 2018"
+           , "king's day 2018"
+           , "King's Day 2018"
+           ]
+  , examples (datetimeHoliday (2014, 4, 26, 0, 0, 0) Day "Koningsdag")
+           [ "Koningsdag 2014"
+           , "koningsdag 2014"
+           , "King's Day 2014"
+           , "king's day 2014"
+           ]
   ]

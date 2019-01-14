@@ -12,9 +12,7 @@
 {-# LANGUAGE NoRebindableSyntax #-}
 {-# LANGUAGE OverloadedStrings #-}
 
-module Duckling.Time.EN.Rules
-  ( rules
-  ) where
+module Duckling.Time.EN.Rules where
 
 import Data.Maybe
 import Data.Text (Text)
@@ -1880,6 +1878,16 @@ ruleComputedHolidays' = mkRuleHolidays'
   , ( "Parsi New Year", "parsi new year|jamshedi navroz"
     , predEveryNDaysFrom 365 (2020, 8, 16)
     )
+  -- king's day is on April 27th unless its on Sunday in which case its a day
+  -- earlier used a bit of a trick since intersectWithReplacement expects all
+  -- times to be aligned in granularity (e.g once a week, twice a year, etc.)
+  -- we intersect with last Sunday of April since if "4/27 is on Sunday" it
+  -- will be the last Sunday on April
+  , ( "King's Day", "king's day|koningsdag"
+    , let tentative = monthDay 4 27
+          alternative = monthDay 4 26
+          lastSundayOfApril = predLastOf (dayOfWeek 7) (month 4)
+        in intersectWithReplacement lastSundayOfApril tentative alternative )
   ]
 
 ruleCycleThisLastNext :: Rule

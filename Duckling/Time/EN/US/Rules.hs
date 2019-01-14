@@ -10,10 +10,7 @@
 {-# LANGUAGE NoRebindableSyntax #-}
 {-# LANGUAGE OverloadedStrings #-}
 
-module Duckling.Time.EN.US.Rules
-  ( rules
-  , rulesBackwardCompatible
-  ) where
+module Duckling.Time.EN.US.Rules where
 
 import Data.Maybe
 import Prelude

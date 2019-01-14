@@ -126,4 +126,11 @@ allExamples = concat
              , "-1200K"
              , "-,0012G"
              ]
+  , examples (NumeralValue 6.7)
+             [ "6,7"
+             ]
+  , examples (NumeralValue 6700.54)
+             [ "6.700,54"
+             , "6 700,54"
+             ]
   ]

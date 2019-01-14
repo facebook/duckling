@@ -11,7 +11,8 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Volume.NL.Rules
-  ( rules ) where
+  ( rules
+  ) where
 
 import Data.String
 import Data.Text (Text)
@@ -19,17 +20,16 @@ import Prelude
 
 import Duckling.Dimensions.Types
 import Duckling.Types
-import Duckling.Regex.Types
+import Duckling.Regex.Types (GroupMatch(..))
 import Duckling.Volume.Helpers
 import Duckling.Numeral.Helpers (isPositive)
 import qualified Duckling.Volume.Types as TVolume
 import qualified Duckling.Numeral.Types as TNumeral
 
 volumes :: [(Text, String, TVolume.Unit)]
-volumes = [ ("<latent vol> ml"    , "m(ili)?l(iter)?" , TVolume.Millilitre)
-          , ("<vol> hectoliters"  , "(hectoliter?)"   , TVolume.Hectolitre)
-          , ("<vol> liters"       , "l(iter)?"    , TVolume.Litre)
-          , ("<latent vol> gallon", "(gallon?)"   , TVolume.Gallon)
+volumes = [ ("<latent vol> ml"    , "m(illi)?l(iter)?" , TVolume.Millilitre)
+          , ("<vol> hl"           , "h(ecto)?l(iter)?"   , TVolume.Hectolitre)
+          , ("<vol> liters"       , "l(iters?)?"    , TVolume.Litre)
           ]
 
 rulesVolumes :: [Rule]

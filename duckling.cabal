@@ -236,6 +236,8 @@ library
                      , Duckling.AmountOfMoney.HR.Rules
                      , Duckling.AmountOfMoney.ID.Corpus
                      , Duckling.AmountOfMoney.ID.Rules
+                     , Duckling.AmountOfMoney.IT.Rules
+                     , Duckling.AmountOfMoney.IT.Corpus
                      , Duckling.AmountOfMoney.KA.Corpus
                      , Duckling.AmountOfMoney.KA.Rules
                      , Duckling.AmountOfMoney.KO.Corpus
@@ -550,6 +552,8 @@ library
                      , Duckling.Quantity.KO.Rules
                      , Duckling.Quantity.MN.Corpus
                      , Duckling.Quantity.MN.Rules
+                     , Duckling.Quantity.NL.Corpus
+                     , Duckling.Quantity.NL.Rules
                      , Duckling.Quantity.PT.Corpus
                      , Duckling.Quantity.PT.Rules
                      , Duckling.Quantity.RO.Corpus
@@ -820,6 +824,7 @@ test-suite duckling-test
                      , Duckling.AmountOfMoney.GA.Tests
                      , Duckling.AmountOfMoney.HR.Tests
                      , Duckling.AmountOfMoney.ID.Tests
+                     , Duckling.AmountOfMoney.IT.Tests
                      , Duckling.AmountOfMoney.KA.Tests
                      , Duckling.AmountOfMoney.KO.Tests
                      , Duckling.AmountOfMoney.MN.Tests
@@ -980,6 +985,7 @@ test-suite duckling-test
                      , Duckling.Quantity.KM.Tests
                      , Duckling.Quantity.KO.Tests
                      , Duckling.Quantity.MN.Tests
+                     , Duckling.Quantity.NL.Tests
                      , Duckling.Quantity.PT.Tests
                      , Duckling.Quantity.RO.Tests
                      , Duckling.Quantity.RU.Tests

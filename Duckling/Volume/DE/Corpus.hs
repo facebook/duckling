@@ -14,17 +14,19 @@ module Duckling.Volume.DE.Corpus
 import Data.String
 import Prelude
 
+import Duckling.Locale
+import Duckling.Resolve
 import Duckling.Testing.Types
 import Duckling.Volume.Types
 
 corpus :: Corpus
-corpus = (testContext, testOptions, allExamples)
+corpus = (testContext {locale = makeLocale DE Nothing}, testOptions, allExamples)
 
 allExamples :: [Example]
 allExamples = concat
   [ examples (simple Litre 1)
              [ "1 liter"             
-             , "ein liter"             
+             --, "ein liter"             
              ]
   , examples (simple Litre 2)
              [ "2 liter"
@@ -36,11 +38,11 @@ allExamples = concat
              ]
   , examples (simple Litre 0.5)
              [ "halber liter"             
-             , "ein halber liter"
+            , "ein halber liter"
              ]
   , examples (simple Litre 0.25)
-             [ "viertel-liter"
-             , "ein viertel liter"
+             [ "viertel liter"
+            , "ein viertel liter"
              ]
   , examples (simple Millilitre 1)
              [ "ein milliliter"
@@ -65,19 +67,19 @@ allExamples = concat
              [ "etwa 2 -7 l"
              , "~2-7 liter"
              , "von 2 bis 7 l"
-             , "zwischen 2.0 l und ungefähr 7.0 l"
-             , "zwischen 2l and etwa 7l"
+             , "zwischen 2,0 l und ungefähr 7,0 l"
+             , "zwischen 2l und etwa 7l"
              , "2 - ~7 liter"
              ]
   , examples (under Hectolitre 2)
              [ "nicht mehr als 2 hektoliter"
-             , "höchstens zwei hectoliter"
+             , "höchstens zwei hektoliter"
              , "unter 2 hektolitern"
              , "weniger als 2 hektoliter"
              ]
   , examples (above Millilitre 4)
              [ "mehr als 4 ml"
-             , "wenigstens 4.0 ml"
+             , "wenigstens 4,0 ml"
              , "über vier milliliter"
              , "mindestens vier ml"
              ]

@@ -19,6 +19,7 @@ import Duckling.Dimensions.Types
 import Duckling.Locale
 import Duckling.Types
 import qualified Duckling.Distance.DE.Rules as Distance
+import qualified Duckling.Volume.DE.Rules as Volume
 import qualified Duckling.Duration.DE.Rules as Duration
 import qualified Duckling.Email.DE.Rules as Email
 import qualified Duckling.Ordinal.DE.Rules as Ordinal
@@ -48,5 +49,5 @@ langRules (This Temperature) = []
 langRules (This Time) = Time.rules
 langRules (This TimeGrain) = TimeGrain.rules
 langRules (This Url) = []
-langRules (This Volume) = []
+langRules (This Volume) = Volume.rules
 langRules (This (CustomDimension dim)) = dimLangRules DE dim

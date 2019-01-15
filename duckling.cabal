@@ -736,6 +736,8 @@ library
                      -- Volume
                      , Duckling.Volume.AR.Corpus
                      , Duckling.Volume.AR.Rules
+                     , Duckling.Volume.DE.Corpus
+                     , Duckling.Volume.DE.Rules
                      , Duckling.Volume.EN.Corpus
                      , Duckling.Volume.EN.Rules
                      , Duckling.Volume.ES.Corpus
@@ -1042,6 +1044,7 @@ test-suite duckling-test
 
                      -- Volume
                      , Duckling.Volume.AR.Tests
+                     , Duckling.Volume.DE.Tests                     
                      , Duckling.Volume.EN.Tests
                      , Duckling.Volume.ES.Tests
                      , Duckling.Volume.FR.Tests

@@ -711,7 +711,7 @@ ruleByTheEndOfTime :: Rule
 ruleByTheEndOfTime = Rule
   { name = "by the end of <time>"
   , pattern =
-    [ regex "tot (het)? einde (van)?|voor"
+    [ regex "tot (het)? einde (van)?"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of

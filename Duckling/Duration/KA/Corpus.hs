@@ -49,14 +49,11 @@ allExamples = concat
   , examples (DurationData 3 Quarter)
              [ "3 კვარტალი"
              ]
-  -- , examples (DurationData 2 Year)
-  --            [ "2 წელი"
-  --            ]
-  -- , examples (DurationData 27 Month)
-  --            [ "2 წელი და 3 თვე"
-  --            , "2 წელი, 3 თვე"
-  --            ]
-  -- , examples (DurationData 31719604 Second)
-  --            [ "1 წელი, 2 დღე, 3 საათი და 4 წამი"
-  --            ]
+  , examples (DurationData 27 Month)
+             [ "2 წელი და 3 თვე"
+             , "2 წელი, 3 თვე"
+             ]
+  , examples (DurationData 31719604 Second)
+             [ "1 წელი, 2 დღე, 3 საათი და 4 წამი"
+             ]
   ]

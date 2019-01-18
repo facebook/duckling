@@ -59,6 +59,7 @@ import qualified Duckling.Rules.PT as PTRules
 import qualified Duckling.Rules.RO as RORules
 import qualified Duckling.Rules.RU as RURules
 import qualified Duckling.Rules.SV as SVRules
+import qualified Duckling.Rules.SW as SWRules
 import qualified Duckling.Rules.TA as TARules
 import qualified Duckling.Rules.TR as TRRules
 import qualified Duckling.Rules.UK as UKRules
@@ -122,6 +123,7 @@ defaultRules PT = PTRules.defaultRules
 defaultRules RO = RORules.defaultRules
 defaultRules RU = RURules.defaultRules
 defaultRules SV = SVRules.defaultRules
+defaultRules SW = SWRules.defaultRules
 defaultRules TA = TARules.defaultRules
 defaultRules TR = TRRules.defaultRules
 defaultRules UK = UKRules.defaultRules
@@ -165,6 +167,7 @@ localeRules PT = PTRules.localeRules
 localeRules RO = RORules.localeRules
 localeRules RU = RURules.localeRules
 localeRules SV = SVRules.localeRules
+localeRules SW = SWRules.localeRules
 localeRules TA = TARules.localeRules
 localeRules TR = TRRules.localeRules
 localeRules UK = UKRules.localeRules
@@ -208,6 +211,7 @@ langRules PT = PTRules.langRules
 langRules RO = RORules.langRules
 langRules RU = RURules.langRules
 langRules SV = SVRules.langRules
+langRules SW = SWRules.langRules
 langRules TA = TARules.langRules
 langRules TR = TRRules.langRules
 langRules UK = UKRules.langRules

@@ -70,6 +70,7 @@ data Lang
   | RO
   | RU
   | SV
+  | SW
   | TA
   | TR
   | UK

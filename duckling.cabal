@@ -196,6 +196,7 @@ library
                      , Duckling.Dimensions.UK
                      , Duckling.Dimensions.VI
                      , Duckling.Dimensions.ZH
+                     , Duckling.Dimensions.SW
 
                      -- AmountOfMoney
                      , Duckling.AmountOfMoney.AR.Corpus

@@ -36,8 +36,9 @@ allExamples = concat
   , examples (DurationData 1 Day)
              [ "दिवस"
              , "एक दिन"
+             , "बिल्कुल एक दिन"
              ]
-  , examples (DurationData 14 Day)
+  , examples (DurationData 15 Day)
              [ "पखवाड़ा"
              , "एक पखवाड़ा"
              ]
@@ -45,5 +46,7 @@ allExamples = concat
              [ "एक साल"
              , "केवल एक वर्ष"
              , "लगभग एक साल"
+             , "एक बरस"
+             , "केवल एक साल"
              ]
   ]

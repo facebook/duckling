@@ -281,6 +281,8 @@ library
                      , Duckling.Distance.GA.Rules
                      , Duckling.Distance.HR.Corpus
                      , Duckling.Distance.HR.Rules
+                     , Duckling.Distance.IT.Corpus
+                     , Duckling.Distance.IT.Rules
                      , Duckling.Distance.KM.Corpus
                      , Duckling.Distance.KM.Rules
                      , Duckling.Distance.KO.Corpus

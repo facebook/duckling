@@ -13,6 +13,7 @@ import Data.String
 import Test.Tasty
 
 import qualified Duckling.Temperature.AR.Tests as AR
+import qualified Duckling.Temperature.CS.Tests as CS
 import qualified Duckling.Temperature.EN.Tests as EN
 import qualified Duckling.Temperature.ES.Tests as ES
 import qualified Duckling.Temperature.FR.Tests as FR
@@ -32,6 +33,7 @@ import qualified Duckling.Temperature.ZH.Tests as ZH
 tests :: TestTree
 tests = testGroup "Temperature Tests"
   [ AR.tests
+  , CS.tests
   , EN.tests
   , ES.tests
   , FR.tests

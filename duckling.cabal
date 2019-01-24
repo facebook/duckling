@@ -574,6 +574,8 @@ library
                      -- Temperature
                      , Duckling.Temperature.AR.Corpus
                      , Duckling.Temperature.AR.Rules
+                     , Duckling.Temperature.CS.Corpus
+                     , Duckling.Temperature.CS.Rules
                      , Duckling.Temperature.EN.Corpus
                      , Duckling.Temperature.EN.Rules
                      , Duckling.Temperature.ES.Corpus
@@ -995,6 +997,7 @@ test-suite duckling-test
 
                      -- Temperature
                      , Duckling.Temperature.AR.Tests
+                     , Duckling.Temperature.CS.Tests
                      , Duckling.Temperature.EN.Tests
                      , Duckling.Temperature.ES.Tests
                      , Duckling.Temperature.FR.Tests

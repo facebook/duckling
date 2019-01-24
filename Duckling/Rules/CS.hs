@@ -20,6 +20,7 @@ import Duckling.Locale
 import Duckling.Types
 import qualified Duckling.Distance.CS.Rules as Distance
 import qualified Duckling.Numeral.CS.Rules as Numeral
+import qualified Duckling.Temperature.CS.Rules as Temperature
 
 defaultRules :: Some Dimension -> [Rule]
 defaultRules = langRules
@@ -39,7 +40,7 @@ langRules (This Ordinal) = []
 langRules (This PhoneNumber) = []
 langRules (This Quantity) = []
 langRules (This RegexMatch) = []
-langRules (This Temperature) = []
+langRules (This Temperature) = Temperature.rules
 langRules (This Time) = []
 langRules (This TimeGrain) = []
 langRules (This Url) = []

@@ -191,12 +191,12 @@ library
                      , Duckling.Dimensions.RO
                      , Duckling.Dimensions.RU
                      , Duckling.Dimensions.SV
+                     , Duckling.Dimensions.SW
                      , Duckling.Dimensions.TA
                      , Duckling.Dimensions.TR
                      , Duckling.Dimensions.UK
                      , Duckling.Dimensions.VI
                      , Duckling.Dimensions.ZH
-                     , Duckling.Dimensions.SW
 
                      -- AmountOfMoney
                      , Duckling.AmountOfMoney.AR.Corpus

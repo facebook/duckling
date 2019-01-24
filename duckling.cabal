@@ -191,6 +191,7 @@ library
                      , Duckling.Dimensions.RO
                      , Duckling.Dimensions.RU
                      , Duckling.Dimensions.SV
+                     , Duckling.Dimensions.SW
                      , Duckling.Dimensions.TA
                      , Duckling.Dimensions.TR
                      , Duckling.Dimensions.UK

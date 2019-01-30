@@ -45,6 +45,7 @@ import qualified Duckling.Dimensions.IT as ITDimensions
 import qualified Duckling.Dimensions.JA as JADimensions
 import qualified Duckling.Dimensions.KA as KADimensions
 import qualified Duckling.Dimensions.KM as KMDimensions
+import qualified Duckling.Dimensions.KN as KNDimensions
 import qualified Duckling.Dimensions.KO as KODimensions
 import qualified Duckling.Dimensions.LO as LODimensions
 import qualified Duckling.Dimensions.ML as MLDimensions
@@ -119,6 +120,7 @@ langDimensions IT = ITDimensions.allDimensions
 langDimensions JA = JADimensions.allDimensions
 langDimensions KA = KADimensions.allDimensions
 langDimensions KM = KMDimensions.allDimensions
+langDimensions KN = KNDimensions.allDimensions
 langDimensions KO = KODimensions.allDimensions
 langDimensions LO = LODimensions.allDimensions
 langDimensions ML = MLDimensions.allDimensions

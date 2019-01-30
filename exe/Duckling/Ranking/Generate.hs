@@ -193,6 +193,7 @@ getCorpusForLang IT = ITTime.corpus
 getCorpusForLang JA = (testContext, testOptions, [])
 getCorpusForLang KA = (testContext, testOptions, [])
 getCorpusForLang KM = (testContext, testOptions, [])
+getCorpusForLang KN = (testContext, testOptions, [])
 getCorpusForLang KO = KOTime.corpus
 getCorpusForLang LO = (testContext, testOptions, [])
 getCorpusForLang ML = (testContext, testOptions, [])

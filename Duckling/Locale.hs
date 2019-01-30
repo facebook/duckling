@@ -56,6 +56,7 @@ data Lang
   | IT
   | JA
   | KA
+  | KN
   | KM
   | KO
   | LO

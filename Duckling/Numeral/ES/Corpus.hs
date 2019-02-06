@@ -42,6 +42,9 @@ allExamples = concat
              [ "veintiuno"
              , "veinte y uno"
              ]
+  , examples (NumeralValue 22)
+             [ "veintidós"
+             ]
   , examples (NumeralValue 23)
              [ "veintitrés"
              , "veinte y tres"

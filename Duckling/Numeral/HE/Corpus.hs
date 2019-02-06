@@ -70,6 +70,10 @@ allExamples = concat
              , "1.10"
              , "01.10"
              ]
+  , examples (NumeralValue 0.5)
+             [ "חצי"
+             , "0.5"
+             ]
   , examples (NumeralValue 0.77)
              [ "0.77"
              , ".77"

@@ -344,6 +344,15 @@ ruleCommas = Rule
       _ -> Nothing
   }
 
+ruleHalf :: Rule
+ruleHalf = Rule
+  { name = "half"
+  , pattern =
+    [ regex "חצי"
+    ]
+  , prod = \_ -> double 0.5
+  }
+
 rules :: [Rule]
 rules =
   [ ruleCommas
@@ -373,4 +382,5 @@ rules =
   , ruleNumeralsPrefixWithNegativeOrMinus
   , rulePowersOfTen
   , ruleSingle
+  , ruleHalf
   ]

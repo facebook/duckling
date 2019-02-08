@@ -72,6 +72,7 @@ library
                      , Duckling.Rules.JA
                      , Duckling.Rules.KA
                      , Duckling.Rules.KM
+                     , Duckling.Rules.KN
                      , Duckling.Rules.KO
                      , Duckling.Rules.LO
                      , Duckling.Rules.ML
@@ -178,6 +179,7 @@ library
                      , Duckling.Dimensions.JA
                      , Duckling.Dimensions.KA
                      , Duckling.Dimensions.KM
+                     , Duckling.Dimensions.KN
                      , Duckling.Dimensions.KO
                      , Duckling.Dimensions.LO
                      , Duckling.Dimensions.ML
@@ -425,6 +427,8 @@ library
                      , Duckling.Numeral.KA.Rules
                      , Duckling.Numeral.KM.Corpus
                      , Duckling.Numeral.KM.Rules
+                     , Duckling.Numeral.KN.Corpus
+                     , Duckling.Numeral.KN.Rules
                      , Duckling.Numeral.KO.Corpus
                      , Duckling.Numeral.KO.Rules
                      , Duckling.Numeral.LO.Corpus
@@ -928,6 +932,7 @@ test-suite duckling-test
                      , Duckling.Numeral.JA.Tests
                      , Duckling.Numeral.KA.Tests
                      , Duckling.Numeral.KM.Tests
+                     , Duckling.Numeral.KN.Tests
                      , Duckling.Numeral.KO.Tests
                      , Duckling.Numeral.LO.Tests
                      , Duckling.Numeral.ML.Tests

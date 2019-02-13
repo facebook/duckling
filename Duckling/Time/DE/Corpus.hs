@@ -673,4 +673,10 @@ allExamples = concat
              [ "2018-08-31"
              , "2018-8-31"
              ]
+  , examples (datetime (1980, 5, 30, 0, 0, 0) Day)
+             [ "30. Mai 1980"
+             ]
+  , examples (datetime (2013, 2, 9, 0, 0, 0) Day)
+             [ "vorvorgestern"
+             ]
   ]

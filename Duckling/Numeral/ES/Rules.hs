@@ -138,6 +138,7 @@ sixteenToTwentyNineMap = HashMap.fromList
   , ( "veintiuno" , 21 )
   , ( "veintiuna" , 21 )
   , ( "veintidos" , 22 )
+  , ( "veintidós" , 22 )
   , ( "veintitrés" , 23 )
   , ( "veintitres" , 23 )
   , ( "veinticuatro" , 24 )
@@ -153,7 +154,7 @@ ruleNumeral5 :: Rule
 ruleNumeral5 = Rule
   { name = "number (16..19 21..29)"
   , pattern =
-    [ regex "(die(c|s)is(é|e)is|diecisiete|dieciocho|diecinueve|veintiun(o|a)|veintidos|veintitr(é|e)s|veinticuatro|veinticinco|veintis(é|e)is|veintisiete|veintiocho|veintinueve)"
+    [ regex "(die(c|s)is(é|e)is|diecisiete|dieciocho|diecinueve|veintiun(o|a)|veintid(o|ó)s|veintitr(é|e)s|veinticuatro|veinticinco|veintis(é|e)is|veintisiete|veintiocho|veintinueve|treinta)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->

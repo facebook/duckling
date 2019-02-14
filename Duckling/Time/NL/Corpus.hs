@@ -11,6 +11,7 @@
 module Duckling.Time.NL.Corpus
   ( corpus
   , defaultCorpus
+  , latentCorpus
   , negativeCorpus
   ) where
 
@@ -38,6 +39,15 @@ defaultCorpus = (context, testOptions, allExamples ++ custom)
                  [ "Sinterklaas"
                  , "Pakjesavond"
                  , "Sinterklaasavond"
+                 ]
+      ]
+
+latentCorpus :: Corpus
+latentCorpus = (context, testOptions {withLatent = True}, xs)
+  where
+    xs = concat
+      [ examples (datetimeOpenInterval Before (2013, 2, 12, 8, 0, 0) Hour)
+                 [ "voor 8"
                  ]
       ]
 

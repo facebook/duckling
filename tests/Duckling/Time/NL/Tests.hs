@@ -24,6 +24,7 @@ import qualified Duckling.Time.NL.BE.Corpus as BE
 tests :: TestTree
 tests = testGroup "NL Tests"
   [ makeCorpusTest [This Time] corpus
+  , makeCorpusTest [This Time] latentCorpus
   , makeNegativeCorpusTest [This Time] negativeCorpus
   , localeTests
   ]

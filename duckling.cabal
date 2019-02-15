@@ -125,6 +125,7 @@ library
                      , Duckling.Ranking.Classifiers.JA_XX
                      , Duckling.Ranking.Classifiers.KA_XX
                      , Duckling.Ranking.Classifiers.KM_XX
+                     , Duckling.Ranking.Classifiers.KN_XX
                      , Duckling.Ranking.Classifiers.KO_XX
                      , Duckling.Ranking.Classifiers.LO_XX
                      , Duckling.Ranking.Classifiers.ML_XX
@@ -313,6 +314,7 @@ library
                      , Duckling.Distance.Helpers
                      , Duckling.Distance.Rules
                      , Duckling.Distance.Types
+                     , Duckling.DistanceUnits.Types
 
                      -- Duration
                      , Duckling.Duration.AR.Corpus
@@ -863,6 +865,7 @@ test-suite duckling-test
                      , Duckling.Distance.FR.Tests
                      , Duckling.Distance.GA.Tests
                      , Duckling.Distance.HR.Tests
+                     , Duckling.Distance.IT.Tests
                      , Duckling.Distance.KM.Tests
                      , Duckling.Distance.KO.Tests
                      , Duckling.Distance.MN.Tests

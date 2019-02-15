@@ -175,6 +175,7 @@ ruleDurationPrecision = Rule
         _ -> Nothing
   }
 
+-- | NOTE: Oxford comma is not supported.
 ruleCompositeDurationCommasAnd :: Rule
 ruleCompositeDurationCommasAnd = Rule
   { name = "composite <duration> (with ,/and)"

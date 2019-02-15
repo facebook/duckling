@@ -10,6 +10,7 @@
 
 module Duckling.Distance.Helpers
   ( distance
+  , distanceSum
   , isDistanceOfUnit
   , isSimpleDistance
   , unitOnly
@@ -21,11 +22,13 @@ module Duckling.Distance.Helpers
   ) where
 
 import Prelude
+import Data.Semigroup ((<>))
 
 import Duckling.Dimensions.Types
 import Duckling.Distance.Types (DistanceData(..))
 import Duckling.Types
 import qualified Duckling.Distance.Types as TDistance
+import qualified Duckling.DistanceUnits.Types as DGTypes
 
 -- -----------------------------------------------------------------
 -- Patterns
@@ -36,7 +39,8 @@ isSimpleDistance (Token Distance DistanceData {TDistance.value = Just _
 isSimpleDistance _ = False
 
 isDistanceOfUnit :: TDistance.Unit -> Predicate
-isDistanceOfUnit unit (Token Distance DistanceData {TDistance.unit = Just u}) = unit == u
+isDistanceOfUnit unit (Token Distance DistanceData {TDistance.unit = Just u}) =
+    unit == u
 isDistanceOfUnit _ _ = False
 
 -- -----------------------------------------------------------------
@@ -47,6 +51,22 @@ distance x = DistanceData {TDistance.value = Just x
                           , TDistance.unit = Nothing
                           , TDistance.minValue = Nothing
                           , TDistance.maxValue = Nothing}
+
+distanceSum ::
+     Double
+  -> TDistance.Unit
+  -> Double
+  -> TDistance.Unit
+  -> Maybe DistanceData
+distanceSum v1 u1 v2 u2 = unwrapContext $ cd1 <> cd2
+  where
+    wrapContext v u = DGTypes.ContextualDistance v $ DGTypes.toSystemUnit u
+    cd1 = wrapContext v1 u1
+    cd2 = wrapContext v2 u2
+
+    unwrapContext DGTypes.Nonrelatable = Nothing
+    unwrapContext (DGTypes.ContextualDistance v u) =
+        Just $ withUnit (DGTypes.toRawUnit u) $ distance v
 
 unitOnly :: TDistance.Unit -> DistanceData
 unitOnly u = DistanceData {TDistance.unit = Just u

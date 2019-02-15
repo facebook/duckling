@@ -85,9 +85,12 @@ allExamples = concat
   , examples (DurationData 27 Month)
              [ "2 years and 3 months"
              , "2 years, 3 months"
+             , "2 years 3 months"
              ]
   , examples (DurationData 31719604 Second)
              [ "1 year, 2 days, 3 hours and 4 seconds"
              , "1 year 2 days 3 hours and 4 seconds"
+               -- Oxford comma not supported:
+--           , "1 year, 2 days, 3 hours, and 4 seconds"
              ]
   ]

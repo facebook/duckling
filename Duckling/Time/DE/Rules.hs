@@ -521,6 +521,19 @@ ruleNextCycle = Rule
       _ -> Nothing
   }
 
+ruleAfterNextCycle :: Rule
+ruleAfterNextCycle = Rule
+  { name = "after next <cycle>"
+  , pattern =
+    [ regex "(ü)ber ?n(ä)chste[ns]?"
+    , dimension TimeGrain
+    ]
+  , prod = \tokens -> case tokens of
+      (_:Token TimeGrain grain:_) ->
+        tt $ cycleNth grain 2
+      _ -> Nothing
+  }
+
 ruleTimeofdayApproximately :: Rule
 ruleTimeofdayApproximately = Rule
   { name = "<time-of-day> approximately"
@@ -1658,6 +1671,7 @@ rules =
   , ruleNamedmonthDayofmonthNonOrdinal
   , ruleNamedmonthDayofmonthOrdinal
   , ruleNextCycle
+  , ruleAfterNextCycle
   , ruleNextNCycle
   , ruleNextTime
   , ruleNight

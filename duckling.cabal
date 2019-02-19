@@ -24,7 +24,7 @@ stability:           alpha
 cabal-version:       >=1.10
 tested-with:
   GHC==8.0.2,
-  GHC==8.2.1
+  GHC==8.2.2
 
 extra-source-files:    README.md
                      , PATENTS

@@ -1182,4 +1182,3 @@ executable duckling-expensive
 source-repository head
   type:     git
   location: https://github.com/facebook/duckling
-  

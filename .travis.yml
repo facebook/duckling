@@ -13,6 +13,10 @@ before_cache:
 
 matrix:
   include:
+    # when text-show tries to use TH the wrong one gets linked
+    # - env: CABALVER=1.24 GHCVER=7.10.3 HAPPYVER=1.19.5 BUILD=cabal
+    #   compiler: ": #GHC 7.10.3"
+    #   addons: {apt: {packages: [cabal-install-1.24,ghc-7.10.3,happy-1.19.5], sources: [hvr-ghc]}}
     - env: CABALVER=1.24 GHCVER=8.0.2
       compiler: ": #GHC 8.0.2"
       addons: {apt: {packages: [cabal-install-1.24,ghc-8.0.2,happy-1.19.5], sources: [hvr-ghc]}}

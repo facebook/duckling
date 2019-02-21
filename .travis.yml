@@ -13,6 +13,7 @@ before_cache:
 
 matrix:
   include:
+    # crashes in travis because 2 versions of unix get installed and
     # when text-show tries to use TH the wrong one gets linked
     # - env: CABALVER=1.24 GHCVER=7.10.3 HAPPYVER=1.19.5 BUILD=cabal
     #   compiler: ": #GHC 7.10.3"

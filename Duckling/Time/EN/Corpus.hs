@@ -1021,6 +1021,9 @@ allExamples = concat
              , "Thursday from 9:30 untill 11:00"
              , "9:30 till 11:00 on Thursday"
              ]
+  , examples (datetimeInterval ((2016, 4, 15, 10, 0, 0), (2016, 4, 19, 10, 0, 0)) Minute)
+             [ "from 10.00am Friday 15th April 2016 until 10.00am on Tuesday 19th April 2016"
+             ]
   , examples (datetimeInterval ((2013, 2, 13, 1, 0, 0), (2013, 2, 13, 2, 31, 0)) Minute)
              [ "tomorrow in between 1-2:30 ish"
              ]

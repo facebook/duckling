@@ -14,9 +14,9 @@ module Duckling.Time.Helpers
   ( -- Patterns
     hasNoDirection, isADayOfWeek, isAMonth, isAnHourOfDay, isAPartOfDay
   , isATimeOfDay, isDurationGreaterThan, isDOMInteger, isDOMOrdinal, isDOMValue
-  , isGrain, isGrainFinerThan, isGrainOfTime, isIntegerBetween, isNotLatent
-  , isOrdinalBetween, isMidnightOrNoon, isOkWithThisNext, sameGrain
-  , hasTimezone, hasNoTimezone, today
+  , isGrain, isGrainFinerThan, isGrainCoarserThan, isGrainOfTime
+  , isIntegerBetween, isNotLatent , isOrdinalBetween, isMidnightOrNoon
+  , isOkWithThisNext, sameGrain, hasTimezone, hasNoTimezone, today
     -- Production
   , cycleLastOf, cycleN, cycleNth, cycleNthAfter, dayOfMonth, dayOfWeek
   , durationAfter, durationAgo, durationBefore, mkOkForThisNext, form, hour
@@ -275,6 +275,10 @@ isGrain _ _ = False
 isGrainFinerThan :: TG.Grain -> Predicate
 isGrainFinerThan value (Token Time TimeData{TTime.timeGrain = g}) = g < value
 isGrainFinerThan _ _ = False
+
+isGrainCoarserThan :: TG.Grain -> Predicate
+isGrainCoarserThan value (Token Time TimeData{TTime.timeGrain = g}) = g > value
+isGrainCoarserThan _ _ = False
 
 isGrainOfTime :: TG.Grain -> Predicate
 isGrainOfTime value (Token Time TimeData{TTime.timeGrain = g}) = g == value

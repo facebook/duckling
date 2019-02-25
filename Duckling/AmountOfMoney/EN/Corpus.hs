@@ -76,6 +76,7 @@ allExamples = concat
              [ "USD3.14"
              , "3.14US$"
              , "US$ 3.14"
+             , "US$3 and fourteen"
              ]
   , examples (simple EUR 20)
              [ "20\x20ac"
@@ -115,6 +116,7 @@ allExamples = concat
              [ "GBP3.01"
              , "GBP 3.01"
              , "3 GBP 1 pence"
+             , "3 GBP and one"
              ]
   , examples (simple Unnamed 42)
              [ "42 bucks"
@@ -225,5 +227,10 @@ allExamples = concat
               [ "ten tugriks"
               , "10 Tugrik"
               , "10MNT"
+              ]
+   , examples (simple USD 4.7e9)
+              [ "US$4.7 billion"
+              , "a US$4.7 billion"
+              , "a US$ 4.7 billion"
               ]
   ]

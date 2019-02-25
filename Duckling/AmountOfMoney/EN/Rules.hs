@@ -143,6 +143,18 @@ ruleACurrency = Rule
       _ -> Nothing
   }
 
+ruleAbsorbA :: Rule
+ruleAbsorbA = Rule
+  { name = "a <amount-of-money>"
+  , pattern =
+    [ regex "an?"
+    , Predicate isSimpleAmountOfMoney
+    ]
+  , prod = \case
+      (_:Token AmountOfMoney fd:_) -> Just $ Token AmountOfMoney fd
+      _ -> Nothing
+  }
+
 ruleADollarCoin :: Rule
 ruleADollarCoin = Rule
   { name = "a <dollar coin>"
@@ -356,6 +368,7 @@ rules :: [Rule]
 rules =
   [ ruleUnitAmount
   , ruleACurrency
+  , ruleAbsorbA
   , ruleBucks
   , ruleCent
   , ruleADollarCoin

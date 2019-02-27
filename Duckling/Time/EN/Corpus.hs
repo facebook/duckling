@@ -1603,4 +1603,14 @@ allExamples = concat
             , "King's Day 2014"
             , "king's day 2014"
             ]
+  , examples (datetimeHoliday (2018, 5, 9, 0, 0, 0) Day "Rabindra Jayanti")
+            [ "rabindra jayanti 2018"
+            , "Rabindranath Jayanti 2018"
+            , "Rabindra Jayanti 2018"
+            ]
+  , examples (datetimeHoliday (2019, 5, 9, 0, 0, 0) Day "Rabindra Jayanti")
+            [ "rabindra jayanti 2019"
+            , "Rabindranath Jayanti 2019"
+            , "Rabindra Jayanti 2019"
+            ]
   ]

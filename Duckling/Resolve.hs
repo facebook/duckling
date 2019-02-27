@@ -38,7 +38,7 @@ data Context = Context
   deriving (Eq, Show)
 
 newtype Options = Options
-  { withLatent :: Bool  -- When set, includes less certain parses, e.g. "7" as an hour of the day
+  { withLatent :: Bool  -- ^ When set, includes less certain parses, e.g. "7" as an hour of the day
   }
   deriving (Eq, Show)
 
@@ -49,7 +49,7 @@ class ( Eq (ResolvedValue a)
   type ResolvedValue a
   resolve :: Context -> Options -> a -> Maybe (ResolvedValue a, Bool)
 
--- | Given a UTCTime and an TimeZone, build a ZonedTime (no conversion)
+-- | Given an UTCTime and a TimeZone, build a ZonedTime (no conversion)
 fromUTC :: Time.UTCTime -> Time.TimeZone -> Time.ZonedTime
 fromUTC (Time.UTCTime day diffTime) timeZone = Time.ZonedTime localTime timeZone
   where

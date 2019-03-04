@@ -1820,6 +1820,8 @@ ruleComputedHolidays = mkRuleHolidays
     , cycleNthAfter False TG.Day 50 easterSunday )
   -- Rabindra Jayanti 25th day of the Bengali month of Boishakh
   , ( "Rabindra Jayanti", "rabindra(nath)?\\s+jayanti", rabindraJayanti )
+  , ("Guru Ravidass Jayanti", "guru\\s+ravidass?\\s+(birthday|jayanti)"
+    , ravidassJayanti )
   ]
 
 ruleComputedHolidays' :: [Rule]

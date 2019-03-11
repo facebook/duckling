@@ -320,10 +320,10 @@ classifiers
                                unseen = -4.31748811353631,
                                likelihoods =
                                  HashMap.fromList
-                                   [("<integer> (latent time-of-day)", -0.9718605830289658),
+                                   [("<integer> (latent time-of-day)", -0.9718605830289657),
                                     ("intersect by \"di\", \"della\", \"del\"", -3.20545280453606),
                                     ("day", -2.3581549441488563), ("Lunedi", -3.6109179126442243),
-                                    ("hour", -0.9718605830289658),
+                                    ("hour", -0.9718605830289657),
                                     ("two time tokens separated by `di`", -3.20545280453606),
                                     ("Domenica", -3.6109179126442243)],
                                n = 33}}),

@@ -142,14 +142,16 @@ rulePowersOfTen :: Rule
 rulePowersOfTen = Rule
   { name = "powers of tens"
   , pattern =
-    [ regex "(hundrede?|tusinde?|million(er)?)"
+    [ regex "(hundrede?|tohundrede|tusinde?|totusinde|million(er)?)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
         "hundred"   -> double 1e2 >>= withGrain 2 >>= withMultipliable
         "hundrede"  -> double 1e2 >>= withGrain 2 >>= withMultipliable
+        "tohundrede"  -> double (2 * 1e2) >>= withGrain 2 >>= withMultipliable
         "tusind"    -> double 1e3 >>= withGrain 3 >>= withMultipliable
         "tusinde"   -> double 1e3 >>= withGrain 3 >>= withMultipliable
+        "totusinde"   -> double (2 * 1e3) >>= withGrain 3 >>= withMultipliable
         "million"   -> double 1e6 >>= withGrain 6 >>= withMultipliable
         "millioner" -> double 1e6 >>= withGrain 6 >>= withMultipliable
         _           -> Nothing

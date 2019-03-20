@@ -118,6 +118,22 @@ allExamples = concat
              , "3 GBP 1 pence"
              , "3 GBP and one"
              ]
+  , examples (simple CAD 3.03)
+             [ "CAD3.03"
+             , "CAD 3.03"
+             , "3 CAD 3 cents"
+             ]
+  , examples (simple CHF 3.04)
+             [ "CHF3.04"
+             , "CHF 3.04"
+             , "3 CHF 4 cents"
+             ]
+  , examples (simple CNY 3)
+             [ "CNY3"
+             , "CNY 3"
+             , "3 CNY"
+             , "3 yuan"
+             ]
   , examples (simple Unnamed 42)
              [ "42 bucks"
              , "around 42 bucks"

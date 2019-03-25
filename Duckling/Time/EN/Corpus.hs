@@ -1426,6 +1426,24 @@ allExamples = concat
              , "sacrifice feast 2018"
              , "Bakr Id 2018"
              ]
+  , examples (datetimeHoliday (1980, 10, 19, 0, 0, 0) Day "Eid al-Adha")
+             [ "Eid al-Adha 1980"
+             , "id ul-adha 1980"
+             , "sacrifice feast 1980"
+             , "Bakr Id 1980"
+             ]
+  , examples (datetimeHoliday (1966, 4, 1, 0, 0, 0) Day "Eid al-Adha")
+             [ "Eid al-Adha 1966"
+             , "id ul-adha 1966"
+             , "sacrifice feast 1966"
+             , "Bakr Id 1966"
+             ]
+  , examples (datetimeHoliday (1974, 1, 3, 0, 0, 0) Day "Eid al-Adha")
+             [ "Eid al-Adha 1974"
+             , "id ul-adha 1974"
+             , "sacrifice feast 1974"
+             , "Bakr Id 1974"
+             ]
   , examples (datetimeHoliday (2017, 6, 22, 0, 0, 0) Day "Laylat al-Qadr")
              [ "laylat al kadr 2017"
              , "night of measures 2017"

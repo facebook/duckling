@@ -29,6 +29,7 @@ data Unit
   = Gallon
   | Hectolitre
   | Litre
+  | Centilitre
   | Millilitre
   deriving (Eq, Generic, Hashable, Ord, Show, NFData)
 

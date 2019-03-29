@@ -29,6 +29,11 @@ allExamples = concat
              , "250ml"
              , "250 ml"
              ]
+  , examples (simple Centilitre 25)
+             [ "25 centilitres"
+             , "25cl"
+             , "25 cl"
+             ]
   , examples (simple Litre 2)
              [ "2 litres"
              ]
@@ -42,5 +47,8 @@ allExamples = concat
   , examples (simple Litre 0.5)
              [ "demi-litre"
              , "demi litre"
+             ]
+  , examples (simple Litre 0.25)
+             [ "quart de litre"
              ]
   ]

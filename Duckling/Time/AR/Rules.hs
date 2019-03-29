@@ -26,6 +26,7 @@ import Duckling.Duration.Helpers (duration)
 import Duckling.Numeral.Helpers (parseInt)
 import Duckling.Numeral.Types (NumeralData (..))
 import Duckling.Regex.Types
+import Duckling.Time.Computed
 import Duckling.Time.Helpers
 import Duckling.Time.Types (TimeData (..))
 import Duckling.Types
@@ -1711,6 +1712,27 @@ ruleTimezone = Rule
       _ -> Nothing
   }
 
+rulePeriodicHolidays :: [Rule]
+rulePeriodicHolidays = mkRuleHolidays
+  [ ( "عيد الميلاد" ,"عيد الميلاد", monthDay 12 25 )
+  ]
+
+ruleComputedHolidays :: [Rule]
+ruleComputedHolidays = mkRuleHolidays
+  [ ( "عيد الأضحى" ,"عيد الأضحى", eidalAdha )
+  , ( "عيد الفطر" ,"عيد الفطر", eidalFitr )
+  , ( "عيد الفصح" ,"عيد الفصح", easterSunday )
+  , ( "رأس السنة الهجرية" ,"رأس السنة الهجرية", muharram )
+  ]
+
+ruleComputedHolidays' :: [Rule]
+ruleComputedHolidays' = mkRuleHolidays'
+  [ ( "رمضان", "رمضان"
+    , let start = ramadan
+          end = cycleNthAfter False TG.Day (-1) eidalFitr
+        in interval TTime.Open start end )
+  ]
+
 rules :: [Rule]
 rules =
   [ ruleIntersect
@@ -1827,3 +1849,6 @@ rules =
   ++ ruleDaysOfWeek
   ++ ruleMonths
   ++ ruleUSHolidays
+  ++ rulePeriodicHolidays
+  ++ ruleComputedHolidays
+  ++ ruleComputedHolidays'

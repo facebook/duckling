@@ -22,6 +22,7 @@ import Duckling.PhoneNumber.Corpus
 import Duckling.PhoneNumber.Types
 import Duckling.Testing.Asserts
 import Duckling.Testing.Types
+import qualified Duckling.PhoneNumber.AR.Tests as AR
 import qualified Duckling.PhoneNumber.PT.Tests as PT
 
 tests :: TestTree
@@ -30,6 +31,7 @@ tests = testGroup "PhoneNumber Tests"
   , makeNegativeCorpusTest [This PhoneNumber] negativeCorpus
   , surroundTests
   , PT.tests
+  , AR.tests
   ]
 
 surroundTests :: TestTree

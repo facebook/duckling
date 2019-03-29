@@ -385,6 +385,7 @@ library
 
                      -- Numeral
                      , Duckling.Numeral.AR.Corpus
+                     , Duckling.Numeral.AR.Helpers
                      , Duckling.Numeral.AR.Rules
                      , Duckling.Numeral.BG.Corpus
                      , Duckling.Numeral.BG.Rules
@@ -547,6 +548,8 @@ library
                      , Duckling.Ordinal.Types
 
                      -- PhoneNumber
+                     , Duckling.PhoneNumber.AR.Corpus
+                     , Duckling.PhoneNumber.AR.Rules
                      , Duckling.PhoneNumber.PT.Corpus
                      , Duckling.PhoneNumber.PT.Rules
                      , Duckling.PhoneNumber.Corpus
@@ -996,6 +999,7 @@ test-suite duckling-test
                      , Duckling.Ordinal.Tests
 
                      -- PhoneNumber
+                     , Duckling.PhoneNumber.AR.Tests
                      , Duckling.PhoneNumber.PT.Tests
                      , Duckling.PhoneNumber.Tests
 

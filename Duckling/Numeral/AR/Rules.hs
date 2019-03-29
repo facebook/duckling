@@ -9,10 +9,7 @@
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE OverloadedStrings #-}
 
-module Duckling.Numeral.AR.Rules
-  ( rules
-  ) where
-
+module Duckling.Numeral.AR.Rules (rules) where
 import Data.HashMap.Strict (HashMap)
 import Data.Maybe
 import Data.String
@@ -22,6 +19,7 @@ import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
+import Duckling.Numeral.AR.Helpers (digitsMap)
 import Duckling.Numeral.Helpers
 import Duckling.Numeral.Types (NumeralData (..))
 import Duckling.Regex.Types
@@ -61,19 +59,6 @@ ruleInteger18 = Rule
     ]
   , prod = \_ -> integer 12
   }
-
-digitsMap :: HashMap Text Integer
-digitsMap = HashMap.fromList
-  [ ("عشر", 2)
-  , ("ثلاث", 3)
-  , ("اربع", 4)
-  , ("أربع", 4)
-  , ("خمس", 5)
-  , ("ست", 6)
-  , ("سبع", 7)
-  , ("ثمان", 8)
-  , ("تسع", 9)
-  ]
 
 ruleInteger19 :: Rule
 ruleInteger19 = Rule

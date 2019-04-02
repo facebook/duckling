@@ -1639,6 +1639,20 @@ ruleYear = Rule
       _ -> Nothing
   }
 
+ruleVingtiemeSiecleYear :: Rule
+ruleVingtiemeSiecleYear = Rule
+  { name = "year"
+  , pattern =
+    [ Predicate $ isIntegerBetween 40 99
+    ]
+  , prod = \tokens -> case tokens of
+      (token:_) -> do
+        n <- getIntValue token
+        realYear <- Just (1900 + n)
+        tt $ year realYear
+      _ -> Nothing
+  }
+
 ruleMaintenant :: Rule
 ruleMaintenant = Rule
   { name = "maintenant"
@@ -2070,6 +2084,7 @@ rules =
   , ruleDbutDAnnee
   , rulePlusTard
   , rulePlusTardPartofday
+  , ruleVingtiemeSiecleYear
   ]
   ++ ruleMonths
   ++ ruleDaysOfWeek

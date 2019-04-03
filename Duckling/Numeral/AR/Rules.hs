@@ -8,18 +8,20 @@
 
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE NoRebindableSyntax #-}
 
 module Duckling.Numeral.AR.Rules (rules) where
-import Data.HashMap.Strict (HashMap)
 import Data.Maybe
 import Data.String
-import Data.Text (Text)
 import Prelude
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
-import Duckling.Numeral.AR.Helpers (digitsMap)
+import Duckling.Numeral.AR.Helpers
+  ( digitsMap
+  , parseArabicIntegerFromText
+  )
 import Duckling.Numeral.Helpers
 import Duckling.Numeral.Types (NumeralData (..))
 import Duckling.Regex.Types
@@ -327,9 +329,37 @@ ruleIntegerWithThousandsSeparator = Rule
       _ -> Nothing
   }
 
+ruleIntegerNumeric :: Rule
+ruleIntegerNumeric = Rule
+  { name = "Arabic integer numeric"
+  , pattern =
+    [ regex "([٠-٩]{1,18})"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        parseArabicIntegerFromText match >>= integer
+      _ -> Nothing
+  }
+
+ruleFractionsNumeric :: Rule
+ruleFractionsNumeric = Rule
+  { name = "Arabic fractional number numeric"
+  , pattern =
+    [ regex "([٠-٩]+)/([٠-٩]+)"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (numerator:denominator:_)):_) -> do
+        n <- parseArabicIntegerFromText numerator >>= integer
+        d <- parseArabicIntegerFromText denominator >>= integer
+        divide n d >>= notOkForAnyTime
+      _ -> Nothing
+  }
+
 rules :: [Rule]
 rules =
-  [ ruleDecimalNumeral
+  [ ruleIntegerNumeric
+  , ruleFractionsNumeric
+  , ruleDecimalNumeral
   , ruleDecimalWithThousandsSeparator
   , ruleInteger
   , ruleInteger11

@@ -11,15 +11,21 @@
 module Duckling.Numeral.AR.Helpers
   ( digitsMap
   , numeralToStringMap
+  , parseArabicDoubleAsText
+  , parseArabicDoubleFromText
   , parseArabicIntAsText
   , parseArabicIntegerFromText
   ) where
 
+import Control.Monad (join)
 import Data.HashMap.Strict (HashMap)
 import Data.Maybe (mapMaybe)
 import Data.String
 import Data.Text (Text)
-import Duckling.Numeral.Helpers (parseInteger)
+import Duckling.Numeral.Helpers
+  ( parseDouble
+  , parseInteger
+  )
 import Prelude
 
 import qualified Data.HashMap.Strict as HashMap
@@ -55,10 +61,21 @@ digitsMap =
     ]
 
 parseArabicIntAsText :: Text -> Text
-parseArabicIntAsText intText =
+parseArabicIntAsText =
   Text.pack
-    $ concat
-    $ mapMaybe (`HashMap.lookup` numeralToStringMap) (Text.unpack intText)
+    . join
+    . mapMaybe (`HashMap.lookup` numeralToStringMap)
+    . Text.unpack
 
 parseArabicIntegerFromText :: Text -> Maybe Integer
-parseArabicIntegerFromText given = parseInteger $ parseArabicIntAsText given
+parseArabicIntegerFromText = parseInteger . parseArabicIntAsText
+
+parseArabicDoubleAsText :: Text -> Text
+parseArabicDoubleAsText =
+  Text.pack
+    . join
+    . mapMaybe (`HashMap.lookup` HashMap.insert '٫' "." numeralToStringMap)
+    . Text.unpack
+
+parseArabicDoubleFromText :: Text -> Maybe Double
+parseArabicDoubleFromText = parseDouble . parseArabicDoubleAsText

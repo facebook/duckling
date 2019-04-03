@@ -12,7 +12,6 @@
 
 module Duckling.Numeral.AR.Rules (rules) where
 import Data.Maybe
-import Data.String
 import Prelude
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Text as Text
@@ -20,6 +19,7 @@ import qualified Data.Text as Text
 import Duckling.Dimensions.Types
 import Duckling.Numeral.AR.Helpers
   ( digitsMap
+  , parseArabicDoubleFromText
   , parseArabicIntegerFromText
   )
 import Duckling.Numeral.Helpers
@@ -355,6 +355,31 @@ ruleFractionsNumeric = Rule
       _ -> Nothing
   }
 
+ruleArabicDecimal :: Rule
+ruleArabicDecimal = Rule
+  { name = "Arabic decimal number with Arabic decimal separator"
+  , pattern =
+    [ regex "([٠-٩]*٫[٠-٩]+)"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        parseArabicDoubleFromText match >>= double
+      _ -> Nothing
+  }
+
+ruleArabicCommas :: Rule
+ruleArabicCommas = Rule
+  { name = "Arabic number with commas and optional Arabic decimal separator"
+  , pattern =
+    [ regex "([٠-٩]{1,3}(٬[٠-٩]{3}){1,5}(٫[٠-٩]+)?)"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        parseArabicDoubleFromText (Text.replace "٬" Text.empty match) >>=
+          double
+      _ -> Nothing
+  }
+
 rules :: [Rule]
 rules =
   [ ruleIntegerNumeric
@@ -384,4 +409,6 @@ rules =
   , ruleNumeralsPrefixWithMinus
   , rulePowersOfTen
   , ruleInteger200
+  , ruleArabicDecimal
+  , ruleArabicCommas
   ]

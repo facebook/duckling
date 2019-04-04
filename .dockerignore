@@ -1,0 +1,10 @@
+.git/
+.gitignore
+.travis.yml
+CODE_OF_CONDUCT.md
+CONTRIBUTING.md
+Dockerfile
+LICENSE
+PATENTS
+README.md
+logo.png

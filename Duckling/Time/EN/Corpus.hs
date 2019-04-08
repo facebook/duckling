@@ -1568,6 +1568,10 @@ allExamples = concat
              , "holika dahan 2019"
              , "kamudu pyre 2019"
              ]
+  , examples (datetimeHoliday (2019, 8, 23, 0, 0, 0) Day "Krishna Janmashtami")
+            [ "krishna janmashtami 2019"
+            , "gokulashtami 2019"
+            ]
   , examples (datetimeHoliday (2019, 3, 21, 0, 0, 0) Day "Holi")
              [ "holi 2019"
              , "dhulandi 2019"

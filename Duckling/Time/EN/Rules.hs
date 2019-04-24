@@ -2220,7 +2220,7 @@ ruleDayInDuration = Rule
   , pattern =
     [ Predicate $ or . sequence [isGrainOfTime TG.Day, isGrainOfTime TG.Month]
     , regex "in"
-    , dimension Duration
+    , Predicate $ isDurationGreaterThan TG.Hour
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_:Token Duration dd:_) ->

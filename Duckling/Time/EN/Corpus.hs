@@ -1113,6 +1113,9 @@ allExamples = concat
   , examples (datetime (2013, 2, 13, 15, 0, 0) Hour)
              [ "3pm tomorrow"
              ]
+  , examples (datetime (2013, 2, 12, 5, 30, 0) Minute)
+             [ "today in one hour"
+             ]
   , examples (datetimeOpenInterval Before (2013, 2, 12, 14, 0, 0) Minute)
              [ "until 2:00pm"
              , "through 2:00pm"

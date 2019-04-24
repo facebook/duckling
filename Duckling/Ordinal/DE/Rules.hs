@@ -22,11 +22,12 @@ import Duckling.Ordinal.Helpers
 import Duckling.Regex.Types
 import Duckling.Types
 
+-- todo: bei regex bis 31 weiter machen.
 ruleOrdinalsFirstth :: Rule
 ruleOrdinalsFirstth = Rule
   { name = "ordinals (first..19th)"
   , pattern =
-    [ regex "(erste(r|s)?|zweite(r|s)|dritte(r|s)|vierte(r|s)|fünfte(r|s)|sechste(r|s)|siebte(r|s)|achte(r|s)|neunte(r|s)|zehnte(r|s)|elfter|zwölfter|dreizenter|vierzehnter|fünfzehnter|sechzenter|siebzehnter|achtzehnter|neunzehnter)"
+    [ regex "(erste(r|s)?|zweite(r|s)|dritte(r|s)|vierte(r|s)|fünfte(r|s)|sechste(r|s)|siebte(r|s)|achte(r|s)|neunte(r|s)|zehnte(r|s)|elfte(r|s)|zwölfte(r|s)|dreizente(r|s)|vierzehnte(r|s)|fünfzehnte(r|s)|sechzente(r|s)|siebzehnte(r|s)|achtzehnte(r|s)|neunzehnte(r|s))"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
@@ -60,15 +61,70 @@ ruleOrdinalsFirstth = Rule
         "zehnte" -> Just $ ordinal 10
         "zehnter" -> Just $ ordinal 10
         "zehntes" -> Just $ ordinal 10
+        "elfte" -> Just $ ordinal 11
         "elfter" -> Just $ ordinal 11
+        "elftes" -> Just $ ordinal 11
+        "zwölfte" -> Just $ ordinal 12
         "zwölfter" -> Just $ ordinal 12
+        "zwölftes" -> Just $ ordinal 12
+        "dreizehnte" -> Just $ ordinal 13
         "dreizehnter" -> Just $ ordinal 13
+        "dreizehntes" -> Just $ ordinal 13
+        "vierzehnte" -> Just $ ordinal 14
         "vierzehnter" -> Just $ ordinal 14
+        "vierzehntes" -> Just $ ordinal 14
+        "fünfzehnte" -> Just $ ordinal 15
         "fünfzehnter" -> Just $ ordinal 15
+        "fünfzehntes" -> Just $ ordinal 15
+        "sechzehnte" -> Just $ ordinal 16
         "sechzehnter" -> Just $ ordinal 16
+        "sechzehntes" -> Just $ ordinal 16
+        "siebzehnte" -> Just $ ordinal 17
         "siebzehnter" -> Just $ ordinal 17
+        "siebzehntes" -> Just $ ordinal 17
+        "achtzehnte" -> Just $ ordinal 18
         "achtzehnter" -> Just $ ordinal 18
+        "achtzehntes" -> Just $ ordinal 18
+        "neunzehnte" -> Just $ ordinal 19
         "neunzehnter" -> Just $ ordinal 19
+        "neunzehntes" -> Just $ ordinal 19
+        "zwanzigste" -> Just $ ordinal 20
+        "zwanzigster" -> Just $ ordinal 20
+        "zwanzigster" -> Just $ ordinal 20
+        "zwanzigstes" -> Just $ ordinal 20
+        "einundzwanzigste" -> Just $ ordinal 21
+        "einundzwanzigster" -> Just $ ordinal 21
+        "einundzwanzigstes" -> Just $ ordinal 21
+        "zweiundzwanzigste" -> Just $ ordinal 22
+        "zweiundzwanzigster" -> Just $ ordinal 22
+        "zweiundzwanzigstes" -> Just $ ordinal 22
+        "dreiundzwanzigste" -> Just $ ordinal 23
+        "dreiundzwanzigster" -> Just $ ordinal 23
+        "dreiundzwanzigstes" -> Just $ ordinal 23
+        "vierundzwanzigste" -> Just $ ordinal 24
+        "vierundzwanzigster" -> Just $ ordinal 24
+        "vierundzwanzigstes" -> Just $ ordinal 24
+        "fünfundzwanzigste" -> Just $ ordinal 25
+        "fünfundzwanzigster" -> Just $ ordinal 25
+        "fünfundzwanzigstes" -> Just $ ordinal 25
+        "sechsundzwanzigste" -> Just $ ordinal 26
+        "sechsundzwanzigster" -> Just $ ordinal 26
+        "sechsundzwanzigstes" -> Just $ ordinal 26
+        "siebenundzwanzigste" -> Just $ ordinal 27
+        "siebenundzwanzigster" -> Just $ ordinal 27
+        "siebenundzwanzigstes" -> Just $ ordinal 27
+        "achtundzwanzigste" -> Just $ ordinal 28
+        "achtundzwanzigster" -> Just $ ordinal 28
+        "achtundzwanzigstes" -> Just $ ordinal 28
+        "neunundzwanzigste" -> Just $ ordinal 29
+        "neunundzwanzigster"  -> Just $ ordinal 29
+        "neunundzwanzigstes"  -> Just $ ordinal 29
+        "dreißigste" -> Just $ ordinal 30
+        "dreißigster" -> Just $ ordinal 30
+        "dreißigstes" -> Just $ ordinal 30
+        "einunddreißigste" -> Just $ ordinal 31
+        "einunddreißigster"  -> Just $ ordinal 31
+        "einunddreißigstes" -> Just $ ordinal 31
         _ -> Nothing
       _ -> Nothing
   }

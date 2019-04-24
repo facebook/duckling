@@ -23,4 +23,4 @@ RUN stack install
 
 EXPOSE 8000
 
-CMD ["duckling-example-exe"
+CMD ["duckling-example-exe"]

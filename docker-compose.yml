@@ -2,7 +2,7 @@ version: "3.2"
 
 services:
   NER:
-    image: duckling:v.0.2
+    image: duckling
     build: 
       context: .
       dockerfile: Dockerfile

@@ -682,4 +682,8 @@ allExamples = concat
   , examples (datetime (2013, 12, 5, 0, 0, 0) Day)
              [ "fünfter Dezember"
              ]
+  , examples (datetime (2013, 12, 30, 0, 0, 0) Day)
+             [ "dreißigster Dezember"
+             , "dreissigster Dezember"
+             ]
   ]

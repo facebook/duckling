@@ -161,9 +161,8 @@ ruleStamattina = Rule
     [ regex "stamattina"
     ]
   , prod = \_ -> do
-      let td1 = cycleNth TG.Day 0
       td2 <- interval TTime.Open (hour False 4) (hour False 12)
-      Token Time . partOfDay <$> intersect td1 td2
+      Token Time . partOfDay <$> intersect today td2
   }
 
 ruleYearNotLatent :: Rule
@@ -424,8 +423,7 @@ ruleInDuration = Rule
       (Token RegexMatch (GroupMatch (match:_)):
        Token Duration dd:
        _) -> case Text.toLower match of
-        "entro" -> Token Time <$>
-          interval TTime.Open (cycleNth TG.Second 0) (inDuration dd)
+        "entro" -> Token Time <$> interval TTime.Open now (inDuration dd)
         "in"    -> tt $ inDuration dd
         _       -> Nothing
       _ -> Nothing
@@ -463,7 +461,7 @@ ruleRightNow = Rule
   , pattern =
     [ regex "(subito|(immediata|attual)mente|(proprio )?adesso|(in questo|al) momento|ora)"
     ]
-  , prod = \_ -> tt $ cycleNth TG.Second 0
+  , prod = \_ -> tt now
   }
 
 ruleToday :: Rule
@@ -472,7 +470,7 @@ ruleToday = Rule
   , pattern =
     [ regex "(di )?oggi|in giornata"
     ]
-  , prod = \_ -> tt $ cycleNth TG.Day 0
+  , prod = \_ -> tt today
   }
 
 ruleLastCycleOfTime :: Rule
@@ -552,8 +550,7 @@ ruleRelativeMinutesToIntegerAsHourofday = Rule
   , prod = \tokens -> case tokens of
       (token:_:Token Time td:_) -> do
         n <- getIntValue token
-        t <- minutesBefore n td
-        Just $ Token Time t
+        Token Time <$> minutesBefore n td
       _ -> Nothing
   }
 ruleHourofdayMinusIntegerAsRelativeMinutes :: Rule
@@ -567,8 +564,7 @@ ruleHourofdayMinusIntegerAsRelativeMinutes = Rule
   , prod = \tokens -> case tokens of
       (Token Time td:_:token:_) -> do
         n <- getIntValue token
-        t <- minutesBefore n td
-        Just $ Token Time t
+        Token Time <$> minutesBefore n td
       _ -> Nothing
   }
 ruleHhRelativeminutesDelPomeriggiotimeofday :: Rule
@@ -654,8 +650,7 @@ ruleMinutesToIntegerAsHourofday = Rule
   , prod = \tokens -> case tokens of
       (token:_:Token Time td:_) -> do
         n <- getIntValue token
-        t <- minutesBefore n td
-        Just $ Token Time t
+        Token Time <$> minutesBefore n td
       _ -> Nothing
   }
 ruleHourofdayMinusIntegerMinutes :: Rule
@@ -1034,9 +1029,7 @@ ruleEntroIlDuration = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token TimeGrain grain:_) ->
-        let from = cycleNth TG.Second 0
-            to = cycleNth grain 1
-        in Token Time <$> interval TTime.Open from to
+        Token Time <$> interval TTime.Open now (cycleNth grain 1)
       _ -> Nothing
   }
 
@@ -1309,9 +1302,8 @@ ruleStasera = Rule
     [ regex "stasera"
     ]
   , prod = \_ -> do
-      let td1 = cycleNth TG.Day 0
       td2 <- interval TTime.Open (hour False 18) (hour False 0)
-      Token Time . partOfDay <$> intersect td1 td2
+      Token Time . partOfDay <$> intersect today td2
   }
 
 ruleSeason3 :: Rule
@@ -1392,7 +1384,7 @@ ruleDurationAgo = Rule
     , regex "fa"
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Duration dd:_) ->
+      (Token Duration dd:_) ->
         tt $ durationAgo dd
       _ -> Nothing
   }
@@ -1460,9 +1452,7 @@ ruleFinoAlDatetimeInterval = Rule
     , Predicate isNotLatent
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td:_) ->
-        let now = cycleNth TG.Second 0
-        in Token Time <$> interval TTime.Open now td
+      (_:Token Time td:_) -> Token Time <$> interval TTime.Open now td
       _ -> Nothing
   }
 
@@ -1827,8 +1817,7 @@ ruleThisPartofday = Rule
     , Predicate isAPartOfDay
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td:_) ->
-        Token Time . partOfDay <$> intersect (cycleNth TG.Day 0) td
+      (_:Token Time td:_) -> Token Time . partOfDay <$> intersect today td
       _ -> Nothing
   }
 

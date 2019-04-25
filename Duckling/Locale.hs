@@ -13,7 +13,7 @@
 module Duckling.Locale
   ( Lang(..)
   , Locale(..)
-  , Region(..)
+  , Region(AU,BE,BZ,CA,CN,GB,HK,IE,IN,JM,MO,NZ,PH,TT,TW,US,ZA)
   , allLocales
   , makeLocale
   ) where
@@ -28,11 +28,15 @@ import qualified Data.HashMap.Strict as HashMap
 import qualified Data.HashSet as HashSet
 import qualified TextShow as TS
 
+import Duckling.Region hiding (NL)
+import qualified Duckling.Region as R (Region(NL))
+
 -- | ISO 639-1 Language.
 -- See https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
 data Lang
   = AR
   | BG
+  | BN
   | CS
   | DA
   | DE
@@ -40,6 +44,7 @@ data Lang
   | EN
   | ES
   | ET
+  | FI
   | FR
   | GA
   | HE
@@ -47,10 +52,16 @@ data Lang
   | HR
   | HU
   | ID
+  | IS
   | IT
   | JA
   | KA
+  | KN
+  | KM
   | KO
+  | LO
+  | ML
+  | MN
   | MY
   | NB
   | NE
@@ -60,6 +71,8 @@ data Lang
   | RO
   | RU
   | SV
+  | SW
+  | TA
   | TR
   | UK
   | VI
@@ -67,30 +80,6 @@ data Lang
   deriving (Bounded, Enum, Eq, Generic, Hashable, Ord, Read, Show)
 
 instance TextShow Lang where
-  showb = TS.fromString . show
-
--- | ISO 3166-1 alpha-2 Country code (includes regions and territories).
--- See https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
-data Region
-  = AU
-  | BZ
-  | CA
-  | CN
-  | GB
-  | HK
-  | IE
-  | IN
-  | JM
-  | MO
-  | NZ
-  | PH
-  | TT
-  | TW
-  | US
-  | ZA
-  deriving (Bounded, Enum, Eq, Generic, Hashable, Ord, Read, Show)
-
-instance TextShow Region where
   showb = TS.fromString . show
 
 data Locale = Locale Lang (Maybe Region)
@@ -114,5 +103,6 @@ makeLocale lang (Just region)
 allLocales :: HashMap Lang (HashSet Region)
 allLocales = HashMap.fromList
   [ (EN, HashSet.fromList [AU, BZ, CA, GB, IN, IE, JM, NZ, PH, ZA, TT, US])
+  , (NL, HashSet.fromList [BE, R.NL])
   , (ZH, HashSet.fromList [CN, HK, MO, TW])
   ]

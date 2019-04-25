@@ -42,7 +42,7 @@ ruleDDMMYYYY :: Rule
 ruleDDMMYYYY = Rule
   { name = "dd/mm/yyyy"
   , pattern =
-    [ regex "(3[01]|[12]\\d|0?[1-9])[/-](1[0-2]|0?[1-9])[-/](\\d{2,4})"
+    [ regex "(3[01]|[12]\\d|0?[1-9])[-/\\s](1[0-2]|0?[1-9])[-/\\s](\\d{2,4})"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (dd:mm:yy:_)):_) -> do
@@ -69,20 +69,25 @@ ruleDDMMYYYYDot = Rule
       _ -> Nothing
   }
 
--- Fourth Thursday of November
-ruleThanksgiving :: Rule
-ruleThanksgiving = Rule
-  { name = "Thanksgiving Day"
-  , pattern =
-    [ regex "thanks?giving( day)?"
-    ]
-  , prod = \_ -> tt . mkOkForThisNext $ nthDOWOfMonth 4 4 11
-  }
+rulePeriodicHolidays :: [Rule]
+rulePeriodicHolidays = mkRuleHolidays
+  -- Fixed day/week/month, year over year
+  [ ( "August Bank Holiday", "(august|summer) bank holiday"
+    , nthDOWOfMonth 1 1 8 )
+  , ( "Early May Bank Holiday", "early may bank holiday", nthDOWOfMonth 1 1 5 )
+  , ( "Father's Day", "father'?s?'? day", nthDOWOfMonth 3 7 6 )
+  , ( "Mother's Day", "mother'?s?'? day", nthDOWOfMonth 2 7 5 )
+  , ( "June Bank Holiday", "june bank holiday", nthDOWOfMonth 1 1 6 )
+  , ( "Labour Day", "labour day", nthDOWOfMonth 1 1 5 )
+  , ( "October Bank Holiday", "october (bank )?holiday"
+    , predLastOf (dayOfWeek 1) (month 10) )
+  , ( "Thanksgiving Day", "thanks?giving( day)?", nthDOWOfMonth 4 4 11 )
+  ]
 
 rules :: [Rule]
 rules =
   [ ruleDDMM
   , ruleDDMMYYYY
   , ruleDDMMYYYYDot
-  , ruleThanksgiving
   ]
+  ++ rulePeriodicHolidays

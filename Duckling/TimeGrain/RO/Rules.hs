@@ -10,15 +10,16 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.TimeGrain.RO.Rules
-  ( rules ) where
+  ( rules
+  ) where
 
+import Data.String
 import Data.Text (Text)
 import Prelude
-import Data.String
 
 import Duckling.Dimensions.Types
-import qualified Duckling.TimeGrain.Types as TG
 import Duckling.Types
+import qualified Duckling.TimeGrain.Types as TG
 
 grains :: [(Text, String, TG.Grain)]
 grains = [ ("secunde (grain)", "sec(und(a|e|ă))?", TG.Second)

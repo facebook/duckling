@@ -22,10 +22,10 @@ import Duckling.Resolve
 import Duckling.Testing.Types
 
 corpus :: Corpus
-corpus = (testContext {locale = makeLocale DE Nothing}, allExamples)
+corpus = (testContext {locale = makeLocale DE Nothing}, testOptions, allExamples)
 
 negativeCorpus :: NegativeCorpus
-negativeCorpus = (testContext {locale = makeLocale DE Nothing}, examples)
+negativeCorpus = (testContext {locale = makeLocale DE Nothing}, testOptions, examples)
   where
     examples =
       [ "1.1"

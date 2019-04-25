@@ -24,9 +24,9 @@ import qualified Data.Text as Text
 import Duckling.Dimensions.Types
 import Duckling.Numeral.Helpers
 import Duckling.Quantity.Helpers
-import Duckling.Regex.Types
+import Duckling.Regex.Types (GroupMatch(..))
 import Duckling.Types
-import Duckling.Numeral.Types (NumeralData (..))
+import Duckling.Numeral.Types (NumeralData(..))
 import Duckling.Quantity.Types (QuantityData(..))
 import qualified Duckling.Numeral.Types as TNumeral
 import qualified Duckling.Quantity.Types as TQuantity
@@ -51,9 +51,6 @@ opsMap = HashMap.fromList
   , ( "kgs"       , (* 1000))
   ]
 
-getValue :: Text -> Double -> Double
-getValue match = HashMap.lookupDefault id (Text.toLower match) opsMap
-
 ruleNumeralQuantities :: [Rule]
 ruleNumeralQuantities = map go quantities
   where
@@ -65,7 +62,7 @@ ruleNumeralQuantities = map go quantities
         (Token Numeral nd:
          Token RegexMatch (GroupMatch (match:_)):
          _) -> Just . Token Quantity $ quantity u value
-          where value = getValue match $ TNumeral.value nd
+          where value = getValue opsMap match $ TNumeral.value nd
         _ -> Nothing
       }
 
@@ -78,7 +75,7 @@ ruleAQuantity = map go quantities
       , pattern = [ regex ("an? " ++ regexPattern) ]
       , prod = \case
         (Token RegexMatch (GroupMatch (match:_)):
-         _) -> Just . Token Quantity $ quantity u $ getValue match 1
+         _) -> Just . Token Quantity $ quantity u $ getValue opsMap match 1
         _ -> Nothing
       }
 
@@ -91,7 +88,7 @@ ruleQuantityOfProduct = Rule
     ]
   , prod = \case
     (Token Quantity qd:Token RegexMatch (GroupMatch (product:_)):_) ->
-      Just . Token Quantity $ withProduct product qd
+      Just . Token Quantity $ withProduct (Text.toLower product) qd
     _ -> Nothing
   }
 
@@ -191,8 +188,6 @@ ruleIntervalDash = Rule
         _ -> Nothing
     }
 
-
-
 ruleIntervalMax :: Rule
 ruleIntervalMax = Rule
     { name = "under/below/less/lower/at most/no more than <dist>"
@@ -224,6 +219,7 @@ ruleIntervalMin = Rule
          _) -> Just . Token Quantity . withMin from $ unitOnly u
         _ -> Nothing
     }
+
 rules :: [Rule]
 rules =
   [ ruleQuantityOfProduct

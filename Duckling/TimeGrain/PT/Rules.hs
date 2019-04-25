@@ -10,15 +10,16 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.TimeGrain.PT.Rules
-  ( rules ) where
+  ( rules
+  ) where
 
 import Data.Text (Text)
-import Prelude
 import Data.String
+import Prelude
 
 import Duckling.Dimensions.Types
-import qualified Duckling.TimeGrain.Types as TG
 import Duckling.Types
+import qualified Duckling.TimeGrain.Types as TG
 
 grains :: [(Text, String, TG.Grain)]
 grains = [ ("segundo (grain)", "seg(undo)?s?", TG.Second)
@@ -27,6 +28,7 @@ grains = [ ("segundo (grain)", "seg(undo)?s?", TG.Second)
          , ("dia (grain)", "d(í|i)as?", TG.Day)
          , ("semana (grain)", "semanas?", TG.Week)
          , ("mes (grain)", "m(e|ê)s(es)?", TG.Month)
+         , ("trimestre (grain)", "trimestres?", TG.Quarter)
          , ("ano (grain)", "anos?", TG.Year)
          ]
 

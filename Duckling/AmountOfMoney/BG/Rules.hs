@@ -7,6 +7,7 @@
 
 
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.AmountOfMoney.BG.Rules
@@ -16,17 +17,29 @@ module Duckling.AmountOfMoney.BG.Rules
 import Data.Maybe
 import Data.String
 import Prelude
-import qualified Data.Text as Text
 
 import Duckling.AmountOfMoney.Helpers
 import Duckling.AmountOfMoney.Types (Currency(..), AmountOfMoneyData (..))
 import Duckling.Dimensions.Types
 import Duckling.Numeral.Helpers (isNatural, isPositive)
 import Duckling.Numeral.Types (NumeralData (..))
-import Duckling.Regex.Types
 import Duckling.Types
 import qualified Duckling.AmountOfMoney.Types as TAmountOfMoney
 import qualified Duckling.Numeral.Types as TNumeral
+
+ruleUnitAmount :: Rule
+ruleUnitAmount = Rule
+  { name = "<unit> <amount>"
+  , pattern =
+    [ Predicate isCurrencyOnly
+    , Predicate isPositive
+    ]
+  , prod = \case
+      (Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.currency = c}:
+       Token Numeral NumeralData{TNumeral.value = v}:
+       _) -> Just . Token AmountOfMoney . withValue v $ currencyOnly c
+      _ -> Nothing
+  }
 
 ruleBGN :: Rule
 ruleBGN = Rule
@@ -152,7 +165,7 @@ ruleIntervalBetweenNumeral = Rule
     [ regex "между|от"
     , Predicate isPositive
     , regex "до|и"
-    , financeWith TAmountOfMoney.value isJust
+    , Predicate isSimpleAmountOfMoney
     ]
   , prod = \tokens -> case tokens of
       (_:
@@ -170,9 +183,9 @@ ruleIntervalBetween = Rule
   { name = "between|from <amount-of-money> to|and <amount-of-money>"
   , pattern =
     [ regex "между|от"
-    , financeWith TAmountOfMoney.value isJust
+    , Predicate isSimpleAmountOfMoney
     , regex "до|и"
-    , financeWith TAmountOfMoney.value isJust
+    , Predicate isSimpleAmountOfMoney
     ]
   , prod = \tokens -> case tokens of
       (_:
@@ -192,7 +205,7 @@ ruleIntervalNumeralDash = Rule
   , pattern =
     [ Predicate isPositive
     , regex "-"
-    , financeWith TAmountOfMoney.value isJust
+    , Predicate isSimpleAmountOfMoney
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData{TNumeral.value = from}:
@@ -208,9 +221,9 @@ ruleIntervalDash :: Rule
 ruleIntervalDash = Rule
   { name = "<amount-of-money> - <amount-of-money>"
   , pattern =
-    [ financeWith TAmountOfMoney.value isJust
+    [ Predicate isSimpleAmountOfMoney
     , regex "-"
-    , financeWith TAmountOfMoney.value isJust
+    , Predicate isSimpleAmountOfMoney
     ]
   , prod = \tokens -> case tokens of
       (Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just from,
@@ -228,7 +241,7 @@ ruleIntervalMax = Rule
   { name = "under/less/lower/no more than <amount-of-money>"
   , pattern =
     [ regex "под|по-малко от|не повече от"
-    , financeWith TAmountOfMoney.value isJust
+    , Predicate isSimpleAmountOfMoney
     ]
   , prod = \tokens -> case tokens of
       (_:
@@ -243,7 +256,7 @@ ruleIntervalMin = Rule
   { name = "over/above/at least/more than <amount-of-money>"
   , pattern =
     [ regex "над|поне|повече от"
-    , financeWith TAmountOfMoney.value isJust
+    , Predicate isSimpleAmountOfMoney
     ]
   , prod = \tokens -> case tokens of
       (_:
@@ -255,7 +268,8 @@ ruleIntervalMin = Rule
 
 rules :: [Rule]
 rules =
-  [ ruleBGN
+  [ ruleUnitAmount
+  , ruleBGN
   , ruleDollar
   , ruleCent
   , ruleEUR

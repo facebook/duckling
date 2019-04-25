@@ -20,7 +20,7 @@ import Duckling.Resolve
 import Duckling.Testing.Types
 
 corpus :: Corpus
-corpus = (testContext {locale = makeLocale ES Nothing}, allExamples)
+corpus = (testContext {locale = makeLocale ES Nothing}, testOptions, allExamples)
 
 allExamples :: [Example]
 allExamples = concat
@@ -41,6 +41,9 @@ allExamples = concat
   , examples (NumeralValue 21)
              [ "veintiuno"
              , "veinte y uno"
+             ]
+  , examples (NumeralValue 22)
+             [ "veintidós"
              ]
   , examples (NumeralValue 23)
              [ "veintitrés"

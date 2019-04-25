@@ -20,8 +20,8 @@ import Prelude
 import Duckling.Dimensions.Types
 import Duckling.Distance.Helpers
 import Duckling.Numeral.Types (NumeralData (..))
-import qualified Duckling.Numeral.Types as TNumeral
 import Duckling.Types
+import qualified Duckling.Numeral.Types as TNumeral
 
 ruleNumeralAsDistance :: Rule
 ruleNumeralAsDistance = Rule

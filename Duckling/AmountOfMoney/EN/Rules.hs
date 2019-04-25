@@ -7,6 +7,7 @@
 
 
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.AmountOfMoney.EN.Rules
@@ -27,6 +28,20 @@ import Duckling.Regex.Types
 import Duckling.Types
 import qualified Duckling.AmountOfMoney.Types as TAmountOfMoney
 import qualified Duckling.Numeral.Types as TNumeral
+
+ruleUnitAmount :: Rule
+ruleUnitAmount = Rule
+  { name = "<unit> <amount>"
+  , pattern =
+    [ Predicate isCurrencyOnly
+    , Predicate isPositive
+    ]
+  , prod = \case
+      (Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.currency = c}:
+       Token Numeral NumeralData{TNumeral.value = v}:
+       _) -> Just . Token AmountOfMoney . withValue v $ currencyOnly c
+      _ -> Nothing
+  }
 
 rulePounds :: Rule
 rulePounds = Rule
@@ -119,12 +134,53 @@ ruleACurrency = Rule
   { name = "a <currency>"
   , pattern =
     [ regex "an?"
-    , financeWith TAmountOfMoney.value isNothing
+    , Predicate isCurrencyOnly
     ]
   , prod = \tokens -> case tokens of
       (_:
        Token AmountOfMoney fd:
        _) -> Just . Token AmountOfMoney $ fd {TAmountOfMoney.value = Just 1}
+      _ -> Nothing
+  }
+
+ruleAbsorbA :: Rule
+ruleAbsorbA = Rule
+  { name = "a <amount-of-money>"
+  , pattern =
+    [ regex "an?"
+    , Predicate isSimpleAmountOfMoney
+    ]
+  , prod = \case
+      (_:Token AmountOfMoney fd:_) -> Just $ Token AmountOfMoney fd
+      _ -> Nothing
+  }
+
+ruleADollarCoin :: Rule
+ruleADollarCoin = Rule
+  { name = "a <dollar coin>"
+  , pattern =
+    [ regex "an?"
+    , Predicate isDollarCoin
+    ]
+  , prod = \tokens -> case tokens of
+      (_:
+       Token AmountOfMoney fd:
+       _) -> Just . Token AmountOfMoney $ fd
+      _ -> Nothing
+  }
+
+ruleNumDollarCoins :: Rule
+ruleNumDollarCoins = Rule
+  { name = "X <dollar coins>"
+  , pattern =
+    [ Predicate isNatural
+    , Predicate isDollarCoin
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Numeral NumeralData{TNumeral.value = c}:
+       Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just d,
+                                             TAmountOfMoney.currency = cur}:
+       _) -> Just . Token AmountOfMoney $ withValue (c * d) $ currencyOnly cur
       _ -> Nothing
   }
 
@@ -207,7 +263,7 @@ ruleIntervalBetweenNumeral = Rule
     [ regex "between|from"
     , Predicate isPositive
     , regex "to|and"
-    , financeWith TAmountOfMoney.value isJust
+    , Predicate isSimpleAmountOfMoney
     ]
   , prod = \tokens -> case tokens of
       (_:
@@ -225,9 +281,9 @@ ruleIntervalBetween = Rule
   { name = "between|from <amount-of-money> to|and <amount-of-money>"
   , pattern =
     [ regex "between|from"
-    , financeWith TAmountOfMoney.value isJust
+    , Predicate isSimpleAmountOfMoney
     , regex "to|and"
-    , financeWith TAmountOfMoney.value isJust
+    , Predicate isSimpleAmountOfMoney
     ]
   , prod = \tokens -> case tokens of
       (_:
@@ -247,7 +303,7 @@ ruleIntervalNumeralDash = Rule
   , pattern =
     [ Predicate isNatural
     , regex "-"
-    , financeWith TAmountOfMoney.value isJust
+    , Predicate isSimpleAmountOfMoney
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData{TNumeral.value = from}:
@@ -263,9 +319,9 @@ ruleIntervalDash :: Rule
 ruleIntervalDash = Rule
   { name = "<amount-of-money> - <amount-of-money>"
   , pattern =
-    [ financeWith TAmountOfMoney.value isJust
+    [ Predicate isSimpleAmountOfMoney
     , regex "-"
-    , financeWith TAmountOfMoney.value isJust
+    , Predicate isSimpleAmountOfMoney
     ]
   , prod = \tokens -> case tokens of
       (Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just from,
@@ -283,7 +339,7 @@ ruleIntervalMax = Rule
   { name = "under/less/lower/no more than <amount-of-money>"
   , pattern =
     [ regex "under|(less|lower|not? more) than"
-    , financeWith TAmountOfMoney.value isJust
+    , Predicate isSimpleAmountOfMoney
     ]
   , prod = \tokens -> case tokens of
       (_:
@@ -298,7 +354,7 @@ ruleIntervalMin = Rule
   { name = "over/above/at least/more than <amount-of-money>"
   , pattern =
     [ regex "over|above|at least|more than"
-    , financeWith TAmountOfMoney.value isJust
+    , Predicate isSimpleAmountOfMoney
     ]
   , prod = \tokens -> case tokens of
       (_:
@@ -310,9 +366,13 @@ ruleIntervalMin = Rule
 
 rules :: [Rule]
 rules =
-  [ ruleACurrency
+  [ ruleUnitAmount
+  , ruleACurrency
+  , ruleAbsorbA
   , ruleBucks
   , ruleCent
+  , ruleADollarCoin
+  , ruleNumDollarCoins
   , ruleDinars
   , ruleDirham
   , ruleIntersect

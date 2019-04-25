@@ -7,6 +7,7 @@
 
 
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Temperature.PT.Rules
@@ -25,10 +26,10 @@ ruleLatentTempTemp :: Rule
 ruleLatentTempTemp = Rule
   { name = "<latent temp> temp"
   , pattern =
-    [ dimension Temperature
+    [ Predicate $ isValueOnly False
     , regex "(graus?)|°"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Temperature td:_) -> Just . Token Temperature $
         withUnit TTemperature.Degree td
       _ -> Nothing
@@ -38,10 +39,10 @@ ruleTempCelsius :: Rule
 ruleTempCelsius = Rule
   { name = "<temp> Celsius"
   , pattern =
-    [ dimension Temperature
+    [ Predicate $ isValueOnly True
     , regex "(cent(i|í)grados?|c(el[cs]?(ius)?)?\\.?)"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Temperature td:_) -> Just . Token Temperature $
         withUnit TTemperature.Celsius td
       _ -> Nothing
@@ -51,10 +52,10 @@ ruleTempFahrenheit :: Rule
 ruleTempFahrenheit = Rule
   { name = "<temp> Fahrenheit"
   , pattern =
-    [ dimension Temperature
+    [ Predicate $ isValueOnly True
     , regex "f(ah?reh?n(h?eit)?)?\\.?"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Temperature td:_) -> Just . Token Temperature $
         withUnit TTemperature.Fahrenheit td
       _ -> Nothing
@@ -64,15 +65,15 @@ ruleLatentTempTempAbaixoDeZero :: Rule
 ruleLatentTempTempAbaixoDeZero = Rule
   { name = "<latent temp> temp abaixo de zero"
   , pattern =
-    [ dimension Temperature
+    [ Predicate $ isValueOnly True
     , regex "((graus?)|°)?( abaixo (de)? zero)"
     ]
-  , prod = \tokens -> case tokens of
-      (Token Temperature td@TemperatureData{TTemperature.value = v}:_) ->
+  , prod = \case
+      (Token Temperature td@TemperatureData{TTemperature.value = Just v}:_) ->
         case TTemperature.unit td of
           Nothing -> Just . Token Temperature . withUnit TTemperature.Degree $
-            td {TTemperature.value = - v}
-          _ -> Just . Token Temperature $ td {TTemperature.value = - v}
+            td {TTemperature.value = Just (- v)}
+          _ -> Just . Token Temperature $ td {TTemperature.value = Just (- v)}
       _ -> Nothing
   }
 

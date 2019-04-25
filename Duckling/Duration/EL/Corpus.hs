@@ -26,10 +26,10 @@ context :: Context
 context = testContext {locale = makeLocale EL Nothing}
 
 corpus :: Corpus
-corpus = (context, allExamples)
+corpus = (context, testOptions, allExamples)
 
 negativeCorpus :: NegativeCorpus
-negativeCorpus = (context, examples)
+negativeCorpus = (context, testOptions, examples)
   where
     examples =
       [ "για μήνες"

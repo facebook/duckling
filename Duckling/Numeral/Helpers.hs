@@ -11,12 +11,14 @@
 
 module Duckling.Numeral.Helpers
   ( decimalsToDouble
+  , diffIntegerDigits
   , double
   , integer
   , multiply
   , isMultipliable
   , isNatural
   , isPositive
+  , hasGrain
   , divide
   , notOkForAnyTime
   , numberBetween
@@ -79,6 +81,18 @@ decimalsToDouble x =
       [] -> 0
       (multiplier : _) -> x / multiplier
 
+-- diffIntegerDigits a b = # of digits in a - # of digits in b
+-- ignores the nondecimal components
+diffIntegerDigits :: Double -> Double -> Int
+diffIntegerDigits a b = digitsOf a - digitsOf b
+  where
+    digitsOf :: Double -> Int
+    digitsOf = digitsOfInt . floor . abs
+
+    digitsOfInt :: Int -> Int
+    digitsOfInt 0 = 0
+    digitsOfInt a = 1 + digitsOfInt (a `div` 10)
+
 -- -----------------------------------------------------------------
 -- Patterns
 
@@ -107,6 +121,10 @@ isPositive _ = False
 isMultipliable :: Predicate
 isMultipliable (Token Numeral nd) = multipliable nd
 isMultipliable _ = False
+
+hasGrain :: Predicate
+hasGrain (Token Numeral NumeralData {grain = Just g}) = g > 1
+hasGrain _ = False
 
 oneOf :: [Double] -> PatternItem
 oneOf vs = Predicate $ \x ->

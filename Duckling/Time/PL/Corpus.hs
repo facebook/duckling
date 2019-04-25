@@ -24,10 +24,10 @@ import Duckling.Time.Types hiding (Month)
 import Duckling.TimeGrain.Types hiding (add)
 
 corpus :: Corpus
-corpus = (testContext {locale = makeLocale PL Nothing}, allExamples)
+corpus = (testContext {locale = makeLocale PL Nothing}, testOptions, allExamples)
 
 negativeCorpus :: NegativeCorpus
-negativeCorpus = (testContext {locale = makeLocale PL Nothing}, examples)
+negativeCorpus = (testContext {locale = makeLocale PL Nothing}, testOptions, examples)
   where
     examples =
       [ "nie"
@@ -155,6 +155,17 @@ allExamples = concat
              , "8 Sie."
              , "Ósmy Sie."
              , "Osmego Sie."
+             ]
+  , examples (datetime (2013, 11, 20, 0, 0, 0) Day)
+             [ "20 listopada"
+             , "20 listopadowi"
+             , "20 listopadem"
+             , "20 listopad"
+             ]
+  , examples (datetime (2013, 5, 20, 0, 0, 0) Day)
+             [ "20 maja"
+             , "20 maj"
+             , "20 majem"
              ]
   , examples (datetime (2014, 10, 0, 0, 0, 0) Month)
              [ "Październik 2014"
@@ -733,6 +744,9 @@ allExamples = concat
              ]
   , examples (datetimeInterval ((2013, 2, 12, 11, 30, 0), (2013, 2, 12, 13, 31, 0)) Minute)
              [ "11:30-1:30"
+             ]
+  , examples (datetimeInterval ((2013, 2, 12, 18, 0, 0), (2013, 2, 13, 0, 0, 0)) Hour)
+             [ "dziś wieczorem"
              ]
   , examples (datetimeInterval ((2013, 2, 12, 4, 30, 0), (2013, 2, 26, 0, 0, 0)) Second)
              [ "w ciągu 2 tygodni"

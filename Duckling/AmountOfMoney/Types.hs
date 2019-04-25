@@ -23,7 +23,7 @@ import GHC.Generics
 import Prelude
 import qualified Data.HashMap.Strict as H
 
-import Duckling.Resolve (Resolve(..))
+import Duckling.Resolve (Resolve(..), Options(..))
 
 data Currency
   -- ambiguous
@@ -41,22 +41,34 @@ data Currency
   | BGN
   | BRL
   | BYN
+  | CAD
+  | CHF
+  | CNY
+  | CZK
+  | DKK
   | EGP
   | EUR
   | GBP
+  | HKD
   | HRK
   | IDR
   | ILS
   | INR
   | IQD
+  | JMD
   | JOD
   | JPY
+  | GEL
   | KRW
   | KWD
   | LBP
   | MAD
+  | MNT
   | MYR
   | NOK
+  | NZD
+  | PKR
+  | PLN
   | PTS
   | QAR
   | RON
@@ -64,8 +76,11 @@ data Currency
   | SAR
   | SEK
   | SGD
+  | THB
+  | TTD
   | USD
   | VND
+  | ZAR
   deriving (Eq, Generic, Hashable, Show, Ord, NFData)
 
 instance ToJSON Currency where
@@ -82,55 +97,86 @@ instance ToJSON Currency where
   toJSON BGN     = "BGN"
   toJSON BRL     = "BRL"
   toJSON BYN     = "BYN"
+  toJSON CAD     = "CAD"
+  toJSON CHF     = "CHF"
+  toJSON CNY     = "CNY"
+  toJSON CZK     = "CZK"
+  toJSON DKK     = "DKK"
   toJSON EGP     = "EGP"
   toJSON EUR     = "EUR"
   toJSON GBP     = "GBP"
+  toJSON HKD     = "HKD"
   toJSON HRK     = "HRK"
   toJSON IDR     = "IDR"
   toJSON ILS     = "ILS"
   toJSON IQD     = "IQD"
   toJSON INR     = "INR"
+  toJSON JMD     = "JMD"
   toJSON JOD     = "JOD"
   toJSON JPY     = "JPY"
+  toJSON GEL     = "GEL"
   toJSON KRW     = "KRW"
   toJSON KWD     = "KWD"
   toJSON LBP     = "LBP"
   toJSON MAD     = "MAD"
+  toJSON MNT     = "MNT"
   toJSON MYR     = "MYR"
   toJSON NOK     = "NOK"
+  toJSON NZD     = "NZD"
   toJSON PTS     = "PTS"
+  toJSON PKR     = "PKR"
+  toJSON PLN     = "PLN"
   toJSON QAR     = "QAR"
   toJSON RON     = "RON"
   toJSON RUB     = "RUB"
   toJSON SAR     = "SAR"
   toJSON SEK     = "SEK"
   toJSON SGD     = "SGD"
+  toJSON THB     = "THB"
+  toJSON TTD     = "TTD"
   toJSON USD     = "USD"
   toJSON VND     = "VND"
+  toJSON ZAR     = "ZAR"
 
 data AmountOfMoneyData = AmountOfMoneyData
   { value    :: Maybe Double
   , currency :: Currency
   , minValue :: Maybe Double
   , maxValue :: Maybe Double
+  , latent   :: Bool
   }
   deriving (Eq, Generic, Hashable, Show, Ord, NFData)
 
 instance Resolve AmountOfMoneyData where
   type ResolvedValue AmountOfMoneyData = AmountOfMoneyValue
-  resolve _ AmountOfMoneyData {value = Nothing, minValue = Nothing
-                              , maxValue = Nothing} = Nothing
-  resolve _ AmountOfMoneyData {value = Just value, currency} =
-    Just $ simple currency value
-  resolve _ AmountOfMoneyData {value = Nothing, currency = c
-                              , minValue = Just from, maxValue = Just to} =
-    Just $ between c (from, to)
-  resolve _ AmountOfMoneyData {value = Nothing, currency = c
-                              , minValue = Just v, maxValue = Nothing} =
-    Just $ above c v
-  resolve _ AmountOfMoneyData {value = Nothing, currency = c
-                              , minValue = Nothing, maxValue = Just v} =
-    Just $ under c v
+  resolve _ Options {withLatent = False} AmountOfMoneyData {latent = True} =
+    Nothing
+  resolve _ _ AmountOfMoneyData {value = Nothing, minValue = Nothing
+                              , maxValue = Nothing} =
+    Nothing
+  resolve _ _ AmountOfMoneyData {value = Just value, currency, latent} =
+    Just (simple currency value, latent)
+  resolve _ _ AmountOfMoneyData {value = Nothing, currency = c
+                              , minValue = Just from, maxValue = Just to
+                              , latent} =
+    Just (between c (from, to), latent)
+  resolve _ _ AmountOfMoneyData {value = Nothing, currency = c
+                              , minValue = Just v, maxValue = Nothing
+                              , latent} =
+    Just (above c v, latent)
+  resolve _ _ AmountOfMoneyData {value = Nothing, currency = c
+                              , minValue = Nothing, maxValue = Just v
+                              , latent} =
+    Just (under c v, latent)
+
+amountOfMoneyData' :: AmountOfMoneyData
+amountOfMoneyData' = AmountOfMoneyData
+  { value = Nothing
+  , currency = Unnamed
+  , minValue = Nothing
+  , maxValue = Nothing
+  , latent = False
+  }
 
 data IntervalDirection = Above | Under
   deriving (Eq, Generic, Hashable, Ord, Show, NFData)

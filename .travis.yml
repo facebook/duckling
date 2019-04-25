@@ -21,9 +21,12 @@ matrix:
     - env: CABALVER=1.24 GHCVER=8.0.2
       compiler: ": #GHC 8.0.2"
       addons: {apt: {packages: [cabal-install-1.24,ghc-8.0.2,happy-1.19.5], sources: [hvr-ghc]}}
-    - env: CABALVER=2.0 GHCVER=8.2.1
-      compiler: ": #GHC 8.2.1"
-      addons: {apt: {packages: [cabal-install-2.0,ghc-8.2.1,happy-1.19.5], sources: [hvr-ghc]}}
+    - env: CABALVER=2.0 GHCVER=8.2.2
+      compiler: ": #GHC 8.2.2"
+      addons: {apt: {packages: [cabal-install-2.0,ghc-8.2.2,happy-1.19.5], sources: [hvr-ghc]}}
+    - env: CABALVER=2.0 GHCVER=8.6.3
+      compiler: ": #GHC 8.6.3"
+      addons: {apt: {packages: [cabal-install-2.0,ghc-8.6.3,happy-1.19.5], sources: [hvr-ghc]}}
 
 before_install:
  - unset CC
@@ -73,7 +76,7 @@ script:
  - if [ -f configure.ac ]; then autoreconf -i; fi
  - cabal configure --enable-tests -v2  # -v2 provides useful information for debugging
  - cabal build -j1 # this builds all libraries and executables (including tests/benchmarks)
- - cabal test -j1 --show-details=always
+ - travis_wait cabal test -j1 --show-details=always
  - cabal check
  - cabal sdist   # tests that a source-distribution can be generated
 

@@ -27,10 +27,10 @@ context :: Context
 context = testContext {locale = makeLocale EL Nothing}
 
 corpus :: Corpus
-corpus = (context, allExamples)
+corpus = (context, testOptions, allExamples)
 
 negativeCorpus :: NegativeCorpus
-negativeCorpus = (context, examples)
+negativeCorpus = (context, testOptions, examples)
   where
     examples =
       [ "ένας ενήληκας"
@@ -836,7 +836,7 @@ allExamples = concat
              , "από 3 μέχρι 4 το απόγευμα"
              , "περίπου 3-4 μμ"
              ]
-  , examples (datetimeInterval ((2013, 2, 12, 15, 30, 0), (2013, 2, 12, 19, 0, 0)) Minute)
+  , examples (datetimeInterval ((2013, 2, 12, 15, 30, 0), (2013, 2, 12, 18, 1, 0)) Minute)
              [ "3:30 μέχρι 6 μμ"
              , "3:30-6 μ.μ."
              ]

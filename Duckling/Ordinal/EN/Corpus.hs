@@ -9,16 +9,17 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Ordinal.EN.Corpus
-  ( corpus ) where
+  ( corpus
+  ) where
 
-import Prelude
 import Data.String
+import Prelude
 
 import Duckling.Ordinal.Types
 import Duckling.Testing.Types
 
 corpus :: Corpus
-corpus = (testContext, allExamples)
+corpus = (testContext, testOptions, allExamples)
 
 allExamples :: [Example]
 allExamples = concat

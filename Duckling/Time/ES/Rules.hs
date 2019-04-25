@@ -157,7 +157,7 @@ ruleNow = Rule
   , pattern =
     [ regex "(hoy)|(en este momento)"
     ]
-  , prod = \_ -> tt $ cycleNth TG.Day 0
+  , prod = \_ -> tt today
   }
 
 ruleUltimoDayofweekDeTime :: Rule
@@ -276,18 +276,6 @@ ruleElDayofmonthNonOrdinal = Rule
       _ -> Nothing
   }
 
-ruleSeason4 :: Rule
-ruleSeason4 = Rule
-  { name = "season"
-  , pattern =
-    [ regex "primavera"
-    ]
-  , prod = \_ ->
-      let from = monthDay 3 20
-          to = monthDay 6 21
-      in Token Time <$> interval TTime.Open from to
-  }
-
 ruleYearLatent2 :: Rule
 ruleYearLatent2 = Rule
   { name = "year (latent)"
@@ -354,8 +342,7 @@ ruleHourofdayMinusIntegerAsRelativeMinutes = Rule
   , prod = \tokens -> case tokens of
       (Token Time td:_:token:_) -> do
         n <- getIntValue token
-        t <- minutesBefore n td
-        Just $ Token Time t
+        Token Time <$> minutesBefore n td
       _ -> Nothing
   }
 
@@ -371,8 +358,7 @@ ruleHourofdayMinusIntegerAsRelativeMinutes2 = Rule
   , prod = \tokens -> case tokens of
       (Token Time td:_:token:_) -> do
         n <- getIntValue token
-        t <- minutesBefore n td
-        Just $ Token Time t
+        Token Time <$> minutesBefore n td
       _ -> Nothing
   }
 
@@ -384,9 +370,7 @@ ruleHourofdayMinusQuarter = Rule
     , regex "menos\\s? cuarto"
     ]
   , prod = \tokens -> case tokens of
-      (Token Time td:_) -> do
-        t <- minutesBefore 15 td
-        Just $ Token Time t
+      (Token Time td:_) -> Token Time <$> minutesBefore 15 td
       _ -> Nothing
   }
 
@@ -398,9 +382,7 @@ ruleHourofdayMinusHalf = Rule
     , regex "menos\\s? media"
     ]
   , prod = \tokens -> case tokens of
-      (Token Time td:_) -> do
-        t <- minutesBefore 30 td
-        Just $ Token Time t
+      (Token Time td:_) -> Token Time <$> minutesBefore 30 td
       _ -> Nothing
   }
 
@@ -412,9 +394,7 @@ ruleHourofdayMinusThreeQuarter = Rule
     , regex "menos\\s? (3|tres) cuartos?"
     ]
   , prod = \tokens -> case tokens of
-      (Token Time td:_) -> do
-        t <- minutesBefore 45 td
-        Just $ Token Time t
+      (Token Time td:_) -> Token Time <$> minutesBefore 45 td
       _ -> Nothing
   }
 
@@ -689,29 +669,13 @@ ruleNamedmonthnameddayPast = Rule
       _ -> Nothing
   }
 
-ruleSeason3 :: Rule
-ruleSeason3 = Rule
-  { name = "season"
-  , pattern =
-    [ regex "invierno"
-    ]
-  , prod = \_ ->
-      let from = monthDay 12 21
-          to = monthDay 3 20
-      in Token Time <$> interval TTime.Open from to
-  }
-
-ruleSeason :: Rule
-ruleSeason = Rule
-  { name = "season"
-  , pattern =
-    [ regex "verano"
-    ]
-  , prod = \_ ->
-      let from = monthDay 6 21
-          to = monthDay 9 23
-      in Token Time <$> interval TTime.Open from to
-  }
+ruleSeasons :: [Rule]
+ruleSeasons = mkRuleSeasons
+  [ ( "verano"   , "verano"   , monthDay  6 21, monthDay  9 23 )
+  , ( "otoño"    , "oto(ñ|n)o", monthDay  9 23, monthDay 12 21 )
+  , ( "invierno" , "invierno" , monthDay 12 21, monthDay  3 20 )
+  , ( "primavera", "primavera", monthDay  3 20, monthDay  6 21 )
+  ]
 
 ruleRightNow :: Rule
 ruleRightNow = Rule
@@ -719,7 +683,7 @@ ruleRightNow = Rule
   , pattern =
     [ regex "ahor(it)?a|ya|en\\s?seguida|cuanto antes"
     ]
-  , prod = \_ -> tt $ cycleNth TG.Second 0
+  , prod = \_ -> tt now
   }
 
 ruleDimTimeDeLaTarde :: Rule
@@ -862,8 +826,7 @@ ruleDentroDeDuration = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Duration dd:_) ->
-        Token Time <$>
-          interval TTime.Open (cycleNth TG.Second 0) (inDuration dd)
+        Token Time <$> interval TTime.Open now (inDuration dd)
       _ -> Nothing
   }
 
@@ -991,8 +954,7 @@ ruleThisPartofday = Rule
     , Predicate isAPartOfDay
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td:_) -> Token Time . partOfDay <$>
-        intersect (cycleNth TG.Day 0) td
+      (_:Token Time td:_) -> Token Time . partOfDay <$> intersect today td
       _ -> Nothing
   }
 
@@ -1030,18 +992,6 @@ ruleYesterday = Rule
     [ regex "ayer"
     ]
   , prod = \_ -> tt . cycleNth TG.Day $ - 1
-  }
-
-ruleSeason2 :: Rule
-ruleSeason2 = Rule
-  { name = "season"
-  , pattern =
-    [ regex "oto(ñ|n)o"
-    ]
-  , prod = \_ ->
-      let from = monthDay 9 23
-          to = monthDay 12 21
-      in Token Time <$> interval TTime.Open from to
   }
 
 ruleDayofweekDayofmonth :: Rule
@@ -1389,10 +1339,6 @@ rules =
   , rulePasadosNCycle
   , ruleProximasNCycle
   , ruleRightNow
-  , ruleSeason
-  , ruleSeason2
-  , ruleSeason3
-  , ruleSeason4
   , ruleTheDayAfterTomorrow
   , ruleTheDayBeforeYesterday
   , ruleThisDayofweek
@@ -1426,3 +1372,4 @@ rules =
   ]
   ++ ruleDaysOfWeek
   ++ ruleMonths
+  ++ ruleSeasons

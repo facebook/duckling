@@ -21,10 +21,10 @@ import Duckling.Testing.Types
 import Duckling.TimeGrain.Types (Grain(..))
 
 corpus :: Corpus
-corpus = (testContext, allExamples)
+corpus = (testContext, testOptions, allExamples)
 
 negativeCorpus :: NegativeCorpus
-negativeCorpus = (testContext, examples)
+negativeCorpus = (testContext, testOptions, examples)
   where
     examples =
       [ "for months"
@@ -61,5 +61,36 @@ allExamples = concat
              ]
   , examples (DurationData 2 Year)
              [ "2 years"
+             ]
+  , examples (DurationData 30 Minute)
+             [ "half an hour"
+             , "half hour"
+             , "1/2 hour"
+             , "1/2h"
+             , "1/2 h"
+             ]
+  , examples (DurationData 12 Hour)
+             [ "half a day"
+             , "half day"
+             , "1/2 day"
+             ]
+  , examples (DurationData 90 Minute)
+             [ "an hour and a half"
+             , "one hour and half"
+             ]
+  , examples (DurationData 45 Day)
+             [ "a month and a half"
+             , "one month and half"
+             ]
+  , examples (DurationData 27 Month)
+             [ "2 years and 3 months"
+             , "2 years, 3 months"
+             , "2 years 3 months"
+             ]
+  , examples (DurationData 31719604 Second)
+             [ "1 year, 2 days, 3 hours and 4 seconds"
+             , "1 year 2 days 3 hours and 4 seconds"
+               -- Oxford comma not supported:
+--           , "1 year, 2 days, 3 hours, and 4 seconds"
              ]
   ]

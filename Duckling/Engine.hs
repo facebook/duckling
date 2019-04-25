@@ -19,7 +19,7 @@ module Duckling.Engine
 
 import Control.DeepSeq
 import Control.Monad.Extra
-import Data.Aeson
+import Data.Aeson (toJSON)
 import Data.ByteString (ByteString)
 import Data.Functor.Identity
 import Data.Maybe
@@ -48,10 +48,10 @@ type Duckling a = Identity a
 runDuckling :: Duckling a -> a
 runDuckling ma = runIdentity ma
 
-parseAndResolve :: [Rule] -> Text -> Context -> [ResolvedToken]
-parseAndResolve rules input context = mapMaybe (resolveNode context) .
-  force $ Stash.toPosOrderedList $ runDuckling $
-  parseString rules (Document.fromText input)
+parseAndResolve :: [Rule] -> Text -> Context -> Options -> [ResolvedToken]
+parseAndResolve rules input context options =
+  mapMaybe (resolveNode context options) . force $ Stash.toPosOrderedList $
+  runDuckling $ parseString rules (Document.fromText input)
 
 produce :: Match -> Maybe Node
 produce (_, _, []) = Nothing
@@ -218,11 +218,13 @@ parseString rules sentence = do
   headPredicateRules =
     [ rule | rule@Rule{pattern = (Predicate _ : _)} <- rules ]
 
-resolveNode :: Context -> Node -> Maybe ResolvedToken
-resolveNode context n@Node{token = (Token _ dd), nodeRange = nodeRange} = do
-  val <- resolve context dd
+resolveNode :: Context -> Options -> Node -> Maybe ResolvedToken
+resolveNode context options n@Node{token = (Token dim dd), nodeRange = r}
+  = do
+  (val, latent) <- resolve context options dd
   Just Resolved
-    { range = nodeRange
+    { range = r
     , node = n
-    , jsonValue = toJSON val
+    , rval = RVal dim val
+    , isLatent = latent
     }

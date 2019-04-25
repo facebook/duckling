@@ -70,7 +70,6 @@ cardinalsMap = HashMap.fromList
   , ( "ninety", 90 )
   ]
 
-
 ruleOrdinals :: Rule
 ruleOrdinals = Rule
   { name = "ordinals (first..twentieth,thirtieth,...)"

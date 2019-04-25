@@ -20,7 +20,7 @@ import Duckling.Resolve
 import Duckling.Testing.Types
 
 corpus :: Corpus
-corpus = (testContext {locale = makeLocale ZH Nothing}, allExamples)
+corpus = (testContext {locale = makeLocale ZH Nothing}, testOptions, allExamples)
 
 allExamples :: [Example]
 allExamples = concat
@@ -66,6 +66,24 @@ allExamples = concat
              [ "96"
              , "九十六"
              ]
+  , examples (NumeralValue 203)
+             [ "203"
+             , "二百零三"
+             ]
+  , examples (NumeralValue 534)
+             [ "534"
+             , "五百三十四"
+             ]
+  , examples (NumeralValue 34567)
+             [ "34567"
+             , "34,567"
+             , "三万四千五百六十七"
+             ]
+  , examples (NumeralValue 10040)
+             [ "10040"
+             , "10,040"
+             , "一万零四十"
+             ]
   , examples (NumeralValue 1.1)
              [ "1.1"
              , "1.10"
@@ -75,24 +93,36 @@ allExamples = concat
              [ "0.77"
              , ".77"
              ]
+  , examples (NumeralValue 34507)
+             [ "34507"
+             , "34,507"
+             , "三万四千五百零七"
+             ]
   , examples (NumeralValue 100000)
              [ "100,000"
              , "100000"
              , "100K"
              , "100k"
+             , "十万"
              ]
   , examples (NumeralValue 3000000)
              [ "3M"
-             , "3000K"
              , "3000000"
              , "3,000,000"
+             , "三百万"
+             ]
+  , examples (NumeralValue 1040000)
+             [ "1,040,000"
+             , "1040000"
+             , "1.04M"
+             , "一百零四万"
              ]
   , examples (NumeralValue 1200000)
              [ "1,200,000"
              , "1200000"
              , "1.2M"
-             , "1200K"
              , ".0012G"
+             , "一百二十万"
              ]
   , examples (NumeralValue (-1200000))
              [ "- 1,200,000"
@@ -105,5 +135,6 @@ allExamples = concat
              , "-1.2M"
              , "-1200K"
              , "-.0012G"
+             , "负一百二十万"
              ]
   ]

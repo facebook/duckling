@@ -48,7 +48,7 @@ ruleInniu = Rule
   , pattern =
     [ regex "inniu"
     ]
-  , prod = \_ -> tt $ cycleNth TG.Day 0
+  , prod = \_ -> tt today
   }
 
 ruleAnOrdinalCycleINdiaidhTime :: Rule
@@ -454,7 +454,7 @@ ruleAnois = Rule
   , pattern =
     [ regex "anois|(ag an (t-?)?am seo)"
     ]
-  , prod = \_ -> tt $ cycleNth TG.Second 0
+  , prod = \_ -> tt now
   }
 
 ruleLFhilePdraig :: Rule

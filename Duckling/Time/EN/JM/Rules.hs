@@ -42,7 +42,7 @@ ruleDDMMYYYY :: Rule
 ruleDDMMYYYY = Rule
   { name = "dd/mm/yyyy"
   , pattern =
-    [ regex "(3[01]|[12]\\d|0?[1-9])[/-](1[0-2]|0?[1-9])[-/](\\d{2,4})"
+    [ regex "(3[01]|[12]\\d|0?[1-9])[-/\\s](1[0-2]|0?[1-9])[-/\\s](\\d{2,4})"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (dd:mm:yy:_)):_) -> do
@@ -69,20 +69,22 @@ ruleDDMMYYYYDot = Rule
       _ -> Nothing
   }
 
--- Fourth Thursday of November
-ruleThanksgiving :: Rule
-ruleThanksgiving = Rule
-  { name = "Thanksgiving Day"
-  , pattern =
-    [ regex "thanks?giving( day)?"
-    ]
-  , prod = \_ -> tt . mkOkForThisNext $ nthDOWOfMonth 4 4 11
-  }
+rulePeriodicHolidays :: [Rule]
+rulePeriodicHolidays = mkRuleHolidays
+  -- Fixed dates, year over year
+  [ ( "Labour Day", "labour day", monthDay 5 23 )
+
+  -- Fixed day/week/month, year over year
+  , ( "Father's Day", "father'?s?'? day", nthDOWOfMonth 3 7 6 )
+  , ( "Heroes' Day", "heroes' day", nthDOWOfMonth 3 1 10 )
+  , ( "Mother's Day", "mother'?s?'? day", nthDOWOfMonth 2 7 5 )
+  , ( "Thanksgiving Day", "thanks?giving( day)?", nthDOWOfMonth 4 4 11 )
+  ]
 
 rules :: [Rule]
 rules =
   [ ruleDDMM
   , ruleDDMMYYYY
   , ruleDDMMYYYYDot
-  , ruleThanksgiving
   ]
+  ++ rulePeriodicHolidays

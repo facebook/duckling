@@ -18,7 +18,7 @@ import Duckling.Quantity.Types
 import Duckling.Testing.Types
 
 corpus :: Corpus
-corpus = (testContext, allExamples)
+corpus = (testContext, testOptions, allExamples)
 
 allExamples :: [Example]
 allExamples = concat
@@ -46,6 +46,7 @@ allExamples = concat
              ]
   , examples (simple Cup 3 (Just "sugar"))
              [ "3 Cups of sugar"
+             , "3 Cups of SugAr"
              ]
   , examples (simple Cup 0.75 Nothing)
              [ "3/4 cup"

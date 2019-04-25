@@ -12,6 +12,7 @@
 module Duckling.Ranking.Generate
   ( regenAllClassifiers
   , regenClassifiers
+  , regenLangClassifiers
   ) where
 
 import Data.HashSet (HashSet)
@@ -45,10 +46,12 @@ import qualified Duckling.Time.IT.Corpus as ITTime
 import qualified Duckling.Time.KO.Corpus as KOTime
 import qualified Duckling.Time.NB.Corpus as NBTime
 import qualified Duckling.Time.NL.Corpus as NLTime
+import qualified Duckling.Time.NL.BE.Corpus as NL_BETime
 import qualified Duckling.Time.PL.Corpus as PLTime
 import qualified Duckling.Time.PT.Corpus as PTTime
 import qualified Duckling.Time.RO.Corpus as ROTime
 import qualified Duckling.Time.SV.Corpus as SVTime
+import qualified Duckling.Time.UK.Corpus as UKTime
 import qualified Duckling.Time.VI.Corpus as VITime
 import qualified Duckling.Time.ZH.Corpus as ZHTime
 import qualified Duckling.Time.ZH.CN.Corpus as ZH_CNTime
@@ -67,11 +70,17 @@ regenAllClassifiers = do
   mapM_ regenClassifiers locales
   where
     defaultLocale :: Lang -> Locale
-    defaultLocale lang = Locale lang Nothing
+    defaultLocale lang = makeLocale lang Nothing
     f :: [Locale] -> Lang -> HashSet Region -> [Locale]
     f res lang countries =
-      res ++ [Locale lang (Just c) | c <- HashSet.toList countries]
+      res ++ [makeLocale lang (Just c) | c <- HashSet.toList countries]
     locales = HashMap.foldlWithKey' f [] allLocales
+
+regenLangClassifiers :: Lang -> IO ()
+regenLangClassifiers lang = do
+  regenClassifiers $ makeLocale lang Nothing
+  mapM_ (regenClassifiers . makeLocale lang . Just)
+    $ HashMap.lookupDefault HashSet.empty lang allLocales
 
 -- | Run this function to overwrite the file with Classifiers data
 regenClassifiers :: Locale -> IO ()
@@ -157,40 +166,51 @@ getCorpus locale@(Locale lang (Just region)) =
 -- | For backward compatibility.
 getDefaultCorpusForLang :: Lang -> Corpus
 getDefaultCorpusForLang EN = ENTime.defaultCorpus
+getDefaultCorpusForLang NL = NLTime.defaultCorpus
 getDefaultCorpusForLang lang = getCorpusForLang lang
 
 getCorpusForLang :: Lang -> Corpus
 getCorpusForLang AR = ARTime.corpus
-getCorpusForLang BG = (testContext, [])
-getCorpusForLang CS = (testContext, [])
+getCorpusForLang BG = (testContext, testOptions, [])
+getCorpusForLang BN = (testContext, testOptions, [])
+getCorpusForLang CS = (testContext, testOptions, [])
 getCorpusForLang DA = DATime.corpus
 getCorpusForLang DE = DETime.corpus
 getCorpusForLang EL = ELTime.corpus
 getCorpusForLang EN = ENTime.corpus
 getCorpusForLang ES = ESTime.corpus
-getCorpusForLang ET = (testContext, [])
+getCorpusForLang ET = (testContext, testOptions, [])
+getCorpusForLang FI = (testContext, testOptions, [])
 getCorpusForLang FR = FRTime.corpus
 getCorpusForLang GA = GATime.corpus
 getCorpusForLang HR = HRTime.corpus
 getCorpusForLang HE = HETime.corpus
 getCorpusForLang HU = HUTime.corpus
-getCorpusForLang HI = (testContext, [])
-getCorpusForLang ID = (testContext, [])
+getCorpusForLang HI = (testContext, testOptions, [])
+getCorpusForLang ID = (testContext, testOptions, [])
+getCorpusForLang IS = (testContext, testOptions, [])
 getCorpusForLang IT = ITTime.corpus
-getCorpusForLang JA = (testContext, [])
-getCorpusForLang KA = (testContext, [])
+getCorpusForLang JA = (testContext, testOptions, [])
+getCorpusForLang KA = (testContext, testOptions, [])
+getCorpusForLang KM = (testContext, testOptions, [])
+getCorpusForLang KN = (testContext, testOptions, [])
 getCorpusForLang KO = KOTime.corpus
-getCorpusForLang MY = (testContext, [])
+getCorpusForLang LO = (testContext, testOptions, [])
+getCorpusForLang ML = (testContext, testOptions, [])
+getCorpusForLang MN = (testContext, testOptions, [])
+getCorpusForLang MY = (testContext, testOptions, [])
 getCorpusForLang NB = NBTime.corpus
-getCorpusForLang NE = (testContext, [])
+getCorpusForLang NE = (testContext, testOptions, [])
 getCorpusForLang NL = NLTime.corpus
 getCorpusForLang PL = PLTime.corpus
 getCorpusForLang PT = PTTime.corpus
 getCorpusForLang RO = ROTime.corpus
-getCorpusForLang RU = (testContext, [])
+getCorpusForLang RU = (testContext, testOptions, [])
 getCorpusForLang SV = SVTime.corpus
-getCorpusForLang TR = (testContext, [])
-getCorpusForLang UK = (testContext, [])
+getCorpusForLang SW = (testContext, testOptions, [])
+getCorpusForLang TA = (testContext, testOptions, [])
+getCorpusForLang TR = (testContext, testOptions, [])
+getCorpusForLang UK = UKTime.corpus
 getCorpusForLang VI = VITime.corpus
 getCorpusForLang ZH = ZHTime.corpus
 
@@ -198,6 +218,7 @@ getExamplesForLocale :: Lang -> Region -> [Example]
 getExamplesForLocale EN CA = EN_CATime.allExamples
 getExamplesForLocale EN GB = EN_GBTime.allExamples
 getExamplesForLocale EN US = EN_USTime.allExamples
+getExamplesForLocale NL BE = NL_BETime.allExamples
 getExamplesForLocale ZH CN = ZH_CNTime.allExamples
 getExamplesForLocale ZH HK = ZH_HKTime.allExamples
 getExamplesForLocale ZH MO = ZH_MOTime.allExamples

@@ -32,7 +32,7 @@ ruleIntersectWithAnd :: Rule
 ruleIntersectWithAnd = Rule
   { name = "intersect (with and)"
   , pattern =
-    [ numberWith (fromMaybe 0 . TNumeral.grain) (>1)
+    [ Predicate hasGrain
     , regex "och"
     , Predicate $ and . sequence [not . isMultipliable, isPositive]
     ]
@@ -119,7 +119,7 @@ ruleIntersect :: Rule
 ruleIntersect = Rule
   { name = "intersect"
   , pattern =
-    [ numberWith (fromMaybe 0 . TNumeral.grain) (>1)
+    [ Predicate hasGrain
     , Predicate $ and . sequence [not . isMultipliable, isPositive]
     ]
   , prod = \tokens -> case tokens of
@@ -264,7 +264,7 @@ ruleNumeralDotNumeral = Rule
   , pattern =
     [ dimension Numeral
     , regex "komma"
-    , numberWith TNumeral.grain isNothing
+    , Predicate $ not . hasGrain
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral nd1:_:Token Numeral nd2:_) ->

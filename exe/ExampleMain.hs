@@ -8,12 +8,12 @@
 
 {-# LANGUAGE OverloadedStrings #-}
 
-import Control.Applicative
+import Control.Applicative hiding (empty)
 import Control.Arrow ((***))
 import Control.Monad (unless)
 import Control.Monad.IO.Class
 import Data.Aeson
-import Data.ByteString (ByteString)
+import Data.ByteString (ByteString, empty)
 import Data.HashMap.Strict (HashMap)
 import Data.Maybe
 import Data.String
@@ -21,6 +21,7 @@ import Data.Text (Text)
 import Data.Time.LocalTime.TimeZone.Series
 import Prelude
 import System.Directory
+import System.Environment (lookupEnv)
 import TextShow
 import Text.Read (readMaybe)
 import qualified Data.ByteString.Lazy as LBS
@@ -51,7 +52,10 @@ main :: IO ()
 main = do
   setupLogs
   tzs <- loadTimeZoneSeries "/usr/share/zoneinfo/"
-  quickHttpServe $
+  p <- lookupEnv "PORT"
+  conf <- commandLineConfig $
+    maybe defaultConfig (`setPort` defaultConfig) (readMaybe =<< p)
+  httpServe conf $
     ifTop (writeBS "quack!") <|>
     route
       [ ("targets", method GET targetsHandler)
@@ -79,6 +83,7 @@ parseHandler tzs = do
   tz <- getPostParam "tz"
   loc <- getPostParam "locale"
   ref <- getPostParam "reftime"
+  latent <- getPostParam "latent"
 
   case t of
     Nothing -> do
@@ -92,20 +97,31 @@ parseHandler tzs = do
           { referenceTime = maybe now (parseRefTime timezone) ref
           , locale = maybe (makeLocale (parseLang l) Nothing) parseLocale loc
           }
+        options = Options {withLatent = parseLatent latent}
 
         dimParse = fromMaybe [] $ decode $ LBS.fromStrict $ fromMaybe "" ds
-        dims = mapMaybe fromName dimParse
+        dims = mapMaybe parseDimension dimParse
 
-        parsedResult = parse (Text.decodeUtf8 tx) context dims
+        parsedResult = parse (Text.decodeUtf8 tx) context options dims
 
       writeLBS $ encode parsedResult
   where
     defaultLang = EN
     defaultLocale = makeLocale defaultLang Nothing
     defaultTimeZone = "America/Los_Angeles"
+    defaultLatent = False
+
+    parseDimension :: Text -> Maybe (Some Dimension)
+    parseDimension x = fromName x <|> fromCustomName x
+      where
+        fromCustomName :: Text -> Maybe (Some Dimension)
+        fromCustomName name = HashMap.lookup name m
+        m = HashMap.fromList
+          [ -- ("my-dimension", This (CustomDimension MyDimension))
+          ]
 
     parseTimeZone :: Maybe ByteString -> Text
-    parseTimeZone = fromMaybe defaultTimeZone . fmap Text.decodeUtf8
+    parseTimeZone = maybe defaultTimeZone Text.decodeUtf8
 
     parseLocale :: ByteString -> Locale
     parseLocale x = maybe defaultLocale (`makeLocale` mregion) mlang
@@ -125,3 +141,8 @@ parseHandler tzs = do
       where
         msec = read $ Text.unpack $ Text.decodeUtf8 refTime
         utcTime = posixSecondsToUTCTime $ fromInteger msec / 1000
+
+    parseLatent :: Maybe ByteString -> Bool
+    parseLatent x = fromMaybe defaultLatent
+      (readMaybe (Text.unpack $ Text.toTitle $ Text.decodeUtf8 $ fromMaybe empty x)::Maybe Bool)
+

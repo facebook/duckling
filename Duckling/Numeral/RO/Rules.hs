@@ -7,6 +7,7 @@
 
 
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Numeral.RO.Rules
@@ -23,7 +24,7 @@ import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
 import Duckling.Numeral.Helpers
-import Duckling.Numeral.Types (NumeralData (..))
+import Duckling.Numeral.Types (NumeralData(..))
 import Duckling.Regex.Types
 import Duckling.Types
 import qualified Duckling.Numeral.Types as TNumeral
@@ -35,22 +36,8 @@ ruleNumeralsPrefixWithOrMinus = Rule
     [ regex "-|minus"
     , Predicate isPositive
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (_:Token Numeral nd:_) -> double (TNumeral.value nd * (-1))
-      _ -> Nothing
-  }
-
-ruleSpecialCompositionForMissingHundredsLikeInOneTwentyTwo :: Rule
-ruleSpecialCompositionForMissingHundredsLikeInOneTwentyTwo = Rule
-  { name = "special composition for missing hundreds like in one twenty two"
-  , pattern =
-    [ numberBetween 1 10
-    , numberBetween 11 100
-    ]
-  , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = hundreds}:
-       Token Numeral NumeralData{TNumeral.value = rest}:
-       _) -> double $ hundreds * 100 + rest
       _ -> Nothing
   }
 
@@ -60,7 +47,7 @@ ruleDecimalWithThousandsSeparator = Rule
   , pattern =
     [ regex "(\\d+(\\.\\d\\d\\d)+,\\d+)"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token RegexMatch (GroupMatch (match:_)):
        _) -> let fmt = Text.replace "," "." $ Text.replace "." Text.empty match
         in parseDouble fmt >>= double
@@ -73,9 +60,8 @@ ruleDecimalNumeral = Rule
   , pattern =
     [ regex "(\\d*,\\d+)"
     ]
-  , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):
-       _) -> parseDecimal False match
+  , prod = \case
+      (Token RegexMatch (GroupMatch (match:_)):_) -> parseDecimal False match
       _ -> Nothing
   }
 
@@ -86,7 +72,7 @@ ruleInteger3 = Rule
     [ oneOf [20, 30 .. 90]
     , numberBetween 1 10
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Numeral NumeralData{TNumeral.value = v1}:
        Token Numeral NumeralData{TNumeral.value = v2}:
        _) -> double $ v1 + v2
@@ -100,8 +86,21 @@ ruleMultiply = Rule
     [ dimension Numeral
     , Predicate isMultipliable
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (token1:token2:_) -> multiply token1 token2
+      _ -> Nothing
+  }
+
+ruleMultiplyDe :: Rule
+ruleMultiplyDe = Rule
+  { name = "compose by multiplication"
+  , pattern =
+    [ numberWith TNumeral.value (>= 20)
+    , regex "de"
+    , Predicate isMultipliable
+    ]
+  , prod = \case
+      (token1:_:token2:_) -> multiply token1 token2
       _ -> Nothing
   }
 
@@ -109,10 +108,10 @@ ruleIntersect :: Rule
 ruleIntersect = Rule
   { name = "intersect"
   , pattern =
-    [ numberWith (fromMaybe 0 . TNumeral.grain) (>1)
+    [ Predicate hasGrain
     , Predicate $ and . sequence [not . isMultipliable, isPositive]
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Numeral NumeralData{TNumeral.value = val1, TNumeral.grain = Just g}:
        Token Numeral NumeralData{TNumeral.value = val2}:
        _) | (10 ** fromIntegral g) > val2 -> double $ val1 + val2
@@ -123,11 +122,11 @@ ruleIntersectCuI :: Rule
 ruleIntersectCuI = Rule
   { name = "intersect (cu și)"
   , pattern =
-    [ numberWith (fromMaybe 0 . TNumeral.grain) (>1)
-    , regex "(s|ș)i"
+    [ Predicate hasGrain
+    , regex "[sș]i"
     , Predicate $ and . sequence [not . isMultipliable, isPositive]
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Numeral NumeralData{TNumeral.value = val1, TNumeral.grain = Just g}:
        _:
        Token Numeral NumeralData{TNumeral.value = val2}:
@@ -142,7 +141,7 @@ ruleNumeralsSuffixesWithNegativ = Rule
     [ Predicate isPositive
     , regex "neg(ativ)?"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Numeral NumeralData{TNumeral.value = v}:
        _) -> double $ v * (-1)
       _ -> Nothing
@@ -154,7 +153,7 @@ rulePowersOfTen = Rule
   , pattern =
     [ regex "(sut(a|e|ă)?|milio(n|ane)?|miliar(de?)?|mi[ei]?)"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
         "suta"      -> double 1e2 >>= withGrain 2 >>= withMultipliable
         "sute"      -> double 1e2 >>= withGrain 2 >>= withMultipliable
@@ -213,7 +212,7 @@ ruleIntegerZeroTen = Rule
   , pattern =
     [ regex "(zero|nimic|nici(\\s?o|\\sun(a|ul?))|una|unul?|doi|dou(a|ă)|trei|patru|cinci|(s|ș)ase|(s|ș)apte|opt|nou(a|ă)|zec[ei]|(i|î)nt(a|â)i|un|o)"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token RegexMatch (GroupMatch (match:_)):_) ->
         HashMap.lookup (Text.toLower match) zeroTenMap >>= integer
       _ -> Nothing
@@ -245,7 +244,7 @@ ruleInteger = Rule
   , pattern =
     [ regex "(cin|sapti|opti)(s|ș)pe|(cinci|(s|ș)apte|opt)sprezece|(un|doi|trei|pai|(s|ș)ai|nou(a|ă))((s|ș)pe|sprezece)"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token RegexMatch (GroupMatch (e1:_:e2:_:r:_)):_) -> do
         match <- case () of
           _ | not $ Text.null e1 -> Just e1
@@ -260,9 +259,9 @@ ruleInteger2 :: Rule
 ruleInteger2 = Rule
   { name = "integer (20..90)"
   , pattern =
-    [ regex "(dou(a|ă)|trei|patru|cinci|(s|ș)ai|(s|ș)apte|opt|nou(a|ă))\\s?zeci"
+    [ regex "(dou[aă]|trei|patru|cinci|[sș]ai|[sș]apte|opt|nou[aă])\\s?zeci"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token RegexMatch (GroupMatch (match:_)):_) -> do
         unit <- HashMap.lookup (Text.toLower match) zeroTenMap
         integer (unit * 10) >>= withGrain 2 >>= withMultipliable
@@ -275,7 +274,7 @@ ruleIntegerCuSeparatorDeMiiDot = Rule
   , pattern =
     [ regex "(\\d{1,3}(\\.\\d\\d\\d){1,5})"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token RegexMatch (GroupMatch (match:_)):
        _) -> let fmt = Text.replace "." Text.empty match
         in parseDouble fmt >>= double
@@ -294,8 +293,8 @@ rules =
   , ruleIntersect
   , ruleIntersectCuI
   , ruleMultiply
+  , ruleMultiplyDe
   , ruleNumeralsPrefixWithOrMinus
   , ruleNumeralsSuffixesWithNegativ
   , rulePowersOfTen
-  , ruleSpecialCompositionForMissingHundredsLikeInOneTwentyTwo
   ]

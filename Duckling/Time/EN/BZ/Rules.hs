@@ -42,7 +42,7 @@ ruleDDMMYYYY :: Rule
 ruleDDMMYYYY = Rule
   { name = "dd/mm/yyyy"
   , pattern =
-    [ regex "(3[01]|[12]\\d|0?[1-9])[/-](1[0-2]|0?[1-9])[-/](\\d{2,4})"
+    [ regex "(3[01]|[12]\\d|0?[1-9])[-/\\s](1[0-2]|0?[1-9])[-/\\s](\\d{2,4})"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (dd:mm:yy:_)):_) -> do
@@ -73,11 +73,15 @@ rulePeriodicHolidays :: [Rule]
 rulePeriodicHolidays = mkRuleHolidays
   -- Fixed dates, year over year
   [ ( "Garifuna Settlement Day", "garifuna settlement day", monthDay 11 19 )
-  , ( "National Heroes and Benefactors Day", "national heroes and benefactors day", monthDay 3 9 )
+  , ( "Labour Day", "labour day", monthDay 5 1 )
+  , ( "National Heroes and Benefactors Day"
+    , "national heroes and benefactors day", monthDay 3 9 )
   , ( "Pan American Day", "pan american day", monthDay 10 12 )
   , ( "St. George's Caye Day", "st\\.? george'?s caye day", monthDay 9 10 )
 
   -- Fixed day/week/month, year over year
+  , ( "Father's Day", "father'?s?'? day", nthDOWOfMonth 3 7 6 )
+  , ( "Mother's Day", "mother'?s?'? day", nthDOWOfMonth 2 7 5 )
   , ( "Thanksgiving Day", "thanks?giving( day)?", nthDOWOfMonth 4 4 11 )
   ]
 

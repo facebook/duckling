@@ -7,6 +7,7 @@
 
 
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Temperature.Rules
@@ -17,10 +18,11 @@ import Data.String
 import Prelude
 
 import Duckling.Dimensions.Types
-import qualified Duckling.Numeral.Types as TNumeral
+import Duckling.Temperature.Helpers
 import Duckling.Temperature.Types (TemperatureData (..))
-import qualified Duckling.Temperature.Types as TTemperature
 import Duckling.Types
+import qualified Duckling.Numeral.Types as TNumeral
+import qualified Duckling.Temperature.Types as TTemperature
 
 ruleNumeralAsTemp :: Rule
 ruleNumeralAsTemp = Rule
@@ -28,12 +30,9 @@ ruleNumeralAsTemp = Rule
   , pattern =
     [ dimension Numeral
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Numeral nd:_) ->
-        Just . Token Temperature $ TemperatureData
-          { TTemperature.unit = Nothing
-          , TTemperature.value = floor $ TNumeral.value nd
-          }
+        Just . Token Temperature $ valueOnly $ floor $ TNumeral.value nd
       _ -> Nothing
   }
 

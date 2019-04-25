@@ -17,7 +17,7 @@ module Duckling.Time.AR.Rules
 import Data.Maybe
 import Data.Text (Text)
 import Prelude
-import Data.HashMap.Strict ( HashMap)
+import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Text as Text
 
@@ -25,8 +25,8 @@ import Duckling.Dimensions.Types
 import Duckling.Duration.Helpers (duration)
 import Duckling.Numeral.Helpers (parseInt)
 import Duckling.Numeral.Types (NumeralData (..))
-import Duckling.Ordinal.Types (OrdinalData (..))
 import Duckling.Regex.Types
+import Duckling.Time.Computed
 import Duckling.Time.Helpers
 import Duckling.Time.Types (TimeData (..))
 import Duckling.Types
@@ -692,8 +692,7 @@ ruleHODAndNumeralAfter = Rule
   , prod = \tokens -> case tokens of
       (Token Time td:token:_) -> do
         n <- getIntValue token
-        t <- minutesAfter n td
-        Just $ Token Time t
+        Token Time <$> minutesAfter n td
       _ -> Nothing
   }
 
@@ -708,8 +707,7 @@ ruleNumeralAfterHOD = Rule
   , prod = \tokens -> case tokens of
       (token:_:Token Time td:_) -> do
         n <- getIntValue token
-        t <- minutesAfter n td
-        Just $ Token Time t
+        Token Time <$> minutesAfter n td
       _ -> Nothing
   }
 
@@ -906,7 +904,7 @@ rulePODThis = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td:_) -> Token Time . partOfDay . notLatent <$>
-        intersect (cycleNth TG.Day 0) td
+        intersect today td
       _ -> Nothing
   }
 
@@ -915,7 +913,6 @@ ruleTonight = Rule
   { name = "tonight"
   , pattern = [regex "(هذه )?الليل[ةه]"]
   , prod = \_ -> do
-      let today = cycleNth TG.Day 0
       evening <- interval TTime.Open (hour False 18) (hour False 0)
       Token Time . partOfDay . notLatent <$> intersect today evening
   }
@@ -934,8 +931,7 @@ ruleAfterPartofday = Rule
           "(ال)?مدرس[ةه]" -> Just (hour False 15, hour False 21)
           _        -> Nothing
         td <- interval TTime.Open start end
-        Token Time . partOfDay . notLatent <$>
-          intersect (cycleNth TG.Day 0) td
+        Token Time . partOfDay . notLatent <$> intersect today td
       _ -> Nothing
   }
 
@@ -1217,8 +1213,7 @@ ruleIntervalBy = Rule
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td:_) ->
-        Token Time <$> interval TTime.Open (cycleNth TG.Second 0) td
+      (_:Token Time td:_) -> Token Time <$> interval TTime.Open now td
       _ -> Nothing
   }
 
@@ -1620,8 +1615,7 @@ ruleDurationInWithinAfter = Rule
       (Token RegexMatch (GroupMatch (match:_)):
        Token Duration dd:
        _) -> case Text.toLower match of
-         "خلال" -> Token Time <$>
-           interval TTime.Open (cycleNth TG.Second 0) (inDuration dd)
+         "خلال" -> Token Time <$> interval TTime.Open now (inDuration dd)
          "بعد" -> tt . withDirection TTime.After $ inDuration dd
          "في" -> tt $ inDuration dd
          _ -> Nothing
@@ -1717,6 +1711,27 @@ ruleTimezone = Rule
        _) -> Token Time <$> inTimezone (Text.toUpper tz) td
       _ -> Nothing
   }
+
+rulePeriodicHolidays :: [Rule]
+rulePeriodicHolidays = mkRuleHolidays
+  [ ( "عيد الميلاد" ,"عيد الميلاد", monthDay 12 25 )
+  ]
+
+ruleComputedHolidays :: [Rule]
+ruleComputedHolidays = mkRuleHolidays
+  [ ( "عيد الأضحى" ,"عيد الأضحى", eidalAdha )
+  , ( "عيد الفطر" ,"عيد الفطر", eidalFitr )
+  , ( "عيد الفصح" ,"عيد الفصح", easterSunday )
+  , ( "رأس السنة الهجرية" ,"رأس السنة الهجرية", muharram )
+  ]
+
+ruleComputedHolidays' :: [Rule]
+ruleComputedHolidays' = mkRuleHolidays'
+  [ ( "رمضان", "رمضان"
+    , let start = ramadan
+          end = cycleNthAfter False TG.Day (-1) eidalFitr
+        in interval TTime.Open start end )
+  ]
 
 rules :: [Rule]
 rules =
@@ -1834,3 +1849,6 @@ rules =
   ++ ruleDaysOfWeek
   ++ ruleMonths
   ++ ruleUSHolidays
+  ++ rulePeriodicHolidays
+  ++ ruleComputedHolidays
+  ++ ruleComputedHolidays'

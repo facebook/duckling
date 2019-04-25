@@ -17,20 +17,20 @@ import Prelude
 
 import Duckling.Dimensions.Types
 import Duckling.Ordinal.Types (OrdinalData (..))
-import qualified Duckling.Ordinal.Types as TOrdinal
 import Duckling.Types
+import qualified Duckling.Ordinal.Types as TOrdinal
 
 -- -----------------------------------------------------------------
 -- Patterns
-
--- -----------------------------------------------------------------
--- Production
-
-ordinal :: Int -> Token
-ordinal x = Token Ordinal OrdinalData {TOrdinal.value = x}
 
 oneOf :: [Int] -> PatternItem
 oneOf vs = Predicate $ \x ->
   case x of
     (Token Ordinal OrdinalData {TOrdinal.value = v}) -> elem v vs
     _ -> False
+
+-- -----------------------------------------------------------------
+-- Production
+
+ordinal :: Int -> Token
+ordinal x = Token Ordinal OrdinalData {TOrdinal.value = x}

@@ -21,6 +21,18 @@ import Duckling.Dimensions.Types
 import Duckling.Locale
 import Duckling.Types
 import qualified Duckling.AmountOfMoney.EN.Rules as AmountOfMoney
+import qualified Duckling.AmountOfMoney.EN.AU.Rules as AmountOfMoneyAU
+import qualified Duckling.AmountOfMoney.EN.BZ.Rules as AmountOfMoneyBZ
+import qualified Duckling.AmountOfMoney.EN.CA.Rules as AmountOfMoneyCA
+import qualified Duckling.AmountOfMoney.EN.GB.Rules as AmountOfMoneyGB
+import qualified Duckling.AmountOfMoney.EN.IE.Rules as AmountOfMoneyIE
+import qualified Duckling.AmountOfMoney.EN.IN.Rules as AmountOfMoneyIN
+import qualified Duckling.AmountOfMoney.EN.JM.Rules as AmountOfMoneyJM
+import qualified Duckling.AmountOfMoney.EN.NZ.Rules as AmountOfMoneyNZ
+import qualified Duckling.AmountOfMoney.EN.PH.Rules as AmountOfMoneyPH
+import qualified Duckling.AmountOfMoney.EN.TT.Rules as AmountOfMoneyTT
+import qualified Duckling.AmountOfMoney.EN.US.Rules as AmountOfMoneyUS
+import qualified Duckling.AmountOfMoney.EN.ZA.Rules as AmountOfMoneyZA
 import qualified Duckling.Distance.EN.Rules as Distance
 import qualified Duckling.Duration.EN.Rules as Duration
 import qualified Duckling.Email.EN.Rules as Email
@@ -49,6 +61,18 @@ defaultRules dim@(This Time) = TimeUS.rulesBackwardCompatible ++ langRules dim
 defaultRules dim             = langRules dim
 
 localeRules :: Region -> Some Dimension -> [Rule]
+localeRules AU (This AmountOfMoney) = AmountOfMoneyAU.rules
+localeRules BZ (This AmountOfMoney) = AmountOfMoneyBZ.rules
+localeRules CA (This AmountOfMoney) = AmountOfMoneyCA.rules
+localeRules GB (This AmountOfMoney) = AmountOfMoneyGB.rules
+localeRules IE (This AmountOfMoney) = AmountOfMoneyIE.rules
+localeRules IN (This AmountOfMoney) = AmountOfMoneyIN.rules
+localeRules JM (This AmountOfMoney) = AmountOfMoneyJM.rules
+localeRules NZ (This AmountOfMoney) = AmountOfMoneyNZ.rules
+localeRules PH (This AmountOfMoney) = AmountOfMoneyPH.rules
+localeRules TT (This AmountOfMoney) = AmountOfMoneyTT.rules
+localeRules US (This AmountOfMoney) = AmountOfMoneyUS.rules
+localeRules ZA (This AmountOfMoney) = AmountOfMoneyZA.rules
 localeRules AU (This Time) = TimeAU.rules
 localeRules BZ (This Time) = TimeBZ.rules
 localeRules CA (This Time) = TimeCA.rules
@@ -61,10 +85,12 @@ localeRules PH (This Time) = TimePH.rules
 localeRules TT (This Time) = TimeTT.rules
 localeRules US (This Time) = TimeUS.rules
 localeRules ZA (This Time) = TimeZA.rules
-localeRules _ _            = []
+localeRules region (This (CustomDimension dim)) = dimLocaleRules region dim
+localeRules _ _ = []
 
 langRules :: Some Dimension -> [Rule]
 langRules (This AmountOfMoney) = AmountOfMoney.rules
+langRules (This CreditCardNumber) = []
 langRules (This Distance) = Distance.rules
 langRules (This Duration) = Duration.rules
 langRules (This Email) = Email.rules
@@ -78,3 +104,4 @@ langRules (This Time) = Time.rules
 langRules (This TimeGrain) = TimeGrain.rules
 langRules (This Url) = []
 langRules (This Volume) = Volume.rules
+langRules (This (CustomDimension dim)) = dimLangRules EN dim

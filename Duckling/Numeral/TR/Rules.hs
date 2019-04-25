@@ -305,7 +305,7 @@ ruleIntersect :: Rule
 ruleIntersect = Rule
   { name = "intersect"
   , pattern =
-    [ numberWith (fromMaybe 0 . TNumeral.grain) (>1)
+    [ Predicate hasGrain
     , Predicate $ and . sequence [not . isMultipliable, isPositive]
     ]
   , prod = \tokens -> case tokens of
@@ -666,7 +666,7 @@ ruleNumeralDotNumeral = Rule
   , pattern =
     [ dimension Numeral
     , regex "nokta|virgül"
-    , numberWith TNumeral.grain isNothing
+    , Predicate $ not . hasGrain
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData{TNumeral.value = v1}:

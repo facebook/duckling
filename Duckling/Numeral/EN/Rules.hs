@@ -130,16 +130,17 @@ ruleTens = Rule
 rulePowersOfTen :: Rule
 rulePowersOfTen = Rule
   { name = "powers of tens"
-  , pattern =
-    [ regex "(hundred|thousand|million|billion)s?"
-    ]
+  , pattern = [regex "(hundred|thousand|lakh|million|crore|billion)s?"]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
-        "hundred"  -> double 1e2 >>= withGrain 2 >>= withMultipliable
-        "thousand" -> double 1e3 >>= withGrain 3 >>= withMultipliable
-        "million"  -> double 1e6 >>= withGrain 6 >>= withMultipliable
-        "billion"  -> double 1e9 >>= withGrain 9 >>= withMultipliable
-        _          -> Nothing
+      (Token RegexMatch (GroupMatch (match : _)) : _) ->
+        case Text.toLower match of
+          "hundred" -> double 1e2 >>= withGrain 2 >>= withMultipliable
+          "thousand" -> double 1e3 >>= withGrain 3 >>= withMultipliable
+          "lakh" -> double 1e5 >>= withGrain 5 >>= withMultipliable
+          "million" -> double 1e6 >>= withGrain 6 >>= withMultipliable
+          "crore" -> double 1e7 >>= withGrain 7 >>= withMultipliable
+          "billion" -> double 1e9 >>= withGrain 9 >>= withMultipliable
+          _ -> Nothing
       _ -> Nothing
   }
 
@@ -148,10 +149,12 @@ ruleCompositeTens = Rule
   { name = "integer 21..99"
   , pattern =
     [ oneOf [20,30..90]
+    , regex "[\\s\\-]+"
     , numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData{TNumeral.value = tens}:
+       _:
        Token Numeral NumeralData{TNumeral.value = units}:
        _) -> double $ tens + units
       _ -> Nothing
@@ -205,7 +208,7 @@ ruleDotSpelledOut = Rule
   , pattern =
     [ dimension Numeral
     , regex "point|dot"
-    , numberWith TNumeral.grain isNothing
+    , Predicate $ not . hasGrain
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral nd1:_:Token Numeral nd2:_) ->
@@ -218,7 +221,7 @@ ruleLeadingDotSpelledOut = Rule
   { name = "point 77"
   , pattern =
     [ regex "point|dot"
-    , numberWith TNumeral.grain isNothing
+    , Predicate $ not . hasGrain
     ]
   , prod = \tokens -> case tokens of
       (_:Token Numeral nd:_) -> double . decimalsToDouble $ TNumeral.value nd
@@ -282,7 +285,7 @@ ruleSum :: Rule
 ruleSum = Rule
   { name = "intersect 2 numbers"
   , pattern =
-    [ numberWith (fromMaybe 0 . TNumeral.grain) (>1)
+    [ Predicate $ and . sequence [hasGrain, isPositive]
     , Predicate $ and . sequence [not . isMultipliable, isPositive]
     ]
   , prod = \tokens -> case tokens of
@@ -296,7 +299,7 @@ ruleSumAnd :: Rule
 ruleSumAnd = Rule
   { name = "intersect 2 numbers (with and)"
   , pattern =
-    [ numberWith (fromMaybe 0 . TNumeral.grain) (>1)
+    [ Predicate $ and . sequence [hasGrain, isPositive]
     , regex "and"
     , Predicate $ and . sequence [not . isMultipliable, isPositive]
     ]

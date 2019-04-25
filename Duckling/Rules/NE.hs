@@ -23,10 +23,12 @@ defaultRules :: Some Dimension -> [Rule]
 defaultRules = langRules
 
 localeRules :: Region -> Some Dimension -> [Rule]
+localeRules region (This (CustomDimension dim)) = dimLocaleRules region dim
 localeRules _ _ = []
 
 langRules :: Some Dimension -> [Rule]
 langRules (This AmountOfMoney) = []
+langRules (This CreditCardNumber) = []
 langRules (This Distance) = []
 langRules (This Duration) = []
 langRules (This Numeral) = Numeral.rules
@@ -40,3 +42,4 @@ langRules (This Time) = []
 langRules (This TimeGrain) = []
 langRules (This Url) = []
 langRules (This Volume) = []
+langRules (This (CustomDimension dim)) = dimLangRules NE dim

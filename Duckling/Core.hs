@@ -12,16 +12,19 @@
 
 module Duckling.Core
   ( Context(..)
-  , Region(..)
   , Dimension(..)
   , Entity(..)
-  , Node(..)
-  , Range(..)
   , Lang(..)
   , Locale
+  , Node(..)
+  , Options(..)
+  , Range(..)
+  , Region(..)
+  , ResolvedVal(..)
   , Some(..)
   , fromName
   , makeLocale
+  , toJText
   , toName
 
   -- Duckling API
@@ -36,7 +39,6 @@ module Duckling.Core
   ) where
 
 import Data.HashMap.Strict (HashMap)
-import Data.Maybe
 import Data.Text (Text)
 import Data.Time
 import Data.Time.LocalTime.TimeZone.Series

@@ -28,7 +28,7 @@ newtype OrdinalData = OrdinalData { value :: Int }
 
 instance Resolve OrdinalData where
   type ResolvedValue OrdinalData = OrdinalData
-  resolve _ x = Just x
+  resolve _ _ x = Just (x, False)
 
 instance ToJSON OrdinalData where
   toJSON (OrdinalData value) = object

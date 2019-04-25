@@ -19,26 +19,26 @@ import Duckling.Testing.Types
 import Duckling.Volume.Types
 
 corpus :: Corpus
-corpus = (testContext {locale = makeLocale HR Nothing}, allExamples)
+corpus = (testContext {locale = makeLocale HR Nothing}, testOptions, allExamples)
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (VolumeValue Millilitre 250)
+  [ examples (simple Millilitre 250)
              [ "250 mililitara"
              , "250ml"
              , "250 ml"
              ]
-  , examples (VolumeValue Litre 2)
+  , examples (simple Litre 2)
              [ "2 litre"
              ]
-  , examples (VolumeValue Gallon 3)
+  , examples (simple Gallon 3)
              [ "3 galona"
              , "3 gal"
              ]
-  , examples (VolumeValue Hectolitre 3)
+  , examples (simple Hectolitre 3)
              [ "3 hektolitra"
              ]
-  , examples (VolumeValue Litre 0.5)
+  , examples (simple Litre 0.5)
              [ "pola litre"
              ]
   ]

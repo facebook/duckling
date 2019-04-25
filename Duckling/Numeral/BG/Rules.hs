@@ -16,7 +16,6 @@ module Duckling.Numeral.BG.Rules
 
 import Data.HashMap.Strict (HashMap)
 import Data.Maybe
-import Data.String
 import Data.Text (Text)
 import Prelude
 import qualified Data.HashMap.Strict as HashMap
@@ -164,7 +163,7 @@ ruleDotSpelledOut = Rule
   , pattern =
     [ dimension Numeral
     , regex "цяло и"
-    , numberWith TNumeral.grain isNothing
+    , Predicate $ not . hasGrain
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral nd1:_:Token Numeral nd2:_) ->

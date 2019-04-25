@@ -38,11 +38,18 @@ currencies = HashMap.fromList
   , ("bgn", BGN)
   , ("brl", BRL)
   , ("byn", BYN)
+  , ("cad", CAD)
   , ("¢", Cent)
   , ("c", Cent)
+  , ("chf", CHF)
+  , ("cny", CNY)
+  , ("czk", CZK)
+  , ("rmb", CNY)
+  , ("yuan", CNY)
   , ("$", Dollar)
   , ("dinar", Dinar)
   , ("dinars", Dinar)
+  , ("dkk", DKK)
   , ("dollar", Dollar)
   , ("dollars", Dollar)
   , ("egp", EGP)
@@ -56,26 +63,40 @@ currencies = HashMap.fromList
   , ("€uros", EUR)
   , ("€urs", EUR)
   , ("gbp", GBP)
+  , ("gel", GEL)
+  , ("hkd", HKD)
   , ("hrk", HRK)
   , ("idr", IDR)
   , ("ils", ILS)
+  , ("₪", ILS)
+  , ("nis", ILS)
   , ("inr", INR)
   , ("iqd", IQD)
   , ("rs", INR)
   , ("rs.", INR)
   , ("rupee", INR)
   , ("rupees", INR)
+  , ("jmd", JMD)
   , ("jod", JOD)
   , ("¥", JPY)
   , ("jpy", JPY)
+  , ("lari", GEL)
+  , ("\x20BE", GEL)
   , ("yen", JPY)
   , ("krw", KRW)
   , ("kwd", KWD)
   , ("lbp", LBP)
   , ("mad", MAD)
+  , ("mnt", MNT)
   , ("myr", MYR)
   , ("rm", MYR)
+  , ("₮", MNT)
+  , ("tugrik", MNT)
+  , ("tugriks", MNT)
   , ("nok", NOK)
+  , ("nzd", NZD)
+  , ("pkr", PKR)
+  , ("pln", PLN)
   , ("£", Pound)
   , ("pt", PTS)
   , ("pta", PTS)
@@ -94,16 +115,19 @@ currencies = HashMap.fromList
   , ("sgd", SGD)
   , ("shekel", ILS)
   , ("shekels", ILS)
+  , ("thb", THB)
+  , ("ttd", TTD)
   , ("usd", USD)
   , ("us$", USD)
   , ("vnd", VND)
+  , ("zar", ZAR)
   ]
 
 ruleCurrencies :: Rule
 ruleCurrencies = Rule
   { name = "currencies"
   , pattern =
-    [ regex "(aed|aud|bgn|brl|byn|¢|c|\\$|dinars?|dollars?|egp|(e|€)uro?s?|€|gbp|hrk|idr|ils|inr|iqd|jod|¥|jpy|krw|kwd|lbp|mad|myr|rm|nok|£|pta?s?|qar|₽|rs\\.?|riy?als?|ron|rub|rupees?|sar|sek|sgb|shekels?|us(d|\\$)|vnd|yen)"
+    [ regex "(aed|aud|bgn|brl|byn|¢|cad|chf|cny|c|\\$|dinars?|dkk|dollars?|egp|(e|€)uro?s?|€|gbp|gel|\x20BE|hrk|idr|ils|₪|inr|iqd|jmd|jod|¥|jpy|lari|krw|kwd|lbp|mad|₮|mnt|tugriks?|myr|rm|nis|nok|nzd|£|pkr|pln|pta?s?|qar|₽|rs\\.?|riy?als?|ron|rub|rupees?|sar|sek|sgb|shekels?|thb|ttd|us(d|\\$)|vnd|yen|yuan|zar)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> do
@@ -117,7 +141,7 @@ ruleAmountUnit = Rule
   { name = "<amount> <unit>"
   , pattern =
     [ Predicate isPositive
-    , financeWith TAmountOfMoney.value isNothing
+    , Predicate isCurrencyOnly
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData{TNumeral.value = v}:
@@ -126,23 +150,21 @@ ruleAmountUnit = Rule
       _ -> Nothing
   }
 
-ruleUnitAmount :: Rule
-ruleUnitAmount = Rule
-  { name = "<unit> <amount>"
+ruleAmountLatent :: Rule
+ruleAmountLatent = Rule
+  { name = "<amount> (latent)"
   , pattern =
-    [ financeWith TAmountOfMoney.value isNothing
-    , Predicate isPositive
+    [ Predicate isPositive
     ]
   , prod = \tokens -> case tokens of
-      (Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.currency = c}:
-       Token Numeral NumeralData{TNumeral.value = v}:
-       _) -> Just . Token AmountOfMoney . withValue v $ currencyOnly c
+      (Token Numeral NumeralData{TNumeral.value = v}:_) ->
+        Just . Token AmountOfMoney . mkLatent $ valueOnly v
       _ -> Nothing
   }
 
 rules :: [Rule]
 rules =
   [ ruleAmountUnit
+  , ruleAmountLatent
   , ruleCurrencies
-  , ruleUnitAmount
   ]

@@ -20,7 +20,7 @@ import Duckling.Resolve
 import Duckling.Testing.Types
 
 corpus :: Corpus
-corpus = (testContext {locale = makeLocale VI Nothing}, allExamples)
+corpus = (testContext {locale = makeLocale VI Nothing}, testOptions, allExamples)
 
 allExamples :: [Example]
 allExamples = concat
@@ -58,19 +58,19 @@ allExamples = concat
              ]
   , examples (NumeralValue 100)
             [ "100"
-            , "tră"
+            , "trăm"
             ]
   , examples (NumeralValue 1.1)
-             [ "1.1"
-             , "1.10"
-             , "01.10"
+             [ "1,1"
+             , "1,10"
+             , "01,10"
              ]
   , examples (NumeralValue 0.77)
-             [ "0.77"
-             , ".77"
+             [ "0,77"
+             , ",77"
              ]
   , examples (NumeralValue 100000)
-             [ "100,000"
+             [ "100.000"
              , "100000"
              , "100K"
              , "100k"
@@ -79,32 +79,39 @@ allExamples = concat
              [ "3M"
              , "3000K"
              , "3000000"
-             , "3,000,000"
+             , "3.000.000"
              ]
   , examples (NumeralValue 1200000)
-             [ "1,200,000"
+             [ "1.200.000"
              , "1200000"
-             , "1.2M"
+             , "1,2M"
              , "1200K"
-             , ".0012G"
+             , ",0012G"
              ]
   , examples (NumeralValue (-1200000))
-             [ "- 1,200,000"
+             [ "- 1.200.000"
              , "-1200000"
-             , "âm 1,200,000"
-             , "-1.2M"
+             , "âm 1.200.000"
+             , "-1,2M"
              , "-1200K"
-             , "-.0012G"
+             , "-,0012G"
+             ]
+  , examples (NumeralValue 20)
+             [ "hai chục"
+             , "hai mươi"
              ]
   , examples (NumeralValue 5000)
              [ "5 nghìn"
              , "năm nghìn"
+             , "năm ngàn"
              ]
   , examples (NumeralValue 200000)
              [ "hai trăm nghìn"
+             , "hai trăm ngàn"
              ]
   , examples (NumeralValue 1000000000)
              [ "một tỷ"
+             , "một tỉ"
              ]
   , examples (NumeralValue 21011)
              [ "hai mươi mốt nghìn không trăm mười một"

@@ -7,6 +7,7 @@
 
 
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.AmountOfMoney.AR.Rules
@@ -27,6 +28,20 @@ import Duckling.Regex.Types
 import Duckling.Types
 import qualified Duckling.AmountOfMoney.Types as TAmountOfMoney
 import qualified Duckling.Numeral.Types as TNumeral
+
+ruleUnitAmount :: Rule
+ruleUnitAmount = Rule
+  { name = "<unit> <amount>"
+  , pattern =
+    [ Predicate isCurrencyOnly
+    , Predicate isPositive
+    ]
+  , prod = \case
+      (Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.currency = c}:
+       Token Numeral NumeralData{TNumeral.value = v}:
+       _) -> Just . Token AmountOfMoney . withValue v $ currencyOnly c
+      _ -> Nothing
+  }
 
 rulePounds :: Rule
 rulePounds = Rule
@@ -251,7 +266,7 @@ ruleIntervalBetweenNumeral = Rule
     [ regex "(من|(ما )?بين)( ال)?"
     , Predicate isPositive
     , regex "(الى|حتى|و|ل)( ا?ل)?"
-    , financeWith TAmountOfMoney.value isJust
+    , Predicate isSimpleAmountOfMoney
     ]
   , prod = \tokens -> case tokens of
       (_:
@@ -268,9 +283,9 @@ ruleIntervalBetween = Rule
   { name = "between|from <amount-of-money> to|and <amount-of-money>"
   , pattern =
     [ regex "(من|(ما )?بين)( ال)?"
-    , financeWith TAmountOfMoney.value isJust
+    , Predicate isSimpleAmountOfMoney
     , regex "(الى|حتى|و|ل)( ا?ل)?"
-    , financeWith TAmountOfMoney.value isJust
+    , Predicate isSimpleAmountOfMoney
     ]
   , prod = \tokens -> case tokens of
       (_:
@@ -288,7 +303,7 @@ ruleIntervalNumeralDash = Rule
   , pattern =
     [ Predicate isPositive
     , regex "-"
-    , financeWith TAmountOfMoney.value isJust
+    , Predicate isSimpleAmountOfMoney
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData {TNumeral.value = from}:
@@ -303,9 +318,9 @@ ruleIntervalDash :: Rule
 ruleIntervalDash = Rule
   { name = "<amount-of-money> - <amount-of-money>"
   , pattern =
-    [ financeWith TAmountOfMoney.value isJust
+    [ Predicate isSimpleAmountOfMoney
     , regex "-"
-    , financeWith TAmountOfMoney.value isJust
+    , Predicate isSimpleAmountOfMoney
     ]
   , prod = \tokens -> case tokens of
       (Token AmountOfMoney AmountOfMoneyData {TAmountOfMoney.value = Just from, TAmountOfMoney.currency = c1}:
@@ -321,7 +336,7 @@ ruleIntervalMax = Rule
   { name = "under/less/lower/no more than <amount-of-money>"
   , pattern =
     [ regex "(حتى|[أا]قل من|تحت|(ما )?دون)|على ال[أا]كثر"
-    , financeWith TAmountOfMoney.value isJust
+    , Predicate isSimpleAmountOfMoney
     ]
   , prod = \tokens -> case tokens of
       (_:
@@ -335,7 +350,7 @@ ruleIntervalAtMost = Rule
   { name = "under/less/lower/no more than <amount-of-money>"
   , pattern =
     [ regex "على ال[أا]كثر"
-    , financeWith TAmountOfMoney.value isJust
+    , Predicate isSimpleAmountOfMoney
     ]
   , prod = \tokens -> case tokens of
       (_:
@@ -349,7 +364,7 @@ ruleIntervalMin = Rule
   { name = "at least/over/above/more than <amount-of-money>"
   , pattern =
     [ regex "فوق||[أا]كثر من|على ال[اأ]قل"
-    , financeWith TAmountOfMoney.value isJust
+    , Predicate isSimpleAmountOfMoney
     ]
   , prod = \tokens -> case tokens of
       (_:
@@ -362,7 +377,7 @@ ruleIntervalAtLeast :: Rule
 ruleIntervalAtLeast = Rule
   { name = "<amount-of-money> at least"
   , pattern =
-    [ financeWith TAmountOfMoney.value isJust
+    [ Predicate isSimpleAmountOfMoney
     , regex "على ال[اأ]قل"
     ]
   , prod = \tokens -> case tokens of
@@ -373,7 +388,8 @@ ruleIntervalAtLeast = Rule
 
 rules :: [Rule]
 rules =
-  [ ruleCent
+  [ ruleUnitAmount
+  , ruleCent
   , rulePounds
   , ruleDinars
   , ruleDirhams

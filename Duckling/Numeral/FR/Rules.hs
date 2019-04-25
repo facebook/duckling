@@ -57,10 +57,12 @@ ruleNumerals2 = Rule
   { name = "numbers 22..29 32..39 .. 52..59"
   , pattern =
     [ oneOf [20, 50, 40, 30]
+    , regex "[\\s\\-]+"
     , numberBetween 2 10
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData{TNumeral.value = v1}:
+       _:
        Token Numeral NumeralData{TNumeral.value = v2}:
        _) -> double $ v1 + v2
       _ -> Nothing
@@ -117,10 +119,12 @@ ruleNumerals5 = Rule
   { name = "numbers 62..69 .. 92..99"
   , pattern =
     [ oneOf [60, 80]
+    , regex "[\\s\\-]+"
     , numberBetween 2 20
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData{TNumeral.value = v1}:
+       _:
        Token Numeral NumeralData{TNumeral.value = v2}:
        _) -> double $ v1 + v2
       _ -> Nothing
@@ -166,10 +170,12 @@ ruleNumeral3 = Rule
   { name = "number (17..19)"
   , pattern =
     [ numberWith TNumeral.value (== 10)
+    , regex "[\\s\\-]+"
     , numberBetween 7 10
     ]
   , prod = \tokens -> case tokens of
       (_:
+       _:
        Token Numeral NumeralData{TNumeral.value = v}:
        _) -> double $ 10 + v
       _ -> Nothing
@@ -224,7 +230,7 @@ ruleNumerals = Rule
   { name = "numbers 21 31 41 51"
   , pattern =
     [ oneOf [20, 50, 40, 30]
-    , regex "et"
+    , regex "-?et-?"
     , numberWith TNumeral.value (== 1)
     ]
   , prod = \tokens -> case tokens of
@@ -270,7 +276,7 @@ ruleSum :: Rule
 ruleSum = Rule
   { name = "intersect 2 numbers"
   , pattern =
-    [ numberWith (fromMaybe 0 . TNumeral.grain) (>1)
+    [ Predicate hasGrain
     , Predicate $ and . sequence [not . isMultipliable, isPositive]
     ]
   , prod = \tokens -> case tokens of

@@ -98,9 +98,6 @@ opsMap = HashMap.fromList
   , ( "كيلو جرامين", (* 2000))
   ]
 
-getValue :: Text -> Double -> Double
-getValue match = HashMap.lookupDefault id (Text.toLower match) opsMap
-
 ruleNumeralQuantities :: [Rule]
 ruleNumeralQuantities = map go quantities
   where
@@ -112,7 +109,7 @@ ruleNumeralQuantities = map go quantities
         (Token Numeral nd:
          Token RegexMatch (GroupMatch (match:_)):
          _) -> Just . Token Quantity $ quantity u value
-          where value = getValue match $ TNumeral.value nd
+          where value = getValue opsMap match $ TNumeral.value nd
         _ -> Nothing
       }
 
@@ -125,7 +122,7 @@ ruleAQuantity = map go quantities
       , pattern = [ regex regexPattern ]
       , prod = \tokens -> case tokens of
         (Token RegexMatch (GroupMatch (match:_)):
-         _) -> Just . Token Quantity $ quantity u $ getValue match 1
+         _) -> Just . Token Quantity $ quantity u $ getValue opsMap match 1
         _ -> Nothing
       }
 

@@ -29,7 +29,7 @@ newtype EmailData = EmailData { value :: Text }
 
 instance Resolve EmailData where
   type ResolvedValue EmailData = EmailData
-  resolve _ x = Just x
+  resolve _ _ x = Just (x, False)
 
 instance ToJSON EmailData where
   toJSON EmailData {value} = object [ "value" .= value ]

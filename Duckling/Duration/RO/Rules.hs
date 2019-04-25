@@ -7,18 +7,22 @@
 
 
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Duration.RO.Rules
-  ( rules ) where
+  ( rules
+  ) where
 
-import Prelude
 import Data.String
+import Prelude
 
 import Duckling.Dimensions.Types
 import Duckling.Duration.Helpers
-import qualified Duckling.TimeGrain.Types as TG
+import Duckling.Numeral.Helpers (numberWith)
 import Duckling.Types
+import qualified Duckling.Numeral.Types as TNumeral
+import qualified Duckling.TimeGrain.Types as TG
 
 ruleQuarterOfAnHour :: Rule
 ruleQuarterOfAnHour = Rule
@@ -54,7 +58,7 @@ ruleOUnitofduration = Rule
     [ regex "o|un"
     , dimension TimeGrain
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (_:Token TimeGrain grain:_) -> Just . Token Duration $ duration grain 1
       _ -> Nothing
   }
@@ -66,8 +70,24 @@ ruleExactInJurDeDuration = Rule
     [ regex "(exact|aproximativ|(i|î)n jur de)"
     , dimension Duration
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (_:token:_) -> Just token
+      _ -> Nothing
+  }
+
+ruleIntegerDeUnitofduration :: Rule
+ruleIntegerDeUnitofduration = Rule
+  { name = "<integer> <unit-of-duration>"
+  , pattern =
+    [ numberWith TNumeral.value (>= 20)
+    , regex "de"
+    , dimension TimeGrain
+    ]
+  , prod = \case
+      (Token Numeral TNumeral.NumeralData{TNumeral.value = v}:
+       _:
+       Token TimeGrain grain:
+       _) -> Just . Token Duration . duration grain $ floor v
       _ -> Nothing
   }
 
@@ -78,4 +98,5 @@ rules =
   , ruleOUnitofduration
   , ruleQuarterOfAnHour
   , ruleTreiSferturiDeOra
+  , ruleIntegerDeUnitofduration
   ]

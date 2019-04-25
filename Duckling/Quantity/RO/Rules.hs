@@ -7,30 +7,33 @@
 
 
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Quantity.RO.Rules
-  ( rules ) where
+  ( rules
+  ) where
 
-import Prelude
 import Data.String
+import Prelude
 
 import Duckling.Dimensions.Types
-import Duckling.Numeral.Types (NumeralData (..))
-import qualified Duckling.Numeral.Types as TNumeral
+import Duckling.Numeral.Helpers (isPositive)
+import Duckling.Numeral.Types (NumeralData(..))
 import Duckling.Quantity.Helpers
-import qualified Duckling.Quantity.Types as TQuantity
 import Duckling.Regex.Types
 import Duckling.Types
+import qualified Duckling.Numeral.Types as TNumeral
+import qualified Duckling.Quantity.Types as TQuantity
 
 ruleNumeralUnits :: Rule
 ruleNumeralUnits = Rule
   { name = "<number> <units>"
   , pattern =
-    [ dimension Numeral
-    , regex "livr(a|e|ă)"
+    [ Predicate isPositive
+    , regex "(de )?livr(a|e|ă)"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Numeral NumeralData {TNumeral.value = v}:_) ->
         Just . Token Quantity $ quantity TQuantity.Pound v
       _ -> Nothing
@@ -41,12 +44,12 @@ ruleQuantityOfProduct = Rule
   { name = "<quantity> of product"
   , pattern =
     [ dimension Quantity
-    , regex "de (carne|can(a|ă)|zah(a|ă)r)"
+    , regex "de (carne|can[aă]|zah[aă]r|mamaliga)"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Quantity qd:
-       Token RegexMatch (GroupMatch (match:_)):
-       _) -> Just . Token Quantity $ withProduct match qd
+       Token RegexMatch (GroupMatch (product:_)):
+       _) -> Just . Token Quantity $ withProduct product qd
       _ -> Nothing
   }
 

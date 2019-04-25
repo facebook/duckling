@@ -162,8 +162,7 @@ rulePartofdayHmNay = Rule
     , regex "(h(ô)m )?nay"
     ]
   , prod = \tokens -> case tokens of
-      (Token Time td:_) ->
-        Token Time . partOfDay <$> intersect (cycleNth TG.Day 0) td
+      (Token Time td:_) -> Token Time . partOfDay <$> intersect today td
       _ -> Nothing
   }
 
@@ -172,7 +171,7 @@ ruleNgyDdmmyyyy = Rule
   { name = "ngày dd/mm/yyyy"
   , pattern =
     [ regex "ng(à)y"
-    , regex "(3[01]|[12]\\d|0?[1-9])[-/](0?[1-9]|1[0-2])[/-](\\d{2,4})"
+    , regex "(3[01]|[12]\\d|0?[1-9])[-/](1[0-2]|0?[1-9])[/-](\\d{2,4})"
     ]
   , prod = \tokens -> case tokens of
       (_:Token RegexMatch (GroupMatch (m1:m2:m3:_)):_) -> do
@@ -330,7 +329,7 @@ ruleHmNay = Rule
   , pattern =
     [ regex "((ngay )?h(ô)m|b(ữ)a) nay"
     ]
-  , prod = \_ -> tt $ cycleNth TG.Day 0
+  , prod = \_ -> tt today
   }
 
 ruleAtHhmm :: Rule
@@ -521,8 +520,7 @@ ruleAfterWork = Rule
     ]
   , prod = \_ -> do
       td <- interval TTime.Open (hour False 17) (hour False 21)
-      Token Time . partOfDay . notLatent <$>
-        intersect (cycleNth TG.Day 0) td
+      Token Time . partOfDay . notLatent <$> intersect today td
   }
 
 ruleLastNCycle :: Rule
@@ -620,7 +618,7 @@ ruleTimeTrc :: Rule
 ruleTimeTrc = Rule
   { name = "<time> trước"
   , pattern =
-    [ dimension Time
+    [ Predicate $ not . isGrainFinerThan TG.Day
     , regex "tr(ư)(ớ)c|v(ừ)a r(ồ)i"
     ]
   , prod = \tokens -> case tokens of
@@ -733,8 +731,7 @@ ruleAfterLunch = Rule
     ]
   , prod = \_ -> do
       td <- interval TTime.Open (hour False 13) (hour False 17)
-      Token Time . partOfDay . notLatent <$>
-        intersect (cycleNth TG.Day 0) td
+      Token Time . partOfDay . notLatent <$> intersect today td
   }
 
 ruleSeason2 :: Rule
@@ -831,7 +828,6 @@ ruleTonight = Rule
     [ regex "(t(ố)i|(đ)(ê)m)( h(ô)m)? nay"
     ]
   , prod = \_ -> do
-      let today = cycleNth TG.Day 0
       evening <- interval TTime.Open (hour False 18) (hour False 0)
       Token Time . partOfDay . notLatent <$> intersect today evening
   }
@@ -856,7 +852,7 @@ ruleByGi = Rule
   , pattern =
     [ regex "(ngay )?(b(â)y gi(ờ)|l(ú)c n(à)y)"
     ]
-  , prod = \_ -> tt $ cycleNth TG.Second 0
+  , prod = \_ -> tt now
   }
 
 ruleNgyDdmm :: Rule
@@ -864,7 +860,7 @@ ruleNgyDdmm = Rule
   { name = "ngày dd/mm"
   , pattern =
     [ regex "ng(à)y"
-    , regex "(3[01]|[12]\\d|0?[1-9])/(0?[1-9]|1[0-2])"
+    , regex "(3[01]|[12]\\d|0?[1-9])/(1[0-2]|0?[1-9])"
     ]
   , prod = \tokens -> case tokens of
       (_:Token RegexMatch (GroupMatch (dd:mm:_)):_) -> do
@@ -927,7 +923,7 @@ ruleGingSinh :: Rule
 ruleGingSinh = Rule
   { name = "giáng sinh"
   , pattern =
-    [ regex "(ng(à)y )(xmas|christmas|gi(á)ng sinh)?"
+    [ regex "(ngày )?(xmas|christmas|giáng sinh)"
     ]
   , prod = \_ -> tt $ monthDay 12 25
   }
@@ -936,7 +932,7 @@ ruleNgyHmKia :: Rule
 ruleNgyHmKia = Rule
   { name = "ngày hôm kia"
   , pattern =
-    [ regex "(ng(à)y )?h(ô)m kia"
+    [ regex "(ngày )?hôm kia"
     ]
   , prod = \_ -> tt . cycleNth TG.Day $ - 2
   }

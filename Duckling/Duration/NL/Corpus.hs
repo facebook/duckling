@@ -23,10 +23,10 @@ import Duckling.Testing.Types
 import Duckling.TimeGrain.Types (Grain(..))
 
 corpus :: Corpus
-corpus = (testContext {locale = makeLocale NL Nothing}, allExamples)
+corpus = (testContext {locale = makeLocale NL Nothing}, testOptions, allExamples)
 
 negativeCorpus :: NegativeCorpus
-negativeCorpus = (testContext {locale = makeLocale NL Nothing}, examples)
+negativeCorpus = (testContext {locale = makeLocale NL Nothing}, testOptions, examples)
   where
     examples =
       [ "voor maanden"

@@ -24,10 +24,10 @@ import Duckling.Time.Types hiding (Month)
 import Duckling.TimeGrain.Types hiding (add)
 
 corpus :: Corpus
-corpus = (testContext {locale = makeLocale FR Nothing}, allExamples)
+corpus = (testContext {locale = makeLocale FR Nothing}, testOptions, allExamples)
 
 negativeCorpus :: NegativeCorpus
-negativeCorpus = (testContext {locale = makeLocale FR Nothing}, examples)
+negativeCorpus = (testContext {locale = makeLocale FR Nothing}, testOptions, examples)
   where
     examples =
       [ "Ana a un court de tennis"
@@ -709,36 +709,40 @@ allExamples = concat
              , "13 juillet au 15 juillet"
              , "13 juillet - 15 juillet"
              , "entre le 13 et le 15 juillet"
-             , "samedi 13 au dimanche 15 juillet"
+             , "samedi 13 au dimanche 15e juillet"
              , "du samedi 13 au dimanche 15 juillet"
              , "du 13 au dimanche 15 juillet"
+             , "entre le 13 et le quinze juillet"
+             , "du treize au 15 juillet"
+             , "du 13e au 15 juillet"
              ]
   , examples (datetimeInterval ((2013, 7, 1, 0, 0, 0), (2013, 7, 11, 0, 0, 0)) Day)
              [ "1er au 10 juillet"
              , "lundi 1er au mercredi 10 juillet"
-             , "lundi 1 au mercredi 10 juillet"
+             , "lundi 1 au mercredi 10e juillet"
              , "du lundi 1er au mercredi 10 juillet"
              , "du 1er au mercredi 10 juillet"
+             , "du 1er au dix juillet"
+             , "1er au dix juillet"
              ]
   , examples (datetimeInterval ((2013, 2, 13, 0, 0, 0), (2013, 2, 19, 0, 0, 0)) Day)
              [ "du 13 au 18"
-             , "entre le 13 et le 18"
+             , "entre le 13 et le dix-huit"
+             , "du 13e au dix-huit"
              ]
   , examples (datetimeInterval ((2013, 6, 10, 0, 0, 0), (2013, 7, 2, 0, 0, 0)) Day)
              [ "10 juin au 1er juillet"
              , "entre le 10 juin et le 1er juillet"
              , "du 10 juin au 1er juillet"
              ]
-  , examples (datetimeInterval ((2013, 2, 14, 9, 30, 0), (2013, 2, 14, 12, 0, 0)) Minute)
+  , examples (datetimeInterval ((2013, 2, 14, 9, 30, 0), (2013, 2, 14, 11, 1, 0)) Minute)
              [ "de 9h30 jusqu'à 11h jeudi"
              , "de 9 heures 30 à 11h jeudi"
              , "de 9 heures 30 a 11h jeudi"
              , "entre 9h30 et 11h jeudi"
              , "jeudi mais entre 9h30 et 11h"
              , "jeudi par exemple entre 9h30 et 11h"
-             ]
-  , examples (datetimeInterval ((2013, 2, 14, 9, 30, 0), (2013, 2, 14, 11, 1, 0)) Minute)
-             [ "9h30 - 11h00 Jeudi"
+             , "9h30 - 11h00 Jeudi"
              ]
   , examples (datetimeOpenInterval After (2013, 3, 8, 0, 0, 0) Day)
              [ "à partir du 8"

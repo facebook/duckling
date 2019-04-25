@@ -8,20 +8,20 @@
 
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE NoRebindableSyntax #-}
 
-module Duckling.Numeral.AR.Rules
-  ( rules
-  ) where
-
-import Data.HashMap.Strict (HashMap)
+module Duckling.Numeral.AR.Rules (rules) where
 import Data.Maybe
-import Data.String
-import Data.Text (Text)
 import Prelude
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
+import Duckling.Numeral.AR.Helpers
+  ( digitsMap
+  , parseArabicDoubleFromText
+  , parseArabicIntegerFromText
+  )
 import Duckling.Numeral.Helpers
 import Duckling.Numeral.Types (NumeralData (..))
 import Duckling.Regex.Types
@@ -61,19 +61,6 @@ ruleInteger18 = Rule
     ]
   , prod = \_ -> integer 12
   }
-
-digitsMap :: HashMap Text Integer
-digitsMap = HashMap.fromList
-  [ ("عشر", 2)
-  , ("ثلاث", 3)
-  , ("اربع", 4)
-  , ("أربع", 4)
-  , ("خمس", 5)
-  , ("ست", 6)
-  , ("سبع", 7)
-  , ("ثمان", 8)
-  , ("تسع", 9)
-  ]
 
 ruleInteger19 :: Rule
 ruleInteger19 = Rule
@@ -173,7 +160,7 @@ rulePowersOfTen :: Rule
 rulePowersOfTen = Rule
   { name = "powers of tens"
   , pattern =
-    [ regex "(ما?[ئي][ةه]|مئات|[أا]لف|ال??|[آا]لاف|ملايين)"
+    [ regex "(ما?[ئي][ةه]|مئت(ان|ين)|مئات|[أا]لف(ان|ين)?|[آا]لاف|ملايين|مليون(ان|ين)?)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
@@ -185,18 +172,28 @@ rulePowersOfTen = Rule
           double 1e2 >>= withGrain 2 >>= withMultipliable
         "مائه" ->
           double 1e2 >>= withGrain 2 >>= withMultipliable
+        "مئتين" ->
+          double 2e2 >>= withGrain 2
+        "مئتان" ->
+          double 2e2 >>= withGrain 2
         "مئات" ->
           double 1e2 >>= withGrain 2 >>= withMultipliable
         "ألف" -> double 1e3 >>= withGrain 3 >>= withMultipliable
         "الف" -> double 1e3 >>= withGrain 3 >>= withMultipliable
+        "الفين" -> double 2e3 >>= withGrain 3
+        "الفان" -> double 2e3 >>= withGrain 3
         "الاف" ->
           double 1e3 >>= withGrain 3 >>= withMultipliable
         "آلاف" ->
           double 1e3 >>= withGrain 3 >>= withMultipliable
-        "ملايي" ->
-          double 1e6 >>= withGrain 6 >>= withMultipliable
         "ملايين" ->
           double 1e6 >>= withGrain 6 >>= withMultipliable
+        "مليون" ->
+          double 1e6 >>= withGrain 6 >>= withMultipliable
+        "مليونين" ->
+          double 2e6 >>= withGrain 6
+        "مليونان" ->
+          double 2e6 >>= withGrain 6
         _ -> Nothing
       _ -> Nothing
   }
@@ -310,7 +307,7 @@ ruleNumeralDotNumeral = Rule
   , pattern =
     [ dimension Numeral
     , regex "فاصل[ةه]"
-    , numberWith TNumeral.grain isNothing
+    , Predicate $ not . hasGrain
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData{TNumeral.value = v1}:
@@ -332,9 +329,62 @@ ruleIntegerWithThousandsSeparator = Rule
       _ -> Nothing
   }
 
+ruleIntegerNumeric :: Rule
+ruleIntegerNumeric = Rule
+  { name = "Arabic integer numeric"
+  , pattern =
+    [ regex "([٠-٩]{1,18})"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        parseArabicIntegerFromText match >>= integer
+      _ -> Nothing
+  }
+
+ruleFractionsNumeric :: Rule
+ruleFractionsNumeric = Rule
+  { name = "Arabic fractional number numeric"
+  , pattern =
+    [ regex "([٠-٩]+)/([٠-٩]+)"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (numerator:denominator:_)):_) -> do
+        n <- parseArabicIntegerFromText numerator >>= integer
+        d <- parseArabicIntegerFromText denominator >>= integer
+        divide n d >>= notOkForAnyTime
+      _ -> Nothing
+  }
+
+ruleArabicDecimal :: Rule
+ruleArabicDecimal = Rule
+  { name = "Arabic decimal number with Arabic decimal separator"
+  , pattern =
+    [ regex "([٠-٩]*٫[٠-٩]+)"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        parseArabicDoubleFromText match >>= double
+      _ -> Nothing
+  }
+
+ruleArabicCommas :: Rule
+ruleArabicCommas = Rule
+  { name = "Arabic number with commas and optional Arabic decimal separator"
+  , pattern =
+    [ regex "([٠-٩]{1,3}(٬[٠-٩]{3}){1,5}(٫[٠-٩]+)?)"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        parseArabicDoubleFromText (Text.replace "٬" Text.empty match) >>=
+          double
+      _ -> Nothing
+  }
+
 rules :: [Rule]
 rules =
-  [ ruleDecimalNumeral
+  [ ruleIntegerNumeric
+  , ruleFractionsNumeric
+  , ruleDecimalNumeral
   , ruleDecimalWithThousandsSeparator
   , ruleInteger
   , ruleInteger11
@@ -359,4 +409,6 @@ rules =
   , ruleNumeralsPrefixWithMinus
   , rulePowersOfTen
   , ruleInteger200
+  , ruleArabicDecimal
+  , ruleArabicCommas
   ]

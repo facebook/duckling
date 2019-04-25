@@ -19,4 +19,5 @@ import Duckling.Testing.Asserts
 tests :: TestTree
 tests = testGroup "VI Tests"
   [ makeCorpusTest [This Time] corpus
+  , makeNegativeCorpusTest [This Time] negativeCorpus
   ]

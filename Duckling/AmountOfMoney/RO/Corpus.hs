@@ -10,6 +10,7 @@
 
 module Duckling.AmountOfMoney.RO.Corpus
   ( corpus
+  , negativeCorpus
   ) where
 
 import Data.String
@@ -20,8 +21,18 @@ import Duckling.Locale
 import Duckling.Resolve
 import Duckling.Testing.Types
 
+context :: Context
+context = testContext {locale = makeLocale RO Nothing}
+
+negativeCorpus :: NegativeCorpus
+negativeCorpus = (context, testOptions, examples)
+  where
+    examples =
+      [ "10 de dolari"
+      ]
+
 corpus :: Corpus
-corpus = (testContext {locale = makeLocale RO Nothing}, allExamples)
+corpus = (context, testOptions, allExamples)
 
 allExamples :: [Example]
 allExamples = concat
@@ -31,8 +42,8 @@ allExamples = concat
              , "10 RON"
              ]
   , examples (simple Cent 50)
-             [ "50 bani"
-             , "50 BANI"
+             [ "50 de bani"
+             , "50 DE BANI"
              ]
   , examples (simple RON 10.5)
              [ "10,5 lei"
@@ -65,21 +76,21 @@ allExamples = concat
              [ "2 centi"
              ]
   , examples (simple Cent 23)
-             [ "23 centi"
+             [ "23 de centi"
              ]
   , examples (simple Dollar 2.23)
-             [ "2 dolari si 23 centi"
-             , "2 dolari și 23 cenți"
-             , "doi dolari si douăzeci si trei centi"
-             , "doi dolari și douăzeci și trei cenți"
-             , "2 dolari 23 centi"
+             [ "2 dolari si 23 de centi"
+             , "2 dolari și 23 de cenți"
+             , "doi dolari si douăzeci si trei de centi"
+             , "doi dolari și douăzeci și trei de cenți"
+             , "2 dolari 23 de centi"
              , "doi dolari si 23"
              , "doi dolari și 23"
              ]
   , examples (simple EUR 20)
              [ "20€"
-             , "20 euro"
-             , "20 Euro"
+             , "20 de euro"
+             , "20 de Euro"
              , "EUR 20"
              ]
   , examples (simple EUR 29.99)
@@ -105,7 +116,7 @@ allExamples = concat
              [ "una liră libaneză"
              ]
   , examples (simple INR 42)
-             [ "42 rupii"
+             [ "42 de rupii"
              , "Rs. 42"
              ]
   , examples (simple KWD 1)
@@ -118,4 +129,29 @@ allExamples = concat
              [ "1 rial saudit"
              , "un rial saudi"
              ]
+  , examples (between RON (5, 15))
+             [ "intre 5 si 15 lei"
+             , "intre 5 și 15 lei"
+             , "de la 5 RON la 15 RON"
+             , "intre 5 lei si 15 lei"
+             , "de la 5 la 15 lei"
+             , "5 - 15 roni"
+             , "aproximativ 5-15 lei"
+             , "aproape de 5-15 lei"
+             , "cam 5-15 RON"
+             ]
+  , examples (under EUR 7)
+             [ "sub șapte euro"
+             , "mai putin de 7 EUR"
+             , "mai puțin de 7 EUR"
+             , "nu chiar 7€"
+             , "nici macar 7 euro"
+             , "mai ieftin de 7€"
+             , "cel mult 7 euro"
+             ]
+  , examples (above Dollar 3)
+            [ "mai mult de 3 dolari"
+            , "peste 3 dolari"
+            , "mai scump de trei dolari"
+            ]
   ]

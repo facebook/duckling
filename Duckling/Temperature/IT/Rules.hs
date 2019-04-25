@@ -24,7 +24,7 @@ ruleLatentTempDegrees :: Rule
 ruleLatentTempDegrees = Rule
   { name = "<latent temp> degrees"
   , pattern =
-    [ dimension Temperature
+    [ Predicate $ isValueOnly False
     , regex "(grad[io]?\\.?)|°"
     ]
   , prod = \tokens -> case tokens of
@@ -37,7 +37,7 @@ ruleTempCelcius :: Rule
 ruleTempCelcius = Rule
   { name = "<temp> Celcius"
   , pattern =
-    [ dimension Temperature
+    [ Predicate $ isValueOnly True
     , regex "(c((el[cs]?(ius)?)|(entigrad[io]))?\\.?)"
     ]
   , prod = \tokens -> case tokens of
@@ -50,7 +50,7 @@ ruleTempFahrenheit :: Rule
 ruleTempFahrenheit = Rule
   { name = "<temp> Fahrenheit"
   , pattern =
-    [ dimension Temperature
+    [ Predicate $ isValueOnly True
     , regex "f(ah?rh?eh?n(h?eit)?)?\\.?"
     ]
   , prod = \tokens -> case tokens of

@@ -12,12 +12,13 @@
 module Duckling.Resolve
   ( Context(..)
   , DucklingTime(..)
+  , Options(..)
   , Resolve(..)
   , fromUTC
   , toUTC
   ) where
 
-import Data.Aeson
+import Data.Aeson (ToJSON)
 import Prelude
 import qualified Data.Time as Time
 import qualified Data.Time.LocalTime.TimeZone.Series as Series
@@ -36,9 +37,17 @@ data Context = Context
   }
   deriving (Eq, Show)
 
-class ToJSON (ResolvedValue a) => Resolve a where
+newtype Options = Options
+  { withLatent :: Bool  -- When set, includes less certain parses, e.g. "7" as an hour of the day
+  }
+  deriving (Eq, Show)
+
+class ( Eq (ResolvedValue a)
+      , Show (ResolvedValue a)
+      , ToJSON (ResolvedValue a)
+      ) => Resolve a where
   type ResolvedValue a
-  resolve :: Context -> a -> Maybe (ResolvedValue a)
+  resolve :: Context -> Options -> a -> Maybe (ResolvedValue a, Bool)
 
 -- | Given a UTCTime and an TimeZone, build a ZonedTime (no conversion)
 fromUTC :: Time.UTCTime -> Time.TimeZone -> Time.ZonedTime

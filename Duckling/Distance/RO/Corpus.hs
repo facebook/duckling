@@ -20,7 +20,7 @@ import Duckling.Resolve
 import Duckling.Testing.Types
 
 corpus :: Corpus
-corpus = (testContext {locale = makeLocale RO Nothing}, allExamples)
+corpus = (testContext {locale = makeLocale RO Nothing}, testOptions, allExamples)
 
 allExamples :: [Example]
 allExamples = concat
@@ -43,5 +43,8 @@ allExamples = concat
              ]
   , examples (simple Foot 10)
              [ "zece picioare"
+             ]
+  , examples (simple Foot 20)
+             [ "20 de picioare"
              ]
   ]

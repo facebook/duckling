@@ -21,7 +21,7 @@ import Duckling.Resolve
 import Duckling.Testing.Types
 
 corpus :: Corpus
-corpus = (testContext {locale = makeLocale FR Nothing}, allExamples)
+corpus = (testContext {locale = makeLocale FR Nothing}, testOptions, allExamples)
 
 allExamples :: [Example]
 allExamples = concat
@@ -125,5 +125,12 @@ allExamples = concat
              , "-1,2M"
              , "-1200K"
              , "-,0012G"
+             ]
+  , examples (NumeralValue 6.7)
+             [ "6,7"
+             ]
+  , examples (NumeralValue 6700.54)
+             [ "6.700,54"
+             , "6 700,54"
              ]
   ]

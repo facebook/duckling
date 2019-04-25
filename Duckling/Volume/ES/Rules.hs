@@ -7,85 +7,68 @@
 
 
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Volume.ES.Rules
   ( rules ) where
 
-import Prelude
 import Data.String
+import Data.Text (Text)
+import Prelude
 
 import Duckling.Dimensions.Types
 import Duckling.Types
+import Duckling.Regex.Types
 import Duckling.Volume.Helpers
+import Duckling.Numeral.Helpers (isPositive)
 import qualified Duckling.Volume.Types as TVolume
+import qualified Duckling.Numeral.Types as TNumeral
 
-ruleLatentVolMl :: Rule
-ruleLatentVolMl = Rule
-  { name = "<latent vol> ml"
-  , pattern =
-    [ dimension Volume
-    , regex "m(l|ililitros?)"
-    ]
-  , prod = \tokens -> case tokens of
-      (Token Volume vd:_) ->
-        Just . Token Volume $ withUnit TVolume.Millilitre vd
-      _ -> Nothing
-  }
+volumes :: [(Text, String, TVolume.Unit)]
+volumes = [ ("<latent vol> ml"    , "m(l|ililitros?)" , TVolume.Millilitre)
+          , ("<vol> hectoliters"  , "(hectolitros?)"    , TVolume.Hectolitre)
+          , ("<vol> liters"       , "l(itros?)?"     , TVolume.Litre)
+          , ("<latent vol> gallon", "gal(o|ó)ne?s?"   , TVolume.Gallon)
+          ]
 
-ruleVolHectoliters :: Rule
-ruleVolHectoliters = Rule
-  { name = "<vol> hectoliters"
-  , pattern =
-    [ dimension Volume
-    , regex "hectolitros?"
-    ]
-  , prod = \tokens -> case tokens of
-      (Token Volume vd:_) ->
-        Just . Token Volume $ withUnit TVolume.Hectolitre vd
-      _ -> Nothing
-  }
+rulesVolumes :: [Rule]
+rulesVolumes = map go volumes
+  where
+    go :: (Text, String, TVolume.Unit) -> Rule
+    go (name, regexPattern, u) = Rule
+      { name = name
+      , pattern =
+        [ regex regexPattern
+        ]
+      , prod = \_ -> Just . Token Volume $ unitOnly u
+      }
 
-ruleVolLiters :: Rule
-ruleVolLiters = Rule
-  { name = "<vol> liters"
-  , pattern =
-    [ dimension Volume
-    , regex "l(itros?)?"
-    ]
-  , prod = \tokens -> case tokens of
-      (Token Volume vd:_) ->
-        Just . Token Volume $ withUnit TVolume.Litre vd
-      _ -> Nothing
-  }
+fractions :: [(Text, String, Double)]
+fractions = [ ("half", "medio", 1/2)
+            ]
 
-ruleHalfLiter :: Rule
-ruleHalfLiter = Rule
-  { name = "half liter"
-  , pattern =
-    [ regex "medio litros?"
-    ]
-  , prod = \_ -> Just . Token Volume . withUnit TVolume.Litre $ volume 0.5
-  }
-
-ruleLatentVolGallon :: Rule
-ruleLatentVolGallon = Rule
-  { name = "<latent vol> gallon"
-  , pattern =
-    [ dimension Volume
-    , regex "gal(o|ó)ne?s?"
-    ]
-  , prod = \tokens -> case tokens of
-      (Token Volume vd:_) ->
-        Just . Token Volume $ withUnit TVolume.Gallon vd
-      _ -> Nothing
-  }
+rulesFractionalVolume :: [Rule]
+rulesFractionalVolume = map go fractions
+  where
+    go :: (Text, String, Double) -> Rule
+    go (name, regexPattern, f) = Rule
+      { name = name
+      , pattern =
+        [ regex regexPattern
+        , Predicate isUnitOnly
+        ]
+      , prod = \case
+        (_:
+         Token Volume TVolume.VolumeData{TVolume.unit = Just u}:
+         _) ->
+          Just . Token Volume $ volume u f
+        _ -> Nothing
+      }
 
 rules :: [Rule]
 rules =
-  [ ruleHalfLiter
-  , ruleLatentVolGallon
-  , ruleLatentVolMl
-  , ruleVolHectoliters
-  , ruleVolLiters
+  [
   ]
+  ++ rulesVolumes
+  ++ rulesFractionalVolume

@@ -38,7 +38,7 @@ ruleIntersectNumerals :: Rule
 ruleIntersectNumerals = Rule
   { name = "intersect numbers"
   , pattern =
-    [ numberWith (fromMaybe 0 . TNumeral.grain) (>1)
+    [ Predicate hasGrain
     , Predicate $ and . sequence [not . isMultipliable, isPositive]
     ]
   , prod = \tokens -> case tokens of
@@ -52,7 +52,7 @@ ruleIntersectWithAnd :: Rule
 ruleIntersectWithAnd = Rule
   { name = "intersect (with and)"
   , pattern =
-    [ numberWith (fromMaybe 0 . TNumeral.grain) (>1)
+    [ Predicate hasGrain
     , regex "ו"
     , Predicate isMultipliable
     ]
@@ -324,7 +324,7 @@ ruleNumeralDotNumeral = Rule
   , pattern =
     [ dimension Numeral
     , regex "נקודה"
-    , numberWith TNumeral.grain isNothing
+    , Predicate $ not . hasGrain
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral nd1:_:Token Numeral nd2:_) ->
@@ -342,6 +342,15 @@ ruleCommas = Rule
       (Token RegexMatch (GroupMatch (match:_)):_) ->
         parseDouble (Text.replace "," Text.empty match) >>= double
       _ -> Nothing
+  }
+
+ruleHalf :: Rule
+ruleHalf = Rule
+  { name = "half"
+  , pattern =
+    [ regex "חצי"
+    ]
+  , prod = \_ -> double 0.5
   }
 
 rules :: [Rule]
@@ -373,4 +382,5 @@ rules =
   , ruleNumeralsPrefixWithNegativeOrMinus
   , rulePowersOfTen
   , ruleSingle
+  , ruleHalf
   ]

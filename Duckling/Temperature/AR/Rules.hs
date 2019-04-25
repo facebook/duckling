@@ -7,6 +7,7 @@
 
 
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Temperature.AR.Rules
@@ -27,10 +28,10 @@ ruleTemperatureDegrees :: Rule
 ruleTemperatureDegrees = Rule
   { name = "<latent temp> degrees"
   , pattern =
-    [ dimension Temperature
+    [ Predicate $ isValueOnly False
     , regex "(درج([ةه]|ات)( مئوي[ةه])?)|°"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Temperature td:_) -> Just . Token Temperature $
         withUnit TTemperature.Degree td
       _ -> Nothing
@@ -42,20 +43,17 @@ ruleTemperatureTwoDegrees = Rule
   , pattern =
     [ regex "درجت(ين|ان)"
     ]
-  , prod = \_ -> Just . Token Temperature $ TemperatureData
-      { TTemperature.unit = Nothing
-      , TTemperature.value = 2
-      }
+  , prod = \_ -> Just . Token Temperature $ valueOnly 2
   }
 
 ruleTemperatureCelsius :: Rule
 ruleTemperatureCelsius = Rule
   { name = "<temp> Celsius"
   , pattern =
-    [ dimension Temperature
+    [ Predicate $ isValueOnly True
     , regex "(درج([ةه]|ات) )?سي?لي?[سز]ي?وس"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
     (Token Temperature td:_) -> Just . Token Temperature $
       withUnit TTemperature.Celsius td
     _ -> Nothing
@@ -65,10 +63,10 @@ ruleTemperatureFahrenheit :: Rule
 ruleTemperatureFahrenheit = Rule
   { name = "<temp> Fahrenheit"
   , pattern =
-    [ dimension Temperature
+    [ Predicate $ isValueOnly True
     , regex "(درج([ةه]|ات) )?ف(ا|ي)?هرنها?يت"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
     (Token Temperature td:_) -> Just . Token Temperature $
       withUnit TTemperature.Fahrenheit td
     _ -> Nothing
@@ -78,15 +76,15 @@ ruleTemperatureBelowZero :: Rule
 ruleTemperatureBelowZero = Rule
   { name = "<temp> below zero"
   , pattern =
-    [ dimension Temperature
+    [ Predicate $ isValueOnly True
     , regex "تحت الصفر"
     ]
-  , prod = \tokens -> case tokens of
-      (Token Temperature td@TemperatureData {TTemperature.value = v}:
+  , prod = \case
+      (Token Temperature td@TemperatureData {TTemperature.value = Just v}:
        _) -> case TTemperature.unit td of
         Nothing -> Just . Token Temperature . withUnit TTemperature.Degree $
-          td {TTemperature.value = - v}
-        _ -> Just . Token Temperature $ td {TTemperature.value = - v}
+          td {TTemperature.value = Just (- v)}
+        _ -> Just . Token Temperature $ td {TTemperature.value = Just (- v)}
       _ -> Nothing
   }
 

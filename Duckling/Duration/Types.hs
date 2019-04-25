@@ -18,7 +18,9 @@ module Duckling.Duration.Types where
 import Control.DeepSeq
 import Data.Aeson
 import Data.Hashable
+import Data.Semigroup
 import Data.Text (Text)
+import Data.Tuple.Extra (both)
 import GHC.Generics
 import TextShow (showt)
 import Prelude
@@ -34,7 +36,13 @@ data DurationData = DurationData
 
 instance Resolve DurationData where
   type ResolvedValue DurationData = DurationData
-  resolve _ x = Just x
+  resolve _ _ x = Just (x, False)
+
+instance Semigroup DurationData where
+  d1@(DurationData _ g1) <> d2@(DurationData _ g2) = DurationData (v1+v2) g
+    where
+    g = g1 `min` g2
+    (DurationData v1 _, DurationData v2 _) = both (withGrain g) (d1,d2)
 
 instance ToJSON DurationData where
   toJSON DurationData {value, grain} = object
@@ -47,3 +55,12 @@ instance ToJSON DurationData where
       , "value" .= inSeconds grain value
       ]
     ]
+
+-- | Convert a duration to the given grain, rounded to the
+-- nearest integer. For example, 1 month is converted to 4 weeks.
+withGrain :: Grain -> DurationData -> DurationData
+withGrain g d@(DurationData v1 g1)
+  | g == g1 = d
+  | otherwise = DurationData v g
+      where
+      v = round $ inSeconds g1 (fromIntegral v1 :: Double) / inSeconds g 1

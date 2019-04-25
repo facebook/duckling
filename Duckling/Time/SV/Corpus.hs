@@ -23,7 +23,7 @@ import Duckling.Time.Types hiding (Month)
 import Duckling.TimeGrain.Types hiding (add)
 
 corpus :: Corpus
-corpus = (testContext {locale = makeLocale SV Nothing}, allExamples)
+corpus = (testContext {locale = makeLocale SV Nothing}, testOptions, allExamples)
 
 allExamples :: [Example]
 allExamples = concat

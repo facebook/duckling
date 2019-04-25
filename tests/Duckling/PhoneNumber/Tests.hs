@@ -22,6 +22,7 @@ import Duckling.PhoneNumber.Corpus
 import Duckling.PhoneNumber.Types
 import Duckling.Testing.Asserts
 import Duckling.Testing.Types
+import qualified Duckling.PhoneNumber.AR.Tests as AR
 import qualified Duckling.PhoneNumber.PT.Tests as PT
 
 tests :: TestTree
@@ -30,11 +31,13 @@ tests = testGroup "PhoneNumber Tests"
   , makeNegativeCorpusTest [This PhoneNumber] negativeCorpus
   , surroundTests
   , PT.tests
+  , AR.tests
   ]
 
 surroundTests :: TestTree
 surroundTests = testCase "Surround Tests" $
-  mapM_ (analyzedFirstTest testContext . withTargets [This PhoneNumber]) xs
+  mapM_ (analyzedFirstTest testContext testOptions .
+    withTargets [This PhoneNumber]) xs
   where
     xs = examples (PhoneNumberValue "06354640807")
                   [ "hey 06354640807"

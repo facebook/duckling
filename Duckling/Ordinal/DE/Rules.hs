@@ -26,7 +26,7 @@ ruleOrdinalsFirstth :: Rule
 ruleOrdinalsFirstth = Rule
   { name = "ordinals (first..19th)"
   , pattern =
-    [ regex "(erste(r|s)?|zweite(r|s)?|dritte(r|s)?|vierte(r|s)?|fünfte(r|s)?|sechste(r|s)?|siebte(r|s)?|achte(r|s)?|neunte(r|s)?|zehnte(r|s)?|elfte(r|s)?|zwölfte(r|s)?|dreizente(r|s)?|vierzehnte(r|s)?|fünfzehnte(r|s)?|sechzente(r|s)?|siebzehnte(r|s)?|achtzehnte(r|s)?|neunzehnte(r|s)?|zwanzigste(r|s)?|einundzwanzigste(r|s)?|zweiundzwanzigste(r|s)?|dreiundzwanzigste(r|s)?|vierundzwanzigste(r|s)?|fünfundzwanzigste(r|s)?|sechsundzwanzigste(r|s)?|siebenundzwanzigste(r|s)?|achtundzwanzigste(r|s)?|neunundzwanzigste(r|s)?|drei(ss|ß)igste(r|s)?|einunddrei(ss|ß)igste(r|s)?)"
+    [ regex "(erste(r|s|n)?|zweite(r|s|n)?|dritte(r|s|n)?|vierte(r|s|n)?|fünfte(r|s|n)?|sechste(r|s|n)?|siebte(r|s|n)?|achte(r|s|n)?|neunte(r|s|n)?|zehnte(r|s|n)?|elfte(r|s|n)?|zwölfte(r|s|n)?|dreizente(r|s|n)?|vierzehnte(r|s|n)?|fünfzehnte(r|s|n)?|sechzente(r|s|n)?|siebzehnte(r|s|n)?|achtzehnte(r|s|n)?|neunzehnte(r|s|n)?|zwanzigste(r|s|n)?|einundzwanzigste(r|s|n)?|zweiundzwanzigste(r|s|n)?|dreiundzwanzigste(r|s|n)?|vierundzwanzigste(r|s|n)?|fünfundzwanzigste(r|s|n)?|sechsundzwanzigste(r|s|n)?|siebenundzwanzigste(r|s|n)?|achtundzwanzigste(r|s|n)?|neunundzwanzigste(r|s|n)?|drei(ss|ß)igste(r|s|n)?|einunddrei(ss|ß)igste(r|s|n)?)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of

@@ -37,6 +37,26 @@ See `exe/ExampleMain.hs` for an example on how to integrate Duckling in your
 project.
 If your backend doesn't run Haskell or if you don't want to spin your own Duckling server, you can directly use [wit.ai](https://wit.ai)'s built-in entities.
 
+
+## Developing in docker
+To start the container, go in the root directory and type: 
+```
+docker-compose up --build
+```
+this will build a new image, create a volume and **mount** the Host directory with the container.
+The container and the project on you Host machine are now synchronize.
+To check if everything works look at the file at  ``Duckling/log/access.log``
+and send a request via curl... you should see a new request.
+After your work is done use:
+```
+docker-compose exec NER stack build :duckling-regen-exe && stack exec duckling-regen-exe && stack test
+```
+
+Then this fail you have 2 options:
+* execute the comands seperatly
+* shout down the servis with ``$docker-compose down`` and build it again.
+
+
 ## Supported dimensions
 Duckling supports many languages, but most don't support all dimensions yet
 (**we need your help!**).

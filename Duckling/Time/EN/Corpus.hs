@@ -13,15 +13,17 @@ module Duckling.Time.EN.Corpus
   , defaultCorpus
   , negativeCorpus
   , latentCorpus
+  , diffCorpus
   ) where
 
 import Data.String
 import Prelude
 
+import Duckling.Core
 import Duckling.Resolve
 import Duckling.Testing.Types hiding (examples)
 import Duckling.Time.Corpus
-import Duckling.Time.Types hiding (Month)
+import Duckling.Time.Types hiding (Month, refTime)
 import Duckling.TimeGrain.Types hiding (add)
 
 corpus :: Corpus
@@ -152,6 +154,21 @@ latentCorpus = (testContext, testOptions {withLatent = True}, xs)
                  [ "night"
                  ]
       ]
+
+diffContext :: Context
+diffContext = Context
+  { locale = makeLocale EN Nothing
+  , referenceTime = refTime (2013, 2, 15, 4, 30, 0) (-2)
+  }
+
+diffCorpus :: Corpus
+diffCorpus = (diffContext, testOptions, diffExamples)
+  where
+    diffExamples =
+      examples (datetime (2013, 3, 8, 0, 0, 0) Day)
+               [ "3 fridays from now"
+               , "three fridays from now"
+               ]
 
 allExamples :: [Example]
 allExamples = concat
@@ -613,6 +630,18 @@ allExamples = concat
              ]
   , examples (datetime (2016, 2, 12, 0, 0, 0) Day)
              [ "3 years from today"
+             ]
+  , examples (datetime (2013, 3, 1, 0, 0, 0) Day)
+             [ "3 fridays from now"
+             , "three fridays from now"
+             ]
+  , examples (datetime (2013, 2, 24, 0, 0, 0) Day)
+             [ "2 sundays from now"
+             , "two sundays from now"
+             ]
+  , examples (datetime (2013, 3, 12, 0, 0, 0) Day)
+             [ "4 tuesdays from now"
+             , "four tuesdays from now"
              ]
   , examples (datetime (2013, 2, 19, 4, 0, 0) Hour)
              [ "in 7 days"

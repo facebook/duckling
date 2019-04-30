@@ -47,6 +47,7 @@ tests :: TestTree
 tests = testGroup "EN Tests"
   [ makeCorpusTest [This Time] defaultCorpus
   , makeNegativeCorpusTest [This Time] negativeCorpus
+  , makeCorpusTest [This Time] diffCorpus
   , exactSecondTests
   , valuesTest
   , intersectTests

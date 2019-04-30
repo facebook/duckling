@@ -322,6 +322,22 @@ ruleTheNthTimeAfterTime = Rule
       _ -> Nothing
   }
 
+ruleNDOWFromTime :: Rule
+ruleNDOWFromTime = Rule
+  { name = "<integer> <day-of-week> from <time>"
+  , pattern =
+    [ dimension Numeral
+    , Predicate isADayOfWeek
+    , regex "from"
+    , dimension Time
+    ]
+  , prod = \tokens -> case tokens of
+      (token:Token Time td1:_:Token Time td2:_) -> do
+        n <- getIntValue token
+        tt $ predNthAfter (n - 1) td1 td2
+      _ -> Nothing
+  }
+
 ruleYearLatent :: Rule
 ruleYearLatent = Rule
   { name = "year (latent)"
@@ -2392,6 +2408,7 @@ rules =
   , ruleTheNthTimeOfTime
   , ruleNthTimeAfterTime
   , ruleTheNthTimeAfterTime
+  , ruleNDOWFromTime
   , ruleYearLatent
   , ruleYearADBC
   , ruleTheDOMNumeral

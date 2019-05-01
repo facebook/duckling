@@ -679,4 +679,15 @@ allExamples = concat
   , examples (datetime (2013, 2, 9, 0, 0, 0) Day)
              [ "vorvorgestern"
              ]
+  , examples (datetime (2013, 12, 5, 0, 0, 0) Day)
+             [ "fünfter Dezember"
+             ]
+  , examples (datetime (2013, 12, 30, 0, 0, 0) Day)
+             [ "dreißigster Dezember"
+             , "dreissigster Dezember"
+             ]
+  , examples (datetime (2013, 12, 4, 0, 0, 0) Day)
+             [ "am vierten Dezember"
+             , "der vierte Dezember"
+             ]
   ]

@@ -11,14 +11,16 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Ordinal.DE.Rules
-  ( rules ) where
+  ( rules
+  ) where
 
-import qualified Data.HashMap.Strict as HashMap
-import qualified Data.List as List
-import qualified Data.Text as Text
+import Data.Semigroup ((<>))
 import Prelude
 import Data.String
 import Data.Text (Text)
+import qualified Data.HashMap.Strict as HashMap
+import qualified Data.List as List
+import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
 import Duckling.Numeral.Helpers (parseInt)

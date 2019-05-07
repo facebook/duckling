@@ -50,6 +50,10 @@ allExamples = concat
              [ "maine"
              , "mâine"
              ]
+  , examples (datetime (2013, 2, 14, 0, 0, 0) Day)
+             [ "poimaine"
+             , "poimâine"
+             ]
   , examples (datetime (2013, 2, 18, 0, 0, 0) Day)
              [ "luni"
              , "lunea asta"

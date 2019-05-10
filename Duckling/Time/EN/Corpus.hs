@@ -510,6 +510,7 @@ allExamples = concat
              , "3:15PM"
              , "3:15p"
              , "at 3 15"
+             , "15 minutes past 3pm"
              ]
   , examples (datetime (2013, 2, 12, 15, 20, 0) Minute)
              [ "at 20 past 3pm"
@@ -518,6 +519,7 @@ allExamples = concat
              , "twenty after 3pm"
              , "3:20p"
              , "at three twenty"
+             , "20 minutes past 3pm"
              ]
   , examples (datetime (2013, 2, 12, 15, 30, 0) Minute)
              [ "at half past three pm"
@@ -529,7 +531,19 @@ allExamples = concat
              , "3:30 p m"
              , "3:30"
              , "half three"
+             , "30 minutes past 3 pm"
              ]
+   , examples (datetime (2013, 2, 12, 12, 15, 0) Minute)
+              [ "at 15 past noon"
+              , "a quarter past noon"
+              , "12:15 in the afternoon"
+              , "12:15"
+              , "12:15pm"
+              , "12:15PM"
+              , "12:15p"
+              , "at 12 15"
+              , "15 minutes past noon"
+  ]
   , examples (datetime (2013, 2, 12, 9, 59, 0) Minute)
              [ "nine fifty nine a m"
              ]
@@ -540,6 +554,17 @@ allExamples = concat
              [ "a quarter to noon"
              , "11:45am"
              , "15 to noon"
+             ]
+  , examples (datetime (2013, 2, 12, 13, 15, 0) Minute)
+             [ "a quarter past 1pm"
+             , "1:15pm"
+             , "15 minutes from 1pm"
+             ]
+  , examples (datetime (2013, 2, 12, 14, 15, 0) Minute)
+             [ "a quarter past 2pm"
+             ]
+  , examples (datetime (2013, 2, 12, 20, 15, 0) Minute)
+             [ "a quarter past 8pm"
              ]
   , examples (datetime (2013, 2, 12, 20, 0, 0) Hour)
              [ "8 tonight"

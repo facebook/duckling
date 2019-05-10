@@ -2274,10 +2274,10 @@ ruleInNumeral = Rule
 
 ruleDurationAfterBeforeTime :: Rule
 ruleDurationAfterBeforeTime = Rule
-  { name = "<duration> after|before|from <time>"
+  { name = "<duration> after|before|from|past <time>"
   , pattern =
     [ dimension Duration
-    , regex "(after|before|from)"
+    , regex "(after|before|from|past)"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of

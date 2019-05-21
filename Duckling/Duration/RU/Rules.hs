@@ -7,6 +7,7 @@
 
 
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE NoRebindableSyntax #-}
 {-# LANGUAGE OverloadedStrings #-}
 
@@ -15,6 +16,7 @@ module Duckling.Duration.RU.Rules
   ) where
 
 import Data.HashMap.Strict (HashMap)
+import Data.Semigroup ((<>))
 import Data.String
 import Data.Text (Text)
 import Prelude
@@ -29,7 +31,9 @@ import Duckling.Duration.Types (DurationData (DurationData))
 import Duckling.Regex.Types
 import Duckling.Types
 import Duckling.TimeGrain.Types
+import qualified Duckling.Duration.Types as TDuration
 import qualified Duckling.Numeral.Types as TNumeral
+import qualified Duckling.TimeGrain.Types as TG
 
 grainsMap :: HashMap Text Grain
 grainsMap = HashMap.fromList
@@ -108,6 +112,113 @@ rulePositiveDuration = Rule
       _ -> Nothing
   }
 
+hourDiminutive :: Rule
+hourDiminutive = Rule
+  { name = "hour diminutive"
+  , pattern =
+    [ regex "час(ок|ик|очек)"
+    ]
+  , prod = \tokens -> case tokens of
+      _ -> Just . Token Duration . duration Hour $ 1
+  }
+
+hoursDiminutive :: Rule
+hoursDiminutive = Rule
+  { name = "hour diminutive 2"
+  , pattern =
+    [ numberWith TNumeral.value $ isInteger
+    , regex "час(иков|очков)"
+    ]
+  , prod = \tokens -> case tokens of
+      Token Numeral NumeralData{TNumeral.value = v}:_ -> do
+        n <- TNumeral.getIntValue v
+        Just . Token Duration . duration Hour $ n
+      _ -> Nothing
+  }
+
+minuteDiminutive :: Rule
+minuteDiminutive = Rule
+  { name = "minute diminutive"
+  , pattern =
+    [ regex "минутк.|минуточк."
+    ]
+  , prod = \tokens -> case tokens of
+      _ -> Just . Token Duration . duration Minute $ 1
+  }
+
+minutesDiminutive :: Rule
+minutesDiminutive = Rule
+  { name = "minute diminutive"
+  , pattern =
+    [ numberWith TNumeral.value $ isInteger
+    , regex "минутк.|минуток|минуточк.|минуточек"
+    ]
+  , prod = \tokens -> case tokens of
+      Token Numeral NumeralData{TNumeral.value = v}:_ -> do
+        n <- TNumeral.getIntValue v
+        Just . Token Duration . duration Minute $ n
+      _ -> Nothing
+  }
+
+ruleDurationQuarterOfAnHour :: Rule
+ruleDurationQuarterOfAnHour = Rule
+  { name = "quarter of an hour"
+  , pattern =
+    [ regex "((одн(у|а|ой)|1)\\s)?четверт. (часа|ч|ч\\.)"
+    ]
+  , prod = \_ -> Just . Token Duration $ duration TG.Minute 15
+  }
+
+ruleDurationThreeQuartersOfAnHour :: Rule
+ruleDurationThreeQuartersOfAnHour = Rule
+  { name = "3 quarters of an hour"
+  , pattern =
+    [ numberWith TNumeral.value (== 3)
+    , regex "четверт(и|ей) (часа|ч|ч\\.)"
+    ]
+  , prod = \_ -> Just . Token Duration $ duration TG.Minute 45
+  }
+
+ruleDuration24h :: Rule
+ruleDuration24h = Rule
+  { name = "сутки"
+  , pattern =
+    [ regex "сутки"
+    ]
+  , prod = \_ -> Just . Token Duration $ duration TG.Hour 24
+  }
+
+ruleDuration24hN :: Rule
+ruleDuration24hN = Rule
+  { name = "<integer> сутки"
+  , pattern =
+    [ numberWith TNumeral.value $ isInteger
+    , regex "сутки|суток"
+    ]
+    -- 
+  , prod = \tokens -> case tokens of
+      (Token Numeral NumeralData{TNumeral.value = v}:_) -> do
+        n <- TNumeral.getIntValue v
+        Just . Token Duration $ duration TG.Hour (n * 24)
+      _ -> Nothing
+  }
+
+ruleCompositeDuration :: Rule
+ruleCompositeDuration = Rule
+  { name = "composite <duration>"
+  , pattern =
+    [ Predicate isNatural
+    , dimension TimeGrain
+    , dimension Duration
+    ]
+  , prod = \case
+      (Token Numeral NumeralData{TNumeral.value = v}:
+       Token TimeGrain g:
+       Token Duration dd@DurationData{TDuration.grain = dg}:
+       _) | g > dg -> Just . Token Duration $ duration g (floor v) <> dd
+      _ -> Nothing
+  }
+
 rules :: [Rule]
 rules =
   [ rulePositiveDuration
@@ -115,4 +226,13 @@ rules =
   , ruleNumeralQuotes
   , ruleGrainAsDuration
   , ruleHalves
+  , hourDiminutive
+  , hoursDiminutive
+  , minuteDiminutive
+  , minutesDiminutive
+  , ruleDurationQuarterOfAnHour
+  , ruleDurationThreeQuartersOfAnHour
+  , ruleDuration24h
+  , ruleDuration24hN
+  , ruleCompositeDuration
   ]

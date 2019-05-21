@@ -10,6 +10,7 @@
 
 module Duckling.Duration.RU.Corpus
   ( corpus
+  , negativeCorpus
   ) where
 
 import Data.String
@@ -24,6 +25,14 @@ import Duckling.TimeGrain.Types (Grain(..))
 corpus :: Corpus
 corpus = (testContext {locale = makeLocale RU Nothing}, testOptions, allExamples)
 
+negativeCorpus :: NegativeCorpus
+negativeCorpus = (testContext {locale = makeLocale RU Nothing}, testOptions, examples)
+  where
+    examples =
+      [ "суток"
+      ]
+
+
 allExamples :: [Example]
 allExamples = concat
   [ examples (DurationData 1 Second)
@@ -36,12 +45,19 @@ allExamples = concat
              [ "15 мин"
              , "пятнадцать минут"
              , "15'"
+             , "четверть часа"
+             , "1 четверть часа"
              ]
   , examples (DurationData 30 Minute)
              [ "30 минут"
              , "пол часа"
              , "полчаса"
              , "тридцать минут"
+             ]
+  , examples (DurationData 45 Minute)
+             [ "45 минут"
+             , "3 четверти часа"
+             , "три четверти часа"
              ]
   , examples (DurationData 5400 Second)
              [ "полтора часа"
@@ -92,5 +108,41 @@ allExamples = concat
              , "полдня"
              , "примерно полдня"
              , "пол дня"
+             ]
+  , examples (DurationData 1 Hour)
+             [ "час"
+             , "1 час"
+             , "часик"
+             , "часок"
+             , "часочек"
+             ]
+  , examples (DurationData 5 Hour)
+             [ "5 часов"
+             , "5 часиков"
+             , "5 часочков"
+             ]
+  , examples (DurationData 1 Minute)
+             [ "минута"
+             , "минуту"
+             , "минутка"
+             , "минутку"
+             , "минуточка"
+             , "минуточку"
+             , "1 минутка"
+             ]
+  , examples (DurationData  4 Minute)
+             [ "4 минуты"
+             , "4 минутки"
+             , "4 минуточки"
+             ]
+  , examples (DurationData 24 Hour)
+             [ "сутки"
+             , "1 сутки"
+             ]
+  , examples (DurationData 120 Hour)
+             [ "5 суток"
+             ]
+  , examples (DurationData 115 Minute)
+             [  "1 час 55 минут"
              ]
   ]

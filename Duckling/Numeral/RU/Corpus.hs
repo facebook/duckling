@@ -42,6 +42,7 @@ allExamples = concat
              [ "3"
              , "три"
              , "03"
+             , "трех"
              ]
   , examples (NumeralValue 4)
              [ "4"

@@ -31,20 +31,29 @@ import qualified Duckling.Numeral.Types as TNumeral
 tensMap :: HashMap Text Integer
 tensMap = HashMap.fromList
   [ ( "двадцать", 20)
+  , ( "двадцати", 20)
   , ( "тридцать", 30)
+  , ( "тридцати", 30)
   , ( "сорок", 40)
+  , ( "сорока", 40)
   , ( "пятьдесят", 50)
+  , ( "пятидесяти", 50)
   , ( "шестьдесят", 60)
+  , ( "шестидесяти", 60)
   , ( "семьдесят", 70)
+  , ( "семидесяти", 70)
   , ( "восемьдесят", 80)
+  , ( "восьмидесяти", 80)
   , ( "девяносто", 90)
+  , ( "девяноста", 90)
   ]
 
 ruleInteger5 :: Rule
 ruleInteger5 = Rule
   { name = "integer (20..90)"
   , pattern =
-    [ regex "(двадцать|тридцать|сорок|пятьдесят|шестьдесят|семьдесят|восемьдесят|девяносто)"
+    [ regex $ "(двадцать|тридцать|сорок|пятьдесят|шестьдесят|семьдесят|восемьдесят|девяносто"
+            ++"|двадцати|тридцати|сорока|пятидесяти|шестидесяти|семидесяти|восьмидесяти|девяноста)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
@@ -79,7 +88,7 @@ ruleInteger3 :: Rule
 ruleInteger3 = Rule
   { name = "integer 2"
   , pattern =
-    [ regex "(два|две|двое|пара|пару|парочку|парочка)"
+    [ regex "(два|две|двух|двое|пара|пару|парочку|парочка)"
     ]
   , prod = \_ -> integer 2
   }
@@ -221,6 +230,27 @@ threeToNineteenMap = HashMap.fromList
   , ( "девятнадцать", 19)
   ]
 
+threeToNineteenMapGenitive :: HashMap Text Integer
+threeToNineteenMapGenitive = HashMap.fromList
+  [ ( "трех", 3)
+  , ( "четырех", 4)
+  , ( "пяти", 5)
+  , ( "шести", 6)
+  , ( "семи", 7)
+  , ( "восьми", 8)
+  , ( "девяти", 9)
+  , ( "десяти", 10)
+  , ( "одиннадцати", 11)
+  , ( "двенадцати", 12)
+  , ( "тринадцати", 13)
+  , ( "четырнадцати", 14)
+  , ( "пятнадцати", 15)
+  , ( "шестнадцати", 16)
+  , ( "семнадцати", 17)
+  , ( "восемнадцати", 18)
+  , ( "девятнадцати", 19)
+  ]
+
 ruleInteger4 :: Rule
 ruleInteger4 = Rule
   { name = "integer (3..19)"
@@ -230,6 +260,18 @@ ruleInteger4 = Rule
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
         HashMap.lookup (Text.toLower match) threeToNineteenMap >>= integer
+      _ -> Nothing
+  }
+
+ruleInteger4Genitive :: Rule
+ruleInteger4Genitive = Rule
+  { name = "integer (3..19)"
+  , pattern =
+    [ regex "(трех|четырнадцати|четырех|пятнадцати|пяти|шестнадцати|шести|семнадцати|семи|восемнадцати|восьми|девятнадцати|девяти|десяти|одиннадцати|двенадцати|тринадцати)"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        HashMap.lookup (Text.toLower match) threeToNineteenMapGenitive >>= integer
       _ -> Nothing
   }
 
@@ -276,6 +318,7 @@ rules =
   , ruleInteger2
   , ruleInteger3
   , ruleInteger4
+  , ruleInteger4Genitive
   , ruleInteger5
   , ruleInteger6
   , ruleInteger7

@@ -111,4 +111,4 @@ in|within|after <duration> (in two minutes)
 ```
 
 ## License
-Duckling is BSD-licensed. We also provide an additional patent grant.
+Duckling is BSD-licensed.

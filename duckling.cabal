@@ -2,8 +2,7 @@
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
--- LICENSE file in the root directory of this source tree. An additional grant
--- of patent rights can be found in the PATENTS file in the same directory.
+-- LICENSE file in the root directory of this source tree.
 
 
 name:                duckling
@@ -13,8 +12,8 @@ description:
   Duckling is a library for parsing text into structured data.
 homepage:            https://github.com/facebook/duckling#readme
 bug-reports:         https://github.com/facebook/duckling/issues
-license:             OtherLicense
-license-files:       LICENSE,PATENTS
+license:             BSD3
+license-files:       LICENSE
 author:              Facebook, Inc.
 maintainer:          duckling-team@fb.com
 copyright:           Copyright (c) 2014-present, Facebook, Inc.
@@ -28,7 +27,6 @@ tested-with:
   GHC==8.6.3
 
 extra-source-files:    README.md
-                     , PATENTS
 
 library
   exposed-modules:     Duckling.Core

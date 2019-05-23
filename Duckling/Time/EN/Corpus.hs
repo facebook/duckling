@@ -152,6 +152,9 @@ latentCorpus = (testContext, testOptions {withLatent = True}, xs)
           ((2013, 2, 12, 18, 0, 0), (2013, 2, 13, 0, 0, 0)) Hour)
                  [ "night"
                  ]
+      , examples (datetimeInterval ((2013, 2, 12, 0, 0, 0), (2013, 2, 17, 0, 0, 0)) Day)
+                 [ "the week"
+                 ]
       ]
 
 diffContext :: Context

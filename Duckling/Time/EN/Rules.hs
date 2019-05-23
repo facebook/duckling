@@ -979,15 +979,18 @@ ruleWeekend = Rule
 ruleWeek :: Rule
 ruleWeek = Rule
  { name = "week"
- , pattern = [regex "(all|rest of the) week"]
+ , pattern = [regex "(all|rest of the|the) week"]
  , prod = \case
      (Token RegexMatch (GroupMatch (match:_)):_) ->
        let end = cycleNthAfter True TG.Day (-2) $ cycleNth TG.Week 1
            period = case Text.toLower match of
                       "all" -> interval Closed (cycleNth TG.Week 0) end
                       "rest of the" -> interval Open today end
+                      "the" -> interval Open today end
                       _ -> Nothing
-       in Token Time <$> period
+       in case Text.toLower match of
+         "the" -> Token Time . mkLatent <$> period
+         _ -> Token Time <$> period
      _ -> Nothing
  }
 

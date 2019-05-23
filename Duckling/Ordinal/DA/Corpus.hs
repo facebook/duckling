@@ -22,9 +22,24 @@ corpus :: Corpus
 corpus = (testContext {locale = makeLocale DA Nothing}, testOptions, allExamples)
 
 allExamples :: [Example]
-allExamples =
-  examples (OrdinalData 4)
-           [ "4."
-           , "fjerde"
-           , "Fjerde"
-           ]
+allExamples = concat
+  [ examples (OrdinalData 4)
+             [ "4."
+             , "fjerde"
+             , "Fjerde"
+             ]
+  , examples (OrdinalData 41)
+             [ "enogfyrrende"
+             ]
+  , examples (OrdinalData 78)
+             [ "otteoghalvfjerdsindstyvende"
+             ]
+  , examples (OrdinalData 263)
+             [ "to hundrede og treogtresindstyvende"
+             , "tohundrede og treogtresindstyvende"
+             ]
+  , examples (OrdinalData 70)
+             [ "halvfjerdsende"
+             , "halvfjerdsindstyvende"
+             ]
+  ]

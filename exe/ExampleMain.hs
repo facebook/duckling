@@ -9,7 +9,7 @@
 
 import Control.Applicative hiding (empty)
 import Control.Arrow ((***))
-import Control.Monad (unless)
+import Control.Monad (unless, when)
 import Control.Monad.IO.Class
 import Data.Aeson
 import Data.ByteString (ByteString, empty)

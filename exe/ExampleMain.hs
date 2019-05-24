@@ -52,7 +52,7 @@ setupLogs conf = do
   let shouldLogErrors = shouldLog $ getErrorLog conf
   let shouldLogAccesses = shouldLog $ getAccessLog conf
 
-  when (shouldLogErrors || shouldLogAccesses) $ createIfMissing "log"
+  when (shouldLogErrors || shouldLogAccesses) $ createDirectoryIfMissing False "log"
   when shouldLogErrors $ createIfMissing "log/error.log"
   when shouldLogAccesses $ createIfMissing "log/access.log"
 

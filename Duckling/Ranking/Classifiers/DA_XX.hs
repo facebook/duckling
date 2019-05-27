@@ -277,7 +277,7 @@ classifiers
                                  HashMap.fromList
                                    [("ordinal (digits)quarter (grain)", -1.252762968495368),
                                     ("quarter", -0.8472978603872037),
-                                    ("ordinals (first..31st)quarter (grain)", -1.252762968495368)],
+                                    ("ordinals (first..19st)quarter (grain)", -1.252762968495368)],
                                n = 2},
                    koData =
                      ClassData{prior = -0.6931471805599453,
@@ -286,7 +286,7 @@ classifiers
                                  HashMap.fromList
                                    [("ordinal (digits)quarter (grain)", -1.252762968495368),
                                     ("quarter", -0.8472978603872037),
-                                    ("ordinals (first..31st)quarter (grain)", -1.252762968495368)],
+                                    ("ordinals (first..19st)quarter (grain)", -1.252762968495368)],
                                n = 2}}),
        ("intersect",
         Classifier{okData =
@@ -420,12 +420,12 @@ classifiers
                                likelihoods =
                                  HashMap.fromList
                                    [("daymonth", -1.7346010553881064),
-                                    ("ordinals (first..31st)week (grain)October",
+                                    ("ordinals (first..19st)week (grain)intersect",
                                      -1.7346010553881064),
-                                    ("ordinals (first..31st)week (grain)intersect",
+                                    ("ordinals (first..19st)week (grain)October",
                                      -1.7346010553881064),
                                     ("weekmonth", -1.2237754316221157),
-                                    ("ordinals (first..31st)day (grain)October",
+                                    ("ordinals (first..19st)day (grain)October",
                                      -1.7346010553881064)],
                                n = 6},
                    koData =
@@ -567,7 +567,7 @@ classifiers
                      ClassData{prior = 0.0, unseen = -2.0794415416798357,
                                likelihoods =
                                  HashMap.fromList
-                                   [("ordinals (first..31st)quarter (grain)year",
+                                   [("ordinals (first..19st)quarter (grain)year",
                                      -1.252762968495368),
                                     ("quarteryear", -0.8472978603872037),
                                     ("ordinal (digits)quarter (grain)year", -1.252762968495368)],
@@ -625,9 +625,9 @@ classifiers
                                likelihoods =
                                  HashMap.fromList
                                    [("daymonth", -0.8938178760220964),
-                                    ("ordinals (first..31st)TuesdayOctober", -1.9924301646902063),
-                                    ("ordinals (first..31st)Tuesdayintersect", -1.9924301646902063),
-                                    ("ordinals (first..31st)Wednesdayintersect",
+                                    ("ordinals (first..19st)Tuesdayintersect", -1.9924301646902063),
+                                    ("ordinals (first..19st)TuesdayOctober", -1.9924301646902063),
+                                    ("ordinals (first..19st)Wednesdayintersect",
                                      -1.4816045409242156)],
                                n = 8},
                    koData =
@@ -636,8 +636,8 @@ classifiers
                                likelihoods =
                                  HashMap.fromList
                                    [("daymonth", -0.9444616088408514),
-                                    ("ordinals (first..31st)WednesdayOctober", -1.2809338454620642),
-                                    ("ordinals (first..31st)TuesdaySeptember", -1.791759469228055)],
+                                    ("ordinals (first..19st)WednesdayOctober", -1.2809338454620642),
+                                    ("ordinals (first..19st)TuesdaySeptember", -1.791759469228055)],
                                n = 6}}),
        ("the <day-of-month> (non ordinal)",
         Classifier{okData =
@@ -647,15 +647,6 @@ classifiers
                    koData =
                      ClassData{prior = -infinity, unseen = -0.6931471805599453,
                                likelihoods = HashMap.fromList [], n = 0}}),
-       ("ordinals (first..31st)",
-        Classifier{okData =
-                     ClassData{prior = -5.406722127027582e-2,
-                               unseen = -2.995732273553991,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 18},
-                   koData =
-                     ClassData{prior = -2.9444389791664407,
-                               unseen = -1.0986122886681098,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 1}}),
        ("April",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -1.6094379124341003,
@@ -708,7 +699,7 @@ classifiers
                                unseen = -3.258096538021482,
                                likelihoods =
                                  HashMap.fromList
-                                   [("ordinals (first..31st)March", -1.8325814637483102),
+                                   [("ordinals (first..19st)March", -1.8325814637483102),
                                     ("ordinal (digits)February", -1.8325814637483102),
                                     ("month", -0.8209805520698302),
                                     ("ordinal (digits)March", -1.6094379124341003)],
@@ -718,7 +709,7 @@ classifiers
                                unseen = -2.0794415416798357,
                                likelihoods =
                                  HashMap.fromList
-                                   [("ordinals (first..31st)April", -1.252762968495368),
+                                   [("ordinals (first..19st)April", -1.252762968495368),
                                     ("month", -1.252762968495368)],
                                n = 1}}),
        ("numbers prefix with -, negative or minus",
@@ -803,7 +794,7 @@ classifiers
                      ClassData{prior = 0.0, unseen = -2.3978952727983707,
                                likelihoods =
                                  HashMap.fromList
-                                   [("ordinals (first..31st)", -1.2039728043259361),
+                                   [("ordinals (first..19st)", -1.2039728043259361),
                                     ("ordinal (digits)", -0.35667494393873245)],
                                n = 8},
                    koData =
@@ -879,6 +870,15 @@ classifiers
                    koData =
                      ClassData{prior = -infinity, unseen = -0.6931471805599453,
                                likelihoods = HashMap.fromList [], n = 0}}),
+       ("ordinals (first..19st)",
+        Classifier{okData =
+                     ClassData{prior = -5.406722127027582e-2,
+                               unseen = -2.995732273553991,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 18},
+                   koData =
+                     ClassData{prior = -2.9444389791664407,
+                               unseen = -1.0986122886681098,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 1}}),
        ("about <time-of-day>",
         Classifier{okData =
                      ClassData{prior = -0.6931471805599453,
@@ -1545,8 +1545,8 @@ classifiers
                      ClassData{prior = 0.0, unseen = -2.3978952727983707,
                                likelihoods =
                                  HashMap.fromList
-                                   [("ordinals (first..31st)April", -1.6094379124341003),
-                                    ("ordinals (first..31st)March", -1.6094379124341003),
+                                   [("ordinals (first..19st)April", -1.6094379124341003),
+                                    ("ordinals (first..19st)March", -1.6094379124341003),
                                     ("month", -0.916290731874155),
                                     ("ordinal (digits)March", -1.6094379124341003)],
                                n = 3},

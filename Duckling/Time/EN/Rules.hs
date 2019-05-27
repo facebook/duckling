@@ -2,8 +2,7 @@
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
--- LICENSE file in the root directory of this source tree. An additional grant
--- of patent rights can be found in the PATENTS file in the same directory.
+-- LICENSE file in the root directory of this source tree.
 
 
 {-# LANGUAGE GADTs #-}
@@ -319,6 +318,22 @@ ruleTheNthTimeAfterTime = Rule
   , prod = \tokens -> case tokens of
       (_:Token Ordinal od:Token Time td1:_:Token Time td2:_) ->
         tt $ predNthAfter (TOrdinal.value od - 1) td1 td2
+      _ -> Nothing
+  }
+
+ruleNDOWFromTime :: Rule
+ruleNDOWFromTime = Rule
+  { name = "<integer> <day-of-week> from <time>"
+  , pattern =
+    [ dimension Numeral
+    , Predicate isADayOfWeek
+    , regex "from"
+    , dimension Time
+    ]
+  , prod = \tokens -> case tokens of
+      (token:Token Time td1:_:Token Time td2:_) -> do
+        n <- getIntValue token
+        tt $ predNthAfter (n - 1) td1 td2
       _ -> Nothing
   }
 
@@ -964,15 +979,18 @@ ruleWeekend = Rule
 ruleWeek :: Rule
 ruleWeek = Rule
  { name = "week"
- , pattern = [regex "(all|rest of the) week"]
+ , pattern = [regex "(all|rest of the|the) week"]
  , prod = \case
      (Token RegexMatch (GroupMatch (match:_)):_) ->
        let end = cycleNthAfter True TG.Day (-2) $ cycleNth TG.Week 1
            period = case Text.toLower match of
                       "all" -> interval Closed (cycleNth TG.Week 0) end
                       "rest of the" -> interval Open today end
+                      "the" -> interval Open today end
                       _ -> Nothing
-       in Token Time <$> period
+       in case Text.toLower match of
+         "the" -> Token Time . mkLatent <$> period
+         _ -> Token Time <$> period
      _ -> Nothing
  }
 
@@ -2258,10 +2276,10 @@ ruleInNumeral = Rule
 
 ruleDurationAfterBeforeTime :: Rule
 ruleDurationAfterBeforeTime = Rule
-  { name = "<duration> after|before|from <time>"
+  { name = "<duration> after|before|from|past <time>"
   , pattern =
     [ dimension Duration
-    , regex "(after|before|from)"
+    , regex "(after|before|from|past)"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -2392,6 +2410,7 @@ rules =
   , ruleTheNthTimeOfTime
   , ruleNthTimeAfterTime
   , ruleTheNthTimeAfterTime
+  , ruleNDOWFromTime
   , ruleYearLatent
   , ruleYearADBC
   , ruleTheDOMNumeral

@@ -2,8 +2,7 @@
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
--- LICENSE file in the root directory of this source tree. An additional grant
--- of patent rights can be found in the PATENTS file in the same directory.
+-- LICENSE file in the root directory of this source tree.
 
 
 module Duckling.AmountOfMoney.Tests
@@ -20,9 +19,13 @@ import qualified Duckling.AmountOfMoney.BG.Tests as BG
 import qualified Duckling.AmountOfMoney.ES.Tests as ES
 import qualified Duckling.AmountOfMoney.FR.Tests as FR
 import qualified Duckling.AmountOfMoney.GA.Tests as GA
+import qualified Duckling.AmountOfMoney.HE.Tests as HE
 import qualified Duckling.AmountOfMoney.HR.Tests as HR
 import qualified Duckling.AmountOfMoney.ID.Tests as ID
+import qualified Duckling.AmountOfMoney.IT.Tests as IT
+import qualified Duckling.AmountOfMoney.KA.Tests as KA
 import qualified Duckling.AmountOfMoney.KO.Tests as KO
+import qualified Duckling.AmountOfMoney.MN.Tests as MN
 import qualified Duckling.AmountOfMoney.NB.Tests as NB
 import qualified Duckling.AmountOfMoney.NL.Tests as NL
 import qualified Duckling.AmountOfMoney.PT.Tests as PT
@@ -40,9 +43,13 @@ tests = testGroup "AmountOfMoney Tests"
   , ES.tests
   , FR.tests
   , GA.tests
+  , HE.tests
   , HR.tests
   , ID.tests
+  , IT.tests
+  , KA.tests
   , KO.tests
+  , MN.tests
   , NB.tests
   , NL.tests
   , PT.tests

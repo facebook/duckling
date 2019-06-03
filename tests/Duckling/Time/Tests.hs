@@ -2,8 +2,7 @@
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
--- LICENSE file in the root directory of this source tree. An additional grant
--- of patent rights can be found in the PATENTS file in the same directory.
+-- LICENSE file in the root directory of this source tree.
 
 
 {-# LANGUAGE OverloadedStrings #-}
@@ -44,6 +43,7 @@ import qualified Duckling.Time.PL.Tests as PL
 import qualified Duckling.Time.PT.Tests as PT
 import qualified Duckling.Time.RO.Tests as RO
 import qualified Duckling.Time.SV.Tests as SV
+import qualified Duckling.Time.UK.Tests as UK
 import qualified Duckling.Time.VI.Tests as VI
 import qualified Duckling.Time.ZH.Tests as ZH
 
@@ -69,6 +69,7 @@ tests = testGroup "Time Tests"
   , PT.tests
   , RO.tests
   , SV.tests
+  , UK.tests
   , VI.tests
   , ZH.tests
   , timeFormatTest

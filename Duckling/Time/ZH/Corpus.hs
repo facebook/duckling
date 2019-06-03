@@ -2,8 +2,7 @@
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
--- LICENSE file in the root directory of this source tree. An additional grant
--- of patent rights can be found in the PATENTS file in the same directory.
+-- LICENSE file in the root directory of this source tree.
 
 
 {-# LANGUAGE OverloadedStrings #-}
@@ -275,26 +274,29 @@ allExamples = concat
              , "下礼拜"
              , "下禮拜"
              ]
-  , examples (datetime (2013, 1, 0, 0, 0, 0) Month)
+  , examples (datetime (2013, 1, 1, 0, 0, 0) Month)
              [ "上月"
              , "上个月"
              , "上個月"
              ]
-  , examples (datetime (2013, 3, 0, 0, 0, 0) Month)
+  , examples (datetime (2013, 3, 1, 0, 0, 0) Month)
              [ "下月"
              , "下个月"
              , "下個月"
+             , "3月"
+             , "3月份"
+             , "三月"
              ]
-  , examples (datetime (2012, 0, 0, 0, 0, 0) Year)
+  , examples (datetime (2012, 1, 1, 0, 0, 0) Year)
              [ "去年"
              , "上年"
              ]
-  , examples (datetime (2013, 0, 0, 0, 0, 0) Year)
+  , examples (datetime (2013, 1, 1, 0, 0, 0) Year)
              [ "今年"
              , "这一年"
              , "這一年"
              ]
-  , examples (datetime (2014, 0, 0, 0, 0, 0) Year)
+  , examples (datetime (2014, 1, 1, 0, 0, 0) Year)
              [ "明年"
              , "下年"
              ]

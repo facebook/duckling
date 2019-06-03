@@ -2,8 +2,7 @@
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
--- LICENSE file in the root directory of this source tree. An additional grant
--- of patent rights can be found in the PATENTS file in the same directory.
+-- LICENSE file in the root directory of this source tree.
 
 
 {-# LANGUAGE GADTs #-}
@@ -37,7 +36,7 @@ ruleUnitAmount = Rule
   , prod = \case
       (Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.currency = c}:
        Token Numeral NumeralData{TNumeral.value = v}:
-       _) -> Just . Token AmountOfMoney . withValue v $ currencyOnly c
+       _) -> Just $ Token AmountOfMoney . withValue v $ currencyOnly c
       _ -> Nothing
   }
 
@@ -49,11 +48,11 @@ ruleIntersectAndNumeral = Rule
     , regex "og"
     , Predicate isNatural
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token AmountOfMoney fd:
        _:
        Token Numeral NumeralData{TNumeral.value = c}:
-       _) -> Just . Token AmountOfMoney $ withCents c fd
+       _) -> Just $ Token AmountOfMoney $ withCents c fd
       _ -> Nothing
   }
 
@@ -64,7 +63,7 @@ ruleAboutAmountofmoney = Rule
     [ regex "omtrent|cirka|rundt|ca"
     , Predicate isMoneyWithValue
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (_:token:_) -> Just token
       _ -> Nothing
   }
@@ -73,9 +72,10 @@ ruleCent :: Rule
 ruleCent = Rule
   { name = "cent"
   , pattern =
-    [ regex "cents?|penn(y|ies)|(ø)re"
+    [ regex "cent(?:\\b|s)|\\bc\\b|pen(?:ce|ny|nies)|\\bp\\b|(?:ø|ö)rer?|fen|haleru|groszy|pais(?:e|a)\
+           \|centesim(?:o|i)|centimes?|\\bct?\\b|\\brp?\\b|rap(?:pen)?s?|satang"
     ]
-  , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly Cent
+  , prod = const $ Just $ Token AmountOfMoney $ currencyOnly Cent
   }
 
 ruleIntersectXCents :: Rule
@@ -85,26 +85,10 @@ ruleIntersectXCents = Rule
     [ Predicate isWithoutCents
     , Predicate isCents
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token AmountOfMoney fd:
        Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just c}:
-       _) -> Just . Token AmountOfMoney $ withCents c fd
-      _ -> Nothing
-  }
-
-ruleIntersectXCentsWithAnd :: Rule
-ruleIntersectXCentsWithAnd = Rule
-  { name = "intersect (X cents) with and"
-  , pattern =
-    [ Predicate isWithoutCents
-    , regex "og"
-    , Predicate isCents
-    ]
-  , prod = \tokens -> case tokens of
-      (Token AmountOfMoney fd:
-       _:
-       Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just c}:
-       _) -> Just . Token AmountOfMoney $ withCents c fd
+       _) -> Just $ Token AmountOfMoney $ withCents c fd
       _ -> Nothing
   }
 
@@ -112,18 +96,18 @@ ruleNok :: Rule
 ruleNok = Rule
   { name = "NOK"
   , pattern =
-    [ regex "kr(oner)?"
+    [ regex "(?:norske? ?)?kr(?:oner?)?"
     ]
-  , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly NOK
+  , prod = const $ Just $ Token AmountOfMoney $ currencyOnly NOK
   }
 
 rulePound :: Rule
 rulePound = Rule
   { name = "£"
   , pattern =
-    [ regex "pund?"
+    [ regex "po?und?s?"
     ]
-  , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly Pound
+  , prod = const $ Just $ Token AmountOfMoney $ currencyOnly Pound
   }
 
 ruleIntersectAndXCents :: Rule
@@ -134,11 +118,11 @@ ruleIntersectAndXCents = Rule
     , regex "og"
     , Predicate isCents
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token AmountOfMoney fd:
        _:
        Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just c}:
-       _) -> Just . Token AmountOfMoney $ withCents c fd
+       _) -> Just $ Token AmountOfMoney $ withCents c fd
       _ -> Nothing
   }
 
@@ -149,10 +133,10 @@ ruleIntersect = Rule
     [ Predicate isWithoutCents
     , Predicate isNatural
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token AmountOfMoney fd:
        Token Numeral NumeralData{TNumeral.value = c}:
-       _) -> Just . Token AmountOfMoney $ withCents c fd
+       _) -> Just $ Token AmountOfMoney $ withCents c fd
       _ -> Nothing
   }
 
@@ -162,7 +146,169 @@ ruleDirham = Rule
   , pattern =
     [ regex "dirhams?"
     ]
-  , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly AED
+  , prod = const $ Just $ Token AmountOfMoney $ currencyOnly AED
+  }
+
+ruleSEK :: Rule
+ruleSEK = Rule
+  { name = "SEK"
+  , pattern =
+    [ regex "(?:svenske? )?kron(?:a|or)|svenske? kr(?:oner?)?"
+    ]
+  , prod = const $ Just $ Token AmountOfMoney $ currencyOnly SEK
+  }
+
+ruleGBP :: Rule
+ruleGBP = Rule
+  { name = "GBP"
+  , pattern =
+    [ regex "(?:britiske?|engelske?) po?unds?"
+    ]
+  , prod = const $ Just $ Token AmountOfMoney $ currencyOnly GBP
+  }
+
+ruleDKK :: Rule
+ruleDKK = Rule
+  { name = "DKK"
+  , pattern =
+    [ regex "danske? kr(?:oner?)?"
+    ]
+  , prod = const $ Just $ Token AmountOfMoney $ currencyOnly DKK
+  }
+
+ruleUSD :: Rule
+ruleUSD = Rule
+  { name = "USD"
+  , pattern =
+    [ regex "amerikanske? dollars?"
+    ]
+  , prod = const $ Just $ Token AmountOfMoney $ currencyOnly USD
+  }
+
+ruleAUD :: Rule
+ruleAUD = Rule
+  { name = "AUD"
+  , pattern =
+    [ regex "australske? dollars?"
+    ]
+  , prod = const $ Just $ Token AmountOfMoney $ currencyOnly AUD
+  }
+
+ruleCAD :: Rule
+ruleCAD = Rule
+  { name = "CAD"
+  , pattern =
+    [ regex "(?:k|c)anadiske? dollars?"
+    ]
+  , prod = const $ Just $ Token AmountOfMoney $ currencyOnly CAD
+  }
+
+ruleCHF :: Rule
+ruleCHF = Rule
+  { name = "CHF"
+  , pattern =
+    [ regex "sveitsiske? francs?"
+    ]
+  , prod = const $ Just $ Token AmountOfMoney $ currencyOnly CHF
+  }
+
+ruleCNY :: Rule
+ruleCNY = Rule
+  { name = "CNY"
+  , pattern =
+    [ regex "(?:kinesiske? )?(?:yuan|renminbi)"
+    ]
+  , prod = const $ Just $ Token AmountOfMoney $ currencyOnly CNY
+  }
+
+ruleCZK :: Rule
+ruleCZK = Rule
+  { name = "CZK"
+  , pattern =
+    [ regex "(?:tsjekkiske? )?koruna"
+    ]
+  , prod = const $ Just $ Token AmountOfMoney $ currencyOnly CZK
+  }
+
+ruleHKD :: Rule
+ruleHKD = Rule
+  { name = "HKD"
+  , pattern =
+    [ regex "hong kong dollars?"
+    ]
+  , prod = const $ Just $ Token AmountOfMoney $ currencyOnly HKD
+  }
+
+ruleINR :: Rule
+ruleINR = Rule
+  { name = "INR"
+  , pattern =
+    [ regex "(?:indiske? )?rup(?:i(?:er)?|ees?)"
+    ]
+  , prod = const $ Just $ Token AmountOfMoney $ currencyOnly INR
+  }
+
+ruleJPY :: Rule
+ruleJPY = Rule
+  { name = "JPY"
+  , pattern =
+    [ regex "japanske? yen"
+    ]
+  , prod = const $ Just $ Token AmountOfMoney $ currencyOnly JPY
+  }
+
+ruleNZD :: Rule
+ruleNZD = Rule
+  { name = "NZD"
+  , pattern =
+    [ regex "(?:nz|new zealand(?:ske)?) dollars?"
+    ]
+  , prod = const $ Just $ Token AmountOfMoney $ currencyOnly NZD
+  }
+
+rulePKR :: Rule
+rulePKR = Rule
+  { name = "PKR"
+  , pattern =
+    [ regex "pakistanske? rup(?:i(?:er)?|ees?)"
+    ]
+  , prod = const $ Just $ Token AmountOfMoney $ currencyOnly PKR
+  }
+
+rulePLN :: Rule
+rulePLN = Rule
+  { name = "PLN"
+  , pattern =
+    [ regex "(?:polske? )?(?:z|s)?lotys?"
+    ]
+  , prod = const $ Just $ Token AmountOfMoney $ currencyOnly PLN
+  }
+
+ruleSGD :: Rule
+ruleSGD = Rule
+  { name = "SGD"
+  , pattern =
+    [ regex "singapor(?:e|ske?) dollars?"
+    ]
+  , prod = const $ Just $ Token AmountOfMoney $ currencyOnly SGD
+  }
+
+ruleTHB :: Rule
+ruleTHB = Rule
+  { name = "THB"
+  , pattern =
+    [ regex "(?:thai(?:land(?:ske?)?)? )?b(?:ah|ha)t"
+    ]
+  , prod = const $ Just $ Token AmountOfMoney $ currencyOnly THB
+  }
+
+ruleZAR :: Rule
+ruleZAR = Rule
+  { name = "ZAR"
+  , pattern =
+    [ regex "(?:sør(?: |-)?afrika(?:nske?)? )?rand"
+    ]
+  , prod = const $ Just $ Token AmountOfMoney $ currencyOnly ZAR
   }
 
 rules :: [Rule]
@@ -175,7 +321,24 @@ rules =
   , ruleIntersectAndNumeral
   , ruleIntersectAndXCents
   , ruleIntersectXCents
-  , ruleIntersectXCentsWithAnd
   , ruleNok
   , rulePound
+  , ruleSEK
+  , ruleDKK
+  , ruleUSD
+  , ruleAUD
+  , ruleCAD
+  , ruleGBP
+  , ruleCHF
+  , ruleCNY
+  , ruleCZK
+  , ruleHKD
+  , ruleINR
+  , ruleJPY
+  , ruleNZD
+  , rulePKR
+  , rulePLN
+  , ruleSGD
+  , ruleTHB
+  , ruleZAR
   ]

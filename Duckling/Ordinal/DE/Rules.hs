@@ -2,19 +2,24 @@
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
--- LICENSE file in the root directory of this source tree. An additional grant
--- of patent rights can be found in the PATENTS file in the same directory.
+-- LICENSE file in the root directory of this source tree.
 
 
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Ordinal.DE.Rules
-  ( rules ) where
+  ( rules
+  ) where
 
-import qualified Data.Text as Text
+import Data.Semigroup ((<>))
 import Prelude
 import Data.String
+import Data.Text (Text)
+import qualified Data.HashMap.Strict as HashMap
+import qualified Data.List as List
+import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
 import Duckling.Numeral.Helpers (parseInt)
@@ -22,56 +27,63 @@ import Duckling.Ordinal.Helpers
 import Duckling.Regex.Types
 import Duckling.Types
 
+ordinalList :: [(Text, Int)]
+ordinalList =
+  [ ("erste", 1)
+  , ("zweite", 2)
+  , ("dritte", 3)
+  , ("vierte", 4)
+  , ("fünfte", 5)
+  , ("sechste", 6)
+  , ("siebte", 7)
+  , ("achte", 8)
+  , ("neunte", 9)
+  , ("zehnte", 10)
+  , ("elfte", 11)
+  , ("zwölfte", 12)
+  , ("dreizente", 13)
+  , ("vierzehnte", 14)
+  , ("fünfzehnte", 15)
+  , ("sechzente", 16)
+  , ("siebzehnte", 17)
+  , ("achtzehnte", 18)
+  , ("neunzehnte", 19)
+  , ("zwanzigste", 20)
+  , ("einundzwanzigste", 21)
+  , ("zweiundzwanzigste", 22)
+  , ("dreiundzwanzigste", 23)
+  , ("vierundzwanzigste", 24)
+  , ("fünfundzwanzigste", 25)
+  , ("sechsundzwanzigste", 26)
+  , ("siebenundzwanzigste", 27)
+  , ("achtundzwanzigste", 28)
+  , ("neunundzwanzigste", 29)
+  , ("dreissigste", 30)
+  , ("dreißigste", 30)
+  , ("einunddreissigste", 31)
+  , ("einunddreißigste", 31)
+  ]
+
 ruleOrdinalsFirstth :: Rule
 ruleOrdinalsFirstth = Rule
-  { name = "ordinals (first..19th)"
+  { name = "ordinal (1..31)"
   , pattern =
-    [ regex "(erste(r|s)?|zweite(r|s)|dritte(r|s)|vierte(r|s)|fuenfte(r|s)|sechste(r|s)|siebte(r|s)|achte(r|s)|neunte(r|s)|zehnte(r|s)|elfter|zwölfter|dreizenter|vierzehnter|fünfzehnter|sechzenter|siebzehnter|achtzehnter|neunzehnter)"
+    [ regex $ Text.unpack construction
     ]
-  , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
-        "erstes" -> Just $ ordinal 1
-        "erster" -> Just $ ordinal 1
-        "erste" -> Just $ ordinal 1
-        "zweiter" -> Just $ ordinal 2
-        "zweite" -> Just $ ordinal 2
-        "zweites" -> Just $ ordinal 2
-        "drittes" -> Just $ ordinal 3
-        "dritte" -> Just $ ordinal 3
-        "dritter" -> Just $ ordinal 3
-        "viertes" -> Just $ ordinal 4
-        "vierte" -> Just $ ordinal 4
-        "vierter" -> Just $ ordinal 4
-        "fünftes" -> Just $ ordinal 5
-        "fünfter" -> Just $ ordinal 5
-        "fünfte" -> Just $ ordinal 5
-        "sechste" -> Just $ ordinal 6
-        "sechstes" -> Just $ ordinal 6
-        "sechster" -> Just $ ordinal 6
-        "siebtes" -> Just $ ordinal 7
-        "siebte" -> Just $ ordinal 7
-        "siebter" -> Just $ ordinal 7
-        "achtes" -> Just $ ordinal 8
-        "achte" -> Just $ ordinal 8
-        "achter" -> Just $ ordinal 8
-        "neuntes" -> Just $ ordinal 9
-        "neunter" -> Just $ ordinal 9
-        "neunte" -> Just $ ordinal 9
-        "zehnte" -> Just $ ordinal 10
-        "zehnter" -> Just $ ordinal 10
-        "zehntes" -> Just $ ordinal 10
-        "elfter" -> Just $ ordinal 11
-        "zwölfter" -> Just $ ordinal 12
-        "dreizehnter" -> Just $ ordinal 13
-        "vierzehnter" -> Just $ ordinal 14
-        "fünfzehnter" -> Just $ ordinal 15
-        "sechzehnter" -> Just $ ordinal 16
-        "siebzehnter" -> Just $ ordinal 17
-        "achtzehnter" -> Just $ ordinal 18
-        "neunzehnter" -> Just $ ordinal 19
-        _ -> Nothing
+  , prod = \case
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        ordinal <$> HashMap.lookup (Text.toLower match) ordinalMap
       _ -> Nothing
   }
+  where
+    ordinalMap :: HashMap.HashMap Text Int
+    ordinalMap = HashMap.fromList ordinalList
+
+    construction :: Text
+    construction =
+      "("
+      <> mconcat (List.intersperse "|" (fst <$> ordinalList))
+      <> ")[rsn]?"
 
 ruleOrdinalDigits :: Rule
 ruleOrdinalDigits = Rule
@@ -79,7 +91,7 @@ ruleOrdinalDigits = Rule
   , pattern =
     [ regex "(?<!\\d|\\.)0*(\\d+)(\\.(?!\\d)| ?(te(n|r|s)?)|(ste(n|r|s)?))"
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token RegexMatch (GroupMatch (match:_)):_) -> do
         v <- parseInt match
         Just $ ordinal v
@@ -88,6 +100,6 @@ ruleOrdinalDigits = Rule
 
 rules :: [Rule]
 rules =
-  [ ruleOrdinalDigits
-  , ruleOrdinalsFirstth
+  [ ruleOrdinalsFirstth
+  , ruleOrdinalDigits
   ]

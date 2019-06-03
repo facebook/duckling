@@ -2,8 +2,7 @@
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
--- LICENSE file in the root directory of this source tree. An additional grant
--- of patent rights can be found in the PATENTS file in the same directory.
+-- LICENSE file in the root directory of this source tree.
 
 
 {-# LANGUAGE GADTs #-}
@@ -11,6 +10,7 @@
 
 module Duckling.AmountOfMoney.Helpers
   ( currencyOnly
+  , valueOnly
   , isSimpleAmountOfMoney
   , isCent
   , isCents
@@ -24,6 +24,7 @@ module Duckling.AmountOfMoney.Helpers
   , withMax
   , withMin
   , withValue
+  , mkLatent
   , dollarCoins
   )
   where
@@ -34,7 +35,11 @@ import Data.String
 import Data.Text (Text)
 import Prelude
 
-import Duckling.AmountOfMoney.Types (Currency (..), AmountOfMoneyData (..))
+import Duckling.AmountOfMoney.Types
+  ( Currency (..)
+  , AmountOfMoneyData (..)
+  , amountOfMoneyData'
+  )
 import Duckling.Numeral.Types (getIntValue, isInteger)
 import Duckling.Dimensions.Types
 import Duckling.Types hiding (Entity(..))
@@ -104,8 +109,10 @@ isCent _ = False
 -- Production
 
 currencyOnly :: Currency -> AmountOfMoneyData
-currencyOnly c = AmountOfMoneyData
-  {currency = c, value = Nothing, minValue = Nothing, maxValue = Nothing}
+currencyOnly c = amountOfMoneyData'{currency = c}
+
+valueOnly :: Double -> AmountOfMoneyData
+valueOnly x = amountOfMoneyData'{value = Just x}
 
 withValue :: Double -> AmountOfMoneyData -> AmountOfMoneyData
 withValue x fd = fd {value = Just x}
@@ -113,8 +120,8 @@ withValue x fd = fd {value = Just x}
 withCents :: Double -> AmountOfMoneyData -> AmountOfMoneyData
 withCents x fd@AmountOfMoneyData {value = Just value} = fd
   {value = Just $ value + x / 100}
-withCents x AmountOfMoneyData {value = Nothing} = AmountOfMoneyData
-  {value = Just x, currency = Cent, minValue = Nothing, maxValue = Nothing}
+withCents x AmountOfMoneyData {value = Nothing} =
+  amountOfMoneyData'{value = Just x, currency = Cent}
 
 withInterval :: (Double, Double) -> AmountOfMoneyData -> AmountOfMoneyData
 withInterval (from, to) fd = fd
@@ -125,3 +132,6 @@ withMin x fd = fd {minValue = Just x}
 
 withMax :: Double -> AmountOfMoneyData -> AmountOfMoneyData
 withMax x fd = fd {maxValue = Just x}
+
+mkLatent :: AmountOfMoneyData -> AmountOfMoneyData
+mkLatent fd = fd {latent = True}

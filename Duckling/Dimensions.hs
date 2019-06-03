@@ -2,8 +2,7 @@
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
--- LICENSE file in the root directory of this source tree. An additional grant
--- of patent rights can be found in the PATENTS file in the same directory.
+-- LICENSE file in the root directory of this source tree.
 
 
 {-# LANGUAGE GADTs #-}
@@ -40,12 +39,16 @@ import qualified Duckling.Dimensions.HI as HIDimensions
 import qualified Duckling.Dimensions.HR as HRDimensions
 import qualified Duckling.Dimensions.HU as HUDimensions
 import qualified Duckling.Dimensions.ID as IDDimensions
+import qualified Duckling.Dimensions.IS as ISDimensions
 import qualified Duckling.Dimensions.IT as ITDimensions
 import qualified Duckling.Dimensions.JA as JADimensions
 import qualified Duckling.Dimensions.KA as KADimensions
 import qualified Duckling.Dimensions.KM as KMDimensions
+import qualified Duckling.Dimensions.KN as KNDimensions
 import qualified Duckling.Dimensions.KO as KODimensions
 import qualified Duckling.Dimensions.LO as LODimensions
+import qualified Duckling.Dimensions.ML as MLDimensions
+import qualified Duckling.Dimensions.MN as MNDimensions
 import qualified Duckling.Dimensions.MY as MYDimensions
 import qualified Duckling.Dimensions.NB as NBDimensions
 import qualified Duckling.Dimensions.NE as NEDimensions
@@ -55,11 +58,13 @@ import qualified Duckling.Dimensions.PT as PTDimensions
 import qualified Duckling.Dimensions.RO as RODimensions
 import qualified Duckling.Dimensions.RU as RUDimensions
 import qualified Duckling.Dimensions.SV as SVDimensions
+import qualified Duckling.Dimensions.SW as SWDimensions
 import qualified Duckling.Dimensions.TA as TADimensions
 import qualified Duckling.Dimensions.TR as TRDimensions
 import qualified Duckling.Dimensions.UK as UKDimensions
 import qualified Duckling.Dimensions.VI as VIDimensions
 import qualified Duckling.Dimensions.ZH as ZHDimensions
+
 
 allDimensions :: Lang -> [Some Dimension]
 allDimensions lang = CommonDimensions.allDimensions ++ langDimensions lang
@@ -72,6 +77,7 @@ explicitDimensions targets = HashSet.union targets deps
 
 -- | Ordinal depends on Numeral for JA, KO, and ZH.
 dependents :: Some Dimension -> HashSet (Some Dimension)
+dependents (This CreditCardNumber) = HashSet.empty
 dependents (This Distance) = HashSet.singleton (This Numeral)
 dependents (This Duration) = HashSet.fromList [This Numeral, This TimeGrain]
 dependents (This Numeral) = HashSet.empty
@@ -108,12 +114,16 @@ langDimensions HI = HIDimensions.allDimensions
 langDimensions HR = HRDimensions.allDimensions
 langDimensions HU = HUDimensions.allDimensions
 langDimensions ID = IDDimensions.allDimensions
+langDimensions IS = ISDimensions.allDimensions
 langDimensions IT = ITDimensions.allDimensions
 langDimensions JA = JADimensions.allDimensions
 langDimensions KA = KADimensions.allDimensions
 langDimensions KM = KMDimensions.allDimensions
+langDimensions KN = KNDimensions.allDimensions
 langDimensions KO = KODimensions.allDimensions
 langDimensions LO = LODimensions.allDimensions
+langDimensions ML = MLDimensions.allDimensions
+langDimensions MN = MNDimensions.allDimensions
 langDimensions MY = MYDimensions.allDimensions
 langDimensions NB = NBDimensions.allDimensions
 langDimensions NE = NEDimensions.allDimensions
@@ -123,6 +133,7 @@ langDimensions PT = PTDimensions.allDimensions
 langDimensions RO = RODimensions.allDimensions
 langDimensions RU = RUDimensions.allDimensions
 langDimensions SV = SVDimensions.allDimensions
+langDimensions SW = SWDimensions.allDimensions
 langDimensions TA = TADimensions.allDimensions
 langDimensions TR = TRDimensions.allDimensions
 langDimensions UK = UKDimensions.allDimensions

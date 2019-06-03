@@ -2,8 +2,7 @@
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
--- LICENSE file in the root directory of this source tree. An additional grant
--- of patent rights can be found in the PATENTS file in the same directory.
+-- LICENSE file in the root directory of this source tree.
 
 
 module Duckling.Dimensions.Tests
@@ -15,6 +14,7 @@ import Prelude
 import Test.Tasty
 
 import qualified Duckling.AmountOfMoney.Tests as AmountOfMoney
+import qualified Duckling.CreditCardNumber.Tests as CreditCardNumber
 import qualified Duckling.Distance.Tests as Distance
 import qualified Duckling.Duration.Tests as Duration
 import qualified Duckling.Email.Tests as Email
@@ -30,6 +30,7 @@ import qualified Duckling.Url.Tests as Url
 tests :: TestTree
 tests = testGroup "Dimensions Tests"
   [ AmountOfMoney.tests
+  , CreditCardNumber.tests
   , Distance.tests
   , Duration.tests
   , Email.tests

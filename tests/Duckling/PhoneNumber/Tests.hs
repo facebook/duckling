@@ -2,8 +2,7 @@
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
--- LICENSE file in the root directory of this source tree. An additional grant
--- of patent rights can be found in the PATENTS file in the same directory.
+-- LICENSE file in the root directory of this source tree.
 
 
 {-# LANGUAGE OverloadedStrings #-}
@@ -22,6 +21,7 @@ import Duckling.PhoneNumber.Corpus
 import Duckling.PhoneNumber.Types
 import Duckling.Testing.Asserts
 import Duckling.Testing.Types
+import qualified Duckling.PhoneNumber.AR.Tests as AR
 import qualified Duckling.PhoneNumber.PT.Tests as PT
 
 tests :: TestTree
@@ -30,6 +30,7 @@ tests = testGroup "PhoneNumber Tests"
   , makeNegativeCorpusTest [This PhoneNumber] negativeCorpus
   , surroundTests
   , PT.tests
+  , AR.tests
   ]
 
 surroundTests :: TestTree

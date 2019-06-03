@@ -2,8 +2,7 @@
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
--- LICENSE file in the root directory of this source tree. An additional grant
--- of patent rights can be found in the PATENTS file in the same directory.
+-- LICENSE file in the root directory of this source tree.
 
 
 {-# LANGUAGE GADTs #-}
@@ -11,7 +10,8 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Time.DE.Rules
-  ( rules ) where
+  ( rules
+  ) where
 
 import Prelude
 import Data.Text (Text)
@@ -20,7 +20,7 @@ import qualified Data.Text as Text
 import Duckling.Dimensions.Types
 import Duckling.Numeral.Helpers (parseInt)
 import Duckling.Ordinal.Types (OrdinalData (..))
-import Duckling.Regex.Types
+import Duckling.Regex.Types (GroupMatch(..))
 import Duckling.Time.Helpers
 import Duckling.Time.Types (TimeData (..))
 import Duckling.Types
@@ -38,6 +38,7 @@ ruleInstants = mkRuleInstants
   , ( "yesterday"       , TG.Day   , -1, "gestern" )
   , ( "after tomorrow"  , TG.Day   ,  2, "(ü)bermorgen" )
   , ( "before yesterday", TG.Day   , -2, "vorgestern" )
+  , ( "3 days ago"      , TG.Day   , -3, "vorvorgestern" )
   , ( "EOM|End of month", TG.Month ,  1, "(das )?ende des monats?" )
   , ( "EOY|End of year" , TG.Year  ,  1,
        "(das )?(EOY|jahr(es)? ?ende|ende (des )?jahr(es)?)" )
@@ -1050,7 +1051,7 @@ ruleYyyymmdd :: Rule
 ruleYyyymmdd = Rule
   { name = "yyyy-mm-dd"
   , pattern =
-    [ regex "(\\d{2,4})-(0?[1-9]|10|11|12)-([012]?[1-9]|10|20|30|31)"
+    [ regex "(\\d{2,4})-(1[0-2]|0?[1-9])-(3[01]|[12]\\d|0?[1-9])"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (m1:m2:m3:_)):_) -> do

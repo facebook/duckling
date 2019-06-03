@@ -2,8 +2,7 @@
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
--- LICENSE file in the root directory of this source tree. An additional grant
--- of patent rights can be found in the PATENTS file in the same directory.
+-- LICENSE file in the root directory of this source tree.
 
 
 module Duckling.Time.NL.Tests
@@ -24,6 +23,7 @@ import qualified Duckling.Time.NL.BE.Corpus as BE
 tests :: TestTree
 tests = testGroup "NL Tests"
   [ makeCorpusTest [This Time] corpus
+  , makeCorpusTest [This Time] latentCorpus
   , makeNegativeCorpusTest [This Time] negativeCorpus
   , localeTests
   ]

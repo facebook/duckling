@@ -2,8 +2,7 @@
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
--- LICENSE file in the root directory of this source tree. An additional grant
--- of patent rights can be found in the PATENTS file in the same directory.
+-- LICENSE file in the root directory of this source tree.
 
 
 {-# LANGUAGE GADTs #-}
@@ -764,12 +763,12 @@ ruleMonthNumericWithMonthSymbol = Rule
   { name = "month (numeric with month symbol)"
   , pattern =
     [ Predicate $ isIntegerBetween 1 12
-    , regex "月"
+    , regex "月(份)?"
     ]
   , prod = \tokens -> case tokens of
       (token:_) -> do
         v <- getIntValue token
-        tt . mkLatent $ month v
+        tt . mkOkForThisNext $ month v
       _ -> Nothing
   }
 
@@ -890,22 +889,6 @@ ruleDaysOfWeek = mkRuleDaysOfWeek
   , ( "Friday", "星期五|周五|礼拜五|禮拜五|週五" )
   , ( "Saturday", "星期六|周六|礼拜六|禮拜六|週六" )
   , ( "Sunday", "星期日|星期天|礼拜天|周日|禮拜天|週日|禮拜日" )
-  ]
-
-ruleMonths :: [Rule]
-ruleMonths = mkRuleMonths
-  [ ( "January", "一月(份)?" )
-  , ( "February", "二月(份)?" )
-  , ( "March", "三月(份)?" )
-  , ( "April", "四月(份)?" )
-  , ( "May", "五月(份)?" )
-  , ( "June", "六月(份)?" )
-  , ( "July", "七月(份)?" )
-  , ( "August", "八月(份)?" )
-  , ( "September", "九月(份)?" )
-  , ( "October", "十月(份)?" )
-  , ( "November", "十一月(份)?" )
-  , ( "December", "十二月(份)?" )
   ]
 
 rulePeriodicHolidays :: [Rule]
@@ -1039,5 +1022,4 @@ rules =
   , ruleTimezone
   ]
   ++ ruleDaysOfWeek
-  ++ ruleMonths
   ++ rulePeriodicHolidays

@@ -2,8 +2,7 @@
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
--- LICENSE file in the root directory of this source tree. An additional grant
--- of patent rights can be found in the PATENTS file in the same directory.
+-- LICENSE file in the root directory of this source tree.
 
 
 {-# LANGUAGE GADTs #-}
@@ -33,19 +32,23 @@ import qualified Duckling.TimeGrain.Types as TG
 avadhiMap :: HashMap Text TG.Grain
 avadhiMap = HashMap.fromList
   [ ("मिनट" , TG.Minute)
+  , ("क्षण", TG.Minute)
   , ("घंटा" , TG.Hour)
   , ("दिवस" , TG.Day)
   , ("दिन"  , TG.Day)
   , ("महीना", TG.Month)
+  , ("माह", TG.Month)
+  , ("मास", TG.Month)
   , ("वर्ष" , TG.Year)
   , ("साल"  , TG.Year)
+  , ("बरस", TG.Year)
   ]
 
 ruleAadha :: Rule
 ruleAadha = Rule
   { name = "half of a duration"
   , pattern =
-    [ regex "आधा ((साल|वर्ष)|(महीना)|(दिन|दिवस)|(घंटा)|(मिनट))"
+    [ regex "आधा ((साल|वर्ष|बरस)|(महीना|मास|माह)|(दिन|दिवस)|(घंटा)|(मिनट|क्षण))"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (x:_)):_) -> do
@@ -85,7 +88,7 @@ ruleDurationEkSaal :: Rule
 ruleDurationEkSaal = Rule
   { name = "one year"
   , pattern =
-    [ regex "एक (साल|वर्ष)"
+    [ regex "एक (साल|वर्ष|बरस)"
     ]
   , prod = \_ -> Just . Token Duration $ duration TG.Year 1
   }

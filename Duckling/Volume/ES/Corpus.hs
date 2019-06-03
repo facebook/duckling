@@ -2,8 +2,7 @@
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
--- LICENSE file in the root directory of this source tree. An additional grant
--- of patent rights can be found in the PATENTS file in the same directory.
+-- LICENSE file in the root directory of this source tree.
 
 
 {-# LANGUAGE OverloadedStrings #-}
@@ -24,21 +23,21 @@ corpus = (testContext {locale = makeLocale ES Nothing}, testOptions, allExamples
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (VolumeValue Millilitre 250)
+  [ examples (simple Millilitre 250)
              [ "250 mililitros"
              , "250ml"
              , "250 ml"
              ]
-  , examples (VolumeValue Litre 2)
+  , examples (simple Litre 2)
              [ "2 litros"
              ]
-  , examples (VolumeValue Gallon 3)
+  , examples (simple Gallon 3)
              [ "3 galón"
              ]
-  , examples (VolumeValue Hectolitre 3)
+  , examples (simple Hectolitre 3)
              [ "3 hectolitros"
              ]
-  , examples (VolumeValue Litre 0.5)
+  , examples (simple Litre 0.5)
              [ "medio litro"
              ]
   ]

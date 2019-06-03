@@ -2,8 +2,7 @@
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
--- LICENSE file in the root directory of this source tree. An additional grant
--- of patent rights can be found in the PATENTS file in the same directory.
+-- LICENSE file in the root directory of this source tree.
 
 
 {-# LANGUAGE GADTs #-}
@@ -29,6 +28,7 @@ import Duckling.Types
 
 toName :: Dimension a -> Text
 toName RegexMatch = "regex"
+toName CreditCardNumber = "credit-card-number"
 toName Distance = "distance"
 toName Duration = "duration"
 toName Email = "email"
@@ -49,6 +49,7 @@ fromName name = HashMap.lookup name m
   where
     m = HashMap.fromList
       [ ("amount-of-money", This AmountOfMoney)
+      , ("credit-card-number", This CreditCardNumber)
       , ("distance", This Distance)
       , ("duration", This Duration)
       , ("email", This Email)

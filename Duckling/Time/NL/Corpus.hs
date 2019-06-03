@@ -2,8 +2,7 @@
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
--- LICENSE file in the root directory of this source tree. An additional grant
--- of patent rights can be found in the PATENTS file in the same directory.
+-- LICENSE file in the root directory of this source tree.
 
 
 {-# LANGUAGE OverloadedStrings #-}
@@ -11,6 +10,7 @@
 module Duckling.Time.NL.Corpus
   ( corpus
   , defaultCorpus
+  , latentCorpus
   , negativeCorpus
   ) where
 
@@ -38,6 +38,15 @@ defaultCorpus = (context, testOptions, allExamples ++ custom)
                  [ "Sinterklaas"
                  , "Pakjesavond"
                  , "Sinterklaasavond"
+                 ]
+      ]
+
+latentCorpus :: Corpus
+latentCorpus = (context, testOptions {withLatent = True}, xs)
+  where
+    xs = concat
+      [ examples (datetimeOpenInterval Before (2013, 2, 12, 8, 0, 0) Hour)
+                 [ "voor 8"
                  ]
       ]
 
@@ -453,9 +462,6 @@ allExamples = concat
   , examples (datetimeHoliday (2013, 6, 16, 0, 0, 0) Day "Vaderdag")
              [ "vaderdag"
              ]
-  , examples (datetimeHoliday (2017, 04, 27, 0, 0, 0) Day "Koningsdag")
-             [ "Koningsdag 2017"
-             ]
   , examples (datetimeHoliday (2013, 10, 31, 0, 0, 0) Day "Halloween")
              [ "Halloween"
              ]
@@ -675,4 +681,16 @@ allExamples = concat
              [ "17h10"
              , "17u10"
              ]
+  , examples (datetimeHoliday (2018, 4, 27, 0, 0, 0) Day "Koningsdag")
+           [ "Koningsdag 2018"
+           , "koningsdag 2018"
+           , "king's day 2018"
+           , "King's Day 2018"
+           ]
+  , examples (datetimeHoliday (2014, 4, 26, 0, 0, 0) Day "Koningsdag")
+           [ "Koningsdag 2014"
+           , "koningsdag 2014"
+           , "King's Day 2014"
+           , "king's day 2014"
+           ]
   ]

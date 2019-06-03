@@ -2,8 +2,7 @@
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
--- LICENSE file in the root directory of this source tree. An additional grant
--- of patent rights can be found in the PATENTS file in the same directory.
+-- LICENSE file in the root directory of this source tree.
 
 
 {-# LANGUAGE GADTs #-}
@@ -58,15 +57,23 @@ zeroNineteenMap = HashMap.fromList
   , ( "ათი"      , 10 )
   , ( "აათი"      , 10 )
   , ( "თერთმეტი"   , 11 )
+  , ( "თერთმეტ"   , 11 )
   , ( "თორმეტი"   , 12 )
+  , ( "თორმეტ"   , 12 )
   , ( "ცამეტი" , 13 )
+  , ( "ცამეტ" , 13 )
   , ( "თოთხმეტი" , 14 )
+  , ( "თოთხმეტ" , 14 )
   , ( "თხუთმეტი"  , 15 )
-  , ( "თხუთმეტი"  , 15 )
+  , ( "თხუთმეტ"  , 15 )
   , ( "თექვსმეტი"  , 16 )
+  , ( "თექვსმეტ"  , 16 )
   , ( "ჩვიდმეტი", 17 )
+  , ( "ჩვიდმეტ", 17 )
   , ( "თვრამეტი" , 18 )
+  , ( "თვრამეტ" , 18 )
   , ( "ცხრამეტი" , 19 )
+  , ( "ცხრამეტ" , 19 )
   ]
 
 informalMap :: HashMap Text Integer
@@ -83,7 +90,7 @@ ruleToNineteen :: Rule
 ruleToNineteen = Rule
   { name = "integer (0..19)"
   , pattern =
-    [ regex "(წყვილ(ებ)?ი|ცოტა|რამდენიმე|რამოდენიმე|ნოლი?|ნული?|ერთი|ორი?|სამი?|ოთხი?|ხუთი?|ექვსი?|შვიდი?|რვა|თერთმეტი|თორმეტი|ცამეტი|თოთხმეტი|თხუთმეტი|თექვსმეტი|ჩვიდმეტი|თვრამეტი|ცხრამეტი|ცხრა|ა?ათი)"
+    [ regex "(წყვილ(ებ)?ი|ცოტა|რამდენიმე|რამოდენიმე|ნოლი?|ნული?|ერთი|ორი?|სამი?|ოთხი?|ხუთი?|ექვსი?|შვიდი?|რვა|თერთმეტი?|თორმეტი?|ცამეტი?|თოთხმეტი?|თხუთმეტი?|თექვსმეტი?|ჩვიდმეტი?|თვრამეტი?|ცხრამეტი?|ცხრა|ა?ათი)"
     ]
   , prod = \case
       (Token RegexMatch (GroupMatch (match:_)):_) ->

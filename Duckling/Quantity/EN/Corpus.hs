@@ -2,8 +2,7 @@
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
--- LICENSE file in the root directory of this source tree. An additional grant
--- of patent rights can be found in the PATENTS file in the same directory.
+-- LICENSE file in the root directory of this source tree.
 
 
 {-# LANGUAGE OverloadedStrings #-}
@@ -46,6 +45,7 @@ allExamples = concat
              ]
   , examples (simple Cup 3 (Just "sugar"))
              [ "3 Cups of sugar"
+             , "3 Cups of SugAr"
              ]
   , examples (simple Cup 0.75 Nothing)
              [ "3/4 cup"

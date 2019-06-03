@@ -2,13 +2,13 @@
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
--- LICENSE file in the root directory of this source tree. An additional grant
--- of patent rights can be found in the PATENTS file in the same directory.
+-- LICENSE file in the root directory of this source tree.
 
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Time.VI.Corpus
   ( corpus
+  , negativeCorpus
   ) where
 
 import Data.String
@@ -21,13 +21,21 @@ import Duckling.Time.Corpus
 import Duckling.Time.Types hiding (Month, refTime)
 import Duckling.TimeGrain.Types hiding (add)
 
+negativeCorpus :: NegativeCorpus
+negativeCorpus = (context, testOptions, examples)
+  where
+    examples =
+      [ "có ngày chính xác"
+      ]
+
 corpus :: Corpus
 corpus = (context, testOptions, allExamples)
-  where
-    context = testContext
-      { locale = makeLocale VI Nothing
-      , referenceTime = refTime (2017, 2, 2, 3, 55, 0) (-2)
-      }
+
+context :: Context
+context = testContext
+  { locale = makeLocale VI Nothing
+  , referenceTime = refTime (2017, 2, 2, 3, 55, 0) (-2)
+  }
 
 allExamples :: [Example]
 allExamples = concat
@@ -68,7 +76,7 @@ allExamples = concat
   , examples (datetime (2017, 2, 5, 0, 0, 0) Day)
              [ "chủ nhật"
              ]
-  , examples (datetime (2017, 6, 0, 0, 0, 0) Month)
+  , examples (datetime (2017, 6, 1, 0, 0, 0) Month)
              [ "tháng 6"
              , "tháng sáu"
              ]
@@ -93,7 +101,7 @@ allExamples = concat
              , "7/3"
              , "07/03"
              ]
-  , examples (datetime (2017, 10, 0, 0, 0, 0) Month)
+  , examples (datetime (2017, 10, 1, 0, 0, 0) Month)
              [ "tháng 10 năm 2017"
              , "tháng mười năm 2017"
              ]
@@ -110,7 +118,7 @@ allExamples = concat
              [ "thứ năm tuần tới"
              , "thứ 5 tuần sau"
              ]
-  , examples (datetime (2017, 3, 0, 0, 0, 0) Month)
+  , examples (datetime (2017, 3, 1, 0, 0, 0) Month)
              [ "tháng 3 tới"
              ]
   , examples (datetime (2017, 4, 9, 0, 0, 0) Day)
@@ -134,10 +142,10 @@ allExamples = concat
   , examples (datetime (2017, 2, 6, 0, 0, 0) Week)
              [ "tuần sau"
              ]
-  , examples (datetime (2017, 1, 0, 0, 0, 0) Month)
+  , examples (datetime (2017, 1, 1, 0, 0, 0) Month)
              [ "tháng trước"
              ]
-  , examples (datetime (2017, 3, 0, 0, 0, 0) Month)
+  , examples (datetime (2017, 3, 1, 0, 0, 0) Month)
              [ "tháng sau"
              ]
   , examples (datetime (2017, 1, 1, 0, 0, 0) Quarter)
@@ -153,14 +161,14 @@ allExamples = concat
   , examples (datetime (2018, 10, 1, 0, 0, 0) Quarter)
              [ "quý 4 năm 2018"
              ]
-  , examples (datetime (2016, 0, 0, 0, 0, 0) Year)
+  , examples (datetime (2016, 1, 1, 0, 0, 0) Year)
              [ "năm trước"
              , "năm ngoái"
              ]
-  , examples (datetime (2017, 0, 0, 0, 0, 0) Year)
+  , examples (datetime (2017, 1, 1, 0, 0, 0) Year)
              [ "năm nay"
              ]
-  , examples (datetime (2018, 0, 0, 0, 0, 0) Year)
+  , examples (datetime (2018, 1, 1, 0, 0, 0) Year)
              [ "năm sau"
              ]
   , examples (datetime (2017, 1, 1, 0, 0, 0) Quarter)
@@ -179,14 +187,14 @@ allExamples = concat
   , examples (datetime (2018, 10, 1, 0, 0, 0) Quarter)
              [ "quý 4 của năm 2018"
              ]
-  , examples (datetime (2016, 0, 0, 0, 0, 0) Year)
+  , examples (datetime (2016, 1, 1, 0, 0, 0) Year)
              [ "năm ngoái"
              , "năm trước"
              ]
-  , examples (datetime (2017, 0, 0, 0, 0, 0) Year)
+  , examples (datetime (2017, 1, 1, 0, 0, 0) Year)
              [ "năm nay"
              ]
-  , examples (datetime (2018, 0, 0, 0, 0, 0) Year)
+  , examples (datetime (2018, 1, 1, 0, 0, 0) Year)
              [ "năm tiếp theo"
              , "năm kế tiếp"
              , "năm tới"
@@ -316,18 +324,18 @@ allExamples = concat
              [ "3 ngày tới"
              , "3 ngày tiếp theo"
              ]
-  , examples (datetimeInterval ((2016, 12, 0, 0, 0, 0), (2017, 2, 0, 0, 0, 0)) Month)
+  , examples (datetimeInterval ((2016, 12, 1, 0, 0, 0), (2017, 2, 1, 0, 0, 0)) Month)
              [ "2 tháng vừa rồi"
              , "2 tháng qua"
              ]
-  , examples (datetimeInterval ((2017, 3, 0, 0, 0, 0), (2017, 6, 0, 0, 0, 0)) Month)
+  , examples (datetimeInterval ((2017, 3, 1, 0, 0, 0), (2017, 6, 1, 0, 0, 0)) Month)
              [ "3 tháng tới"
              , "ba tháng tiếp theo"
              ]
-  , examples (datetimeInterval ((2015, 0, 0, 0, 0, 0), (2017, 0, 0, 0, 0, 0)) Year)
+  , examples (datetimeInterval ((2015, 1, 1, 0, 0, 0), (2017, 1, 1, 0, 0, 0)) Year)
              [ "2 năm vừa rồi"
              ]
-  , examples (datetimeInterval ((2018, 0, 0, 0, 0, 0), (2021, 0, 0, 0, 0, 0)) Year)
+  , examples (datetimeInterval ((2018, 1, 1, 0, 0, 0), (2021, 1, 1, 0, 0, 0)) Year)
              [ "3 năm tới"
              , "3 năm tiếp theo"
              ]
@@ -367,8 +375,12 @@ allExamples = concat
              [ "thứ hai tới"
              , "thứ 2 tới"
              ]
-  , examples (datetime (2017, 4, 0, 0, 0, 0) Month)
+  , examples (datetime (2017, 4, 1, 0, 0, 0) Month)
              [ "tháng 4"
              , "tháng tư"
+             ]
+  , examples (datetime (2017, 12, 25, 0, 0, 0) Day)
+             [ "giáng sinh"
+             , "ngày giáng sinh"
              ]
   ]

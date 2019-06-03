@@ -2,14 +2,14 @@
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
--- LICENSE file in the root directory of this source tree. An additional grant
--- of patent rights can be found in the PATENTS file in the same directory.
+-- LICENSE file in the root directory of this source tree.
 
 {-# LANGUAGE GADTs #-}
 
 
 module Duckling.Quantity.Helpers
-  ( isSimpleQuantity
+  ( getValue
+  , isSimpleQuantity
   , quantity
   , unitOnly
   , withProduct
@@ -20,22 +20,29 @@ module Duckling.Quantity.Helpers
   , withMax
   ) where
 
+import Data.HashMap.Strict (HashMap)
 import Data.Text (Text)
 import Prelude
+import qualified Data.HashMap.Strict as HashMap
+import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
 import Duckling.Quantity.Types (QuantityData(..))
 import Duckling.Types
 import qualified Duckling.Quantity.Types as TQuantity
 
+getValue :: HashMap Text (Double -> Double) -> Text -> Double -> Double
+getValue opsMap match = HashMap.lookupDefault id (Text.toLower match) opsMap
 
 -- -----------------------------------------------------------------
 -- Patterns
+
 isSimpleQuantity :: Predicate
 isSimpleQuantity (Token Quantity QuantityData {TQuantity.unit = Just _
                                               , TQuantity.value = Just _})
  = True
 isSimpleQuantity _ = False
+
 -- -----------------------------------------------------------------
 -- Production
 

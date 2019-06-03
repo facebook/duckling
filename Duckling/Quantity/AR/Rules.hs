@@ -2,8 +2,7 @@
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
--- LICENSE file in the root directory of this source tree. An additional grant
--- of patent rights can be found in the PATENTS file in the same directory.
+-- LICENSE file in the root directory of this source tree.
 
 
 {-# LANGUAGE GADTs #-}
@@ -98,9 +97,6 @@ opsMap = HashMap.fromList
   , ( "كيلو جرامين", (* 2000))
   ]
 
-getValue :: Text -> Double -> Double
-getValue match = HashMap.lookupDefault id (Text.toLower match) opsMap
-
 ruleNumeralQuantities :: [Rule]
 ruleNumeralQuantities = map go quantities
   where
@@ -112,7 +108,7 @@ ruleNumeralQuantities = map go quantities
         (Token Numeral nd:
          Token RegexMatch (GroupMatch (match:_)):
          _) -> Just . Token Quantity $ quantity u value
-          where value = getValue match $ TNumeral.value nd
+          where value = getValue opsMap match $ TNumeral.value nd
         _ -> Nothing
       }
 
@@ -125,7 +121,7 @@ ruleAQuantity = map go quantities
       , pattern = [ regex regexPattern ]
       , prod = \tokens -> case tokens of
         (Token RegexMatch (GroupMatch (match:_)):
-         _) -> Just . Token Quantity $ quantity u $ getValue match 1
+         _) -> Just . Token Quantity $ quantity u $ getValue opsMap match 1
         _ -> Nothing
       }
 

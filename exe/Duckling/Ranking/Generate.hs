@@ -2,8 +2,7 @@
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
--- LICENSE file in the root directory of this source tree. An additional grant
--- of patent rights can be found in the PATENTS file in the same directory.
+-- LICENSE file in the root directory of this source tree.
 
 
 {-# LANGUAGE NoRebindableSyntax #-}
@@ -51,6 +50,7 @@ import qualified Duckling.Time.PL.Corpus as PLTime
 import qualified Duckling.Time.PT.Corpus as PTTime
 import qualified Duckling.Time.RO.Corpus as ROTime
 import qualified Duckling.Time.SV.Corpus as SVTime
+import qualified Duckling.Time.UK.Corpus as UKTime
 import qualified Duckling.Time.VI.Corpus as VITime
 import qualified Duckling.Time.ZH.Corpus as ZHTime
 import qualified Duckling.Time.ZH.CN.Corpus as ZH_CNTime
@@ -187,12 +187,16 @@ getCorpusForLang HE = HETime.corpus
 getCorpusForLang HU = HUTime.corpus
 getCorpusForLang HI = (testContext, testOptions, [])
 getCorpusForLang ID = (testContext, testOptions, [])
+getCorpusForLang IS = (testContext, testOptions, [])
 getCorpusForLang IT = ITTime.corpus
 getCorpusForLang JA = (testContext, testOptions, [])
 getCorpusForLang KA = (testContext, testOptions, [])
 getCorpusForLang KM = (testContext, testOptions, [])
+getCorpusForLang KN = (testContext, testOptions, [])
 getCorpusForLang KO = KOTime.corpus
 getCorpusForLang LO = (testContext, testOptions, [])
+getCorpusForLang ML = (testContext, testOptions, [])
+getCorpusForLang MN = (testContext, testOptions, [])
 getCorpusForLang MY = (testContext, testOptions, [])
 getCorpusForLang NB = NBTime.corpus
 getCorpusForLang NE = (testContext, testOptions, [])
@@ -202,9 +206,10 @@ getCorpusForLang PT = PTTime.corpus
 getCorpusForLang RO = ROTime.corpus
 getCorpusForLang RU = (testContext, testOptions, [])
 getCorpusForLang SV = SVTime.corpus
+getCorpusForLang SW = (testContext, testOptions, [])
 getCorpusForLang TA = (testContext, testOptions, [])
 getCorpusForLang TR = (testContext, testOptions, [])
-getCorpusForLang UK = (testContext, testOptions, [])
+getCorpusForLang UK = UKTime.corpus
 getCorpusForLang VI = VITime.corpus
 getCorpusForLang ZH = ZHTime.corpus
 

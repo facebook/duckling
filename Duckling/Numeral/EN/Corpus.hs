@@ -2,8 +2,7 @@
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
--- LICENSE file in the root directory of this source tree. An additional grant
--- of patent rights can be found in the PATENTS file in the same directory.
+-- LICENSE file in the root directory of this source tree.
 
 
 {-# LANGUAGE OverloadedStrings #-}
@@ -115,6 +114,7 @@ allExamples = concat
              , "3000000"
              , "3,000,000"
              , "3 million"
+             , "30 lakh"
              ]
   , examples (NumeralValue 1.2e6)
              [ "1,200,000"
@@ -122,6 +122,7 @@ allExamples = concat
              , "1.2M"
              , "1200k"
              , ".0012G"
+             , "12 lakhs"
              ]
   , examples (NumeralValue 5000)
              [ "5 thousand"
@@ -156,6 +157,7 @@ allExamples = concat
              ]
   , examples (NumeralValue 31256721)
              [ "thirty-one million two hundred fifty-six thousand seven hundred twenty-one"
+             , "three crore twelve lakh fifty-six thousand seven hundred twenty-one"
              ]
   , examples (NumeralValue 2400)
              [ "two hundred dozens"
@@ -167,5 +169,6 @@ allExamples = concat
   , examples (NumeralValue 3000000000)
              [ "three billions"
              , "three thousand millions"
+             , "three hundred crores"
              ]
   ]

@@ -2,8 +2,7 @@
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
--- LICENSE file in the root directory of this source tree. An additional grant
--- of patent rights can be found in the PATENTS file in the same directory.
+-- LICENSE file in the root directory of this source tree.
 
 
 {-# LANGUAGE GADTs #-}
@@ -14,8 +13,9 @@ module Duckling.Time.Helpers
   ( -- Patterns
     hasNoDirection, isADayOfWeek, isAMonth, isAnHourOfDay, isAPartOfDay
   , isATimeOfDay, isDurationGreaterThan, isDOMInteger, isDOMOrdinal, isDOMValue
-  , isGrain, isGrainFinerThan, isGrainOfTime, isIntegerBetween, isNotLatent
-  , isOrdinalBetween, isMidnightOrNoon, isOkWithThisNext, sameGrain, today
+  , isGrain, isGrainFinerThan, isGrainCoarserThan, isGrainOfTime
+  , isIntegerBetween, isNotLatent , isOrdinalBetween, isMidnightOrNoon
+  , isOkWithThisNext, sameGrain, hasTimezone, hasNoTimezone, today
     -- Production
   , cycleLastOf, cycleN, cycleNth, cycleNthAfter, dayOfMonth, dayOfWeek
   , durationAfter, durationAgo, durationBefore, mkOkForThisNext, form, hour
@@ -25,8 +25,9 @@ module Duckling.Time.Helpers
   , predNth, predNthAfter, predNthClosest, season, second, timeOfDayAMPM
   , weekday, weekend, workweek, withDirection, year, yearMonthDay, tt, durationIntervalAgo
   , inDurationInterval, intersectWithReplacement, yearADBC, yearMonth
+  , predEveryNDaysFrom
     -- Other
-  , getIntValue, timeComputed
+  , getIntValue, timeComputed, toTimeObjectM
   -- Rule constructors
   , mkRuleInstants, mkRuleDaysOfWeek, mkRuleMonths, mkRuleMonthsWithLatent
   , mkRuleSeasons, mkRuleHolidays, mkRuleHolidays'
@@ -274,12 +275,23 @@ isGrainFinerThan :: TG.Grain -> Predicate
 isGrainFinerThan value (Token Time TimeData{TTime.timeGrain = g}) = g < value
 isGrainFinerThan _ _ = False
 
+isGrainCoarserThan :: TG.Grain -> Predicate
+isGrainCoarserThan value (Token Time TimeData{TTime.timeGrain = g}) = g > value
+isGrainCoarserThan _ _ = False
+
 isGrainOfTime :: TG.Grain -> Predicate
 isGrainOfTime value (Token Time TimeData{TTime.timeGrain = g}) = g == value
 isGrainOfTime _ _ = False
 
 sameGrain :: TimeData -> TimeData -> Bool
 sameGrain TimeData{TTime.timeGrain = g} TimeData{TTime.timeGrain = h} = g == h
+
+hasTimezone :: Predicate
+hasTimezone (Token Time TimeData{TTime.hasTimezone = tz}) = tz
+hasTimezone _ = False
+
+hasNoTimezone :: Predicate
+hasNoTimezone = not . hasTimezone
 
 isADayOfWeek :: Predicate
 isADayOfWeek (Token Time td) = case TTime.form td of
@@ -365,9 +377,9 @@ intersect td1 td2 =
 
 intersectWithReplacement :: TimeData -> TimeData -> TimeData -> Maybe TimeData
 intersectWithReplacement
-  (TimeData pred1 _ g1 _ _ _ _ h1)
-  (TimeData pred2 _ g2 _ _ _ _ h2)
-  (TimeData pred3 _ g3 _ _ _ _ h3)
+  (TimeData pred1 _ g1 _ _ _ _ h1 _)
+  (TimeData pred2 _ g2 _ _ _ _ h2 _)
+  (TimeData pred3 _ g3 _ _ _ _ h3 _)
   | g1 == g2 && g2 == g3 = Just $ TTime.timedata'
     { TTime.timePred = timeComposeWithReplacement pred1 pred2 pred3
     , TTime.timeGrain = g1
@@ -377,7 +389,7 @@ intersectWithReplacement
   | otherwise = Nothing
 
 intersect' :: (TimeData, TimeData) -> TimeData
-intersect' (TimeData pred1 _ g1 _ _ d1 _ h1, TimeData pred2 _ g2 _ _ d2 _ h2)
+intersect' (TimeData pred1 _ g1 _ _ d1 _ h1 _, TimeData pred2 _ g2 _ _ d2 _ h2 _)
   | g1 < g2 = TTime.timedata'
     { TTime.timePred = timeCompose pred1 pred2
     , TTime.timeGrain = g1
@@ -526,8 +538,32 @@ predNthClosest n TimeData
     , TTime.holiday = h
     }
 
+-- This function is used for periodic events, for example,
+-- "every 365 days" or "every 8 years".
+-- `given` is a known example of the event.
+-- Do not export
+predEveryFrom :: TG.Grain -> Int -> TTime.TimeObject -> TimeData
+predEveryFrom periodGrain period given = TTime.timedata'
+    { TTime.timePred = TTime.periodicPredicate periodGrain period given
+    , TTime.timeGrain = TTime.grain given
+    }
+
+predEveryNDaysFrom :: Int -> (Integer, Int, Int) -> Maybe TimeData
+predEveryNDaysFrom period given = do
+  date <- toTimeObjectM given
+  return $ predEveryFrom TG.Day period date
+
+toTimeObjectM :: (Integer, Int, Int) -> Maybe TTime.TimeObject
+toTimeObjectM (year, month, day) = do
+  day <- Time.fromGregorianValid year month day
+  return TTime.TimeObject
+    { TTime.start = Time.UTCTime day 0
+    , TTime.grain = TG.Day
+    , TTime.end = Nothing
+    }
+
 interval' :: TTime.TimeIntervalType -> (TimeData, TimeData) -> TimeData
-interval' intervalType (TimeData p1 _ g1 _ _ _ _ _, TimeData p2 _ g2 _ _ _ _ _) =
+interval' intervalType (TimeData p1 _ g1 _ _ _ _ _ _, TimeData p2 _ g2 _ _ _ _ _ _) =
   TTime.timedata'
     { TTime.timePred = mkTimeIntervalsPredicate intervalType' p1 p2
     , TTime.timeGrain = min g1 g2
@@ -580,7 +616,7 @@ inDurationInterval dd = interval' TTime.Open
 inTimezone :: Text -> TimeData -> Maybe TimeData
 inTimezone input td@TimeData {TTime.timePred = p} = do
   tz <- parseTimezone input
-  Just $ td {TTime.timePred = shiftTimezone (Series.TimeZoneSeries tz []) p}
+  Just $ td {TTime.timePred = shiftTimezone (Series.TimeZoneSeries tz []) p, TTime.hasTimezone = True}
 
 withHoliday :: Text -> TimeData -> TimeData
 withHoliday n td = td {TTime.holiday = Just n}

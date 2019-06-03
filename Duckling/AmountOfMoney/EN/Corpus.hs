@@ -2,8 +2,7 @@
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
--- LICENSE file in the root directory of this source tree. An additional grant
--- of patent rights can be found in the PATENTS file in the same directory.
+-- LICENSE file in the root directory of this source tree.
 
 
 {-# LANGUAGE OverloadedStrings #-}
@@ -11,12 +10,14 @@
 module Duckling.AmountOfMoney.EN.Corpus
   ( corpus
   , negativeCorpus
+  , latentCorpus
   ) where
 
 import Data.String
 import Prelude
 
 import Duckling.AmountOfMoney.Types
+import Duckling.Resolve (Options(..))
 import Duckling.Testing.Types
 
 negativeCorpus :: NegativeCorpus
@@ -28,6 +29,21 @@ negativeCorpus = (testContext, testOptions, examples)
 
 corpus :: Corpus
 corpus = (testContext, testOptions, allExamples)
+
+latentCorpus :: Corpus
+latentCorpus = (testContext, testOptions {withLatent = True}, xs)
+  where
+    xs = concat
+      [ examples (simple Unnamed 5)
+                 [ "five"
+                 , "5"
+                 , "about 5"
+                 ]
+      , examples (simple Unnamed 7.2)
+                 [ "7.2"
+                 , "7.20000"
+                 ]
+      ]
 
 allExamples :: [Example]
 allExamples = concat
@@ -59,6 +75,7 @@ allExamples = concat
              [ "USD3.14"
              , "3.14US$"
              , "US$ 3.14"
+             , "US$3 and fourteen"
              ]
   , examples (simple EUR 20)
              [ "20\x20ac"
@@ -98,6 +115,23 @@ allExamples = concat
              [ "GBP3.01"
              , "GBP 3.01"
              , "3 GBP 1 pence"
+             , "3 GBP and one"
+             ]
+  , examples (simple CAD 3.03)
+             [ "CAD3.03"
+             , "CAD 3.03"
+             , "3 CAD 3 cents"
+             ]
+  , examples (simple CHF 3.04)
+             [ "CHF3.04"
+             , "CHF 3.04"
+             , "3 CHF 4 cents"
+             ]
+  , examples (simple CNY 3)
+             [ "CNY3"
+             , "CNY 3"
+             , "3 CNY"
+             , "3 yuan"
              ]
   , examples (simple Unnamed 42)
              [ "42 bucks"
@@ -193,4 +227,25 @@ allExamples = concat
              , "over 1.42 dollars"
              , "above a dollar and 42 cents"
              ]
+   , examples (simple INR 5e5)
+              [ "5 lakh rupees"
+              , "five lakhs rupees"
+              ]
+   , examples (between INR (7, 9e5))
+              [ "7-9 lakh rupees"
+              ]
+   , examples (simple INR 4e7)
+              [ "four crore rupees"
+              , "4 crores rupees"
+              ]
+   , examples (simple MNT 10)
+              [ "ten tugriks"
+              , "10 Tugrik"
+              , "10MNT"
+              ]
+   , examples (simple USD 4.7e9)
+              [ "US$4.7 billion"
+              , "a US$4.7 billion"
+              , "a US$ 4.7 billion"
+              ]
   ]

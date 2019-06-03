@@ -2,86 +2,101 @@
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
--- LICENSE file in the root directory of this source tree. An additional grant
--- of patent rights can be found in the PATENTS file in the same directory.
+-- LICENSE file in the root directory of this source tree.
 
 
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Ordinal.PT.Rules
-  ( rules ) where
+  ( rules
+  ) where
 
-import qualified Data.Text as Text
-import Prelude
+import Data.HashMap.Strict (HashMap)
 import Data.String
+import Data.Text (Text)
+import Prelude
+import qualified Data.HashMap.Strict as HashMap
+import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
 import Duckling.Ordinal.Helpers
-import Duckling.Regex.Types
+import Duckling.Ordinal.Types (OrdinalData (..))
+import Duckling.Regex.Types (GroupMatch (..))
 import Duckling.Types
+import qualified Duckling.Ordinal.Types as TOrdinal
 
-ruleOrdinalsPrimeiro :: Rule
-ruleOrdinalsPrimeiro = Rule
-  { name = "ordinals (primeiro..10)"
+ordinalsMap :: HashMap Text Int
+ordinalsMap = HashMap.fromList
+  [ ( "primeir", 1 )
+  , ( "segund", 2 )
+  , ( "terceir", 3 )
+  , ( "quart", 4 )
+  , ( "quint", 5 )
+  , ( "sext", 6 )
+  , ( "setim", 7 )
+  , ( "sétim", 7 )
+  , ( "oitav", 8 )
+  , ( "non", 9 )
+  , ( "decim", 10 )
+  , ( "décim", 10 )
+  ]
+
+ruleOrdinals :: Rule
+ruleOrdinals = Rule
+  { name = "ordinals (1..10)"
   , pattern =
-    [ regex "((primeir|segund|quart|quint|sext|s(e|é)tim|oitav|non|d(e|é)cim)(os?|as?))"
+    [ regex "(primeir|segund|terceir|quart|quint|sext|s[ée]tim|oitav|non|d[ée]cim)[ao]s?"
     ]
-  , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
-        "primeira" -> Just $ ordinal 1
-        "primeiros" -> Just $ ordinal 1
-        "primeiras" -> Just $ ordinal 1
-        "primeiro" -> Just $ ordinal 1
-        "segundo" -> Just $ ordinal 2
-        "segunda" -> Just $ ordinal 2
-        "segundas" -> Just $ ordinal 2
-        "segundos" -> Just $ ordinal 2
-        "terceiros" -> Just $ ordinal 3
-        "terceiro" -> Just $ ordinal 3
-        "terceiras" -> Just $ ordinal 3
-        "terceira" -> Just $ ordinal 3
-        "quartos" -> Just $ ordinal 4
-        "quarto" -> Just $ ordinal 4
-        "quarta" -> Just $ ordinal 4
-        "quartas" -> Just $ ordinal 4
-        "quinto" -> Just $ ordinal 5
-        "quinta" -> Just $ ordinal 5
-        "quintas" -> Just $ ordinal 5
-        "quintos" -> Just $ ordinal 5
-        "sextos" -> Just $ ordinal 6
-        "sexto" -> Just $ ordinal 6
-        "sexta" -> Just $ ordinal 6
-        "sextas" -> Just $ ordinal 6
-        "setimas" -> Just $ ordinal 7
-        "sétima" -> Just $ ordinal 7
-        "setimo" -> Just $ ordinal 7
-        "setimos" -> Just $ ordinal 7
-        "setima" -> Just $ ordinal 7
-        "sétimos" -> Just $ ordinal 7
-        "sétimo" -> Just $ ordinal 7
-        "sétimas" -> Just $ ordinal 7
-        "oitavas" -> Just $ ordinal 8
-        "oitava" -> Just $ ordinal 8
-        "oitavo" -> Just $ ordinal 8
-        "oitavos" -> Just $ ordinal 8
-        "nonos" -> Just $ ordinal 9
-        "nona" -> Just $ ordinal 9
-        "nono" -> Just $ ordinal 9
-        "nonas" -> Just $ ordinal 9
-        "décimos" -> Just $ ordinal 10
-        "decimo" -> Just $ ordinal 10
-        "decimos" -> Just $ ordinal 10
-        "décimo" -> Just $ ordinal 10
-        "decimas" -> Just $ ordinal 10
-        "décima" -> Just $ ordinal 10
-        "decima" -> Just $ ordinal 10
-        "décimas" -> Just $ ordinal 10
-        _ -> Nothing
+  , prod = \case
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        ordinal <$> HashMap.lookup (Text.toLower match) ordinalsMap
+      _ -> Nothing
+  }
+
+cardinalsMap :: HashMap Text Int
+cardinalsMap = HashMap.fromList
+  [ ( "vi", 20 )
+  , ( "tri", 30 )
+  , ( "quadra", 40 )
+  , ( "qüinqua", 50 )
+  , ( "quinqua", 50 )
+  , ( "sexa", 60 )
+  , ( "septua", 70 )
+  , ( "octo", 80 )
+  , ( "nona", 90 )
+  ]
+
+ruleCardinals :: Rule
+ruleCardinals = Rule
+  { name = "cardinals (20 .. 90)"
+  , pattern =
+    [ regex "(vi|tri|quadra|q[üu]inqua|sexa|septua|octo|nona)g[ée]sim[ao]s?"
+    ]
+  , prod = \case
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        ordinal <$> HashMap.lookup (Text.toLower match) cardinalsMap
+      _ -> Nothing
+  }
+
+ruleCompositeOrdinals :: Rule
+ruleCompositeOrdinals = Rule
+  { name = "ordinals (11..19)"
+  , pattern =
+    [ oneOf [10, 20 .. 90]
+    , oneOf [1..9]
+    ]
+  , prod = \case
+      (Token Ordinal OrdinalData{TOrdinal.value = t}:
+       Token Ordinal OrdinalData{TOrdinal.value = u}:
+       _) -> Just $ ordinal $ t + u
       _ -> Nothing
   }
 
 rules :: [Rule]
 rules =
-  [ ruleOrdinalsPrimeiro
+  [ ruleOrdinals
+  , ruleCardinals
+  , ruleCompositeOrdinals
   ]

@@ -2,8 +2,7 @@
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
--- LICENSE file in the root directory of this source tree. An additional grant
--- of patent rights can be found in the PATENTS file in the same directory.
+-- LICENSE file in the root directory of this source tree.
 
 
 {-# LANGUAGE OverloadedStrings #-}
@@ -39,7 +38,7 @@ allExamples = concat
              [ "USD1,23"
              ]
   , examples (simple Dollar 2)
-             [ "2 dola"
+             [ "2 dolar"
              , "dua dolar"
              ]
   , examples (simple EUR 20)
@@ -79,5 +78,49 @@ allExamples = concat
              [ "10 yen"
              , "10¥"
              , "10 ¥."
+             ]
+  , examples (between Dollar(10, 20))
+             [ "antara 10 sampai 20 dolar"
+             , "dari 10 dolar sampai 20 dolar"
+             , "sekitar 10 sampai 20 dolar"
+             , "antara 10 hingga 20 dolar"
+             , "sekitar 10 dolar hingga 20 dolar"
+             , "kira-kira 10-20 dolar"
+             , "10-20 dolar"
+             ]
+  , examples (between IDR(1000, 10000))
+             [ "antara Rp1000 sampai Rp10000"
+             , "dari 1000 Rupiah hingga 10000 Rupiah"
+             , "sekitar 1000 sampai 10000 Rupiah"
+             , "1000-10000 Rupiah"
+             , "kira-kira Rp1000 sampai Rp10000"
+             , "dari Rp1.000 sampai Rp10.000"
+             , "antara 1.000 hingga 10.000 Rupiah"
+             , "kira-kira 1.000-10.000 Rupiah"
+             , "sekitar 1.000 hingga 10.000 Rupiah"
+             ]
+  , examples (under EUR 7)
+             [ "kurang dari 7 euro"
+             , "di bawah EUR 7"
+             , "tidak sampai 7 euro"
+             , "lebih murah dari EUR 7"
+             ]
+  , examples (under IDR 500)
+             [ "kurang dari 500 Rupiah"
+             , "tidak sampai Rp500"
+             , "di bawah Rp 500"
+             , "lebih murah dari 500 rupiah"
+             ]
+  , examples (above USD 1.42)
+             [ "di atas USD1,42"
+             , "lebih dari USD1,42"
+             , "melebihi USD1,42"
+             , "melewati USD1,42"
+             ]
+  , examples (above IDR 33000)
+             [ "di atas 33.000 Rupiah"
+             , "lebih dari Rp33000"
+             , "melebihi Rp33.000"
+             , "melewati 33000 rupiah"
              ]
   ]

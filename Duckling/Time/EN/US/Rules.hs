@@ -2,18 +2,14 @@
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
--- LICENSE file in the root directory of this source tree. An additional grant
--- of patent rights can be found in the PATENTS file in the same directory.
+-- LICENSE file in the root directory of this source tree.
 
 
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE NoRebindableSyntax #-}
 {-# LANGUAGE OverloadedStrings #-}
 
-module Duckling.Time.EN.US.Rules
-  ( rules
-  , rulesBackwardCompatible
-  ) where
+module Duckling.Time.EN.US.Rules where
 
 import Data.Maybe
 import Prelude

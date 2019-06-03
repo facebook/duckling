@@ -2,8 +2,7 @@
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
--- LICENSE file in the root directory of this source tree. An additional grant
--- of patent rights can be found in the PATENTS file in the same directory.
+-- LICENSE file in the root directory of this source tree.
 
 
 {-# LANGUAGE OverloadedStrings #-}
@@ -47,6 +46,7 @@ tests :: TestTree
 tests = testGroup "EN Tests"
   [ makeCorpusTest [This Time] defaultCorpus
   , makeNegativeCorpusTest [This Time] negativeCorpus
+  , makeCorpusTest [This Time] diffCorpus
   , exactSecondTests
   , valuesTest
   , intersectTests
@@ -177,4 +177,8 @@ rangeTests = testCase "Range Test" $
          , ("table Wednesday for 30 people", Range 6 15)
            -- do not parse "for 30" as year intersect
          , ("house 1 on december 2013", Range 11 24) -- ruleAbsorbOnDay
+         , ("at 6pm GMT PDT", Range 0 10) -- ruleTimezone
+         , ("at 6pm (PDT) GMT", Range 0 12) -- ruleTimezoneBracket
+         , ("6pm GMT - 8pm GMT PDT", Range 0 17)
+           -- ruleTimezone will not match because TimeData hasTimezone.
          ]

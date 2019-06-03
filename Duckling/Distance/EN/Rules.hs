@@ -2,8 +2,7 @@
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
--- LICENSE file in the root directory of this source tree. An additional grant
--- of patent rights can be found in the PATENTS file in the same directory.
+-- LICENSE file in the root directory of this source tree.
 
 
 {-# LANGUAGE GADTs #-}
@@ -24,54 +23,23 @@ import Duckling.Distance.Types (DistanceData(..))
 import Duckling.Numeral.Helpers
 import Duckling.Numeral.Types (NumeralData (..))
 import Duckling.Types
-import qualified Duckling.Distance.Types as TDistance
+import qualified Duckling.Distance.Types as TDist
 import qualified Duckling.Numeral.Types as TNumeral
 
-ruleDistanceFeetInch :: Rule
-ruleDistanceFeetInch = Rule
-  { name = "<distance|feet> <distance|inch>"
-  , pattern =
-    [ Predicate $ isDistanceOfUnit TDistance.Foot
-    , Predicate $ isDistanceOfUnit TDistance.Inch
-    ]
-  , prod = \case
-      (Token Distance DistanceData {TDistance.value = Just feet}:
-       Token Distance DistanceData {TDistance.value = Just inches}:
-       _) -> Just . Token Distance . withUnit TDistance.Inch . distance $
-        feet * 12 + inches
-      _ -> Nothing
-  }
 
-ruleDistanceFeetAndInch :: Rule
-ruleDistanceFeetAndInch = Rule
-  { name = "<distance|feet> and <distance|inch>"
-  , pattern =
-    [ Predicate $ isDistanceOfUnit TDistance.Foot
-    , regex "and"
-    , Predicate $ isDistanceOfUnit TDistance.Inch
-    ]
-  , prod = \case
-      (Token Distance DistanceData {TDistance.value = Just feet}:
-       _:
-       Token Distance DistanceData {TDistance.value = Just inches}:
-       _) -> Just . Token Distance . withUnit TDistance.Inch . distance $
-        feet * 12 + inches
-      _ -> Nothing
-  }
-
-distances :: [(Text, String, TDistance.Unit)]
+distances :: [(Text, String, TDist.Unit)]
 distances = [ -- Imperial
-              ("miles", "mi(le(s)?)?", TDistance.Mile)
-            , ("yard", "y(ar)?ds?", TDistance.Yard)
-            , ("feet", "('|f(oo|ee)?ts?)", TDistance.Foot)
-            , ("inch", "(\"|''|in(ch(es)?)?)", TDistance.Inch)
+              ("miles", "mi(le(s)?)?", TDist.Mile)
+            , ("yard", "y(ar)?ds?", TDist.Yard)
+            , ("feet", "('|f(oo|ee)?ts?)", TDist.Foot)
+            , ("inch", "(\"|''|in(ch(es)?)?)", TDist.Inch)
               -- Metric
-            , ("km", "k(ilo)?m?(et(er|re))?s?", TDistance.Kilometre)
-            , ("meters", "met(er|re)s?", TDistance.Metre)
-            , ("centimeters", "cm|centimet(er|re)s?", TDistance.Centimetre)
-            , ("millimeters", "mm|millimet(er|re)s?", TDistance.Millimetre)
+            , ("km", "k(ilo)?m?(et(er|re))?s?", TDist.Kilometre)
+            , ("meters", "met(er|re)s?", TDist.Metre)
+            , ("centimeters", "cm|centimet(er|re)s?", TDist.Centimetre)
+            , ("millimeters", "mm|millimet(er|re)s?", TDist.Millimetre)
               -- Ambiguous
-            , ("m (miles or meters)", "m", TDistance.M)
+            , ("m (miles or meters)", "m", TDist.M)
             ]
 
 rulePrecision :: Rule
@@ -89,7 +57,7 @@ rulePrecision = Rule
 ruleDistances :: [Rule]
 ruleDistances = map go distances
   where
-    go :: (Text, String, TDistance.Unit) -> Rule
+    go :: (Text, String, TDist.Unit) -> Rule
     go (name, regexPattern, u) = Rule
       { name = name
       , pattern = [ dimension Distance, regex regexPattern ]
@@ -111,7 +79,7 @@ ruleIntervalBetweenNumeral = Rule
       (_:
        Token Numeral NumeralData{TNumeral.value = from}:
        _:
-       Token Distance DistanceData{TDistance.value = Just to, TDistance.unit = Just u}:
+       Token Distance DistanceData{TDist.value=Just to, TDist.unit=Just u}:
        _) | from < to ->
         Just . Token Distance . withInterval (from, to) $ unitOnly u
       _ -> Nothing
@@ -128,9 +96,9 @@ ruleIntervalBetween = Rule
     ]
   , prod = \case
       (_:
-       Token Distance DistanceData{TDistance.value = Just from, TDistance.unit = Just u1}:
+       Token Distance DistanceData{TDist.value=Just from, TDist.unit=Just u1}:
        _:
-       Token Distance DistanceData{TDistance.value = Just to, TDistance.unit = Just u2}:
+       Token Distance DistanceData{TDist.value=Just to, TDist.unit=Just u2}:
        _) | from < to && u1 == u2 ->
         Just . Token Distance . withInterval (from, to) $ unitOnly u1
       _ -> Nothing
@@ -147,7 +115,7 @@ ruleIntervalNumeralDash = Rule
   , prod = \case
       (Token Numeral NumeralData{TNumeral.value = from}:
        _:
-       Token Distance DistanceData{TDistance.value = Just to, TDistance.unit = Just u}:
+       Token Distance DistanceData{TDist.value=Just to, TDist.unit=Just u}:
        _) | from < to ->
          Just . Token Distance . withInterval (from, to) $ unitOnly u
       _ -> Nothing
@@ -162,9 +130,9 @@ ruleIntervalDash = Rule
     , Predicate isSimpleDistance
     ]
   , prod = \case
-      (Token Distance DistanceData{TDistance.value = Just from, TDistance.unit = Just u1}:
+      (Token Distance DistanceData{TDist.value=Just from, TDist.unit=Just u1}:
        _:
-       Token Distance DistanceData{TDistance.value = Just to, TDistance.unit = Just u2}:
+       Token Distance DistanceData{TDist.value=Just to, TDist.unit=Just u2}:
        _) | from < to && u1 == u2 ->
         Just . Token Distance . withInterval (from, to) $ unitOnly u1
       _ -> Nothing
@@ -179,7 +147,7 @@ ruleIntervalMax = Rule
     ]
   , prod = \case
       (_:
-       Token Distance DistanceData{TDistance.value = Just to, TDistance.unit = Just u}:
+       Token Distance DistanceData{TDist.value=Just to, TDist.unit=Just u}:
        _) -> Just . Token Distance . withMax to $ unitOnly u
       _ -> Nothing
   }
@@ -193,20 +161,53 @@ ruleIntervalMin = Rule
     ]
   , prod = \case
       (_:
-       Token Distance DistanceData{TDistance.value = Just to, TDistance.unit = Just u}:
+       Token Distance DistanceData{TDist.value=Just to, TDist.unit=Just u}:
        _) -> Just . Token Distance . withMin to $ unitOnly u
+      _ -> Nothing
+  }
+
+-- | NOTE: Oxford comma is not supported.
+ruleCompositeDistanceCommasAnd :: Rule
+ruleCompositeDistanceCommasAnd = Rule
+  { name = "composite <distance> (with ,/and)"
+  , pattern =
+    [ Predicate isSimpleDistance
+    , regex ",|and"
+    , Predicate isSimpleDistance
+    ]
+  , prod = \case
+      (Token Distance DistanceData{TDist.value=Just v1, TDist.unit=Just u1}:
+       _:
+       Token Distance DistanceData{TDist.value=Just v2, TDist.unit=Just u2}:
+       _) | u1 /= u2 && v1 > 0 && v2 > 0 -> Token Distance <$>
+                                              distanceSum v1 u1 v2 u2
+      _ -> Nothing
+  }
+
+ruleCompositeDistance :: Rule
+ruleCompositeDistance = Rule
+  { name = "composite <distance>"
+  , pattern =
+    [ Predicate isSimpleDistance
+    , Predicate isSimpleDistance
+    ]
+  , prod = \case
+      (Token Distance DistanceData{TDist.value=Just v1, TDist.unit=Just u1}:
+       Token Distance DistanceData{TDist.value=Just v2, TDist.unit=Just u2}:
+       _) | u1 /= u2 && v1 > 0 && v2 > 0 -> Token Distance <$>
+                                              distanceSum v1 u1 v2 u2
       _ -> Nothing
   }
 
 rules :: [Rule]
 rules =
-  [ ruleDistanceFeetInch
-  , ruleDistanceFeetAndInch
-  , ruleIntervalBetweenNumeral
+  [ ruleIntervalBetweenNumeral
   , ruleIntervalBetween
   , ruleIntervalMax
   , ruleIntervalMin
   , ruleIntervalNumeralDash
   , ruleIntervalDash
-  , rulePrecision]
-  ++ ruleDistances
+  , rulePrecision
+  , ruleCompositeDistanceCommasAnd
+  , ruleCompositeDistance
+  ] ++ ruleDistances

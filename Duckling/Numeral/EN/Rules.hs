@@ -2,8 +2,7 @@
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
--- LICENSE file in the root directory of this source tree. An additional grant
--- of patent rights can be found in the PATENTS file in the same directory.
+-- LICENSE file in the root directory of this source tree.
 
 
 {-# LANGUAGE GADTs #-}
@@ -130,16 +129,17 @@ ruleTens = Rule
 rulePowersOfTen :: Rule
 rulePowersOfTen = Rule
   { name = "powers of tens"
-  , pattern =
-    [ regex "(hundred|thousand|million|billion)s?"
-    ]
+  , pattern = [regex "(hundred|thousand|lakh|million|crore|billion)s?"]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
-        "hundred"  -> double 1e2 >>= withGrain 2 >>= withMultipliable
-        "thousand" -> double 1e3 >>= withGrain 3 >>= withMultipliable
-        "million"  -> double 1e6 >>= withGrain 6 >>= withMultipliable
-        "billion"  -> double 1e9 >>= withGrain 9 >>= withMultipliable
-        _          -> Nothing
+      (Token RegexMatch (GroupMatch (match : _)) : _) ->
+        case Text.toLower match of
+          "hundred" -> double 1e2 >>= withGrain 2 >>= withMultipliable
+          "thousand" -> double 1e3 >>= withGrain 3 >>= withMultipliable
+          "lakh" -> double 1e5 >>= withGrain 5 >>= withMultipliable
+          "million" -> double 1e6 >>= withGrain 6 >>= withMultipliable
+          "crore" -> double 1e7 >>= withGrain 7 >>= withMultipliable
+          "billion" -> double 1e9 >>= withGrain 9 >>= withMultipliable
+          _ -> Nothing
       _ -> Nothing
   }
 

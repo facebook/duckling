@@ -2,8 +2,7 @@
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
--- LICENSE file in the root directory of this source tree. An additional grant
--- of patent rights can be found in the PATENTS file in the same directory.
+-- LICENSE file in the root directory of this source tree.
 
 
 {-# LANGUAGE OverloadedStrings #-}
@@ -328,5 +327,28 @@ allExamples = concat
              [ "اغسطس 27 الى 29"
              , "من 27-29 من الشهر الثامن"
              ]
-
+  , examples (datetimeHoliday (2020, 12, 25, 0, 0, 0) Day "عيد الميلاد")
+             [ "عيد الميلاد 2020"
+             ]
+  , examples (datetimeHoliday (2013, 10, 15, 0, 0, 0) Day "عيد الأضحى")
+             [ "عيد الأضحى"
+             , "عيد الأضحى 2013"
+             ]
+  , examples (datetimeHoliday (2013, 8, 8, 0, 0, 0) Day "عيد الفطر")
+             [ "عيد الفطر"
+             , "عيد الفطر 2013"
+             ]
+  , examples (datetimeHoliday (2013, 3, 31, 0, 0, 0) Day "عيد الفصح")
+             [ "عيد الفصح"
+             , "عيد الفصح 2013"
+             ]
+  , examples (datetimeHoliday (2013, 11, 4, 0, 0, 0) Day "رأس السنة الهجرية")
+             [ "رأس السنة الهجرية"
+             ]
+  , examples (datetimeHoliday (2019, 8, 31, 0, 0, 0) Day "رأس السنة الهجرية")
+             [ "رأس السنة الهجرية 2019"
+             ]
+  , examples (datetimeIntervalHoliday ((2019, 5, 6, 0, 0, 0), (2019, 6, 4, 0, 0, 0)) Day "رمضان")
+             [ "رمضان 2019"
+             ]
   ]

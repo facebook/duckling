@@ -2,8 +2,7 @@
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
--- LICENSE file in the root directory of this source tree. An additional grant
--- of patent rights can be found in the PATENTS file in the same directory.
+-- LICENSE file in the root directory of this source tree.
 
 
 {-# LANGUAGE GADTs #-}
@@ -397,7 +396,7 @@ ruleToday :: Rule
 ruleToday = Rule
   { name = "today"
   , pattern =
-    [ regex "dzisiejszy|dzisiaj|dziś|dzis|w ten dzień|w ten dzien|w obecny dzień|w obecny dzien|obecnego dnia"
+    [ regex "dzisiejszy|dzisiaj|dzi[śs]|w ten dzień|w ten dzien|w obecny dzień|w obecny dzien|obecnego dnia"
     ]
   , prod = \_ -> tt today
   }
@@ -531,19 +530,6 @@ ruleLunch = Rule
            interval TTime.Open from to
   }
 
-ruleLastCycle :: Rule
-ruleLastCycle = Rule
-  { name = "last <cycle>"
-  , pattern =
-    [ regex "ostatni(ego|ch|emu|mi|m|(a|ą)|ej|e)?|(po ?)?przedni(ego|ch|emu|mi|m|e|(a|ą)|ej)?"
-    , dimension TimeGrain
-    ]
-  , prod = \tokens -> case tokens of
-      (_:Token TimeGrain grain:_) ->
-        tt . cycleNth grain $ - 1
-      _ -> Nothing
-  }
-
 ruleAfternoon :: Rule
 ruleAfternoon = Rule
   { name = "afternoon"
@@ -555,6 +541,32 @@ ruleAfternoon = Rule
           to = hour False 19
       in Token Time . mkLatent . partOfDay <$>
            interval TTime.Open from to
+  }
+
+ruleEveningnight :: Rule
+ruleEveningnight = Rule
+  { name = "evening|night"
+  , pattern =
+    [ regex "wiecz[oó]r(em|owi|ze|a|u)?|nocą?"
+    ]
+  , prod = \_ ->
+      let from = hour False 18
+          to = hour False 0
+      in Token Time . mkLatent . partOfDay <$>
+           interval TTime.Open from to
+  }
+
+ruleLastCycle :: Rule
+ruleLastCycle = Rule
+  { name = "last <cycle>"
+  , pattern =
+    [ regex "ostatni(ego|ch|emu|mi|m|(a|ą)|ej|e)?|(po ?)?przedni(ego|ch|emu|mi|m|e|(a|ą)|ej)?"
+    , dimension TimeGrain
+    ]
+  , prod = \tokens -> case tokens of
+      (_:Token TimeGrain grain:_) ->
+        tt . cycleNth grain $ - 1
+      _ -> Nothing
   }
 
 ruleHourofdayHourofdayInterval :: Rule
@@ -1494,19 +1506,6 @@ ruleDurationAfterTime = Rule
       (Token Duration dd:_:Token Time td:_) ->
         tt $ durationAfter dd td
       _ -> Nothing
-  }
-
-ruleEveningnight :: Rule
-ruleEveningnight = Rule
-  { name = "evening|night"
-  , pattern =
-    [ regex "wiecz(o|ó)r(em|owi|ze|a|u)?|noc(ą)?"
-    ]
-  , prod = \_ ->
-      let from = hour False 18
-          to = hour False 0
-      in Token Time . mkLatent . partOfDay <$>
-           interval TTime.Open from to
   }
 
 ruleOrdinalQuarter :: Rule

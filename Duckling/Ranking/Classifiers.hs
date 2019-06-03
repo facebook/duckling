@@ -2,8 +2,7 @@
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
--- LICENSE file in the root directory of this source tree. An additional grant
--- of patent rights can be found in the PATENTS file in the same directory.
+-- LICENSE file in the root directory of this source tree.
 
 
 module Duckling.Ranking.Classifiers
@@ -34,12 +33,16 @@ import qualified Duckling.Ranking.Classifiers.HI_XX as HI_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.HR_XX as HR_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.HU_XX as HU_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.ID_XX as ID_XXClassifiers
+import qualified Duckling.Ranking.Classifiers.IS_XX as IS_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.IT_XX as IT_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.JA_XX as JA_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.KA_XX as KA_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.KM_XX as KM_XXClassifiers
+import qualified Duckling.Ranking.Classifiers.KN_XX as KN_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.KO_XX as KO_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.LO_XX as LO_XXClassifiers
+import qualified Duckling.Ranking.Classifiers.ML_XX as ML_XXClassifiers
+import qualified Duckling.Ranking.Classifiers.MN_XX as MN_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.MY_XX as MY_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.NB_XX as NB_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.NE_XX as NE_XXClassifiers
@@ -49,6 +52,7 @@ import qualified Duckling.Ranking.Classifiers.PT_XX as PT_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.RO_XX as RO_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.RU_XX as RU_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.SV_XX as SV_XXClassifiers
+import qualified Duckling.Ranking.Classifiers.SW_XX as SW_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.TA_XX as TA_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.TR_XX as TR_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.UK_XX as UK_XXClassifiers
@@ -76,12 +80,16 @@ classifiers (Locale HI _) = HI_XXClassifiers.classifiers
 classifiers (Locale HR _) = HR_XXClassifiers.classifiers
 classifiers (Locale HU _) = HU_XXClassifiers.classifiers
 classifiers (Locale ID _) = ID_XXClassifiers.classifiers
+classifiers (Locale IS _) = IS_XXClassifiers.classifiers
 classifiers (Locale IT _) = IT_XXClassifiers.classifiers
 classifiers (Locale JA _) = JA_XXClassifiers.classifiers
 classifiers (Locale KA _) = KA_XXClassifiers.classifiers
 classifiers (Locale KM _) = KM_XXClassifiers.classifiers
+classifiers (Locale KN _) = KN_XXClassifiers.classifiers
 classifiers (Locale KO _) = KO_XXClassifiers.classifiers
 classifiers (Locale LO _) = LO_XXClassifiers.classifiers
+classifiers (Locale ML _) = ML_XXClassifiers.classifiers
+classifiers (Locale MN _) = MN_XXClassifiers.classifiers
 classifiers (Locale MY _) = MY_XXClassifiers.classifiers
 classifiers (Locale NB _) = NB_XXClassifiers.classifiers
 classifiers (Locale NE _) = NE_XXClassifiers.classifiers
@@ -91,6 +99,7 @@ classifiers (Locale PT _) = PT_XXClassifiers.classifiers
 classifiers (Locale RO _) = RO_XXClassifiers.classifiers
 classifiers (Locale RU _) = RU_XXClassifiers.classifiers
 classifiers (Locale SV _) = SV_XXClassifiers.classifiers
+classifiers (Locale SW _) = SW_XXClassifiers.classifiers
 classifiers (Locale TA _) = TA_XXClassifiers.classifiers
 classifiers (Locale TR _) = TR_XXClassifiers.classifiers
 classifiers (Locale UK _) = UK_XXClassifiers.classifiers

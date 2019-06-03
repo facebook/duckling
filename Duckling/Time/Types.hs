@@ -2,8 +2,7 @@
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
--- LICENSE file in the root directory of this source tree. An additional grant
--- of patent rights can be found in the PATENTS file in the same directory.
+-- LICENSE file in the root directory of this source tree.
 
 
 {-# LANGUAGE DeriveAnyClass #-}
@@ -65,18 +64,19 @@ data TimeData = TimeData
   , direction :: Maybe IntervalDirection
   , okForThisNext :: Bool -- allows specific this+Time
   , holiday :: Maybe Text
+  , hasTimezone :: Bool -- hack to prevent double timezone parsing
   }
 
 instance Eq TimeData where
-  (==) (TimeData _ l1 g1 n1 f1 d1 _ _) (TimeData _ l2 g2 n2 f2 d2 _ _) =
-    l1 == l2 && g1 == g2 && n1 == n2 && f1 == f2 && d1 == d2
+  (==) (TimeData _ l1 g1 n1 f1 d1 _ _ t1) (TimeData _ l2 g2 n2 f2 d2 _ _ t2) =
+    l1 == l2 && g1 == g2 && n1 == n2 && f1 == f2 && d1 == d2 && t1 == t2
 
 instance Hashable TimeData where
-  hashWithSalt s (TimeData _ latent grain imm form dir _ _) = hashWithSalt s
+  hashWithSalt s (TimeData _ latent grain imm form dir _ _ _) = hashWithSalt s
     (0::Int, (latent, grain, imm, form, dir))
 
 instance Ord TimeData where
-  compare (TimeData _ l1 g1 n1 f1 d1 _ _) (TimeData _ l2 g2 n2 f2 d2 _ _) =
+  compare (TimeData _ l1 g1 n1 f1 d1 _ _ _) (TimeData _ l2 g2 n2 f2 d2 _ _ _) =
     case compare g1 g2 of
       EQ -> case compare f1 f2 of
         EQ -> case compare l1 l2 of
@@ -88,13 +88,14 @@ instance Ord TimeData where
       z -> z
 
 instance Show TimeData where
-  show (TimeData _ latent grain _ form dir _ holiday) =
+  show (TimeData _ latent grain _ form dir _ holiday tz) =
     "TimeData{" ++
     "latent=" ++ show latent ++
     ", grain=" ++ show grain ++
     ", form=" ++ show form ++
     ", direction=" ++ show dir ++
     ", holiday=" ++ show holiday ++
+    ", hasTimezone=" ++ show tz ++
     "}"
 
 instance NFData TimeData where
@@ -140,6 +141,7 @@ timedata' = TimeData
   , direction = Nothing
   , okForThisNext = False
   , holiday = Nothing
+  , hasTimezone = False
   }
 
 data TimeContext = TimeContext
@@ -426,6 +428,21 @@ weekdayPredicate = mkSeriesPredicate series
       | dow == 1 = (Time.addDays (-3) d, 5)
       | dow == 7 = (Time.addDays (-2) d, 5)
       | otherwise = (Time.addDays (-1) d, dow-1)
+
+-- Predicate for periodic events with known `given`
+periodicPredicate :: TG.Grain -> Int -> TimeObject -> Predicate
+periodicPredicate grain delta given = mkSeriesPredicate series
+  where
+  series t _ = (past', future')
+    where
+    (past, future) = timeSequence grain delta given
+    (past', future') = if timeBefore t given
+      then
+        let (newer, older) = span (timeBefore t) past
+        in (older, reverse newer ++ future)
+      else
+        let (older, newer) = span (`timeBefore` t) future
+        in (reverse older ++ past, newer)
 
 toMidnight :: Time.Day -> Time.UTCTime
 toMidnight = flip Time.UTCTime (Time.timeOfDayToTime Time.midnight)

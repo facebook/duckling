@@ -2,8 +2,7 @@
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
--- LICENSE file in the root directory of this source tree. An additional grant
--- of patent rights can be found in the PATENTS file in the same directory.
+-- LICENSE file in the root directory of this source tree.
 
 
 {-# LANGUAGE OverloadedStrings #-}
@@ -25,35 +24,35 @@ corpus = (testContext {locale = makeLocale RU Nothing}, testOptions, allExamples
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (VolumeValue Millilitre 250)
+  [ examples (simple Millilitre 250)
              [ "250 миллилитров"
              , "250мл"
              , "250 мл"
              ]
-  , examples (VolumeValue Litre 2)
+  , examples (simple Litre 2)
              [ "2 литра"
              , "2 л"
              , "два литра"
              ]
-  , examples (VolumeValue Litre 1)
+  , examples (simple Litre 1)
              [ "1 литр"
              , "один литр"
              , "1л"
              ]
-  , examples (VolumeValue Gallon 3)
+  , examples (simple Gallon 3)
              [ "3 галлона"
              ]
-  , examples (VolumeValue Hectolitre 3)
+  , examples (simple Hectolitre 3)
              [ "3 гектолитра"
              , "3 гл"
              , "3гл"
              ]
-  , examples (VolumeValue Litre 0.5)
+  , examples (simple Litre 0.5)
              [ "пол-литра"
              , "поллитра"
              , "пол литра"
              ]
-  , examples (VolumeValue Litre 1.5)
+  , examples (simple Litre 1.5)
              [ "полтора литра"
              ]
   ]

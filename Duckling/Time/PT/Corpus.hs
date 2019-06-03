@@ -2,8 +2,7 @@
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
--- LICENSE file in the root directory of this source tree. An additional grant
--- of patent rights can be found in the PATENTS file in the same directory.
+-- LICENSE file in the root directory of this source tree.
 
 
 {-# LANGUAGE OverloadedStrings #-}
@@ -203,6 +202,11 @@ allExamples = concat
              ]
   , examples (datetime (2013, 2, 4, 0, 0, 0) Week)
              [ "semana passada"
+             , "semana anterior"
+             , "passada semana"
+             , "anterior semana"
+             , "última semana"
+             , "ultima semana"
              ]
   , examples (datetime (2013, 2, 18, 0, 0, 0) Week)
              [ "semana que vem"
@@ -427,6 +431,10 @@ allExamples = concat
              ]
   , examples (datetimeInterval ((2012, 12, 0, 0, 0, 0), (2013, 2, 0, 0, 0, 0)) Month)
              [ "passados 2 meses"
+             , "últimos 2 meses"
+             , "2 meses anteriores"
+             , "2 últimos meses"
+             , "2 anteriores meses"
              ]
   , examples (datetimeInterval ((2013, 3, 0, 0, 0, 0), (2013, 6, 0, 0, 0, 0)) Month)
              [ "3 próximos meses"
@@ -435,6 +443,10 @@ allExamples = concat
              ]
   , examples (datetimeInterval ((2011, 0, 0, 0, 0, 0), (2013, 0, 0, 0, 0, 0)) Year)
              [ "passados 2 anos"
+              , "últimos 2 anos"
+              , "2 anos anteriores"
+              , "2 últimos anos"
+              , "2 anteriores anos"
              ]
   , examples (datetimeInterval ((2014, 0, 0, 0, 0, 0), (2017, 0, 0, 0, 0, 0)) Year)
              [ "3 próximos anos"
@@ -445,7 +457,7 @@ allExamples = concat
              [ "13 a 15 de julho"
              , "13 - 15 de julho de 2013"
              ]
-  , examples (datetimeInterval ((2013, 2, 12, 9, 30, 0), (2013, 2, 12, 11, 0, 0)) Minute)
+  , examples (datetimeInterval ((2013, 2, 12, 9, 30, 0), (2013, 2, 12, 11, 1, 0)) Minute)
              [ "9:30 - 11:00"
              ]
   , examples (datetimeInterval ((2013, 12, 21, 0, 0, 0), (2014, 1, 7, 0, 0, 0)) Day)
@@ -476,4 +488,111 @@ allExamples = concat
              [ "antes da meia noite"
              , "até a meia noite"
              ]
+ ,examples (datetime (2013, 2, 12, 3, 0, 0) Hour)
+             [ "última hora"
+             , "hora anterior"
+             , "hora passada"
+             ]
+  , examples (datetime (2013, 1, 1, 0, 0, 0) Quarter)
+             [ "este trimestre"
+             , "trimestre actual"
+             , "trimestre atual"
+             ]
+  , examples (datetime (2013, 1, 1, 0, 0, 0) Month)
+             [ "primeiro mês de 2013"
+             , "primeiro mês 2013"
+             ]
+  , examples (datetime (2013, 4, 1, 0, 0, 0) Quarter)
+             [ "próximo trimestre"
+             , "segundo trimestre de 2013"
+             , "segundo trimestre"
+             ]
+  , examples (datetime (2013, 7, 1, 0, 0, 0) Quarter)
+             [ "terceiro trimestre"
+             ]
+  , examples (datetime (2018, 10, 1, 0, 0, 0) Quarter)
+             [ "quarto trimestre de 2018"
+             , "quarto trimestre 2018"
+             ]
+  , examples (datetime (2012, 10, 1, 0, 0, 0) Quarter)
+             [ "trimestre passado"
+             , "trimestre anterior"
+             , "último trimestre"
+             , "ultimo trimestre"
+             ]
+  , examples (datetime (2013, 12, 1, 0, 0, 0) Month)
+             [ "décimo segundo mês de 2013"
+             , "último mês de 2013"
+             , "último mês 2013"
+             ]
+  , examples (datetime (2015, 10, 1, 0, 0, 0) Quarter)
+             [ "último trimestre de 2015"
+             , "último trimestre 2015"
+             ]
+  , examples (datetimeInterval ((2013, 7, 13, 0, 0, 0), (2013, 7, 16, 0, 0, 0)) Day)
+             [ "desde 13 a 15 de Julho"
+             , "a partir de 13 até 15 de Julho"
+             , "desde 13 até 15 de Julho"
+             , "13-15 de Julho"
+             , "13 até 15 de Julho"
+             , "13 a 15 de Julho"
+             , "desde 13 a 15 Julho"
+             , "a partir de 13 até 15 Julho"
+             , "desde 13 até 15 Julho"
+             , "13-15 Julho"
+             , "13 até 15 Julho"
+             , "13 a 15 Julho"
+             ]
+  , examples (datetimeInterval ((2017, 1, 1, 0, 0, 0), (2017, 10, 1, 0, 0, 0)) Quarter)
+             [ "de primeiro trimestre de 2017 até terceiro trimestre de 2017"
+             , "de primeiro trimestre de 2017 até ao terceiro trimestre de 2017"
+             , "do primeiro trimestre de 2017 até terceiro trimestre de 2017"
+             , "do primeiro trimestre de 2017 até ao terceiro trimestre de 2017"
+             , "desde primeiro trimestre de 2017 até terceiro trimestre de 2017"
+             , "desde primeiro trimestre de 2017 até ao terceiro trimestre de 2017"
+             , "a partir do primeiro trimestre de 2017 até terceiro trimestre de 2017"
+             , "a partir do primeiro trimestre de 2017 até ao terceiro trimestre de 2017"
+             , "a partir de primeiro trimestre de 2017 até terceiro trimestre de 2017"
+             , "a partir de primeiro trimestre de 2017 até ao terceiro trimestre de 2017"
+             , "primeiro trimestre de 2017 a terceiro trimestre de 2017"
+             , "primeiro trimestre de 2017 ao terceiro trimestre de 2017"
+             , "primeiro trimestre de 2017 - terceiro trimestre de 2017"
+             , "entre primeiro trimestre de 2017 e terceiro trimestre de 2017"
+             , "entre o primeiro trimestre de 2017 e terceiro trimestre de 2017"
+             , "primeiro trimestre de 2017 até terceiro trimestre de 2017"
+             , "primeiro trimestre de 2017 até ao terceiro trimestre de 2017"
+             , "primeiro trimestre 2017 a terceiro trimestre 2017"
+             , "primeiro trimestre 2017 ao terceiro trimestre 2017"
+             , "primeiro trimestre 2017 - terceiro trimestre 2017"
+             , "primeiro trimestre 2017 até terceiro trimestre 2017"
+             , "primeiro trimestre 2017 até ao terceiro trimestre 2017"
+             , "entre primeiro trimestre 2017 e terceiro trimestre 2017"
+             , "entre o primeiro trimestre 2017 e terceiro trimestre 2017"
+             ]
+  , examples (datetimeInterval ((2017, 3, 1, 0, 0, 0), (2017, 10, 1, 0, 0, 0)) Month)
+              [ "de terceiro mês de 2017 até nono mês de 2017"
+              , "de terceiro mês de 2017 até ao nono mês de 2017"
+              , "do terceiro mês de 2017 até nono mês de 2017"
+              , "do terceiro mês de 2017 até ao nono mês de 2017"
+              , "desde terceiro mês de 2017 até nono mês de 2017"
+              , "desde terceiro mês de 2017 até ao nono mês de 2017"
+              , "a partir do terceiro mês de 2017 até nono mês de 2017"
+              , "a partir do terceiro mês de 2017 até ao nono mês de 2017"
+              , "a partir de terceiro mês de 2017 até nono mês de 2017"
+              , "a partir de terceiro mês de 2017 até ao nono mês de 2017"
+              , "terceiro mês de 2017 a nono mês de 2017"
+              , "terceiro mês de 2017 ao nono mês de 2017"
+              , "terceiro mês de 2017 - nono mês de 2017"
+              , "entre terceiro mês de 2017 e nono mês de 2017"
+              , "entre o terceiro mês de 2017 e nono mês de 2017"
+              , "terceiro mês de 2017 até nono mês de 2017"
+              , "terceiro mês de 2017 até ao nono mês de 2017"
+              , "terceiro mês 2017 a nono mês 2017"
+              , "terceiro mês 2017 ao nono mês 2017"
+              , "terceiro mês 2017 - nono mês 2017"
+              , "terceiro mês 2017 até nono mês 2017"
+              , "terceiro mês 2017 até ao nono mês 2017"
+              , "entre terceiro mês 2017 e nono mês 2017"
+              , "entre o terceiro mês 2017 e nono mês 2017"
+              ]
   ]

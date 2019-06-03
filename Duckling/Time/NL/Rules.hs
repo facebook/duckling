@@ -2,8 +2,7 @@
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
--- LICENSE file in the root directory of this source tree. An additional grant
--- of patent rights can be found in the PATENTS file in the same directory.
+-- LICENSE file in the root directory of this source tree.
 
 
 {-# LANGUAGE GADTs #-}
@@ -84,7 +83,6 @@ ruleHolidays = mkRuleHolidays
   [ ( "Nieuwjaarsdag", "nieuwjaars?(dag)?", monthDay  1  1 )
   , ( "Valentijnsdag", "valentijns?(dag)?", monthDay  2 14 )
   , ( "Halloween", "hall?oween?", monthDay 10 31 )
-  , ( "Koningsdag", "konings?dag", monthDay  4 27 )
   , ( "Allerheiligen", "allerheiligen?|aller heiligen?", monthDay 11  1 )
   , ( "Kerstavond", "kerstavond", monthDay 12 24 )
   , ( "Tweede Kerstdag", "tweede kerstdag", monthDay 12 26 )
@@ -94,6 +92,20 @@ ruleHolidays = mkRuleHolidays
   , ( "Vaderdag", "vaderdag", nthDOWOfMonth 3 7 6 )
   ]
 
+ruleComputedHolidays' :: [Rule]
+ruleComputedHolidays' = mkRuleHolidays'
+  [
+  -- king's day is on April 27th unless its on Sunday in which case its a day
+  -- earlier used a bit of a trick since intersectWithReplacement expects all
+  -- times to be aligned in granularity (e.g once a week, twice a year, etc.)
+  -- we intersect with last Sunday of April since if "4/27 is on Sunday" it
+  -- will be the last Sunday on April
+    ( "Koningsdag", "king's day|koningsdag"
+    , let tentative = monthDay 4 27
+          alternative = monthDay 4 26
+          lastSundayOfApril = predLastOf (dayOfWeek 7) (month 4)
+        in intersectWithReplacement lastSundayOfApril tentative alternative )
+  ]
 ruleRelativeMinutesToOrAfterIntegerPartOfDay :: Rule
 ruleRelativeMinutesToOrAfterIntegerPartOfDay = Rule
   { name = "relative minutes to|till|before|after <integer> (time-of-day)"
@@ -698,7 +710,7 @@ ruleByTheEndOfTime :: Rule
 ruleByTheEndOfTime = Rule
   { name = "by the end of <time>"
   , pattern =
-    [ regex "tot (het)? einde (van)?|voor"
+    [ regex "tot( het)? einde( van)?"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -1592,3 +1604,4 @@ rules =
   ++ ruleMonths
   ++ ruleSeasons
   ++ ruleHolidays
+  ++ ruleComputedHolidays'

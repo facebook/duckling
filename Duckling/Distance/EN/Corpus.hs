@@ -2,8 +2,7 @@
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
--- LICENSE file in the root directory of this source tree. An additional grant
--- of patent rights can be found in the PATENTS file in the same directory.
+-- LICENSE file in the root directory of this source tree.
 
 
 {-# LANGUAGE OverloadedStrings #-}
@@ -51,6 +50,52 @@ allExamples = concat
   , examples (simple Metre 1.87)
              [ "1.87 meters"
              ]
+  -- Composite values:
+  , examples (simple Inch 94)
+             [ "7 feet and 10 inches"
+             , "7 feet, 10 inches"
+             , "7 feet 10 inches"
+             ]
+  , examples (simple Metre 2001)
+             [ "2 km and 1 meter"
+             , "2 kilometer, 1 metre"
+             , "2 kilometer 1 metre"
+             ]
+  , examples (simple Inch 166)
+             [ "2 yards 7 ft 10 inches"
+             , "2 yds, 7 feet and 10 inches"
+             , "2 yards, 7 feet, 10 in"
+             ]
+  , examples (simple Foot 13)
+             [ "2 yards and 7 feet"
+             , "2 yards, 7 feet"
+             , "2 yd 7'"
+             ]
+  , examples (simple Centimetre 1000806)
+             [ "10 kms 8 metres 6 cm"
+             , "10 kms, 8 meters, 6 cm"
+             , "10 kms, 8 meters and 6 centimeters"
+--             , "10 kms, 8 meters, and 6 cm" -- Oxford comma not supported
+             ]
+  , examples (simple Metre 1.3048)
+             [ "1 meter and 1 foot"
+             ]
+  , examples (simple Kilometre 2.609344)
+             [ "1 kilometer and 1 mile"
+             ]
+  , examples (simple M 3)
+             -- The original, ambiguous "m" unit is preserved
+             [ "3m"
+             ]
+  , examples (simple Centimetre 305)
+             -- The ambiguous "m" unit is inferred as "meteres"
+             [ "3m and 5cm"
+             ]
+  , examples (simple Foot 5281)
+             -- The ambiguous "m" unit is inferred as "miles"
+             [ "1m and 1ft"
+             ]
+  -- Ranges:
   , examples (between Kilometre (3, 5))
              [ "between 3 and 5 kilometers"
              , "from 3km to 5km"

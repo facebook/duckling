@@ -2,8 +2,7 @@
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
--- LICENSE file in the root directory of this source tree. An additional grant
--- of patent rights can be found in the PATENTS file in the same directory.
+-- LICENSE file in the root directory of this source tree.
 
 
 {-# LANGUAGE OverloadedStrings #-}
@@ -49,9 +48,6 @@ allExamples = concat
   , examples (DurationData 3 Quarter)
              [ "3 კვარტალი"
              ]
-  -- , examples (DurationData 2 Year)
-  --            [ "2 წელი"
-  --            ]
   , examples (DurationData 27 Month)
              [ "2 წელი და 3 თვე"
              , "2 წელი, 3 თვე"

@@ -196,6 +196,7 @@ library
                      , Duckling.Dimensions.UK
                      , Duckling.Dimensions.VI
                      , Duckling.Dimensions.ZH
+                     , Duckling.Dimensions.SW
 
                      -- AmountOfMoney
                      , Duckling.AmountOfMoney.AR.Corpus
@@ -786,7 +787,7 @@ library
                      , extra                 >= 1.4.10 && < 1.7
                      , hashable              >= 1.2.4.0 && < 1.3
                      , regex-base            >= 0.93.2 && < 0.94
-                     , regex-pcre            >= 0.94.4 && < 0.95
+                     , regex-pcre-builtin    >= 0.94.4 && < 0.95
                      , text                  >= 1.2.2.1 && < 1.3
                      , text-show             >= 2.1.2 && < 3.7
                      , time                  >= 1.5.0.1 && < 1.9

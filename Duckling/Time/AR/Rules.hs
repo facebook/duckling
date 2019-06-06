@@ -1637,6 +1637,19 @@ ruleDurationHenceAgo = Rule
       _ -> Nothing
   }
 
+ruleBeforeDuration :: Rule
+ruleBeforeDuration = Rule
+  { name = "before <duration>"
+  , pattern =
+    [ regex "من|قبل"
+    , dimension Duration
+    ]
+  , prod = \tokens -> case tokens of
+      (_:Token Duration dd:_) -> 
+        tt $ durationAgo dd
+      _ -> Nothing
+  }
+
 ruleInNumeral :: Rule
 ruleInNumeral = Rule
   { name = "in <number> (implicit minutes)"
@@ -1814,6 +1827,7 @@ rules =
   , ruleCycleOrdinalAfterTime
   , ruleDurationInWithinAfter
   , ruleDurationHenceAgo
+  , ruleBeforeDuration
   , ruleDurationAfterBeforeTime
   , ruleIntervalForDurationFrom
   , ruleTimeForDuration

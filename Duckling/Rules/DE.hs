@@ -2,13 +2,10 @@
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
--- LICENSE file in the root directory of this source tree. An additional grant
--- of patent rights can be found in the PATENTS file in the same directory.
+-- LICENSE file in the root directory of this source tree.
 
 
 {-# LANGUAGE GADTs #-}
-
-
 module Duckling.Rules.DE
   ( defaultRules
   , langRules
@@ -16,14 +13,16 @@ module Duckling.Rules.DE
   ) where
 
 import Duckling.Dimensions.Types
-import Duckling.Locale
-import Duckling.Types
+import qualified Duckling.Distance.DE.Rules as Distance
 import qualified Duckling.Duration.DE.Rules as Duration
 import qualified Duckling.Email.DE.Rules as Email
-import qualified Duckling.Ordinal.DE.Rules as Ordinal
+import Duckling.Locale
 import qualified Duckling.Numeral.DE.Rules as Numeral
+import qualified Duckling.Ordinal.DE.Rules as Ordinal
 import qualified Duckling.Time.DE.Rules as Time
 import qualified Duckling.TimeGrain.DE.Rules as TimeGrain
+import Duckling.Types
+import qualified Duckling.Volume.DE.Rules as Volume
 
 defaultRules :: Some Dimension -> [Rule]
 defaultRules = langRules
@@ -35,7 +34,7 @@ localeRules _ _ = []
 langRules :: Some Dimension -> [Rule]
 langRules (This AmountOfMoney) = []
 langRules (This CreditCardNumber) = []
-langRules (This Distance) = []
+langRules (This Distance) = Distance.rules
 langRules (This Duration) = Duration.rules
 langRules (This Email) = Email.rules
 langRules (This Numeral) = Numeral.rules
@@ -47,5 +46,5 @@ langRules (This Temperature) = []
 langRules (This Time) = Time.rules
 langRules (This TimeGrain) = TimeGrain.rules
 langRules (This Url) = []
-langRules (This Volume) = []
+langRules (This Volume) = Volume.rules
 langRules (This (CustomDimension dim)) = dimLangRules DE dim

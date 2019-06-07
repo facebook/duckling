@@ -1394,20 +1394,6 @@ classifiers
                    koData =
                      ClassData{prior = -infinity, unseen = -0.6931471805599453,
                                likelihoods = HashMap.fromList [], n = 0}}),
-       ("by the end of <time>",
-        Classifier{okData =
-                     ClassData{prior = -infinity, unseen = -1.791759469228055,
-                               likelihoods = HashMap.fromList [], n = 0},
-                   koData =
-                     ClassData{prior = 0.0, unseen = -2.890371757896165,
-                               likelihoods =
-                                 HashMap.fromList
-                                   [("half to|till|before <integer> (hour-of-day)",
-                                     -1.7346010553881064),
-                                    ("time-of-day (latent)", -1.4469189829363254),
-                                    ("hh:mm", -2.1400661634962708), ("hour", -1.4469189829363254),
-                                    ("minute", -1.4469189829363254)],
-                               n = 6}}),
        ("in <duration>",
         Classifier{okData =
                      ClassData{prior = -4.652001563489282e-2,

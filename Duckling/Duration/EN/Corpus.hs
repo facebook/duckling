@@ -2,8 +2,7 @@
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
--- LICENSE file in the root directory of this source tree. An additional grant
--- of patent rights can be found in the PATENTS file in the same directory.
+-- LICENSE file in the root directory of this source tree.
 
 
 {-# LANGUAGE OverloadedStrings #-}
@@ -45,6 +44,11 @@ allExamples = concat
              [ "2 mins"
              , "two minutes"
              , "2'"
+             , "2 more minutes"
+             , "two additional minutes"
+             , "2 extra minutes"
+             , "2 less minutes"
+             , "2 fewer minutes"
              ]
   , examples (DurationData 30 Day)
              [ "30 days"
@@ -85,9 +89,12 @@ allExamples = concat
   , examples (DurationData 27 Month)
              [ "2 years and 3 months"
              , "2 years, 3 months"
+             , "2 years 3 months"
              ]
   , examples (DurationData 31719604 Second)
              [ "1 year, 2 days, 3 hours and 4 seconds"
              , "1 year 2 days 3 hours and 4 seconds"
+               -- Oxford comma not supported:
+--           , "1 year, 2 days, 3 hours, and 4 seconds"
              ]
   ]

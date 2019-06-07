@@ -2,8 +2,7 @@
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
--- LICENSE file in the root directory of this source tree. An additional grant
--- of patent rights can be found in the PATENTS file in the same directory.
+-- LICENSE file in the root directory of this source tree.
 
 
 module Duckling.Volume.Tests
@@ -15,6 +14,7 @@ import Prelude
 import Test.Tasty
 
 import qualified Duckling.Volume.AR.Tests as AR
+import qualified Duckling.Volume.DE.Tests as DE
 import qualified Duckling.Volume.EN.Tests as EN
 import qualified Duckling.Volume.ES.Tests as ES
 import qualified Duckling.Volume.FR.Tests as FR
@@ -33,6 +33,7 @@ import qualified Duckling.Volume.TR.Tests as TR
 tests :: TestTree
 tests = testGroup "Volume Tests"
   [ AR.tests
+  , DE.tests
   , EN.tests
   , ES.tests
   , FR.tests

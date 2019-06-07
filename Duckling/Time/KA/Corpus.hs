@@ -2,8 +2,7 @@
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
--- LICENSE file in the root directory of this source tree. An additional grant
--- of patent rights can be found in the PATENTS file in the same directory.
+-- LICENSE file in the root directory of this source tree.
 
 
 {-# LANGUAGE OverloadedStrings #-}
@@ -44,9 +43,6 @@ latentCorpus = (testContext {locale = makeLocale KA Nothing},
       , examples (datetime (2013, 2, 12, 7, 0, 0) Hour)
                  [ "7 საათზე"
                  ]
-      , examples (datetime (1954, 1, 1, 0, 0, 0) Year)
-                 [ "1954 წელი"
-                 ]
       , examples (datetime (2013, 5, 1, 0, 0, 0) Month)
                  [ "მაისი"
                  ]
@@ -77,8 +73,6 @@ allExamples = concat
              ]
   , examples (datetime (2013, 2, 18, 0, 0, 0) Day)
              [ "ორშაბათი"
-             , "ორშ."
-             , "ორშ"
              , "ამ ორშაბათს"
              , "ეს ორშაბათი"
              ]
@@ -87,24 +81,15 @@ allExamples = concat
              ]
   , examples (datetime (2013, 2, 14, 0, 0, 0) Day)
              [ "ხუთშაბათი"
-             , "ხუთ"
-             , "ხუთშ"
-             , "ხუთშ."
              ]
   , examples (datetime (2013, 2, 15, 0, 0, 0) Day)
              [ "პარასკევი"
-             , "პარ"
-             , "პარ."
              ]
   , examples (datetime (2013, 2, 16, 0, 0, 0) Day)
              [ "შაბათი"
-             , "შაბ"
-             , "შაბ."
              ]
   , examples (datetime (2013, 2, 17, 0, 0, 0) Day)
              [ "კვირა"
-             , "კვრ"
-             , "კვ."
              ]
   , examples (datetime (2013, 3, 1, 0, 0, 0) Day)
              [ "1-ლი მარტი"
@@ -125,7 +110,7 @@ allExamples = concat
              , "თხუთმეტი თებერვალი"
              ]
   , examples (datetime (2013, 8, 8, 0, 0, 0) Day)
-             [ "8 აგვ"
+             [ "8 აგვისტო"
              ]
   , examples (datetime (2014, 10, 1, 0, 0, 0) Month)
              [ "2014 წლის ოქტომბერი"
@@ -307,7 +292,7 @@ allExamples = concat
              [ "დღეს საღამოს"
              , "დღეს ღამე"
              ]
-  , examples (datetimeInterval ((2013, 2, 8, 18, 0, 0), (2013, 2, 11, 0, 0, 0)) Hour)
+  , examples (datetimeInterval ((2013, 2, 9, 0, 0, 0), (2013, 2, 11, 0, 0, 0)) Day)
              [ "გასულ უქმეებზე"
              , "გასულ შაბათ-კვირას"
              ]
@@ -317,7 +302,7 @@ allExamples = concat
   , examples (datetimeInterval ((2013, 2, 11, 18, 0, 0), (2013, 2, 12, 0, 0, 0)) Hour)
              [ "გუშინ საღამოს"
              ]
-  , examples (datetimeInterval ((2013, 2, 15, 18, 0, 0), (2013, 2, 18, 0, 0, 0)) Hour)
+  , examples (datetimeInterval ((2013, 2, 16, 0, 0, 0), (2013, 2, 18, 0, 0, 0)) Day)
              [ "ამ შაბათკვირას"
              ]
   , examples (datetimeInterval ((2013, 2, 18, 4, 0, 0), (2013, 2, 18, 12, 0, 0)) Hour)
@@ -338,7 +323,7 @@ allExamples = concat
              , "13-15 ივლისი"
              ]
   , examples (datetimeInterval ((2013, 8, 8, 0, 0, 0), (2013, 8, 13, 0, 0, 0)) Day)
-             [ "8-12 აგვ"
+             [ "8-12 აგვისტო"
              ]
   , examples (datetimeInterval ((2013, 2, 14, 9, 30, 0), (2013, 2, 14, 11, 1, 0)) Minute)
              [ "ხუთშაბათი 9:30-დან 11:00-მდე"
@@ -430,22 +415,15 @@ allExamples = concat
   , examples (datetimeInterval ((2013, 3, 21, 0, 0, 0), (2013, 4, 1, 0, 0, 0)) Day)
              [ "მარტის ბოლო"
              ]
-  , examples (datetimeInterval ((2013, 10, 25, 18, 0, 0), (2013, 10, 28, 0, 0, 0)) Hour)
+  , examples (datetimeInterval ((2013, 10, 26, 0, 0, 0), (2013, 10, 28, 0, 0, 0)) Day)
              [ "ოქტომბრის ბოლო უქმეები"
              , "ოქტომბრის ბოლო შაბათ-კვირა"
              ]
-  , examples (datetimeInterval ((2013, 7, 26, 18, 0, 0), (2013, 7, 29, 0, 0, 0)) Hour)
-             [ "ივლისის ბოლო უქმეები"
-             , "ივლისის ბოლო შაბათ-კვირა"
-             , "ივლისის ბოლო შაბათ-კვირა"
-             ]
-  , examples (datetimeInterval ((2017, 10, 27, 18, 0, 0), (2017, 10, 30, 0, 0, 0)) Hour)
-             [ "2017 წლის ოქტომბრის ბოლო უქმეები"
-             , "2017 წლის ოქტომბრის ბოლო შაბათ-კვირა"
+  , examples (datetimeInterval ((2017, 12, 23, 0, 0, 0), (2017, 12, 25, 0, 0, 0)) Day)
+             [ "2017 წლის დეკემბრის ბოლო უქმეები"
              ]
   , examples (datetimeInterval ((2013, 8, 27, 0, 0, 0), (2013, 8, 30, 0, 0, 0)) Day)
-             [ "27-29 აგვ"
-             , "27-29 აგვისტო"
+             [ "27-29 აგვისტო"
              ]
   , examples (datetimeInterval ((2013, 10, 23, 0, 0, 0), (2013, 10, 27, 0, 0, 0)) Day)
              [ "23-26 ოქტომბერი"
@@ -468,5 +446,20 @@ allExamples = concat
   , examples (datetimeInterval ((2013, 1, 1, 0, 0, 0), (2013, 4, 1, 0, 0, 0)) Month)
              [ "წლის დასაწყისი"
              , "ამ წლის დასაწყისი"
+             ]
+  , examples (datetimeInterval ((2012, 12, 1, 0, 0, 0), (2013, 2, 1, 0, 0, 0)) Month)
+             [ "გასულ ორ თვეში"
+             , "გასულ 2 თვეში"
+             , "გასულ 2 თვეს"
+             ]
+  , examples (datetimeInterval ((2013, 1, 21, 0, 0, 0), (2013, 2, 11, 0, 0, 0)) Week)
+             [ "გასული 3 კვირა"
+             ]
+  , examples (datetimeInterval ((2013, 5, 1, 0, 0, 0), (2013, 6, 1, 0, 0, 0)) Month)
+             [ "მიმდინარე წლის მაისში"
+             , "წელს მაისში"
+             ]
+  , examples (datetimeInterval ((2013, 4, 1, 0, 0, 0), (2013, 7, 1, 0, 0, 0)) Quarter)
+             [ "წელს მეორე კვარტალში"
              ]
   ]

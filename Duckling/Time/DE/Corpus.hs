@@ -2,8 +2,7 @@
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
--- LICENSE file in the root directory of this source tree. An additional grant
--- of patent rights can be found in the PATENTS file in the same directory.
+-- LICENSE file in the root directory of this source tree.
 
 
 {-# LANGUAGE OverloadedStrings #-}
@@ -672,5 +671,22 @@ allExamples = concat
   , examples (datetime (2018, 8, 31, 0, 0, 0) Day)
              [ "2018-08-31"
              , "2018-8-31"
+             ]
+  , examples (datetime (1980, 5, 30, 0, 0, 0) Day)
+             [ "30. Mai 1980"
+             ]
+  , examples (datetime (2013, 2, 9, 0, 0, 0) Day)
+             [ "vorvorgestern"
+             ]
+  , examples (datetime (2013, 12, 5, 0, 0, 0) Day)
+             [ "fünfter Dezember"
+             ]
+  , examples (datetime (2013, 12, 30, 0, 0, 0) Day)
+             [ "dreißigster Dezember"
+             , "dreissigster Dezember"
+             ]
+  , examples (datetime (2013, 12, 4, 0, 0, 0) Day)
+             [ "am vierten Dezember"
+             , "der vierte Dezember"
              ]
   ]

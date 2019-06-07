@@ -2,8 +2,7 @@
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
--- LICENSE file in the root directory of this source tree. An additional grant
--- of patent rights can be found in the PATENTS file in the same directory.
+-- LICENSE file in the root directory of this source tree.
 
 
 {-# LANGUAGE OverloadedStrings #-}
@@ -36,6 +35,7 @@ allExamples = concat
   , examples (DurationData 1 Day)
              [ "दिवस"
              , "एक दिन"
+             , "बिल्कुल एक दिन"
              ]
   , examples (DurationData 14 Day)
              [ "पखवाड़ा"
@@ -45,5 +45,7 @@ allExamples = concat
              [ "एक साल"
              , "केवल एक वर्ष"
              , "लगभग एक साल"
+             , "एक बरस"
+             , "केवल एक साल"
              ]
   ]

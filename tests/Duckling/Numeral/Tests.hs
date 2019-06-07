@@ -2,8 +2,7 @@
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
--- LICENSE file in the root directory of this source tree. An additional grant
--- of patent rights can be found in the PATENTS file in the same directory.
+-- LICENSE file in the root directory of this source tree.
 
 
 module Duckling.Numeral.Tests (tests) where
@@ -35,6 +34,7 @@ import qualified Duckling.Numeral.IT.Tests as IT
 import qualified Duckling.Numeral.JA.Tests as JA
 import qualified Duckling.Numeral.KA.Tests as KA
 import qualified Duckling.Numeral.KM.Tests as KM
+import qualified Duckling.Numeral.KN.Tests as KN
 import qualified Duckling.Numeral.KO.Tests as KO
 import qualified Duckling.Numeral.LO.Tests as LO
 import qualified Duckling.Numeral.ML.Tests as ML
@@ -80,6 +80,7 @@ tests = testGroup "Numeral Tests"
   , JA.tests
   , KA.tests
   , KM.tests
+  , KN.tests
   , KO.tests
   , LO.tests
   , ML.tests

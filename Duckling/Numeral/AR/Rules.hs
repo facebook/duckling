@@ -2,26 +2,25 @@
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
--- LICENSE file in the root directory of this source tree. An additional grant
--- of patent rights can be found in the PATENTS file in the same directory.
+-- LICENSE file in the root directory of this source tree.
 
 
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE NoRebindableSyntax #-}
 
-module Duckling.Numeral.AR.Rules
-  ( rules
-  ) where
-
-import Data.HashMap.Strict (HashMap)
+module Duckling.Numeral.AR.Rules (rules) where
 import Data.Maybe
-import Data.String
-import Data.Text (Text)
 import Prelude
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
+import Duckling.Numeral.AR.Helpers
+  ( digitsMap
+  , parseArabicDoubleFromText
+  , parseArabicIntegerFromText
+  )
 import Duckling.Numeral.Helpers
 import Duckling.Numeral.Types (NumeralData (..))
 import Duckling.Regex.Types
@@ -61,19 +60,6 @@ ruleInteger18 = Rule
     ]
   , prod = \_ -> integer 12
   }
-
-digitsMap :: HashMap Text Integer
-digitsMap = HashMap.fromList
-  [ ("عشر", 2)
-  , ("ثلاث", 3)
-  , ("اربع", 4)
-  , ("أربع", 4)
-  , ("خمس", 5)
-  , ("ست", 6)
-  , ("سبع", 7)
-  , ("ثمان", 8)
-  , ("تسع", 9)
-  ]
 
 ruleInteger19 :: Rule
 ruleInteger19 = Rule
@@ -342,9 +328,62 @@ ruleIntegerWithThousandsSeparator = Rule
       _ -> Nothing
   }
 
+ruleIntegerNumeric :: Rule
+ruleIntegerNumeric = Rule
+  { name = "Arabic integer numeric"
+  , pattern =
+    [ regex "([٠-٩]{1,18})"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        parseArabicIntegerFromText match >>= integer
+      _ -> Nothing
+  }
+
+ruleFractionsNumeric :: Rule
+ruleFractionsNumeric = Rule
+  { name = "Arabic fractional number numeric"
+  , pattern =
+    [ regex "([٠-٩]+)/([٠-٩]+)"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (numerator:denominator:_)):_) -> do
+        n <- parseArabicIntegerFromText numerator >>= integer
+        d <- parseArabicIntegerFromText denominator >>= integer
+        divide n d >>= notOkForAnyTime
+      _ -> Nothing
+  }
+
+ruleArabicDecimal :: Rule
+ruleArabicDecimal = Rule
+  { name = "Arabic decimal number with Arabic decimal separator"
+  , pattern =
+    [ regex "([٠-٩]*٫[٠-٩]+)"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        parseArabicDoubleFromText match >>= double
+      _ -> Nothing
+  }
+
+ruleArabicCommas :: Rule
+ruleArabicCommas = Rule
+  { name = "Arabic number with commas and optional Arabic decimal separator"
+  , pattern =
+    [ regex "([٠-٩]{1,3}(٬[٠-٩]{3}){1,5}(٫[٠-٩]+)?)"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        parseArabicDoubleFromText (Text.replace "٬" Text.empty match) >>=
+          double
+      _ -> Nothing
+  }
+
 rules :: [Rule]
 rules =
-  [ ruleDecimalNumeral
+  [ ruleIntegerNumeric
+  , ruleFractionsNumeric
+  , ruleDecimalNumeral
   , ruleDecimalWithThousandsSeparator
   , ruleInteger
   , ruleInteger11
@@ -369,4 +408,6 @@ rules =
   , ruleNumeralsPrefixWithMinus
   , rulePowersOfTen
   , ruleInteger200
+  , ruleArabicDecimal
+  , ruleArabicCommas
   ]

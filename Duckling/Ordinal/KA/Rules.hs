@@ -2,8 +2,7 @@
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
--- LICENSE file in the root directory of this source tree. An additional grant
--- of patent rights can be found in the PATENTS file in the same directory.
+-- LICENSE file in the root directory of this source tree.
 
 
 {-# LANGUAGE GADTs #-}
@@ -81,7 +80,7 @@ ruleOrdinals :: Rule
 ruleOrdinals = Rule
   { name = "ordinals (first..twentieth,thirtieth,...)"
   , pattern =
-    [ regex "(პირველი|მეორე|მესამე|მეოთხე|მეხუთე|მეექვსე|მეშვიდე|მერვე|მეცხრე|მეათე|მეთერთმეტე|მეთოთხმეტე|მეცამეტე|მეთოთხმეტე|მეთხუთმეტე|მეთექვსმეტე|მეჩვიდმეტე|მეთვრამეტე|მეცხრამეტე|მეოცე|ოცდამეათე|მეორმოცე|ორმოცდამეათე|მესამოცე|სამოცდამეათე|მეოთხმოცე|ოთხმოცდამეათე)"
+    [ regex "(პირველი?|მეორე|მესამე|მეოთხე|მეხუთე|მეექვსე|მეშვიდე|მერვე|მეცხრე|მეათე|მეთერთმეტე|მეთოთხმეტე|მეცამეტე|მეთოთხმეტე|მეთხუთმეტე|მეთექვსმეტე|მეჩვიდმეტე|მეთვრამეტე|მეცხრამეტე|მეოცე|ოცდამეათე|მეორმოცე|ორმოცდამეათე|მესამოცე|სამოცდამეათე|მეოთხმოცე|ოთხმოცდამეათე)"
     ]
   , prod = \case
       (Token RegexMatch (GroupMatch (match:_)):_) ->

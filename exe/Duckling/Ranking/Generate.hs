@@ -2,8 +2,7 @@
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
--- LICENSE file in the root directory of this source tree. An additional grant
--- of patent rights can be found in the PATENTS file in the same directory.
+-- LICENSE file in the root directory of this source tree.
 
 
 {-# LANGUAGE NoRebindableSyntax #-}
@@ -193,6 +192,7 @@ getCorpusForLang IT = ITTime.corpus
 getCorpusForLang JA = (testContext, testOptions, [])
 getCorpusForLang KA = (testContext, testOptions, [])
 getCorpusForLang KM = (testContext, testOptions, [])
+getCorpusForLang KN = (testContext, testOptions, [])
 getCorpusForLang KO = KOTime.corpus
 getCorpusForLang LO = (testContext, testOptions, [])
 getCorpusForLang ML = (testContext, testOptions, [])

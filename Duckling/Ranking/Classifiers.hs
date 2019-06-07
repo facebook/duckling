@@ -2,8 +2,7 @@
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
--- LICENSE file in the root directory of this source tree. An additional grant
--- of patent rights can be found in the PATENTS file in the same directory.
+-- LICENSE file in the root directory of this source tree.
 
 
 module Duckling.Ranking.Classifiers
@@ -39,6 +38,7 @@ import qualified Duckling.Ranking.Classifiers.IT_XX as IT_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.JA_XX as JA_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.KA_XX as KA_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.KM_XX as KM_XXClassifiers
+import qualified Duckling.Ranking.Classifiers.KN_XX as KN_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.KO_XX as KO_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.LO_XX as LO_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.ML_XX as ML_XXClassifiers
@@ -85,6 +85,7 @@ classifiers (Locale IT _) = IT_XXClassifiers.classifiers
 classifiers (Locale JA _) = JA_XXClassifiers.classifiers
 classifiers (Locale KA _) = KA_XXClassifiers.classifiers
 classifiers (Locale KM _) = KM_XXClassifiers.classifiers
+classifiers (Locale KN _) = KN_XXClassifiers.classifiers
 classifiers (Locale KO _) = KO_XXClassifiers.classifiers
 classifiers (Locale LO _) = LO_XXClassifiers.classifiers
 classifiers (Locale ML _) = ML_XXClassifiers.classifiers

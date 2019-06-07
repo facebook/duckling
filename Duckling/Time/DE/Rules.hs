@@ -2,8 +2,7 @@
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
--- LICENSE file in the root directory of this source tree. An additional grant
--- of patent rights can be found in the PATENTS file in the same directory.
+-- LICENSE file in the root directory of this source tree.
 
 
 {-# LANGUAGE GADTs #-}
@@ -39,6 +38,7 @@ ruleInstants = mkRuleInstants
   , ( "yesterday"       , TG.Day   , -1, "gestern" )
   , ( "after tomorrow"  , TG.Day   ,  2, "(ü)bermorgen" )
   , ( "before yesterday", TG.Day   , -2, "vorgestern" )
+  , ( "3 days ago"      , TG.Day   , -3, "vorvorgestern" )
   , ( "EOM|End of month", TG.Month ,  1, "(das )?ende des monats?" )
   , ( "EOY|End of year" , TG.Year  ,  1,
        "(das )?(EOY|jahr(es)? ?ende|ende (des )?jahr(es)?)" )

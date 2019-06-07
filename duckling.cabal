@@ -2,8 +2,7 @@
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
--- LICENSE file in the root directory of this source tree. An additional grant
--- of patent rights can be found in the PATENTS file in the same directory.
+-- LICENSE file in the root directory of this source tree.
 
 
 name:                duckling
@@ -13,8 +12,8 @@ description:
   Duckling is a library for parsing text into structured data.
 homepage:            https://github.com/facebook/duckling#readme
 bug-reports:         https://github.com/facebook/duckling/issues
-license:             OtherLicense
-license-files:       LICENSE,PATENTS
+license:             BSD3
+license-files:       LICENSE
 author:              Facebook, Inc.
 maintainer:          duckling-team@fb.com
 copyright:           Copyright (c) 2014-present, Facebook, Inc.
@@ -24,10 +23,10 @@ stability:           alpha
 cabal-version:       >=1.10
 tested-with:
   GHC==8.0.2,
-  GHC==8.2.1
+  GHC==8.2.2,
+  GHC==8.6.3
 
 extra-source-files:    README.md
-                     , PATENTS
 
 library
   exposed-modules:     Duckling.Core
@@ -72,6 +71,7 @@ library
                      , Duckling.Rules.JA
                      , Duckling.Rules.KA
                      , Duckling.Rules.KM
+                     , Duckling.Rules.KN
                      , Duckling.Rules.KO
                      , Duckling.Rules.LO
                      , Duckling.Rules.ML
@@ -124,6 +124,7 @@ library
                      , Duckling.Ranking.Classifiers.JA_XX
                      , Duckling.Ranking.Classifiers.KA_XX
                      , Duckling.Ranking.Classifiers.KM_XX
+                     , Duckling.Ranking.Classifiers.KN_XX
                      , Duckling.Ranking.Classifiers.KO_XX
                      , Duckling.Ranking.Classifiers.LO_XX
                      , Duckling.Ranking.Classifiers.ML_XX
@@ -178,6 +179,7 @@ library
                      , Duckling.Dimensions.JA
                      , Duckling.Dimensions.KA
                      , Duckling.Dimensions.KM
+                     , Duckling.Dimensions.KN
                      , Duckling.Dimensions.KO
                      , Duckling.Dimensions.LO
                      , Duckling.Dimensions.ML
@@ -191,6 +193,7 @@ library
                      , Duckling.Dimensions.RO
                      , Duckling.Dimensions.RU
                      , Duckling.Dimensions.SV
+                     , Duckling.Dimensions.SW
                      , Duckling.Dimensions.TA
                      , Duckling.Dimensions.TR
                      , Duckling.Dimensions.UK
@@ -234,6 +237,8 @@ library
                      , Duckling.AmountOfMoney.FR.Rules
                      , Duckling.AmountOfMoney.GA.Corpus
                      , Duckling.AmountOfMoney.GA.Rules
+                     , Duckling.AmountOfMoney.HE.Corpus
+                     , Duckling.AmountOfMoney.HE.Rules
                      , Duckling.AmountOfMoney.HR.Corpus
                      , Duckling.AmountOfMoney.HR.Rules
                      , Duckling.AmountOfMoney.ID.Corpus
@@ -271,6 +276,8 @@ library
                      , Duckling.Distance.BG.Rules
                      , Duckling.Distance.CS.Corpus
                      , Duckling.Distance.CS.Rules
+                     , Duckling.Distance.DE.Corpus
+                     , Duckling.Distance.DE.Rules
                      , Duckling.Distance.EN.Corpus
                      , Duckling.Distance.EN.Rules
                      , Duckling.Distance.ES.Corpus
@@ -281,6 +288,8 @@ library
                      , Duckling.Distance.GA.Rules
                      , Duckling.Distance.HR.Corpus
                      , Duckling.Distance.HR.Rules
+                     , Duckling.Distance.IT.Corpus
+                     , Duckling.Distance.IT.Rules
                      , Duckling.Distance.KM.Corpus
                      , Duckling.Distance.KM.Rules
                      , Duckling.Distance.KO.Corpus
@@ -304,6 +313,7 @@ library
                      , Duckling.Distance.Helpers
                      , Duckling.Distance.Rules
                      , Duckling.Distance.Types
+                     , Duckling.DistanceUnits.Types
 
                      -- Duration
                      , Duckling.Duration.AR.Corpus
@@ -373,6 +383,7 @@ library
 
                      -- Numeral
                      , Duckling.Numeral.AR.Corpus
+                     , Duckling.Numeral.AR.Helpers
                      , Duckling.Numeral.AR.Rules
                      , Duckling.Numeral.BG.Corpus
                      , Duckling.Numeral.BG.Rules
@@ -418,6 +429,8 @@ library
                      , Duckling.Numeral.KA.Rules
                      , Duckling.Numeral.KM.Corpus
                      , Duckling.Numeral.KM.Rules
+                     , Duckling.Numeral.KN.Corpus
+                     , Duckling.Numeral.KN.Rules
                      , Duckling.Numeral.KO.Corpus
                      , Duckling.Numeral.KO.Rules
                      , Duckling.Numeral.LO.Corpus
@@ -533,6 +546,8 @@ library
                      , Duckling.Ordinal.Types
 
                      -- PhoneNumber
+                     , Duckling.PhoneNumber.AR.Corpus
+                     , Duckling.PhoneNumber.AR.Rules
                      , Duckling.PhoneNumber.PT.Corpus
                      , Duckling.PhoneNumber.PT.Rules
                      , Duckling.PhoneNumber.Corpus
@@ -738,6 +753,8 @@ library
                      -- Volume
                      , Duckling.Volume.AR.Corpus
                      , Duckling.Volume.AR.Rules
+                     , Duckling.Volume.DE.Corpus
+                     , Duckling.Volume.DE.Rules
                      , Duckling.Volume.EN.Corpus
                      , Duckling.Volume.EN.Rules
                      , Duckling.Volume.ES.Corpus
@@ -780,7 +797,7 @@ library
                      , attoparsec            >= 0.13.1.0 && < 0.14
                      , aeson                 >= 0.11.3.0 && < 1.5
                      , bytestring            >= 0.10.6.0 && < 0.11
-                     , containers            >= 0.5.6.2 && < 0.6
+                     , containers            >= 0.5.6.2 && < 0.7
                      , deepseq               >= 1.4.1.1 && < 1.5
                      , dependent-sum         >= 0.3.2.2 && < 0.5
                      , extra                 >= 1.4.10 && < 1.7
@@ -788,8 +805,8 @@ library
                      , regex-base            >= 0.93.2 && < 0.94
                      , regex-pcre            >= 0.94.4 && < 0.95
                      , text                  >= 1.2.2.1 && < 1.3
-                     , text-show             >= 2.1.2 && < 3.7
-                     , time                  >= 1.5.0.1 && < 1.9
+                     , text-show             >= 2.1.2 && < 3.8
+                     , time                  >= 1.5.0.1 && < 2
                      , timezone-series       >= 0.1.5.1 && < 0.2
                      , unordered-containers  >= 0.2.7.2 && < 0.3
   default-language:    Haskell2010
@@ -798,6 +815,7 @@ library
 test-suite duckling-test
   type:                exitcode-stdio-1.0
   main-is:             TestMain.hs
+  ghc-options:         -main-is TestMain
   hs-source-dirs:      tests
   build-depends:       duckling
                      , base
@@ -805,7 +823,7 @@ test-suite duckling-test
                      , text
                      , time
                      , unordered-containers
-                     , tasty                 >= 0.11.1 && < 0.12
+                     , tasty                 >= 0.11.1 && < 1.3
                      , tasty-hunit           >= 0.9.2 && < 1.0
   other-modules:       Duckling.Tests
                      , Duckling.Testing.Asserts
@@ -824,6 +842,7 @@ test-suite duckling-test
                      , Duckling.AmountOfMoney.ES.Tests
                      , Duckling.AmountOfMoney.FR.Tests
                      , Duckling.AmountOfMoney.GA.Tests
+                     , Duckling.AmountOfMoney.HE.Tests
                      , Duckling.AmountOfMoney.HR.Tests
                      , Duckling.AmountOfMoney.ID.Tests
                      , Duckling.AmountOfMoney.IT.Tests
@@ -843,11 +862,13 @@ test-suite duckling-test
                      -- Distance
                      , Duckling.Distance.BG.Tests
                      , Duckling.Distance.CS.Tests
+                     , Duckling.Distance.DE.Tests
                      , Duckling.Distance.EN.Tests
                      , Duckling.Distance.ES.Tests
                      , Duckling.Distance.FR.Tests
                      , Duckling.Distance.GA.Tests
                      , Duckling.Distance.HR.Tests
+                     , Duckling.Distance.IT.Tests
                      , Duckling.Distance.KM.Tests
                      , Duckling.Distance.KO.Tests
                      , Duckling.Distance.MN.Tests
@@ -887,6 +908,8 @@ test-suite duckling-test
 
                      -- Email
                      , Duckling.Email.EN.Tests
+                     , Duckling.Email.DE.Tests
+                     , Duckling.Email.IS.Tests
                      , Duckling.Email.FR.Tests
                      , Duckling.Email.IT.Tests
                      , Duckling.Email.Tests
@@ -915,6 +938,7 @@ test-suite duckling-test
                      , Duckling.Numeral.JA.Tests
                      , Duckling.Numeral.KA.Tests
                      , Duckling.Numeral.KM.Tests
+                     , Duckling.Numeral.KN.Tests
                      , Duckling.Numeral.KO.Tests
                      , Duckling.Numeral.LO.Tests
                      , Duckling.Numeral.ML.Tests
@@ -974,6 +998,7 @@ test-suite duckling-test
                      , Duckling.Ordinal.Tests
 
                      -- PhoneNumber
+                     , Duckling.PhoneNumber.AR.Tests
                      , Duckling.PhoneNumber.PT.Tests
                      , Duckling.PhoneNumber.Tests
 
@@ -1042,6 +1067,7 @@ test-suite duckling-test
 
                      -- Volume
                      , Duckling.Volume.AR.Tests
+                     , Duckling.Volume.DE.Tests
                      , Duckling.Volume.EN.Tests
                      , Duckling.Volume.ES.Tests
                      , Duckling.Volume.FR.Tests
@@ -1073,7 +1099,7 @@ executable duckling-regen-exe
                      , Duckling.Ranking.Generate
   build-depends:       duckling
                      , base
-                     , haskell-src-exts      >= 1.18 && < 1.20
+                     , haskell-src-exts      >= 1.18 && < 1.30
                      , text
                      , unordered-containers
   default-language:    Haskell2010
@@ -1092,7 +1118,7 @@ executable duckling-example-exe
                      , extra
                      , filepath              >= 1.4.0.0 && < 1.5
                      , snap-core             >= 1.0.2.0 && < 1.1
-                     , snap-server           >= 1.0.1.1 && < 1.1
+                     , snap-server           >= 1.0.1.1 && < 1.2
                      , text
                      , text-show
                      , time

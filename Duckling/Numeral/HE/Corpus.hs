@@ -2,8 +2,7 @@
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
--- LICENSE file in the root directory of this source tree. An additional grant
--- of patent rights can be found in the PATENTS file in the same directory.
+-- LICENSE file in the root directory of this source tree.
 
 {-# LANGUAGE OverloadedStrings #-}
 
@@ -69,6 +68,10 @@ allExamples = concat
              [ "1.1"
              , "1.10"
              , "01.10"
+             ]
+  , examples (NumeralValue 0.5)
+             [ "חצי"
+             , "0.5"
              ]
   , examples (NumeralValue 0.77)
              [ "0.77"

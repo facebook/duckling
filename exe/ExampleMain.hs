@@ -51,7 +51,7 @@ setupLogs = do
 main :: IO ()
 main = do
   setupLogs
-  tzs <- loadTimeZoneSeries "zoneinfo/"
+  tzs <- loadTimeZoneSeries "/usr/share/zoneinfo/"
   p <- lookupEnv "PORT"
   conf <- commandLineConfig $
     maybe defaultConfig (`setPort` defaultConfig) (readMaybe =<< p)

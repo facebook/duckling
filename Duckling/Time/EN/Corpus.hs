@@ -49,6 +49,8 @@ defaultCorpus = (testContext, testOptions, allExamples ++ custom)
                  ]
       , examples (datetime (2013, 4, 25, 16, 0, 0) Minute)
                  [ "4/25 at 4:00pm"
+                 , "4/25 at 16h00"
+                 , "4/25 at 16h"
                  ]
       , examples (datetimeHoliday (2013, 11, 28, 0, 0, 0) Day "Thanksgiving Day")
                  [ "thanksgiving day"
@@ -486,6 +488,7 @@ allExamples = concat
   , examples (datetime (2013, 2, 13, 3, 18, 0) Minute)
              [ "3:18am"
              , "3:18a"
+             , "3h18"
              ]
   , examples (datetime (2016, 2, 1, 7, 0, 0) Hour)
              [ "at 7 in 3 years"
@@ -503,16 +506,24 @@ allExamples = concat
              , "at 3p"
              , "at 3p."
              ]
+  , examples (datetime (2013, 2, 12, 15, 0, 0) Minute)
+             [ "15h00"
+             , "at 15h00"
+             , "15h"
+             , "at 15h"
+             ]
   , examples (datetime (2013, 2, 12, 15, 15, 0) Minute)
              [ "at 15 past 3pm"
              , "a quarter past 3pm"
              , "3:15 in the afternoon"
              , "15:15"
+             , "15h15"
              , "3:15pm"
              , "3:15PM"
              , "3:15p"
              , "at 3 15"
              , "15 minutes past 3pm"
+             , "15 minutes past 15h"
              ]
   , examples (datetime (2013, 2, 12, 15, 20, 0) Minute)
              [ "at 20 past 3pm"
@@ -520,6 +531,7 @@ allExamples = concat
              , "3:20 in afternoon"
              , "twenty after 3pm"
              , "3:20p"
+             , "15h20"
              , "at three twenty"
              , "20 minutes past 3pm"
              ]
@@ -527,6 +539,7 @@ allExamples = concat
              [ "at half past three pm"
              , "half past 3 pm"
              , "15:30"
+             , "15h30"
              , "3:30pm"
              , "3:30PM"
              , "330 p.m."
@@ -540,6 +553,7 @@ allExamples = concat
               , "a quarter past noon"
               , "12:15 in the afternoon"
               , "12:15"
+              , "12h15"
               , "12:15pm"
               , "12:15PM"
               , "12:15p"
@@ -555,11 +569,13 @@ allExamples = concat
   , examples (datetime (2013, 2, 12, 11, 45, 0) Minute)
              [ "a quarter to noon"
              , "11:45am"
+             , "11h45"
              , "15 to noon"
              ]
   , examples (datetime (2013, 2, 12, 13, 15, 0) Minute)
              [ "a quarter past 1pm"
              , "1:15pm"
+             , "13h15"
              , "15 minutes from 1pm"
              ]
   , examples (datetime (2013, 2, 12, 14, 15, 0) Minute)
@@ -577,6 +593,7 @@ allExamples = concat
              ]
   , examples (datetime (2013, 9, 20, 19, 30, 0) Minute)
              [ "at 7:30 PM on Fri, Sep 20"
+             , "at 19h30 on Fri, Sep 20"
              ]
   , examples (datetime (2013, 2, 16, 9, 0, 0) Hour)
              [ "at 9am on Saturday"
@@ -586,6 +603,8 @@ allExamples = concat
              ]
   , examples (datetime (2014, 7, 18, 19, 0, 0) Minute)
              [ "Fri, Jul 18, 2014 07:00 PM"
+             , "Fri, Jul 18, 2014 19h00"
+             , "Fri, Jul 18, 2014 19h"
              ]
   , examples (datetime (2013, 2, 12, 4, 30, 1) Second)
              [ "in a sec"
@@ -745,6 +764,7 @@ allExamples = concat
              [ "for 30' starting from 4pm"
              , "from 4pm for thirty minutes"
              , "4pm for 30 mins"
+             , "16h for 30 mins"
              ]
   , examples (datetimeInterval ((2013, 6, 21, 0, 0, 0), (2013, 9, 24, 0, 0, 0)) Day)
              [ "this Summer"
@@ -1040,12 +1060,18 @@ allExamples = concat
              ]
   , examples (datetimeInterval ((2013, 2, 12, 9, 30, 0), (2013, 2, 12, 11, 1, 0)) Minute)
              [ "9:30 - 11:00"
+             , "9h30 - 11h00"
+             , "9h30 - 11h"
              ]
   , examples (datetimeInterval ((2013, 2, 12, 13, 30, 0), (2013, 2, 12, 15, 1, 0)) Minute)
              [ "9:30 - 11:00 CST"
+             , "9h30 - 11h00 CST"
+             , "9h30 - 11h CST"
              ]
   , examples (datetimeInterval ((2013, 2, 12, 13, 0, 0), (2013, 2, 12, 16, 1, 0)) Minute)
              [ "15:00 GMT - 18:00 GMT"
+             , "15h00 GMT - 18h00 GMT"
+             , "15h GMT - 18h GMT"
              ]
   , examples (datetimeInterval
       ((2015, 3, 28, 17, 00, 0), (2015, 3, 29, 21, 0, 1)) Second)
@@ -1054,23 +1080,9 @@ allExamples = concat
   , examples (datetimeInterval ((2013, 2, 14, 9, 30, 0), (2013, 2, 14, 11, 1, 0)) Minute)
              [ "from 9:30 - 11:00 on Thursday"
              , "between 9:30 and 11:00 on thursday"
-             , "between 9:30 and 11:00 on thursday"
-             , "between 9:30 and 11:00 on thursday"
-             , "between 9:30 and 11:00 on thursday"
-             , "between 9:30 and 11:00 on thursday"
-             , "between 9:30 and 11:00 on thursday"
-             , "between 9:30 and 11:00 on thursday"
-             , "between 9:30 and 11:00 on thursday"
-             , "between 9:30 and 11:00 on thursday"
+             , "between 9h30 and 11h00 on thursday"
              , "9:30 - 11:00 on Thursday"
-             , "9:30 - 11:00 on Thursday"
-             , "9:30 - 11:00 on Thursday"
-             , "9:30 - 11:00 on Thursday"
-             , "9:30 - 11:00 on Thursday"
-             , "9:30 - 11:00 on Thursday"
-             , "9:30 - 11:00 on Thursday"
-             , "9:30 - 11:00 on Thursday"
-             , "9:30 - 11:00 on Thursday"
+             , "9h30 - 11h00 on Thursday"
              , "later than 9:30 but before 11:00 on Thursday"
              , "Thursday from 9:30 to 11:00"
              , "from 9:30 untill 11:00 on thursday"
@@ -1089,6 +1101,7 @@ allExamples = concat
              [ "3:30 to 6 PM"
              , "3:30-6 p.m."
              , "3:30-6:00pm"
+             , "15h30-18h"
              , "from 3:30 to six p.m."
              , "from 3:30 to 6:00pm"
              , "later than 3:30pm but before 6pm"
@@ -1150,6 +1163,10 @@ allExamples = concat
   , examples (datetime (2013, 2, 14, 6, 0, 0) Minute)
              [ "Thursday 8:00 GMT"
              , "Thursday 8:00 gmt"
+             , "Thursday 8h00 GMT"
+             , "Thursday 8h00 gmt"
+             , "Thursday 8h GMT"
+             , "Thursday 8h gmt"
              , "Thu at 8 GMT"
              , "Thu at 8 gmt"
              , "Thursday 9 am BST"
@@ -1158,6 +1175,10 @@ allExamples = concat
   , examples (datetime (2013, 2, 14, 14, 0, 0) Minute)
              [ "Thursday 8:00 PST"
              , "Thursday 8:00 pst"
+             , "Thursday 8h00 PST"
+             , "Thursday 8h00 pst"
+             , "Thursday 8h PST"
+             , "Thursday 8h pst"
              , "Thu at 8 am PST"
              , "Thu at 8 am pst"
              , "Thursday at 9:30pm ist"
@@ -1204,6 +1225,8 @@ allExamples = concat
   , examples (datetime (2013, 2, 12, 13, 30, 0) Minute)
              [ "at 1:30pm"
              , "1:30pm"
+             , "at 13h30"
+             , "13h30"
              ]
   , examples (datetime (2013, 2, 12, 4, 45, 0) Second)
              [ "in 15 minutes"

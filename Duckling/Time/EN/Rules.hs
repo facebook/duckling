@@ -13,6 +13,7 @@
 
 module Duckling.Time.EN.Rules where
 
+import Control.Applicative ((<|>))
 import Data.Maybe
 import Data.Text (Text)
 import Prelude
@@ -551,7 +552,21 @@ ruleHHMM = Rule
       (Token RegexMatch (GroupMatch (hh:mm:_)):_) -> do
         h <- parseInt hh
         m <- parseInt mm
-        tt $ hourMinute True h m
+        tt $ hourMinute (h < 12) h m
+      _ -> Nothing
+  }
+
+ruleHHhMM :: Rule
+ruleHHhMM = Rule
+  { name = "hhhmm"
+  , pattern =
+    [ regex "(?<!/)((?:[01]?\\d)|(?:2[0-3]))h(([0-5]\\d)|(?!\\d))"
+    ]
+  , prod = \case
+      (Token RegexMatch (GroupMatch (hh:mm:_)):_) -> do
+        h <- parseInt hh
+        m <- parseInt mm <|> Just 0
+        tt $ hourMinute False h m
       _ -> Nothing
   }
 
@@ -565,7 +580,7 @@ ruleHHMMLatent = Rule
       (Token RegexMatch (GroupMatch (hh:mm:_)):_) -> do
         h <- parseInt hh
         m <- parseInt mm
-        tt . mkLatent $ hourMinute True h m
+        tt . mkLatent $ hourMinute (h < 12) h m
       _ -> Nothing
   }
 
@@ -578,7 +593,7 @@ ruleHHMMSS = Rule
         h <- parseInt hh
         m <- parseInt mm
         s <- parseInt ss
-        tt $ hourMinuteSecond True h m s
+        tt $ hourMinuteSecond (h < 12) h m s
       _ -> Nothing
   }
 
@@ -2427,6 +2442,7 @@ rules =
   , ruleAtTOD
   , ruleTODOClock
   , ruleHHMM
+  , ruleHHhMM
   , ruleHHMMLatent
   , ruleHHMMSS
   , ruleMilitaryAMPM

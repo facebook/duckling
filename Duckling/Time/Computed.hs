@@ -6,12 +6,11 @@
 
 module Duckling.Time.Computed
   ( chanukah, chineseNewYear, dhanteras, easterSunday, eidalAdha, eidalFitr
-  , globalYouthServiceDay, guruGobindSinghJayanti, krishnaJanmashtami, lagBaOmer
-  , mawlid, muharram, navaratri, orthodoxEaster, passover, rajab, rakshaBandhan
-  , ramadan, roshHashana, thaiPongal, thiruOnam, tishaBAv, tuBishvat
-  , vasantPanchami, vesak, yomHaatzmaut, vaisakhi, purim, saraswatiJayanti
-  , rabindraJayanti, ravidassJayanti
-
+  , globalYouthServiceDay, guruGobindSinghJayanti, karvaChauth
+  , krishnaJanmashtami, lagBaOmer, mawlid, muharram, navaratri, orthodoxEaster
+  , passover, rajab, rakshaBandhan, ramadan, roshHashana, thaiPongal, thiruOnam
+  , tishaBAv, tuBishvat, vasantPanchami, vesak, yomHaatzmaut, vaisakhi, purim
+  , saraswatiJayanti, rabindraJayanti, ravidassJayanti
   ) where
 
 import Data.Maybe
@@ -1759,6 +1758,44 @@ guruGobindSinghJayanti' = mapMaybe toTimeObjectM
   , (2029, 1, 5)
   , (2030, 1, 10)
   ]
+
+karvaChauth :: TimeData
+karvaChauth = computedDays karvaChauth'
+
+karvaChauth' :: [TimeObject]
+karvaChauth' = mapMaybe toTimeObjectM
+    [ (2000, 10, 16)
+    , (2001, 10, 4)
+    , (2002, 10, 24)
+    , (2003, 10, 13)
+    , (2004, 10, 31)
+    , (2005, 10, 20)
+    , (2006, 10, 9)
+    , (2007, 10, 28)
+    , (2008, 10, 17)
+    , (2009, 10, 7)
+    , (2010, 10, 26)
+    , (2011, 10, 15)
+    , (2012, 10, 2)
+    , (2013, 10, 22)
+    , (2014, 10, 11)
+    , (2015, 10, 30)
+    , (2016, 10, 18)
+    , (2017, 10, 8)
+    , (2018, 10, 27)
+    , (2019, 10, 17)
+    , (2020, 10, 3)
+    , (2021, 10, 23)
+    , (2022, 10, 12)
+    , (2023, 10, 31)
+    , (2024, 10, 20)
+    , (2025, 10, 9)
+    , (2026, 10, 28)
+    , (2027, 10, 18)
+    , (2028, 10, 6)
+    , (2029, 10, 25)
+    , (2030, 10, 14)
+    ]
 
 krishnaJanmashtami :: TimeData
 krishnaJanmashtami = computedDays krishnaJanmashtami'

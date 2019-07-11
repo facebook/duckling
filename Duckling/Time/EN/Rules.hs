@@ -782,7 +782,7 @@ ruleQuarterAfterHOD :: Rule
 ruleQuarterAfterHOD = Rule
   { name = "quarter after|past <hour-of-day>"
   , pattern =
-    [ regex "(a|one)? ?quarter (after|past)"
+    [ regex "(for )?((a|one) )?quarter (after|past)"
     , Predicate isAnHourOfDay
     ]
   , prod = \tokens -> case tokens of

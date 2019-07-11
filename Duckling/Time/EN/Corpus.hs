@@ -515,6 +515,7 @@ allExamples = concat
   , examples (datetime (2013, 2, 12, 15, 15, 0) Minute)
              [ "at 15 past 3pm"
              , "a quarter past 3pm"
+             , "for a quarter past 3pm"
              , "3:15 in the afternoon"
              , "15:15"
              , "15h15"
@@ -551,6 +552,7 @@ allExamples = concat
    , examples (datetime (2013, 2, 12, 12, 15, 0) Minute)
               [ "at 15 past noon"
               , "a quarter past noon"
+              , "for a quarter past noon"
               , "12:15 in the afternoon"
               , "12:15"
               , "12h15"
@@ -574,15 +576,18 @@ allExamples = concat
              ]
   , examples (datetime (2013, 2, 12, 13, 15, 0) Minute)
              [ "a quarter past 1pm"
+             , "for a quarter past 1pm"
              , "1:15pm"
              , "13h15"
              , "15 minutes from 1pm"
              ]
   , examples (datetime (2013, 2, 12, 14, 15, 0) Minute)
              [ "a quarter past 2pm"
+             , "for a quarter past 2pm"
              ]
   , examples (datetime (2013, 2, 12, 20, 15, 0) Minute)
              [ "a quarter past 8pm"
+             , "for a quarter past 8pm"
              ]
   , examples (datetime (2013, 2, 12, 20, 0, 0) Hour)
              [ "8 tonight"

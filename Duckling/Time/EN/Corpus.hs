@@ -1618,6 +1618,10 @@ allExamples = concat
   , examples (datetimeHoliday (2018, 8, 26, 0, 0, 0) Day "Raksha Bandhan")
              [ "rakhi 2018"
              ]
+  , examples (datetimeHoliday (2020, 4, 6, 0, 0, 0) Day "Mahavir Jayanti")
+             [ "mahavir jayanti 2020"
+             , "mahaveer janma kalyanak 2020"
+             ]
   , examples (datetimeHoliday (2018, 2, 10, 0, 0, 0) Day "Dayananda Saraswati Jayanti")
              [ "saraswati jayanti 2018"
              ]

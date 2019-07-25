@@ -91,6 +91,7 @@ allExamples = concat
              , "3/3/15"
              , "2015-3-3"
              , "2015-03-03"
+             , "2015.03.03"
              ]
   , examples (datetime (2013, 2, 15, 0, 0, 0) Day)
              [ "På den 15."
@@ -104,6 +105,7 @@ allExamples = concat
              , "februar 15"
              , "15-02"
              , "15/02"
+             , "15.02"
              ]
   , examples (datetime (2013, 8, 8, 0, 0, 0) Day)
              [ "8 Aug"

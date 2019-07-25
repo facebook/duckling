@@ -610,7 +610,7 @@ ruleDdmm :: Rule
 ruleDdmm = Rule
   { name = "dd/mm"
   , pattern =
-    [ regex "(3[01]|[12]\\d|0?[1-9])[\\/-](0?[1-9]|1[0-2])"
+    [ regex "(3[01]|[12]\\d|0?[1-9])[\\/\\-\\.](0?[1-9]|1[0-2])"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (dd:mm:_)):_) -> do
@@ -1479,7 +1479,7 @@ ruleDdmmyyyy :: Rule
 ruleDdmmyyyy = Rule
   { name = "dd/mm/yyyy"
   , pattern =
-    [ regex "(3[01]|[12]\\d|0?[1-9])[\\/-](0?[1-9]|1[0-2])[\\/-](\\d{2,4})"
+    [ regex "(3[01]|[12]\\d|0?[1-9])[\\/\\-\\.](0?[1-9]|1[0-2])[\\/\\-\\.](\\d{2,4})"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (dd:mm:yy:_)):_) -> do

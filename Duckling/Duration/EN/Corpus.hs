@@ -44,6 +44,11 @@ allExamples = concat
              [ "2 mins"
              , "two minutes"
              , "2'"
+             , "2 more minutes"
+             , "two additional minutes"
+             , "2 extra minutes"
+             , "2 less minutes"
+             , "2 fewer minutes"
              ]
   , examples (DurationData 30 Day)
              [ "30 days"

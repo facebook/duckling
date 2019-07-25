@@ -88,7 +88,7 @@ ruleDurationNumeralMore = Rule
   { name = "<integer> more <unit-of-duration>"
   , pattern =
     [ Predicate isNatural
-    , regex "more|less"
+    , regex "more|additional|extra|less|fewer"
     , dimension TimeGrain
     ]
   , prod = \case

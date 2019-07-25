@@ -6,12 +6,12 @@
 
 module Duckling.Time.Computed
   ( chanukah, chineseNewYear, dhanteras, easterSunday, eidalAdha, eidalFitr
-  , globalYouthServiceDay, guruGobindSinghJayanti, krishnaJanmashtami, lagBaOmer
-  , mawlid, muharram, navaratri, orthodoxEaster, passover, rajab, rakshaBandhan
-  , ramadan, roshHashana, thaiPongal, thiruOnam, tishaBAv, tuBishvat
-  , vasantPanchami, vesak, yomHaatzmaut, vaisakhi, purim, saraswatiJayanti
-  , rabindraJayanti, ravidassJayanti
-
+  , globalYouthServiceDay, guruGobindSinghJayanti, karvaChauth
+  , krishnaJanmashtami, lagBaOmer, mawlid, muharram, navaratri, orthodoxEaster
+  , passover, rajab, rakshaBandhan, mahavirJayanti, ramadan, roshHashana
+  , thaiPongal, thiruOnam, tishaBAv, tuBishvat, vasantPanchami, vesak
+  , yomHaatzmaut, vaisakhi, purim, saraswatiJayanti, rabindraJayanti
+  , ravidassJayanti
   ) where
 
 import Data.Maybe
@@ -1594,6 +1594,44 @@ rakshaBandhan' = mapMaybe toTimeObjectM
   , (2030, 8, 13)
   ]
 
+mahavirJayanti :: TimeData
+mahavirJayanti = computedDays mahavirJayanti'
+
+mahavirJayanti' :: [TimeObject]
+mahavirJayanti' = mapMaybe toTimeObjectM
+  [ (2000, 4, 16)
+  , (2001, 4, 6)
+  , (2002, 4, 25)
+  , (2003, 4, 15)
+  , (2004, 4, 3)
+  , (2005, 4, 22)
+  , (2006, 4, 11)
+  , (2007, 3, 31)
+  , (2008, 4, 18)
+  , (2009, 4, 7)
+  , (2010, 3, 28)
+  , (2011, 4, 16)
+  , (2012, 4, 5)
+  , (2013, 4, 24)
+  , (2014, 4, 13)
+  , (2015, 4, 2)
+  , (2016, 4, 19)
+  , (2017, 4, 9)
+  , (2018, 3, 29)
+  , (2019, 4, 17)
+  , (2020, 4, 6)
+  , (2021, 4, 25)
+  , (2022, 4, 14)
+  , (2023, 4, 4)
+  , (2024, 4, 21)
+  , (2025, 4, 10)
+  , (2026, 3, 31)
+  , (2027, 4, 19)
+  , (2028, 4, 7)
+  , (2029, 4, 26)
+  , (2030, 4, 16)
+  ]
+
 thaiPongal :: TimeData
 thaiPongal = computedDays thaiPongal'
 
@@ -1759,6 +1797,44 @@ guruGobindSinghJayanti' = mapMaybe toTimeObjectM
   , (2029, 1, 5)
   , (2030, 1, 10)
   ]
+
+karvaChauth :: TimeData
+karvaChauth = computedDays karvaChauth'
+
+karvaChauth' :: [TimeObject]
+karvaChauth' = mapMaybe toTimeObjectM
+    [ (2000, 10, 16)
+    , (2001, 10, 4)
+    , (2002, 10, 24)
+    , (2003, 10, 13)
+    , (2004, 10, 31)
+    , (2005, 10, 20)
+    , (2006, 10, 9)
+    , (2007, 10, 28)
+    , (2008, 10, 17)
+    , (2009, 10, 7)
+    , (2010, 10, 26)
+    , (2011, 10, 15)
+    , (2012, 10, 2)
+    , (2013, 10, 22)
+    , (2014, 10, 11)
+    , (2015, 10, 30)
+    , (2016, 10, 18)
+    , (2017, 10, 8)
+    , (2018, 10, 27)
+    , (2019, 10, 17)
+    , (2020, 10, 3)
+    , (2021, 10, 23)
+    , (2022, 10, 12)
+    , (2023, 10, 31)
+    , (2024, 10, 20)
+    , (2025, 10, 9)
+    , (2026, 10, 28)
+    , (2027, 10, 18)
+    , (2028, 10, 6)
+    , (2029, 10, 25)
+    , (2030, 10, 14)
+    ]
 
 krishnaJanmashtami :: TimeData
 krishnaJanmashtami = computedDays krishnaJanmashtami'

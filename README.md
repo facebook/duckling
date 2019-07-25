@@ -69,11 +69,12 @@ $ stack build :duckling-regen-exe && stack exec duckling-regen-exe && stack test
 It's important to regenerate the classifiers after updating the code and before
 running the test suite.
 
-To extend Duckling's support for a dimension in a given language, typically 3
+To extend Duckling's support for a dimension in a given language, typically 4
 files need to be updated:
 * `Duckling/<Dimension>/<Lang>/Rules.hs`
 * `Duckling/<Dimension>/<Lang>/Corpus.hs`
 * `Duckling/Dimensions/<Lang>.hs` (if not already present in `Duckling/Dimensions/Common.hs`)
+* `Duckling/Rules/<Lang>.hs`
 
 To add a new language:
 * Make sure that the language code used follows the [ISO-639-1 standard](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes).

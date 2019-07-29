@@ -1622,6 +1622,9 @@ allExamples = concat
              [ "mahavir jayanti 2020"
              , "mahaveer janma kalyanak 2020"
              ]
+  , examples (datetimeHoliday (2020, 2, 21, 0, 0, 0) Day "Maha Shivaratri")
+              [ "maha shivaratri 2020"
+              ]
   , examples (datetimeHoliday (2018, 2, 10, 0, 0, 0) Day "Dayananda Saraswati Jayanti")
              [ "saraswati jayanti 2018"
              ]

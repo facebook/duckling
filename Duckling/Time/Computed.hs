@@ -8,7 +8,7 @@ module Duckling.Time.Computed
   ( chanukah, chineseNewYear, dhanteras, easterSunday, eidalAdha, eidalFitr
   , globalYouthServiceDay, guruGobindSinghJayanti, karvaChauth
   , krishnaJanmashtami, lagBaOmer, mawlid, muharram, navaratri, orthodoxEaster
-  , passover, rajab, rakshaBandhan, mahavirJayanti, ramadan, roshHashana
+  , passover, rajab, rakshaBandhan, mahavirJayanti, mahaShivaRatri, ramadan, roshHashana
   , thaiPongal, thiruOnam, tishaBAv, tuBishvat, vasantPanchami, vesak
   , yomHaatzmaut, vaisakhi, purim, saraswatiJayanti, rabindraJayanti
   , ravidassJayanti
@@ -1669,6 +1669,44 @@ thaiPongal' = mapMaybe toTimeObjectM
   , (2029, 1, 14)
   , (2030, 1, 14)
   ]
+
+mahaShivaRatri :: TimeData
+mahaShivaRatri = computedDays mahaShivaRatri'
+
+mahaShivaRatri' :: [TimeObject]
+mahaShivaRatri' = mapMaybe toTimeObjectM
+   [  (2000, 3, 4)
+   ,  (2001, 2, 21)
+   ,  (2002, 3, 12)
+   ,  (2003, 3, 1)
+   ,  (2004, 2, 18)
+   ,  (2005, 3, 8)
+   ,  (2006, 2, 26)
+   ,  (2007, 2, 16)
+   ,  (2008, 3, 6)
+   ,  (2009, 2, 23)
+   ,  (2010, 2, 12)
+   ,  (2011, 3, 2)
+   ,  (2012, 2, 20)
+   ,  (2013, 3, 10)
+   ,  (2014, 2, 27)
+   ,  (2015, 2, 17)
+   ,  (2016, 3, 7)
+   ,  (2017, 2, 24)
+   ,  (2018, 2, 13)
+   ,  (2019, 3, 4)
+   ,  (2020, 2, 21)
+   ,  (2021, 3, 11)
+   ,  (2022, 3, 1)
+   ,  (2023, 2, 18)
+   ,  (2024, 3, 8)
+   ,  (2025, 2, 26)
+   ,  (2026, 2, 15)
+   ,  (2027, 3, 6)
+   ,  (2028, 2, 23)
+   ,  (2029, 2, 11)
+   ,  (2030, 3, 2)
+   ]
 
 thiruOnam :: TimeData
 thiruOnam = computedDays thiruOnam'

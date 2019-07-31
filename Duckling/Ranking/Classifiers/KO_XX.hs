@@ -507,7 +507,7 @@ classifiers
                      ClassData{prior = -0.40546510810816444,
                                unseen = -1.791759469228055,
                                likelihoods = HashMap.fromList [("", 0.0)], n = 4}}),
-       ("christmas eve",
+       ("Christmas Eve",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -1.0986122886681098,
                                likelihoods = HashMap.fromList [("", 0.0)], n = 1},
@@ -985,6 +985,15 @@ classifiers
                    koData =
                      ClassData{prior = -infinity, unseen = -0.6931471805599453,
                                likelihoods = HashMap.fromList [], n = 0}}),
+       ("Christmas",
+        Classifier{okData =
+                     ClassData{prior = -0.6931471805599453,
+                               unseen = -1.0986122886681098,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 1},
+                   koData =
+                     ClassData{prior = -0.6931471805599453,
+                               unseen = -1.0986122886681098,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 1}}),
        ("<integer> and an half hours",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -1.9459101490553135,
@@ -1070,15 +1079,6 @@ classifiers
                                     ("day", -1.6739764335716716),
                                     ("day (grain)", -1.6739764335716716)],
                                n = 4}}),
-       ("christmas",
-        Classifier{okData =
-                     ClassData{prior = -0.6931471805599453,
-                               unseen = -1.0986122886681098,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 1},
-                   koData =
-                     ClassData{prior = -0.6931471805599453,
-                               unseen = -1.0986122886681098,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 1}}),
        ("next n <cycle>",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -3.4965075614664802,

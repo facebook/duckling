@@ -26,6 +26,30 @@ import qualified Duckling.Ordinal.Types as TOrdinal
 import qualified Duckling.Time.Types as TTime
 import qualified Duckling.TimeGrain.Types as TG
 
+ruleHolidays :: [Rule]
+ruleHolidays = mkRuleHolidays
+  [ ( "Liberation Day"            , "광복절"
+    , monthDay  8   15 )
+  , ( "Constitution Day"          , "제헌절"
+    , monthDay  7   17 )
+  , ( "New Year's Day"            , "(신정)|(설날)"
+    , monthDay  1   1  )
+  , ( "Hangul Day"                , "한글날"
+    , monthDay  10  9  )
+  , ( "National Foundation Day"   , "개천절"
+    , monthDay  10  3  )
+  , ( "Independence Movement Day" , "삼일절"
+    , monthDay  3   1  )
+  , ( "Memorial Day"              , "현충일"
+    , monthDay  6   6  )
+  , ( "Christmas"                 , "크리스마스"
+    , monthDay  12  25 )
+  , ( "Christmas Eve"             , "(크리스마스)?이브"
+    , monthDay  12  24 )
+  , ( "Children's Day"            , "어린이날"
+    , monthDay  5   5  )
+  ]
+
 ruleNamedday :: Rule
 ruleNamedday = Rule
   { name = "<named-day>에"
@@ -38,15 +62,6 @@ ruleNamedday = Rule
       _ -> Nothing
   }
 
-ruleLiberationDay :: Rule
-ruleLiberationDay = Rule
-  { name = "Liberation Day"
-  , pattern =
-    [ regex "광복절"
-    ]
-  , prod = \_ -> tt $ monthDay 8 15
-  }
-
 ruleTheDayAfterTomorrow :: Rule
 ruleTheDayAfterTomorrow = Rule
   { name = "the day after tomorrow - 내일모레"
@@ -55,15 +70,6 @@ ruleTheDayAfterTomorrow = Rule
     ]
   , prod = \_ ->
       tt . cycleNthAfter False TG.Day 1 $ cycleNth TG.Day 1
-  }
-
-ruleConstitutionDay :: Rule
-ruleConstitutionDay = Rule
-  { name = "Constitution Day"
-  , pattern =
-    [ regex "제헌절"
-    ]
-  , prod = \_ -> tt $ monthDay 6 17
   }
 
 ruleTimeofday4 :: Rule
@@ -117,15 +123,6 @@ ruleThisDayofweek = Rule
       (_:Token Time td:_) ->
         tt $ predNth 0 False td
       _ -> Nothing
-  }
-
-ruleNewYearsDay :: Rule
-ruleNewYearsDay = Rule
-  { name = "New Year's Day"
-  , pattern =
-    [ regex "신정|설날"
-    ]
-  , prod = \_ -> tt $ monthDay 1 1
   }
 
 ruleLastTime :: Rule
@@ -448,15 +445,6 @@ ruleAfternoon = Rule
           to = hour False 19
       in Token Time . mkLatent . partOfDay <$>
            interval TTime.Open from to
-  }
-
-ruleChristmasEve :: Rule
-ruleChristmasEve = Rule
-  { name = "christmas eve"
-  , pattern =
-    [ regex "(크리스마스)?이브"
-    ]
-  , prod = \_ -> tt $ monthDay 12 24
   }
 
 ruleInduringThePartofday :: Rule
@@ -884,15 +872,6 @@ ruleTimeofday3 = Rule
       _ -> Nothing
   }
 
-ruleMemorialDay :: Rule
-ruleMemorialDay = Rule
-  { name = "Memorial Day"
-  , pattern =
-    [ regex "현충일"
-    ]
-  , prod = \_ -> tt $ monthDay 6 6
-  }
-
 ruleYearLatent :: Rule
 ruleYearLatent = Rule
   { name = "year (latent)"
@@ -938,15 +917,6 @@ ruleAfterTimeofday = Rule
       (Token Time td:_) ->
         tt . notLatent $ withDirection TTime.After td
       _ -> Nothing
-  }
-
-ruleChristmas :: Rule
-ruleChristmas = Rule
-  { name = "christmas"
-  , pattern =
-    [ regex "크리스마스"
-    ]
-  , prod = \_ -> tt $ monthDay 12 25
   }
 
 ruleTimeofdayAmpm :: Rule
@@ -1006,15 +976,6 @@ ruleTimeofday = Rule
       _ -> Nothing
   }
 
-ruleHangulDay :: Rule
-ruleHangulDay = Rule
-  { name = "Hangul Day"
-  , pattern =
-    [ regex "한글날"
-    ]
-  , prod = \_ -> tt $ monthDay 10 9
-  }
-
 ruleHhmm :: Rule
 ruleHhmm = Rule
   { name = "hh:mm"
@@ -1055,15 +1016,6 @@ ruleYear = Rule
         v <- getIntValue token
         tt $ year v
       _ -> Nothing
-  }
-
-ruleChildrensDay :: Rule
-ruleChildrensDay = Rule
-  { name = "Children's Day"
-  , pattern =
-    [ regex "어린이날"
-    ]
-  , prod = \_ -> tt $ monthDay 5 5
   }
 
 ruleAbsorptionOfAfterNamedDay :: Rule
@@ -1136,15 +1088,6 @@ ruleTimeofdayTimeofdayInterval = Rule
       _ -> Nothing
   }
 
-ruleNationalFoundationDay :: Rule
-ruleNationalFoundationDay = Rule
-  { name = "National Foundation Day"
-  , pattern =
-    [ regex "개천절"
-    ]
-  , prod = \_ -> tt $ monthDay 10 3
-  }
-
 ruleEveningnight :: Rule
 ruleEveningnight = Rule
   { name = "evening|night"
@@ -1156,15 +1099,6 @@ ruleEveningnight = Rule
           to = hour False 0
       in Token Time . partOfDay . mkLatent <$>
            interval TTime.Open from to
-  }
-
-ruleIndependenceMovementDay :: Rule
-ruleIndependenceMovementDay = Rule
-  { name = "Independence Movement Day"
-  , pattern =
-    [ regex "삼일절"
-    ]
-  , prod = \_ -> tt $ monthDay 3 1
   }
 
 ruleMmddyyyy :: Rule
@@ -1258,10 +1192,6 @@ rules =
   , ruleAfternoon
   , ruleAmpmTimeofday
   , ruleByTime
-  , ruleChildrensDay
-  , ruleChristmas
-  , ruleChristmasEve
-  , ruleConstitutionDay
   , ruleDate
   , ruleDatetimeDatetimeInterval
   , ruleDay
@@ -1273,14 +1203,12 @@ rules =
   , ruleEndOfTime
   , ruleEveningnight
   , ruleExactlyTimeofday
-  , ruleHangulDay
   , ruleHhmm
   , ruleHhmmMilitaryAmpm
   , ruleHhmmss
   , ruleHourofdayIntegerAsRelativeMinutes
   , ruleHourofdayHalfAsRelativeMinutes
   , ruleInDuration
-  , ruleIndependenceMovementDay
   , ruleInduringThePartofday
   , ruleIntegerHourofdayRelativeMinutes
   , ruleHalfHourofdayRelativeMinutes
@@ -1289,9 +1217,7 @@ rules =
   , ruleLastCycle
   , ruleLastNCycle
   , ruleLastTime
-  , ruleLiberationDay
   , ruleLunch
-  , ruleMemorialDay
   , ruleMidnighteodendOfDay
   , ruleMmdd
   , ruleMmddyyyy
@@ -1299,8 +1225,6 @@ rules =
   , ruleMorning
   , ruleNamedday
   , ruleNamedmonth
-  , ruleNationalFoundationDay
-  , ruleNewYearsDay
   , ruleNextCycle
   , ruleNextNCycle
   , ruleNextTime
@@ -1346,3 +1270,4 @@ rules =
   , ruleSeconds
   , ruleTimezone
   ]
+  ++ ruleHolidays

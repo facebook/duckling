@@ -58,6 +58,17 @@ ruleSeasons = mkRuleSeasons
   , ( "Spring"  , "봄"    , monthDay  3   20, monthDay  6   21 )
   ]
 
+ruleDaysOfWeek :: [Rule]
+ruleDaysOfWeek = mkRuleDaysOfWeek
+  [ ( "Monday"    , "월(요일|욜)" )
+  , ( "Tuesday"   , "화(요일|욜)" )
+  , ( "Wednesday" , "수(요일|욜)" )
+  , ( "Thursday"  , "목(요일|욜)" )
+  , ( "Friday"    , "금(요일|욜)" )
+  , ( "Saturday"  , "토(요일|욜)" )
+  , ( "Sunday"    , "일(요일|욜)" )
+  ]
+
 ruleNamedday :: Rule
 ruleNamedday = Rule
   { name = "<named-day>에"
@@ -333,25 +344,6 @@ ruleTheDayBeforeYesterday = Rule
     ]
   , prod = \_ ->
       tt . cycleNthAfter False TG.Day (-1) $ cycleNth TG.Day (-1)
-  }
-
-ruleDayofweek :: Rule
-ruleDayofweek = Rule
-  { name = "day-of-week"
-  , pattern =
-    [ regex "(월|화|수|목|금|토|일)(요일|욜)"
-    ]
-  , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> case match of
-        "월" -> tt $ dayOfWeek 1
-        "화" -> tt $ dayOfWeek 2
-        "수" -> tt $ dayOfWeek 3
-        "목" -> tt $ dayOfWeek 4
-        "금" -> tt $ dayOfWeek 5
-        "토" -> tt $ dayOfWeek 6
-        "일" -> tt $ dayOfWeek 7
-        _ -> Nothing
-      _ -> Nothing
   }
 
 ruleNextCycle :: Rule
@@ -1157,7 +1149,6 @@ rules =
   , ruleDay
   , ruleDayWithKoreanNumeral
   , ruleDayWithKoreanNumeral2
-  , ruleDayofweek
   , ruleDurationAgo
   , ruleDurationFromNow
   , ruleEndOfTime
@@ -1228,3 +1219,4 @@ rules =
   ]
   ++ ruleHolidays
   ++ ruleSeasons
+  ++ ruleDaysOfWeek

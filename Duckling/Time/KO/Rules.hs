@@ -50,6 +50,14 @@ ruleHolidays = mkRuleHolidays
     , monthDay  5   5  )
   ]
 
+ruleSeasons :: [Rule]
+ruleSeasons = mkRuleSeasons
+  [ ( "Summer"  , "여름"  , monthDay  6   21, monthDay  9   23 )
+  , ( "Fall"    , "가을"  , monthDay  9   23, monthDay  12  21 )
+  , ( "Winter"  , "겨울"  , monthDay  12  21, monthDay  3   20 )
+  , ( "Spring"  , "봄"    , monthDay  3   20, monthDay  6   21 )
+  ]
+
 ruleNamedday :: Rule
 ruleNamedday = Rule
   { name = "<named-day>에"
@@ -186,18 +194,6 @@ ruleMonth = Rule
         v <- getIntValue token
         tt $ month v
       _ -> Nothing
-  }
-
-ruleSeason4 :: Rule
-ruleSeason4 = Rule
-  { name = "season"
-  , pattern =
-    [ regex "봄"
-    ]
-  , prod = \_ ->
-      let from = monthDay 3 20
-          to = monthDay 6 21
-      in Token Time <$> interval TTime.Open from to
   }
 
 ruleYearLatent2 :: Rule
@@ -524,30 +520,6 @@ ruleExactlyTimeofday = Rule
   , prod = \tokens -> case tokens of
       (Token Time td:_) -> tt $ notLatent td
       _ -> Nothing
-  }
-
-ruleSeason3 :: Rule
-ruleSeason3 = Rule
-  { name = "season"
-  , pattern =
-    [ regex "겨울"
-    ]
-  , prod = \_ ->
-      let from = monthDay 12 21
-          to = monthDay 3 20
-      in Token Time <$> interval TTime.Open from to
-  }
-
-ruleSeason :: Rule
-ruleSeason = Rule
-  { name = "season"
-  , pattern =
-    [ regex "여름"
-    ]
-  , prod = \_ ->
-      let from = monthDay 6 21
-          to = monthDay 9 23
-      in Token Time <$> interval TTime.Open from to
   }
 
 ruleDayWithKoreanNumeral :: Rule
@@ -894,18 +866,6 @@ ruleYesterday = Rule
   , prod = \_ -> tt . cycleNth TG.Day $ - 1
   }
 
-ruleSeason2 :: Rule
-ruleSeason2 = Rule
-  { name = "season"
-  , pattern =
-    [ regex "가을"
-    ]
-  , prod = \_ ->
-      let from = monthDay 9 23
-          to = monthDay 12 21
-      in Token Time <$> interval TTime.Open from to
-  }
-
 ruleAfterTimeofday :: Rule
 ruleAfterTimeofday = Rule
   { name = "after <time-of-day>"
@@ -1231,10 +1191,6 @@ rules =
   , ruleNoon
   , ruleNow
   , ruleQuarter
-  , ruleSeason
-  , ruleSeason2
-  , ruleSeason3
-  , ruleSeason4
   , ruleSinceTimeofday
   , ruleTheDayAfterTomorrow
   , ruleTheDayBeforeYesterday
@@ -1271,3 +1227,4 @@ rules =
   , ruleTimezone
   ]
   ++ ruleHolidays
+  ++ ruleSeasons

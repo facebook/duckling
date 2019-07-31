@@ -316,13 +316,6 @@ classifiers
                                     ("mm/ddafter <time-of-day>", -4.863680881139593),
                                     ("todayafter <time-of-day>", -4.863680881139593)],
                                n = 94}}),
-       ("season",
-        Classifier{okData =
-                     ClassData{prior = 0.0, unseen = -1.3862943611198906,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 2},
-                   koData =
-                     ClassData{prior = -infinity, unseen = -0.6931471805599453,
-                               likelihoods = HashMap.fromList [], n = 0}}),
        ("year (grain)",
         Classifier{okData =
                      ClassData{prior = -1.0608719606852628,
@@ -1238,6 +1231,13 @@ classifiers
                    koData =
                      ClassData{prior = -infinity, unseen = -0.6931471805599453,
                                likelihoods = HashMap.fromList [], n = 0}}),
+       ("Winter",
+        Classifier{okData =
+                     ClassData{prior = 0.0, unseen = -1.0986122886681098,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 1},
+                   koData =
+                     ClassData{prior = -infinity, unseen = -0.6931471805599453,
+                               likelihoods = HashMap.fromList [], n = 0}}),
        ("<time-of-day> - <time-of-day> (interval)",
         Classifier{okData =
                      ClassData{prior = -0.49247648509779407,
@@ -1358,6 +1358,13 @@ classifiers
                    koData =
                      ClassData{prior = -infinity, unseen = -0.6931471805599453,
                                likelihoods = HashMap.fromList [], n = 0}}),
+       ("Summer",
+        Classifier{okData =
+                     ClassData{prior = 0.0, unseen = -1.0986122886681098,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 1},
+                   koData =
+                     ClassData{prior = -infinity, unseen = -0.6931471805599453,
+                               likelihoods = HashMap.fromList [], n = 0}}),
        ("compose by multiplication",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -1.791759469228055,
@@ -1413,15 +1420,17 @@ classifiers
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("this <time>",
         Classifier{okData =
-                     ClassData{prior = 0.0, unseen = -2.639057329615259,
+                     ClassData{prior = 0.0, unseen = -2.70805020110221,
                                likelihoods =
                                  HashMap.fromList
-                                   [("season", -1.466337068793427), ("day", -1.466337068793427),
-                                    ("hour", -1.466337068793427), ("morning", -1.8718021769015913),
-                                    ("week-end", -1.8718021769015913)],
+                                   [("day", -1.540445040947149), ("hour", -1.540445040947149),
+                                    ("Winter", -1.9459101490553135),
+                                    ("morning", -1.9459101490553135),
+                                    ("week-end", -1.9459101490553135),
+                                    ("Summer", -1.9459101490553135)],
                                n = 4},
                    koData =
-                     ClassData{prior = -infinity, unseen = -1.791759469228055,
+                     ClassData{prior = -infinity, unseen = -1.9459101490553135,
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("day-of-week",
         Classifier{okData =

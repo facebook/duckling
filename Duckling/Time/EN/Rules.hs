@@ -104,9 +104,9 @@ ruleAbsorbOnADOW = Rule
 
 ruleAbsorbInMonthYear :: Rule
 ruleAbsorbInMonthYear = Rule
-  { name = "in|during <named-month>|year"
+  { name = "in|during|of <named-month>|year"
   , pattern =
-    [ regex "in|during"
+    [ regex "in|during|of"
     , Predicate $ or . sequence [isAMonth, isGrainOfTime TG.Year]
     ]
   , prod = \tokens -> case tokens of

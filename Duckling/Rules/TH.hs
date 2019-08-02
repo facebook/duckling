@@ -42,3 +42,4 @@ langRules (This Time) = []
 langRules (This TimeGrain) = []
 langRules (This Url) = []
 langRules (This Volume) = []
+langRules (This (CustomDimension dim)) = dimLangRules TH dim

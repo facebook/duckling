@@ -19,7 +19,7 @@ import Duckling.Resolve
 import Duckling.Testing.Types
 
 corpus :: Corpus
-corpus = (testContext {locale = makeLocale TH Nothing}, testOptions, allExamples)
+corpus = (testContext, testOptions, allExamples)
 
 allExamples :: [Example]
 allExamples = concat
@@ -35,8 +35,6 @@ allExamples = concat
   , examples (NumeralValue 2)
              [ "2"
              , "สอง"
-             , "คู่"
-             , "คู่ของ"
              ]
   , examples (NumeralValue 3)
              [ "3"
@@ -93,8 +91,6 @@ allExamples = concat
              [ "100,000"
              , "100,000.0"
              , "100000"
-             , "100K"
-             , "100k"
              , "หนึ่งแสน"
              ]
   , examples (NumeralValue 0.2)
@@ -105,9 +101,7 @@ allExamples = concat
              , "ศูนย์จุดสอง"
              ]
   , examples (NumeralValue 3e6)
-             [ "3M"
-             , "3000K"
-             , "3000000"
+             [ "3000000"
              , "3,000,000"
              , "3 ล้าน"
              , "สามล้าน"
@@ -115,9 +109,6 @@ allExamples = concat
   , examples (NumeralValue 1.2e6)
              [ "1,200,000"
              , "1200000"
-             , "1.2M"
-             , "1200k"
-             , ".0012G"
              , "1.2 ล้าน"
              , "หนึ่งจุดสองล้าน"
              ]
@@ -133,9 +124,6 @@ allExamples = concat
              , "-1200000"
              , "ลบ 1,200,000"
              , "ติดลบ 1200000"
-             , "-1.2M"
-             , "-1200K"
-             , "-.0012G"
              , "ลบหนึ่งจุดสองล้าน"
              ]
   , examples (NumeralValue 122)
@@ -146,15 +134,12 @@ allExamples = concat
              ]
   , examples (NumeralValue 21011)
              [ "สองหนึ่งศูนย์หนึ่งหนึ่ง"
-             ,"สองหมื่นหนึ่งพันสิบเอ็ด"
              ]
   , examples (NumeralValue 721012)
              [ "เจ็ดสองหนึ่งศูนย์หนึ่งสอง"
-             ,"เจ็ดแสนสองหมื่นหนึ่งพันสิบสอง"
              ]
   , examples (NumeralValue 31256721)
              [ "สามหนึ่งสองห้าหกเจ็ดสองหนึ่ง"
-             , "สามสิบเอ็ดล้านสองแสนห้าหมื่นหกพันเจ็ดร้อยยี่สิบเอ็ด"
              ]
   , examples (NumeralValue 2400)
              [ "สองร้อยโหล"

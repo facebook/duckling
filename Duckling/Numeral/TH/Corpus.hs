@@ -45,11 +45,11 @@ allExamples = concat
              [ "10"
              , "สิบ"
              ]
-  -- , examples (NumeralValue 12)
-  --            [ "12"
-  --            , "สิบสอง"
-  --            , "โหล"
-  --            ]
+  , examples (NumeralValue 12)
+             [ "12"
+             , "สิบสอง"
+             , "โหล"
+             ]
   , examples (NumeralValue 14)
              [ "14"
              , "สิบสี่"
@@ -117,13 +117,11 @@ allExamples = concat
   , examples (NumeralValue (-504))
              [ "-504"
              ]
-  -- , examples (NumeralValue (-1.2e6))
-  --            [ "- 1,200,000"
-  --            , "-1200000"
-  --            , "ลบ 1,200,000"
-  --            , "ติดลบ 1200000"
-  --            , "ลบหนึ่งจุดสองล้าน"
-  --            ]
+  , examples (NumeralValue (-1.2e6))
+             [ "- 1,200,000"
+             , "-1200000"
+             , "ลบ 1,200,000"
+             ]
   , examples (NumeralValue 2e5)
              [ "สองแสน"
              ]

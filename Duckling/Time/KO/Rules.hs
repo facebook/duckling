@@ -26,6 +26,49 @@ import qualified Duckling.Ordinal.Types as TOrdinal
 import qualified Duckling.Time.Types as TTime
 import qualified Duckling.TimeGrain.Types as TG
 
+ruleHolidays :: [Rule]
+ruleHolidays = mkRuleHolidays
+  [ ( "Liberation Day"            , "광복절"
+    , monthDay  8   15 )
+  , ( "Constitution Day"          , "제헌절"
+    , monthDay  7   17 )
+  , ( "New Year's Day"            , "(신정)|(설날)"
+    , monthDay  1   1  )
+  , ( "Hangul Day"                , "한글날"
+    , monthDay  10  9  )
+  , ( "National Foundation Day"   , "개천절"
+    , monthDay  10  3  )
+  , ( "Independence Movement Day" , "삼일절"
+    , monthDay  3   1  )
+  , ( "Memorial Day"              , "현충일"
+    , monthDay  6   6  )
+  , ( "Christmas"                 , "크리스마스"
+    , monthDay  12  25 )
+  , ( "Christmas Eve"             , "(크리스마스)?이브"
+    , monthDay  12  24 )
+  , ( "Children's Day"            , "어린이날"
+    , monthDay  5   5  )
+  ]
+
+ruleSeasons :: [Rule]
+ruleSeasons = mkRuleSeasons
+  [ ( "Summer"  , "여름"  , monthDay  6   21, monthDay  9   23 )
+  , ( "Fall"    , "가을"  , monthDay  9   23, monthDay  12  21 )
+  , ( "Winter"  , "겨울"  , monthDay  12  21, monthDay  3   20 )
+  , ( "Spring"  , "봄"    , monthDay  3   20, monthDay  6   21 )
+  ]
+
+ruleDaysOfWeek :: [Rule]
+ruleDaysOfWeek = mkRuleDaysOfWeek
+  [ ( "Monday"    , "월(요일|욜)" )
+  , ( "Tuesday"   , "화(요일|욜)" )
+  , ( "Wednesday" , "수(요일|욜)" )
+  , ( "Thursday"  , "목(요일|욜)" )
+  , ( "Friday"    , "금(요일|욜)" )
+  , ( "Saturday"  , "토(요일|욜)" )
+  , ( "Sunday"    , "일(요일|욜)" )
+  ]
+
 ruleNamedday :: Rule
 ruleNamedday = Rule
   { name = "<named-day>에"
@@ -38,15 +81,6 @@ ruleNamedday = Rule
       _ -> Nothing
   }
 
-ruleLiberationDay :: Rule
-ruleLiberationDay = Rule
-  { name = "Liberation Day"
-  , pattern =
-    [ regex "광복절"
-    ]
-  , prod = \_ -> tt $ monthDay 8 15
-  }
-
 ruleTheDayAfterTomorrow :: Rule
 ruleTheDayAfterTomorrow = Rule
   { name = "the day after tomorrow - 내일모레"
@@ -55,15 +89,6 @@ ruleTheDayAfterTomorrow = Rule
     ]
   , prod = \_ ->
       tt . cycleNthAfter False TG.Day 1 $ cycleNth TG.Day 1
-  }
-
-ruleConstitutionDay :: Rule
-ruleConstitutionDay = Rule
-  { name = "Constitution Day"
-  , pattern =
-    [ regex "제헌절"
-    ]
-  , prod = \_ -> tt $ monthDay 6 17
   }
 
 ruleTimeofday4 :: Rule
@@ -117,15 +142,6 @@ ruleThisDayofweek = Rule
       (_:Token Time td:_) ->
         tt $ predNth 0 False td
       _ -> Nothing
-  }
-
-ruleNewYearsDay :: Rule
-ruleNewYearsDay = Rule
-  { name = "New Year's Day"
-  , pattern =
-    [ regex "신정|설날"
-    ]
-  , prod = \_ -> tt $ monthDay 1 1
   }
 
 ruleLastTime :: Rule
@@ -189,18 +205,6 @@ ruleMonth = Rule
         v <- getIntValue token
         tt $ month v
       _ -> Nothing
-  }
-
-ruleSeason4 :: Rule
-ruleSeason4 = Rule
-  { name = "season"
-  , pattern =
-    [ regex "봄"
-    ]
-  , prod = \_ ->
-      let from = monthDay 3 20
-          to = monthDay 6 21
-      in Token Time <$> interval TTime.Open from to
   }
 
 ruleYearLatent2 :: Rule
@@ -342,25 +346,6 @@ ruleTheDayBeforeYesterday = Rule
       tt . cycleNthAfter False TG.Day (-1) $ cycleNth TG.Day (-1)
   }
 
-ruleDayofweek :: Rule
-ruleDayofweek = Rule
-  { name = "day-of-week"
-  , pattern =
-    [ regex "(월|화|수|목|금|토|일)(요일|욜)"
-    ]
-  , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> case match of
-        "월" -> tt $ dayOfWeek 1
-        "화" -> tt $ dayOfWeek 2
-        "수" -> tt $ dayOfWeek 3
-        "목" -> tt $ dayOfWeek 4
-        "금" -> tt $ dayOfWeek 5
-        "토" -> tt $ dayOfWeek 6
-        "일" -> tt $ dayOfWeek 7
-        _ -> Nothing
-      _ -> Nothing
-  }
-
 ruleNextCycle :: Rule
 ruleNextCycle = Rule
   { name = "next <cycle>"
@@ -450,15 +435,6 @@ ruleAfternoon = Rule
            interval TTime.Open from to
   }
 
-ruleChristmasEve :: Rule
-ruleChristmasEve = Rule
-  { name = "christmas eve"
-  , pattern =
-    [ regex "(크리스마스)?이브"
-    ]
-  , prod = \_ -> tt $ monthDay 12 24
-  }
-
 ruleInduringThePartofday :: Rule
 ruleInduringThePartofday = Rule
   { name = "in|during the <part-of-day>"
@@ -536,30 +512,6 @@ ruleExactlyTimeofday = Rule
   , prod = \tokens -> case tokens of
       (Token Time td:_) -> tt $ notLatent td
       _ -> Nothing
-  }
-
-ruleSeason3 :: Rule
-ruleSeason3 = Rule
-  { name = "season"
-  , pattern =
-    [ regex "겨울"
-    ]
-  , prod = \_ ->
-      let from = monthDay 12 21
-          to = monthDay 3 20
-      in Token Time <$> interval TTime.Open from to
-  }
-
-ruleSeason :: Rule
-ruleSeason = Rule
-  { name = "season"
-  , pattern =
-    [ regex "여름"
-    ]
-  , prod = \_ ->
-      let from = monthDay 6 21
-          to = monthDay 9 23
-      in Token Time <$> interval TTime.Open from to
   }
 
 ruleDayWithKoreanNumeral :: Rule
@@ -884,15 +836,6 @@ ruleTimeofday3 = Rule
       _ -> Nothing
   }
 
-ruleMemorialDay :: Rule
-ruleMemorialDay = Rule
-  { name = "Memorial Day"
-  , pattern =
-    [ regex "현충일"
-    ]
-  , prod = \_ -> tt $ monthDay 6 6
-  }
-
 ruleYearLatent :: Rule
 ruleYearLatent = Rule
   { name = "year (latent)"
@@ -915,18 +858,6 @@ ruleYesterday = Rule
   , prod = \_ -> tt . cycleNth TG.Day $ - 1
   }
 
-ruleSeason2 :: Rule
-ruleSeason2 = Rule
-  { name = "season"
-  , pattern =
-    [ regex "가을"
-    ]
-  , prod = \_ ->
-      let from = monthDay 9 23
-          to = monthDay 12 21
-      in Token Time <$> interval TTime.Open from to
-  }
-
 ruleAfterTimeofday :: Rule
 ruleAfterTimeofday = Rule
   { name = "after <time-of-day>"
@@ -938,15 +869,6 @@ ruleAfterTimeofday = Rule
       (Token Time td:_) ->
         tt . notLatent $ withDirection TTime.After td
       _ -> Nothing
-  }
-
-ruleChristmas :: Rule
-ruleChristmas = Rule
-  { name = "christmas"
-  , pattern =
-    [ regex "크리스마스"
-    ]
-  , prod = \_ -> tt $ monthDay 12 25
   }
 
 ruleTimeofdayAmpm :: Rule
@@ -1006,15 +928,6 @@ ruleTimeofday = Rule
       _ -> Nothing
   }
 
-ruleHangulDay :: Rule
-ruleHangulDay = Rule
-  { name = "Hangul Day"
-  , pattern =
-    [ regex "한글날"
-    ]
-  , prod = \_ -> tt $ monthDay 10 9
-  }
-
 ruleHhmm :: Rule
 ruleHhmm = Rule
   { name = "hh:mm"
@@ -1055,15 +968,6 @@ ruleYear = Rule
         v <- getIntValue token
         tt $ year v
       _ -> Nothing
-  }
-
-ruleChildrensDay :: Rule
-ruleChildrensDay = Rule
-  { name = "Children's Day"
-  , pattern =
-    [ regex "어린이날"
-    ]
-  , prod = \_ -> tt $ monthDay 5 5
   }
 
 ruleAbsorptionOfAfterNamedDay :: Rule
@@ -1136,15 +1040,6 @@ ruleTimeofdayTimeofdayInterval = Rule
       _ -> Nothing
   }
 
-ruleNationalFoundationDay :: Rule
-ruleNationalFoundationDay = Rule
-  { name = "National Foundation Day"
-  , pattern =
-    [ regex "개천절"
-    ]
-  , prod = \_ -> tt $ monthDay 10 3
-  }
-
 ruleEveningnight :: Rule
 ruleEveningnight = Rule
   { name = "evening|night"
@@ -1156,15 +1051,6 @@ ruleEveningnight = Rule
           to = hour False 0
       in Token Time . partOfDay . mkLatent <$>
            interval TTime.Open from to
-  }
-
-ruleIndependenceMovementDay :: Rule
-ruleIndependenceMovementDay = Rule
-  { name = "Independence Movement Day"
-  , pattern =
-    [ regex "삼일절"
-    ]
-  , prod = \_ -> tt $ monthDay 3 1
   }
 
 ruleMmddyyyy :: Rule
@@ -1258,29 +1144,22 @@ rules =
   , ruleAfternoon
   , ruleAmpmTimeofday
   , ruleByTime
-  , ruleChildrensDay
-  , ruleChristmas
-  , ruleChristmasEve
-  , ruleConstitutionDay
   , ruleDate
   , ruleDatetimeDatetimeInterval
   , ruleDay
   , ruleDayWithKoreanNumeral
   , ruleDayWithKoreanNumeral2
-  , ruleDayofweek
   , ruleDurationAgo
   , ruleDurationFromNow
   , ruleEndOfTime
   , ruleEveningnight
   , ruleExactlyTimeofday
-  , ruleHangulDay
   , ruleHhmm
   , ruleHhmmMilitaryAmpm
   , ruleHhmmss
   , ruleHourofdayIntegerAsRelativeMinutes
   , ruleHourofdayHalfAsRelativeMinutes
   , ruleInDuration
-  , ruleIndependenceMovementDay
   , ruleInduringThePartofday
   , ruleIntegerHourofdayRelativeMinutes
   , ruleHalfHourofdayRelativeMinutes
@@ -1289,9 +1168,7 @@ rules =
   , ruleLastCycle
   , ruleLastNCycle
   , ruleLastTime
-  , ruleLiberationDay
   , ruleLunch
-  , ruleMemorialDay
   , ruleMidnighteodendOfDay
   , ruleMmdd
   , ruleMmddyyyy
@@ -1299,18 +1176,12 @@ rules =
   , ruleMorning
   , ruleNamedday
   , ruleNamedmonth
-  , ruleNationalFoundationDay
-  , ruleNewYearsDay
   , ruleNextCycle
   , ruleNextNCycle
   , ruleNextTime
   , ruleNoon
   , ruleNow
   , ruleQuarter
-  , ruleSeason
-  , ruleSeason2
-  , ruleSeason3
-  , ruleSeason4
   , ruleSinceTimeofday
   , ruleTheDayAfterTomorrow
   , ruleTheDayBeforeYesterday
@@ -1346,3 +1217,6 @@ rules =
   , ruleSeconds
   , ruleTimezone
   ]
+  ++ ruleHolidays
+  ++ ruleSeasons
+  ++ ruleDaysOfWeek

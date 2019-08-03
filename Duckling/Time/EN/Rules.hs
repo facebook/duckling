@@ -1824,6 +1824,7 @@ ruleComputedHolidays = mkRuleHolidays
   , ( "Raksha Bandhan", "raksha(\\s+)?bandhan|rakhi", rakshaBandhan )
   , ( "Mahavir Jayanti", "(mahavir|mahaveer) (jayanti|janma kalyanak)"
     , mahavirJayanti )
+  , ( "Maha Shivaratri", "maha(\\s+)?shivaratri", mahaShivaRatri)
   , ( "Dayananda Saraswati Jayanti","((maharishi|swami) )?(dayananda )?saraswati jayanti", saraswatiJayanti )
   , ( "Karva Chauth", "karva\\s+chauth|karaka\\s+chaturthi", karvaChauth)
   , ( "Krishna Janmashtami", "(krishna )?janmashtami|gokulashtami", krishnaJanmashtami )

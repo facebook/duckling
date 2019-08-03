@@ -67,7 +67,6 @@ allExamples = concat
              ]
   , examples (NumeralValue 33)
              [ "33"
-             , "สามสิบสาม"
              , "0033"
              ]
   , examples (NumeralValue 24)

@@ -54,6 +54,7 @@ zeroNineteenMap = HashMap.fromList
   , ( "เก้า"     , 9 )
   , ( "สิบ"      , 10 )
   , ( "สิบเอ็ด"   , 11 )
+  , ( "สิบหนึ่ง"   , 11 )
   , ( "สิบสอง"   , 12 )
   , ( "สิบสาม" , 13 )
   , ( "สิบสี่" , 14 )
@@ -76,7 +77,7 @@ ruleToNineteen = Rule
   { name = "integer (0..19)"
   -- e.g. fourteen must be before four, otherwise four will always shadow fourteen
   , pattern =
-    [ regex "(ไม่มี|ศูนย์|หนึ่ง|(คู่)s?( ของ)?|(คู่)s?( นึง)?|สิบเอ็ด|สิบสอง|สิบสาม|สิบสี่|สิบห้า|สิบหก|สิบเจ็ด|สิบแปด|สิบเก้า|สอง|สาม|สี่|ห้า|หก|เจ็ด|แปด|เก้า|สิบ)"
+    [ regex "(ไม่มี|ศูนย์|สิบหนึ่ง|หนึ่ง|(คู่)s?( ของ)?|(คู่)s?( นึง)?|สิบเอ็ด|เอ็ด|สิบสอง|สิบสาม|สิบสี่|สิบห้า|สิบหก|สิบเจ็ด|สิบแปด|สิบเก้า|สอง|สาม|สี่|ห้า|หก|เจ็ด|แปด|เก้า|สิบ)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
@@ -110,10 +111,241 @@ ruleTens = Rule
       _ -> Nothing
   }
 
+digitsHundredTwentyToTwentyNineMap :: HashMap Text Integer
+digitsHundredTwentyToTwentyNineMap = HashMap.fromList
+  [ ( "ร้อยยี่สิบ"      , 120 )
+  , ( "ร้อยยี่สิบเอ็ด"      , 121 )
+  , ( "ร้อยยี่สิบหนึ่ง"      , 121 )
+  , ( "ร้อยยี่สิบสอง"      , 122 )
+  , ( "ร้อยยี่สิบสาม"      , 123 )
+  , ( "ร้อยยี่สิบสี่"      , 124 )
+  , ( "ร้อยยี่สิบห้า"      , 125 )
+  , ( "ร้อยยี่สิบหก"      , 126 )
+  , ( "ร้อยยี่สิบเจ็ด"      , 127 )
+  , ( "ร้อยยี่สิบแปด"      , 128 )
+  , ( "ร้อยยี่สิบเก้า"      , 129 )
+  , ( "หนึ่งร้อยยี่สิบ"      , 120 )
+  , ( "หนึ่งร้อยยี่สิบเอ็ด"      , 121 )
+  , ( "หนึ่งร้อยยี่สิบหนึ่ง"      , 121 )
+  , ( "หนึ่งร้อยยี่สิบสอง"      , 122 )
+  , ( "หนึ่งร้อยยี่สิบสาม"      , 123 )
+  , ( "หนึ่งร้อยยี่สิบสี่"      , 124 )
+  , ( "หนึ่งร้อยยี่สิบห้า"      , 125 )
+  , ( "หนึ่งร้อยยี่สิบหก"      , 126 )
+  , ( "หนึ่งร้อยยี่สิบเจ็ด"      , 127 )
+  , ( "หนึ่งร้อยยี่สิบแปด"      , 128 )
+  , ( "หนึ่งร้อยยี่สิบเก้า"      , 129 )
+  , ( "สองร้อยยี่สิบ"      , 220 )
+  , ( "สองร้อยยี่สิบเอ็ด"      , 221 )
+  , ( "สองร้อยยี่สิบหนึ่ง"      , 221 )
+  , ( "สองร้อยยี่สิบสอง"      , 222 )
+  , ( "สองร้อยยี่สิบสาม"      , 223 )
+  , ( "สองร้อยยี่สิบสี่"      , 224 )
+  , ( "สองร้อยยี่สิบห้า"      , 225 )
+  , ( "สองร้อยยี่สิบหก"      , 226 )
+  , ( "สองร้อยยี่สิบเจ็ด"      , 227 )
+  , ( "สองร้อยยี่สิบแปด"      , 228 )
+  , ( "สองร้อยยี่สิบเก้า"      , 229 )
+  , ( "สามร้อยยี่สิบ"      , 320 )
+  , ( "สามร้อยยี่สิบเอ็ด"      , 321 )
+  , ( "สามร้อยยี่สิบหนึ่ง"      , 321 )
+  , ( "สามร้อยยี่สิบสอง"      , 322 )
+  , ( "สามร้อยยี่สิบสาม"      , 323 )
+  , ( "สามร้อยยี่สิบสี่"      , 324 )
+  , ( "สามร้อยยี่สิบห้า"      , 325 )
+  , ( "สามร้อยยี่สิบหก"      , 326 )
+  , ( "สามร้อยยี่สิบเจ็ด"      , 327 )
+  , ( "สามร้อยยี่สิบแปด"      , 328 )
+  , ( "สามร้อยยี่สิบเก้า"      , 329 )
+  , ( "สี่ร้อยยี่สิบ"      , 420 )
+  , ( "สี่ร้อยยี่สิบเอ็ด"      , 421 )
+  , ( "สี่ร้อยยี่สิบหนึ่ง"      , 421 )
+  , ( "สี่ร้อยยี่สิบสอง"      , 422 )
+  , ( "สี่ร้อยยี่สิบสาม"      , 423 )
+  , ( "สี่ร้อยยี่สิบสี่"      , 424 )
+  , ( "สี่ร้อยยี่สิบห้า"      , 425 )
+  , ( "สี่ร้อยยี่สิบหก"      , 426 )
+  , ( "สี่ร้อยยี่สิบเจ็ด"      , 427 )
+  , ( "สี่ร้อยยี่สิบแปด"      , 428 )
+  , ( "สี่ร้อยยี่สิบเก้า"      , 429 )
+  , ( "ห้าร้อยยี่สิบ"      , 520 )
+  , ( "ห้าร้อยยี่สิบเอ็ด"      , 521 )
+  , ( "ห้าร้อยยี่สิบหนึ่ง"      , 521 )
+  , ( "ห้าร้อยยี่สิบสอง"      , 522 )
+  , ( "ห้าร้อยยี่สิบสาม"      , 523 )
+  , ( "ห้าร้อยยี่สิบสี่"      , 524 )
+  , ( "ห้าร้อยยี่สิบห้า"      , 525 )
+  , ( "ห้าร้อยยี่สิบหก"      , 526 )
+  , ( "ห้าร้อยยี่สิบเจ็ด"      , 527 )
+  , ( "ห้าร้อยยี่สิบแปด"      , 528 )
+  , ( "ห้าร้อยยี่สิบเก้า"      , 529 )
+  , ( "หกร้อยยี่สิบ"      , 620 )
+  , ( "หกร้อยยี่สิบเอ็ด"      , 621 )
+  , ( "หกร้อยยี่สิบหนึ่ง"      , 621 )
+  , ( "หกร้อยยี่สิบสอง"      , 622 )
+  , ( "หกร้อยยี่สิบสาม"      , 623 )
+  , ( "หกร้อยยี่สิบสี่"      , 624 )
+  , ( "หกร้อยยี่สิบห้า"      , 625 )
+  , ( "หกร้อยยี่สิบหก"      , 626 )
+  , ( "หกร้อยยี่สิบเจ็ด"      , 627 )
+  , ( "หกร้อยยี่สิบแปด"      , 628 )
+  , ( "หกร้อยยี่สิบเก้า"      , 629 )
+  , ( "เจ็ดร้อยยี่สิบ"      , 720 )
+  , ( "เจ็ดร้อยยี่สิบเอ็ด"      , 721 )
+  , ( "เจ็ดร้อยยี่สิบหนึ่ง"      , 721 )
+  , ( "เจ็ดร้อยยี่สิบสอง"      , 722 )
+  , ( "เจ็ดร้อยยี่สิบสาม"      , 723 )
+  , ( "เจ็ดร้อยยี่สิบสี่"      , 724 )
+  , ( "เจ็ดร้อยยี่สิบห้า"      , 725 )
+  , ( "เจ็ดร้อยยี่สิบหก"      , 726 )
+  , ( "เจ็ดร้อยยี่สิบเจ็ด"      , 727 )
+  , ( "เจ็ดร้อยยี่สิบแปด"      , 728 )
+  , ( "เจ็ดร้อยยี่สิบเก้า"      , 729 )
+  , ( "แปดร้อยยี่สิบ"      , 820 )
+  , ( "แปดร้อยยี่สิบเอ็ด"      , 821 )
+  , ( "แปดร้อยยี่สิบหนึ่ง"      , 821 )
+  , ( "แปดร้อยยี่สิบสอง"      , 822 )
+  , ( "แปดร้อยยี่สิบสาม"      , 823 )
+  , ( "แปดร้อยยี่สิบสี่"      , 824 )
+  , ( "แปดร้อยยี่สิบห้า"      , 825 )
+  , ( "แปดร้อยยี่สิบหก"      , 826 )
+  , ( "แปดร้อยยี่สิบเจ็ด"      , 827 )
+  , ( "แปดร้อยยี่สิบแปด"      , 828 )
+  , ( "แปดร้อยยี่สิบเก้า"      , 829 )
+  , ( "เก้าร้อยยี่สิบ"      , 920 )
+  , ( "เก้าร้อยยี่สิบเอ็ด"      , 921 )
+  , ( "เก้าร้อยยี่สิบหนึ่ง"      , 921 )
+  , ( "เก้าร้อยยี่สิบสอง"      , 922 )
+  , ( "เก้าร้อยยี่สิบสาม"      , 923 )
+  , ( "เก้าร้อยยี่สิบสี่"      , 924 )
+  , ( "เก้าร้อยยี่สิบห้า"      , 925 )
+  , ( "เก้าร้อยยี่สิบหก"      , 926 )
+  , ( "เก้าร้อยยี่สิบเจ็ด"      , 927 )
+  , ( "เก้าร้อยยี่สิบแปด"      , 928 )
+  , ( "เก้าร้อยยี่สิบเก้า"      , 929 )
+  ]
+
+ruleOneHundredTwentyToTewntyNine :: Rule
+ruleOneHundredTwentyToTewntyNine = Rule
+  { name = "integer (120,121,...,129)"
+  , pattern =
+    [ regex "(หนึ่งร้อยยี่สิบเอ็ด|หนึ่งร้อยยี่สิบสอง|หนึ่งร้อยยี่สิบสาม|หนึ่งร้อยยี่สิบสี่|หนึ่งร้อยยี่สิบห้า|หนึ่งร้อยยี่สิบหก|หนึ่งร้อยยี่สิบเจ็ด|หนึ่งร้อยยี่สิบแปด|หนึ่งร้อยยี่สิบเก้า|หนึ่งร้อยยี่สิบ|ร้อยยี่สิบเอ็ด|ร้อยยี่สิบสอง|ร้อยยี่สิบสาม|ร้อยยี่สิบสี่|ร้อยยี่สิบห้า|ร้อยยี่สิบหก|ร้อยยี่สิบเจ็ด|ร้อยยี่สิบแปด|ร้อยยี่สิบเก้า|ร้อยยี่สิบ)"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        let x = Text.toLower match in
+        (HashMap.lookup x digitsHundredTwentyToTwentyNineMap >>= integer)
+      _ -> Nothing
+  }
+
+ruleTwoHundredTwentyToTewntyNine :: Rule
+ruleTwoHundredTwentyToTewntyNine = Rule
+  { name = "integer (220,221,...,229)"
+  , pattern =
+    [ regex "(สองร้อยยี่สิบเอ็ด|สองร้อยยี่สิบหนึ่ง|สองร้อยยี่สิบสอง|สองร้อยยี่สิบสาม|สองร้อยยี่สิบสี่|สองร้อยยี่สิบห้า|สองร้อยยี่สิบหก|สองร้อยยี่สิบเจ็ด|สองร้อยยี่สิบแปด|สองร้อยยี่สิบเก้า|สองร้อยยี่สิบ)"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        let x = Text.toLower match in
+        (HashMap.lookup x digitsHundredTwentyToTwentyNineMap >>= integer)
+      _ -> Nothing
+  }
+
+ruleThreeHundredTwentyToTewntyNine :: Rule
+ruleThreeHundredTwentyToTewntyNine = Rule
+  { name = "integer (320,321,...,329)"
+  , pattern =
+    [ regex "(สามร้อยยี่สิบเอ็ด|สามร้อยยี่สิบหนึ่ง|สามร้อยยี่สิบสอง|สามร้อยยี่สิบสาม|สามร้อยยี่สิบสี่|สามร้อยยี่สิบห้า|สามร้อยยี่สิบหก|สามร้อยยี่สิบเจ็ด|สามร้อยยี่สิบแปด|สามร้อยยี่สิบเก้า|สามร้อยยี่สิบ)"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        let x = Text.toLower match in
+        (HashMap.lookup x digitsHundredTwentyToTwentyNineMap >>= integer)
+      _ -> Nothing
+  }
+
+ruleFourHundredTwentyToTewntyNine :: Rule
+ruleFourHundredTwentyToTewntyNine = Rule
+  { name = "integer (420,421,...,429)"
+  , pattern =
+    [ regex "(สี่ร้อยยี่สิบเอ็ด|สี่ร้อยยี่สิบหนึ่ง|สี่ร้อยยี่สิบสอง|สี่ร้อยยี่สิบสาม|สี่ร้อยยี่สิบสี่|สี่ร้อยยี่สิบห้า|สี่ร้อยยี่สิบหก|สี่ร้อยยี่สิบเจ็ด|สี่ร้อยยี่สิบแปด|สี่ร้อยยี่สิบเก้า|สี่ร้อยยี่สิบ)"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        let x = Text.toLower match in
+        (HashMap.lookup x digitsHundredTwentyToTwentyNineMap >>= integer)
+      _ -> Nothing
+  }
+
+ruleFiveHundredTwentyToTewntyNine :: Rule
+ruleFiveHundredTwentyToTewntyNine = Rule
+  { name = "integer (520,521,...,529)"
+  , pattern =
+    [ regex "(ห้าร้อยยี่สิบเอ็ด|ห้าร้อยยี่สิบหนึ่ง|ห้าร้อยยี่สิบสอง|ห้าร้อยยี่สิบสาม|ห้าร้อยยี่สิบสี่|ห้าร้อยยี่สิบห้า|ห้าร้อยยี่สิบหก|ห้าร้อยยี่สิบเจ็ด|ห้าร้อยยี่สิบแปด|ห้าร้อยยี่สิบเก้า|ห้าร้อยยี่สิบ)"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        let x = Text.toLower match in
+        (HashMap.lookup x digitsHundredTwentyToTwentyNineMap >>= integer)
+      _ -> Nothing
+  }
+
+ruleSixHundredTwentyToTewntyNine :: Rule
+ruleSixHundredTwentyToTewntyNine = Rule
+  { name = "integer (620,621,...,629)"
+  , pattern =
+    [ regex "(หกร้อยยี่สิบเอ็ด|หกร้อยยี่สิบหนึ่ง|หกร้อยยี่สิบสอง|หกร้อยยี่สิบสาม|หกร้อยยี่สิบสี่|หกร้อยยี่สิบห้า|หกร้อยยี่สิบหก|หกร้อยยี่สิบเจ็ด|หกร้อยยี่สิบแปด|หกร้อยยี่สิบเก้า|หกร้อยยี่สิบ)"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        let x = Text.toLower match in
+        (HashMap.lookup x digitsHundredTwentyToTwentyNineMap >>= integer)
+      _ -> Nothing
+  }
+
+ruleSevenHundredTwentyToTewntyNine :: Rule
+ruleSevenHundredTwentyToTewntyNine = Rule
+  { name = "integer (720,721,...,729)"
+  , pattern =
+    [ regex "(เจ็ดร้อยยี่สิบเอ็ด|เจ็ดร้อยยี่สิบหนึ่ง|เจ็ดร้อยยี่สิบสอง|เจ็ดร้อยยี่สิบสาม|เจ็ดร้อยยี่สิบสี่|เจ็ดร้อยยี่สิบห้า|เจ็ดร้อยยี่สิบหก|เจ็ดร้อยยี่สิบเจ็ด|เจ็ดร้อยยี่สิบแปด|เจ็ดร้อยยี่สิบเก้า|เจ็ดร้อยยี่สิบ)"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        let x = Text.toLower match in
+        (HashMap.lookup x digitsHundredTwentyToTwentyNineMap >>= integer)
+      _ -> Nothing
+  }
+
+ruleEightHundredTwentyToTewntyNine :: Rule
+ruleEightHundredTwentyToTewntyNine = Rule
+  { name = "integer (820,821,...,829)"
+  , pattern =
+    [ regex "(แปดร้อยยี่สิบเอ็ด|แปดร้อยยี่สิบหนึ่ง|แปดร้อยยี่สิบสอง|แปดร้อยยี่สิบสาม|แปดร้อยยี่สิบสี่|แปดร้อยยี่สิบห้า|แปดร้อยยี่สิบหก|แปดร้อยยี่สิบเจ็ด|แปดร้อยยี่สิบแปด|แปดร้อยยี่สิบเก้า|แปดร้อยยี่สิบ)"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        let x = Text.toLower match in
+        (HashMap.lookup x digitsHundredTwentyToTwentyNineMap >>= integer)
+      _ -> Nothing
+  }
+
+ruleNineHundredTwentyToTewntyNine :: Rule
+ruleNineHundredTwentyToTewntyNine = Rule
+  { name = "integer (920,921,...,929)"
+  , pattern =
+    [ regex "(เก้าร้อยยี่สิบเอ็ด|เก้าร้อยยี่สิบหนึ่ง|เก้าร้อยยี่สิบสอง|เก้าร้อยยี่สิบสาม|เก้าร้อยยี่สิบสี่|เก้าร้อยยี่สิบห้า|เก้าร้อยยี่สิบหก|เก้าร้อยยี่สิบเจ็ด|เก้าร้อยยี่สิบแปด|เก้าร้อยยี่สิบเก้า|เก้าร้อยยี่สิบ)"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        let x = Text.toLower match in
+        (HashMap.lookup x digitsHundredTwentyToTwentyNineMap >>= integer)
+      _ -> Nothing
+  }
+
 rulePowersOfTen :: Rule
 rulePowersOfTen = Rule
   { name = "powers of tens"
-  , pattern = [regex "(ร้อย|พัน|หมื่น|แสน|ล้าน|สิบล้าน|ร้อยล้าน|พันล้าน)s?"]
+  , pattern = [regex "(ร้อย|พัน|หมื่น|แสน|ล้าน|สิบล้าน|ร้อยล้าน|พันล้าน)"]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match : _)) : _) ->
         case Text.toLower match of
@@ -328,7 +560,16 @@ ruleMultiply = Rule
 
 rules :: [Rule]
 rules =
-  [ ruleToNineteen
+  [ ruleNineHundredTwentyToTewntyNine
+  , ruleEightHundredTwentyToTewntyNine
+  , ruleSevenHundredTwentyToTewntyNine
+  , ruleSixHundredTwentyToTewntyNine
+  , ruleFiveHundredTwentyToTewntyNine
+  , ruleFourHundredTwentyToTewntyNine
+  , ruleThreeHundredTwentyToTewntyNine
+  , ruleTwoHundredTwentyToTewntyNine
+  , ruleOneHundredTwentyToTewntyNine
+  , ruleToNineteen
   , ruleTens
   , rulePowersOfTen
   , ruleCompositeTens

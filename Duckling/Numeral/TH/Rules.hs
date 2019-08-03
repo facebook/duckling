@@ -43,6 +43,7 @@ zeroNineteenMap = HashMap.fromList
   [ ( "ไม่มี"     , 0 )
   , ( "ศูนย์"     , 0 )
   , ( "หนึ่ง"      , 1 )
+  , ( "เอ็ด"      , 1 )
   , ( "สอง"      , 2 )
   , ( "สาม"    , 3 )
   , ( "สี่"     , 4 )
@@ -75,7 +76,7 @@ ruleToNineteen = Rule
   { name = "integer (0..19)"
   -- e.g. fourteen must be before four, otherwise four will always shadow fourteen
   , pattern =
-    [ regex "(ไม่มี|ศูนย์|หนึ่ง|สิบสอง|สอง|(คู่)s?( ของ)?|(คู่)s?( นึง)?|สิบสาม|สาม|สิบสี่|สี่|สิบห้า|ห้า|สิบหก|หก|สิบเจ็ด|เจ็ด|สิบแปด|แปด|สิบเก้า|เก้า|สิบ|สิบเอ็ด)"
+    [ regex "(ไม่มี|ศูนย์|หนึ่ง|(คู่)s?( ของ)?|(คู่)s?( นึง)?|สิบเอ็ด|สิบสอง|สิบสาม|สิบสี่|สิบห้า|สิบหก|สิบเจ็ด|สิบแปด|สิบเก้า|สอง|สาม|สี่|ห้า|หก|เจ็ด|แปด|เก้า|สิบ)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
@@ -141,6 +142,25 @@ ruleCompositeTens = Rule
        _:
        Token Numeral NumeralData{TNumeral.value = units}:
        _) -> double $ tens + units
+      _ -> Nothing
+  }
+
+ruleSumTenDigits :: Rule
+ruleSumTenDigits = Rule
+  { name = "สามสิบสี่"
+  , pattern =
+    [ regex "(ยี่สิบ|สามสิบ|สี่สิบ|ห้าสิบ|หกสิบ|เจ็ดสิบ|แปดสิบ|เก้าสิบ)"
+    , regex "(หนึ่ง|เอ็ด|สอง|สาม|สี่|ห้า|หก|เจ็ด|แปด|เก้า|สิบ)"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (m1:_)):
+       Token RegexMatch (GroupMatch (m2:_)):
+       _) -> do
+       let x1 = Text.toLower m1
+       let x2 = Text.toLower m2
+       hundreds <- HashMap.lookup x1 tensMap
+       rest <- HashMap.lookup x2 zeroNineteenMap
+       integer (hundreds + rest)
       _ -> Nothing
   }
 
@@ -312,8 +332,7 @@ rules =
   , ruleTens
   , rulePowersOfTen
   , ruleCompositeTens
-  , ruleSkipHundreds1
-  , ruleSkipHundreds2
+  , ruleSumTenDigits
   , ruleDotSpelledOut
   , ruleLeadingDotSpelledOut
   , ruleDecimals

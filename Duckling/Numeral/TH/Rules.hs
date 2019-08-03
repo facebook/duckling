@@ -75,7 +75,7 @@ ruleToNineteen = Rule
   { name = "integer (0..19)"
   -- e.g. fourteen must be before four, otherwise four will always shadow fourteen
   , pattern =
-    [ regex "(ไม่มี|ศูนย์|หนึ่ง|สอง|(คู่)s?( ของ)?|(คู่)s?( นึง)?|สาม|สิบสี่|สี่|สิบห้า|ห้า|สิบหก|หก|สิบเจ็ด|เจ็ด|สิบแปด|แปด|สิบเก้า|เก้า|สิบ|สิบเอ็ด|สิบสอง|สิบสาม)"
+    [ regex "(ไม่มี|ศูนย์|หนึ่ง|สิบสอง|สอง|(คู่)s?( ของ)?|(คู่)s?( นึง)?|สิบสาม|สาม|สิบสี่|สี่|สิบห้า|ห้า|สิบหก|หก|สิบเจ็ด|เจ็ด|สิบแปด|แปด|สิบเก้า|เก้า|สิบ|สิบเอ็ด)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->

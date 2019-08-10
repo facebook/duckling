@@ -1822,6 +1822,7 @@ ruleComputedHolidays = mkRuleHolidays
     , cycleNthAfter False TG.Day 49 easterSunday )
   , ( "Purim", "purim", purim )
   , ( "Raksha Bandhan", "raksha(\\s+)?bandhan|rakhi", rakshaBandhan )
+  , ( "Pargat Diwas", "pargat diwas|(maharishi )?valmiki jayanti", pargatDiwas )
   , ( "Mahavir Jayanti", "(mahavir|mahaveer) (jayanti|janma kalyanak)"
     , mahavirJayanti )
   , ( "Maha Shivaratri", "maha(\\s+)?shivaratri", mahaShivaRatri)

@@ -1743,4 +1743,14 @@ allExamples = concat
             , "Guru Ravidas Birthday 2019"
             , "guru ravidas jayanti 2019"
             ]
+  , examples (datetimeHoliday (2019, 10, 13, 0, 0, 0) Day "Pargat Diwas")
+            [ "valmiki jayanti 2019"
+            , "Valmiki Jayanti 2019"
+            , "pargat diwas 2019"
+            ]
+  , examples (datetimeHoliday (2018, 10, 24, 0, 0, 0) Day "Pargat Diwas")
+            [ "maharishi valmiki jayanti 2018"
+            , "pargat diwas 2018"
+            , "Pargat Diwas 2018"
+            ]
   ]

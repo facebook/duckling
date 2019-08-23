@@ -25,7 +25,6 @@ import Duckling.Locale
 import Duckling.Resolve
 import Duckling.Testing.Asserts
 import Duckling.Testing.Types hiding (examples)
--- import Duckling.Time.Corpus
 import Duckling.Time.BG.Corpus
 import Duckling.TimeGrain.Types (Grain(..))
 import Duckling.Types (Range(..))

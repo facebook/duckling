@@ -125,6 +125,19 @@ ruleDurationAndHalfHour = Rule
       _ -> Nothing
   }
 
+ruleDurationAndHalfMinute :: Rule
+ruleDurationAndHalfMinute = Rule
+  { name = "<integer> and a half minutes"
+  , pattern =
+    [ Predicate isNatural
+    , regex "and (an? )?half min(ute)?s?"
+    ]
+  , prod = \case
+      (Token Numeral NumeralData{TNumeral.value = v}:_) ->
+        Just . Token Duration . duration TG.Second $ 30 + 60 * floor v
+      _ -> Nothing
+  }
+
 ruleDurationA :: Rule
 ruleDurationA = Rule
   { name = "a <unit-of-duration>"
@@ -218,6 +231,7 @@ rules =
   , ruleDurationNumeralMore
   , ruleDurationDotNumeralHours
   , ruleDurationAndHalfHour
+  , ruleDurationAndHalfMinute
   , ruleDurationA
   , ruleDurationHalfATimeGrain
   , ruleDurationOneGrainAndHalf

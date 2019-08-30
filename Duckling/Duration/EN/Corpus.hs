@@ -97,4 +97,9 @@ allExamples = concat
                -- Oxford comma not supported:
 --           , "1 year, 2 days, 3 hours, and 4 seconds"
              ]
+  , examples (DurationData 330 Second)
+             [ "5 and a half minutes"
+             , "five and half min"
+             , "5 and an half minute"
+             ]
   ]

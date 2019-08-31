@@ -815,7 +815,6 @@ library
 test-suite duckling-test
   type:                exitcode-stdio-1.0
   main-is:             TestMain.hs
-  ghc-options:         -main-is TestMain
   hs-source-dirs:      tests
   build-depends:       duckling
                      , base

@@ -250,7 +250,7 @@ ruleLastTime = Rule
   { name = "last <time>"
   , pattern =
     [ regex "去|上(个|個)?"
-    , dimension Time
+    , Predicate isOkWithThisNext
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td:_) -> tt $ predNth (-1) False td
@@ -314,7 +314,7 @@ ruleNoon = Rule
   , pattern =
     [ regex "中午"
     ]
-  , prod = \_ -> tt $ hour False 12
+  , prod = \_ -> tt $ mkOkForThisNext $ hour False 12
   }
 
 ruleToday :: Rule
@@ -406,7 +406,7 @@ ruleMidnight = Rule
   , pattern =
     [ regex "午夜|凌晨|半夜"
     ]
-  , prod = \_ -> tt $ hour False 0
+  , prod = \_ -> tt $ mkOkForThisNext $ hour False 0
   }
 
 ruleInduringThePartofday :: Rule
@@ -567,7 +567,7 @@ ruleWeekend = Rule
   , pattern =
     [ regex "周末|週末"
     ]
-  , prod = \_ -> tt weekend
+  , prod = \_ -> tt $ mkOkForThisNext weekend
   }
 
 ruleLastYear :: Rule
@@ -597,7 +597,7 @@ ruleNextTime = Rule
   { name = "next <time>"
   , pattern =
     [ regex "明|下(个|個)?"
-    , dimension Time
+    , Predicate isOkWithThisNext
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td:_) ->
@@ -690,7 +690,7 @@ ruleThisTime = Rule
   { name = "this <time>"
   , pattern =
     [ regex "今(个|個)?|这(个)?|這(個)?"
-    , dimension Time
+    , Predicate isOkWithThisNext
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td:_) ->
@@ -755,20 +755,6 @@ rulePartofdayDimTime = Rule
   , prod = \tokens -> case tokens of
       (Token Time td1:Token Time td2:_) ->
         Token Time <$> intersect td1 td2
-      _ -> Nothing
-  }
-
-ruleMonthNumericWithMonthSymbol :: Rule
-ruleMonthNumericWithMonthSymbol = Rule
-  { name = "month (numeric with month symbol)"
-  , pattern =
-    [ Predicate $ isIntegerBetween 1 12
-    , regex "月(份)?"
-    ]
-  , prod = \tokens -> case tokens of
-      (token:_) -> do
-        v <- getIntValue token
-        tt . mkOkForThisNext $ month v
       _ -> Nothing
   }
 
@@ -891,6 +877,22 @@ ruleDaysOfWeek = mkRuleDaysOfWeek
   , ( "Sunday", "星期日|星期天|礼拜天|周日|禮拜天|週日|禮拜日" )
   ]
 
+ruleMonths :: [Rule]
+ruleMonths = mkRuleMonths
+  [ ( "January", "(一|1)月(份)?" )
+  , ( "February", "(二|2)月(份)?" )
+  , ( "March", "(三|3)月(份)?" )
+  , ( "April", "(四|4)月(份)?" )
+  , ( "May", "(五|5)月(份)?" )
+  , ( "June", "(六|6)月(份)?" )
+  , ( "July", "(七|7)月(份)?" )
+  , ( "August", "(八|8)月(份)?" )
+  , ( "September", "(九|9)月(份)?" )
+  , ( "October", "(十|10)月(份)?" )
+  , ( "November", "(十一|11)月(份)?" )
+  , ( "December", "(十二|12)月(份)?" )
+  ]
+
 rulePeriodicHolidays :: [Rule]
 rulePeriodicHolidays = mkRuleHolidays
   -- Fixed dates, year over year
@@ -975,7 +977,6 @@ rules =
   , ruleMidnight
   , ruleMmdd
   , ruleMmddyyyy
-  , ruleMonthNumericWithMonthSymbol
   , ruleMorning
   , ruleNamedmonthDayofmonth
   , ruleNextCycle
@@ -1022,4 +1023,5 @@ rules =
   , ruleTimezone
   ]
   ++ ruleDaysOfWeek
+  ++ ruleMonths
   ++ rulePeriodicHolidays

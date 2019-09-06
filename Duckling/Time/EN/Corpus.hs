@@ -1753,4 +1753,13 @@ allExamples = concat
             , "pargat diwas 2018"
             , "Pargat Diwas 2018"
             ]
+  , examples (datetimeHoliday (2018, 3, 18, 0, 0, 0) Day "Ugadi")
+            [ "Ugadi 2018"
+            , "ugadi 2018"
+            , "yugadi 2018"
+            , "Yugadi 2018"
+            , "samvatsaradi 2018"
+            , "chaitra sukladi 2018"
+            , "chaitra sukhladi 2018"
+            ]
   ]

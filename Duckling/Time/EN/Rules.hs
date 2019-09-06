@@ -1626,6 +1626,7 @@ rulePeriodicHolidays = mkRuleHolidays
   , ( "St Patrick's Day", "st\\.? (patrick|paddy)'?s day", monthDay 3 17 )
   , ( "St. Stephen's Day", "st\\.? stephen'?s day", monthDay 12 26 )
   , ( "Time of Remembrance and Reconciliation for Those Who Lost Their Lives during the Second World War", "time of remembrance and reconciliation for those who lost their lives during the second world war", monthDay 5 8 )
+  , ( "Ugadi", "y?ugadi|samvatsaradi|chaitra sukh?ladi", ugadi)
   , ( "United Nations Day", "united nations day", monthDay 10 24 )
   , ( "United Nations' Mine Awareness Day", "united nations'? mine awareness day", monthDay 4 4 )
   , ( "United Nations' World Health Day", "united nations'? world health day", monthDay 4 7 )

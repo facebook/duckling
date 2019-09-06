@@ -11,7 +11,7 @@ module Duckling.Time.Computed
   , passover, rajab, rakshaBandhan, mahavirJayanti, mahaShivaRatri, ramadan, roshHashana
   , thaiPongal, thiruOnam, tishaBAv, tuBishvat, vasantPanchami, vesak
   , yomHaatzmaut, vaisakhi, purim, saraswatiJayanti, rabindraJayanti
-  , ravidassJayanti, pargatDiwas
+  , ravidassJayanti, pargatDiwas, ugadi
   ) where
 
 import Data.Maybe
@@ -2246,4 +2246,42 @@ pargatDiwas' = mapMaybe toTimeObjectM
   , (2028, 10, 2)
   , (2029, 10, 21)
   , (2030, 10, 10)
+  ]
+
+ugadi :: TimeData
+ugadi = computedDays ugadi'
+
+ugadi' :: [TimeObject]
+ugadi' = mapMaybe toTimeObjectM
+  [ (2000, 4, 5)
+  , (2001, 3, 26)
+  , (2002, 4, 13)
+  , (2003, 4, 2)
+  , (2004, 3, 21)
+  , (2005, 4, 9)
+  , (2006, 3, 30)
+  , (2007, 3, 19)
+  , (2008, 4, 6)
+  , (2009, 3, 27)
+  , (2010, 3, 16)
+  , (2011, 4, 4)
+  , (2012, 3, 23)
+  , (2013, 4, 11)
+  , (2014, 3, 31)
+  , (2015, 3, 21)
+  , (2016, 4, 8)
+  , (2017, 3, 28)
+  , (2018, 3, 18)
+  , (2019, 4, 6)
+  , (2020, 3, 25)
+  , (2021, 4, 13)
+  , (2022, 4, 2)
+  , (2023, 3, 22)
+  , (2024, 4, 9)
+  , (2025, 3, 30)
+  , (2026, 3, 19)
+  , (2027, 4, 7)
+  , (2028, 3, 27)
+  , (2029, 4, 14)
+  , (2030, 4, 3)
   ]

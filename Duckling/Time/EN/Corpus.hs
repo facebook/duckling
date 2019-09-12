@@ -914,6 +914,8 @@ allExamples = concat
   , examples (datetimeHoliday (2013, 3, 17, 0, 0, 0) Day "St Patrick's Day")
              [ "st patrick's day 2013"
              , "st paddy's day"
+             , "saint paddy's day"
+             , "saint patricks day"
              ]
   , examples (datetimeIntervalHoliday ((2018, 2, 14, 0, 0, 0), (2018, 4, 1, 0, 0, 0)) Day "Lent")
              [ "lent 2018"

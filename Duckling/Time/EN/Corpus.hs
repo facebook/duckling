@@ -1495,6 +1495,15 @@ allExamples = concat
   , examples (datetimeHoliday (2017, 11, 30, 0, 0, 0) Day "Mawlid")
              [ "mawlid al-nabawi 2017"
              ]
+  , examples (datetimeHoliday (1950, 7, 16, 0, 0, 0) Day "Eid al-Fitr")
+             [ "Eid al-Fitr 1950"
+             ]
+  , examples (datetimeHoliday (1975, 10, 6, 0, 0, 0) Day "Eid al-Fitr")
+             [ "Eid al-Fitr 1975"
+             ]
+  , examples (datetimeHoliday (1988, 5, 16, 0, 0, 0) Day "Eid al-Fitr")
+             [ "Eid al-Fitr 1988"
+             ]
   , examples (datetimeHoliday (2018, 6, 15, 0, 0, 0) Day "Eid al-Fitr")
              [ "Eid al-Fitr 2018"
              ]
@@ -1564,6 +1573,12 @@ allExamples = concat
   , examples (datetimeHoliday (2019, 4, 3, 0, 0, 0) Day "Isra and Mi'raj")
              [ "the night journey 2019"
              , "ascension to heaven 2019"
+             ]
+  , examples (datetimeIntervalHoliday ((1950, 6, 17, 0, 0, 0), (1950, 7, 16, 0, 0, 0)) Day "Ramadan")
+             [ "Ramadan 1950"
+             ]
+  , examples (datetimeIntervalHoliday ((1977, 8, 15, 0, 0, 0), (1977, 9, 14, 0, 0, 0)) Day "Ramadan")
+             [ "Ramadan 1977"
              ]
   , examples (datetimeIntervalHoliday ((2018, 5, 16, 0, 0, 0), (2018, 6, 15, 0, 0, 0)) Day "Ramadan")
              [ "Ramadan 2018"

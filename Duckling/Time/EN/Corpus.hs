@@ -1632,6 +1632,9 @@ allExamples = concat
              [ "karva chauth 2018"
              , "karva chauth in 2018"
              ]
+  , examples (datetimeHoliday (2018, 7, 14, 0, 0, 0) Day "Ratha-Yatra")
+             [ "ratha-yatra 2018"
+             ]
   , examples (datetimeHoliday (2018, 8, 26, 0, 0, 0) Day "Raksha Bandhan")
              [ "rakhi 2018"
              ]

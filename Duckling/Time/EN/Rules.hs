@@ -1823,12 +1823,16 @@ ruleComputedHolidays = mkRuleHolidays
     , cycleNthAfter False TG.Day 49 easterSunday )
   , ( "Purim", "purim", purim )
   , ( "Raksha Bandhan", "raksha(\\s+)?bandhan|rakhi", rakshaBandhan )
+  , ( "Ratha-Yatra", "ratha(\\-|\\s+)?yatra|rathjatra|chariot\\s+festival"
+    , rathaYatra )
   , ( "Pargat Diwas", "pargat diwas|(maharishi )?valmiki jayanti", pargatDiwas )
   , ( "Mahavir Jayanti", "(mahavir|mahaveer) (jayanti|janma kalyanak)"
     , mahavirJayanti )
   , ( "Maha Shivaratri", "maha(\\s+)?shivaratri", mahaShivaRatri)
-  , ( "Dayananda Saraswati Jayanti","((maharishi|swami) )?(dayananda )?saraswati jayanti", saraswatiJayanti )
-  , ( "Karva Chauth", "karva\\s+chauth|karaka\\s+chaturthi", karvaChauth)
+  , ( "Dayananda Saraswati Jayanti","((maharishi|swami) )?(dayananda )?saraswati jayanti"
+    , saraswatiJayanti )
+  , ( "Karva Chauth", "karva\\s+chauth|karaka\\s+chaturthi"
+    , karvaChauth)
   , ( "Krishna Janmashtami", "(krishna )?janmashtami|gokulashtami", krishnaJanmashtami )
   , ( "Shemini Atzeret", "shemini\\s+atzeret"
     , cycleNthAfter False TG.Day 21 roshHashana )

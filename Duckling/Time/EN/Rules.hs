@@ -28,6 +28,7 @@ import Duckling.Ordinal.Types (OrdinalData (..))
 import Duckling.Regex.Types
 import Duckling.Time.Computed
 import Duckling.Time.Helpers
+import Duckling.Time.HolidayHelpers
 import Duckling.Time.Types (TimeData (..), TimeIntervalType (..))
 import Duckling.Types
 import qualified Duckling.Duration.Types as TDuration
@@ -1910,32 +1911,14 @@ ruleComputedHolidays' = mkRuleHolidays'
     , let start = cycleNthAfter False TG.Day 14 roshHashana
           end = cycleNthAfter False TG.Day 22 roshHashana
         in interval TTime.Open start end )
-
-  -- Other
-  -- Last Saturday of March unless it falls on Holy Saturday
-  -- In which case it's the Saturday before
-  , ( "Earth Hour", "earth hour"
-    , let holySaturday = cycleNthAfter False TG.Day (-1) easterSunday
-          tentative = predLastOf (dayOfWeek 6) (month 3)
-          alternative = cycleNthAfter False TG.Day (-7) tentative
-        in do
-          day <- intersectWithReplacement holySaturday tentative alternative
-          start <- intersect day $ hourMinute True 20 30
-          interval TTime.Closed start $ cycleNthAfter False TG.Minute 60 start )
   -- Does not account for leap years, so every 365 days.
   , ( "Parsi New Year", "parsi new year|jamshedi navroz"
     , predEveryNDaysFrom 365 (2020, 8, 16)
     )
-  -- king's day is on April 27th unless its on Sunday in which case its a day
-  -- earlier used a bit of a trick since intersectWithReplacement expects all
-  -- times to be aligned in granularity (e.g once a week, twice a year, etc.)
-  -- we intersect with last Sunday of April since if "4/27 is on Sunday" it
-  -- will be the last Sunday on April
+  , ( "Earth Hour", "earth hour"
+    , computeEarthHour )
   , ( "King's Day", "king's day|koningsdag"
-    , let tentative = monthDay 4 27
-          alternative = monthDay 4 26
-          lastSundayOfApril = predLastOf (dayOfWeek 7) (month 4)
-        in intersectWithReplacement lastSundayOfApril tentative alternative )
+    , computeKingsDay )
   ]
 
 ruleCycleThisLastNext :: Rule

@@ -36,6 +36,11 @@ allExamples = concat
              , "70 degrees F"
              , "seventy Fahrenheit"
              ]
+  , examples (simple Fahrenheit 98.6)
+             [ "98.6°F"
+             , "98.6 ° Fahrenheit"
+             , "98.6 degrees F"
+             ]
   , examples (simple Degree 45)
              [ "45°"
              , "45 degrees"

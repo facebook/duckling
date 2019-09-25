@@ -20,4 +20,5 @@ import Duckling.Testing.Asserts
 tests :: TestTree
 tests = testGroup "EN Tests"
   [ makeCorpusTest [This Quantity] corpus
+  , makeCorpusTest [This Quantity] latentCorpus
   ]

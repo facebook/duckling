@@ -28,6 +28,7 @@ import Duckling.Ordinal.Types (OrdinalData (..))
 import Duckling.Regex.Types
 import Duckling.Time.Computed
 import Duckling.Time.Helpers
+import Duckling.Time.HolidayHelpers
 import Duckling.Time.Types (TimeData (..), TimeIntervalType (..))
 import Duckling.Types
 import qualified Duckling.Duration.Types as TDuration
@@ -1623,9 +1624,10 @@ rulePeriodicHolidays = mkRuleHolidays
   , ( "Orthodox New Year", "orthodox new year", monthDay 1 14 )
   , ( "Public Service Day", "public service day", monthDay 6 23 )
   , ( "St. George's Day", "(saint|st\\.?) george'?s day|feast of saint george", monthDay 4 23 )
-  , ( "St Patrick's Day", "st\\.? (patrick|paddy)'?s day", monthDay 3 17 )
-  , ( "St. Stephen's Day", "st\\.? stephen'?s day", monthDay 12 26 )
+  , ( "St Patrick's Day", "(saint|st\\.?) (patrick|paddy)'?s day", monthDay 3 17 )
+  , ( "St. Stephen's Day", "(saint|st\\.?) stephen'?s day", monthDay 12 26 )
   , ( "Time of Remembrance and Reconciliation for Those Who Lost Their Lives during the Second World War", "time of remembrance and reconciliation for those who lost their lives during the second world war", monthDay 5 8 )
+  , ( "Ugadi", "y?ugadi|samvatsaradi|chaitra sukh?ladi", ugadi)
   , ( "United Nations Day", "united nations day", monthDay 10 24 )
   , ( "United Nations' Mine Awareness Day", "united nations'? mine awareness day", monthDay 4 4 )
   , ( "United Nations' World Health Day", "united nations'? world health day", monthDay 4 7 )
@@ -1822,11 +1824,16 @@ ruleComputedHolidays = mkRuleHolidays
     , cycleNthAfter False TG.Day 49 easterSunday )
   , ( "Purim", "purim", purim )
   , ( "Raksha Bandhan", "raksha(\\s+)?bandhan|rakhi", rakshaBandhan )
+  , ( "Ratha-Yatra", "ratha(\\-|\\s+)?yatra|rathjatra|chariot\\s+festival"
+    , rathaYatra )
+  , ( "Pargat Diwas", "pargat diwas|(maharishi )?valmiki jayanti", pargatDiwas )
   , ( "Mahavir Jayanti", "(mahavir|mahaveer) (jayanti|janma kalyanak)"
     , mahavirJayanti )
   , ( "Maha Shivaratri", "maha(\\s+)?shivaratri", mahaShivaRatri)
-  , ( "Dayananda Saraswati Jayanti","((maharishi|swami) )?(dayananda )?saraswati jayanti", saraswatiJayanti )
-  , ( "Karva Chauth", "karva\\s+chauth|karaka\\s+chaturthi", karvaChauth)
+  , ( "Dayananda Saraswati Jayanti","((maharishi|swami) )?(dayananda )?saraswati jayanti"
+    , saraswatiJayanti )
+  , ( "Karva Chauth", "karva\\s+chauth|karaka\\s+chaturthi"
+    , karvaChauth)
   , ( "Krishna Janmashtami", "(krishna )?janmashtami|gokulashtami", krishnaJanmashtami )
   , ( "Shemini Atzeret", "shemini\\s+atzeret"
     , cycleNthAfter False TG.Day 21 roshHashana )
@@ -1904,32 +1911,14 @@ ruleComputedHolidays' = mkRuleHolidays'
     , let start = cycleNthAfter False TG.Day 14 roshHashana
           end = cycleNthAfter False TG.Day 22 roshHashana
         in interval TTime.Open start end )
-
-  -- Other
-  -- Last Saturday of March unless it falls on Holy Saturday
-  -- In which case it's the Saturday before
-  , ( "Earth Hour", "earth hour"
-    , let holySaturday = cycleNthAfter False TG.Day (-1) easterSunday
-          tentative = predLastOf (dayOfWeek 6) (month 3)
-          alternative = cycleNthAfter False TG.Day (-7) tentative
-        in do
-          day <- intersectWithReplacement holySaturday tentative alternative
-          start <- intersect day $ hourMinute True 20 30
-          interval TTime.Closed start $ cycleNthAfter False TG.Minute 60 start )
   -- Does not account for leap years, so every 365 days.
   , ( "Parsi New Year", "parsi new year|jamshedi navroz"
     , predEveryNDaysFrom 365 (2020, 8, 16)
     )
-  -- king's day is on April 27th unless its on Sunday in which case its a day
-  -- earlier used a bit of a trick since intersectWithReplacement expects all
-  -- times to be aligned in granularity (e.g once a week, twice a year, etc.)
-  -- we intersect with last Sunday of April since if "4/27 is on Sunday" it
-  -- will be the last Sunday on April
+  , ( "Earth Hour", "earth hour"
+    , computeEarthHour )
   , ( "King's Day", "king's day|koningsdag"
-    , let tentative = monthDay 4 27
-          alternative = monthDay 4 26
-          lastSundayOfApril = predLastOf (dayOfWeek 7) (month 4)
-        in intersectWithReplacement lastSundayOfApril tentative alternative )
+    , computeKingsDay )
   ]
 
 ruleCycleThisLastNext :: Rule

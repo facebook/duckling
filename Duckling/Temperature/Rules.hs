@@ -31,7 +31,7 @@ ruleNumeralAsTemp = Rule
     ]
   , prod = \case
       (Token Numeral nd:_) ->
-        Just . Token Temperature $ valueOnly $ floor $ TNumeral.value nd
+        Just . Token Temperature $ valueOnly $ TNumeral.value nd
       _ -> Nothing
   }
 

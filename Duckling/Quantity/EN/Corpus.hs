@@ -8,16 +8,36 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Quantity.EN.Corpus
-  ( corpus ) where
+  ( corpus
+  , latentCorpus
+  ) where
 
 import Prelude
 import Data.String
 
 import Duckling.Quantity.Types
+import Duckling.Resolve (Options(..))
 import Duckling.Testing.Types
 
 corpus :: Corpus
 corpus = (testContext, testOptions, allExamples)
+
+
+latentCorpus :: Corpus
+latentCorpus = (testContext, testOptions {withLatent = True}, latentExamples)
+  where
+    latentExamples = concat
+      [
+      examples (simple Unnamed 4 Nothing)
+                [ "around 4"
+                , "four"
+                , "~ four"
+                ]
+      ,
+      examples (simple Unnamed 38.5 Nothing)
+                [ "about 38.5"
+                ]
+      ]
 
 allExamples :: [Example]
 allExamples = concat

@@ -219,6 +219,19 @@ ruleIntervalMin = Rule
         _ -> Nothing
     }
 
+ruleQuantityLatent :: Rule
+ruleQuantityLatent = Rule
+  { name = "<quantity> (latent)"
+  , pattern =
+    [ Predicate isPositive
+    ]
+  , prod = \case
+      (Token Numeral NumeralData{TNumeral.value = v}: _) ->
+        Just $ (Token Quantity . mkLatent) $ valueOnly v
+      _ -> Nothing
+  }
+
+
 rules :: [Rule]
 rules =
   [ ruleQuantityOfProduct
@@ -229,6 +242,7 @@ rules =
   , ruleIntervalNumeralDash
   , ruleIntervalDash
   , rulePrecision
+  , ruleQuantityLatent
   ]
   ++ ruleNumeralQuantities
   ++ ruleAQuantity

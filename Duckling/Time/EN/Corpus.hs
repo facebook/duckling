@@ -914,6 +914,8 @@ allExamples = concat
   , examples (datetimeHoliday (2013, 3, 17, 0, 0, 0) Day "St Patrick's Day")
              [ "st patrick's day 2013"
              , "st paddy's day"
+             , "saint paddy's day"
+             , "saint patricks day"
              ]
   , examples (datetimeIntervalHoliday ((2018, 2, 14, 0, 0, 0), (2018, 4, 1, 0, 0, 0)) Day "Lent")
              [ "lent 2018"
@@ -1495,6 +1497,15 @@ allExamples = concat
   , examples (datetimeHoliday (2017, 11, 30, 0, 0, 0) Day "Mawlid")
              [ "mawlid al-nabawi 2017"
              ]
+  , examples (datetimeHoliday (1950, 7, 16, 0, 0, 0) Day "Eid al-Fitr")
+             [ "Eid al-Fitr 1950"
+             ]
+  , examples (datetimeHoliday (1975, 10, 6, 0, 0, 0) Day "Eid al-Fitr")
+             [ "Eid al-Fitr 1975"
+             ]
+  , examples (datetimeHoliday (1988, 5, 16, 0, 0, 0) Day "Eid al-Fitr")
+             [ "Eid al-Fitr 1988"
+             ]
   , examples (datetimeHoliday (2018, 6, 15, 0, 0, 0) Day "Eid al-Fitr")
              [ "Eid al-Fitr 2018"
              ]
@@ -1565,6 +1576,12 @@ allExamples = concat
              [ "the night journey 2019"
              , "ascension to heaven 2019"
              ]
+  , examples (datetimeIntervalHoliday ((1950, 6, 17, 0, 0, 0), (1950, 7, 16, 0, 0, 0)) Day "Ramadan")
+             [ "Ramadan 1950"
+             ]
+  , examples (datetimeIntervalHoliday ((1977, 8, 15, 0, 0, 0), (1977, 9, 14, 0, 0, 0)) Day "Ramadan")
+             [ "Ramadan 1977"
+             ]
   , examples (datetimeIntervalHoliday ((2018, 5, 16, 0, 0, 0), (2018, 6, 15, 0, 0, 0)) Day "Ramadan")
              [ "Ramadan 2018"
              ]
@@ -1614,6 +1631,9 @@ allExamples = concat
   , examples (datetimeHoliday (2018, 10, 27, 0, 0, 0) Day "Karva Chauth")
              [ "karva chauth 2018"
              , "karva chauth in 2018"
+             ]
+  , examples (datetimeHoliday (2018, 7, 14, 0, 0, 0) Day "Ratha-Yatra")
+             [ "ratha-yatra 2018"
              ]
   , examples (datetimeHoliday (2018, 8, 26, 0, 0, 0) Day "Raksha Bandhan")
              [ "rakhi 2018"
@@ -1742,5 +1762,24 @@ allExamples = concat
             [ "Guru Ravidass Jayanti 2019"
             , "Guru Ravidas Birthday 2019"
             , "guru ravidas jayanti 2019"
+            ]
+  , examples (datetimeHoliday (2019, 10, 13, 0, 0, 0) Day "Pargat Diwas")
+            [ "valmiki jayanti 2019"
+            , "Valmiki Jayanti 2019"
+            , "pargat diwas 2019"
+            ]
+  , examples (datetimeHoliday (2018, 10, 24, 0, 0, 0) Day "Pargat Diwas")
+            [ "maharishi valmiki jayanti 2018"
+            , "pargat diwas 2018"
+            , "Pargat Diwas 2018"
+            ]
+  , examples (datetimeHoliday (2018, 3, 18, 0, 0, 0) Day "Ugadi")
+            [ "Ugadi 2018"
+            , "ugadi 2018"
+            , "yugadi 2018"
+            , "Yugadi 2018"
+            , "samvatsaradi 2018"
+            , "chaitra sukladi 2018"
+            , "chaitra sukhladi 2018"
             ]
   ]

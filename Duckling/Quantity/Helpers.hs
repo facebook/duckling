@@ -12,12 +12,14 @@ module Duckling.Quantity.Helpers
   , isSimpleQuantity
   , quantity
   , unitOnly
+  , valueOnly
   , withProduct
   , withUnit
   , withValue
   , withInterval
   , withMin
   , withMax
+  , mkLatent
   ) where
 
 import Data.HashMap.Strict (HashMap)
@@ -51,14 +53,24 @@ quantity u v = QuantityData {TQuantity.unit = Just u
                             , TQuantity.value = Just v
                             , TQuantity.aproduct = Nothing
                             , TQuantity.minValue = Nothing
-                            , TQuantity.maxValue = Nothing}
+                            , TQuantity.maxValue = Nothing
+                            , TQuantity.latent = False}
 
 unitOnly :: TQuantity.Unit -> QuantityData
 unitOnly u = QuantityData {TQuantity.unit = Just u
                           , TQuantity.value = Nothing
                           , TQuantity.aproduct = Nothing
                           , TQuantity.minValue = Nothing
-                          , TQuantity.maxValue = Nothing}
+                          , TQuantity.maxValue = Nothing
+                          , TQuantity.latent = False}
+
+valueOnly :: Double -> QuantityData
+valueOnly v = QuantityData {TQuantity.unit = Nothing
+                          , TQuantity.value = Just v
+                          , TQuantity.aproduct = Nothing
+                          , TQuantity.minValue = Nothing
+                          , TQuantity.maxValue = Nothing
+                          , TQuantity.latent = False}
 
 withProduct :: Text -> QuantityData -> QuantityData
 withProduct p qd = qd {TQuantity.aproduct = Just p}
@@ -77,3 +89,6 @@ withMin from qd = qd {minValue = Just from}
 
 withMax :: Double -> QuantityData -> QuantityData
 withMax to qd = qd {maxValue = Just to}
+
+mkLatent :: QuantityData -> QuantityData
+mkLatent qd = qd {TQuantity.latent = True}

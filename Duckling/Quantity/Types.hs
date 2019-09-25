@@ -10,18 +10,20 @@
 {-# LANGUAGE NoRebindableSyntax #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TypeFamilies #-}
-
 module Duckling.Quantity.Types where
 
 import Control.DeepSeq
 import Data.Aeson
+import qualified Data.HashMap.Strict as H
 import Data.Hashable
 import Data.Text (Text)
+import qualified Data.Text as Text
+import Duckling.Resolve
+  ( Resolve(..)
+  , Options(..)
+  )
 import GHC.Generics
 import Prelude
-import Duckling.Resolve (Resolve(..))
-import qualified Data.HashMap.Strict as H
-import qualified Data.Text as Text
 
 data Unit
   = Bowl
@@ -48,48 +50,57 @@ data QuantityData = QuantityData
   , aproduct :: Maybe Text
   , minValue :: Maybe Double
   , maxValue :: Maybe Double
+  , latent :: Bool
   } deriving (Eq, Generic, Hashable, Ord, Show, NFData)
-
 
 instance Resolve QuantityData where
   type ResolvedValue QuantityData = QuantityValue
+  resolve _ Options {withLatent = False} QuantityData {latent = True}
+   = Nothing
+
+  resolve _ _ QuantityData {value = Just value
+                         , unit = Nothing
+                         , aproduct = aproduct
+                         , latent = latent}
+   = Just (simple Unnamed value aproduct, latent)
 
   resolve _ _ QuantityData {value = Just value
                          , unit = Just unit
-                         , aproduct = aproduct}
-   = Just (simple unit value aproduct, False)
+                         , aproduct = aproduct
+                         , latent = latent}
+   = Just (simple unit value aproduct, latent)
 
   resolve _ _ QuantityData {value = Nothing
                          , unit = Just unit
                          , aproduct = aproduct
                          , minValue = Just from
-                         , maxValue = Just to}
-   = Just (between unit (from, to) aproduct, False)
+                         , maxValue = Just to
+                         , latent = latent}
+   = Just (between unit (from, to) aproduct, latent)
 
   resolve _ _ QuantityData {value = Nothing
                          , unit = Just unit
                          , aproduct = aproduct
                          , minValue = Just from
-                         , maxValue = Nothing}
-   = Just (above unit from aproduct, False)
+                         , maxValue = Nothing
+                         , latent = latent}
+   = Just (above unit from aproduct, latent)
 
   resolve _ _ QuantityData {value = Nothing
                          , unit = Just unit
                          , aproduct = aproduct
                          , minValue = Nothing
-                         , maxValue = Just to}
-   = Just (under unit to aproduct, False)
+                         , maxValue = Just to
+                         , latent = latent}
+   = Just (under unit to aproduct, latent)
 
   resolve _ _ _ = Nothing
 
 data IntervalDirection = Above | Under
   deriving (Eq, Generic, Hashable, Ord, Show, NFData)
 
-data SingleValue = SingleValue
-    { vUnit :: Unit
-    , vValue :: Double
-    , vProduct :: Maybe Text
-    }
+data SingleValue =
+  SingleValue { vUnit :: Unit, vValue :: Double, vProduct :: Maybe Text }
     deriving (Eq, Generic, Hashable, Ord, Show, NFData)
 
 instance ToJSON SingleValue where
@@ -98,7 +109,6 @@ instance ToJSON SingleValue where
       , "unit" .= unit
       ]
       ++ [ "product" .= p | Just p <- [aproduct] ]
-
 
 data QuantityValue
   = SimpleValue SingleValue
@@ -123,6 +133,7 @@ instance ToJSON QuantityValue where
     [ "type" .= ("interval" :: Text)
     , "to" .= toJSON to
     ]
+
 -- -----------------------------------------------------------------
 -- Value helpers
 
@@ -130,7 +141,7 @@ simple :: Unit -> Double -> Maybe Text -> QuantityValue
 simple u v p = SimpleValue $ single u v p
 
 between :: Unit -> (Double, Double) -> Maybe Text -> QuantityValue
-between u (from,to) p = IntervalValue (single u from p, single u to p)
+between u (from, to) p = IntervalValue (single u from p, single u to p)
 
 above :: Unit -> Double -> Maybe Text -> QuantityValue
 above = openInterval Above
@@ -138,11 +149,8 @@ above = openInterval Above
 under :: Unit -> Double -> Maybe Text -> QuantityValue
 under = openInterval Under
 
-openInterval :: IntervalDirection
-                     -> Unit
-                     -> Double
-                     -> Maybe Text
-                     -> QuantityValue
+openInterval
+  :: IntervalDirection -> Unit -> Double -> Maybe Text -> QuantityValue
 openInterval direction u v p = OpenIntervalValue (single u v p, direction)
 
 single :: Unit -> Double -> Maybe Text -> SingleValue

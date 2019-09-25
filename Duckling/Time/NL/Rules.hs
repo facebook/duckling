@@ -24,6 +24,7 @@ import Duckling.Numeral.Types (NumeralData (..))
 import Duckling.Ordinal.Types (OrdinalData (..))
 import Duckling.Regex.Types
 import Duckling.Time.Helpers
+import Duckling.Time.HolidayHelpers
 import Duckling.Time.Types (TimeData (..))
 import Duckling.Types
 import qualified Duckling.Numeral.Types as TNumeral
@@ -95,16 +96,8 @@ ruleHolidays = mkRuleHolidays
 ruleComputedHolidays' :: [Rule]
 ruleComputedHolidays' = mkRuleHolidays'
   [
-  -- king's day is on April 27th unless its on Sunday in which case its a day
-  -- earlier used a bit of a trick since intersectWithReplacement expects all
-  -- times to be aligned in granularity (e.g once a week, twice a year, etc.)
-  -- we intersect with last Sunday of April since if "4/27 is on Sunday" it
-  -- will be the last Sunday on April
     ( "Koningsdag", "king's day|koningsdag"
-    , let tentative = monthDay 4 27
-          alternative = monthDay 4 26
-          lastSundayOfApril = predLastOf (dayOfWeek 7) (month 4)
-        in intersectWithReplacement lastSundayOfApril tentative alternative )
+    , computeKingsDay )
   ]
 ruleRelativeMinutesToOrAfterIntegerPartOfDay :: Rule
 ruleRelativeMinutesToOrAfterIntegerPartOfDay = Rule

@@ -177,7 +177,7 @@ ruleThisTime = Rule
   { name = "this <time>"
   , pattern =
     [ regex "هذا"
-    , Predicate isNotLatent
+    , Predicate $ and . sequence [isNotLatent, isOkWithThisNext]
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td:_) -> tt $ predNth 0 False td
@@ -188,7 +188,7 @@ ruleNextTime :: Rule
 ruleNextTime = Rule
   { name = "<time> next"
   , pattern =
-    [ Predicate isNotLatent
+    [ Predicate $ and . sequence [isNotLatent, isOkWithThisNext]
     , regex "التالي"
     ]
   , prod = \tokens -> case tokens of
@@ -201,7 +201,7 @@ ruleLastTime = Rule
   { name = "last <time>"
   , pattern =
     [ regex "([اآ]خر)"
-    , Predicate isNotLatent
+    , Predicate $ and . sequence [isNotLatent, isOkWithThisNext]
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td:_) -> tt $ predNth (- 1) False td
@@ -213,7 +213,7 @@ ruleLastTime2 :: Rule
 ruleLastTime2 = Rule
   { name = "<time> last"
   , pattern =
-    [ Predicate isNotLatent
+    [ Predicate $ and . sequence [isNotLatent, isOkWithThisNext]
     , regex "((ال)?ماضيت?(ان|ين|ة|ه)?|(ال)?منصرمت?(ان|ين|ة|ه)?|(ال)?سابقت?(ان|ين|ة|ه)?)"
     ]
   , prod = \tokens -> case tokens of
@@ -956,26 +956,13 @@ ruleWeekend = Rule
   , prod = \_ -> tt weekend
   }
 
-ruleSeasons :: Rule
-ruleSeasons = Rule
-  { name = "seasons"
-  , pattern = [regex "((ال)?صيف|(ال)?خريف|(ال)?شتاء|(ال)?ربيع)"]
-  , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) -> do
-        (start, end) <- case Text.toLower match of
-          "الصيف"   -> Just $ (monthDay 6 21 , monthDay 9 23)
-          "صيف"     -> Just $ (monthDay 6 21 , monthDay 9 23)
-          "الخريف"  -> Just $ (monthDay 9 23 , monthDay 12 21)
-          "خريف"    -> Just $ (monthDay 9 23 , monthDay 12 21)
-          "الشتاء"  -> Just $ (monthDay 12 21, monthDay 3 20)
-          "شتاء"    -> Just $ (monthDay 12 21, monthDay 3 20)
-          "الربيع"  -> Just $ (monthDay 3 20 , monthDay 6 21)
-          "ربيع"    -> Just $ (monthDay 3 20 , monthDay 6 21)
-          _         -> Nothing
-        Token Time <$> interval TTime.Open start end
-      _ -> Nothing
-
-  }
+ruleSeasons :: [Rule]
+ruleSeasons = mkRuleSeasons
+  [ ("summer", "صيف|الصيف"  , monthDay  6 21, monthDay  9 23)
+  , ("fall"  , "الخريف|خريف", monthDay  9 23, monthDay 12 21)
+  , ("winter", "شتاء|الشتاء", monthDay 12 21, monthDay  3 20)
+  , ("spring", "ربيع|الربيع", monthDay  3 20, monthDay  6 21)
+  ]
 
 ruleTODPrecision :: Rule
 ruleTODPrecision = Rule
@@ -1252,8 +1239,8 @@ ruleIntervalSinceTOD = Rule
       _ -> Nothing
   }
 
-daysOfWeek :: [(Text, String)]
-daysOfWeek =
+ruleDaysOfWeek :: [Rule]
+ruleDaysOfWeek = mkRuleDaysOfWeek
   [ ( "Monday"   , "(ال)?[اإ]ثنين"   )
   , ( "Tuesday"  , "(ال)?ثلاثاء?"     )
   , ( "Wednesday", "(ال)?[اأ]ربعاء?" )
@@ -1263,17 +1250,8 @@ daysOfWeek =
   , ( "Sunday"   , "(ال)?[اأ]حد"     )
   ]
 
-ruleDaysOfWeek :: [Rule]
-ruleDaysOfWeek = zipWith go daysOfWeek [1..7]
-  where
-    go (name, regexPattern) i = Rule
-      { name = name
-      , pattern = [regex regexPattern]
-      , prod = \_ -> tt $ dayOfWeek i
-      }
-
-months :: [(Text, String)]
-months =
+ruleMonths :: [Rule]
+ruleMonths = mkRuleMonths
   [ ( "January"  , "يناير|كانون (ال)ثاني?"       )
   , ( "February" , "فبراير|شباط"                 )
   , ( "March"    , "مارس|[اآ]ذار"                )
@@ -1287,15 +1265,6 @@ months =
   , ( "November" , "نوفمبر|تشرين (ال)?ثاني"      )
   , ( "December" , "ديسمبر|كانون (ال)?[اأ]ول"    )
   ]
-
-ruleMonths :: [Rule]
-ruleMonths = zipWith go months [1..12]
-  where
-    go (name, regexPattern) i = Rule
-      { name = name
-      , pattern = [regex regexPattern]
-      , prod = \_ -> tt $ month i
-      }
 
 ruleMonthsNumeral :: Rule
 ruleMonthsNumeral = Rule
@@ -1379,24 +1348,15 @@ ruleDayOfMonth = Rule
       _ -> Nothing
   }
 
-usHolidays :: [(Text, String, Int, Int)]
-usHolidays =
-  [ ( "Christmas"       , "(يوم |عطل[ةه] )?((ال)?كري?سماس)"              , 12, 25 )
-  , ( "Christmas Eve"   , "(ليل[ةه] )((ال)?كري?سماس)"                    , 12, 24 )
-  , ( "New Year's Eve"  , "(ليل[ةه] )(ر[اأ]س السن[ةه])"                  , 12, 31 )
-  , ( "New Year's Day"  , "(يوم |عطل[ةه] )?(ر[اأ]س السن[ةه])"            , 1 , 1  )
-  , ( "Valentine's Day" , "(عيد|يوم|عطل[ةه])((ال)?حب|(ال)?فالنتا?ين)"    , 2 , 14 )
-  , ( "Halloween"       , "(عيد |يوم |عطل[ةه] )?((ال)?هالوي?ين)"         , 10, 31 )
-  ]
-
 ruleUSHolidays :: [Rule]
-ruleUSHolidays = map go usHolidays
-  where
-    go (name, regexPattern, m, d) = Rule
-      { name = name
-      , pattern = [regex regexPattern]
-      , prod = \_ -> tt $ monthDay m d
-      }
+ruleUSHolidays = mkRuleHolidays
+  [ ( "Christmas"       , "(يوم |عطل[ةه] )?((ال)?كري?سماس)"           , monthDay 12 25)
+  , ( "Christmas Eve"   , "(ليل[ةه] )((ال)?كري?سماس)"                 , monthDay 12 24)
+  , ( "New Year's Eve"  , "(ليل[ةه] )(ر[اأ]س السن[ةه])"               , monthDay 12 31)
+  , ( "New Year's Day"  , "(وم |عطل[ةه] )?(ر[اأ]س السن[ةه])"          , monthDay  1  1)
+  , ( "Valentine's Day" , "(عيد|يوم|عطل[ةه])((ال)?حب|(ال)?فالنتا?ين)" , monthDay  2 12)
+  , ( "Halloween"       , "(عيد |يوم |عطل[ةه] )?((ال)?هالوي?ين)"      , monthDay 10 31 )
+  ]
 
 ruleThisLastNextCycle :: Rule
 ruleThisLastNextCycle = Rule
@@ -1804,7 +1764,6 @@ rules =
   , ruleAfterPartofday
   , ruleTimePOD
   , ruleWeekend
-  , ruleSeasons
   , ruleTODPrecision
   , rulePrecisionTOD
   , ruleIntervalFromMonthDDDD
@@ -1844,9 +1803,11 @@ rules =
   , ruleDayOfMonth
   , ruleNow
   ]
+
   ++ ruleInstants
   ++ ruleDaysOfWeek
   ++ ruleMonths
+  ++ ruleSeasons
   ++ ruleUSHolidays
   ++ rulePeriodicHolidays
   ++ ruleComputedHolidays

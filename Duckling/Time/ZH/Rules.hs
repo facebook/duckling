@@ -20,6 +20,7 @@ import qualified Data.Text as Text
 import Duckling.Dimensions.Types
 import Duckling.Numeral.Helpers (parseInt)
 import Duckling.Regex.Types
+import Duckling.Time.Computed
 import Duckling.Time.Helpers
 import Duckling.Time.Types (TimeData (..))
 import Duckling.Types
@@ -250,7 +251,7 @@ ruleLastTime = Rule
   { name = "last <time>"
   , pattern =
     [ regex "去|上(个|個)?"
-    , dimension Time
+    , Predicate isOkWithThisNext
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td:_) -> tt $ predNth (-1) False td
@@ -314,7 +315,7 @@ ruleNoon = Rule
   , pattern =
     [ regex "中午"
     ]
-  , prod = \_ -> tt $ hour False 12
+  , prod = \_ -> tt $ mkOkForThisNext $ hour False 12
   }
 
 ruleToday :: Rule
@@ -406,7 +407,7 @@ ruleMidnight = Rule
   , pattern =
     [ regex "午夜|凌晨|半夜"
     ]
-  , prod = \_ -> tt $ hour False 0
+  , prod = \_ -> tt $ mkOkForThisNext $ hour False 0
   }
 
 ruleInduringThePartofday :: Rule
@@ -567,7 +568,7 @@ ruleWeekend = Rule
   , pattern =
     [ regex "周末|週末"
     ]
-  , prod = \_ -> tt weekend
+  , prod = \_ -> tt $ mkOkForThisNext weekend
   }
 
 ruleLastYear :: Rule
@@ -597,7 +598,7 @@ ruleNextTime = Rule
   { name = "next <time>"
   , pattern =
     [ regex "明|下(个|個)?"
-    , dimension Time
+    , Predicate isOkWithThisNext
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td:_) ->
@@ -690,7 +691,7 @@ ruleThisTime = Rule
   { name = "this <time>"
   , pattern =
     [ regex "今(个|個)?|这(个)?|這(個)?"
-    , dimension Time
+    , Predicate isOkWithThisNext
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td:_) ->
@@ -755,20 +756,6 @@ rulePartofdayDimTime = Rule
   , prod = \tokens -> case tokens of
       (Token Time td1:Token Time td2:_) ->
         Token Time <$> intersect td1 td2
-      _ -> Nothing
-  }
-
-ruleMonthNumericWithMonthSymbol :: Rule
-ruleMonthNumericWithMonthSymbol = Rule
-  { name = "month (numeric with month symbol)"
-  , pattern =
-    [ Predicate $ isIntegerBetween 1 12
-    , regex "月(份)?"
-    ]
-  , prod = \tokens -> case tokens of
-      (token:_) -> do
-        v <- getIntValue token
-        tt . mkOkForThisNext $ month v
       _ -> Nothing
   }
 
@@ -891,6 +878,22 @@ ruleDaysOfWeek = mkRuleDaysOfWeek
   , ( "Sunday", "星期日|星期天|礼拜天|周日|禮拜天|週日|禮拜日" )
   ]
 
+ruleMonths :: [Rule]
+ruleMonths = mkRuleMonths
+  [ ( "January", "(一|1)月(份)?" )
+  , ( "February", "(二|2)月(份)?" )
+  , ( "March", "(三|3)月(份)?" )
+  , ( "April", "(四|4)月(份)?" )
+  , ( "May", "(五|5)月(份)?" )
+  , ( "June", "(六|6)月(份)?" )
+  , ( "July", "(七|7)月(份)?" )
+  , ( "August", "(八|8)月(份)?" )
+  , ( "September", "(九|9)月(份)?" )
+  , ( "October", "(十|10)月(份)?" )
+  , ( "November", "(十一|11)月(份)?" )
+  , ( "December", "(十二|12)月(份)?" )
+  ]
+
 rulePeriodicHolidays :: [Rule]
 rulePeriodicHolidays = mkRuleHolidays
   -- Fixed dates, year over year
@@ -951,6 +954,155 @@ rulePeriodicHolidays = mkRuleHolidays
   , ( "母亲节", "母(亲节|親節)", nthDOWOfMonth 2 7 5 )
   ]
 
+
+ruleComputedHolidays :: [Rule]
+ruleComputedHolidays = mkRuleHolidays
+  [ ( "耶稣升天节", "耶(稣|穌)升天(节|節|日)"
+    , cycleNthAfter False TG.Day 39 easterSunday )
+  , ( "大斋首日", "大(斋|齋)首日|(圣|聖)灰((礼仪|禮儀)?日|星期三)|灰日"
+    , cycleNthAfter False TG.Day (-46) easterSunday )
+  , ( "阿舒拉节", "阿舒拉(节|節)"
+    , cycleNthAfter False TG.Day 9 muharram )
+  , ( "克哈特普迦节", "克哈特普迦(节|節)"
+    , cycleNthAfter False TG.Day 8 dhanteras )
+  , ( "春节", "春(节|節)|(农历|農曆|唐人)新年|新(正|春)|正月(正(时|時)|朔日)|岁首"
+    , chineseNewYear )
+  , ( "基督圣体节", "基督(圣体|聖體)((圣|聖)血)?((节|節)|瞻(礼|禮))"
+    , cycleNthAfter False TG.Day 60 easterSunday )
+  , ( "排灯节", "(排|万|萬|印度)(灯节|燈節)"
+    , cycleNthAfter False TG.Day 2 dhanteras )
+  , ( "复活节星期一", "(复|復)活(节|節)星期一"
+    , cycleNthAfter False TG.Day 1 easterSunday )
+  , ( "复活节", "(复|復)活(节|節)|主(复|復)活日", easterSunday )
+  , ( "古尔邦节", "古(尔|爾)邦(节|節)|宰牲(节|節)"
+    , eidalAdha )
+  , ( "开斋节", "(开斋|開齋|肉孜|(尔|爾)代)(节|節)", eidalFitr )
+  , ( "耶稣受难日", "(耶(稣|穌)|主)受(难|難)(节|節|日)|(圣|聖|沈默)(周|週)五"
+    , cycleNthAfter False TG.Day (-2) easterSunday )
+  , ( "侯丽节", "((侯|荷)(丽|麗)|洒红|灑紅|欢悦|歡悅|五彩|胡里|好利|霍利)(节|節)"
+    , cycleNthAfter False TG.Day 39 vasantPanchami )
+  , ( "圣周六"
+    , "神?(圣周|聖週)六|(耶(稣|穌)|主)受(难|難)(节|節|日)翌日|(复|復)活(节|節)前夜|黑色星期六"
+    , cycleNthAfter False TG.Day (-1) easterSunday )
+  , ( "伊斯兰新年", "伊斯兰(教)?(历)?新年"
+    , muharram )
+  , ( "登霄节"
+    , "(夜行)?登霄(节|節)"
+    , cycleNthAfter False TG.Day 26 rajab
+    )
+  , ( "印度丰收节第四天", "(印度(丰|豐)收|(庞|龐)格(尔|爾))(节|節)第四天"
+    , cycleNthAfter False TG.Day 2 thaiPongal )
+  , ( "篝火节", "((犹|猶)太教)?篝火(节|節)", lagBaOmer )
+  , ( "法令之夜"
+    , "(法令|命运|权力)之夜"
+    , cycleNthAfter False TG.Day 26 ramadan )
+  , ( "拉撒路圣周六", "拉撒路(圣周|聖週)六|拉匝路(周|週)六"
+    , cycleNthAfter False TG.Day (-8) orthodoxEaster )
+  , ( "印度丰收节第三天", "(印度(丰|豐)收|(庞|龐)格(尔|爾))(节|節)第三天"
+    , cycleNthAfter False TG.Day 1 thaiPongal )
+  , ( "神圣星期四"
+    , "濯足(节|節)|神(圣|聖)星期四|(圣周|聖週)(星期)?四|(设|設)立(圣|聖)餐日"
+    , cycleNthAfter False TG.Day (-3) easterSunday )
+  , ( "圣纪节" , "圣纪节|聖紀節", mawlid )
+  , ( "东正教复活节星期一", "(东|東)正教(复|復)活(节|節)星期一"
+    , cycleNthAfter False TG.Day 1 orthodoxEaster )
+  , ( "东正教复活节", "(东|東)正教((复|復)活(节|節)|主(复|復)活日)"
+    , orthodoxEaster )
+  , ( "东正教圣周六"
+    , "(东|東)正教(神?(圣周|聖週)六|(耶(稣|穌)|主)受(难|難)(节|節|日)翌日|(复|復)活(节|節)前夜)"
+    , cycleNthAfter False TG.Day (-1) orthodoxEaster )
+  , ( "东正教耶稣受难日", "(东|東)正教((耶(稣|穌)|主)受(难|難)(节|節|日)|(圣|聖|沈默)(周|週)五)"
+    , cycleNthAfter False TG.Day (-2) orthodoxEaster )
+  , ( "东正教棕枝主日", "(东|東)正教((棕|圣|聖)枝|圣树|聖樹|基督苦(难|難))主日"
+    , cycleNthAfter False TG.Day (-7) orthodoxEaster )
+  , ( "棕枝主日", "((棕|圣|聖)枝|圣树|聖樹|基督苦(难|難))主日"
+    , cycleNthAfter False TG.Day (-7) easterSunday )
+  , ( "五旬节", "五旬(节|節)|(圣灵|聖靈)降(临|臨)(日|节|節)"
+    , cycleNthAfter False TG.Day 49 easterSunday )
+  , ( "印度兄妹节", "(印度兄妹|拉克沙班丹)(节|節)", rakshaBandhan )
+  , ( "圣会节", "(圣|聖)会(节|節)"
+    , cycleNthAfter False TG.Day 21 roshHashana )
+  , ( "忏悔节", "忏悔(节|節|火曜日)|煎(饼|餅)星期二"
+    , cycleNthAfter False TG.Day (-47) easterSunday )
+  , ( "西赫托拉节", "(西赫(托拉|妥拉)|诵经|誦經|转经|轉經|律法|(欢庆圣|歡慶聖)法)(节|節)"
+    , cycleNthAfter False TG.Day 22 roshHashana )
+  , ( "印度丰收节", "(印度|淡米(尔|爾))(丰|豐)收(节|節)", thaiPongal )
+  , ( "欧南节", "欧南(节|節)", thiruOnam )
+  , ( "圣殿被毁日", "((圣|聖)殿被毁|禁食)日", tishaBAv )
+  , ( "圣三一主日", "((天主)?(圣|聖)?三一|(圣|聖)三)(主日|节|節)"
+    , cycleNthAfter False TG.Day 56 easterSunday )
+  , ( "十胜节", "(十(胜|勝)|(凯|凱)旋|(圣|聖)母)(节|節)"
+    , cycleNthAfter False TG.Day 9 navaratri )
+  -- 15th day of Shevat
+  , ( "犹太植树节", "((犹|猶)太植(树|樹)|(图|圖)比舍巴特)(节|節)|(树|樹)木新年", tuBishvat )
+  -- day of the full moon in May in the Gregorian calendar
+  , ( "卫塞节", "((卫|衛)塞|威瑟|比(萨宝|薩寶)蕉)(节|節)", vesak )
+  , ( "以色列独立日", "以色列((独|獨)立日|国庆节|國慶節)", yomHaatzmaut )
+  , ( "赎罪日", "(赎|贖)罪日", cycleNthAfter False TG.Day 9 roshHashana )
+  , ( "圣灵节庆日", "(圣灵节庆|聖靈節慶)日"
+    , cycleNthAfter False TG.Day 50 easterSunday )
+
+  -- Other
+  , ( "老板节", "老(板节|闆節)"
+    , predNthClosest 0 weekday (monthDay 10 16) )
+  ]
+
+ruleComputedHolidays' :: [Rule]
+ruleComputedHolidays' = mkRuleHolidays'
+  [ ( "全球青年服务日", "全球青年服(务|務)日"
+    , let start = globalYouthServiceDay
+          end = cycleNthAfter False TG.Day 2 globalYouthServiceDay
+        in interval TTime.Open start end )
+  , ( "四旬节", "四旬(节|節)"
+    , let start = cycleNthAfter False TG.Day (-48) orthodoxEaster
+          end = cycleNthAfter False TG.Day (-9) orthodoxEaster
+        in interval TTime.Open start end )
+  , ( "光明节", "(光明|修殿|(献|獻)殿|(烛|燭)光|哈努卡|(马|馬)加比)(节|節)"
+    , let start = chanukah
+          end = cycleNthAfter False TG.Day 7 chanukah
+        in interval TTime.Open start end )
+  , ( "大斋期", "大(斋|齋)(期|节|節)"
+    , let start = cycleNthAfter False TG.Day (-46) easterSunday
+          end = cycleNthAfter False TG.Day (-1) easterSunday
+        in interval TTime.Open start end )
+  , ( "九夜节", "(九夜|(难|難)近母)(节|節)"
+    , let start = navaratri
+          end = cycleNthAfter False TG.Day 9 navaratri
+        in interval TTime.Open start end )
+  , ( "逾越节", "逾越(节|節)"
+    , let start = passover
+          end = cycleNthAfter False TG.Day 8 passover
+        in interval TTime.Open start end )
+  , ( "斋月", "(穆斯林)?(斋|齋)月"
+    , let start = ramadan
+          end = cycleNthAfter False TG.Day (-1) eidalFitr
+        in interval TTime.Open start end )
+  , ( "犹太新年", "(犹|猶)太新年"
+    , let start = roshHashana
+          end = cycleNthAfter False TG.Day 2 roshHashana
+        in interval TTime.Open start end )
+  , ( "七七节", "(七七|沙夫幼特|(周|週)日|收(获|穫)|新果(实|實))(节|節)"
+    , let start = cycleNthAfter False TG.Day 50 passover
+          end = cycleNthAfter False TG.Day 52 passover
+        in interval TTime.Open start end )
+  , ( "住棚节", "住棚(节|節)"
+    , let start = cycleNthAfter False TG.Day 14 roshHashana
+          end = cycleNthAfter False TG.Day 22 roshHashana
+        in interval TTime.Open start end )
+
+  -- Other
+  -- Last Saturday of March unless it falls on Holy Saturday
+  -- In which case it's the Saturday before
+  , ( "地球一小时", "地球一小(时|時)"
+    , let holySaturday = cycleNthAfter False TG.Day (-1) easterSunday
+          tentative = predLastOf (dayOfWeek 6) (month 3)
+          alternative = cycleNthAfter False TG.Day (-7) tentative
+        in do
+          day <- intersectWithReplacement holySaturday tentative alternative
+          start <- intersect day $ hourMinute True 20 30
+          interval TTime.Closed start $ cycleNthAfter False TG.Minute 60 start )
+  ]
+
 rules :: [Rule]
 rules =
   [ ruleAbsorptionOfAfterNamedDay
@@ -975,7 +1127,6 @@ rules =
   , ruleMidnight
   , ruleMmdd
   , ruleMmddyyyy
-  , ruleMonthNumericWithMonthSymbol
   , ruleMorning
   , ruleNamedmonthDayofmonth
   , ruleNextCycle
@@ -1022,4 +1173,7 @@ rules =
   , ruleTimezone
   ]
   ++ ruleDaysOfWeek
+  ++ ruleMonths
+  ++ ruleComputedHolidays
+  ++ ruleComputedHolidays'
   ++ rulePeriodicHolidays

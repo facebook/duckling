@@ -348,35 +348,35 @@ allExamples = concat
   , examples (datetimeInterval ((2012, 12, 21, 0, 0, 0), (2013, 3, 21, 0, 0, 0)) Day)
              [ "이번겨울"
              ]
-  , examples (datetime (2013, 12, 25, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2013, 12, 25, 0, 0, 0) Day "Christmas")
              [ "크리스마스"
              ]
-  , examples (datetime (2013, 12, 24, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2013, 12, 24, 0, 0, 0) Day "Christmas Eve")
              [ "크리스마스이브"
              ]
-  , examples (datetime (2014, 1, 1, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2014, 1, 1, 0, 0, 0) Day "New Year's Day")
              [ "신정"
              , "설날"
              ]
-  , examples (datetime (2013, 3, 1, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2013, 3, 1, 0, 0, 0) Day "Independence Movement Day")
              [ "삼일절"
              ]
-  , examples (datetime (2013, 5, 5, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2013, 5, 5, 0, 0, 0) Day "Children's Day")
              [ "어린이날"
              ]
-  , examples (datetime (2013, 6, 6, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2013, 6, 6, 0, 0, 0) Day "Memorial Day")
              [ "현충일"
              ]
-  , examples (datetime (2013, 6, 17, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2013, 7, 17, 0, 0, 0) Day "Constitution Day")
              [ "제헌절"
              ]
-  , examples (datetime (2013, 8, 15, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2013, 8, 15, 0, 0, 0) Day "Liberation Day")
              [ "광복절"
              ]
-  , examples (datetime (2013, 10, 3, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2013, 10, 3, 0, 0, 0) Day "National Foundation Day")
              [ "개천절"
              ]
-  , examples (datetime (2013, 10, 9, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2013, 10, 9, 0, 0, 0) Day "Hangul Day")
              [ "한글날"
              ]
   , examples (datetimeInterval ((2013, 2, 12, 18, 0, 0), (2013, 2, 13, 0, 0, 0)) Hour)

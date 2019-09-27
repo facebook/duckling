@@ -21,6 +21,7 @@ import Duckling.Ordinal.Types (OrdinalData(..))
 import Duckling.Regex.Types
 import Duckling.Time.Helpers
 import Duckling.Time.Types (TimeData (..))
+import Duckling.Time.Computed
 import Duckling.Types
 import qualified Duckling.Ordinal.Types as TOrdinal
 import qualified Duckling.Time.Types as TTime
@@ -194,21 +195,12 @@ ruleHourofdayHalf = Rule
       _ -> Nothing
   }
 
-ruleValentinesDay :: Rule
-ruleValentinesDay = Rule
-  { name = "valentine's day"
-  , pattern =
-    [ regex "walentynki"
-    ]
-  , prod = \_ -> tt $ monthDay 2 14
-  }
-
 ruleLastTime :: Rule
 ruleLastTime = Rule
   { name = "last <time>"
   , pattern =
     [ regex "ostatni(ego|ch|emu|mi|m|(a|ą)|ej)?|(po ?)?przedni(ego|ch|emu|e|mi|m|a)?"
-    , dimension Time
+    , Predicate isOkWithThisNext
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td:_) ->
@@ -329,18 +321,6 @@ ruleMonthDdddInterval = Rule
         dom2 <- intersect (dayOfMonth dd2) td
         Token Time <$> interval TTime.Closed dom1 dom2
       _ -> Nothing
-  }
-
-ruleSeason4 :: Rule
-ruleSeason4 = Rule
-  { name = "season"
-  , pattern =
-    [ regex "wiosna|wiosny|wiośnie|wiosnie|wiosnę|wiosne|wiosną|wiosna|wiośnie|wiosnie|wiosno"
-    ]
-  , prod = \_ ->
-      let from = monthDay 3 20
-          to = monthDay 6 21
-      in Token Time <$> interval TTime.Open from to
   }
 
 ruleYearLatent2 :: Rule
@@ -467,15 +447,6 @@ ruleTimeofdayApproximately = Rule
   , prod = \tokens -> case tokens of
       (Token Time td:_) -> tt $ notLatent td
       _ -> Nothing
-  }
-
-rulePolishIndependenceDay :: Rule
-rulePolishIndependenceDay = Rule
-  { name = "Polish independence day"
-  , pattern =
-    [ regex "(s|ś)wiet(a|o) niepodleg(l|ł)o(s|ś)ci|(ś|s)w\\.? niepodleg(l|ł)o(s|ś)ci"
-    ]
-  , prod = \_ -> tt $ monthDay 11 11
   }
 
 ruleOnDate :: Rule
@@ -608,15 +579,6 @@ ruleNamedmonthDayofmonthOrdinal = Rule
       _ -> Nothing
   }
 
-ruleChristmasEve :: Rule
-ruleChristmasEve = Rule
-  { name = "christmas eve"
-  , pattern =
-    [ regex "(wigilia|wigilii|wigili(e|ę)|wigili(a|ą)|wigilio) ?(bo(z|ż)ego narodzenia)?"
-    ]
-  , prod = \_ -> tt $ monthDay 12 24
-  }
-
 ruleInduringThePartofday :: Rule
 ruleInduringThePartofday = Rule
   { name = "in|during the <part-of-day>"
@@ -628,15 +590,6 @@ ruleInduringThePartofday = Rule
       (_:Token Time td:_) ->
         tt $ notLatent td
       _ -> Nothing
-  }
-
-ruleThanksgivingDay :: Rule
-ruleThanksgivingDay = Rule
-  { name = "thanksgiving day"
-  , pattern =
-    [ regex "((s|ś)wiet(a|o)|(dzie(n|ń)))? ?dzi(e|ę)kczynieni(e|a)"
-    ]
-  , prod = \_ -> tt $ nthDOWOfMonth 4 4 11
   }
 
 ruleDayofmonthordinalNamedmonth :: Rule
@@ -747,30 +700,6 @@ ruleExactlyTimeofday = Rule
       _ -> Nothing
   }
 
-ruleSeason3 :: Rule
-ruleSeason3 = Rule
-  { name = "season"
-  , pattern =
-    [ regex "zima|zimy|zimie|zimę|zime|zimą|zima|zimie|zimo"
-    ]
-  , prod = \_ ->
-      let from = monthDay 12 21
-          to = monthDay 3 20
-      in Token Time <$> interval TTime.Open from to
-  }
-
-ruleSeason :: Rule
-ruleSeason = Rule
-  { name = "season"
-  , pattern =
-    [ regex "lato|lata|latu|latem|lecie"
-    ]
-  , prod = \_ ->
-      let from = monthDay 6 21
-          to = monthDay 9 23
-      in Token Time <$> interval TTime.Open from to
-  }
-
 ruleIntegerLatentTimeofday :: Rule
 ruleIntegerLatentTimeofday = Rule
   { name = "<integer> (latent time-of-day)"
@@ -797,15 +726,6 @@ ruleBetweenDatetimeAndDatetimeInterval = Rule
       (_:Token Time td1:_:Token Time td2:_) ->
         Token Time <$> interval TTime.Closed td1 td2
       _ -> Nothing
-  }
-
-ruleNewYearsEve :: Rule
-ruleNewYearsEve = Rule
-  { name = "new year's eve"
-  , pattern =
-    [ regex "sylwester|nowy rok"
-    ]
-  , prod = \_ -> tt $ monthDay 12 31
   }
 
 ruleDurationAgo :: Rule
@@ -989,7 +909,7 @@ ruleWeekend = Rule
   , pattern =
     [ regex "((wek|week|wik)(\\s|-)?end|wkend)"
     ]
-  , prod = \_ -> tt weekend
+  , prod = \_ -> tt $ mkOkForThisNext weekend
   }
 
 ruleEomendOfMonth :: Rule
@@ -1006,7 +926,7 @@ ruleNextTime = Rule
   { name = "next <time>"
   , pattern =
     [ regex "kolejn(ym|y|ego|emu|(a|ą)|ej|e)|nast(e|ę)pn(ym|y|ego|emu|e|(a|ą)|ej|e)|przysz(l|ł)(ego|emu|ym|(a|ą)|ej|ych|i|ymi|y|e)"
-    , Predicate isNotLatent
+    , Predicate $ and . sequence [isNotLatent, isOkWithThisNext]
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td:_) ->
@@ -1140,7 +1060,7 @@ ruleThisTime = Rule
   { name = "this <time>"
   , pattern =
     [ regex "te(mu|n|go|j)|ta|to|tym|nadchodz(a|ą)c(ym|y|ego|emu|(a|ą)|ej)"
-    , dimension Time
+    , Predicate isOkWithThisNext
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td:_) ->
@@ -1234,18 +1154,6 @@ ruleYesterday = Rule
   , prod = \_ -> tt . cycleNth TG.Day $ - 1
   }
 
-ruleSeason2 :: Rule
-ruleSeason2 = Rule
-  { name = "season"
-  , pattern =
-    [ regex "jesień|jesien|jesieni|jesienią|jesienia"
-    ]
-  , prod = \_ ->
-      let from = monthDay 9 23
-          to = monthDay 12 21
-      in Token Time <$> interval TTime.Open from to
-  }
-
 ruleAfterTimeofday :: Rule
 ruleAfterTimeofday = Rule
   { name = "after <time-of-day>"
@@ -1257,15 +1165,6 @@ ruleAfterTimeofday = Rule
       (_:Token Time td:_) ->
         tt $ withDirection TTime.After td
       _ -> Nothing
-  }
-
-ruleChristmas :: Rule
-ruleChristmas = Rule
-  { name = "christmas"
-  , pattern =
-    [ regex "((Ś|ś|s)wi(e|ę)ta)? ?bo(z|ż)(ym|ego|e) narodzeni(e|a|u)"
-    ]
-  , prod = \_ -> tt $ monthDay 12 25
   }
 
 ruleDayofmonthOrdinal :: Rule
@@ -1352,15 +1251,6 @@ ruleYear = Rule
       _ -> Nothing
   }
 
-ruleHalloweenDay :: Rule
-ruleHalloweenDay = Rule
-  { name = "halloween day"
-  , pattern =
-    [ regex "hall?owe?en( day)?"
-    ]
-  , prod = \_ -> tt $ monthDay 10 31
-  }
-
 ruleNamedmonthDayofmonthNonOrdinal :: Rule
 ruleNamedmonthDayofmonthNonOrdinal = Rule
   { name = "<named-month> <day-of-month> (non ordinal)"
@@ -1412,15 +1302,6 @@ ruleLastDayofweekOfTime = Rule
       (_:Token Time td1:_:Token Time td2:_) ->
         tt $ predLastOf td1 td2
       _ -> Nothing
-  }
-
-ruleFathersDay :: Rule
-ruleFathersDay = Rule
-  { name = "Father's Day"
-  , pattern =
-    [ regex "dzie(n|ń) ?(taty|ojca)"
-    ]
-  , prod = \_ -> tt $ nthDOWOfMonth 3 7 6
   }
 
 ruleLastCycleTime :: Rule
@@ -1570,15 +1451,6 @@ ruleTomorrow = Rule
   , prod = \_ -> tt $ cycleNth TG.Day 1
   }
 
-ruleMothersDay :: Rule
-ruleMothersDay = Rule
-  { name = "Mother's Day"
-  , pattern =
-    [ regex "dzie(n|ń) ?ma(my|tki|m)"
-    ]
-  , prod = \_ -> tt $ nthDOWOfMonth 2 7 5
-  }
-
 ruleTimeofdayOclock :: Rule
 ruleTimeofdayOclock = Rule
   { name = "<time-of-day> o'clock"
@@ -1640,6 +1512,109 @@ ruleTimezone = Rule
       _ -> Nothing
   }
 
+
+ruleHolidays :: [Rule]
+ruleHolidays =
+  mkRuleHolidays
+    [ ( "New Year's Day", "nowy rok", monthDay 1 1)
+    , ( "Three Kings' Day", "((ś|s)wi(e|ę)to)? ?trzech kr(o|ó)li", monthDay 1 6)
+    , ( "Valentine's Day", "walentynki", monthDay 2 14)
+    , ( "Women's Day", "dzie(n|ń) kobiet", monthDay 3 8)
+    , ( "Labour Day", "(s|ś)wi(e|ę)to pracy", monthDay 5 1)
+    , ( "Constitution Day"
+      , "(ś|s)wi(e|ę)to konstytucj(i|a) ?((trzeciego|3) maja)?"
+      , monthDay 5 3
+      )
+    , ( "Mother's Day", "dzie(n|ń) ma(my|tki|m)", monthDay 5 26)
+    , ( "Father's Day", "dzie(n|ń) (taty|ojca)", monthDay 6 23)
+    , ( "Assumption Day"
+      , "(ś|s)wi(e|ę)to wojska polskiego|wniebowzi(e|ę)cie naj(s|ś)wi(e|ę)tszej maryi panny"
+      , monthDay 8 15
+      )
+    , ( "Halloween Day", "hall?owe?en( day)?", monthDay 10 31)
+    , ( "All Saints' Day"
+      , "((ś|s)wi(e|ę)to)? ?wszystkich (s|ś)wi(e|ę)tych"
+      , monthDay 11 1
+      )
+    , ( "Polish Independence Day"
+      , "(s|ś)wi(e|ę)t(a|o) niepodleg(l|ł)o(s|ś)ci|(ś|s)w\\.? niepodleg(l|ł)o(s|ś)ci"
+      , monthDay 11 11
+      )
+    , ( "Saint Nicholas Day", "mikołajki", monthDay 12 6)
+    , ( "Christmas Eve"
+      , "(wigilia|wigilii|wigili(e|ę)|wigili(a|ą)|wigilio) ?(bo(z|ż)ego narodzenia)?"
+      , monthDay 12 24
+      )
+    , ( "Christmas"
+      , "((Ś|ś|s)wi(e|ę)ta)? ?bo(z|ż)(ym|ego|e) narodzeni(e|a|u)"
+      , monthDay 12 25
+      )
+    , ( "St Stephen's Day"
+      , "drugi dzie(n|ń) (s|ś)wi(a|ą)t bo(z|ż)ego narodzenia"
+      , monthDay 12 26
+      )
+    , ( "New Year's Eve", "sylwester", monthDay 12 31)
+    , ( "Thanksgiving Day"
+      , "((s|ś)wiet(a|o)|(dzie(n|ń)))? ?dzi(e|ę)kczynieni(e|a)"
+      , nthDOWOfMonth 4 4 11
+      )
+    ]
+
+ruleComputedHolidays :: [Rule]
+ruleComputedHolidays =
+  mkRuleHolidays
+    [ ( "Ash Wednesday"
+      , "popielec"
+      , cycleNthAfter False TG.Day (-46) easterSunday
+      )
+    , ( "Palm Sunday"
+      , "niedziela palmowa"
+      , cycleNthAfter False TG.Day (-7) easterSunday
+      )
+    , ( "Good Friday"
+      , "wielki pi(a|ą)tek"
+      , cycleNthAfter False TG.Day (-2) easterSunday
+      )
+    , ( "Holy Saturday"
+      , "wielka sobota"
+      , cycleNthAfter False TG.Day (-1) easterSunday
+      )
+    , ( "Easter Sunday", "wielkanoc|niedziela wielkanocna", easterSunday)
+    , ( "Easter Monday"
+      , "poniedzia(l|ł)ek wielkanocny"
+      , cycleNthAfter False TG.Day 1 easterSunday
+      )
+    , ( "Pentecost"
+      , "zielone (s|ś)wi(a|ą)tki|zes(l|ł)anie ducha (ś|s)wi(e|ę)tego"
+      , cycleNthAfter False TG.Day 49 easterSunday
+      )
+    , ( "Corpus Christi"
+      , "bo(z|ż)e cia(l|ł)o"
+      , cycleNthAfter False TG.Day 60 easterSunday
+      )
+    ]
+
+ruleSeasons :: [Rule]
+ruleSeasons =
+  mkRuleSeasons
+    [ ("lato", "lato|lata|latu|latem|lecie", monthDay 6 21, monthDay 9 23)
+    , ( "jesień"
+      , "jesień|jesien|jesieni|jesienią|jesienia"
+      , monthDay 9 23
+      , monthDay 12 21
+      )
+    , ( "zima"
+      , "zima|zimy|zimie|zimę|zime|zimą|zima|zimie|zimo"
+      , monthDay 12 21
+      , monthDay 3 20
+      )
+    , ( "wiosna"
+      , "wiosna|wiosny|wiośnie|wiosnie|wiosnę|wiosne|wiosną|wiosna|wiośnie|wiosnie|wiosno"
+      , monthDay 3 20
+      , monthDay 6 21
+      )
+    ]
+
 rules :: [Rule]
 rules =
   [ ruleAboutTimeofday
@@ -1652,8 +1627,6 @@ rules =
   , ruleBetweenTimeofdayAndTimeofdayInterval
   , ruleByTheEndOfTime
   , ruleByTime
-  , ruleChristmas
-  , ruleChristmasEve
   , ruleCycleAfterTime
   , ruleCycleBeforeTime
   , ruleDatetimeDatetimeInterval
@@ -1674,11 +1647,9 @@ rules =
   , ruleEoyendOfYear
   , ruleEveningnight
   , ruleExactlyTimeofday
-  , ruleFathersDay
   , ruleFromDatetimeDatetimeInterval
   , ruleFromHourofdayHourofdayInterval
   , ruleFromTimeofdayTimeofdayInterval
-  , ruleHalloweenDay
   , ruleHhmm
   , ruleHhmmMilitary
   , ruleHhmmMilitaryAmpm
@@ -1705,10 +1676,8 @@ rules =
   , ruleMmddyyyy
   , ruleMonthDdddInterval
   , ruleMorning
-  , ruleMothersDay
   , ruleNamedmonthDayofmonthNonOrdinal
   , ruleNamedmonthDayofmonthOrdinal
-  , ruleNewYearsEve
   , ruleNextCycle
   , ruleNextNCycle
   , ruleNextTime
@@ -1725,18 +1694,12 @@ rules =
   , ruleOrdinalCycleTime
   , ruleOrdinalQuarter
   , ruleOrdinalQuarterYear
-  , rulePolishIndependenceDay
   , ruleRelativeMinutesAfterpastIntegerHourofday
   , ruleQuarterAfterpastIntegerHourofday
   , ruleHalfAfterpastIntegerHourofday
   , ruleRelativeMinutesTotillbeforeIntegerHourofday
   , ruleQuarterTotillbeforeIntegerHourofday
   , ruleHalfTotillbeforeIntegerHourofday
-  , ruleSeason
-  , ruleSeason2
-  , ruleSeason3
-  , ruleSeason4
-  , ruleThanksgivingDay
   , ruleTheCycleOfTime
   , ruleTheIdesOfNamedmonth
   , ruleTheOrdinalCycleAfterTime
@@ -1756,7 +1719,6 @@ rules =
   , ruleToday
   , ruleTomorrow
   , ruleUntilTimeofday
-  , ruleValentinesDay
   , ruleWeekend
   , ruleWithinDuration
   , ruleYear
@@ -1768,3 +1730,6 @@ rules =
   ]
   ++ ruleDaysOfWeek
   ++ ruleMonths
+  ++ ruleHolidays
+  ++ ruleSeasons
+  ++ ruleComputedHolidays

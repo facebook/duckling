@@ -613,32 +613,90 @@ allExamples = concat
              [ "ta zima"
              , "tej zimy"
              ]
-  , examples (datetime (2013, 12, 24, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2013, 12, 24, 0, 0, 0) Day "Christmas Eve")
              [ "Wigilia Bożego Narodzenia"
              , "Wigilia"
              ]
-  , examples (datetime (2013, 12, 25, 0, 0, 0) Day)
-             [ "święta Bożego Narodzenia"
-             , "boże narodzenie"
+  , examples (datetimeHoliday (2013, 12, 25, 0, 0, 0) Day "Christmas")
+             [ "Święta Bożego Narodzenia"
+             , "Boże Narodzenie"
              ]
-  , examples (datetime (2013, 12, 31, 0, 0, 0) Day)
-             [ "sylwester"
+  , examples (datetimeHoliday (2013, 12, 31, 0, 0, 0) Day "New Year's Eve")
+             [ "Sylwester"
              ]
-  , examples (datetime (2013, 2, 14, 0, 0, 0) Day)
-             [ "walentynki"
+  , examples (datetimeHoliday (2013, 2, 14, 0, 0, 0) Day "Valentine's Day")
+             [ "Walentynki"
              ]
-  , examples (datetime (2013, 5, 12, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2013, 5, 26, 0, 0, 0) Day "Mother's Day")
              [ "Dzień Mamy"
              ]
-  , examples (datetime (2013, 6, 16, 0, 0, 0) Day)
+  , examples (datetimeHoliday (2013, 6, 23, 0, 0, 0) Day "Father's Day")
              [ "Dzień Taty"
              ]
-  , examples (datetime (2013, 10, 31, 0, 0, 0) Day)
-             [ "halloween"
+  , examples (datetimeHoliday (2013, 10, 31, 0, 0, 0) Day "Halloween Day")
+             [ "Halloween"
              ]
-  , examples (datetime (2013, 11, 28, 0, 0, 0) Day)
-             [ "dzień dziękczynienia"
-             , "dziękczynienie"
+  , examples (datetimeHoliday (2013, 11, 28, 0, 0, 0) Day "Thanksgiving Day")
+             [ "Dzień Dziękczynienia"
+             , "Dziękczynienie"
+             ]
+  , examples (datetimeHoliday (2013, 12, 26, 0, 0, 0) Day "St Stephen's Day")
+             [ "drugi dzień świąt Bożego Narodzenia"
+             ]
+  , examples (datetimeHoliday (2014, 1, 6, 0, 0, 0) Day "Three Kings' Day")
+             [ "Święto Trzech Króli"
+             , "Trzech Króli"
+             ]
+  , examples (datetimeHoliday (2013, 5, 1, 0, 0, 0) Day "Labour Day")
+             [ "Święto Pracy"
+             ]
+  , examples (datetimeHoliday (2013, 5, 3, 0, 0, 0) Day "Constitution Day")
+             [ "Święto Konstytucji Trzeciego Maja"
+             , "Święto Konstytucji 3 Maja"
+             , "Święto Konstytucji"
+             ]
+  , examples (datetimeHoliday (2013, 8, 15, 0, 0, 0) Day "Assumption Day")
+             [ "Święto Wojska Polskiego"
+             , "Wniebowzięcie Najświętszej Maryi Panny"
+             ]
+  , examples (datetimeHoliday (2013, 11, 1, 0, 0, 0) Day "All Saints' Day")
+             [ "Wszystkich Świętych"
+             , "Święto Wszystkich Świętych"
+             ]
+  , examples (datetimeHoliday (2014, 1, 1, 0, 0, 0) Day "New Year's Day")
+             [ "Nowy Rok"
+             ]
+  , examples (datetimeHoliday (2013, 3, 8, 0, 0, 0) Day "Women's Day")
+             [ "Dzień Kobiet"
+             ]
+  , examples (datetimeHoliday (2013, 2, 13, 0, 0, 0) Day "Ash Wednesday")
+             [ "Popielec"
+             ]
+  , examples (datetimeHoliday (2013, 5, 30, 0, 0, 0) Day "Corpus Christi")
+             [ "Boże Ciało"
+             ]
+  , examples (datetimeHoliday (2013, 4, 1, 0, 0, 0) Day "Easter Monday")
+             [ "Poniedziałek Wielkanocny"
+             ]
+  , examples (datetimeHoliday (2013, 3, 31, 0, 0, 0) Day "Easter Sunday")
+             [ "Niedziela Wielkanocna"
+             , "Wielkanoc"
+             ]
+  , examples (datetimeHoliday (2013, 3, 29, 0, 0, 0) Day "Good Friday")
+             [ "Wielki Piątek"
+             ]
+  , examples (datetimeHoliday (2013, 3, 30, 0, 0, 0) Day "Holy Saturday")
+             [ "Wielka Sobota"
+             ]
+  , examples (datetimeHoliday (2013, 3, 24, 0, 0, 0) Day "Palm Sunday")
+             [ "Niedziela Palmowa"
+             ]
+  , examples (datetimeHoliday (2013, 5, 19, 0, 0, 0) Day "Pentecost")
+             [ "Zesłanie Ducha Świętego"
+             , "Zielone Świątki"
+             ]
+  , examples (datetimeHoliday (2013, 12, 6, 0, 0, 0) Day "Saint Nicholas Day")
+             [ "Mikołajki"
              ]
   , examples (datetimeInterval ((2013, 2, 12, 18, 0, 0), (2013, 2, 13, 0, 0, 0)) Hour)
              [ "ten wieczór"

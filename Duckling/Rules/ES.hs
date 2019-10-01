@@ -22,6 +22,7 @@ import qualified Duckling.Distance.ES.Rules as Distance
 import qualified Duckling.Numeral.ES.Rules as Numeral
 import qualified Duckling.Ordinal.ES.Rules as Ordinal
 import qualified Duckling.Temperature.ES.Rules as Temperature
+import qualified Duckling.Duration.ES.Rules as Duration
 import qualified Duckling.Time.ES.Rules as Time
 import qualified Duckling.TimeGrain.ES.Rules as TimeGrain
 import qualified Duckling.Volume.ES.Rules as Volume
@@ -37,7 +38,7 @@ langRules :: Some Dimension -> [Rule]
 langRules (This AmountOfMoney) = AmountOfMoney.rules
 langRules (This CreditCardNumber) = []
 langRules (This Distance) = Distance.rules
-langRules (This Duration) = []
+langRules (This Duration) = Duration.rules
 langRules (This Email) = []
 langRules (This Numeral) = Numeral.rules
 langRules (This Ordinal) = Ordinal.rules

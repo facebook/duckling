@@ -12,7 +12,7 @@ module Duckling.Time.Computed
   , ramadan, rathaYatra, roshHashana, thaiPongal, thiruOnam
   , tishaBAv, tuBishvat, vasantPanchami, vesak
   , yomHaatzmaut, vaisakhi, purim, saraswatiJayanti, rabindraJayanti
-  , ravidassJayanti, pargatDiwas, ugadi
+  , ravidassJayanti, pargatDiwas, ugadi, ganeshChaturthi
   ) where
 
 import Data.Maybe
@@ -1695,6 +1695,44 @@ rakshaBandhan' = mapMaybe toTimeObjectM
   , (2028, 8, 5)
   , (2029, 8, 23)
   , (2030, 8, 13)
+  ]
+
+ganeshChaturthi :: TimeData
+ganeshChaturthi = computedDays ganeshChaturthi'
+
+ganeshChaturthi' :: [TimeObject]
+ganeshChaturthi' = mapMaybe toTimeObjectM
+  [ (2000, 9, 1)
+  , (2001, 8, 22)
+  , (2002, 9, 10)
+  , (2003, 8, 31)
+  , (2004, 9, 18)
+  , (2005, 9, 7)
+  , (2006, 8, 27)
+  , (2007, 9, 15)
+  , (2008, 9, 3)
+  , (2009, 8, 23)
+  , (2010, 9, 11)
+  , (2011, 9, 1)
+  , (2012, 9, 19)
+  , (2013, 9, 9)
+  , (2014, 8, 29)
+  , (2015, 9, 17)
+  , (2016, 9, 5)
+  , (2017, 8, 25)
+  , (2018, 9, 13)
+  , (2019, 9, 2)
+  , (2020, 8, 22)
+  , (2021, 9, 9)
+  , (2022, 8, 30)
+  , (2023, 9, 18)
+  , (2024, 9, 6)
+  , (2025, 8, 26)
+  , (2026, 9, 14)
+  , (2027, 9, 3)
+  , (2028, 8, 23)
+  , (2029, 9, 11)
+  , (2030, 9, 1)
   ]
 
 mahavirJayanti :: TimeData

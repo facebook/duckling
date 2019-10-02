@@ -81,6 +81,11 @@ allExamples = concat
              , "den tredje mars"
              , "den 3. mars"
              ]
+  , examples (datetime (2013, 10, 30, 0, 0, 0) Day)
+             [ "30.10"
+             , "30/10"
+             , "30-10"
+             ]
   , examples (datetime (2015, 3, 3, 0, 0, 0) Day)
              [ "3 mars 2015"
              , "tredje mars 2015"
@@ -92,6 +97,8 @@ allExamples = concat
              , "2015-3-3"
              , "2015-03-03"
              , "2015.03.03"
+             , "03/03/2015"
+             , "03.03.2015"
              ]
   , examples (datetime (2013, 2, 15, 0, 0, 0) Day)
              [ "På den 15."
@@ -127,6 +134,9 @@ allExamples = concat
              , "31/10/74"
              , "31-10-74"
              , "31.10.74"
+             , "1974/10/31"
+             , "1974-10-31"
+             , "1974.10.31"
              ]
   , examples (datetime (2015, 4, 14, 0, 0, 0) Day)
              [ "14april 2015"

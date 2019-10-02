@@ -1098,7 +1098,7 @@ ruleYyyymmdd :: Rule
 ruleYyyymmdd = Rule
   { name = "yyyy-mm-dd"
   , pattern =
-    [ regex "(\\d{2,4})[\\-\\.\\/](0?[1-9]|1[0-2])[\\-\\.\\/](3[01]|[12]\\d|0?[1-9])"
+    [ regex "(\\d{4})[\\-\\.\\/](0?[1-9]|1[0-2])[\\-\\.\\/](3[01]|[12]\\d|0?[1-9])"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (yy:mm:dd:_)):_) -> do
@@ -1421,7 +1421,7 @@ ruleDdDotMm :: Rule
 ruleDdDotMm = Rule
   { name = "dd.mm"
   , pattern =
-    [ regex "(2[5-9]|3[01]])\\.(0[1-9]|1[0-2])"
+    [ regex "(2[5-9]|3[01])\\.(0[1-9]|1[0-2])"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (dd:mm:_)):_) -> do

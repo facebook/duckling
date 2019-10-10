@@ -114,20 +114,27 @@ fromText rawInput = Document{..}
 
 -- As regexes are matched without whitespace delimitator, we need to check
 -- the reasonability of the match to actually be a word.
-isRangeValid :: Document -> Int -> Int -> Bool
-isRangeValid doc start end =
+isRangeValid :: Document -> Int -> Int -> Bool -> Bool
+isRangeValid doc start end skipValidateRange =
   (start == 0 ||
-      isDifferent (doc ! (start - 1)) (doc ! start)) &&
+      (skipValidateRange && (not $ Char.isLower startCharClass)) ||
+      isDifferent (doc ! (start - 1)) startChar) &&
   (end == length doc ||
-      isDifferent (doc ! (end - 1)) (doc ! end))
+      (skipValidateRange && (not $ Char.isLower endCharClass)) ||
+      isDifferent endChar (doc ! end))
   where
     charClass :: Char -> Char
     charClass c
       | Char.isLower c || Char.isUpper c = 'c'
       | Char.isDigit c = 'd'
+      | c == '\'' = 'q'
       | otherwise = c
     isDifferent :: Char -> Char -> Bool
     isDifferent a b = charClass a /= charClass b
+    startChar = (doc ! (start))
+    startCharClass = (charClass startChar)
+    endChar = (doc ! (end - 1))
+    endCharClass = (charClass endChar)
 
 -- True iff a is followed by whitespaces and b.
 isAdjacent :: Document -> Int -> Int -> Bool

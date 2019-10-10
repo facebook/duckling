@@ -60,6 +60,33 @@ ruleSixty = Rule
   , prod = \_ -> integer 60
   }
 
+ruleSeventy :: Rule
+ruleSeventy = Rule
+  { name = "seventy"
+  , pattern =
+    [ regex "siedemdziesi(ą)t|siedemdziesi(ę)ci(u|oma)"
+    ]
+  , prod = \_ -> integer 70
+  }
+
+ruleEighty :: Rule
+ruleEighty = Rule
+  { name = "eighty"
+  , pattern =
+    [ regex "osiemdziesi(ą)t|osiemdziesi(ę)ci(u|oma)"
+    ]
+  , prod = \_ -> integer 80
+  }
+
+ruleNinety :: Rule
+ruleNinety = Rule
+  { name = "ninety"
+  , pattern =
+    [ regex "dziewięćdziesi(ą)t|dziewięćdziesi(ę)ci(u|oma)"
+    ]
+  , prod = \_ -> integer 90
+  }
+
 ruleIntersectWithAnd :: Rule
 ruleIntersectWithAnd = Rule
   { name = "intersect (with and)"
@@ -552,6 +579,7 @@ rules =
   , ruleDozen
   , ruleEight
   , ruleEighteen
+  , ruleEighty
   , ruleEleven
   , ruleFifteen
   , ruleFifty
@@ -567,6 +595,7 @@ rules =
   , ruleMultiply
   , ruleNine
   , ruleNineteen
+  , ruleNinety
   , ruleNumeral
   , ruleNumeral2
   , ruleNumeral3
@@ -582,6 +611,7 @@ rules =
   , ruleOne
   , ruleSeven
   , ruleSeventeen
+  , ruleSeventy
   , ruleSingle
   , ruleSix
   , ruleSixteen

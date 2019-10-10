@@ -98,6 +98,18 @@ allExamples = concat
              [ "5 tysięcy"
              , "pięć tysięcy"
              ]
+  , examples (NumeralValue 79)
+             [ "siedemdziesiąt dziewięć"
+             , "siedemdziesięciu dziewięciu"
+             ]
+  , examples (NumeralValue 84)
+             [ "osiemdziesiąt cztery"
+             , "osiemdziesięciu czterem"
+             ]
+  , examples (NumeralValue 92)
+             [ "dziewięćdziesiąt dwa"
+             , "dziewięćdziesięciu dwóm"
+             ]
   , examples (NumeralValue 122)
              [ "sto dwadzieścia dwa"
              ]

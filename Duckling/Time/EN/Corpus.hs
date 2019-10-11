@@ -1776,6 +1776,9 @@ allExamples = concat
   , examples (datetimeHoliday (2019, 9, 2, 0, 0, 0) Day "Ganesh Chaturthi")
             [ "ganesh chaturthi 2019"
             ]
+  , examples (datetimeHoliday (2020, 4, 2, 0, 0, 0) Day "Rama Navami")
+            [ "rama navami 2020"
+            ]
   , examples (datetimeHoliday (2018, 3, 18, 0, 0, 0) Day "Ugadi")
             [ "Ugadi 2018"
             , "ugadi 2018"

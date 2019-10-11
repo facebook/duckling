@@ -175,6 +175,23 @@ ruleDurationOneGrainAndHalf = Rule
       _ -> Nothing
   }
 
+ruleDurationHoursAndMinutes :: Rule
+ruleDurationHoursAndMinutes = Rule
+  { name = "<integer> hour and <integer>"
+  , pattern =
+    [ Predicate isNatural
+    , regex "hours?( and)?"
+    , Predicate isNatural
+    ]
+  , prod = \case
+      (Token Numeral h:
+       _:
+       Token Numeral m:
+       _) -> Just . Token Duration . duration TG.Minute $
+         (floor $ TNumeral.value m) + 60 * floor (TNumeral.value h)
+      _ -> Nothing
+  }
+
 ruleDurationPrecision :: Rule
 ruleDurationPrecision = Rule
   { name = "about|exactly <duration>"
@@ -235,6 +252,7 @@ rules =
   , ruleDurationA
   , ruleDurationHalfATimeGrain
   , ruleDurationOneGrainAndHalf
+  , ruleDurationHoursAndMinutes
   , ruleDurationPrecision
   , ruleNumeralQuotes
   , ruleCompositeDuration

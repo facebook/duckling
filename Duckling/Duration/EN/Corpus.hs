@@ -81,6 +81,20 @@ allExamples = concat
   , examples (DurationData 90 Minute)
              [ "an hour and a half"
              , "one hour and half"
+             , "1 hour thirty"
+             , "1 hour and thirty"
+             ]
+  , examples (DurationData 75 Minute)
+             [ "1 hour fifteen"
+             , "1 hour and fifteen"
+             ]
+  , examples (DurationData 130 Minute)
+             [ "2 hours ten"
+             , "2 hour and 10"
+             ]
+  , examples (DurationData 3615 Second)
+             [ "1 hour fifteen seconds"
+             , "1 hour and fifteen seconds"
              ]
   , examples (DurationData 45 Day)
              [ "a month and a half"

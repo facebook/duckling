@@ -545,6 +545,28 @@ ruleTODOClock = Rule
       _ -> Nothing
   }
 
+rulePODatTOD :: Rule
+rulePODatTOD = Rule
+  { name = "<part-of-day> at <time-of-day>"
+  , pattern =
+    [ Predicate isAPartOfDay
+    , regex "at|@"
+    , Predicate isATimeOfDay
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Time TimeData{TTime.timePred = TTime.IntersectPredicate
+        (TTime.TimeIntervalsPredicate
+          _ TTime.TimeDatePredicate{TTime.tdHour = Just (False, start)} _) _}:_:
+        Token Time tod@TimeData{TTime.form = Just (TTime.TimeOfDay (Just hours) True)}:_) ->
+        tt $ timeOfDayAMPM (start < 12 || hours == 12) tod
+      (Token Time TimeData{TTime.timePred = TTime.TimeIntervalsPredicate
+        _ TTime.TimeDatePredicate{TTime.tdHour = Just (False, start)} _}:_:
+        Token Time tod@TimeData{TTime.form = Just (TTime.TimeOfDay (Just hours) True)}:_) ->
+        tt $ timeOfDayAMPM (start < 12 || hours == 12) tod
+      _ -> Nothing
+
+  }
+
 ruleHHMM :: Rule
 ruleHHMM = Rule
   { name = "hh:mm"
@@ -881,7 +903,7 @@ rulePartOfDays = Rule
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> do
         let (start, end) = case Text.toLower match of
-              "morning"  -> (hour False 4, hour False 12)
+              "morning"  -> (hour False 0, hour False 12)
               "evening"  -> (hour False 18, hour False 0)
               "night"    -> (hour False 18, hour False 0)
               "lunch"    -> (hour False 12, hour False 14)
@@ -899,7 +921,7 @@ ruleEarlyMorning = Rule
     [ regex "early ((in|hours of) the )?morning"
     ]
   , prod = \_ -> Token Time . partOfDay . mkLatent <$>
-      interval TTime.Open (hour False 4) (hour False 9)
+      interval TTime.Open (hour False 0) (hour False 9)
   }
 
 rulePODIn :: Rule
@@ -1047,6 +1069,18 @@ ruleTODPrecision = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_) -> tt $ notLatent td
+      _ -> Nothing
+  }
+
+ruleTODPOD :: Rule
+ruleTODPOD = Rule
+  { name = "<time-of-day> <part-of-day>"
+  , pattern =
+    [ Predicate isATimeOfDay
+    , Predicate isAPartOfDay
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Time td:Token Time pod:_) -> Token Time . notLatent <$> intersect td pod
       _ -> Nothing
   }
 
@@ -2436,6 +2470,7 @@ rules =
   , ruleTODLatent
   , ruleAtTOD
   , ruleTODOClock
+  , rulePODatTOD
   , ruleHHMM
   , ruleHHhMM
   , ruleHHMMLatent
@@ -2470,6 +2505,7 @@ rules =
   , ruleWeekend
   , ruleWeek
   , ruleTODPrecision
+  , ruleTODPOD
   , rulePrecisionTOD
   , ruleIntervalFromMonthDDDD
   , ruleIntervalFromDDDDMonth

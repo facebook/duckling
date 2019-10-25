@@ -146,7 +146,6 @@ valuesTest = testCase "Values Test" $
     xs = examplesCustom (parserCheck 1 parseValuesSize)
                         [ "now"
                         , "8 o'clock tonight"
-                        , "tonight at 8 o'clock"
                         , "yesterday"
                         ]
     parseValuesSize :: Value -> Maybe Int

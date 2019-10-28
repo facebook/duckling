@@ -601,6 +601,7 @@ allExamples = concat
              ]
   , examples (datetime (2013, 2, 12, 20, 0, 0) Hour)
              [ "8 tonight"
+             , "tonight at 8 o'clock"
              , "eight tonight"
              , "8 this evening"
              , "at 8 in the evening"

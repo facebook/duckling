@@ -6,6 +6,7 @@
 
 
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Duration.HI.Rules
@@ -105,6 +106,53 @@ ruleDurationPreciseImprecise = Rule
         _ -> Nothing
   }
 
+rulePauneDuration :: Rule
+rulePauneDuration = Rule
+  { name = "Paune duration"
+  , pattern =
+    [ regex "पौने"
+    , Predicate isNatural
+    , dimension TimeGrain
+    ]
+  , prod = \case
+      (_:
+       Token Numeral NumeralData{TNumeral.value = v}:
+       Token TimeGrain grain:
+       _) -> Token Duration <$> timesThreeQuarter grain (floor (v - 1))
+      _ -> Nothing
+  }
+
+ruleSavaDuration :: Rule
+ruleSavaDuration = Rule
+  { name = "Sava duration"
+  , pattern =
+    [ regex "सवा"
+    , Predicate isNatural
+    , dimension TimeGrain
+    ]
+  , prod = \case
+      (_:
+       Token Numeral NumeralData{TNumeral.value = v}:
+       Token TimeGrain grain:
+       _) -> Token Duration <$> timesOneQuarter grain (floor v)
+      _ -> Nothing
+  }
+
+ruleSaadeDuration :: Rule
+ruleSaadeDuration = Rule
+  { name = "Saade duration"
+  , pattern =
+    [ regex "साढ़े|साड़े"
+    , Predicate isNatural
+    , dimension TimeGrain
+    ]
+  , prod = \case
+      (_:
+        Token Numeral NumeralData{TNumeral.value = v}:
+        Token TimeGrain grain:
+        _) -> Token Duration <$> timesOneAndAHalf grain (floor v)
+      _ -> Nothing
+  }
 
 rules :: [Rule]
 rules =
@@ -114,4 +162,7 @@ rules =
   ,  ruleAadha
   ,  ruleDurationEkSaal
   ,  ruleDurationPreciseImprecise
+  ,  rulePauneDuration
+  ,  ruleSavaDuration
+  ,  ruleSaadeDuration
   ]

@@ -105,6 +105,24 @@ ruleDurationPreciseImprecise = Rule
         _ -> Nothing
   }
 
+ruleSpecificDuration :: Rule
+ruleSpecificDuration = Rule
+  { name = "डेढ़|ढाई <duration>"
+  , pattern =
+    [ regex "(डेढ़|ढाई)"
+    , dimension TimeGrain
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (match:_)):
+       Token TimeGrain grain:
+       _) -> do
+        let h = case Text.toLower match of
+              "डेढ़" -> 1
+              "ढाई" -> 2
+              _ -> 0
+        Token Duration <$> timesOneAndAHalf grain h
+      _ -> Nothing
+  }
 
 rules :: [Rule]
 rules =
@@ -114,4 +132,5 @@ rules =
   ,  ruleAadha
   ,  ruleDurationEkSaal
   ,  ruleDurationPreciseImprecise
+  ,  ruleSpecificDuration
   ]

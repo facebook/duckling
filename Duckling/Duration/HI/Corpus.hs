@@ -48,4 +48,10 @@ allExamples = concat
              , "एक बरस"
              , "केवल एक साल"
              ]
+  , examples (DurationData 30 Month)
+             [ "ढाई साल"
+             ]
+  , examples (DurationData 90 Minute)
+             [ "डेढ़ घंटा"
+             ]
   ]

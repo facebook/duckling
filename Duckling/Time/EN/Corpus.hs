@@ -744,6 +744,12 @@ allExamples = concat
   , examples (datetime (2012, 11, 12, 0, 0, 0) Day)
              [ "three months ago"
              ]
+  , examples (datetime (2013, 02, 04, 0, 0, 0) Day)
+             [ "the first Monday of this month"
+             , "the first Monday of the month"
+             , "the first Monday in this month"
+             , "first Monday in the month"
+             ]
   , examples (datetime (2011, 2, 1, 0, 0, 0) Month)
              [ "two years ago"
              ]

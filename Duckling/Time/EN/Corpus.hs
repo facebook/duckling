@@ -236,10 +236,17 @@ allExamples = concat
   , examples (datetime (2013, 3, 1, 0, 0, 0) Day)
              [ "the 1st of march"
              , "first of march"
+             , "the first of march"
              , "march first"
+             ]
+  , examples (datetime (2013, 3, 2, 0, 0, 0) Day)
+             [ "the 2nd of march"
+             , "second of march"
+             , "the second of march"
              ]
   , examples (datetime (2013, 3, 3, 0, 0, 0) Day)
              [ "march 3"
+             , "the third of march"
              ]
   , examples (datetime (2013, 3, 15, 0, 0, 0) Day)
              [ "the ides of march"

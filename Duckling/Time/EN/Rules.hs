@@ -434,12 +434,13 @@ ruleDOMOfMonth :: Rule
 ruleDOMOfMonth = Rule
   { name = "<day-of-month> (ordinal or number) of <named-month>"
   , pattern =
-    [ Predicate isDOMValue
+    [ regex "(the)?"
+    , Predicate isDOMValue
     , regex "of|in"
     , Predicate isAMonth
     ]
   , prod = \tokens -> case tokens of
-      (token:_:Token Time td:_) -> Token Time <$> intersectDOM td token
+      (_:token:_:Token Time td:_) -> Token Time <$> intersectDOM td token
       _ -> Nothing
   }
 

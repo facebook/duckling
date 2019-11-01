@@ -95,7 +95,7 @@ ruleAboutDuration :: Rule
 ruleAboutDuration = Rule
   { name = "about <duration>"
   , pattern =
-    [ regex "(oko(l|ł)o|miej wi(ę|e)cej|jakie(s|ś))"
+    [ regex "(oko(l|ł)o|mniej wi(ę|e)cej|jakie(s|ś))"
     , dimension Duration
     ]
   , prod = \tokens -> case tokens of

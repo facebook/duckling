@@ -69,6 +69,7 @@ data Lang
   | PT
   | RO
   | RU
+  | SK
   | SV
   | SW
   | TA

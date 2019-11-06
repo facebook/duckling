@@ -55,21 +55,21 @@ isSimpleTemperature _ = False
 withUnit :: TTemperature.TemperatureUnit -> TemperatureData -> TemperatureData
 withUnit u td = td {TTemperature.unit = Just u}
 
-withInterval :: (Int, Int) -> TemperatureData -> TemperatureData
+withInterval :: (Double, Double) -> TemperatureData -> TemperatureData
 withInterval (from, to) td = td
   { TTemperature.value = Nothing
   , TTemperature.minValue = Just from
   , TTemperature.maxValue = Just to
   }
 
-withValue :: Int -> TemperatureData -> TemperatureData
+withValue :: Double -> TemperatureData -> TemperatureData
 withValue v td = td
   { TTemperature.value = Just v
   , TTemperature.minValue = Nothing
   , TTemperature.maxValue = Nothing
   }
 
-valueOnly :: Int -> TemperatureData
+valueOnly :: Double -> TemperatureData
 valueOnly v = TemperatureData
   { TTemperature.unit = Nothing
   , TTemperature.value = Just v
@@ -85,14 +85,14 @@ unitOnly u = TemperatureData
   , TTemperature.maxValue = Nothing
   }
 
-withMax :: Int -> TemperatureData -> TemperatureData
+withMax :: Double -> TemperatureData -> TemperatureData
 withMax v td = td
   { TTemperature.value = Nothing
   , TTemperature.minValue = Nothing
   , TTemperature.maxValue = Just v
   }
 
-withMin :: Int -> TemperatureData -> TemperatureData
+withMin :: Double -> TemperatureData -> TemperatureData
 withMin v td = td
   { TTemperature.value = Nothing
   , TTemperature.minValue = Just v

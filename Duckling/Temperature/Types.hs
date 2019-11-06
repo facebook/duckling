@@ -34,9 +34,9 @@ instance ToJSON TemperatureUnit where
 
 data TemperatureData = TemperatureData
   { unit     :: Maybe TemperatureUnit
-  , value    :: Maybe Int
-  , minValue :: Maybe Int
-  , maxValue :: Maybe Int
+  , value    :: Maybe Double
+  , minValue :: Maybe Double
+  , maxValue :: Maybe Double
   } deriving (Eq, Generic, Hashable, Show, Ord, NFData)
 
 instance Resolve TemperatureData where
@@ -58,7 +58,7 @@ data IntervalDirection = Above | Under
 
 data SingleValue = SingleValue
   { vUnit :: TemperatureUnit
-  , vValue :: Int
+  , vValue :: Double
   }
   deriving (Eq, Show)
 
@@ -95,22 +95,22 @@ instance ToJSON TemperatureValue where
 -- -----------------------------------------------------------------
 -- Value helpers
 
-simple :: TemperatureUnit -> Int -> TemperatureValue
+simple :: TemperatureUnit -> Double -> TemperatureValue
 simple u v = SimpleValue $ single u v
 
-between :: TemperatureUnit -> (Int, Int) -> TemperatureValue
+between :: TemperatureUnit -> (Double, Double) -> TemperatureValue
 between u (from, to) = IntervalValue (single u from, single u to)
 
-above :: TemperatureUnit -> Int -> TemperatureValue
+above :: TemperatureUnit -> Double -> TemperatureValue
 above = openInterval Above
 
-under :: TemperatureUnit -> Int -> TemperatureValue
+under :: TemperatureUnit -> Double -> TemperatureValue
 under = openInterval Under
 
-openInterval :: IntervalDirection -> TemperatureUnit -> Int -> TemperatureValue
+openInterval :: IntervalDirection -> TemperatureUnit -> Double -> TemperatureValue
 openInterval direction u v = OpenIntervalValue (single u v, direction)
 
-single :: TemperatureUnit -> Int -> SingleValue
+single :: TemperatureUnit -> Double -> SingleValue
 single u v = SingleValue {vUnit = u, vValue = v}
 
 unitsAreCompatible :: Maybe TemperatureUnit -> TemperatureUnit -> Bool

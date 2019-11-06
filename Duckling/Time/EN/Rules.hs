@@ -13,6 +13,7 @@
 
 module Duckling.Time.EN.Rules where
 
+import Control.Applicative ((<|>))
 import Data.Maybe
 import Data.Text (Text)
 import Prelude
@@ -27,6 +28,7 @@ import Duckling.Ordinal.Types (OrdinalData (..))
 import Duckling.Regex.Types
 import Duckling.Time.Computed
 import Duckling.Time.Helpers
+import Duckling.Time.HolidayHelpers
 import Duckling.Time.Types (TimeData (..), TimeIntervalType (..))
 import Duckling.Types
 import qualified Duckling.Duration.Types as TDuration
@@ -432,12 +434,13 @@ ruleDOMOfMonth :: Rule
 ruleDOMOfMonth = Rule
   { name = "<day-of-month> (ordinal or number) of <named-month>"
   , pattern =
-    [ Predicate isDOMValue
+    [ regex "(the)?"
+    , Predicate isDOMValue
     , regex "of|in"
     , Predicate isAMonth
     ]
   , prod = \tokens -> case tokens of
-      (token:_:Token Time td:_) -> Token Time <$> intersectDOM td token
+      (_:token:_:Token Time td:_) -> Token Time <$> intersectDOM td token
       _ -> Nothing
   }
 
@@ -543,6 +546,28 @@ ruleTODOClock = Rule
       _ -> Nothing
   }
 
+rulePODatTOD :: Rule
+rulePODatTOD = Rule
+  { name = "<part-of-day> at <time-of-day>"
+  , pattern =
+    [ Predicate isAPartOfDay
+    , regex "at|@"
+    , Predicate isATimeOfDay
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Time TimeData{TTime.timePred = TTime.IntersectPredicate
+        (TTime.TimeIntervalsPredicate
+          _ TTime.TimeDatePredicate{TTime.tdHour = Just (False, start)} _) _}:_:
+        Token Time tod@TimeData{TTime.form = Just (TTime.TimeOfDay (Just hours) True)}:_) ->
+        tt $ timeOfDayAMPM (start < 12 || hours == 12) tod
+      (Token Time TimeData{TTime.timePred = TTime.TimeIntervalsPredicate
+        _ TTime.TimeDatePredicate{TTime.tdHour = Just (False, start)} _}:_:
+        Token Time tod@TimeData{TTime.form = Just (TTime.TimeOfDay (Just hours) True)}:_) ->
+        tt $ timeOfDayAMPM (start < 12 || hours == 12) tod
+      _ -> Nothing
+
+  }
+
 ruleHHMM :: Rule
 ruleHHMM = Rule
   { name = "hh:mm"
@@ -551,7 +576,21 @@ ruleHHMM = Rule
       (Token RegexMatch (GroupMatch (hh:mm:_)):_) -> do
         h <- parseInt hh
         m <- parseInt mm
-        tt $ hourMinute True h m
+        tt $ hourMinute (h < 12) h m
+      _ -> Nothing
+  }
+
+ruleHHhMM :: Rule
+ruleHHhMM = Rule
+  { name = "hhhmm"
+  , pattern =
+    [ regex "(?<!/)((?:[01]?\\d)|(?:2[0-3]))h(([0-5]\\d)|(?!\\d))"
+    ]
+  , prod = \case
+      (Token RegexMatch (GroupMatch (hh:mm:_)):_) -> do
+        h <- parseInt hh
+        m <- parseInt mm <|> Just 0
+        tt $ hourMinute False h m
       _ -> Nothing
   }
 
@@ -565,7 +604,7 @@ ruleHHMMLatent = Rule
       (Token RegexMatch (GroupMatch (hh:mm:_)):_) -> do
         h <- parseInt hh
         m <- parseInt mm
-        tt . mkLatent $ hourMinute True h m
+        tt . mkLatent $ hourMinute (h < 12) h m
       _ -> Nothing
   }
 
@@ -578,7 +617,7 @@ ruleHHMMSS = Rule
         h <- parseInt hh
         m <- parseInt mm
         s <- parseInt ss
-        tt $ hourMinuteSecond True h m s
+        tt $ hourMinuteSecond (h < 12) h m s
       _ -> Nothing
   }
 
@@ -767,7 +806,7 @@ ruleQuarterAfterHOD :: Rule
 ruleQuarterAfterHOD = Rule
   { name = "quarter after|past <hour-of-day>"
   , pattern =
-    [ regex "(a|one)? ?quarter (after|past)"
+    [ regex "(for )?((a|one) )?quarter (after|past)"
     , Predicate isAnHourOfDay
     ]
   , prod = \tokens -> case tokens of
@@ -865,7 +904,7 @@ rulePartOfDays = Rule
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> do
         let (start, end) = case Text.toLower match of
-              "morning"  -> (hour False 4, hour False 12)
+              "morning"  -> (hour False 0, hour False 12)
               "evening"  -> (hour False 18, hour False 0)
               "night"    -> (hour False 18, hour False 0)
               "lunch"    -> (hour False 12, hour False 14)
@@ -883,7 +922,7 @@ ruleEarlyMorning = Rule
     [ regex "early ((in|hours of) the )?morning"
     ]
   , prod = \_ -> Token Time . partOfDay . mkLatent <$>
-      interval TTime.Open (hour False 4) (hour False 9)
+      interval TTime.Open (hour False 0) (hour False 9)
   }
 
 rulePODIn :: Rule
@@ -1031,6 +1070,18 @@ ruleTODPrecision = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_) -> tt $ notLatent td
+      _ -> Nothing
+  }
+
+ruleTODPOD :: Rule
+ruleTODPOD = Rule
+  { name = "<time-of-day> <part-of-day>"
+  , pattern =
+    [ Predicate isATimeOfDay
+    , Predicate isAPartOfDay
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Time td:Token Time pod:_) -> Token Time . notLatent <$> intersect td pod
       _ -> Nothing
   }
 
@@ -1608,9 +1659,10 @@ rulePeriodicHolidays = mkRuleHolidays
   , ( "Orthodox New Year", "orthodox new year", monthDay 1 14 )
   , ( "Public Service Day", "public service day", monthDay 6 23 )
   , ( "St. George's Day", "(saint|st\\.?) george'?s day|feast of saint george", monthDay 4 23 )
-  , ( "St Patrick's Day", "st\\.? (patrick|paddy)'?s day", monthDay 3 17 )
-  , ( "St. Stephen's Day", "st\\.? stephen'?s day", monthDay 12 26 )
+  , ( "St Patrick's Day", "(saint|st\\.?) (patrick|paddy)'?s day", monthDay 3 17 )
+  , ( "St. Stephen's Day", "(saint|st\\.?) stephen'?s day", monthDay 12 26 )
   , ( "Time of Remembrance and Reconciliation for Those Who Lost Their Lives during the Second World War", "time of remembrance and reconciliation for those who lost their lives during the second world war", monthDay 5 8 )
+  , ( "Ugadi", "y?ugadi|samvatsaradi|chaitra sukh?ladi", ugadi)
   , ( "United Nations Day", "united nations day", monthDay 10 24 )
   , ( "United Nations' Mine Awareness Day", "united nations'? mine awareness day", monthDay 4 4 )
   , ( "United Nations' World Health Day", "united nations'? world health day", monthDay 4 7 )
@@ -1807,7 +1859,18 @@ ruleComputedHolidays = mkRuleHolidays
     , cycleNthAfter False TG.Day 49 easterSunday )
   , ( "Purim", "purim", purim )
   , ( "Raksha Bandhan", "raksha(\\s+)?bandhan|rakhi", rakshaBandhan )
-  , ( "Dayananda Saraswati Jayanti","((maharishi|swami) )?(dayananda )?saraswati jayanti", saraswatiJayanti )
+  , ( "Rama Navami", "rama\\s+navami", ramaNavami)
+  , ( "Ganesh Chaturthi", "(ganesh|vinayaka)\\s+chaturthi", ganeshChaturthi )
+  , ( "Ratha-Yatra", "ratha(\\-|\\s+)?yatra|rathjatra|chariot\\s+festival"
+    , rathaYatra )
+  , ( "Pargat Diwas", "pargat diwas|(maharishi )?valmiki jayanti", pargatDiwas )
+  , ( "Mahavir Jayanti", "(mahavir|mahaveer) (jayanti|janma kalyanak)"
+    , mahavirJayanti )
+  , ( "Maha Shivaratri", "maha(\\s+)?shivaratri", mahaShivaRatri)
+  , ( "Dayananda Saraswati Jayanti","((maharishi|swami) )?(dayananda )?saraswati jayanti"
+    , saraswatiJayanti )
+  , ( "Karva Chauth", "karva\\s+chauth|karaka\\s+chaturthi"
+    , karvaChauth)
   , ( "Krishna Janmashtami", "(krishna )?janmashtami|gokulashtami", krishnaJanmashtami )
   , ( "Shemini Atzeret", "shemini\\s+atzeret"
     , cycleNthAfter False TG.Day 21 roshHashana )
@@ -1885,39 +1948,21 @@ ruleComputedHolidays' = mkRuleHolidays'
     , let start = cycleNthAfter False TG.Day 14 roshHashana
           end = cycleNthAfter False TG.Day 22 roshHashana
         in interval TTime.Open start end )
-
-  -- Other
-  -- Last Saturday of March unless it falls on Holy Saturday
-  -- In which case it's the Saturday before
-  , ( "Earth Hour", "earth hour"
-    , let holySaturday = cycleNthAfter False TG.Day (-1) easterSunday
-          tentative = predLastOf (dayOfWeek 6) (month 3)
-          alternative = cycleNthAfter False TG.Day (-7) tentative
-        in do
-          day <- intersectWithReplacement holySaturday tentative alternative
-          start <- intersect day $ hourMinute True 20 30
-          interval TTime.Closed start $ cycleNthAfter False TG.Minute 60 start )
   -- Does not account for leap years, so every 365 days.
   , ( "Parsi New Year", "parsi new year|jamshedi navroz"
     , predEveryNDaysFrom 365 (2020, 8, 16)
     )
-  -- king's day is on April 27th unless its on Sunday in which case its a day
-  -- earlier used a bit of a trick since intersectWithReplacement expects all
-  -- times to be aligned in granularity (e.g once a week, twice a year, etc.)
-  -- we intersect with last Sunday of April since if "4/27 is on Sunday" it
-  -- will be the last Sunday on April
+  , ( "Earth Hour", "earth hour"
+    , computeEarthHour )
   , ( "King's Day", "king's day|koningsdag"
-    , let tentative = monthDay 4 27
-          alternative = monthDay 4 26
-          lastSundayOfApril = predLastOf (dayOfWeek 7) (month 4)
-        in intersectWithReplacement lastSundayOfApril tentative alternative )
+    , computeKingsDay )
   ]
 
 ruleCycleThisLastNext :: Rule
 ruleCycleThisLastNext = Rule
   { name = "this|last|next <cycle>"
   , pattern =
-    [ regex "(this|current|coming|next|the following|last|past|previous)"
+    [ regex "(this|current|coming|next|(the( following)?)|last|past|previous)"
     , dimension TimeGrain
     ]
   , prod = \tokens -> case tokens of
@@ -1931,6 +1976,7 @@ ruleCycleThisLastNext = Rule
           "previous"      -> tt . cycleNth grain $ - 1
           "next"          -> tt $ cycleNth grain 1
           "the following" -> tt $ cycleNth grain 1
+          "the"           -> tt $ cycleNth grain 0
           _ -> Nothing
       _ -> Nothing
   }
@@ -2426,7 +2472,9 @@ rules =
   , ruleTODLatent
   , ruleAtTOD
   , ruleTODOClock
+  , rulePODatTOD
   , ruleHHMM
+  , ruleHHhMM
   , ruleHHMMLatent
   , ruleHHMMSS
   , ruleMilitaryAMPM
@@ -2459,6 +2507,7 @@ rules =
   , ruleWeekend
   , ruleWeek
   , ruleTODPrecision
+  , ruleTODPOD
   , rulePrecisionTOD
   , ruleIntervalFromMonthDDDD
   , ruleIntervalFromDDDDMonth

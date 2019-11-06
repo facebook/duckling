@@ -21,7 +21,9 @@ import Duckling.Dimensions.Types
 import Duckling.Numeral.Helpers (parseInt)
 import Duckling.Ordinal.Types (OrdinalData (..))
 import Duckling.Regex.Types (GroupMatch(..))
+import Duckling.Time.Computed
 import Duckling.Time.Helpers
+import Duckling.Time.HolidayHelpers
 import Duckling.Time.Types (TimeData (..))
 import Duckling.Types
 import qualified Duckling.Ordinal.Types as TOrdinal
@@ -109,6 +111,190 @@ ruleHolidays = mkRuleHolidays
     , nthDOWOfMonth 2 7 5 )
   , ( "Vatertag"                      , "vatt?er( ?tag)?"
     , nthDOWOfMonth 3 7 6 )
+  ]
+
+ruleComputedHolidays :: [Rule]
+ruleComputedHolidays = mkRuleHolidays
+  [ ( "Christi Himmelfahrt", "(christi\\s+)?himmelfahrt(stag)?"
+    , cycleNthAfter False TG.Day 39 easterSunday )
+  , ( "Aschermittwoch", "ascher?(tag|mittwoch)"
+    , cycleNthAfter False TG.Day (-46) easterSunday )
+  , ( "Aschura", "asc?hura(\\-?tag)?"
+    , cycleNthAfter False TG.Day 9 muharram )
+  , ( "Bhai Dooj", "bhai(ya)?\\s+d(u|oo)j|bhau\\-beej|bhai\\s+(tika|phonta)"
+    , cycleNthAfter False TG.Day 4 dhanteras )
+  , ( "Chhath", "chhathi?|chhath (parv|puja)|dala (chhath|puja)|surya shashthi"
+    , cycleNthAfter False TG.Day 8 dhanteras )
+  , ( "Boghi", "boghi|bogi\\s+pandigai"
+    , cycleNthAfter False TG.Day (-1) thaiPongal )
+  , ( "Chinesisches Neujahr", "chinesische(s|r)\\s+(neujahr(s(tag|fest))?|frühlingsfest)"
+    , chineseNewYear )
+  , ( "Aschermontag"
+    , "(orthodoxer?\\s+)?(ascher|reiner?\\s+|sauberer?\\s+)montag"
+    , cycleNthAfter False TG.Day (-48) orthodoxEaster )
+  , ( "Corpus Christi", "corpus\\s+christi|fronleichnam"
+    , cycleNthAfter False TG.Day 60 easterSunday )
+  , ( "Dhanteras", "dhanatrayodashi|dhanteras|dhanvantari\\s+trayodashi"
+    , dhanteras )
+  , ( "Diwali", "deepavali|diwali|lakshmi\\s+puja"
+    , cycleNthAfter False TG.Day 2 dhanteras )
+  , ( "Durga Ashtami", "(durga|maha)(\\s+a)?shtami"
+    , cycleNthAfter False TG.Day 7 navaratri )
+  , ( "Ostermontag", "ostermontag"
+    , cycleNthAfter False TG.Day 1 easterSunday )
+  , ( "Ostersonntag", "ostersonntag", easterSunday )
+  , ( "Eid al-Adha", "bakr[\\-\\s]e?id|e?id [au]l\\-adha|opferfest"
+    , eidalAdha )
+  , ( "Eid al-Fitr", "eid al\\-fitr", eidalFitr )
+  , ( "Govardhan Puja", "govardhan\\s+puja|annak(u|oo)t"
+    , cycleNthAfter False TG.Day 3 dhanteras )
+  , ( "Karfreitag", "(kar|stiller\\s+|hoher\\s+)freitag"
+    , cycleNthAfter False TG.Day (-2) easterSunday )
+  , ( "Guru Gobind Singh Jayanti"
+    , "guru\\s+(gobind|govind)\\s+singh\\s+(Geburtstag|jayanti)"
+    , guruGobindSinghJayanti )
+  , ( "Holi", "(rangwali )?holi|dhuleti|dhulandi|phagwah"
+    , cycleNthAfter False TG.Day 39 vasantPanchami )
+  , ( "Holika Dahan", "holika dahan|kamudu pyre|chhoti holi"
+    , cycleNthAfter False TG.Day 38 vasantPanchami )
+  , ( "Karsamstag"
+    , "(kar|stiller\\s+)samstag|karsonnabend"
+    , cycleNthAfter False TG.Day (-1) easterSunday )
+  , ( "Islamisches Neujahr", "(arabisches|hijri|islamisches) neujahr|amun jadid|muharram"
+    , muharram )
+  , ( "Isra and Mi'raj"
+    , "isra and mi'raj|aufstieg des propheten|(die\\s+)?nachtreise|aufstieg\\s+in\\s+den\\s+himmel"
+    , cycleNthAfter False TG.Day 26 rajab
+    )
+  , ( "Jumu'atul-Wida", "jumu'atul\\-widaa?'?|jamat[\\-\\s]ul[\\-\\s]vida"
+    , predNthAfter (-1) (dayOfWeek 5) eidalFitr )
+  , ( "Kaanum Pongal", "(kaanum|kanni)\\s+pongal"
+    , cycleNthAfter False TG.Day 2 thaiPongal )
+  , ( "Lag BaOmer", "lag (b|l)[a']omer", lagBaOmer )
+  , ( "Vaisakhi", "mesadi|[bv]aisakhi|vaisakhadi|vasakhi|vaishakhi", vaisakhi)
+  , ( "Lailat al-Qadr"
+    , "la[iy]lat al[\\-\\s][qk]adr|(die)? nacht der (bestimmung|allmacht)"
+    , cycleNthAfter False TG.Day 26 ramadan )
+  , ( "Lazarus-Samstag", "lazarus(\\-|\\s+)samstag"
+    , cycleNthAfter False TG.Day (-8) orthodoxEaster )
+  , ( "Maha Navami", "maha\\s+navami", cycleNthAfter False TG.Day 8 navaratri )
+  , ( "Maha Saptami", "maha\\s+saptami", cycleNthAfter False TG.Day 6 navaratri )
+  , ( "Mattu Pongal", "maa?ttu\\s+pongal"
+    , cycleNthAfter False TG.Day 1 thaiPongal )
+  , ( "Gründonnerstag"
+    , "(grün|hoher\\s+|heiliger\\s+|weißer\\s+|palm)donnerstag"
+    , cycleNthAfter False TG.Day (-3) easterSunday )
+  , ( "Maulid an-Nabī"
+    , "Maulid\\s+an\\-Nabī|mawlid(\\s+al\\-nab(awi|i\\s+al\\-sharif))?|mevli[dt]|mulud|geburtstag des propheten( muhammad)?"
+    , mawlid )
+  , ( "Naraka Chaturdashi"
+    , "naraka? (nivaran )?chaturdashi|(kali|roop) chaudas|choti diwali"
+    , cycleNthAfter False TG.Day 1 dhanteras )
+  , ( "Orthodoxer Ostermontag", "orthodoxer\\s+ostermontag"
+    , cycleNthAfter False TG.Day 1 orthodoxEaster )
+  , ( "Orthodoxer Ostersonntag", "orthodoxer\\s+ostersonntag"
+    , orthodoxEaster )
+  , ( "Orthodoxer Karsamstag", "orthodoxer\\s+karsamstag"
+    , cycleNthAfter False TG.Day (-1) orthodoxEaster )
+  , ( "Orthodoxer Karfreitag", "orthodoxer\\s+karfreitag"
+    , cycleNthAfter False TG.Day (-2) orthodoxEaster )
+  , ( "Orthodoxer Palmsonntag", "orthodoxer\\s+palmsonntag"
+    , cycleNthAfter False TG.Day (-7) orthodoxEaster )
+  , ( "Palmsonntag", "palmsonntag"
+    , cycleNthAfter False TG.Day (-7) easterSunday )
+  , ( "Pfingsten", "pfingsten|pentecost"
+    , cycleNthAfter False TG.Day 49 easterSunday )
+  , ( "Purim", "purim", purim )
+  , ( "Raksha Bandhan", "raksha(\\s+)?bandhan|rakhi", rakshaBandhan )
+  , ( "Pargat Diwas", "pargat diwas|(maharishi )?valmiki jayanti", pargatDiwas )
+  , ( "Mahavir Jayanti", "(mahavir|mahaveer) (jayanti|janma kalyanak)"
+    , mahavirJayanti )
+  , ( "Maha Shivaratri", "maha(\\s+)?shivaratri", mahaShivaRatri)
+  , ( "Dayananda Saraswati Jayanti","((maharishi|swami) )?(dayananda )?saraswati jayanti", saraswatiJayanti )
+  , ( "Karva Chauth", "karva\\s+chauth|karaka\\s+chaturthi", karvaChauth)
+  , ( "Krishna Janmashtami", "(krishna )?janmashtami|gokulashtami", krishnaJanmashtami )
+  , ( "Schmini Azeret", "sc?he?mini\\s+at?zeret"
+    , cycleNthAfter False TG.Day 21 roshHashana )
+  , ( "Fastnacht", "fastnacht(sdienstag)?|mardi gras"
+    , cycleNthAfter False TG.Day (-47) easterSunday )
+  , ( "Shushan Purim", "shushan\\s+purim", cycleNthAfter False TG.Day 1 purim )
+  , ( "Simchat Torah", "simc?hat\\s+torah"
+    , cycleNthAfter False TG.Day 22 roshHashana )
+  , ( "Thai Pongal"
+    , "(thai )?pongal|pongal pandigai|(makara? |magha )?sankranth?i|maghi"
+    , thaiPongal )
+  , ( "Thiru Onam", "(thiru(v|\\s+))?onam", thiruOnam )
+  , ( "Tisha B'Av", "tisha b'av", tishaBAv )
+  , ( "Dreifaltigkeitssonntag",
+      "trinitatis(fest)?|(dreifaltigkeits|goldener\\s+)sonntag|drei(faltigkeit|einigkeit)(sfest)?"
+    , cycleNthAfter False TG.Day 56 easterSunday )
+  , ( "Vasant Panchami", "[bv]asant\\s+panchami", vasantPanchami )
+  , ( "Vijayadashami", "dasara|duss(eh|he)ra|vijayadashami"
+    , cycleNthAfter False TG.Day 9 navaratri )
+  , ( "Tu biSchevat", "tu b[i']sc?he?vat", tuBishvat )
+  , ( "Vesak", "v(e|ai)sak(ha)?|buddha(\\-?tag|\\s+purnima)|wesakfest", vesak )
+  , ( "Jom Ha'atzmaut", "[yj]om ha'?atzmaut", yomHaatzmaut )
+  , ( "Jom HaShoah"
+    , "[yj]om hashoah|[yj]om hazikaron lashoah ve-lag'vurah|holocaust\\-?gedenktag"
+    , cycleNthAfter False TG.Day 12 passover )
+  , ( "Jom Kippur", "[yj]om\\s+kippur", cycleNthAfter False TG.Day 9 roshHashana )
+  , ( "Pfingstmontag", "pfingstmontag|(pentecost|whit)\\s+montag"
+    , cycleNthAfter False TG.Day 50 easterSunday )
+  , ( "Rabindra Jayanti", "rabindra(nath)?\\s+jayanti", rabindraJayanti )
+  , ("Guru Ravidass Jayanti", "guru\\s+ravidass?\\s+(geburtstag|jayanti)"
+    , ravidassJayanti )
+  ]
+
+ruleComputedHolidays' :: [Rule]
+ruleComputedHolidays' = mkRuleHolidays'
+  [ ( "Global Youth Service-Tag", "global youth service[\\-\\s]?tag|gysd"
+    , let start = globalYouthServiceDay
+          end = cycleNthAfter False TG.Day 2 globalYouthServiceDay
+        in interval TTime.Open start end )
+  , ( "Große Fastenzeit", "große\\s+fastenzeit"
+    , let start = cycleNthAfter False TG.Day (-48) orthodoxEaster
+          end = cycleNthAfter False TG.Day (-9) orthodoxEaster
+        in interval TTime.Open start end )
+  , ( "Chanukka", "c?hann?ukk?ah?"
+    , let start = chanukah
+          end = cycleNthAfter False TG.Day 7 chanukah
+        in interval TTime.Open start end )
+  , ( "Fastenzeit", "fastenzeit"
+    , let start = cycleNthAfter False TG.Day (-46) easterSunday
+          end = cycleNthAfter False TG.Day (-1) easterSunday
+        in interval TTime.Open start end )
+  , ( "Navaratri", "durga\\s+puja|durgotsava|nava?rath?ri"
+    , let start = navaratri
+          end = cycleNthAfter False TG.Day 9 navaratri
+        in interval TTime.Open start end )
+  , ( "Pessach", "passover|pess?a[ck]?h|pascha|Passah?"
+    , let start = passover
+          end = cycleNthAfter False TG.Day 8 passover
+        in interval TTime.Open start end )
+  , ( "Ramadan", "rama[dt]h?an|ramzaa?n"
+    , let start = ramadan
+          end = cycleNthAfter False TG.Day (-1) eidalFitr
+        in interval TTime.Open start end )
+  , ( "Rosch haSchana", "rosch ha\\-?schanah?"
+    , let start = roshHashana
+          end = cycleNthAfter False TG.Day 2 roshHashana
+        in interval TTime.Open start end )
+  , ( "Schawuot", "sc?ha[vw]u'?oth?|shovuos"
+    , let start = cycleNthAfter False TG.Day 50 passover
+          end = cycleNthAfter False TG.Day 52 passover
+        in interval TTime.Open start end )
+  , ( "Sukkot", "Laubhüttenfest|su[ck]{2}o[st]"
+    , let start = cycleNthAfter False TG.Day 14 roshHashana
+          end = cycleNthAfter False TG.Day 22 roshHashana
+        in interval TTime.Open start end )
+  -- Does not account for leap years, so every 365 days.
+  , ( "Parsi Neujahr", "parsi neujahr|jamshedi navroz"
+    , predEveryNDaysFrom 365 (2020, 8, 16)
+    )
+  , ( "Earth Hour", "earth hour|stunde der erde"
+    , computeEarthHour )
+  , ( "Königstag", "königstag|koningsdag"
+    , computeKingsDay )
   ]
 
 ruleRelativeMinutesTotillbeforeIntegerHourofday :: Rule
@@ -1716,3 +1902,5 @@ rules =
   ++ ruleMonths
   ++ ruleSeasons
   ++ ruleHolidays
+  ++ ruleComputedHolidays
+  ++ ruleComputedHolidays'

@@ -44,6 +44,11 @@ allExamples = concat
              [ "2 mins"
              , "two minutes"
              , "2'"
+             , "2 more minutes"
+             , "two additional minutes"
+             , "2 extra minutes"
+             , "2 less minutes"
+             , "2 fewer minutes"
              ]
   , examples (DurationData 30 Day)
              [ "30 days"
@@ -76,6 +81,20 @@ allExamples = concat
   , examples (DurationData 90 Minute)
              [ "an hour and a half"
              , "one hour and half"
+             , "1 hour thirty"
+             , "1 hour and thirty"
+             ]
+  , examples (DurationData 75 Minute)
+             [ "1 hour fifteen"
+             , "1 hour and fifteen"
+             ]
+  , examples (DurationData 130 Minute)
+             [ "2 hours ten"
+             , "2 hour and 10"
+             ]
+  , examples (DurationData 3615 Second)
+             [ "1 hour fifteen seconds"
+             , "1 hour and fifteen seconds"
              ]
   , examples (DurationData 45 Day)
              [ "a month and a half"
@@ -91,5 +110,10 @@ allExamples = concat
              , "1 year 2 days 3 hours and 4 seconds"
                -- Oxford comma not supported:
 --           , "1 year, 2 days, 3 hours, and 4 seconds"
+             ]
+  , examples (DurationData 330 Second)
+             [ "5 and a half minutes"
+             , "five and half min"
+             , "5 and an half minute"
              ]
   ]

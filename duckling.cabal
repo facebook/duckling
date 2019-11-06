@@ -707,6 +707,7 @@ library
                      , Duckling.Time.Computed
                      , Duckling.Time.Corpus
                      , Duckling.Time.Helpers
+                     , Duckling.Time.HolidayHelpers
                      , Duckling.Time.Types
                      -- REMOVE ME
                      , Duckling.Time.TimeZone.Parse

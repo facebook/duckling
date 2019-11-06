@@ -25,7 +25,7 @@ module Duckling.Time.Helpers
   , predNth, predNthAfter, predNthClosest, season, second, timeOfDayAMPM
   , weekday, weekend, workweek, withDirection, year, yearMonthDay, tt, durationIntervalAgo
   , inDurationInterval, intersectWithReplacement, yearADBC, yearMonth
-  , predEveryNDaysFrom
+  , predEveryNDaysFrom, timeCycle
     -- Other
   , getIntValue, timeComputed, toTimeObjectM
   -- Rule constructors

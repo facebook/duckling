@@ -246,7 +246,7 @@ ruleLastTime = Rule
   { name = "last <time>"
   , pattern =
     [ regex "(sista|förra|senaste)"
-    , dimension Time
+    , Predicate isOkWithThisNext
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td:_) ->
@@ -809,17 +809,11 @@ ruleInduringThePartofday2 = Rule
       _ -> Nothing
   }
 
-ruleSeason :: Rule
-ruleSeason = Rule
-  { name = "season"
-  , pattern =
-    [ regex "sommar(en)"
-    ]
-  , prod = \_ ->
-      let from = monthDay 6 21
-          to = monthDay 9 23
-      in Token Time <$> interval TTime.Open from to
-  }
+ruleSeasons :: [Rule]
+ruleSeasons = mkRuleSeasons
+  [ ( "sommar"  , "sommar(en)"       , monthDay  6 21, monthDay  9 23 )
+  , ( "vinter"  , "vinter(n)"           , monthDay 12 21, monthDay  3 20 )
+  ]
 
 ruleBetweenDatetimeAndDatetimeInterval :: Rule
 ruleBetweenDatetimeAndDatetimeInterval = Rule
@@ -1030,7 +1024,7 @@ ruleWeekend = Rule
   , pattern =
     [ regex "((week(\\s|-)?end)|helg)(en)?"
     ]
-  , prod = \_ -> tt weekend
+  , prod = \_ -> tt $ mkOkForThisNext weekend
   }
 
 ruleEomendOfMonth :: Rule
@@ -1076,7 +1070,7 @@ ruleNextTime = Rule
   { name = "next <time>"
   , pattern =
     [ regex "nästa|kommande"
-    , Predicate isNotLatent
+    , Predicate $ and . sequence [isNotLatent, isOkWithThisNext]
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td:_) ->
@@ -1214,7 +1208,7 @@ ruleThisTime = Rule
   { name = "this <time>"
   , pattern =
     [ regex "(denna|detta|i|den här)"
-    , dimension Time
+    , Predicate isOkWithThisNext
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td:_) ->
@@ -1278,18 +1272,6 @@ ruleYesterday = Rule
     [ regex "i går|igår"
     ]
   , prod = \_ -> tt . cycleNth TG.Day $ - 1
-  }
-
-ruleSeason2 :: Rule
-ruleSeason2 = Rule
-  { name = "season"
-  , pattern =
-    [ regex "vinter(n)"
-    ]
-  , prod = \_ ->
-      let from = monthDay 12 21
-          to = monthDay 3 20
-      in Token Time <$> interval TTime.Open from to
   }
 
 ruleAfterTimeofday :: Rule
@@ -1722,8 +1704,6 @@ rules =
   , ruleRelativeMinutesTotillbeforeIntegerHourofday
   , ruleQuarterTotillbeforeIntegerHourofday
   , ruleHalfTotillbeforeIntegerHourofday
-  , ruleSeason
-  , ruleSeason2
   , ruleTheCycleAfterTime
   , ruleTheCycleBeforeTime
   , ruleTheCycleOfTime
@@ -1762,3 +1742,4 @@ rules =
   ]
   ++ ruleDaysOfWeek
   ++ ruleMonths
+  ++ ruleSeasons

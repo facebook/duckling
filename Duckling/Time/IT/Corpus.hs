@@ -844,4 +844,23 @@ allExamples = concat
              [ "due anni fa"
              , "2 anni fa"
              ]
+   , examples (datetimeHoliday (2013, 12, 18, 0, 0, 0) Day "Giornata della lingua araba")
+             [ "giornata della lingua araba"
+             ]
+   , examples (datetimeHoliday (2013, 3, 1, 0, 0, 0) Day "Giornata Mondiale contro la discriminazione")
+             [ "giornata mondiale contro la discriminazione"
+             ]
+   , examples (datetimeHoliday (2019, 7, 6, 0, 0, 0) Day "Giornata Internazionale delle cooperative")
+             [ "giornata internazionale delle cooperative del 2019"
+             ]
+   , examples (datetimeHoliday (2013, 11, 17, 0, 0, 0) Day "Giornata Mondiale della Prematurità")
+             [ "giornata mondiale dei prematuri"
+             , "giornata mondiale della prematurita"
+             , "giornata mondiale della prematurità"
+             ]
+   , examples (datetimeHoliday (2013, 5, 25, 0, 0, 0) Day "Giornata dell'Africa")
+             [ "giornata della liberazione africana"
+             , "giornata dell'unità africana"
+             , "giornata dell'africa"
+             ]
   ]

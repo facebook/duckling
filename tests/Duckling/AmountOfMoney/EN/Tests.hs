@@ -41,6 +41,7 @@ tests = testGroup "EN Tests"
   , localeTests
   , intersectTests
   , rangeTests
+  , latentTests
   ]
 
 localeTests :: TestTree
@@ -156,3 +157,6 @@ rangeTests = testCase "Range Test" $
          , ("10 cents and 0.1", Range 0 8)
          , ("Pay Kiran1 10eur", Range 11 16)
          ]
+
+latentTests :: TestTree
+latentTests = makeCorpusTest [This AmountOfMoney] latentCorpus

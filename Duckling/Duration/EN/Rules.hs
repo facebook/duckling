@@ -88,7 +88,7 @@ ruleDurationNumeralMore = Rule
   { name = "<integer> more <unit-of-duration>"
   , pattern =
     [ Predicate isNatural
-    , regex "more|less"
+    , regex "more|additional|extra|less|fewer"
     , dimension TimeGrain
     ]
   , prod = \case
@@ -122,6 +122,19 @@ ruleDurationAndHalfHour = Rule
   , prod = \case
       (Token Numeral NumeralData{TNumeral.value = v}:_) ->
         Just . Token Duration . duration TG.Minute $ 30 + 60 * floor v
+      _ -> Nothing
+  }
+
+ruleDurationAndHalfMinute :: Rule
+ruleDurationAndHalfMinute = Rule
+  { name = "<integer> and a half minutes"
+  , pattern =
+    [ Predicate isNatural
+    , regex "and (an? )?half min(ute)?s?"
+    ]
+  , prod = \case
+      (Token Numeral NumeralData{TNumeral.value = v}:_) ->
+        Just . Token Duration . duration TG.Second $ 30 + 60 * floor v
       _ -> Nothing
   }
 
@@ -159,6 +172,23 @@ ruleDurationOneGrainAndHalf = Rule
     ]
   , prod = \case
       (_:Token TimeGrain grain:_) -> Token Duration <$> timesOneAndAHalf grain 1
+      _ -> Nothing
+  }
+
+ruleDurationHoursAndMinutes :: Rule
+ruleDurationHoursAndMinutes = Rule
+  { name = "<integer> hour and <integer>"
+  , pattern =
+    [ Predicate isNatural
+    , regex "hours?( and)?"
+    , Predicate isNatural
+    ]
+  , prod = \case
+      (Token Numeral h:
+       _:
+       Token Numeral m:
+       _) -> Just . Token Duration . duration TG.Minute $
+         (floor $ TNumeral.value m) + 60 * floor (TNumeral.value h)
       _ -> Nothing
   }
 
@@ -218,9 +248,11 @@ rules =
   , ruleDurationNumeralMore
   , ruleDurationDotNumeralHours
   , ruleDurationAndHalfHour
+  , ruleDurationAndHalfMinute
   , ruleDurationA
   , ruleDurationHalfATimeGrain
   , ruleDurationOneGrainAndHalf
+  , ruleDurationHoursAndMinutes
   , ruleDurationPrecision
   , ruleNumeralQuotes
   , ruleCompositeDuration

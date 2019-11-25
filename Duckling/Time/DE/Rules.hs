@@ -711,7 +711,7 @@ ruleTimeofdayApproximately = Rule
   { name = "<time-of-day> approximately"
   , pattern =
     [ Predicate isATimeOfDay
-    , regex "(um )?zirka|ungef(ä)hr|etwa"
+    , regex "ca\\.?|circa|zirka|ungef(ä)hr|(in )?etwa"
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_) -> tt $ notLatent td
@@ -1102,7 +1102,7 @@ ruleAboutTimeofday :: Rule
 ruleAboutTimeofday = Rule
   { name = "about <time-of-day>"
   , pattern =
-    [ regex "(um )?zirka|ca\\.?|ungef(ä)hr|etwa|gegen"
+    [ regex "so (um)?|(so |um |so um )?circa|zirka|ca\\.?|ungef(ä)hr|(etwa|gegen)( so| um| so um)?"
     , Predicate isATimeOfDay
     ]
   , prod = \tokens -> case tokens of

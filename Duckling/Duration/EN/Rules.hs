@@ -101,7 +101,7 @@ ruleDurationDotNumeralHours :: Rule
 ruleDurationDotNumeralHours = Rule
   { name = "number.number hours"
   , pattern =
-    [ regex "(\\d+)\\.(\\d+) *hours?"
+    [ regex "(\\d+)\\.(\\d+) *h((ou)?rs?)?"
     ]
   , prod = \case
       (Token RegexMatch (GroupMatch (h:m:_)):_) -> do

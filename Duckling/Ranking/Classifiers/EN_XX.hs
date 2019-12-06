@@ -2304,11 +2304,13 @@ classifiers
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("minute (grain)",
         Classifier{okData =
-                     ClassData{prior = 0.0, unseen = -3.258096538021482,
+                     ClassData{prior = -8.004270767353637e-2,
+                               unseen = -3.258096538021482,
                                likelihoods = HashMap.fromList [("", 0.0)], n = 24},
                    koData =
-                     ClassData{prior = -infinity, unseen = -0.6931471805599453,
-                               likelihoods = HashMap.fromList [], n = 0}}),
+                     ClassData{prior = -2.5649493574615367,
+                               unseen = -1.3862943611198906,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 2}}),
        ("last|this|next <season>",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -2.0794415416798357,
@@ -2543,7 +2545,7 @@ classifiers
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("a <unit-of-duration>",
         Classifier{okData =
-                     ClassData{prior = -0.8979415932059586,
+                     ClassData{prior = -0.9694005571881036,
                                unseen = -3.6109179126442243,
                                likelihoods =
                                  HashMap.fromList
@@ -2559,14 +2561,17 @@ classifiers
                                     ("day (grain)", -2.1972245773362196)],
                                n = 11},
                    koData =
-                     ClassData{prior = -0.5232481437645479,
-                               unseen = -3.8501476017100584,
+                     ClassData{prior = -0.4769240720903093,
+                               unseen = -3.9318256327243257,
                                likelihoods =
                                  HashMap.fromList
-                                   [("hour (grain)", -2.2192034840549946),
-                                    ("quarter", -1.2636920390275583), ("hour", -2.2192034840549946),
-                                    ("quarter (grain)", -1.2636920390275583)],
-                               n = 16}}),
+                                   [("hour (grain)", -2.3025850929940455),
+                                    ("quarter", -1.3470736479666092),
+                                    ("minute (grain)", -2.8134107167600364),
+                                    ("hour", -2.3025850929940455),
+                                    ("quarter (grain)", -1.3470736479666092),
+                                    ("minute", -2.8134107167600364)],
+                               n = 18}}),
        ("at the beginning|end of <year>",
         Classifier{okData =
                      ClassData{prior = -0.13353139262452263,

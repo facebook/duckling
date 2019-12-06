@@ -21,7 +21,7 @@ import qualified Duckling.TimeGrain.Types as TG
 
 grains :: [(Text, String, TG.Grain)]
 grains = [ ("second (grain) ", "sec(ond)?s?",      TG.Second)
-         , ("minute (grain)" , "min(ute)?s?",      TG.Minute)
+         , ("minute (grain)" , "m(in(ute)?s?)?",   TG.Minute)
          , ("hour (grain)"   , "h(((ou)?rs?)|r)?", TG.Hour)
          , ("day (grain)"    , "days?",            TG.Day)
          , ("week (grain)"   , "weeks?",           TG.Week)

@@ -18,13 +18,14 @@ import Data.Text (Text)
 import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
+import Duckling.Duration.Helpers (isGrain)
 import Duckling.Numeral.Helpers (parseInt)
-import Duckling.Ordinal.Types (OrdinalData (..))
+import Duckling.Ordinal.Types (OrdinalData(..))
 import Duckling.Regex.Types (GroupMatch(..))
 import Duckling.Time.Computed
 import Duckling.Time.Helpers
 import Duckling.Time.HolidayHelpers
-import Duckling.Time.Types (TimeData (..))
+import Duckling.Time.Types (TimeData(..))
 import Duckling.Types
 import qualified Duckling.Ordinal.Types as TOrdinal
 import qualified Duckling.Time.Types as TTime

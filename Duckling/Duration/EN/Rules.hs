@@ -101,7 +101,8 @@ ruleDurationDotNumeralHours :: Rule
 ruleDurationDotNumeralHours = Rule
   { name = "number.number hours"
   , pattern =
-    [ regex "(\\d+)\\.(\\d+) *h((ou)?rs?)?"
+    [ regex "(\\d+)\\.(\\d+)"
+    , Predicate $ isGrain TG.Hour
     ]
   , prod = \case
       (Token RegexMatch (GroupMatch (h:m:_)):_) -> do

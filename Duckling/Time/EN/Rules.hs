@@ -20,7 +20,7 @@ import Prelude
 import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
-import Duckling.Duration.Helpers (duration)
+import Duckling.Duration.Helpers (duration, isGrain)
 import Duckling.Duration.Types (DurationData (..))
 import Duckling.Numeral.Helpers (isNatural, parseInt)
 import Duckling.Numeral.Types (NumeralData (..))

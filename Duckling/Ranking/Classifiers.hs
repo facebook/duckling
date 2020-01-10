@@ -13,6 +13,7 @@ import Data.Maybe
 
 import Duckling.Locale
 import Duckling.Ranking.Types
+import qualified Duckling.Ranking.Classifiers.AF_XX as AF_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.AR_XX as AR_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.BG_XX as BG_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.BN_XX as BN_XXClassifiers
@@ -62,6 +63,7 @@ import qualified Duckling.Ranking.Classifiers.VI_XX as VI_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.ZH_XX as ZH_XXClassifiers
 
 classifiers :: Locale -> Classifiers
+classifiers (Locale AF _) = AF_XXClassifiers.classifiers
 classifiers (Locale AR _) = AR_XXClassifiers.classifiers
 classifiers (Locale BG _) = BG_XXClassifiers.classifiers
 classifiers (Locale BN _) = BN_XXClassifiers.classifiers

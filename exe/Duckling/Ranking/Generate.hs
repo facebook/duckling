@@ -170,6 +170,7 @@ getDefaultCorpusForLang NL = NLTime.defaultCorpus
 getDefaultCorpusForLang lang = getCorpusForLang lang
 
 getCorpusForLang :: Lang -> Corpus
+getCorpusForLang AF = (testContext, testOptions, [])
 getCorpusForLang AR = ARTime.corpus
 getCorpusForLang BG = BGTime.corpus
 getCorpusForLang BN = (testContext, testOptions, [])

@@ -21,6 +21,7 @@ import Duckling.Dimensions
 import Duckling.Dimensions.Types
 import Duckling.Locale
 import Duckling.Types
+import qualified Duckling.Rules.AF as AFRules
 import qualified Duckling.Rules.AR as ARRules
 import qualified Duckling.Rules.Common as CommonRules
 import qualified Duckling.Rules.BG as BGRules
@@ -89,6 +90,7 @@ rulesFor' (Locale lang Nothing) dim =
 
 -- | Default rules when no locale, for backward compatibility.
 defaultRules :: Lang -> Some Dimension -> [Rule]
+defaultRules AF = AFRules.defaultRules
 defaultRules AR = ARRules.defaultRules
 defaultRules BG = BGRules.defaultRules
 defaultRules BN = BNRules.defaultRules
@@ -136,6 +138,7 @@ defaultRules VI = VIRules.defaultRules
 defaultRules ZH = ZHRules.defaultRules
 
 localeRules :: Lang -> Region -> Some Dimension -> [Rule]
+localeRules AF = AFRules.localeRules
 localeRules AR = ARRules.localeRules
 localeRules BG = BGRules.localeRules
 localeRules BN = BNRules.localeRules
@@ -183,6 +186,7 @@ localeRules VI = VIRules.localeRules
 localeRules ZH = ZHRules.localeRules
 
 langRules :: Lang -> Some Dimension -> [Rule]
+langRules AF = AFRules.langRules
 langRules AR = ARRules.langRules
 langRules BG = BGRules.langRules
 langRules BN = BNRules.langRules

@@ -48,6 +48,7 @@ library
   -- Rules
                      , Duckling.Rules
                      , Duckling.Rules.Common
+                     , Duckling.Rules.AF
                      , Duckling.Rules.AR
                      , Duckling.Rules.BG
                      , Duckling.Rules.BN
@@ -100,6 +101,7 @@ library
                      , Duckling.Ranking.Extraction
                      , Duckling.Ranking.Rank
                      , Duckling.Ranking.Classifiers
+                     , Duckling.Ranking.Classifiers.AF_XX
                      , Duckling.Ranking.Classifiers.AR_XX
                      , Duckling.Ranking.Classifiers.BG_XX
                      , Duckling.Ranking.Classifiers.BN_XX
@@ -160,6 +162,7 @@ library
                      , Duckling.Dimensions
                      , Duckling.Dimensions.Common
                      , Duckling.Dimensions.Types
+                     , Duckling.Dimensions.AF
                      , Duckling.Dimensions.AR
                      , Duckling.Dimensions.BG
                      , Duckling.Dimensions.BN
@@ -388,6 +391,8 @@ library
                      , Duckling.Email.Types
 
                      -- Numeral
+                     , Duckling.Numeral.AF.Corpus
+                     , Duckling.Numeral.AF.Rules
                      , Duckling.Numeral.AR.Corpus
                      , Duckling.Numeral.AR.Helpers
                      , Duckling.Numeral.AR.Rules
@@ -928,6 +933,7 @@ test-suite duckling-test
                      , Duckling.Email.Tests
 
                      -- Numeral
+                     , Duckling.Numeral.AF.Tests
                      , Duckling.Numeral.AR.Tests
                      , Duckling.Numeral.BG.Tests
                      , Duckling.Numeral.BN.Tests

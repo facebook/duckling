@@ -57,6 +57,7 @@ import qualified Duckling.Dimensions.PL as PLDimensions
 import qualified Duckling.Dimensions.PT as PTDimensions
 import qualified Duckling.Dimensions.RO as RODimensions
 import qualified Duckling.Dimensions.RU as RUDimensions
+import qualified Duckling.Dimensions.SK as SKDimensions
 import qualified Duckling.Dimensions.SV as SVDimensions
 import qualified Duckling.Dimensions.SW as SWDimensions
 import qualified Duckling.Dimensions.TA as TADimensions
@@ -133,6 +134,7 @@ langDimensions PL = PLDimensions.allDimensions
 langDimensions PT = PTDimensions.allDimensions
 langDimensions RO = RODimensions.allDimensions
 langDimensions RU = RUDimensions.allDimensions
+langDimensions SK = SKDimensions.allDimensions
 langDimensions SV = SVDimensions.allDimensions
 langDimensions SW = SWDimensions.allDimensions
 langDimensions TA = TADimensions.allDimensions

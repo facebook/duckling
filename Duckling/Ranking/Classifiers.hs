@@ -51,6 +51,7 @@ import qualified Duckling.Ranking.Classifiers.PL_XX as PL_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.PT_XX as PT_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.RO_XX as RO_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.RU_XX as RU_XXClassifiers
+import qualified Duckling.Ranking.Classifiers.SK_XX as SK_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.SV_XX as SV_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.SW_XX as SW_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.TA_XX as TA_XXClassifiers
@@ -99,6 +100,7 @@ classifiers (Locale PL _) = PL_XXClassifiers.classifiers
 classifiers (Locale PT _) = PT_XXClassifiers.classifiers
 classifiers (Locale RO _) = RO_XXClassifiers.classifiers
 classifiers (Locale RU _) = RU_XXClassifiers.classifiers
+classifiers (Locale SK _) = SK_XXClassifiers.classifiers
 classifiers (Locale SV _) = SV_XXClassifiers.classifiers
 classifiers (Locale SW _) = SW_XXClassifiers.classifiers
 classifiers (Locale TA _) = TA_XXClassifiers.classifiers

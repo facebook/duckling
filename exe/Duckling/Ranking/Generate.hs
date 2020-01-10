@@ -206,6 +206,7 @@ getCorpusForLang PL = PLTime.corpus
 getCorpusForLang PT = PTTime.corpus
 getCorpusForLang RO = ROTime.corpus
 getCorpusForLang RU = (testContext, testOptions, [])
+getCorpusForLang SK = (testContext, testOptions, [])
 getCorpusForLang SV = SVTime.corpus
 getCorpusForLang SW = (testContext, testOptions, [])
 getCorpusForLang TA = (testContext, testOptions, [])

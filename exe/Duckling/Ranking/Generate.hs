@@ -28,6 +28,7 @@ import Duckling.Ranking.Types
 import Duckling.Rules
 import Duckling.Testing.Types
 import qualified Duckling.Time.AR.Corpus as ARTime
+import qualified Duckling.Time.BG.Corpus as BGTime
 import qualified Duckling.Time.DA.Corpus as DATime
 import qualified Duckling.Time.DE.Corpus as DETime
 import qualified Duckling.Time.EL.Corpus as ELTime
@@ -170,7 +171,7 @@ getDefaultCorpusForLang lang = getCorpusForLang lang
 
 getCorpusForLang :: Lang -> Corpus
 getCorpusForLang AR = ARTime.corpus
-getCorpusForLang BG = (testContext, testOptions, [])
+getCorpusForLang BG = BGTime.corpus
 getCorpusForLang BN = (testContext, testOptions, [])
 getCorpusForLang CS = (testContext, testOptions, [])
 getCorpusForLang DA = DATime.corpus

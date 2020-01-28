@@ -1849,7 +1849,7 @@ ruleComputedHolidays = mkRuleHolidays
     , orthodoxEaster )
   , ( "Orthodox Holy Saturday", "orthodox\\s+holy\\s+sat(urday)?|the great sabbath"
     , cycleNthAfter False TG.Day (-1) orthodoxEaster )
-  , ( "Orthodox Great Friday", "orthodox\\s+great(\\s+and\\s+holy)?\\s+friday"
+  , ( "Orthodox Good Friday", "orthodox\\s+(great|good)(\\s+and\\s+holy)?\\s+friday"
     , cycleNthAfter False TG.Day (-2) orthodoxEaster )
   , ( "Orthodox Palm Sunday", "orthodox\\s+(branch|palm|yew)\\s+sunday"
     , cycleNthAfter False TG.Day (-7) orthodoxEaster )

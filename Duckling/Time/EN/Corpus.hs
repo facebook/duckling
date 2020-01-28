@@ -948,6 +948,10 @@ allExamples = concat
   , examples (datetimeHoliday (2018, 4, 8, 0, 0, 0) Day "Orthodox Easter Sunday")
              [ "orthodox easter 2018"
              ]
+  , examples (datetimeHoliday (2020, 4, 17, 0, 0, 0) Day "Orthodox Good Friday")
+             [ "orthodox good friday 2020"
+             , "orthodox great friday 2020"
+             ]
   , examples (datetimeHoliday (2018, 2, 19, 0, 0, 0) Day "Clean Monday")
              [ "clean monday 2018"
              , "orthodox shrove monday two thousand eighteen"

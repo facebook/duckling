@@ -66,7 +66,7 @@ ruleOneAgura = Rule
 ruleShekel :: Rule
 ruleShekel = Rule
   { name    = "שקל"
-  , pattern = [regex "שקל(ים)?|ש״?ח"]
+  , pattern = [regex "שקל(ים)?|ש״?ח|ש(\")?ח"]
   , prod    = \_ -> Just . Token AmountOfMoney $ currencyOnly ILS
   }
 
@@ -214,9 +214,9 @@ ruleIntervalBetweenNumeral :: Rule
 ruleIntervalBetweenNumeral = Rule
   { name = "between|from <numeral> to|and <amount-of-money>"
   , pattern =
-      [ regex "מ?|בין "
+      [ regex "מ(ה)?|בין (ה )?|ה"
       , Predicate isPositive
-      , regex "עד |ל"
+      , regex "(ו)?עד( ל| ה)?|[\\-ול](בין )?"
       , Predicate isSimpleAmountOfMoney
       ]
   , prod = \case
@@ -229,19 +229,57 @@ ruleIntervalBetweenNumeral = Rule
         Just . Token AmountOfMoney . withInterval (from, to) $ currencyOnly c
       _ -> Nothing
   }
+  
+ruleNumeralToAmountInterval :: Rule
+ruleNumeralToAmountInterval = Rule
+  { name = "<numeral> to|and <amount-of-money>"
+  , pattern =
+      [ Predicate isPositive
+      , regex "(ו)?עד( ל| ה)?|[\\-ול](בין )?"
+      , Predicate isSimpleAmountOfMoney
+      ]
+  , prod = \case
+      (Token Numeral NumeralData { TNumeral.value = from }:
+       _:
+       Token AmountOfMoney AmountOfMoneyData { TAmountOfMoney.value = Just to,
+                  TAmountOfMoney.currency = c }:
+       _) | from < to ->
+        Just . Token AmountOfMoney . withInterval (from, to) $ currencyOnly c
+      _ -> Nothing
+  }
 
 ruleIntervalBetween :: Rule
 ruleIntervalBetween = Rule
   { name = "between|from <amount-of-money> to|and <amount-of-money>"
   , pattern =
-      [ regex "מ?|בין "
+      [ regex "מ(ה)?|בין (ה )?|ה"
       , Predicate isSimpleAmountOfMoney
-      , regex "עד |ל"
+      , regex "(ו)?עד( ל| ה)?|[\\-ול](בין )?"
       , Predicate isSimpleAmountOfMoney
       ]
   , prod = \case
       (_:
        Token AmountOfMoney AmountOfMoneyData { TAmountOfMoney.value = Just from,
+                  TAmountOfMoney.currency = c1 }:
+       _:
+       Token AmountOfMoney AmountOfMoneyData { TAmountOfMoney.value = Just to,
+                  TAmountOfMoney.currency = c2 }:
+       _) | from < to && c1 == c2 ->
+            Just . Token AmountOfMoney . withInterval (from, to) $
+              currencyOnly c1
+      _ -> Nothing
+  }
+  
+ruleAmountToAmountInterval :: Rule
+ruleAmountToAmountInterval = Rule
+  { name = "<amount-of-money> to|and <amount-of-money>"
+  , pattern =
+      [ Predicate isSimpleAmountOfMoney
+      , regex "(ו)?עד( ל| ה)?|[\\-ול](בין )?"
+      , Predicate isSimpleAmountOfMoney
+      ]
+  , prod = \case
+      (Token AmountOfMoney AmountOfMoneyData { TAmountOfMoney.value = Just from,
                   TAmountOfMoney.currency = c1 }:
        _:
        Token AmountOfMoney AmountOfMoneyData { TAmountOfMoney.value = Just to,
@@ -327,7 +365,9 @@ rules =
   , ruleEUR
   , ruleIntersectAndXCents
   , ruleIntervalBetweenNumeral
+  , ruleNumeralToAmountInterval
   , ruleIntervalBetween
+  , ruleAmountToAmountInterval
   , ruleIntervalMax
   , ruleIntervalMin
   , ruleIntervalNumeralDash

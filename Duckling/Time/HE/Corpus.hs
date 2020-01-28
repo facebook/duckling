@@ -75,7 +75,7 @@ allExamples = concat
              [ "1 למרץ"
              ]
   , examples (datetime (2013, 3, 3, 0, 0, 0) Day)
-             [ "במרץ 3"
+             [ "3 למרץ"
              ]
   , examples (datetime (2013, 3, 15, 0, 0, 0) Day)
              [ "באמצע מרץ"
@@ -98,24 +98,27 @@ allExamples = concat
   , examples (datetime (2013, 2, 15, 0, 0, 0) Day)
              [ "ה15 בפברואר"
              , "15 לפברואר"
-             , "2/15"
-             , "ב 2/15"
-             , "פברואר 15"
+             , "15/2"
+             , "ב 15/2"
+             , "15 בפברואר"
              ]
   , examples (datetime (2013, 8, 8, 0, 0, 0) Day)
-             [ "אוגוסט 8"
+             [ "8 באוגוסט"
+             ]
+  , examples (datetime (2012, 8, 0, 0, 0, 0) Month)
+             [ "אוגוסט 12"
              ]
   , examples (datetime (2014, 10, 0, 0, 0, 0) Month)
              [ "אוקטובר 2014"
              ]
   , examples (datetime (1974, 10, 31, 0, 0, 0) Day)
-             [ "10/31/1974"
-             , "10/31/74"
-             , "10-31-74"
+             [ "31/10/1974"
+             , "31/10/74"
+             , "31-10-74"
              ]
   , examples (datetime (2015, 4, 14, 0, 0, 0) Day)
              [ "14 לאפריל 2015"
-             , "אפריל 14, 2015"
+             , "14 אפריל, 2015"
              ]
   , examples (datetime (2013, 2, 22, 0, 0, 0) Day)
              [ "שישי הבא"
@@ -142,14 +145,17 @@ allExamples = concat
              [ "שבוע הבא"
              ]
   , examples (datetime (2013, 1, 0, 0, 0, 0) Month)
-             [ "חודש שעבר"
+             [ "חודש שעבר",
+             "חודש האחרון",
+             "חודש אחרון",
+             "חודש קודם",
+             "חודש הקודם"
              ]
   , examples (datetime (2013, 3, 0, 0, 0, 0) Month)
              [ "חודש הבא"
              ]
   , examples (datetime (2012, 0, 0, 0, 0, 0) Year)
-             -- "שנה שעברה"
-             [
+             [ "שנה שעברה"
              ]
   , examples (datetime (2014, 0, 0, 0, 0, 0) Year)
              [ "שנה הבאה"
@@ -235,7 +241,7 @@ allExamples = concat
              [ "בתשע בבוקר בשבת"
              ]
   , examples (datetime (2014, 7, 18, 19, 0, 0) Minute)
-             [ "שישי, יולי 18, 2014 07:00 PM"
+             [ "שישי, 18 ליולי, 2014 07:00 PM"
              ]
   , examples (datetime (2013, 2, 12, 4, 32, 0) Second)
              [ "בעוד 2 דקות"
@@ -256,12 +262,29 @@ allExamples = concat
   , examples (datetime (2013, 2, 19, 4, 0, 0) Hour)
              [ "בעוד שבעה ימים"
              ]
+  , examples (datetime (2013, 4, 12, 0, 0, 0) Day)
+             [ "בעוד חודשיים"
+             ]
   , examples (datetime (2013, 2, 5, 4, 0, 0) Hour)
              [ "לפני שבעה ימים"
              ]
-  , examples (datetime (2012, 11, 12, 0, 0, 0) Day)
-             -- "לפני שלושה חודשים"
-             [
+  , examples (datetime (2012, 11, 12, 0, 0, 0) Day) 
+             [  "לפני שלושה חודשים"
+             ]
+ , examples (datetime (2013, 1, 8, 0, 0, 0) Day) 
+             [ "לפני 5 שבועות"
+             ]
+ , examples (datetime (2013, 2, 5, 0, 0, 0) Day) 
+             [ "לפני שבוע"
+             ]
+ , examples (datetimeInterval ((2013, 1, 29, 0, 0, 0), (2013, 2, 12, 0, 0, 0)) Day) 
+             [ "בשבועיים האחרונים"
+             ]
+  , examples (datetimeInterval ((2013, 1, 12, 0, 0, 0), (2013, 2, 12, 0, 0, 0)) Day) 
+             [ "חודש אחורה"
+             ]
+  , examples (datetime (2013, 2, 0, 0, 0, 0) Month)
+             [ "החודש"
              ]
   , examples (datetime (1954, 0, 0, 0, 0, 0) Year)
              [ "1954"
@@ -288,5 +311,8 @@ allExamples = concat
              ]
   , examples (datetimeInterval ((2013, 2, 18, 4, 0, 0), (2013, 2, 18, 12, 0, 0)) Hour)
              [ "שני בבוקר"
+             ]
+  , examples (datetimeInterval ((2013, 11, 15, 0, 0, 0), (2014, 12, 19, 0, 0, 0)) Day)
+             [ "בין 15 לנובמבר 2013 לבין 18 לדצמבר 2014"
              ]
   ]

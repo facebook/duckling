@@ -329,7 +329,7 @@ ruleInDuration :: Rule
 ruleInDuration = Rule
   { name = "in <duration>"
   , pattern =
-    [ regex "בעוד"
+    [ regex "(ב)?עוד"
     , dimension Duration
     ]
   , prod = \tokens -> case tokens of
@@ -442,7 +442,7 @@ ruleTheIdesOfNamedmonth :: Rule
 ruleTheIdesOfNamedmonth = Rule
   { name = "the ides of <named-month>"
   , pattern =
-    [ regex "באמצע"
+    [ regex "אמצע|באמצע"
     , Predicate isAMonth
     ]
   , prod = \tokens -> case tokens of
@@ -538,7 +538,7 @@ ruleLastCycle = Rule
   { name = "last <cycle>"
   , pattern =
     [ dimension TimeGrain
-    , regex "האחרון|האחרונה|שעבר|שעברה"
+    , regex "שעבר(ה)?|(ה)?אחרון|(ה)?אחרונה|(ה)?קודם|(ה)?קודמת"
     ]
   , prod = \tokens -> case tokens of
       (Token TimeGrain grain:_) ->
@@ -556,6 +556,8 @@ ruleAfternoon = Rule
       interval TTime.Open (hour False 12) (hour False 19)
   }
 
+{-
+--In Hebrew whe stating "Month \d\d" (such as August 18), the meaning is August of the year 2018. Replaced with "ruleNamedmonthYear".
 ruleNamedmonthDayofmonthOrdinal :: Rule
 ruleNamedmonthDayofmonthOrdinal = Rule
   { name = "<named-month> <day-of-month> (ordinal)"
@@ -567,6 +569,7 @@ ruleNamedmonthDayofmonthOrdinal = Rule
       (Token Time td:token:_) -> Token Time <$> intersectDOM td token
       _ -> Nothing
   }
+-}
 
 ruleNamedday5 :: Rule
 ruleNamedday5 = Rule
@@ -617,16 +620,17 @@ ruleNthTimeAfterTime = Rule
       _ -> Nothing
   }
 
-ruleMmdd :: Rule
-ruleMmdd = Rule
-  { name = "mm/dd"
+--Hebrew is like en_GB: first comes the day then comes the month
+ruleDDMM :: Rule
+ruleDDMM = Rule
+  { name = "dd/mm"
   , pattern =
-    [ regex "(0?[1-9]|1[0-2])/(3[01]|[12]\\d|0?[1-9])"
+    [ regex "(3[01]|[12]\\d|0?[1-9])\\s?[/.-]\\s?(1[0-2]|0?[1-9])"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (mm:dd:_)):_) -> do
-        m <- parseInt mm
+      (Token RegexMatch (GroupMatch (dd:mm:_)):_) -> do
         d <- parseInt dd
+        m <- parseInt mm
         tt $ monthDay m d
       _ -> Nothing
   }
@@ -680,17 +684,32 @@ ruleThisEvening = Rule
       Token Time . partOfDay <$> intersect today td
   }
 
+  
 ruleBetweenDatetimeAndDatetimeInterval :: Rule
 ruleBetweenDatetimeAndDatetimeInterval = Rule
   { name = "between <datetime> and <datetime> (interval)"
   , pattern =
-    [ regex "בין"
+    [ regex "מ(ה)?|בין (ה )?|ה"
     , dimension Time
-    , regex "ל"
+    , regex "(ו)?עד( ל| ה)?|[\\-ול](בין )?"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td1:_:Token Time td2:_) ->
+        Token Time <$> interval TTime.Closed td1 td2
+      _ -> Nothing
+  }
+
+ruleDatetimeToDatetimeInterval :: Rule
+ruleDatetimeToDatetimeInterval = Rule
+  { name = "<datetime> to <datetime> (interval)"
+  , pattern =
+    [ dimension Time
+    , regex "(ו)?עד( ל| ה)?|\\-ול](בין )?"
+    , dimension Time
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Time td1:_:Token Time td2:_) ->
         Token Time <$> interval TTime.Closed td1 td2
       _ -> Nothing
   }
@@ -716,6 +735,19 @@ ruleDurationAgo = Rule
         tt $ durationAgo dd
       _ -> Nothing
   }
+  
+ruleDurationBack :: Rule
+ruleDurationBack = Rule
+  { name = "<duration> back"
+  , pattern =
+    [ dimension Duration
+    , regex "(((ה)?(אחרון|אחרונות|אחרונה|אחרונים))|אחורה)"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Duration dd:_) ->
+       Token Time <$> interval TTime.Open (durationAgo dd) (today) 
+      _ -> Nothing
+  }
 
 ruleLastNCycle :: Rule
 ruleLastNCycle = Rule
@@ -723,7 +755,7 @@ ruleLastNCycle = Rule
   , pattern =
     [ Predicate $ isIntegerBetween 1 9999
     , dimension TimeGrain
-    , regex "אחרון|אחרונות|אחרונה|אחרונים"
+    , regex "(((ה)?(אחרון|אחרונות|אחרונה|אחרונים))|אחורה)"
     ]
   , prod = \tokens -> case tokens of
       (token:Token TimeGrain grain:_) -> do
@@ -821,7 +853,7 @@ ruleWeekend :: Rule
 ruleWeekend = Rule
   { name = "week-end"
   , pattern =
-    [ regex "(סופ״ש|סוף השבוע)"
+    [ regex "(סופ״ש|סוף (ה)?שבוע|סופש|סופ\"ש)"
     ]
   , prod = \_ -> tt weekend
   }
@@ -944,6 +976,19 @@ ruleThisCycle = Rule
         tt $ cycleNth grain 0
       _ -> Nothing
   }
+  
+ruleTheThisCycle :: Rule
+ruleTheThisCycle = Rule
+  { name = "the this <cycle>"
+  , pattern =
+    [ regex "ה"
+    ,  dimension TimeGrain
+    ]
+  , prod = \tokens -> case tokens of
+      (_:Token TimeGrain grain:_) ->
+        tt $ cycleNth grain 0
+      _ -> Nothing
+  }
 
 ruleThisTime :: Rule
 ruleThisTime = Rule
@@ -957,7 +1002,7 @@ ruleThisTime = Rule
         tt $ predNth 0 False td
       _ -> Nothing
   }
-
+  
 ruleDayofmonthNonOrdinalOfNamedmonth :: Rule
 ruleDayofmonthNonOrdinalOfNamedmonth = Rule
   { name = "<day-of-month> (non ordinal) of <named-month>"
@@ -1091,6 +1136,8 @@ ruleYear = Rule
       _ -> Nothing
   }
 
+{-
+--In Hebrew whe stating "Month \d\d" (such as August 18), the meaning is August of the year 2018. Replaced with "ruleNamedmonthYear".
 ruleNamedmonthDayofmonthNonOrdinal :: Rule
 ruleNamedmonthDayofmonthNonOrdinal = Rule
   { name = "<named-month> <day-of-month> (non ordinal)"
@@ -1102,6 +1149,9 @@ ruleNamedmonthDayofmonthNonOrdinal = Rule
       (Token Time td:token:_) -> Token Time <$> intersectDOM td token
       _ -> Nothing
   }
+-}
+  
+  
 
 ruleNamedday8 :: Rule
 ruleNamedday8 = Rule
@@ -1257,20 +1307,37 @@ rulePartofdayOfTime = Rule
       _ -> Nothing
   }
 
-ruleMmddyyyy :: Rule
-ruleMmddyyyy = Rule
-  { name = "mm/dd/yyyy"
+
+--Hebrew is like en_GB: first comes the day then comes the month
+ruleDDMMYYYY :: Rule
+ruleDDMMYYYY = Rule
+  { name = "dd/mm/yyyy"
   , pattern =
-    [ regex "(0?[1-9]|1[0-2])[/-](3[01]|[12]\\d|0?[1-9])[-/](\\d{2,4})"
+    [ regex "(3[01]|[12]\\d|0?[1-9])[-/\\s](1[0-2]|0?[1-9])[-/\\s](\\d{2,4})"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (mm:dd:yy:_)):_) -> do
+      (Token RegexMatch (GroupMatch (dd:mm:yy:_)):_) -> do
         y <- parseInt yy
-        m <- parseInt mm
         d <- parseInt dd
+        m <- parseInt mm
         tt $ yearMonthDay y m d
       _ -> Nothing
   }
+  
+ruleDDMMYYYYDot :: Rule
+ruleDDMMYYYYDot = Rule
+  { name = "dd.mm.yyyy"
+  , pattern =
+    [ regex "(3[01]|[12]\\d|0?[1-9])\\.(1[0-2]|0?[1-9])\\.(\\d{2,4})"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (dd:mm:yy:_)):_) -> do
+        y <- parseInt yy
+        d <- parseInt dd
+        m <- parseInt mm
+        tt $ yearMonthDay y m d
+      _ -> Nothing
+  } 
 
 ruleTomorrow :: Rule
 ruleTomorrow = Rule
@@ -1306,6 +1373,20 @@ ruleDayofmonthordinalNamedmonthYear = Rule
         intVal <- parseInt match
         dom <- intersectDOM td token
         Token Time <$> intersect dom (year intVal)
+      _ -> Nothing
+  }
+  
+ruleNamedmonthYear :: Rule
+ruleNamedmonthYear = Rule
+  { name = "<named-month> year"
+  , pattern =
+    [ Predicate isAMonth
+    , regex "(\\d{2,4})"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Time td:Token RegexMatch (GroupMatch (match:_)):_) -> do
+        intVal <- parseInt match
+        Token Time <$> intersect td (year intVal)
       _ -> Nothing
   }
 
@@ -1349,6 +1430,7 @@ rules =
   , ruleAtHourTimeofday
   , ruleAtTimeofday
   , ruleBetweenDatetimeAndDatetimeInterval
+  , ruleDatetimeToDatetimeInterval
   , ruleBetweenTimeofdayAndTimeofdayInterval
   , ruleCurrentDayofweek
   , ruleCycleAfterTime
@@ -1361,8 +1443,10 @@ rules =
   , ruleDayofmonthOrdinalOfNamedmonth
   , ruleDayofmonthordinalNamedmonth
   , ruleDayofmonthordinalNamedmonthYear
+  , ruleNamedmonthYear
   , ruleDurationAfterTime
   , ruleDurationAgo
+  , ruleDurationBack
   , ruleDurationBeforeTime
   , ruleDurationFromNow
   , ruleEndOfMonth
@@ -1390,8 +1474,9 @@ rules =
   , ruleLastTime
   , ruleLunch
   , ruleMidnighteodendOfDay
-  , ruleMmdd
-  , ruleMmddyyyy
+  , ruleDDMM
+  , ruleDDMMYYYY
+  , ruleDDMMYYYYDot
   , ruleMorning
   , ruleNamedday
   , ruleNamedday2
@@ -1402,8 +1487,8 @@ rules =
   , ruleNamedday7
   , ruleNamedday8
   , ruleNameddayDayofmonthOrdinal
-  , ruleNamedmonthDayofmonthNonOrdinal
-  , ruleNamedmonthDayofmonthOrdinal
+  --, ruleNamedmonthDayofmonthNonOrdinal
+  --, ruleNamedmonthDayofmonthOrdinal
   , ruleNextCycle
   , ruleNextDayofweek
   , ruleNextNCycle
@@ -1430,6 +1515,7 @@ rules =
   , ruleTheIdesOfNamedmonth
   , ruleTheOrdinalCycleAfterTime
   , ruleThisCycle
+  , ruleTheThisCycle
   , ruleThisEvening
   , ruleThisTime
   , ruleTimeOfPartofday

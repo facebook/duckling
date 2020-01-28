@@ -885,12 +885,11 @@ classifiers
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("hour (grain)",
         Classifier{okData =
-                     ClassData{prior = -1.4294665329850993,
-                               unseen = -2.9444389791664407,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 17},
+                     ClassData{prior = -1.3723081191451507, unseen = -2.995732273553991,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 18},
                    koData =
-                     ClassData{prior = -0.27369583047704105, unseen = -4.02535169073515,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 54}}),
+                     ClassData{prior = -0.2923879634891936, unseen = -4.007333185232471,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 53}}),
        ("Parsi New Year",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -1.791759469228055,
@@ -1642,10 +1641,14 @@ classifiers
                                n = 1}}),
        ("number.number hours",
         Classifier{okData =
-                     ClassData{prior = 0.0, unseen = -1.0986122886681098,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 1},
+                     ClassData{prior = 0.0, unseen = -1.6094379124341003,
+                               likelihoods =
+                                 HashMap.fromList
+                                   [("hour (grain)", -0.6931471805599453),
+                                    ("hour", -0.6931471805599453)],
+                               n = 1},
                    koData =
-                     ClassData{prior = -infinity, unseen = -0.6931471805599453,
+                     ClassData{prior = -infinity, unseen = -1.0986122886681098,
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("from <time-of-day> - <time-of-day> (interval)",
         Classifier{okData =

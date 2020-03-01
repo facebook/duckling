@@ -26,20 +26,81 @@ allExamples = concat
   [ examples (NumeralValue 0)
              [ "0"
              , "noll"
+             , "inget"
              ]
   , examples (NumeralValue 1)
              [ "1"
              , "en"
              , "ett"
+             , "första"
+             , "i"
              ]
   , examples (NumeralValue 2)
              [ "2"
              , "två"
              , "ett par"
+             , "andra"
+             , "ii"
+             , "par"
+             ]
+  , examples (NumeralValue 3)
+             [ "3"
+             , "tre"
+             , "tredje"
+             , "iii"
+             , "trio"
+             ]
+  , examples (NumeralValue 4)
+             [ "4"
+             , "fyra"
+             , "fjärde"
+             , "fyrfaldig"
+             , "fyrdubbla"
+             , "iv"
+             ]
+  , examples (NumeralValue 5)
+             [ "5"
+             , "fem"
+             , "femma"
+             , "femte"
+             , "v"
+             ]
+  , examples (NumeralValue 6)
+             [ "6"
+             , "sex"
+             , "sjätte"
+             , "sexa"
+             , "vi"
              ]
   , examples (NumeralValue 7)
              [ "7"
              , "sju"
+             , "sjunde"
+             , "7:e"
+             , "7e"
+             , "vii"
+             ]
+  , examples (NumeralValue 8)
+             [ "8"
+             , "åtta"
+             , "åttonde"
+             , "åttan"
+             , "viii"
+             ]
+  , examples (NumeralValue 9)
+             [ "9"
+             , "nio"
+             , "nioende"
+             , "nia"
+             , "nians"
+             , "ix"
+             ]
+  , examples (NumeralValue 10)
+             [ "10"
+             , "tio"
+             , "tioende"
+             , "åttan"
+             , "x"
              ]
   , examples (NumeralValue 14)
              [ "14"

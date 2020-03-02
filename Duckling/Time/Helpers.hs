@@ -517,10 +517,12 @@ predNth n notImmediate TimeData
 
 -- Generalized version of `cycleNthAfter` with custom predicate
 predNthAfter :: Int -> TimeData -> TimeData -> TimeData
-predNthAfter n TimeData {TTime.timePred = p, TTime.timeGrain = g} base =
+predNthAfter n TimeData
+  {TTime.timePred = p, TTime.timeGrain = g, TTime.holiday = h} base =
   TTime.timedata'
     { TTime.timePred = takeNthAfter n True p $ TTime.timePred base
     , TTime.timeGrain = g
+    , TTime.holiday = h
     }
 
 -- This function can be used to express predicates invoving "closest",

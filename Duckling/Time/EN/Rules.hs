@@ -1018,7 +1018,9 @@ ruleWeekend = Rule
 ruleWeek :: Rule
 ruleWeek = Rule
  { name = "week"
- , pattern = [regex "(all|rest of the|the) week"]
+ , pattern =
+   [ regex "(all|rest of the|the) week"
+   ]
  , prod = \case
      (Token RegexMatch (GroupMatch (match:_)):_) ->
        let end = cycleNthAfter True TG.Day (-2) $ cycleNth TG.Week 1
@@ -1515,7 +1517,9 @@ ruleEndOrBeginningOfYear = Rule
 ruleEndOfYear :: Rule
 ruleEndOfYear = Rule
   { name = "end of year"
-  , pattern = [ regex "(by (the )?|(at )?the )?(EOY|end of (the )?year)" ]
+  , pattern =
+    [ regex "(by (the )?|(at )?the )?(EOY|end of (the )?year)"
+    ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> do
         start <- std
@@ -1532,7 +1536,9 @@ ruleEndOfYear = Rule
 ruleBeginningOfYear :: Rule
 ruleBeginningOfYear = Rule
   { name = "beginning of year"
-  , pattern = [ regex "((at )?the )?(BOY|beginning of (the )?year)" ]
+  , pattern =
+    [ regex "((at )?the )?(BOY|beginning of (the )?year)"
+    ]
   , prod = \_ -> do
       start <- intersect (month 1) $ cycleNth TG.Year 0
       end <- intersect (month 4) $ cycleNth TG.Year 0
@@ -1555,6 +1561,39 @@ ruleEndOrBeginningOfWeek = Rule
         start <- intersect td $ dayOfWeek sd
         end <- intersect td $ dayOfWeek ed
         Token Time <$> interval TTime.Open start end
+      _ -> Nothing
+  }
+
+ruleClosest :: Rule
+ruleClosest = Rule
+  { name = "the closest <day> to <time>"
+  , pattern =
+    [ regex "the\\s+closest"
+    , Predicate $ isGrainOfTime TG.Day
+    , regex "to"
+    , dimension Time
+    ]
+  , prod = \case
+      (_:Token Time td1:_:Token Time td2:_) ->
+        tt $ predNthClosest 0 td1 td2
+      _ -> Nothing
+  }
+
+ruleNthClosest :: Rule
+ruleNthClosest = Rule
+  { name = "the <ordinal> closest <day> to <time>"
+  , pattern =
+    [ regex "the"
+    , dimension Ordinal
+    , regex "closest"
+    , Predicate $ isGrainOfTime TG.Day
+    , regex "to"
+    , dimension Time
+    ]
+  , prod = \case
+      (_:token:_:Token Time td1:_:Token Time td2:_) -> do
+        n <- getIntValue token
+        tt $ predNthClosest (n - 1) td1 td2
       _ -> Nothing
   }
 
@@ -2565,6 +2604,8 @@ rules =
   , ruleBeginningOfMonth
   , ruleEndOfYear
   , ruleBeginningOfYear
+  , ruleClosest
+  , ruleNthClosest
   ]
   ++ ruleInstants
   ++ ruleDaysOfWeek

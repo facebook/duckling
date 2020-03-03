@@ -19,7 +19,6 @@ import Data.String
 import Prelude
 
 import Duckling.Core
-import Duckling.Resolve
 import Duckling.Testing.Types hiding (examples)
 import Duckling.Time.Corpus
 import Duckling.Time.Types hiding (Month, refTime)
@@ -1353,6 +1352,12 @@ allExamples = concat
              , "4:23am"
              , "four twenty-three a m"
              ]
+  , examples (datetime (2013, 10, 7, 0, 0, 0) Day)
+             [ "the closest Monday to Oct 5th"
+             ]
+  , examples (datetime (2013, 9, 30, 0, 0, 0) Day)
+             [ "the second closest Mon to October fifth"
+             ]
   , examples (datetimeInterval ((2013, 3, 1, 0, 0, 0), (2013, 3, 11, 0, 0, 0)) Day)
              [ "early March"
              ]
@@ -1826,5 +1831,14 @@ allExamples = concat
             , "samvatsaradi 2018"
             , "chaitra sukladi 2018"
             , "chaitra sukhladi 2018"
+            ]
+  , examples (datetimeHoliday (2012, 12, 25, 0, 0, 0) Day "Christmas")
+            [ "the closest xmas to today"
+            ]
+  , examples (datetimeHoliday (2013, 12, 25, 0, 0, 0) Day "Christmas")
+            [ "the second closest xmas to today"
+            ]
+  , examples (datetimeHoliday (2011, 12, 25, 0, 0, 0) Day "Christmas")
+            [ "the 3rd closest xmas to today"
             ]
   ]

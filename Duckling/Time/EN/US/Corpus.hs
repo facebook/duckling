@@ -15,7 +15,6 @@ import Prelude
 
 import Duckling.Testing.Types hiding (examples)
 import Duckling.Time.Corpus
-import Duckling.Time.Types hiding (Month)
 import Duckling.TimeGrain.Types hiding (add)
 
 allExamples :: [Example]
@@ -216,6 +215,7 @@ allExamples = concat
              [ "super tuesday 2012"
              , "last super tuesday"
              , "super tuesday last year"
+             , "the second closest super tuesday to the third Sunday of 2015"
              ]
   , examples (datetimeHoliday (2016, 3, 1, 0, 0, 0) Day "Super Tuesday")
              [ "super tuesday 2016"
@@ -227,10 +227,22 @@ allExamples = concat
              , "super tuesday in seven years"
              , "the first super tue. after 2019"
              , "the 2nd Super Tuesday after next year"
+             , "the closest super tuesday to 2019"
+             , "the closest super tuesday to March 6, 2019"
              ]
   , examples (datetimeHoliday (2004, 2, 3, 0, 0, 0) Day "Mini-Tuesday")
              [ "mini-tuesday"
              , "Mini - Tuesday 2004"
              , "mini tuesday nine yrs ago"
+             ]
+  , examples (datetimeHoliday (2004, 3, 2, 0, 0, 0) Day "Super Tuesday")
+             [ "the closest super tuesday to mini-tuesday"
+             ]
+  , examples (datetimeHoliday (2000, 3, 7, 0, 0, 0) Day "Super Tuesday")
+             [ "the second closest super tuesday to mini-tuesday"
+             ]
+  , examples (datetimeHoliday (2008, 2, 5, 0, 0, 0) Day "Super Tuesday")
+             [ "the 3rd closest super tuesday to mini-tuesday"
+             , "the first closest Super Tuesday to tax day 2006"
              ]
   ]

@@ -410,8 +410,22 @@ library
                      , Duckling.Numeral.EL.Rules
                      , Duckling.Numeral.EN.Corpus
                      , Duckling.Numeral.EN.Rules
+                     , Duckling.Numeral.ES.AR.Corpus
+                     , Duckling.Numeral.ES.AR.Rules
+                     , Duckling.Numeral.ES.CL.Corpus
+                     , Duckling.Numeral.ES.CL.Rules
                      , Duckling.Numeral.ES.Corpus
+                     , Duckling.Numeral.ES.CO.Corpus
+                     , Duckling.Numeral.ES.CO.Rules
+                     , Duckling.Numeral.ES.ES.Corpus
+                     , Duckling.Numeral.ES.ES.Rules
+                     , Duckling.Numeral.ES.MX.Corpus
+                     , Duckling.Numeral.ES.MX.Rules
+                     , Duckling.Numeral.ES.PE.Corpus
+                     , Duckling.Numeral.ES.PE.Rules
                      , Duckling.Numeral.ES.Rules
+                     , Duckling.Numeral.ES.VE.Corpus
+                     , Duckling.Numeral.ES.VE.Rules
                      , Duckling.Numeral.ET.Corpus
                      , Duckling.Numeral.ET.Rules
                      , Duckling.Numeral.FI.Corpus

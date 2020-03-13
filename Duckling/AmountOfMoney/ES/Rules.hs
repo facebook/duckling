@@ -127,6 +127,114 @@ ruleIntersect = Rule
       _ -> Nothing
   }
 
+ruleIntervalBetweenNumeral :: Rule
+ruleIntervalBetweenNumeral = Rule
+  { name = "between|from <numeral> to|and <amount-of-money>"
+  , pattern =
+    [ regex "de|entre"
+    , Predicate isPositive
+    , regex "a|y"
+    , Predicate isSimpleAmountOfMoney
+    ]
+  , prod = \case
+      (_:
+       Token Numeral NumeralData{TNumeral.value = from}:
+       _:
+       Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just to,
+                                             TAmountOfMoney.currency = c}:
+       _) | from < to ->
+        Just $ Token AmountOfMoney $ withInterval (from, to) $ currencyOnly c
+      _ -> Nothing
+  }
+
+ruleIntervalBetween :: Rule
+ruleIntervalBetween = Rule
+  { name = "between|from <amount-of-money> to|and <amount-of-money>"
+  , pattern =
+    [ regex "de|entre"
+    , Predicate isSimpleAmountOfMoney
+    , regex "a|y"
+    , Predicate isSimpleAmountOfMoney
+    ]
+  , prod = \case
+      (_:
+       Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just from,
+                                             TAmountOfMoney.currency = c1}:
+       _:
+       Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just to,
+                                             TAmountOfMoney.currency = c2}:
+       _) | from < to && c1 == c2 ->
+        Just $ Token AmountOfMoney $ withInterval (from, to) $ currencyOnly c1
+      _ -> Nothing
+  }
+
+ruleIntervalNumeralDash :: Rule
+ruleIntervalNumeralDash = Rule
+  { name = "<numeral> - <amount-of-money>"
+  , pattern =
+    [ Predicate isNatural
+    , regex "-"
+    , Predicate isSimpleAmountOfMoney
+    ]
+  , prod = \case
+      (Token Numeral NumeralData{TNumeral.value = from}:
+       _:
+       Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just to,
+                                             TAmountOfMoney.currency = c}:
+       _) | from < to->
+         Just $ Token AmountOfMoney $ withInterval (from, to) $ currencyOnly c
+      _ -> Nothing
+  }
+
+ruleIntervalDash :: Rule
+ruleIntervalDash = Rule
+  { name = "<amount-of-money> - <amount-of-money>"
+  , pattern =
+    [ Predicate isSimpleAmountOfMoney
+    , regex "-"
+    , Predicate isSimpleAmountOfMoney
+    ]
+  , prod = \case
+      (Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just from,
+                                             TAmountOfMoney.currency = c1}:
+       _:
+       Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just to,
+                                             TAmountOfMoney.currency = c2}:
+       _) | from < to && c1 == c2 ->
+        Just $ Token AmountOfMoney $ withInterval (from, to) $ currencyOnly c1
+      _ -> Nothing
+  }
+
+ruleIntervalMax :: Rule
+ruleIntervalMax = Rule
+  { name = "less/no more than <amount-of-money>"
+  , pattern =
+    [ regex "menos de|no más de"
+    , Predicate isSimpleAmountOfMoney
+    ]
+  , prod = \case
+      (_:
+       Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just to,
+                                             TAmountOfMoney.currency = c}:
+       _) -> Just $ Token AmountOfMoney $ withMax to $ currencyOnly c
+      _ -> Nothing
+  }
+
+ruleIntervalMin :: Rule
+ruleIntervalMin = Rule
+  { name = "no less/more than <amount-of-money>"
+  , pattern =
+    [ regex "más de|no menos de"
+    , Predicate isSimpleAmountOfMoney
+    ]
+  , prod = \case
+      (_:
+       Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just to,
+                                             TAmountOfMoney.currency = c}:
+       _) -> Just $ Token AmountOfMoney $ withMin to $ currencyOnly c
+      _ -> Nothing
+  }
+
 rules :: [Rule]
 rules =
   [ ruleUnitAmount
@@ -137,4 +245,10 @@ rules =
   , ruleIntersectAndXCents
   , ruleIntersectXCents
   , rulePounds
+  , ruleIntervalBetweenNumeral
+  , ruleIntervalBetween
+  , ruleIntervalNumeralDash
+  , ruleIntervalDash
+  , ruleIntervalMax
+  , ruleIntervalMin
   ]

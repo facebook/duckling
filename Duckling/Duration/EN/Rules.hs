@@ -159,7 +159,7 @@ ruleDurationHalfATimeGrain = Rule
     , dimension TimeGrain
     ]
   , prod = \case
-      (_:Token TimeGrain grain:_) -> Token Duration <$> timesOneAndAHalf grain 0
+      (_:Token TimeGrain grain:_) -> Token Duration <$> nPlusOneHalf grain 0
       _ -> Nothing
   }
 
@@ -172,7 +172,7 @@ ruleDurationOneGrainAndHalf = Rule
     , regex "and (a )?half"
     ]
   , prod = \case
-      (_:Token TimeGrain grain:_) -> Token Duration <$> timesOneAndAHalf grain 1
+      (_:Token TimeGrain grain:_) -> Token Duration <$> nPlusOneHalf grain 1
       _ -> Nothing
   }
 

@@ -53,7 +53,7 @@ ruleAadha = Rule
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (x:_)):_) -> do
         grain <- HashMap.lookup (Text.toLower x) avadhiMap
-        Token Duration <$> timesOneAndAHalf grain 0
+        Token Duration <$> nPlusOneHalf grain 0
       _ -> Nothing
   }
 

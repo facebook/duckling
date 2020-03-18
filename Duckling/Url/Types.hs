@@ -38,4 +38,5 @@ instance ToJSON UrlData where
   toJSON (UrlData value domain) = object
     [ "value"  .= value
     , "domain" .= domain
+    , "type"   .= ("value" :: Text)
     ]

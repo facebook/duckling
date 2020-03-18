@@ -50,4 +50,7 @@ data PhoneNumberValue = PhoneNumberValue { value :: Text }
   deriving (Eq, Ord, Show)
 
 instance ToJSON PhoneNumberValue where
-  toJSON (PhoneNumberValue value) = object [ "value" .= value ]
+  toJSON (PhoneNumberValue value) = object
+    [ "value" .= value
+    , "type"  .= ("value" :: Text)
+    ]

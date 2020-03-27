@@ -10,6 +10,8 @@ RUN apt-get update
 
 RUN apt-get install -qq -y libpcre3 libpcre3-dev build-essential --fix-missing --no-install-recommends
 
+ENV LANG=C.UTF-8
+
 RUN stack setup
 # NOTE:`stack build` will use as many cores as are available to build
 # in parallel. However, this can cause OOM issues as the linking step

@@ -323,6 +323,9 @@ allExamples = concat
              [ "ano nuevo"
              , "año nuevo"
              ]
+  , examples (datetime (2013, 2, 12, 21, 0, 0) Hour)
+             [ "nueve de la noche"
+             ]
   , examples (datetimeInterval ((2013, 2, 12, 18, 0, 0), (2013, 2, 13, 0, 0, 0)) Hour)
              [ "esta noche"
              ]

@@ -87,15 +87,6 @@ allExamples = concat
   , examples (NumeralValue 20)
              [ "ఇరవై"
              ]
-  , examples (NumeralValue 21)
-             [ "ఇరవై ఒకటి"
-             ]
-  , examples (NumeralValue 24)
-             [ "ఇరవై నాలుగు"
-             ]
-  , examples (NumeralValue 27)
-             [ "ఇరవై ఏడూ"
-             ]
   , examples (NumeralValue 30)
              [ "ముప్పై"
              ]

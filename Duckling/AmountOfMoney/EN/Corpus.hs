@@ -220,12 +220,15 @@ allExamples = concat
              [ "under seven euros"
              , "less than 7 EUR"
              , "lower than 7€"
+             , "no more than 7 euros"
+             , "at most 7€"
              ]
   , examples (above Dollar 1.42)
              [ "more than 1 dollar and forty-two cents"
              , "at least $1.42"
              , "over 1.42 dollars"
              , "above a dollar and 42 cents"
+             , "no less than $1.42"
              ]
    , examples (simple INR 5e5)
               [ "5 lakh rupees"

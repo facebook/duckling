@@ -134,10 +134,31 @@ ruleTens = Rule
       _ -> Nothing
   }
 
+hundredsMap :: HashMap Text Integer
+hundredsMap = HashMap.fromList
+  [ ( "వంద", 100 )
+  , ( "వెయ్యి", 1000 )
+  , ( "లక్ష", 100000 )
+  , ( "కోటి", 10000000 )
+  ]
+
+rulehundreds :: Rule
+rulehundreds = Rule
+  { name = "integer (100,1000,100000,10000000)"
+  , pattern =
+    [ regex "(వంద|వెయ్యి|లక్ష|కోటి)"
+    ]
+  , prod = \case
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        HashMap.lookup (Text.toLower match) hundredsMap >>= integer
+      _ -> Nothing
+  }
+
 rules :: [Rule]
 rules =
   [ ruleTelugu
   , ruleZeroToNine
   , ruleTenToNineteen
   , ruleTens
+  , rulehundreds
   ]

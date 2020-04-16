@@ -1,6 +1,6 @@
-FROM haskell:8
+FROM haskell:8 as builder
 
-RUN git clone https://github.com/facebook/duckling.git
+COPY . .
 
 RUN mkdir /log
 
@@ -17,6 +17,16 @@ RUN stack setup
 # in parallel. However, this can cause OOM issues as the linking step
 # in GHC can be expensive. If the build fails, try specifying the
 # '-j1' flag to force the build to run sequentially.
-RUN stack build
 
+RUN stack build --copy-bins
 ENTRYPOINT stack exec duckling-example-exe
+
+FROM haskell:8
+
+WORKDIR /duckling
+
+# Remove git since the installed version has a security leak and isn't required anyway
+RUN mkdir /log && apt purge -y git-man git
+
+COPY --from=builder /root/.local/bin/duckling-example-exe .
+ENTRYPOINT [ "./duckling-example-exe" ]

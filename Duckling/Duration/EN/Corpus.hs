@@ -49,6 +49,8 @@ allExamples = concat
              , "2 extra minutes"
              , "2 less minutes"
              , "2 fewer minutes"
+             , "2m"
+             , "2 m"
              ]
   , examples (DurationData 30 Day)
              [ "30 days"
@@ -83,6 +85,8 @@ allExamples = concat
              , "one hour and half"
              , "1 hour thirty"
              , "1 hour and thirty"
+             , "1.5 hours"
+             , "1.5 hrs"
              ]
   , examples (DurationData 75 Minute)
              [ "1 hour fifteen"

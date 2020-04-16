@@ -12,7 +12,7 @@ module Duckling.Duration.Helpers
   , isGrain
   , isNatural
   , minutesFromHourMixedFraction
-  , timesOneAndAHalf
+  , nPlusOneHalf
   ) where
 
 import Prelude
@@ -41,8 +41,8 @@ minutesFromHourMixedFraction :: Integer -> Integer -> Integer -> DurationData
 minutesFromHourMixedFraction h n d =
   duration TG.Minute $ fromIntegral $ 60 * h + quot (n * 60) d
 
-timesOneAndAHalf :: TG.Grain -> Int -> Maybe DurationData
-timesOneAndAHalf grain = case grain of
+nPlusOneHalf :: TG.Grain -> Int -> Maybe DurationData
+nPlusOneHalf grain = case grain of
   TG.Minute -> Just . duration TG.Second . (30+) . (60*)
   TG.Hour   -> Just . duration TG.Minute . (30+) . (60*)
   TG.Day    -> Just . duration TG.Hour   . (12+) . (24*)

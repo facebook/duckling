@@ -13,7 +13,7 @@ module Duckling.Time.Helpers
   ( -- Patterns
     hasNoDirection, isADayOfWeek, isAMonth, isAnHourOfDay, isAPartOfDay
   , isATimeOfDay, isDurationGreaterThan, isDOMInteger, isDOMOrdinal, isDOMValue
-  , isGrain, isGrainFinerThan, isGrainCoarserThan, isGrainOfTime
+  , isGrainFinerThan, isGrainCoarserThan, isGrainOfTime
   , isIntegerBetween, isNotLatent , isOrdinalBetween, isMidnightOrNoon
   , isOkWithThisNext, sameGrain, hasTimezone, hasNoTimezone, today
     -- Production
@@ -267,10 +267,6 @@ shiftTimezone providedSeries pred1 =
 -- -----------------------------------------------------------------
 -- Patterns
 
-isGrain :: TG.Grain -> Predicate
-isGrain value (Token TimeGrain grain) = grain == value
-isGrain _ _ = False
-
 isGrainFinerThan :: TG.Grain -> Predicate
 isGrainFinerThan value (Token Time TimeData{TTime.timeGrain = g}) = g < value
 isGrainFinerThan _ _ = False
@@ -521,10 +517,12 @@ predNth n notImmediate TimeData
 
 -- Generalized version of `cycleNthAfter` with custom predicate
 predNthAfter :: Int -> TimeData -> TimeData -> TimeData
-predNthAfter n TimeData {TTime.timePred = p, TTime.timeGrain = g} base =
+predNthAfter n TimeData
+  {TTime.timePred = p, TTime.timeGrain = g, TTime.holiday = h} base =
   TTime.timedata'
     { TTime.timePred = takeNthAfter n True p $ TTime.timePred base
     , TTime.timeGrain = g
+    , TTime.holiday = h
     }
 
 -- This function can be used to express predicates invoving "closest",

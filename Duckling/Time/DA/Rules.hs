@@ -17,6 +17,7 @@ import Data.Text (Text)
 import Prelude
 
 import Duckling.Dimensions.Types
+import Duckling.Duration.Helpers (isGrain)
 import Duckling.Numeral.Helpers (parseInt)
 import Duckling.Ordinal.Types (OrdinalData (..))
 import Duckling.Time.Helpers

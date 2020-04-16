@@ -21,6 +21,7 @@ import Duckling.Dimensions.Types
 import Duckling.Locale
 import Duckling.Types
 import qualified Duckling.Dimensions.Common as CommonDimensions
+import qualified Duckling.Dimensions.AF as AFDimensions
 import qualified Duckling.Dimensions.AR as ARDimensions
 import qualified Duckling.Dimensions.BG as BGDimensions
 import qualified Duckling.Dimensions.BN as BNDimensions
@@ -57,9 +58,11 @@ import qualified Duckling.Dimensions.PL as PLDimensions
 import qualified Duckling.Dimensions.PT as PTDimensions
 import qualified Duckling.Dimensions.RO as RODimensions
 import qualified Duckling.Dimensions.RU as RUDimensions
+import qualified Duckling.Dimensions.SK as SKDimensions
 import qualified Duckling.Dimensions.SV as SVDimensions
 import qualified Duckling.Dimensions.SW as SWDimensions
 import qualified Duckling.Dimensions.TA as TADimensions
+import qualified Duckling.Dimensions.TH as THDimensions
 import qualified Duckling.Dimensions.TR as TRDimensions
 import qualified Duckling.Dimensions.UK as UKDimensions
 import qualified Duckling.Dimensions.VI as VIDimensions
@@ -96,6 +99,7 @@ dependents (This Volume) = HashSet.singleton (This Numeral)
 dependents (This (CustomDimension dim)) = dimDependents dim
 
 langDimensions :: Lang -> [Some Dimension]
+langDimensions AF = AFDimensions.allDimensions
 langDimensions AR = ARDimensions.allDimensions
 langDimensions BG = BGDimensions.allDimensions
 langDimensions BN = BNDimensions.allDimensions
@@ -132,9 +136,11 @@ langDimensions PL = PLDimensions.allDimensions
 langDimensions PT = PTDimensions.allDimensions
 langDimensions RO = RODimensions.allDimensions
 langDimensions RU = RUDimensions.allDimensions
+langDimensions SK = SKDimensions.allDimensions
 langDimensions SV = SVDimensions.allDimensions
 langDimensions SW = SWDimensions.allDimensions
 langDimensions TA = TADimensions.allDimensions
+langDimensions TH = THDimensions.allDimensions
 langDimensions TR = TRDimensions.allDimensions
 langDimensions UK = UKDimensions.allDimensions
 langDimensions VI = VIDimensions.allDimensions

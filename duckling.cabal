@@ -48,6 +48,7 @@ library
   -- Rules
                      , Duckling.Rules
                      , Duckling.Rules.Common
+                     , Duckling.Rules.AF
                      , Duckling.Rules.AR
                      , Duckling.Rules.BG
                      , Duckling.Rules.BN
@@ -84,9 +85,11 @@ library
                      , Duckling.Rules.PT
                      , Duckling.Rules.RO
                      , Duckling.Rules.RU
+                     , Duckling.Rules.SK
                      , Duckling.Rules.SV
                      , Duckling.Rules.SW
                      , Duckling.Rules.TA
+                     , Duckling.Rules.TH
                      , Duckling.Rules.TR
                      , Duckling.Rules.UK
                      , Duckling.Rules.VI
@@ -98,6 +101,7 @@ library
                      , Duckling.Ranking.Extraction
                      , Duckling.Ranking.Rank
                      , Duckling.Ranking.Classifiers
+                     , Duckling.Ranking.Classifiers.AF_XX
                      , Duckling.Ranking.Classifiers.AR_XX
                      , Duckling.Ranking.Classifiers.BG_XX
                      , Duckling.Ranking.Classifiers.BN_XX
@@ -139,9 +143,11 @@ library
                      , Duckling.Ranking.Classifiers.PT_XX
                      , Duckling.Ranking.Classifiers.RO_XX
                      , Duckling.Ranking.Classifiers.RU_XX
+                     , Duckling.Ranking.Classifiers.SK_XX
                      , Duckling.Ranking.Classifiers.SV_XX
                      , Duckling.Ranking.Classifiers.SW_XX
                      , Duckling.Ranking.Classifiers.TA_XX
+                     , Duckling.Ranking.Classifiers.TH_XX
                      , Duckling.Ranking.Classifiers.TR_XX
                      , Duckling.Ranking.Classifiers.UK_XX
                      , Duckling.Ranking.Classifiers.VI_XX
@@ -156,6 +162,7 @@ library
                      , Duckling.Dimensions
                      , Duckling.Dimensions.Common
                      , Duckling.Dimensions.Types
+                     , Duckling.Dimensions.AF
                      , Duckling.Dimensions.AR
                      , Duckling.Dimensions.BG
                      , Duckling.Dimensions.BN
@@ -192,9 +199,11 @@ library
                      , Duckling.Dimensions.PT
                      , Duckling.Dimensions.RO
                      , Duckling.Dimensions.RU
+                     , Duckling.Dimensions.SK
                      , Duckling.Dimensions.SV
                      , Duckling.Dimensions.SW
                      , Duckling.Dimensions.TA
+                     , Duckling.Dimensions.TH
                      , Duckling.Dimensions.TR
                      , Duckling.Dimensions.UK
                      , Duckling.Dimensions.VI
@@ -382,6 +391,8 @@ library
                      , Duckling.Email.Types
 
                      -- Numeral
+                     , Duckling.Numeral.AF.Corpus
+                     , Duckling.Numeral.AF.Rules
                      , Duckling.Numeral.AR.Corpus
                      , Duckling.Numeral.AR.Helpers
                      , Duckling.Numeral.AR.Rules
@@ -399,8 +410,22 @@ library
                      , Duckling.Numeral.EL.Rules
                      , Duckling.Numeral.EN.Corpus
                      , Duckling.Numeral.EN.Rules
+                     , Duckling.Numeral.ES.AR.Corpus
+                     , Duckling.Numeral.ES.AR.Rules
+                     , Duckling.Numeral.ES.CL.Corpus
+                     , Duckling.Numeral.ES.CL.Rules
                      , Duckling.Numeral.ES.Corpus
+                     , Duckling.Numeral.ES.CO.Corpus
+                     , Duckling.Numeral.ES.CO.Rules
+                     , Duckling.Numeral.ES.ES.Corpus
+                     , Duckling.Numeral.ES.ES.Rules
+                     , Duckling.Numeral.ES.MX.Corpus
+                     , Duckling.Numeral.ES.MX.Rules
+                     , Duckling.Numeral.ES.PE.Corpus
+                     , Duckling.Numeral.ES.PE.Rules
                      , Duckling.Numeral.ES.Rules
+                     , Duckling.Numeral.ES.VE.Corpus
+                     , Duckling.Numeral.ES.VE.Rules
                      , Duckling.Numeral.ET.Corpus
                      , Duckling.Numeral.ET.Rules
                      , Duckling.Numeral.FI.Corpus
@@ -455,12 +480,16 @@ library
                      , Duckling.Numeral.RO.Rules
                      , Duckling.Numeral.RU.Corpus
                      , Duckling.Numeral.RU.Rules
+                     , Duckling.Numeral.SK.Corpus
+                     , Duckling.Numeral.SK.Rules
                      , Duckling.Numeral.SV.Corpus
                      , Duckling.Numeral.SV.Rules
                      , Duckling.Numeral.SW.Corpus
                      , Duckling.Numeral.SW.Rules
                      , Duckling.Numeral.TA.Corpus
                      , Duckling.Numeral.TA.Rules
+                     , Duckling.Numeral.TH.Corpus
+                     , Duckling.Numeral.TH.Rules
                      , Duckling.Numeral.TR.Corpus
                      , Duckling.Numeral.TR.Rules
                      , Duckling.Numeral.UK.Corpus
@@ -625,6 +654,8 @@ library
                      -- Time
                      , Duckling.Time.AR.Corpus
                      , Duckling.Time.AR.Rules
+                     , Duckling.Time.BG.Corpus
+                     , Duckling.Time.BG.Rules
                      , Duckling.Time.DA.Corpus
                      , Duckling.Time.DA.Rules
                      , Duckling.Time.DE.Corpus
@@ -816,7 +847,6 @@ library
 test-suite duckling-test
   type:                exitcode-stdio-1.0
   main-is:             TestMain.hs
-  ghc-options:         -main-is TestMain
   hs-source-dirs:      tests
   build-depends:       duckling
                      , base
@@ -916,6 +946,7 @@ test-suite duckling-test
                      , Duckling.Email.Tests
 
                      -- Numeral
+                     , Duckling.Numeral.AF.Tests
                      , Duckling.Numeral.AR.Tests
                      , Duckling.Numeral.BG.Tests
                      , Duckling.Numeral.BN.Tests
@@ -952,9 +983,11 @@ test-suite duckling-test
                      , Duckling.Numeral.PT.Tests
                      , Duckling.Numeral.RO.Tests
                      , Duckling.Numeral.RU.Tests
+                     , Duckling.Numeral.SK.Tests
                      , Duckling.Numeral.SV.Tests
                      , Duckling.Numeral.SW.Tests
                      , Duckling.Numeral.TA.Tests
+                     , Duckling.Numeral.TH.Tests
                      , Duckling.Numeral.TR.Tests
                      , Duckling.Numeral.UK.Tests
                      , Duckling.Numeral.VI.Tests
@@ -1039,6 +1072,7 @@ test-suite duckling-test
 
                      -- Time
                      , Duckling.Time.AR.Tests
+                     , Duckling.Time.BG.Tests
                      , Duckling.Time.DA.Tests
                      , Duckling.Time.DE.Tests
                      , Duckling.Time.EL.Tests

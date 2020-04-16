@@ -146,8 +146,7 @@ allExamples = concat
              , "ti singaporske dollars"
              ]
   , examples (simple THB 10)
-             [ "10 baht"
-             , "10 bhat"
+             [ "10 bhat"
              , "10 thai baht"
              , "10 thai bhat"
              , "10 thailand baht"

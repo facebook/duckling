@@ -59,6 +59,7 @@ fromName name = HashMap.lookup name m
       , ("quantity", This Quantity)
       , ("temperature", This Temperature)
       , ("time", This Time)
+      , ("time-grain", This TimeGrain)
       , ("url", This Url)
       , ("volume", This Volume)
       ]

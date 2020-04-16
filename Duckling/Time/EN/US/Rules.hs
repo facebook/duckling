@@ -270,6 +270,23 @@ rulePeriodicHolidays' = mkRuleHolidays'
       in intersectWithReplacement emancipationDay tentative alternative )
   ]
 
+-- duplicating "Tuesday" regex as we lost the internal info
+tuesday :: String
+tuesday = "(tuesdays?|tue?\\.?)"
+
+ruleComputedHolidays :: [Rule]
+ruleComputedHolidays = mkRuleHolidays
+  [ ( "Super Tuesday", "super\\s+" ++ tuesday, superTuesday )
+  , ( "Mini-Tuesday"
+    , "mini(\\s*\\-\\s*|\\s+)" ++ tuesday
+    , yearMonthDay 2004 2 3
+    )
+  , ( "Super Tuesday"
+    , "((mega\\s+)?giga|tsunami|super\\s+duper)\\s+" ++ tuesday
+    , yearMonthDay 2008 2 5
+    )
+  ]
+
 ruleComputedHolidays' :: [Rule]
 ruleComputedHolidays' = mkRuleHolidays'
   [ ( "Global Youth Service Day", "national youth service day"
@@ -288,6 +305,7 @@ rulesBackwardCompatible =
 
 rules :: [Rule]
 rules = rulesBackwardCompatible
+  ++ ruleComputedHolidays
+  ++ ruleComputedHolidays'
   ++ rulePeriodicHolidays
   ++ rulePeriodicHolidays'
-  ++ ruleComputedHolidays'

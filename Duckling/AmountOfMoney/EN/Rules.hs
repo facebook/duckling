@@ -337,7 +337,7 @@ ruleIntervalMax :: Rule
 ruleIntervalMax = Rule
   { name = "under/less/lower/no more than <amount-of-money>"
   , pattern =
-    [ regex "under|(less|lower|not? more) than"
+    [ regex "under|at most|(less|lower|not? more) than"
     , Predicate isSimpleAmountOfMoney
     ]
   , prod = \tokens -> case tokens of
@@ -352,7 +352,7 @@ ruleIntervalMin :: Rule
 ruleIntervalMin = Rule
   { name = "over/above/at least/more than <amount-of-money>"
   , pattern =
-    [ regex "over|above|at least|more than"
+    [ regex "over|above|at least|(more|not? less) than"
     , Predicate isSimpleAmountOfMoney
     ]
   , prod = \tokens -> case tokens of

@@ -10,17 +10,19 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Time.ES.Rules
-  ( rules ) where
+  ( rules
+  ) where
 
 import Prelude
 import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
+import Duckling.Duration.Helpers (isGrain)
 import Duckling.Numeral.Helpers (parseInt)
-import Duckling.Ordinal.Types (OrdinalData (..))
+import Duckling.Ordinal.Types (OrdinalData(..))
 import Duckling.Regex.Types
 import Duckling.Time.Helpers
-import Duckling.Time.Types (TimeData (..))
+import Duckling.Time.Types (TimeData(..))
 import Duckling.Types
 import qualified Duckling.Ordinal.Types as TOrdinal
 import qualified Duckling.Time.Types as TTime
@@ -272,19 +274,6 @@ ruleElDayofmonthNonOrdinal = Rule
       (_:token:_) -> do
         v <- getIntValue token
         tt $ dayOfMonth v
-      _ -> Nothing
-  }
-
-ruleYearLatent2 :: Rule
-ruleYearLatent2 = Rule
-  { name = "year (latent)"
-  , pattern =
-    [ Predicate $ isIntegerBetween 2101 10000
-    ]
-  , prod = \tokens -> case tokens of
-      (token:_) -> do
-        v <- getIntValue token
-        tt . mkLatent $ year v
       _ -> Nothing
   }
 
@@ -651,7 +640,7 @@ ruleTimeofdayLatent = Rule
   , prod = \tokens -> case tokens of
       (token:_) -> do
         v <- getIntValue token
-        tt . mkLatent $ hour True v
+        tt . mkLatent $ hour (v < 13) v
       _ -> Nothing
   }
 
@@ -975,8 +964,9 @@ ruleYearLatent :: Rule
 ruleYearLatent = Rule
   { name = "year (latent)"
   , pattern =
-    [ Predicate $ isIntegerBetween (- 10000) 999
-    ]
+      [ Predicate $
+        or . sequence [isIntegerBetween (- 10000) 0, isIntegerBetween 25 10000]
+      ]
   , prod = \tokens -> case tokens of
       (token:_) -> do
         n <- getIntValue token
@@ -1555,7 +1545,6 @@ rules =
   , ruleWeekend
   , ruleYear
   , ruleYearLatent
-  , ruleYearLatent2
   , ruleYesterday
   , ruleYyyymmdd
   , ruleHourofdayAndThreeQuarter

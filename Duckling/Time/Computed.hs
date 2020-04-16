@@ -9,7 +9,7 @@ module Duckling.Time.Computed
   , globalYouthServiceDay, guruGobindSinghJayanti, karvaChauth
   , krishnaJanmashtami, lagBaOmer, mawlid, muharram, navaratri, orthodoxEaster
   , passover, rajab, rakshaBandhan, mahavirJayanti, mahaShivaRatri
-  , ramadan, rathaYatra, roshHashana, thaiPongal, thiruOnam
+  , ramadan, rathaYatra, roshHashana, thaiPongal, thiruOnam, superTuesday
   , tishaBAv, tuBishvat, vasantPanchami, vesak
   , yomHaatzmaut, vaisakhi, purim, saraswatiJayanti, rabindraJayanti
   , ravidassJayanti, pargatDiwas, ugadi, ganeshChaturthi, ramaNavami
@@ -2501,4 +2501,21 @@ ramaNavami' = mapMaybe toTimeObjectM
   , (2028, 4, 4)
   , (2029, 4, 23)
   , (2030, 4, 12)
+  ]
+
+superTuesday :: TimeData
+superTuesday = computedDays superTuesday'
+
+superTuesday' :: [TimeObject]
+superTuesday' = mapMaybe toTimeObjectM
+  [ (1984, 3, 13)
+  , (1988, 3, 8)
+  , (1992, 3, 10)
+  , (1996, 3, 12)
+  , (2000, 3, 7)
+  , (2004, 3, 2)
+  , (2008, 2, 5)
+  , (2012, 3, 6)
+  , (2016, 3, 1)
+  , (2020, 3, 3)
   ]

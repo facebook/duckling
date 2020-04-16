@@ -10,18 +10,20 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Time.GA.Rules
-  ( rules ) where
+  ( rules
+  ) where
 
 import Data.Text (Text)
 import Prelude
 
 import Duckling.Dimensions.Types
+import Duckling.Duration.Helpers (isGrain)
 import Duckling.Numeral.Helpers (parseInt)
-import qualified Duckling.Ordinal.Types as TOrdinal
 import Duckling.Regex.Types
 import Duckling.Time.Helpers
-import qualified Duckling.TimeGrain.Types as TG
 import Duckling.Types
+import qualified Duckling.Ordinal.Types as TOrdinal
+import qualified Duckling.TimeGrain.Types as TG
 
 ruleArInn :: Rule
 ruleArInn = Rule

@@ -17,4 +17,5 @@ allDimensions =
   , This Duration
   , This Numeral
   , This Ordinal
+  , This Time
   ]

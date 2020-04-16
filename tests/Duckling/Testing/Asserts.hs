@@ -35,6 +35,11 @@ import Duckling.Resolve
 import Duckling.Testing.Types
 import Duckling.Types
 
+newtype ExampleInput = ExampleInput Text
+
+instance Show ExampleInput where
+  show (ExampleInput input) = "\"" ++ Text.unpack input ++ "\""
+
 withTargets :: [Some Dimension] -> (Text, a) -> (Text, [Some Dimension], a)
 withTargets targets (input, expected) = (input, targets, expected)
 
@@ -42,7 +47,7 @@ analyzedTargetTest :: Context -> Options -> (Text, Some Dimension) -> IO ()
 analyzedTargetTest context options (input, target) =
   assertBool msg $ all (== target) dimensions
   where
-    msg = "analyze " ++ show (input, [target])
+    msg = "analyze " ++ show (ExampleInput input, [target])
           ++ "dimensions = " ++ show dimensions
     dimensions = flip map (analyze input context options $ HashSet.singleton target) $
       \(Resolved{node=Node{token=Token dimension _}}) -> This dimension
@@ -51,8 +56,10 @@ analyzedFirstTest :: Context -> Options ->
   (Text, [Some Dimension], TestPredicate) -> IO ()
 analyzedFirstTest context options (input, targets, predicate) =
   case tokens of
-    [] -> assertFailure ("empty result on " ++ show (input, targets))
-    (token:_) -> assertBool ("don't pass predicate on " ++ show input) $
+    [] -> assertFailure
+      ("empty result on " ++ show (ExampleInput input, targets))
+    (token:_) -> assertBool
+      ("don't pass predicate on " ++ show (ExampleInput input)) $
       predicate context token
     where
       tokens = analyze input context options $ HashSet.fromList targets
@@ -61,8 +68,9 @@ analyzedAmbiguousTest :: Context -> Options ->
   (Text, [Some Dimension], [TestPredicate]) -> IO ()
 analyzedAmbiguousTest context options (input, targets, predicates) =
   case tokens of
-    [] -> assertFailure ("empty result on " ++ show (input, targets))
-    _ -> assertBool ("don't pass predicate on " ++ show input) $
+    [] -> assertFailure
+      ("empty result on " ++ show (ExampleInput input, targets))
+    _ -> assertBool ("don't pass predicate on " ++ show (ExampleInput input)) $
       all (\predicate -> any (predicate context) tokens) predicates
     where
       tokens = analyze input context options $ HashSet.fromList targets
@@ -80,14 +88,17 @@ makeCorpusTest targets (context, options, xs) = testCase "Corpus Tests" $
             partition ((== inputRange) . range) tokens in
       case fullRangeTokens of
         [] -> case restTokens of
-          [] -> assertFailure $ "empty result on " ++ show input
+          [] -> assertFailure $ "empty result on " ++ show (ExampleInput input)
           (_:_:_) -> assertFailure $
-            show (length restTokens) ++ " tokens found for " ++ show input
-          _ -> assertFailure $ "don't fully match " ++ show input
-        [token] -> assertBool ("don't pass predicate on " ++ show input) $
+            show (length restTokens) ++
+            " tokens found for " ++
+            show (ExampleInput input)
+          _ -> assertFailure $ "don't fully match " ++ show (ExampleInput input)
+        [token] -> assertBool
+          ("don't pass predicate on " ++ show (ExampleInput input)) $
           predicate context token
         _ -> assertFailure $ show (length fullRangeTokens)
-          ++ " different ambiguous parses on " ++ show input
+          ++ " different ambiguous parses on " ++ show (ExampleInput input)
 
 
 makeNegativeCorpusTest :: [Some Dimension] -> NegativeCorpus -> TestTree
@@ -98,11 +109,12 @@ makeNegativeCorpusTest targets (context, options, xs) =
 analyzedRangeTest :: Context -> Options -> (Text, [Some Dimension], Range)
   -> IO ()
 analyzedRangeTest context options  (input, targets, expRange) = case tokens of
-  [] -> assertFailure $ "empty result on " ++ show input
+  [] -> assertFailure $ "empty result on " ++ show (ExampleInput input)
   (_:_:_) -> assertFailure $
-    show (length tokens) ++ " tokens found for " ++ show input
+    show (length tokens) ++ " tokens found for " ++ show (ExampleInput input)
   (token:_) ->
-    assertEqual ("wrong range for " ++ show input) expRange (range token)
+    assertEqual ("wrong range for " ++ show (ExampleInput input))
+    expRange (range token)
   where
     tokens = analyze input context options $ HashSet.fromList targets
 
@@ -114,6 +126,6 @@ analyzedNTest :: Context -> Options -> (Text, [Some Dimension], Int) -> IO ()
 analyzedNTest context options (input, targets, n) =
   assertBool msg . (== n) $ length tokens
   where
-    msg = "analyze " ++ show (input, targets)
+    msg = "analyze " ++ show (ExampleInput input, targets)
           ++ "tokens= " ++ show tokens
     tokens = analyze input context options $ HashSet.fromList targets

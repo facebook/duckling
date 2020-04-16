@@ -31,4 +31,7 @@ instance Resolve EmailData where
   resolve _ _ x = Just (x, False)
 
 instance ToJSON EmailData where
-  toJSON EmailData {value} = object [ "value" .= value ]
+  toJSON EmailData {value} = object
+    [ "value" .= value
+    , "type"  .= ("value" :: Text)
+    ]

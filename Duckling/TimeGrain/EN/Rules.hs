@@ -23,7 +23,7 @@ grains :: [(Text, String, TG.Grain)]
 grains = [ ("second (grain) ", "sec(ond)?s?",      TG.Second)
          , ("minute (grain)" , "m(in(ute)?s?)?",   TG.Minute)
          , ("hour (grain)"   , "h(((ou)?rs?)|r)?", TG.Hour)
-         , ("day (grain)"    , "days?",            TG.Day)
+         , ("day (grain)"    , "days?|nights?",    TG.Day)
          , ("week (grain)"   , "weeks?",           TG.Week)
          , ("month (grain)"  , "months?",          TG.Month)
          , ("quarter (grain)", "(quarter|qtr)s?",  TG.Quarter)

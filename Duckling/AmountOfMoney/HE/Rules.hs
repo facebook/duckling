@@ -47,7 +47,7 @@ ruleUnitAmount = Rule
 ruleOneShekel :: Rule
 ruleOneShekel = Rule
   { name    = "שקל"
-  , pattern = [regex "שקל( אחד| בודד)?"]
+  , pattern = [regex " שקל( אחד| בודד)?"]
   , prod    = \_ -> Just . Token AmountOfMoney $ withValue 1 $ currencyOnly ILS
   }
 ruleTwoShekel :: Rule
@@ -66,7 +66,7 @@ ruleOneAgura = Rule
 ruleShekel :: Rule
 ruleShekel = Rule
   { name    = "שקל"
-  , pattern = [regex "שקל(ים)?|ש״?ח|ש(\")?ח"]
+  , pattern = [regex " שקל(ים)?|ש״?ח|ש(\")?ח|₪"]
   , prod    = \_ -> Just . Token AmountOfMoney $ currencyOnly ILS
   }
 
@@ -196,6 +196,30 @@ ruleGBP = Rule
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly GBP
   }
 
+ruleExactAmountDescription :: Rule
+ruleExactAmountDescription = Rule
+  { name = "amount of|amount <amount-of-money>"
+  , pattern =
+    [ regex "(ב)?(גובה|סכום|על סך|שווי)( של)?"
+    , Predicate isPositive
+    ]
+  , prod = \case
+      (_:Token Numeral NumeralData{TNumeral.value = v}:_) -> Just . Token AmountOfMoney $ withValue v $ currencyOnly ILS
+      _ -> Nothing
+  }
+  
+ruleAtAmountDescription :: Rule
+ruleAtAmountDescription = Rule
+  { name = "at <amount-of-money>"
+  , pattern =
+    [ regex "ב|ב |ב-|ב- |ב - |ב -"
+    , Predicate isPositive
+    ]
+  , prod = \case
+      (_:Token Numeral NumeralData{TNumeral.value = v}:_) -> Just . Token AmountOfMoney $ withValue v $ currencyOnly ILS
+      _ -> Nothing
+  }
+
 rulePrecision :: Rule
 rulePrecision = Rule
   { name = "about|exactly <amount-of-money>"
@@ -214,9 +238,9 @@ ruleIntervalBetweenNumeral :: Rule
 ruleIntervalBetweenNumeral = Rule
   { name = "between|from <numeral> to|and <amount-of-money>"
   , pattern =
-      [ regex "מ(ה)?|בין (ה )?|ה"
+      [ regex "(מ(ה)?|בין (ה )?|ה)(סכום)?( של)?"
       , Predicate isPositive
-      , regex "(ו)?עד( ל| ה)?|[\\-ול](בין )?"
+      , regex "((ו)?עד( ל| ה)?|[\\-ול](בין )?)(סכום)?( של)?"
       , Predicate isSimpleAmountOfMoney
       ]
   , prod = \case
@@ -235,7 +259,7 @@ ruleNumeralToAmountInterval = Rule
   { name = "<numeral> to|and <amount-of-money>"
   , pattern =
       [ Predicate isPositive
-      , regex "(ו)?עד( ל| ה)?|[\\-ול](בין )?"
+      , regex "((ו)?עד( ל| ה)?|[\\-ול](בין )?)(סכום)?( של)?"
       , Predicate isSimpleAmountOfMoney
       ]
   , prod = \case
@@ -252,9 +276,9 @@ ruleIntervalBetween :: Rule
 ruleIntervalBetween = Rule
   { name = "between|from <amount-of-money> to|and <amount-of-money>"
   , pattern =
-      [ regex "מ(ה)?|בין (ה )?|ה"
+      [ regex "(מ(ה)?|בין (ה )?|ה)(סכום)?( של)?"
       , Predicate isSimpleAmountOfMoney
-      , regex "(ו)?עד( ל| ה)?|[\\-ול](בין )?"
+      , regex "((ו)?עד( ל| ה)?|[\\-ול](בין )?)(סכום)?( של)?"
       , Predicate isSimpleAmountOfMoney
       ]
   , prod = \case
@@ -275,7 +299,7 @@ ruleAmountToAmountInterval = Rule
   { name = "<amount-of-money> to|and <amount-of-money>"
   , pattern =
       [ Predicate isSimpleAmountOfMoney
-      , regex "(ו)?עד( ל| ה)?|[\\-ול](בין )?"
+      , regex "((ו)?עד( ל| ה)?|[\\-ול](בין )?)(סכום)?( של)?"
       , Predicate isSimpleAmountOfMoney
       ]
   , prod = \case
@@ -295,7 +319,7 @@ ruleIntervalNumeralDash = Rule
   { name = "<numeral> - <amount-of-money>"
   , pattern =
     [ Predicate isPositive
-    , regex "-"
+    , regex "-| -|- | - "
     , Predicate isSimpleAmountOfMoney
     ]
   , prod = \case
@@ -313,7 +337,7 @@ ruleIntervalDash = Rule
   { name = "<amount-of-money> - <amount-of-money>"
   , pattern =
       [ Predicate isSimpleAmountOfMoney
-      , regex "-"
+      , regex "-| -|- | - "
       , Predicate isSimpleAmountOfMoney
       ]
   , prod = \case
@@ -332,7 +356,7 @@ ruleIntervalMax :: Rule
 ruleIntervalMax = Rule
   { name = "under/less/lower/no more than <amount-of-money>"
   , pattern =
-      [ regex "פחות מ|עד|לא יותר מ|מתחת ל?|לא מעל"
+      [ regex "פחות מ-?( -)?|עד ל?-?( -)?|לא יותר מ-?( -)?|מחת ל?-?( -)?|מתחת ל?-?( -)?|לא מעל ל?-?( -)?"
       , Predicate isSimpleAmountOfMoney
       ]
   , prod = \case
@@ -347,7 +371,7 @@ ruleIntervalMin :: Rule
 ruleIntervalMin = Rule
   { name = "over/above/at least/more than <amount-of-money>"
   , pattern =
-      [ regex "יותר מ|מעל|מ|לא פחות מ|לא מתחת ל"
+      [ regex "יותר מ-?( -)?|מעל ל?-?( -)?|מ-?( -)?|לא פחות מ-?( -)?|לא מתחת ל?-?( -)?"
       , Predicate isSimpleAmountOfMoney
       ]
   , prod = \case
@@ -357,6 +381,7 @@ ruleIntervalMin = Rule
        _) -> Just . Token AmountOfMoney . withMin to $ currencyOnly c
       _ -> Nothing
   }
+  
 
 rules :: [Rule]
 rules =
@@ -368,6 +393,7 @@ rules =
   , ruleNumeralToAmountInterval
   , ruleIntervalBetween
   , ruleAmountToAmountInterval
+  , ruleAtAmountDescription
   , ruleIntervalMax
   , ruleIntervalMin
   , ruleIntervalNumeralDash
@@ -375,6 +401,7 @@ rules =
   , rulePounds
   , ruleOneGBP
   , ruleGBP
+  , ruleExactAmountDescription
   , rulePrecision
   , ruleIntersect
   , ruleAgura

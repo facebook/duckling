@@ -240,9 +240,26 @@ ruleCompositeDuration = Rule
       _ -> Nothing
   }
 
+ruleCompositeDurationAnd :: Rule
+ruleCompositeDurationAnd = Rule
+  { name = "composite <duration> and <duration>"
+  , pattern =
+    [ dimension Duration
+    , regex ",|and"
+    , dimension Duration
+    ]
+  , prod = \case
+      (Token Duration DurationData{TDuration.value = v, TDuration.grain = g}:
+       _:
+       Token Duration dd@DurationData{TDuration.grain = dg}:
+       _) | g > dg -> Just . Token Duration $ duration g (v) <> dd
+      _ -> Nothing
+  }
+
 rules :: [Rule]
 rules =
-  [ ruleDurationQuarterOfAnHour
+  [ ruleCompositeDurationCommasAnd
+  , ruleDurationQuarterOfAnHour
   , ruleDurationHalfAnHourAbbrev
   , ruleDurationThreeQuartersOfAnHour
   , ruleDurationFortnight
@@ -257,5 +274,5 @@ rules =
   , ruleDurationPrecision
   , ruleNumeralQuotes
   , ruleCompositeDuration
-  , ruleCompositeDurationCommasAnd
+  , ruleCompositeDurationAnd
   ]

@@ -79,7 +79,7 @@ ruleOrdinalsPrimero :: Rule
 ruleOrdinalsPrimero = Rule
   { name = "ordinals (primero..10)"
   , pattern =
-    [ regex "((primer|segund|cuart|quint|sext|s[eé]ptim|octav|noven|d[eé]cim)(os?|as?)|(prim|terc)er)"
+    [ regex "((primer|segund|tercer|cuart|quint|sext|s[eé]ptim|octav|noven|d[eé]cim)(os?|as?)|(prim|terc)er)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->

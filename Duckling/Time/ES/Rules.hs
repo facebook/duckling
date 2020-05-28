@@ -866,7 +866,7 @@ ruleTimeofdayHoras = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_) ->
-        tt $ notLatent td
+        tt $ mkLatent td
       _ -> Nothing
   }
 

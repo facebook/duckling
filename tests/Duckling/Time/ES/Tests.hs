@@ -19,4 +19,5 @@ import Duckling.Time.ES.Corpus
 tests :: TestTree
 tests = testGroup "ES Tests"
   [ makeCorpusTest [This Time] corpus
+    , makeCorpusTest [This Time] latentCorpus
   ]

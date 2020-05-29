@@ -120,14 +120,4 @@ allExamples = concat
              , "five and half min"
              , "5 and an half minute"
              ]
-  , examples (DurationData 105 Minute)
-              [ "an hour and 45 minutes"
-              , "one hour and 45 minutes"
-              ]
-  , examples (DurationData 90 Second)
-              [ "a minute and 30 seconds"
-              , "one minute and 30 seconds"
-              ]
-  , examples (DurationData 3630 Second)
-              [ "an hour and 30 seconds"]
   ]

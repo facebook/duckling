@@ -9,6 +9,7 @@
 
 module Duckling.Time.ES.Corpus
   ( corpus
+    , latentCorpus
   ) where
 
 import Data.String
@@ -19,9 +20,22 @@ import Duckling.Resolve
 import Duckling.Time.Corpus
 import Duckling.TimeGrain.Types hiding (add)
 import Duckling.Testing.Types hiding (examples)
+import Duckling.Time.Types hiding (Month)
+
+context :: Context
+context = testContext {locale = makeLocale ES Nothing}
+
+latentCorpus :: Corpus
+latentCorpus = (context, testOptions {withLatent = True}, xs)
+  where
+    xs = concat
+      [ examples (datetime (2013, 2, 12, 13, 0, 0) Hour)
+                 [ "una hora"
+                 ]
+      ]
 
 corpus :: Corpus
-corpus = (testContext {locale = makeLocale ES Nothing}, testOptions, allExamples)
+corpus = (context, testOptions, allExamples)
 
 allExamples :: [Example]
 allExamples = concat

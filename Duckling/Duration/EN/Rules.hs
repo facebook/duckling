@@ -29,6 +29,7 @@ import Duckling.Types
 import qualified Duckling.Duration.Types as TDuration
 import qualified Duckling.Numeral.Types as TNumeral
 import qualified Duckling.TimeGrain.Types as TG
+import Data.Text (Text)
 
 ruleDurationQuarterOfAnHour :: Rule
 ruleDurationQuarterOfAnHour = Rule
@@ -272,6 +273,28 @@ ruleDurationDotNumeralMinutes = Rule
       _ -> Nothing
   }
 
+ruleDurationNumeralAndQuarterHour :: Rule
+ruleDurationNumeralAndQuarterHour = Rule
+  { name = "<Integer> and <Integer> quarter of hour"
+  , pattern =
+    [ Predicate isNatural
+    , regex "and"
+    , regex "(a |an |one |two |three )?quarter(s)?(( of )?|( )+)hour(s)?"
+    ]
+  , prod = \case
+      (Token Numeral NumeralData{TNumeral.value = h}:
+       _:
+       Token RegexMatch (GroupMatch (match:_)):
+       _) -> do
+         q <- case Text.strip $ Text.toLower match of "a"     -> Just 1
+                                                      "an"    -> Just 1
+                                                      "one"   -> Just 1
+                                                      "two"   -> Just 2
+                                                      "three" -> Just 3
+                                                      _       -> Just 1
+         Just . Token Duration . duration TG.Minute $ 15 * q + 60 * floor h
+  }
+
 rules :: [Rule]
 rules =
   [ ruleCompositeDurationCommasAnd
@@ -292,4 +315,5 @@ rules =
   , ruleCompositeDuration
   , ruleCompositeDurationAnd
   , ruleDurationDotNumeralMinutes
+  , ruleDurationNumeralAndQuarterHour
   ]

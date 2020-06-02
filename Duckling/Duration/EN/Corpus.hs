@@ -120,4 +120,10 @@ allExamples = concat
              , "five and half min"
              , "5 and an half minute"
              ]
+  , examples (DurationData 930 Second)
+              [ "15.5 minutes"
+              , "15.5 minute"
+              , "15.5 mins"
+              , "15.5 min"
+              ]
   ]

@@ -245,12 +245,11 @@ ruleDurationNumeralAndQuarterHour = Rule
   { name = "<Integer> and <Integer> quarter of hour"
   , pattern =
     [ Predicate isNatural
-    , regex "and"
-    , regex "(a |an |one |two |three )?quarter(s)?(( of )?|( )+)hour(s)?"
+    , regex "and (a |an |one |two |three )?quarters?( of)?( an)?"
+    , Predicate $ isGrain TG.Hour
     ]
   , prod = \case
       (Token Numeral NumeralData{TNumeral.value = h}:
-       _:
        Token RegexMatch (GroupMatch (match:_)):
        _) -> do
          q <- case Text.strip $ Text.toLower match of "a"     -> Just 1

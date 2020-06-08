@@ -3971,6 +3971,13 @@ classifiers
                                    [("hh:mm:ssintersect", -0.916290731874155),
                                     ("secondsecond", -0.916290731874155)],
                                n = 1}}),
+       ("Mid-day",
+        Classifier{okData =
+                     ClassData{prior = 0.0, unseen = -1.6094379124341003,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 3},
+                   koData =
+                     ClassData{prior = -infinity, unseen = -0.6931471805599453,
+                               likelihoods = HashMap.fromList [], n = 0}}),
        ("dd-dd <month> (interval)",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -3.1354942159291497,

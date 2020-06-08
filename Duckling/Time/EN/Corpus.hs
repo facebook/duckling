@@ -1290,6 +1290,9 @@ allExamples = concat
   , examples (datetime (2013, 2, 12, 12, 0, 0) Hour)
              [ "at 12pm"
              , "at noon"
+             , "midday"
+             , "the midday"
+             , "mid day"
              ]
   , examples (datetime (2013, 2, 13, 0, 0, 0) Hour)
              [ "at 12am"

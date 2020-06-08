@@ -335,6 +335,8 @@ library
                      , Duckling.Duration.EL.Rules
                      , Duckling.Duration.EN.Corpus
                      , Duckling.Duration.EN.Rules
+                     , Duckling.Duration.ES.Corpus
+                     , Duckling.Duration.ES.Rules
                      , Duckling.Duration.FR.Corpus
                      , Duckling.Duration.FR.Rules
                      , Duckling.Duration.GA.Corpus
@@ -917,6 +919,7 @@ test-suite duckling-test
                      , Duckling.Duration.BG.Tests
                      , Duckling.Duration.EL.Tests
                      , Duckling.Duration.EN.Tests
+                     , Duckling.Duration.ES.Tests
                      , Duckling.Duration.FR.Tests
                      , Duckling.Duration.GA.Tests
                      , Duckling.Duration.HU.Tests

@@ -19,16 +19,36 @@ import Duckling.Types
 import qualified Duckling.TimeGrain.Types as TG
 import Duckling.Duration.Helpers
 
+ruleDurationQuarterOfAnHour :: Rule
+ruleDurationQuarterOfAnHour = Rule
+  { name = "quarter of an hour"
+  , pattern =
+    [ regex "cuartos? de hora"
+    ]
+  , prod = \_ -> Just . Token Duration $ duration TG.Minute 15
+  }
+
 ruleDurationHalfOfAnHour :: Rule
 ruleDurationHalfOfAnHour = Rule
   { name = "half of an hour"
   , pattern =
-    [ regex "media hora"
+    [ regex "media horas?"
     ]
   , prod = \_ -> Just . Token Duration $ duration TG.Minute 30
+  }
+
+ruleDurationThreeQuartersOfAnHour :: Rule
+ruleDurationThreeQuartersOfAnHour = Rule
+  { name = "three-quarters of an hour"
+  , pattern =
+    [ regex "tres cuartos? de horas?"
+    ]
+  , prod = \_ -> Just . Token Duration $ duration TG.Minute 45
   }
 
 rules :: [Rule]
 rules =
   [ ruleDurationHalfOfAnHour
+  , ruleDurationQuarterOfAnHour
+  , ruleDurationThreeQuartersOfAnHour
   ]

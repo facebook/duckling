@@ -38,6 +38,7 @@ import qualified Duckling.Time.ES.Rules as Time
 import qualified Duckling.TimeGrain.ES.Rules as TimeGrain
 import Duckling.Types
 import qualified Duckling.Volume.ES.Rules as Volume
+import qualified Duckling.Duration.ES.Rules as Duration
 
 defaultRules :: Some Dimension -> [Rule]
 defaultRules dim@(This Numeral) =
@@ -59,7 +60,7 @@ langRules :: Some Dimension -> [Rule]
 langRules (This AmountOfMoney) = AmountOfMoney.rules
 langRules (This CreditCardNumber) = []
 langRules (This Distance) = Distance.rules
-langRules (This Duration) = []
+langRules (This Duration) = Duration.rules
 langRules (This Email) = []
 langRules (This Numeral) = Numeral.rules
 langRules (This Ordinal) = Ordinal.rules

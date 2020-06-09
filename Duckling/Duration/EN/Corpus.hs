@@ -130,4 +130,10 @@ allExamples = concat
               ]
   , examples (DurationData 3630 Second)
               [ "an hour and 30 seconds"]
+  , examples (DurationData 930 Second)
+              [ "15.5 minutes"
+              , "15.5 minute"
+              , "15.5 mins"
+              , "15.5 min"
+              ]
   ]

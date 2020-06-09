@@ -256,6 +256,22 @@ ruleCompositeDurationAnd = Rule
       _ -> Nothing
   }
 
+ruleDurationDotNumeralMinutes :: Rule
+ruleDurationDotNumeralMinutes = Rule
+  { name = "number.number minutes"
+  , pattern =
+    [ regex "(\\d+)\\.(\\d+)"
+    , Predicate $ isGrain TG.Minute
+    ]
+  , prod = \case
+      (Token RegexMatch (GroupMatch (m:s:_)):_) -> do
+        mm <- parseInteger m
+        ss <- parseInteger s
+        let sden = 10 ^ Text.length s
+        Just . Token Duration $ secondsFromHourMixedFraction mm ss sden
+      _ -> Nothing
+  }
+
 rules :: [Rule]
 rules =
   [ ruleCompositeDurationCommasAnd
@@ -275,4 +291,6 @@ rules =
   , ruleNumeralQuotes
   , ruleCompositeDuration
   , ruleCompositeDurationAnd
+  , ruleCompositeDurationCommasAnd
+  , ruleDurationDotNumeralMinutes
   ]

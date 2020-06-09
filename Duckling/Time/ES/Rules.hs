@@ -1469,6 +1469,21 @@ rulePeriodicHolidays = mkRuleHolidays
     , predNthClosest 0 weekday (monthDay 10 16) )
   ]
 
+ruleElDayofmonthNonOrdinalWithDia :: Rule
+ruleElDayofmonthNonOrdinalWithDia = Rule
+  { name = "el dia <day-of-month> (non ordinal)"
+  , pattern =
+    [ regex "el"
+    , regex "día"
+    , Predicate $ isIntegerBetween 1 31
+    ]
+  , prod = \tokens -> case tokens of
+      (_:_:token:_) -> do
+        v <- getIntValue token
+        tt $ dayOfMonth v
+      _ -> Nothing
+  }
+
 rules :: [Rule]
 rules =
   [ ruleALasHourmintimeofday
@@ -1560,6 +1575,7 @@ rules =
   , ruleHourofdayMinusQuarter
   , ruleHourofdayMinusIntegerAsRelativeMinutes2
   , ruleTimezone
+  , ruleElDayofmonthNonOrdinalWithDia
   ]
   ++ ruleDaysOfWeek
   ++ ruleMonths

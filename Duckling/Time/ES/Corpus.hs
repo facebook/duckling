@@ -452,4 +452,7 @@ allExamples = concat
              , "día de las bromas de abril"
              , "día de las bromas"
              ]
+  , examples (datetime (2013, 3, 9, 0, 0, 0) Day)
+             [ "el día nueve"
+             ]
   ]

@@ -322,6 +322,7 @@ allExamples = concat
              [ "next week"
              , "the following week"
              , "around next week"
+             , "upcoming week"
              ]
   , examples (datetime (2013, 1, 1, 0, 0, 0) Month)
              [ "last month"

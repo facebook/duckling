@@ -2001,7 +2001,7 @@ ruleCycleThisLastNext :: Rule
 ruleCycleThisLastNext = Rule
   { name = "this|last|next <cycle>"
   , pattern =
-    [ regex "(this|current|coming|next|(the( following)?)|last|past|previous)"
+    [ regex "(this|current|coming|next|(the( following)?)|last|past|previous|upcoming)"
     , dimension TimeGrain
     ]
   , prod = \tokens -> case tokens of
@@ -2014,6 +2014,7 @@ ruleCycleThisLastNext = Rule
           "past"          -> tt . cycleNth grain $ - 1
           "previous"      -> tt . cycleNth grain $ - 1
           "next"          -> tt $ cycleNth grain 1
+          "upcoming"      -> tt $ cycleNth grain 1
           "the following" -> tt $ cycleNth grain 1
           "the"           -> tt $ cycleNth grain 0
           _ -> Nothing

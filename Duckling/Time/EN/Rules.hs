@@ -2473,6 +2473,40 @@ ruleIntervalDashTimezone = Rule
       _ -> Nothing
   }
 
+ruleUpcomingWeeks :: Rule
+ruleUpcomingWeeks = Rule
+  { name = "upcoming <integer> weeks"
+  , pattern =
+    [ regex "upcoming"
+    , Predicate isNatural
+    , regex "weeks?"
+    ]
+  , prod = \case
+      ( _:
+        Token Numeral NumeralData{ TNumeral.value = numOfWeeks }:
+        _) -> do
+          let end = cycleNthAfter True TG.Day (-2) $ cycleNth TG.Week $ floor numOfWeeks
+          let period = interval Closed (cycleNth TG.Week 0) $ end
+          Token Time <$> period
+      _ -> Nothing
+  }
+
+ruleUpcomingWeeksAlt :: Rule
+ruleUpcomingWeeksAlt = Rule
+  { name = "<integer> upcoming weeks"
+  , pattern =
+    [ Predicate isNatural
+    , regex "upcoming weeks?"
+    ]
+  , prod = \case
+      ( Token Numeral NumeralData{ TNumeral.value = numOfWeeks }:
+        _) -> do
+          let end = cycleNthAfter True TG.Day (-2) $ cycleNth TG.Week $ floor numOfWeeks
+          let period = interval Closed (cycleNth TG.Week 0) $ end
+          Token Time <$> period
+      _ -> Nothing
+  }
+
 rules :: [Rule]
 rules =
   [ ruleIntersect
@@ -2606,6 +2640,8 @@ rules =
   , ruleBeginningOfYear
   , ruleClosest
   , ruleNthClosest
+  , ruleUpcomingWeeks
+  , ruleUpcomingWeeksAlt
   ]
   ++ ruleInstants
   ++ ruleDaysOfWeek

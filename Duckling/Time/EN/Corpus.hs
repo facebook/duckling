@@ -1841,4 +1841,14 @@ allExamples = concat
   , examples (datetimeHoliday (2011, 12, 25, 0, 0, 0) Day "Christmas")
             [ "the 3rd closest xmas to today"
             ]
+  , examples (datetimeInterval ((2013, 2, 11, 0, 0, 0), (2013, 2, 24, 0, 0, 0)) Day)
+            [ "upcoming two weeks"
+            , "upcoming 2 weeks"
+            , "upcoming 2 week"
+            , "upcoming two week"
+            , "two upcoming weeks"
+            , "2 upcoming weeks"
+            , "two upcoming week"
+            , "2 upcoming week"
+            ]
   ]

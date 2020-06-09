@@ -83,10 +83,10 @@ classifiers
                                likelihoods = HashMap.fromList [("", 0.0)], n = 3}}),
        ("integer (numeric)",
         Classifier{okData =
-                     ClassData{prior = -0.5493815537802805, unseen = -6.142037405587356,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 463},
+                     ClassData{prior = -0.545754484837731, unseen = -6.150602768446279,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 467},
                    koData =
-                     ClassData{prior = -0.8611085004860642, unseen = -5.831882477283517,
+                     ClassData{prior = -0.8660836351261781, unseen = -5.831882477283517,
                                likelihoods = HashMap.fromList [("", 0.0)], n = 339}}),
        ("<year> (bc|ad)",
         Classifier{okData =
@@ -453,6 +453,17 @@ classifiers
                    koData =
                      ClassData{prior = -infinity, unseen = -0.6931471805599453,
                                likelihoods = HashMap.fromList [], n = 0}}),
+       ("upcoming <integer> weeks",
+        Classifier{okData =
+                     ClassData{prior = 0.0, unseen = -1.9459101490553135,
+                               likelihoods =
+                                 HashMap.fromList
+                                   [("integer (numeric)", -0.6931471805599453),
+                                    ("integer (0..19)", -0.6931471805599453)],
+                               n = 4},
+                   koData =
+                     ClassData{prior = -infinity, unseen = -1.0986122886681098,
+                               likelihoods = HashMap.fromList [], n = 0}}),
        ("mm/dd",
         Classifier{okData =
                      ClassData{prior = -infinity, unseen = -0.6931471805599453,
@@ -556,13 +567,24 @@ classifiers
                    koData =
                      ClassData{prior = -infinity, unseen = -1.0986122886681098,
                                likelihoods = HashMap.fromList [], n = 0}}),
+       ("<integer> upcoming weeks",
+        Classifier{okData =
+                     ClassData{prior = 0.0, unseen = -1.9459101490553135,
+                               likelihoods =
+                                 HashMap.fromList
+                                   [("integer (numeric)", -0.6931471805599453),
+                                    ("integer (0..19)", -0.6931471805599453)],
+                               n = 4},
+                   koData =
+                     ClassData{prior = -infinity, unseen = -1.0986122886681098,
+                               likelihoods = HashMap.fromList [], n = 0}}),
        ("integer (0..19)",
         Classifier{okData =
-                     ClassData{prior = -1.626052087178029e-2,
-                               unseen = -4.143134726391533,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 61},
+                     ClassData{prior = -1.526747213078842e-2,
+                               unseen = -4.204692619390966,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 65},
                    koData =
-                     ClassData{prior = -4.127134385045092, unseen = -1.0986122886681098,
+                     ClassData{prior = -4.189654742026425, unseen = -1.0986122886681098,
                                likelihoods = HashMap.fromList [("", 0.0)], n = 1}}),
        ("in|during <named-month>|year",
         Classifier{okData =
@@ -1931,12 +1953,13 @@ classifiers
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("week (grain)",
         Classifier{okData =
-                     ClassData{prior = -5.0643732818754915e-2,
+                     ClassData{prior = -9.88458346366326e-2,
                                unseen = -4.3694478524670215,
                                likelihoods = HashMap.fromList [("", 0.0)], n = 77},
                    koData =
-                     ClassData{prior = -3.0081547935525483, unseen = -1.791759469228055,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 4}}),
+                     ClassData{prior = -2.3632097148104805,
+                               unseen = -2.3025850929940455,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 8}}),
        ("<part-of-day> of <time>",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -3.0910424533583156,
@@ -2397,7 +2420,7 @@ classifiers
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("<integer> <unit-of-duration>",
         Classifier{okData =
-                     ClassData{prior = -0.4784902431230543, unseen = -5.293304824724492,
+                     ClassData{prior = -0.50626980723013, unseen = -5.293304824724492,
                                likelihoods =
                                  HashMap.fromList
                                    [("week", -2.649209701079277),
@@ -2422,12 +2445,16 @@ classifiers
                                     ("integer (0..19)week (grain)", -3.342356881639222)],
                                n = 88},
                    koData =
-                     ClassData{prior = -0.9668430110369863, unseen = -4.875197323201151,
+                     ClassData{prior = -0.9231636111619171,
+                               unseen = -4.9344739331306915,
                                likelihoods =
                                  HashMap.fromList
-                                   [("hour", -0.8602012652231115),
-                                    ("integer (numeric)hour (grain)", -0.8602012652231115)],
-                               n = 54}}),
+                                   [("week", -3.317815772723104),
+                                    ("integer (numeric)week (grain)", -3.828641396489095),
+                                    ("hour", -0.9199204999247338),
+                                    ("integer (numeric)hour (grain)", -0.9199204999247338),
+                                    ("integer (0..19)week (grain)", -3.828641396489095)],
+                               n = 58}}),
        ("from the <day-of-month> (ordinal or number) to the <day-of-month> (ordinal or number) <named-month> (interval)",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -2.772588722239781,

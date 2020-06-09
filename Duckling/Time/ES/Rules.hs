@@ -1266,6 +1266,17 @@ ruleTimezone = Rule
       _ -> Nothing
   }
 
+ruleNextWeek :: Rule
+ruleNextWeek = Rule
+  {
+    name = "next week"
+  , pattern =
+    [ Predicate $ isGrain TG.Week
+    , regex "que viene"
+    ]
+  , prod = \_ -> tt $ cycleNth TG.Week 1
+  }
+
 rulePeriodicHolidays :: [Rule]
 rulePeriodicHolidays = mkRuleHolidays
   -- Fixed dates, year over year
@@ -1560,6 +1571,7 @@ rules =
   , ruleHourofdayMinusQuarter
   , ruleHourofdayMinusIntegerAsRelativeMinutes2
   , ruleTimezone
+  , ruleNextWeek
   ]
   ++ ruleDaysOfWeek
   ++ ruleMonths

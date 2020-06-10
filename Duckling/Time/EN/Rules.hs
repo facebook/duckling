@@ -2476,35 +2476,33 @@ ruleIntervalDashTimezone = Rule
 
 ruleUpcomingWeeks :: Rule
 ruleUpcomingWeeks = Rule
-  { name = "upcoming <integer> weeks"
+  { name = "upcoming <integer> <cycle>"
   , pattern =
     [ regex "upcoming"
     , Predicate isNatural
-    , regex "weeks?"
+    , dimension TimeGrain
     ]
   , prod = \case
       ( _:
-        Token Numeral NumeralData{ TNumeral.value = numOfWeeks }:
-        _) -> do
-          let end = cycleNthAfter True TG.Day (-2) $ cycleNth TG.Week $ floor numOfWeeks
-          let period = interval Closed (cycleNth TG.Week 0) $ end
-          Token Time <$> period
+        Token Numeral NumeralData{ TNumeral.value = numOfTimeGrain }:
+        Token TimeGrain grain:
+        _) -> tt $ cycleNth grain $ floor numOfTimeGrain
       _ -> Nothing
   }
 
 ruleUpcomingWeeksAlt :: Rule
 ruleUpcomingWeeksAlt = Rule
-  { name = "<integer> upcoming weeks"
+  { name = "<integer> upcoming <cycle>"
   , pattern =
     [ Predicate isNatural
-    , regex "upcoming weeks?"
+    , regex "upcoming"
+    , dimension TimeGrain
     ]
   , prod = \case
-      ( Token Numeral NumeralData{ TNumeral.value = numOfWeeks }:
-        _) -> do
-          let end = cycleNthAfter True TG.Day (-2) $ cycleNth TG.Week $ floor numOfWeeks
-          let period = interval Closed (cycleNth TG.Week 0) $ end
-          Token Time <$> period
+      ( Token Numeral NumeralData{ TNumeral.value = numOfTimeGrain }:
+        _:
+        Token TimeGrain grain:
+        _) -> tt $ cycleNth grain $ floor numOfTimeGrain
       _ -> Nothing
   }
 

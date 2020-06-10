@@ -87,10 +87,20 @@ allExamples = concat
              , "1 hour and thirty"
              , "1.5 hours"
              , "1.5 hrs"
+             , "one and two quarter hour"
+             , "one and two quarters hour"
+             , "one and two quarter of hour"
+             , "one and two quarters of hour"
              ]
   , examples (DurationData 75 Minute)
              [ "1 hour fifteen"
              , "1 hour and fifteen"
+             , "one and quarter hour"
+             , "one and a quarter hour"
+             , "one and one quarter hour"
+             , "one and quarter of hour"
+             , "one and a quarter of hour"
+             , "one and one quarter of hour"
              ]
   , examples (DurationData 130 Minute)
              [ "2 hours ten"
@@ -119,6 +129,20 @@ allExamples = concat
              [ "5 and a half minutes"
              , "five and half min"
              , "5 and an half minute"
+             ]
+  , examples (DurationData 105 Minute)
+              [ "one and three quarter hour"
+              , "one and three quarters hour"
+              , "one and three quarter of hour"
+              , "one and three quarters of hour"
+              , "one and three quarter of hours"
+              , "one and three quarters of hours"
+              ]
+  , examples (DurationData 135 Minute)
+             [ "two and quarter hour"
+             , "two and a quarter of hour"
+             , "two and quarter of hours"
+             , "two and a quarter of hours"
              ]
   , examples (DurationData 105 Minute)
               [ "an hour and 45 minutes"

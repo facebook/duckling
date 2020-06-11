@@ -688,6 +688,25 @@ ruleDimTimeDeLaTarde = Rule
       _ -> Nothing
   }
 
+ruleDimTimeDeLaTarde2 :: Rule
+ruleDimTimeDeLaTarde2 = Rule
+  { name = "<time-of-day> de la tarde"
+  , pattern =
+    [ Predicate isAnHourOfDay
+    , Predicate $ isIntegerBetween 1 59
+    , regex "(a|en|de) la tarde"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Time TimeData {TTime.form = Just (TTime.TimeOfDay (Just hours) is12H)}:
+       token:
+       _:
+       _) -> do
+         n <- getIntValue token
+         let td = hourMinute is12H hours n
+         tarde <- interval TTime.Open (hour False 12) (hour False 21)
+         Token Time <$> intersect td (mkLatent $ partOfDay tarde)
+      _ -> Nothing
+  }
 ruleIntegerInThePartofday :: Rule
 ruleIntegerInThePartofday = Rule
   { name = "<integer> in the <part-of-day>"
@@ -1504,6 +1523,7 @@ rules =
   , ruleDentroDeDuration
   , ruleDimTimeDeLaManana
   , ruleDimTimeDeLaTarde
+  , ruleDimTimeDeLaTarde2
   , ruleElCycleAntesTime
   , ruleElCycleProximoqueViene
   , ruleElCycleProximoqueVieneTime

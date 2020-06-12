@@ -204,8 +204,8 @@ classifiers
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("semana (grain)",
         Classifier{okData =
-                     ClassData{prior = 0.0, unseen = -2.833213344056216,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 15},
+                     ClassData{prior = 0.0, unseen = -3.044522437723423,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 19},
                    koData =
                      ClassData{prior = -infinity, unseen = -0.6931471805599453,
                                likelihoods = HashMap.fromList [], n = 0}}),
@@ -1138,6 +1138,22 @@ classifiers
                    koData =
                      ClassData{prior = -infinity, unseen = -0.6931471805599453,
                                likelihoods = HashMap.fromList [], n = 0}}),
+       ("next week",
+        Classifier{okData =
+                     ClassData{prior = -0.3364722366212129,
+                               unseen = -2.5649493574615367,
+                               likelihoods =
+                                 HashMap.fromList
+                                   [("week", -0.6931471805599453),
+                                    ("semana (grain)", -0.6931471805599453)],
+                               n = 5},
+                   koData =
+                     ClassData{prior = -1.252762968495368, unseen = -1.9459101490553135,
+                               likelihoods =
+                                 HashMap.fromList
+                                   [("week", -0.6931471805599453),
+                                    ("semana (grain)", -0.6931471805599453)],
+                               n = 2}}),
        ("<datetime> - <datetime> (interval)",
         Classifier{okData =
                      ClassData{prior = -0.916290731874155, unseen = -2.5649493574615367,

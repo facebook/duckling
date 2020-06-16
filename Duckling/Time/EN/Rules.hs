@@ -2482,6 +2482,22 @@ ruleMidDay = Rule
   , prod = \_ -> tt $ hour False 12
   }
 
+ruleMinutesToHOD :: Rule
+ruleMinutesToHOD = Rule
+  { name = "<integer> minutes to|till|before <hour-of-day>"
+  , pattern =
+    [ Predicate $ isIntegerBetween 1 59
+    , Predicate $ isGrain TG.Minute
+    , regex "to|till|before|of"
+    , Predicate isAnHourOfDay
+    ]
+  , prod = \tokens -> case tokens of
+      (token:_:_:Token Time td:_) -> do
+        n <- getIntValue token
+        Token Time <$> minutesBefore n td
+      _ -> Nothing
+  }
+
 rules :: [Rule]
 rules =
   [ ruleIntersect
@@ -2616,6 +2632,7 @@ rules =
   , ruleClosest
   , ruleNthClosest
   , ruleMidDay
+  , ruleMinutesToHOD
   ]
   ++ ruleInstants
   ++ ruleDaysOfWeek

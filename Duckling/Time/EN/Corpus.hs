@@ -1844,4 +1844,7 @@ allExamples = concat
   , examples (datetimeHoliday (2011, 12, 25, 0, 0, 0) Day "Christmas")
             [ "the 3rd closest xmas to today"
             ]
+  , examples (datetime (2013, 2, 13, 13, 40, 0) Minute)
+             [ "20 minutes to 2pm tomorrow"
+             ]
   ]

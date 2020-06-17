@@ -1844,4 +1844,8 @@ allExamples = concat
   , examples (datetimeHoliday (2011, 12, 25, 0, 0, 0) Day "Christmas")
             [ "the 3rd closest xmas to today"
             ]
+  , examples (datetime (2013, 10, 25, 0, 0, 0) Day)
+            [ "last friday of october"
+            , "last friday in october"
+            ]
   ]

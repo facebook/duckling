@@ -223,7 +223,7 @@ ruleLastDOWOfTime = Rule
   , pattern =
     [ regex "last"
     , Predicate isADayOfWeek
-    , regex "of"
+    , regex "(of|in)"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of

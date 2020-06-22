@@ -455,4 +455,9 @@ allExamples = concat
   , examples (datetime (2013, 3, 9, 0, 0, 0) Day)
              [ "el día nueve"
              ]
+  , examples (datetime (2013, 2, 12, 18, 2, 0) Minute)
+             [
+               "las seis cero dos pm"
+             , "las seis zero dos pm"
+             ]
   ]

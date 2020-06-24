@@ -1482,14 +1482,13 @@ rulePeriodicHolidays = mkRuleHolidays
 
 ruleElDayofmonthNonOrdinalWithDia :: Rule
 ruleElDayofmonthNonOrdinalWithDia = Rule
-  { name = "el dia <day-of-month> (non ordinal)"
+  { name = "dia <day-of-month> (non ordinal)"
   , pattern =
-    [ regex "el"
-    , regex "día"
+    [ regex "día"
     , Predicate $ isIntegerBetween 1 31
     ]
   , prod = \tokens -> case tokens of
-      (_:_:token:_) -> do
+      (_:token:_) -> do
         v <- getIntValue token
         tt $ dayOfMonth v
       _ -> Nothing

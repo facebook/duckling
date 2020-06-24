@@ -219,6 +219,8 @@ allExamples = concat
   , examples (datetime (2013, 2, 12, 12, 0, 0) Hour)
              [ "mediodía"
              , "las doce"
+             , "medio dia"
+             , "medio día"
              ]
   , examples (datetime (2013, 2, 12, 12, 15, 0) Minute)
              [ "las doce y cuarto"

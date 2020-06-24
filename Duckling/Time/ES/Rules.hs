@@ -281,7 +281,7 @@ ruleNoon :: Rule
 ruleNoon = Rule
   { name = "noon"
   , pattern =
-    [ regex "mediod(í|i)a"
+    [ regex "medio(\\s*)d(í|i)a"
     ]
   , prod = \_ -> tt $ hour False 12
   }

@@ -1119,11 +1119,11 @@ classifiers
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("noon",
         Classifier{okData =
-                     ClassData{prior = -0.6931471805599453,
-                               unseen = -1.0986122886681098,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 1},
+                     ClassData{prior = -0.2876820724517809,
+                               unseen = -1.6094379124341003,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 3},
                    koData =
-                     ClassData{prior = -0.6931471805599453,
+                     ClassData{prior = -1.3862943611198906,
                                unseen = -1.0986122886681098,
                                likelihoods = HashMap.fromList [("", 0.0)], n = 1}}),
        ("evening",

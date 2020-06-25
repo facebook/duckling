@@ -233,7 +233,7 @@ ruleBelowTenWithTwoDigits = Rule
     name = "integer (0-9) with two digits"
   , pattern =
       [
-        regex "(c|z)ero"
+        regex "((c|z)ero)|0"
       , numberBetween 1 10
       ]
   , prod = \case

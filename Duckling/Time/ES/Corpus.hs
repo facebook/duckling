@@ -468,5 +468,14 @@ allExamples = concat
              [
                "las seis cero dos pm"
              , "las seis zero dos pm"
+             , "para las seis cero dos pm"
+             , "para las seis zero dos pm"
+             , "a las seis cero dos pm"
+             , "a las seis zero dos pm"
+             , "al las seis cero dos pm"
+             , "al las seis zero dos pm"
+             , "para las 6 0 2 pm"
+             , "a las 6 0 2 pm"
+             , "al las 6 0 2 pm"
              ]
   ]

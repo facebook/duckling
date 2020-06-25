@@ -8,6 +8,7 @@
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE NoRebindableSyntax #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE LambdaCase #-}
 
 module Duckling.Time.ES.Rules
   ( rules
@@ -929,8 +930,10 @@ ruleALasHourmintimeofday = Rule
     , Predicate isATimeOfDay
     , regex "horas?"
     ]
-  , prod = \tokens -> case tokens of
-      (_:x:_) -> Just x
+  , prod = \case
+      ( _:
+        x:
+        _) -> Just x
       _ -> Nothing
   }
 
@@ -1131,7 +1134,7 @@ ruleALasTimeofday :: Rule
 ruleALasTimeofday = Rule
   { name = "a las <time-of-day>"
   , pattern =
-    [ regex "(al?)( las?)?|las?"
+    [ regex "((para)|(al?))( las?)?|las?"
     , Predicate isATimeOfDay
     ]
   , prod = \tokens -> case tokens of

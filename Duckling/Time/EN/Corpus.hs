@@ -1895,4 +1895,7 @@ allExamples = concat
             , "2 upcoming years"
             , "2 upcoming year"
             ]
+  , examples (datetime (2013, 2, 13, 13, 40, 0) Minute)
+             [ "20 minutes to 2pm tomorrow"
+             ]
   ]

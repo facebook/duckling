@@ -45,4 +45,14 @@ allExamples = concat
              ,  "cuarenta y cinco minutos"
              ,  "45 minutos"
              ]
+  , examples (DurationData 92 Minute)
+             [
+               "una hora y treinta y dos minutos"
+             , "una hora treinta y dos minutos"
+             ]
+  , examples (DurationData 155 Minute)
+             [
+               "dos hora y treinta y cinco minutos"
+             , "dos hora  treinta y cinco minutos"
+             ]
   ]

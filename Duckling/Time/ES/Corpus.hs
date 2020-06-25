@@ -478,4 +478,7 @@ allExamples = concat
              , "a las 6 0 2 pm"
              , "al las 6 0 2 pm"
              ]
+  , examples (datetime (2013, 2, 12, 18, 2, 0) Minute)
+             [ "seis dos de la tarde"
+             ]
   ]

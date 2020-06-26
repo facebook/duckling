@@ -57,6 +57,18 @@ allExamples = concat
   , examples (DurationData 45 Minute)
              [ "3 kwartier"
              ]
+  , examples (DurationData 75 Minute)
+             [ "een uur en een kwartier"
+             , "een uur en 15 minuten"
+             , "een uur, 15 minuten"
+             , "een uur 15 minuten"
+             ]
+  , examples (DurationData 165 Minute)
+             [ "twee uur en drie kwartier"
+             , "twee uur, 3 kwartier"
+             , "twee uur, 45 minuten"
+             , "twee uur 45 minuten"
+             ]
   , examples (DurationData 1 Hour)
              [ "een uur"
              , "één uur"
@@ -65,6 +77,7 @@ allExamples = concat
              ]
   , examples (DurationData 30 Day)
              [ "30 dagen"
+             , "4 weken en 2 dagen"
              ]
   , examples (DurationData 7 Day)
              [ "7 dagen"

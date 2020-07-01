@@ -62,7 +62,7 @@ ruleDecimalWithThousandsSeparator :: Rule
 ruleDecimalWithThousandsSeparator = Rule
   { name = "decimal with thousands separator"
   , pattern =
-    [ regex "(\\d+(\\.\\d\\d\\d)+,\\d+)"
+    [ regex "(\\d+(\\.\\d\\d\\d)+(,\\d+)?)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):

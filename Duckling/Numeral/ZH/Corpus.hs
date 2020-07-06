@@ -77,25 +77,30 @@ allExamples = concat
              [ "34567"
              , "34,567"
              , "三万四千五百六十七"
+             , "三萬四千五百六十七"
              ]
   , examples (NumeralValue 10040)
              [ "10040"
              , "10,040"
              , "一万零四十"
+             , "一萬零四十"
              ]
   , examples (NumeralValue 1.1)
              [ "1.1"
              , "1.10"
              , "01.10"
+             -- , "一點一"
              ]
   , examples (NumeralValue 0.77)
              [ "0.77"
              , ".77"
+             -- , "零點七七"
              ]
   , examples (NumeralValue 34507)
              [ "34507"
              , "34,507"
              , "三万四千五百零七"
+             , "三萬四千五百零七"
              ]
   , examples (NumeralValue 100000)
              [ "100,000"
@@ -103,18 +108,21 @@ allExamples = concat
              , "100K"
              , "100k"
              , "十万"
+             , "十萬"
              ]
   , examples (NumeralValue 3000000)
              [ "3M"
              , "3000000"
              , "3,000,000"
              , "三百万"
+             , "三百萬"
              ]
   , examples (NumeralValue 1040000)
              [ "1,040,000"
              , "1040000"
              , "1.04M"
              , "一百零四万"
+             , "一百零四萬"
              ]
   , examples (NumeralValue 1200000)
              [ "1,200,000"
@@ -122,6 +130,7 @@ allExamples = concat
              , "1.2M"
              , ".0012G"
              , "一百二十万"
+             , "一百二十萬"
              ]
   , examples (NumeralValue (-1200000))
              [ "- 1,200,000"
@@ -135,5 +144,6 @@ allExamples = concat
              , "-1200K"
              , "-.0012G"
              , "负一百二十万"
+             , "负一百二十萬" 
              ]
   ]

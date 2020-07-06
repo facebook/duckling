@@ -834,13 +834,6 @@ classifiers
                                    [("<integer> (latent time-of-day)", -0.916290731874155),
                                     ("hour", -0.916290731874155)],
                                n = 3}}),
-       ("number suffix: \19975",
-        Classifier{okData =
-                     ClassData{prior = -infinity, unseen = -0.6931471805599453,
-                               likelihoods = HashMap.fromList [], n = 0},
-                   koData =
-                     ClassData{prior = 0.0, unseen = -1.3862943611198906,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 2}}),
        ("relative minutes after|past <integer> (hour-of-day)",
         Classifier{okData =
                      ClassData{prior = -0.6931471805599453,
@@ -1167,6 +1160,13 @@ classifiers
                      ClassData{prior = -0.6931471805599453,
                                unseen = -1.3862943611198906,
                                likelihoods = HashMap.fromList [("", 0.0)], n = 2}}),
+       ("number suffix: \19975|\33836",
+        Classifier{okData =
+                     ClassData{prior = -infinity, unseen = -0.6931471805599453,
+                               likelihoods = HashMap.fromList [], n = 0},
+                   koData =
+                     ClassData{prior = 0.0, unseen = -1.6094379124341003,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 3}}),
        ("\22823\25995\39318\26085",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -1.9459101490553135,

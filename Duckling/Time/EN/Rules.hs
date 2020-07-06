@@ -710,6 +710,29 @@ ruleHONumeral = Rule
       _ -> Nothing
   }
 
+ruleHONumeralAlt :: Rule
+ruleHONumeralAlt = Rule
+  { name = "<hour-of-day> zero <integer>"
+  , pattern =
+    [ Predicate isAnHourOfDay
+    , regex "(zero|o(h|u)?)"
+    , Predicate $ isIntegerBetween 1 9
+    ]
+  , prod = \case
+      (
+        Token Time TimeData{TTime.form = Just (TTime.TimeOfDay
+                                              (Just hours) is12H)
+                          , TTime.latent = isLatent}:
+        _:
+        token:
+        _) -> do
+          n <- getIntValue token
+          if isLatent
+            then tt $ mkLatent $ hourMinute is12H hours n
+            else tt $ hourMinute is12H hours n
+      _ -> Nothing
+  }
+
 ruleHODHalf :: Rule
 ruleHODHalf = Rule
   { name = "<hour-of-day> half"
@@ -2579,6 +2602,7 @@ rules =
   , ruleMilitarySpelledOutAMPM2
   , ruleTODAMPM
   , ruleHONumeral
+  , ruleHONumeralAlt
   , ruleHODHalf
   , ruleHODQuarter
   , ruleNumeralToHOD

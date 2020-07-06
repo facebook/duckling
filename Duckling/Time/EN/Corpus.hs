@@ -1908,4 +1908,16 @@ allExamples = concat
   , examples (datetime (2013, 2, 13, 13, 40, 0) Minute)
              [ "20 minutes to 2pm tomorrow"
              ]
+  , examples (datetime (2013, 1, 7, 0, 0, 0) Day)
+             [
+               "first monday of last month"
+             ]
+  , examples (datetime (2013, 1, 1, 0, 0, 0) Day)
+             [
+               "first tuesday of last month"
+             ]
+  , examples (datetime (2013, 1, 14, 0, 0, 0) Day)
+             [
+               "second monday of last month"
+             ]
   ]

@@ -175,6 +175,10 @@ allExamples = concat
              [ "la semana que viene"
              , "la proxima semana"
              , "semana que viene"
+             , "proxima semana"
+             , "proximas semana"
+             , "próxima semana"
+             , "siguiente semana"
              ]
   , examples (datetime (2013, 1, 1, 0, 0, 0) Month)
              [ "el pasado mes"

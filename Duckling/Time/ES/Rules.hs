@@ -1519,6 +1519,18 @@ ruleElDayofmonthNonOrdinalWithDia = Rule
       _ -> Nothing
   }
 
+ruleNextWeekAlt :: Rule
+ruleNextWeekAlt = Rule
+  {
+    name = "next week (alt)"
+  , pattern =
+    [
+      regex "pr(ó|o)xim(o|a)s?|siguientes?"
+    , Predicate $ isGrain TG.Week
+    ]
+  , prod = \_ -> tt $ cycleNth TG.Week 1
+  }
+
 rules :: [Rule]
 rules =
   [ ruleALasHourmintimeofday
@@ -1613,6 +1625,7 @@ rules =
   , ruleTimezone
   , ruleElDayofmonthNonOrdinalWithDia
   , ruleNextWeek
+  , ruleNextWeekAlt
   ]
   ++ ruleDaysOfWeek
   ++ ruleMonths

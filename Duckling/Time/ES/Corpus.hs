@@ -485,4 +485,12 @@ allExamples = concat
   , examples (datetime (2013, 2, 12, 18, 2, 0) Minute)
              [ "seis dos de la tarde"
              ]
+  , examples (datetime (1990, 0, 0, 0, 0, 0) Year)
+             [
+               "mil novecientos noventa"
+             ]
+  , examples (datetime (1990, 5, 4, 0, 0, 0) Day)
+             [
+               "cuatro de mayo de mil novecientos noventa"
+             ]
   ]

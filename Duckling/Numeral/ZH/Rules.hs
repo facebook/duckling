@@ -113,8 +113,8 @@ numeralSuffixList =
   , ("十", double 1e1 >>= withGrain 1 >>= withMultipliable)
   , ("百", double 1e2 >>= withGrain 2 >>= withMultipliable)
   , ("千", double 1e3 >>= withGrain 3 >>= withMultipliable)
-  , ("万", double 1e4 >>= withGrain 4 >>= withMultipliable)
-  , ("亿", double 1e8 >>= withGrain 8 >>= withMultipliable)
+  , ("万|萬", double 1e4 >>= withGrain 4 >>= withMultipliable)
+  , ("亿|億", double 1e8 >>= withGrain 8 >>= withMultipliable)
   ]
 
 ruleNumeralSuffixes :: [Rule]

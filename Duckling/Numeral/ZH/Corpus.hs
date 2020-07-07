@@ -168,4 +168,11 @@ allExamples = concat
              , "負一百二十萬"
              , "負壹佰貳拾萬"
              ]
+    , examples (NumeralValue 0.5)
+             [ "0.5"
+             , "一半"
+             , "1半"
+             , "半个"
+             , "半個"
+             ]
   ]

@@ -149,6 +149,17 @@ ruleNumeral = Rule
       _ -> Nothing
   }
 
+ruleHalf :: Rule
+ruleHalf = Rule
+  { name = "half"
+  , pattern =
+    [ regex "1半|一半|半个|半個"
+    ]
+  , prod = \case
+      (token:_) -> double 0.5
+      _ -> Nothing
+  }
+
 numeralSuffixList :: [(Text, Maybe Token)]
 numeralSuffixList =
   [ ("K", double 1e3 >>= withGrain 3 >>= withMultipliable)
@@ -253,5 +264,6 @@ rules =
   , ruleMultiply
   , ruleTens
   , ruleCompositeTens
+  , ruleHalf
   ]
   ++ ruleNumeralSuffixes

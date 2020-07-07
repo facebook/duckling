@@ -168,15 +168,6 @@ classifiers
                                    [("<integer> (latent time-of-day)", -0.6931471805599453),
                                     ("hour", -0.6931471805599453)],
                                n = 5}}),
-       ("number suffix: \21313",
-        Classifier{okData =
-                     ClassData{prior = -0.2231435513142097,
-                               unseen = -3.0910424533583156,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 20},
-                   koData =
-                     ClassData{prior = -1.6094379124341003,
-                               unseen = -1.9459101490553135,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 5}}),
        ("Wednesday",
         Classifier{okData =
                      ClassData{prior = -5.715841383994864e-2,
@@ -783,13 +774,14 @@ classifiers
                      ClassData{prior = 0.0, unseen = -6.12029741895095,
                                likelihoods =
                                  HashMap.fromList
-                                   [("week", -2.8992213731731473),
+                                   [("number suffix: \21313|\25342month (grain)",
+                                     -4.508659285607248),
+                                    ("week", -2.8992213731731473),
                                     ("integer (0..10)month (grain)", -2.7168998163791924),
                                     ("integer (0..10)hour (grain)", -3.1736582188749076),
                                     ("<number>\20010/\20491week (grain)", -3.720201925242977),
                                     ("second", -3.4790398684260895),
                                     ("integer (0..10)day (grain)", -2.982602982112198),
-                                    ("number suffix: \21313month (grain)", -4.508659285607248),
                                     ("integer (0..10)year (grain)", -3.8155121050473024),
                                     ("<number>\20010/\20491month (grain)", -3.3455084758015667),
                                     ("integer (numeric)year (grain)", -2.246896187133457),
@@ -849,7 +841,7 @@ classifiers
                                unseen = -3.2188758248682006,
                                likelihoods =
                                  HashMap.fromList
-                                   [("<integer> (latent time-of-day)number suffix: \21313",
+                                   [("<integer> (latent time-of-day)number suffix: \21313|\25342",
                                      -1.3862943611198906),
                                     ("<integer> (latent time-of-day)integer (0..10)",
                                      -1.3862943611198906),
@@ -891,7 +883,8 @@ classifiers
                      ClassData{prior = 0.0, unseen = -3.367295829986474,
                                likelihoods =
                                  HashMap.fromList
-                                   [("number suffix: \21313integer (0..10)", -0.6931471805599453),
+                                   [("number suffix: \21313|\25342integer (0..10)",
+                                     -0.6931471805599453),
                                     ("integer (0..10)integer (0..10)", -0.6931471805599453)],
                                n = 26},
                    koData =
@@ -1135,11 +1128,11 @@ classifiers
                                     ("Marchinteger (numeric)", -3.0910424533583156),
                                     ("Aprilinteger (numeric)", -3.6018680771243066),
                                     ("Februaryinteger (0..10)", -2.6210388241125804),
+                                    ("Februarynumber suffix: \21313|\25342", -2.6210388241125804),
                                     ("month", -0.7492366472109889),
                                     ("Februaryinteger (numeric)", -2.503255788456197),
                                     ("Februaryinteger with consecutive unit modifiers",
-                                     -1.8672670217362002),
-                                    ("Februarynumber suffix: \21313", -2.6210388241125804)],
+                                     -1.8672670217362002)],
                                n = 51},
                    koData =
                      ClassData{prior = -infinity, unseen = -2.1972245773362196,
@@ -1262,6 +1255,15 @@ classifiers
                    koData =
                      ClassData{prior = -infinity, unseen = -0.6931471805599453,
                                likelihoods = HashMap.fromList [], n = 0}}),
+       ("number suffix: \21313|\25342",
+        Classifier{okData =
+                     ClassData{prior = -0.2231435513142097,
+                               unseen = -3.0910424533583156,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 20},
+                   koData =
+                     ClassData{prior = -1.6094379124341003,
+                               unseen = -1.9459101490553135,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 5}}),
        ("\22320\29699\19968\23567\26102",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -1.3862943611198906,

@@ -31,7 +31,7 @@ ruleInteger :: Rule
 ruleInteger = Rule
   { name = "integer (0..10)"
   , pattern =
-    [ regex "(〇|零|一|二|两|兩|三|四|五|六|七|八|九|十)"
+    [ regex "(〇|零|一|二|两|兩|三|四|五|六|七|八|九|十|壹|貳|參|肆|伍|陸|柒|捌|玖|拾)"
     ]
   , prod = \case
       (Token RegexMatch (GroupMatch (match:_)):_) ->
@@ -44,17 +44,27 @@ integerMap = HashMap.fromList
   [ ( "〇", 0 )
   , ( "零", 0 )
   , ( "一", 1 )
+  , ( "壹", 1 )
   , ( "兩", 2 )
   , ( "两", 2 )
   , ( "二", 2 )
+  , ( "貳", 2 ) 
   , ( "三", 3 )
+  , ( "參", 3 )
   , ( "四", 4 )
+  , ( "肆", 4 )
   , ( "五", 5 )
+  , ( "伍", 5 )
   , ( "六", 6 )
+  , ( "陸", 6 )
   , ( "七", 7 )
+  , ( "柒", 7 )
   , ( "八", 8 )
+  , ( "捌", 8 )
   , ( "九", 9 )
+  , ( "玖", 9 )
   , ( "十", 10 )
+  , ( "拾", 10 )
   ]
 
 
@@ -110,9 +120,9 @@ numeralSuffixList =
   [ ("K", double 1e3 >>= withGrain 3 >>= withMultipliable)
   , ("M", double 1e6 >>= withGrain 6 >>= withMultipliable)
   , ("G", double 1e9 >>= withGrain 9 >>= withMultipliable)
-  , ("十", double 1e1 >>= withGrain 1 >>= withMultipliable)
-  , ("百", double 1e2 >>= withGrain 2 >>= withMultipliable)
-  , ("千", double 1e3 >>= withGrain 3 >>= withMultipliable)
+  , ("十|拾", double 1e1 >>= withGrain 1 >>= withMultipliable)
+  , ("百|佰", double 1e2 >>= withGrain 2 >>= withMultipliable)
+  , ("千|仟", double 1e3 >>= withGrain 3 >>= withMultipliable)
   , ("万|萬", double 1e4 >>= withGrain 4 >>= withMultipliable)
   , ("亿|億", double 1e8 >>= withGrain 8 >>= withMultipliable)
   ]

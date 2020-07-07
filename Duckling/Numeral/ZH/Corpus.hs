@@ -35,55 +35,67 @@ allExamples = concat
              , "一"
              , "一个"
              , "1个"
+             , "壹"
              ]
   , examples (NumeralValue 2)
              [ "2"
              , "二個"
              , "二个"
+             , "貳"
              ]
   , examples (NumeralValue 10)
              [ "10"
              , "十"
+             , "拾"
              ]
   , examples (NumeralValue 11)
              [ "11"
              , "十一"
+             , "拾壹"
              ]
   , examples (NumeralValue 20)
              [ "20"
              , "二十"
+             , "貳拾"
              ]
   , examples (NumeralValue 60)
              [ "60"
              , "六十"
+             , "陸拾"
              ]
   , examples (NumeralValue 33)
              [ "33"
              , "三十三"
+             , "參拾參"
              ]
   , examples (NumeralValue 96)
              [ "96"
              , "九十六"
+             , "玖拾陸"
              ]
   , examples (NumeralValue 203)
              [ "203"
              , "二百零三"
+             , "貳佰零參"
              ]
   , examples (NumeralValue 534)
              [ "534"
              , "五百三十四"
+             , "伍佰參拾肆" 
              ]
   , examples (NumeralValue 34567)
              [ "34567"
              , "34,567"
              , "三万四千五百六十七"
              , "三萬四千五百六十七"
+             , "參萬肆仟伍佰陸拾柒"
              ]
   , examples (NumeralValue 10040)
              [ "10040"
              , "10,040"
              , "一万零四十"
              , "一萬零四十"
+             , "壹萬零肆拾"
              ]
   , examples (NumeralValue 1.1)
              [ "1.1"
@@ -101,6 +113,7 @@ allExamples = concat
              , "34,507"
              , "三万四千五百零七"
              , "三萬四千五百零七"
+             , "參萬肆仟伍佰零柒"
              ]
   , examples (NumeralValue 100000)
              [ "100,000"
@@ -109,6 +122,7 @@ allExamples = concat
              , "100k"
              , "十万"
              , "十萬"
+             , "拾萬"
              ]
   , examples (NumeralValue 3000000)
              [ "3M"
@@ -116,6 +130,7 @@ allExamples = concat
              , "3,000,000"
              , "三百万"
              , "三百萬"
+             , "參佰萬"
              ]
   , examples (NumeralValue 1040000)
              [ "1,040,000"
@@ -123,6 +138,7 @@ allExamples = concat
              , "1.04M"
              , "一百零四万"
              , "一百零四萬"
+             , "壹佰零肆萬"
              ]
   , examples (NumeralValue 1200000)
              [ "1,200,000"
@@ -131,6 +147,7 @@ allExamples = concat
              , ".0012G"
              , "一百二十万"
              , "一百二十萬"
+             , "壹佰貳拾萬"
              ]
   , examples (NumeralValue (-1200000))
              [ "- 1,200,000"
@@ -144,6 +161,7 @@ allExamples = concat
              , "-1200K"
              , "-.0012G"
              , "负一百二十万"
-             , "负一百二十萬" 
+             , "負一百二十萬"
+             , "負壹佰貳拾萬"
              ]
   ]

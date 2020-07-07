@@ -67,6 +67,40 @@ integerMap = HashMap.fromList
   , ( "拾", 10 )
   ]
 
+tensMap :: HashMap.HashMap Text Integer
+tensMap = HashMap.fromList
+  [ ( "廿" , 20 )
+  , ( "卅" , 30 )
+  , ( "卌" , 40 )
+  ]
+
+ruleTens :: Rule
+ruleTens = Rule
+  { name = "integer (20,30,40)"
+  , pattern =
+    [ regex "(廿|卅|卌)"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        HashMap.lookup (Text.toLower match) tensMap >>= integer
+      _ -> Nothing
+  }
+
+ruleCompositeTens :: Rule
+ruleCompositeTens = Rule
+  { name = "integer 21..49"
+  , pattern =
+    [ oneOf [20,30,40]
+    , regex "[\\s\\-]+"
+    , numberBetween 1 10
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Numeral NumeralData{TNumeral.value = tens}:
+       _:
+       Token Numeral NumeralData{TNumeral.value = units}:
+       _) -> double $ tens + units
+      _ -> Nothing
+  }
 
 ruleNumeralsPrefixWithNegativeOrMinus :: Rule
 ruleNumeralsPrefixWithNegativeOrMinus = Rule
@@ -217,5 +251,7 @@ rules =
   , ruleNumeralsIntersectNonconsectiveUnit
   , ruleNumeralsPrefixWithNegativeOrMinus
   , ruleMultiply
+  , ruleTens
+  , ruleCompositeTens
   ]
   ++ ruleNumeralSuffixes

@@ -57,6 +57,7 @@ allExamples = concat
              [ "20"
              , "二十"
              , "貳拾"
+             , "廿"
              ]
   , examples (NumeralValue 60)
              [ "60"
@@ -67,6 +68,7 @@ allExamples = concat
              [ "33"
              , "三十三"
              , "參拾參"
+             , "卅三"
              ]
   , examples (NumeralValue 96)
              [ "96"
@@ -82,6 +84,7 @@ allExamples = concat
              [ "534"
              , "五百三十四"
              , "伍佰參拾肆" 
+             , "五百卅四"
              ]
   , examples (NumeralValue 34567)
              [ "34567"
@@ -96,6 +99,7 @@ allExamples = concat
              , "一万零四十"
              , "一萬零四十"
              , "壹萬零肆拾"
+             , "一萬零卌"
              ]
   , examples (NumeralValue 1.1)
              [ "1.1"

@@ -137,6 +137,20 @@ ruleDecimalNumeral = Rule
       _ -> Nothing
   }
 
+ruleDotSpelledOut :: Rule
+ruleDotSpelledOut = Rule
+  { name = "one point 2"
+  , pattern =
+    [ dimension Numeral
+    , regex "點"
+    , Predicate $ not . hasGrain
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Numeral nd1:_:Token Numeral nd2:_) ->
+        double $ TNumeral.value nd1 + decimalsToDouble (TNumeral.value nd2)
+      _ -> Nothing
+  }
+
 ruleNumeral :: Rule
 ruleNumeral = Rule
   { name = "<number>个/個"
@@ -265,5 +279,6 @@ rules =
   , ruleTens
   , ruleCompositeTens
   , ruleHalf
+  , ruleDotSpelledOut
   ]
   ++ ruleNumeralSuffixes

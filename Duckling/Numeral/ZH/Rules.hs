@@ -174,6 +174,24 @@ ruleHalf = Rule
       _ -> Nothing
   }
 
+ruleDozen :: Rule
+ruleDozen = Rule
+  { name = "a dozen of"
+  , pattern =
+    [ regex "打"
+    ]
+  , prod = \_ -> integer 12 >>= withMultipliable >>= notOkForAnyTime
+  }
+
+rulePair :: Rule
+rulePair = Rule
+  { name = "a pair"
+  , pattern =
+    [ regex "雙|對"
+    ]
+  , prod = \_ -> integer 2 >>= withMultipliable >>= notOkForAnyTime
+  }
+
 numeralSuffixList :: [(Text, Maybe Token)]
 numeralSuffixList =
   [ ("K", double 1e3 >>= withGrain 3 >>= withMultipliable)
@@ -280,5 +298,7 @@ rules =
   , ruleCompositeTens
   , ruleHalf
   , ruleDotSpelledOut
+  , ruleDozen
+  , rulePair
   ]
   ++ ruleNumeralSuffixes

@@ -42,11 +42,15 @@ allExamples = concat
              , "二個"
              , "二个"
              , "貳"
+             , "一對"
+             , "一雙"
              ]
   , examples (NumeralValue 10)
              [ "10"
              , "十"
              , "拾"
+             , "五對"
+             , "五雙"
              ]
   , examples (NumeralValue 11)
              [ "11"
@@ -63,6 +67,7 @@ allExamples = concat
              [ "60"
              , "六十"
              , "陸拾"
+             , "五打"
              ]
   , examples (NumeralValue 33)
              [ "33"
@@ -74,6 +79,7 @@ allExamples = concat
              [ "96"
              , "九十六"
              , "玖拾陸"
+             , "八打"
              ]
   , examples (NumeralValue 203)
              [ "203"

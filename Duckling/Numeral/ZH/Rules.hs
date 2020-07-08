@@ -167,10 +167,10 @@ ruleHalf :: Rule
 ruleHalf = Rule
   { name = "half"
   , pattern =
-    [ regex "1半|一半|半个|半個"
+    [ regex "半|1半|一半|半个|半個"
     ]
   , prod = \case
-      (token:_) -> double 0.5
+      (token:_) -> double 0.5 >>= withMultipliable
       _ -> Nothing
   }
 

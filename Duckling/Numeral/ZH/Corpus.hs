@@ -105,12 +105,12 @@ allExamples = concat
              [ "1.1"
              , "1.10"
              , "01.10"
-             -- , "一點一"
+             , "一點一"
              ]
   , examples (NumeralValue 0.77)
              [ "0.77"
              , ".77"
-             -- , "零點七七"
+             , "零點77"
              ]
   , examples (NumeralValue 34507)
              [ "34507"
@@ -174,5 +174,6 @@ allExamples = concat
              , "1半"
              , "半个"
              , "半個"
+             , "零點五"
              ]
   ]

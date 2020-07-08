@@ -857,6 +857,20 @@ classifiers
                                      -1.3862943611198906),
                                     ("hour", -0.7801585575495751)],
                                n = 10}}),
+       ("one point 2",
+        Classifier{okData =
+                     ClassData{prior = -infinity, unseen = -1.3862943611198906,
+                               likelihoods = HashMap.fromList [], n = 0},
+                   koData =
+                     ClassData{prior = 0.0, unseen = -2.772588722239781,
+                               likelihoods =
+                                 HashMap.fromList
+                                   [("integer (0..10)integer (0..10)", -1.3217558399823195),
+                                    ("integer (0..10)number suffix: \21313|\25342",
+                                     -1.3217558399823195),
+                                    ("integer (0..10)integer with consecutive unit modifiers",
+                                     -0.7621400520468967)],
+                               n = 12}}),
        ("intersect by \",\"",
         Classifier{okData =
                      ClassData{prior = -0.40546510810816444,

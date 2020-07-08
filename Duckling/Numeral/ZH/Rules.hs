@@ -151,6 +151,22 @@ ruleDotSpelledOut = Rule
       _ -> Nothing
   }
 
+ruleFraction :: Rule
+ruleFraction = Rule
+  { name = "fraction"
+  , pattern =
+    [ dimension Numeral
+    , regex "分之|分"
+    , dimension Numeral
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Numeral NumeralData{TNumeral.value = v1}:
+       _:
+       Token Numeral NumeralData{TNumeral.value = v2}:
+       _) -> double $ v2 / v1
+      _ -> Nothing
+  }
+
 ruleNumeral :: Rule
 ruleNumeral = Rule
   { name = "<number>个/個"
@@ -300,5 +316,6 @@ rules =
   , ruleDotSpelledOut
   , ruleDozen
   , rulePair
+  , ruleFraction
   ]
   ++ ruleNumeralSuffixes

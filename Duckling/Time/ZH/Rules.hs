@@ -69,11 +69,11 @@ ruleRelativeMinutesTotillbeforeNoonmidnight = Rule
 
 ruleRelativeMinutesAfterpastIntegerHourofday :: Rule
 ruleRelativeMinutesAfterpastIntegerHourofday = Rule
-  { name = "relative minutes after|past <integer> (hour-of-day)"
+  { name = "relative (10-59) minutes after|past <integer> (hour-of-day)"
   , pattern =
     [ Predicate isAnHourOfDay
     , regex "点|點"
-    , Predicate $ isIntegerBetween 1 59
+    , Predicate $ isIntegerBetween 10 59
     ]
   , prod = \tokens -> case tokens of
       (Token Time TimeData {TTime.form = Just (TTime.TimeOfDay (Just hours) _)}:
@@ -82,6 +82,98 @@ ruleRelativeMinutesAfterpastIntegerHourofday = Rule
        _) -> do
         n <- getIntValue token
         tt $ hourMinute True hours n
+      _ -> Nothing
+  }
+
+ruleRelativeMinutesAfterpastIntegerHourofday2 :: Rule
+ruleRelativeMinutesAfterpastIntegerHourofday2 = Rule
+  { name = "relative (10-59) minutes after|past <integer> (hour-of-day)"
+  , pattern =
+    [ Predicate isAnHourOfDay
+    , regex "点|點"
+    , Predicate $ isIntegerBetween 10 59
+    , regex "分"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Time TimeData {TTime.form = Just (TTime.TimeOfDay (Just hours) _)}:
+       _:
+       token:
+       _) -> do
+        n <- getIntValue token
+        tt $ hourMinute True hours n
+      _ -> Nothing
+  }
+
+ruleRelativeMinutesAfterpastIntegerHourofday3 :: Rule
+ruleRelativeMinutesAfterpastIntegerHourofday3 = Rule
+  { name = "relative (1-9) minutes after|past <integer> (hour-of-day)"
+  , pattern =
+    [ Predicate isAnHourOfDay
+    , regex "点零|點零"
+    , Predicate $ isIntegerBetween 1 9
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Time TimeData {TTime.form = Just (TTime.TimeOfDay (Just hours) _)}:
+       _:
+       token:
+       _) -> do
+        n <- getIntValue token
+        tt $ hourMinute True hours n
+      _ -> Nothing
+  }
+
+ruleRelativeMinutesAfterpastIntegerHourofday4 :: Rule
+ruleRelativeMinutesAfterpastIntegerHourofday4 = Rule
+  { name = "relative (1-9) minutes after|past <integer> (hour-of-day)"
+  , pattern =
+    [ Predicate isAnHourOfDay
+    , regex "点零|點零"
+    , Predicate $ isIntegerBetween 1 9
+    , regex "分"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Time TimeData {TTime.form = Just (TTime.TimeOfDay (Just hours) _)}:
+       _:
+       token:
+       _) -> do
+        n <- getIntValue token
+        tt $ hourMinute True hours n
+      _ -> Nothing
+  }
+
+ruleRelativeMinutesAfterpastIntegerHourofday5 :: Rule
+ruleRelativeMinutesAfterpastIntegerHourofday5 = Rule
+  { name = "number of 5 minutes after|past <integer> (hour-of-day)"
+  , pattern =
+    [ Predicate isAnHourOfDay
+    , regex "点踏|點踏"
+    , Predicate $ isIntegerBetween 1 11
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Time TimeData {TTime.form = Just (TTime.TimeOfDay (Just hours) _)}:
+       _:
+       token:
+       _) -> do
+        n <- getIntValue token
+        tt $ hourMinute True hours (5*n)
+      _ -> Nothing
+  }
+
+ruleRelativeMinutesAfterpastIntegerHourofday6 :: Rule
+ruleRelativeMinutesAfterpastIntegerHourofday6 = Rule
+  { name = "number of 5 minutes after|past <integer> (hour-of-day)"
+  , pattern =
+    [ Predicate isAnHourOfDay
+    , regex "点|點"
+    , Predicate $ isIntegerBetween 1 9
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Time TimeData {TTime.form = Just (TTime.TimeOfDay (Just hours) _)}:
+       _:
+       token:
+       _) -> do
+        n <- getIntValue token
+        tt $ hourMinute True hours (5*n)
       _ -> Nothing
   }
 
@@ -1171,6 +1263,11 @@ rules =
   , ruleYesterday
   , ruleYyyymmdd
   , ruleTimezone
+  , ruleRelativeMinutesAfterpastIntegerHourofday2
+  , ruleRelativeMinutesAfterpastIntegerHourofday3
+  , ruleRelativeMinutesAfterpastIntegerHourofday4
+  , ruleRelativeMinutesAfterpastIntegerHourofday5
+  , ruleRelativeMinutesAfterpastIntegerHourofday6
   ]
   ++ ruleDaysOfWeek
   ++ ruleMonths

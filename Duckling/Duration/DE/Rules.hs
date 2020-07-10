@@ -25,20 +25,38 @@ import Duckling.Regex.Types
 import qualified Duckling.TimeGrain.Types as TG
 import Duckling.Types
 
+ruleQuarterOfAnHour :: Rule
+ruleDurationQuarterOfAnHour = Rule
+  { name = "quarter of an hour"
+  , pattern =
+    [ regex "(eine |einer )?Viertelstunde"
+    ]
+  , prod = \_ -> Just . Token Duration $ duration TG.Minute 15
+  }
+
 ruleHalfAnHour :: Rule
 ruleHalfAnHour = Rule
   { name = "half an hour"
   , pattern =
-    [ regex "(1/2\\s?|(einer )halbe?n? )stunde"
+    [ regex "(1/2\s?|(eine )?halbe |(einer)? halben )stunde"
     ]
   , prod = \_ -> Just . Token Duration $ duration TG.Minute 30
+  }
+
+ruleThreeQuartersOfAnHour :: Rule
+ruleDurationThreeQuartersOfAnHour = Rule
+  { name = "three-quarters of an hour"
+  , pattern =
+    [ regex "3/4\s?stunde|eine?r? dreiviertel stunde|drei viertelstunden"
+    ]
+  , prod = \_ -> Just . Token Duration $ duration TG.Minute 45
   }
 
 ruleFortnight :: Rule
 ruleFortnight = Rule
   { name = "fortnight"
   , pattern =
-    [ regex "(a|one)? fortnight"
+    [ regex "zwei Wochen|(14|vierzehn) Tage(n)?"
     ]
   , prod = \_ -> Just . Token Duration $ duration TG.Day 14
   }
@@ -129,6 +147,8 @@ rules =
   , ruleAboutDuration
   , ruleExactlyDuration
   , ruleFortnight
+  , ruleQuarterOfAnHour
+  , ruleThreeQuartersOfAnHour
   , ruleHalfAnHour
   , ruleIntegerAndAnHalfHours
   , ruleIntegerMoreUnitofduration

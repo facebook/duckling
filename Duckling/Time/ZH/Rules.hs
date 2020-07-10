@@ -146,7 +146,7 @@ ruleRelativeMinutesAfterpastIntegerHourofday5 = Rule
   { name = "number of 5 minutes after|past <integer> (hour-of-day)"
   , pattern =
     [ Predicate isAnHourOfDay
-    , regex "点踏|點踏"
+    , regex "点踏|點踏|点搭|點搭"
     , Predicate $ isIntegerBetween 1 11
     ]
   , prod = \tokens -> case tokens of

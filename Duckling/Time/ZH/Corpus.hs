@@ -454,6 +454,7 @@ allExamples = concat
              , "晏晝三點十五分"
              , "晏晝三點三"
              , "晏晝三點踏三"
+             , "晏晝三點搭三"
              ]
   , examples (datetime (2013, 2, 12, 15, 05, 0) Minute)
              [ "下午三点零五"
@@ -469,6 +470,7 @@ allExamples = concat
              , "晏晝三點零五分"
              , "晏晝三點一"
              , "晏晝三點踏一"
+             , "晏晝三點搭一"
              ]
   , examples (datetime (2013, 2, 12, 13, 0, 0) Minute)
              [ "4pm CET"

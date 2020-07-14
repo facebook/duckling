@@ -19,6 +19,7 @@ import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
 import Duckling.Numeral.Helpers (parseInt)
+import Duckling.Numeral.Types (NumeralData(..))
 import Duckling.Regex.Types
 import Duckling.Time.Computed
 import Duckling.Time.Helpers
@@ -27,6 +28,7 @@ import Duckling.Types
 import qualified Duckling.Ordinal.Types as TOrdinal
 import qualified Duckling.Time.Types as TTime
 import qualified Duckling.TimeGrain.Types as TG
+import qualified Duckling.Numeral.Types as TNumeral
 
 ruleTheDayAfterTomorrow :: Rule
 ruleTheDayAfterTomorrow = Rule
@@ -35,6 +37,15 @@ ruleTheDayAfterTomorrow = Rule
     [ regex "后天|後天|後日"
     ]
   , prod = \_ -> tt $ cycleNth TG.Day 2
+  }
+
+ruleTwoDaysAfterTomorrow :: Rule
+ruleTwoDaysAfterTomorrow = Rule
+  { name = "two days after tomorrow"
+  , pattern =
+    [ regex "大后天|大後天|大後日"
+    ]
+  , prod = \_ -> tt $ cycleNth TG.Day 3
   }
 
 ruleRelativeMinutesTotillbeforeIntegerHourofday :: Rule
@@ -166,6 +177,25 @@ ruleRelativeMinutesAfterpastIntegerHourofday6 = Rule
     [ Predicate isAnHourOfDay
     , regex "点|點"
     , Predicate $ isIntegerBetween 1 9
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Time TimeData {TTime.form = Just (TTime.TimeOfDay (Just hours) _)}:
+       _:
+       token:
+       _) -> do
+        n <- getIntValue token
+        tt $ hourMinute True hours (5*n)
+      _ -> Nothing
+  }
+
+ruleRelativeMinutesAfterpastIntegerHourofday7 :: Rule
+ruleRelativeMinutesAfterpastIntegerHourofday7 = Rule
+  { name = "number of 5 minutes after|past <integer> (hour-of-day)"
+  , pattern =
+    [ Predicate isAnHourOfDay
+    , regex "点|點"
+    , Predicate $ isIntegerBetween 1 11
+    , regex "個字"
     ]
   , prod = \tokens -> case tokens of
       (Token Time TimeData {TTime.form = Just (TTime.TimeOfDay (Just hours) _)}:
@@ -566,6 +596,27 @@ ruleYearNumericWithYearSymbol = Rule
   , prod = \tokens -> case tokens of
       (token:_) -> do
         v <- getIntValue token
+        tt $ year v
+      _ -> Nothing
+  }
+
+ruleYearNumericWithYearSymbol2 :: Rule
+ruleYearNumericWithYearSymbol2 = Rule
+  { name = "xxxx year"
+  , pattern =
+    [ dimension Numeral
+    , dimension Numeral
+    , dimension Numeral
+    , dimension Numeral
+    , regex "年"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Numeral NumeralData{TNumeral.value = y1}:
+        Token Numeral NumeralData{TNumeral.value = y2}:
+        Token Numeral NumeralData{TNumeral.value = y3}:
+        Token Numeral NumeralData{TNumeral.value = y4}:
+        _) -> do
+        let v = floor(y1*1000 + y2*100 + y3*10 + y4)
         tt $ year v
       _ -> Nothing
   }
@@ -1246,6 +1297,7 @@ rules =
   , ruleTheCycleAfterTime
   , ruleTheCycleBeforeTime
   , ruleTheDayAfterTomorrow
+  , ruleTwoDaysAfterTomorrow
   , ruleTheDayBeforeYesterday
   , ruleThisCycle
   , ruleThisDayofweek
@@ -1260,6 +1312,7 @@ rules =
   , ruleTonight
   , ruleWeekend
   , ruleYearNumericWithYearSymbol
+  , ruleYearNumericWithYearSymbol2
   , ruleYesterday
   , ruleYyyymmdd
   , ruleTimezone
@@ -1268,6 +1321,7 @@ rules =
   , ruleRelativeMinutesAfterpastIntegerHourofday4
   , ruleRelativeMinutesAfterpastIntegerHourofday5
   , ruleRelativeMinutesAfterpastIntegerHourofday6
+  , ruleRelativeMinutesAfterpastIntegerHourofday7
   ]
   ++ ruleDaysOfWeek
   ++ ruleMonths

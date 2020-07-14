@@ -373,6 +373,7 @@ library
                      , Duckling.Duration.UK.Corpus
                      , Duckling.Duration.UK.Rules
                      , Duckling.Duration.ZH.Corpus
+                     , Duckling.Duration.ZH.Rules
                      , Duckling.Duration.Helpers
                      , Duckling.Duration.Rules
                      , Duckling.Duration.Types

@@ -23,7 +23,7 @@ grains :: [(Text, String, TG.Grain)]
 grains = [ ("second (grain)", "秒(钟|鐘)?", TG.Second)
          , ("minute (grain)", "分(钟|鐘)?", TG.Minute)
          , ("hour (grain)",
-             "小时|小時|鐘(\x982d)?", TG.Hour)
+             "小时|小時|個鐘|鐘(\x982d)?", TG.Hour)
          , ("day (grain)", "天|日", TG.Day)
          , ("week (grain)",
              "周|週|礼拜|禮拜|星期", TG.Week)

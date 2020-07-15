@@ -50,11 +50,33 @@ ruleCNYPrefix = Rule
       _ -> Nothing
   }
 
+ruleHKD :: Rule
+ruleHKD = Rule
+  { name = "HKD"
+  , pattern =
+    [ regex "港幣"
+    ]
+  , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly HKD
+  }
+
+ruleHKDPrefix :: Rule
+ruleHKDPrefix = Rule
+  { name = "hkd prefix"
+  , pattern =
+    [ regex "港幣"
+    , Predicate isPositive
+    ]
+  , prod = \case
+      (_:Token Numeral NumeralData{TNumeral.value = v}:_) ->
+        Just . Token AmountOfMoney . withValue v $ currencyOnly HKD
+      _ -> Nothing
+  }
+
 ruleCent :: Rule
 ruleCent = Rule
   { name = "cent"
   , pattern =
-    [ regex "分"
+    [ regex "分|仙"
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly Cent
 }
@@ -64,7 +86,7 @@ ruleDime = Rule
   { name = "dime"
   , pattern =
     [ Predicate isPositive
-    , regex "角|毛"
+    , regex "角|毛|毫"
     ]
   , prod = \case
       (Token Numeral NumeralData{TNumeral.value = v}:_) ->
@@ -77,7 +99,7 @@ ruleDollar :: Rule
 ruleDollar = Rule
   { name = "dollar"
   , pattern =
-    [ regex "元|圆|块"
+    [ regex "元|圆|块|蚊|個"
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly Dollar
   }
@@ -132,6 +154,19 @@ ruleIntersectDollarsAndDimesCents = Rule
       (Token AmountOfMoney fd:
        Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just c}:
        _) -> Just . Token AmountOfMoney $ withCents c fd
+      _ -> Nothing
+  }
+
+ruleeIntersectDollarsAndAHalf :: Rule
+ruleeIntersectDollarsAndAHalf = Rule
+  { name = "<amount-of-money> and a half"
+  , pattern =
+    [ Predicate $ and . sequence [isSimpleAmountOfMoney, isWithoutCents]
+    , regex "半"
+    ]
+  , prod = \case
+      (Token AmountOfMoney fd:_) -> 
+        Just . Token AmountOfMoney $ withCents 50 fd
       _ -> Nothing
   }
 
@@ -257,6 +292,8 @@ rules =
   [ ruleCent
   , ruleCNY
   , ruleCNYPrefix
+  , ruleHKD
+  , ruleHKDPrefix
   , ruleDime
   , ruleDollar
   , ruleIntersect
@@ -264,6 +301,7 @@ rules =
   , ruleIntersect3
   , ruleIntersectDimesAndCents
   , ruleIntersectDollarsAndDimesCents
+  , ruleeIntersectDollarsAndAHalf
   , ruleIntervalDash
   , ruleIntervalNumeralDash
   , ruleIntervalBound

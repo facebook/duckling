@@ -402,10 +402,7 @@ allExamples = concat
   , examples (datetime (2013, 2, 5, 0, 0, 0) Day)
              [ "last tuesday"
              ]
-  , examples (datetime (2013, 2, 19, 0, 0, 0) Day)
-             [ "next tuesday"
-             ]
-  , examples (datetime (2013, 2, 13, 0, 0, 0) Day)
+  , examples (datetime (2013, 2, 20, 0, 0, 0) Day)
              [ "next wednesday"
              ]
   , examples (datetime (2013, 2, 20, 0, 0, 0) Day)
@@ -1920,4 +1917,8 @@ allExamples = concat
              [
                "second monday of last month"
              ]
+  , examples (datetime (2013, 2, 23, 0, 0, 0) Day)
+             [ "next saturday" ]
+  , examples (datetime (2013, 2, 18, 0, 0, 0) Day)
+             [ "next monday" ]
   ]

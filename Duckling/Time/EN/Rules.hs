@@ -147,11 +147,19 @@ ruleNextDOW :: Rule
 ruleNextDOW = Rule
   { name = "this|next <day-of-week>"
   , pattern =
-    [ regex "this|next"
+    [ regex "(this|next)"
     , Predicate isADayOfWeek
     ]
-  , prod = \tokens -> case tokens of
-      (_:Token Time td:_) -> tt $ predNth 0 True td
+  , prod = \case
+      (
+        Token RegexMatch (GroupMatch (match:_)):
+        Token Time dow:
+        _) -> do
+          td <- case Text.toLower match of
+                  "this" -> Just $ predNth 0 True dow
+                  "next" -> intersect dow $ cycleNth TG.Week 1
+                  _ -> Nothing
+          tt td
       _ -> Nothing
   }
 

@@ -20,7 +20,6 @@ import Duckling.Resolve
 import Duckling.Time.Corpus
 import Duckling.TimeGrain.Types hiding (add)
 import Duckling.Testing.Types hiding (examples)
-import Duckling.Time.Types hiding (Month)
 
 context :: Context
 context = testContext {locale = makeLocale ES Nothing}
@@ -56,8 +55,63 @@ allExamples = concat
              [ "anteayer"
              , "antier"
              ]
+  {--
+    This is intentional
+    The purpose is to steer the classifier towards "tomorrow" rule
+    instead of "morning" rule.
+  --}
   , examples (datetime (2013, 2, 13, 0, 0, 0) Day)
              [ "mañana"
+             , "manana"
+             , "mañana"
+             , "manana"
+             , "mañana"
+             , "manana"
+             , "manana"
+             , "mañana"
+             , "manana"
+             , "mañana"
+             , "manana"
+             , "manana"
+             , "mañana"
+             , "manana"
+             , "mañana"
+             , "manana"
+             , "manana"
+             , "mañana"
+             , "manana"
+             , "mañana"
+             , "manana"
+             , "manana"
+             , "mañana"
+             , "manana"
+             , "mañana"
+             , "manana"
+             , "manana"
+             , "mañana"
+             , "manana"
+             , "mañana"
+             , "manana"
+             , "manana"
+             , "mañana"
+             , "manana"
+             , "mañana"
+             , "manana"
+             , "manana"
+             , "mañana"
+             , "manana"
+             , "mañana"
+             , "manana"
+             , "manana"
+             , "mañana"
+             , "manana"
+             , "mañana"
+             , "manana"
+             , "manana"
+             , "mañana"
+             , "manana"
+             , "mañana"
+             , "manana"
              ]
   , examples (datetime (2013, 2, 14, 0, 0, 0) Day)
              [ "pasado mañana"

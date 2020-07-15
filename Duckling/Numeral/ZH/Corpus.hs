@@ -114,6 +114,7 @@ allExamples = concat
              , "一點一"
              , "十分之十一"
              , "十分十一"
+             , "一又十分一"
              ]
   , examples (NumeralValue 0.77)
              [ "0.77"

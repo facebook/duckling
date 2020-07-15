@@ -167,6 +167,26 @@ ruleFraction = Rule
       _ -> Nothing
   }
 
+ruleMixedFraction :: Rule
+ruleMixedFraction = Rule
+  { name = " mixed fraction"
+  , pattern =
+    [ dimension Numeral
+    , regex "又"
+    , dimension Numeral
+    , regex "分之|分"
+    , dimension Numeral
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Numeral NumeralData{TNumeral.value = v1}:
+       _:
+       Token Numeral NumeralData{TNumeral.value = v2}:
+       _:
+       Token Numeral NumeralData{TNumeral.value = v3}:
+       _) -> double $ v3 / v2 + v1
+      _ -> Nothing
+  }
+
 ruleNumeral :: Rule
 ruleNumeral = Rule
   { name = "<number>个/個"
@@ -317,5 +337,6 @@ rules =
   , ruleDozen
   , rulePair
   , ruleFraction
+  , ruleMixedFraction
   ]
   ++ ruleNumeralSuffixes

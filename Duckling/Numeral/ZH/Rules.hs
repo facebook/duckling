@@ -93,6 +93,56 @@ ruleDecimalNumeral = Rule
       _ -> Nothing
   }
 
+ruleDotSpelledOut :: Rule
+ruleDotSpelledOut = Rule
+  { name = "one point 2"
+  , pattern =
+    [ dimension Numeral
+    , regex "點"
+    , Predicate $ not . hasGrain
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Numeral nd1:_:Token Numeral nd2:_) ->
+        double $ TNumeral.value nd1 + decimalsToDouble (TNumeral.value nd2)
+      _ -> Nothing
+  }
+
+ruleFraction :: Rule
+ruleFraction = Rule
+  { name = "fraction"
+  , pattern =
+    [ dimension Numeral
+    , regex "分之|分"
+    , dimension Numeral
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Numeral NumeralData{TNumeral.value = v1}:
+       _:
+       Token Numeral NumeralData{TNumeral.value = v2}:
+       _) -> double $ v2 / v1
+      _ -> Nothing
+  }
+
+ruleMixedFraction :: Rule
+ruleMixedFraction = Rule
+  { name = " mixed fraction"
+  , pattern =
+    [ dimension Numeral
+    , regex "又"
+    , dimension Numeral
+    , regex "分之|分"
+    , dimension Numeral
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Numeral NumeralData{TNumeral.value = v1}:
+       _:
+       Token Numeral NumeralData{TNumeral.value = v2}:
+       _:
+       Token Numeral NumeralData{TNumeral.value = v3}:
+       _) -> double $ v3 / v2 + v1
+      _ -> Nothing
+  }
+
 ruleNumeral :: Rule
 ruleNumeral = Rule
   { name = "<number>个/個"
@@ -207,5 +257,13 @@ rules =
   , ruleNumeralsIntersectNonconsectiveUnit
   , ruleNumeralsPrefixWithNegativeOrMinus
   , ruleMultiply
+  , ruleTens
+  , ruleCompositeTens
+  , ruleHalf
+  , ruleDotSpelledOut
+  , ruleDozen
+  , rulePair
+  , ruleFraction
+  , ruleMixedFraction
   ]
   ++ ruleNumeralSuffixes

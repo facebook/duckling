@@ -20,4 +20,5 @@ allDimensions =
   , This Quantity
   , This Temperature
   , This Time
+  , This Volume
   ]

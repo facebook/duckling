@@ -30,6 +30,7 @@ import qualified Duckling.Time.ZH.HK.Rules as TimeHK
 import qualified Duckling.Time.ZH.MO.Rules as TimeMO
 import qualified Duckling.Time.ZH.TW.Rules as TimeTW
 import qualified Duckling.TimeGrain.ZH.Rules as TimeGrain
+import qualified Duckling.Volume.ZH.Rules as Volume
 
 defaultRules :: Some Dimension -> [Rule]
 defaultRules = langRules
@@ -57,5 +58,5 @@ langRules (This Temperature) = Temperature.rules
 langRules (This Time) = Time.rules
 langRules (This TimeGrain) = TimeGrain.rules
 langRules (This Url) = []
-langRules (This Volume) = []
+langRules (This Volume) = Volume.rules
 langRules (This (CustomDimension dim)) = dimLangRules ZH dim

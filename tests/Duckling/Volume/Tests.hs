@@ -29,6 +29,7 @@ import qualified Duckling.Volume.PT.Tests as PT
 import qualified Duckling.Volume.RO.Tests as RO
 import qualified Duckling.Volume.RU.Tests as RU
 import qualified Duckling.Volume.TR.Tests as TR
+import qualified Duckling.Volume.ZH.Tests as ZH
 
 tests :: TestTree
 tests = testGroup "Volume Tests"
@@ -48,4 +49,5 @@ tests = testGroup "Volume Tests"
   , RO.tests
   , RU.tests
   , TR.tests
+  , ZH.tests
   ]

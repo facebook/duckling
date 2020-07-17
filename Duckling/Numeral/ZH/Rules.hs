@@ -156,7 +156,7 @@ ruleFraction = Rule
   { name = "fraction"
   , pattern =
     [ dimension Numeral
-    , regex "分之|分"
+    , regex "分之|分|份"
     , dimension Numeral
     ]
   , prod = \tokens -> case tokens of
@@ -174,7 +174,7 @@ ruleMixedFraction = Rule
     [ dimension Numeral
     , regex "又"
     , dimension Numeral
-    , regex "分之|分"
+    , regex "分之|分|份"
     , dimension Numeral
     ]
   , prod = \tokens -> case tokens of
@@ -252,7 +252,6 @@ ruleNumeralSuffixes = uncurry constructNumeralSuffixRule <$> numeralSuffixList
       , prod = const production
       }
 
-
 ruleMultiply :: Rule
 ruleMultiply = Rule
   { name = "compose by multiplication"
@@ -319,6 +318,45 @@ ruleNumeralsIntersectConsecutiveUnit = Rule
       | d == 1 = Just $ v1 + v2
       | otherwise = Nothing
 
+ruleHundredPrefix :: Rule
+ruleHundredPrefix = Rule
+  { name = "one hundred and <integer> (short form)"
+  , pattern =
+    [ regex "百|佰"
+    , numberBetween 1 9
+    ]
+  , prod = \case
+    (_:Token Numeral NumeralData{TNumeral.value = v}:_) ->
+      double $ 100 + v*10
+    _ -> Nothing
+  }
+
+ruleThousandPrefix :: Rule
+ruleThousandPrefix = Rule
+  { name = "one thousand and <integer> (short form)"
+  , pattern =
+    [ regex "千|仟"
+    , numberBetween 1 9
+    ]
+  , prod = \case
+    (_:Token Numeral NumeralData{TNumeral.value = v}:_) ->
+      double $ 1000 + v*100
+    _ -> Nothing
+  }
+
+ruleTenThousandPrefix :: Rule
+ruleTenThousandPrefix = Rule
+  { name = "ten thousand and <integer> (short form)"
+  , pattern =
+    [ regex "万|萬"
+    , numberBetween 1 9
+    ]
+  , prod = \case
+    (_:Token Numeral NumeralData{TNumeral.value = v}:_) ->
+      double $ 10000 + v*1000
+    _ -> Nothing
+  }
+
 rules :: [Rule]
 rules =
   [ ruleDecimalNumeral
@@ -338,5 +376,8 @@ rules =
   , rulePair
   , ruleFraction
   , ruleMixedFraction
+  , ruleHundredPrefix
+  , ruleThousandPrefix
+  , ruleTenThousandPrefix
   ]
   ++ ruleNumeralSuffixes

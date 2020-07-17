@@ -391,14 +391,14 @@ ruleHourofdayIntegerAsRelativeMinutes :: Rule
 ruleHourofdayIntegerAsRelativeMinutes = Rule
   { name = "<hour-of-day> <integer> (as relative minutes)"
   , pattern =
-    [ Predicate $ and . sequence [isNotLatent, isAnHourOfDay]
+    [ Predicate $ and . sequence [isAnHourOfDay]
     , Predicate $ isIntegerBetween 1 59
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Time TimeData {TTime.form = Just (TTime.TimeOfDay (Just hours) is12H)}:
-       token:
+       minutes:
        _) -> do
-        n <- getIntValue token
+        n <- getIntValue minutes
         tt $ hourMinute is12H hours n
       _ -> Nothing
   }

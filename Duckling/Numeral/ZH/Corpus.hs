@@ -89,7 +89,7 @@ allExamples = concat
              , "01.10"
              , "一點一"
              , "十分之十一"
-             , "十分十一"
+             , "十份十一"
              , "一又十分一"
              ]
   , examples (NumeralValue 0.77)
@@ -126,6 +126,9 @@ allExamples = concat
              , "1.2M"
              , ".0012G"
              , "一百二十万"
+             , "一百二十萬"
+             , "壹佰貳拾萬"
+             , "百二萬"
              ]
   , examples (NumeralValue (-1200000))
              [ "- 1,200,000"
@@ -139,5 +142,21 @@ allExamples = concat
              , "-1200K"
              , "-.0012G"
              , "负一百二十万"
+             , "負一百二十萬"
+             , "負壹佰貳拾萬"
+             ]
+    , examples (NumeralValue 0.5)
+             [ "0.5"
+             , "一半"
+             , "1半"
+             , "半个"
+             , "半個"
+             , "零點五"
+             , "二分之一"
+             , "二份一"
+             ]
+    , examples (NumeralValue 1100)
+             [ "千一"
+             , "一千一百"
              ]
   ]

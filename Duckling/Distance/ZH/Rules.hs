@@ -17,6 +17,7 @@ import Prelude
 
 import Duckling.Dimensions.Types
 import Duckling.Distance.Helpers
+import Duckling.Numeral.Helpers
 import Duckling.Numeral.Types (NumeralData (..))
 import Duckling.Types
 import qualified Duckling.Distance.Types as TDistance
@@ -45,6 +46,34 @@ ruleDistMeters = Rule
   , prod = \case
       (Token Distance dd:_) ->
         Just . Token Distance $ withUnit TDistance.Metre dd
+      _ -> Nothing
+  }
+
+ruleDistOneMeterAnd :: Rule
+ruleDistOneMeterAnd = Rule
+  { name = "one meter and <dist>"
+  , pattern =
+    [ regex "米"
+    , Predicate isPositive
+    ]
+  , prod = \case
+      (_:Token Numeral NumeralData{TNumeral.value = v}:_) ->
+        Just . Token Distance $ withUnit TDistance.Metre (distance (1 + v/10))
+      _ -> Nothing
+  }
+
+ruleDistMetersAnd :: Rule
+ruleDistMetersAnd = Rule
+  { name = "<dist> meters and <dist>"
+  , pattern =
+    [ Predicate isPositive
+    , regex "米"
+    , Predicate isPositive
+    ]
+  , prod = \case
+      (Token Numeral NumeralData{TNumeral.value = v1}:_:
+        Token Numeral NumeralData{TNumeral.value = v2}:_) ->
+        Just . Token Distance $ withUnit TDistance.Metre (distance (v1 + v2/10)) 
       _ -> Nothing
   }
 
@@ -125,4 +154,6 @@ rules =
   , ruleDistKm
   , ruleDistMeters
   , ruleDistMiles
+  , ruleDistOneMeterAnd
+  , ruleDistMetersAnd
   ]

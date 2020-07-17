@@ -68,4 +68,14 @@ allExamples = concat
              , "1英里"
              , "一英裏"
              ]
+  , examples (simple Metre 1.9)
+             [ "1.9 m"
+             , "1.9米"
+             , "米九"
+             ]
+  , examples (simple Metre 3.9)
+             [ "3.9 m"
+             , "3.9米"
+             , "三米九"
+             ]
   ]

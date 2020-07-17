@@ -317,7 +317,9 @@ allExamples = concat
   , examples (datetime (2013, 2, 11, 0, 0, 0) Week)
              [ "this week"
              , "current week"
-             , "coming week"
+             ]
+  , examples (datetime (2013, 2, 18, 0, 0, 0) Week)
+             [ "coming week"
              ]
   , examples (datetime (2013, 2, 4, 0, 0, 0) Week)
              [ "last week"
@@ -1446,9 +1448,11 @@ allExamples = concat
   , examples (datetimeInterval ((2013, 2, 11, 0, 0, 0), (2013, 2, 14, 0, 0, 0)) Day)
              [ "beginning of this week"
              , "beginning of current week"
-             , "beginning of coming week"
              , "at the beginning of this week"
              , "at the beginning of current week"
+             ]
+  , examples (datetimeInterval ((2013, 2, 18, 0, 0, 0), (2013, 2, 21, 0, 0, 0)) Day)
+             [ "beginning of coming week"
              , "at the beginning of coming week"
              ]
   , examples (datetimeInterval ((2013, 2, 4, 0, 0, 0), (2013, 2, 7, 0, 0, 0)) Day)
@@ -1470,9 +1474,11 @@ allExamples = concat
   , examples (datetimeInterval ((2013, 2, 15, 0, 0, 0), (2013, 2, 18, 0, 0, 0)) Day)
              [ "end of this week"
              , "end of current week"
-             , "end of coming week"
              , "at the end of this week"
              , "at the end of current week"
+             ]
+   , examples (datetimeInterval ((2013, 2, 22, 0, 0, 0), (2013, 2, 25, 0, 0, 0)) Day)
+             [ "end of coming week"
              , "at the end of coming week"
              ]
   , examples (datetimeInterval ((2013, 2, 8, 0, 0, 0), (2013, 2, 11, 0, 0, 0)) Day)

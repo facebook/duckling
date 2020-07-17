@@ -2060,20 +2060,23 @@ ruleCycleThisLastNext = Rule
     [ regex "(this|current|coming|next|(the( following)?)|last|past|previous|upcoming)"
     , dimension TimeGrain
     ]
-  , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):Token TimeGrain grain:_) ->
-        case Text.toLower match of
-          "this"          -> tt $ cycleNth grain 0
-          "coming"        -> tt $ cycleNth grain 0
-          "current"       -> tt $ cycleNth grain 0
-          "last"          -> tt . cycleNth grain $ - 1
-          "past"          -> tt . cycleNth grain $ - 1
-          "previous"      -> tt . cycleNth grain $ - 1
-          "next"          -> tt $ cycleNth grain 1
-          "upcoming"      -> tt $ cycleNth grain 1
-          "the following" -> tt $ cycleNth grain 1
-          "the"           -> tt $ cycleNth grain 0
-          _ -> Nothing
+  , prod = \case
+      (
+        Token RegexMatch (GroupMatch (match:_)):
+        Token TimeGrain grain:
+        _) ->
+          case Text.toLower match of
+            "this"          -> tt $ cycleNth grain 0
+            "coming"        -> tt $ cycleNth grain 1
+            "current"       -> tt $ cycleNth grain 0
+            "last"          -> tt $ cycleNth grain $ - 1
+            "past"          -> tt $ cycleNth grain $ - 1
+            "previous"      -> tt $ cycleNth grain $ - 1
+            "next"          -> tt $ cycleNth grain 1
+            "upcoming"      -> tt $ cycleNth grain 1
+            "the following" -> tt $ cycleNth grain 1
+            "the"           -> tt $ cycleNth grain 0
+            _ -> Nothing
       _ -> Nothing
   }
 

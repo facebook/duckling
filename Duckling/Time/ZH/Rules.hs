@@ -510,6 +510,19 @@ ruleLastCycle = Rule
       _ -> Nothing
   }
 
+ruleLastDuration :: Rule
+ruleLastDuration = Rule
+  { name = "last <duration>"
+  , pattern =
+    [ regex "上(个|個)?"
+    , dimension Duration
+    ]
+  , prod = \tokens -> case tokens of
+      (_:Token Duration dd:_) ->
+        tt $ durationAgo dd
+      _ -> Nothing
+  }
+
 ruleAfternoon :: Rule
 ruleAfternoon = Rule
   { name = "afternoon"
@@ -1322,6 +1335,7 @@ rules =
   , ruleRelativeMinutesAfterpastIntegerHourofday5
   , ruleRelativeMinutesAfterpastIntegerHourofday6
   , ruleRelativeMinutesAfterpastIntegerHourofday7
+  , ruleLastDuration
   ]
   ++ ruleDaysOfWeek
   ++ ruleMonths

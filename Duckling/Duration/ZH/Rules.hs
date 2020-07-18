@@ -47,7 +47,7 @@ ruleDurationHalfATimeGrain :: Rule
 ruleDurationHalfATimeGrain = Rule
   { name = "half a <time-grain>"
   , pattern =
-    [ regex "半"
+    [ regex "半(個|个)?"
     , dimension TimeGrain
     ]
   , prod = \case

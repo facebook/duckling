@@ -103,4 +103,7 @@ allExamples = concat
               [ "3個字"
               , "三個字"
               ]
+  , examples (DurationData 15 Day)
+             [ "半個月"
+             ]
   ]

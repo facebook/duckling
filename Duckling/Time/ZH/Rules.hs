@@ -902,6 +902,20 @@ ruleNamedmonthDayofmonth = Rule
       _ -> Nothing
   }
 
+ruleDayofmonth :: Rule
+ruleDayofmonth = Rule
+  { name = "<time> <day-of-month>"
+  , pattern =
+    [ Predicate $ isIntegerBetween 1 31
+    , regex "号|號|日"
+    ]
+  , prod = \tokens -> case tokens of
+      (token:_) -> do
+        v <- getIntValue token
+        tt $ dayOfMonth v
+      _ -> Nothing
+  }
+
 rulePartofdayDimTime :: Rule
 rulePartofdayDimTime = Rule
   { name = "<part-of-day> <dim time>"
@@ -1336,6 +1350,7 @@ rules =
   , ruleRelativeMinutesAfterpastIntegerHourofday6
   , ruleRelativeMinutesAfterpastIntegerHourofday7
   , ruleLastDuration
+  , ruleDayofmonth
   ]
   ++ ruleDaysOfWeek
   ++ ruleMonths

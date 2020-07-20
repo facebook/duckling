@@ -293,6 +293,16 @@ allExamples = concat
              , "3月份"
              , "三月"
              ]
+  , examples (datetime (2013, 2, 20, 0, 0, 0) Day)
+             [ "今個月二十號"
+             , "今個月20号"
+             , "今個月廿號"
+             ]
+  , examples (datetime (2013, 3, 20, 0, 0, 0) Day)
+             [ "下個月二十號"
+             , "下個月20号"
+             , "下個月廿號"
+             ]
   , examples (datetime (2012, 1, 1, 0, 0, 0) Year)
              [ "去年"
              , "上年"
@@ -305,6 +315,10 @@ allExamples = concat
   , examples (datetime (2014, 1, 1, 0, 0, 0) Year)
              [ "明年"
              , "下年"
+             ]
+  , examples (datetime (2014, 9, 1, 0, 0, 0) Month)
+             [ "下年9月"
+             , "明年九月"
              ]
   , examples (datetimeInterval ((2013, 2, 12, 4, 29, 58), (2013, 2, 12, 4, 30, 0)) Second)
              [ "上两秒"

@@ -183,7 +183,7 @@ ruleHalfAfterpastIntegerHourofday = Rule
   { name = "half after|past <integer> (hour-of-day)"
   , pattern =
     [ Predicate isAnHourOfDay
-    , regex "点|點"
+    , regex "(点|點)(踏|搭)?"
     , regex "半"
     ]
   , prod = \tokens -> case tokens of

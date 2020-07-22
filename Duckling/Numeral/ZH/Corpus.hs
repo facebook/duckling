@@ -181,6 +181,7 @@ allExamples = concat
     , examples (NumeralValue 0.5)
              [ "0.5"
              , "一半"
+             , "一半半"
              , "1半"
              , "半个"
              , "半個"
@@ -191,5 +192,8 @@ allExamples = concat
     , examples (NumeralValue 1100)
              [ "千一"
              , "一千一百"
+             ]
+    , examples (NumeralValue 19000)
+             [ "萬九"
              ]
   ]

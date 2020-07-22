@@ -203,10 +203,10 @@ ruleHalf :: Rule
 ruleHalf = Rule
   { name = "half"
   , pattern =
-    [ regex "半|1半|一半|半个|半個"
+    [ regex "(1|一)?半(半|个|個)?"
     ]
   , prod = \case
-      (token:_) -> double 0.5 >>= withMultipliable
+      (token:_) -> double 0.5
       _ -> Nothing
   }
 
@@ -323,7 +323,7 @@ ruleHundredPrefix = Rule
   { name = "one hundred and <integer> (short form)"
   , pattern =
     [ regex "百|佰"
-    , numberBetween 1 9
+    , numberBetween 1 10
     ]
   , prod = \case
     (_:Token Numeral NumeralData{TNumeral.value = v}:_) ->
@@ -336,7 +336,7 @@ ruleThousandPrefix = Rule
   { name = "one thousand and <integer> (short form)"
   , pattern =
     [ regex "千|仟"
-    , numberBetween 1 9
+    , numberBetween 1 10
     ]
   , prod = \case
     (_:Token Numeral NumeralData{TNumeral.value = v}:_) ->
@@ -349,7 +349,7 @@ ruleTenThousandPrefix = Rule
   { name = "ten thousand and <integer> (short form)"
   , pattern =
     [ regex "万|萬"
-    , numberBetween 1 9
+    , numberBetween 1 10
     ]
   , prod = \case
     (_:Token Numeral NumeralData{TNumeral.value = v}:_) ->

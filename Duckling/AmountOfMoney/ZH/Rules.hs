@@ -21,7 +21,7 @@ import qualified Data.Text as Text
 import Duckling.AmountOfMoney.Helpers
 import Duckling.AmountOfMoney.Types (Currency (..), AmountOfMoneyData (..))
 import Duckling.Dimensions.Types
-import Duckling.Numeral.Helpers (isNatural, isPositive, oneOf)
+import Duckling.Numeral.Helpers (isNatural, isPositive, oneOf, numberBetween,decimalsToDouble)
 import Duckling.Numeral.Types (NumeralData (..))
 import Duckling.Regex.Types
 import Duckling.Types
@@ -213,6 +213,28 @@ ruleIntersect3 = Rule
       _ -> Nothing
   }
 
+ruleOneDollarAndAHalf :: Rule
+ruleOneDollarAndAHalf = Rule
+  { name = "one dollar and a half (short form)"
+  , pattern =
+    [ regex "個半"
+    ]
+  , prod = \_ -> Just . Token AmountOfMoney $ withValue 1.5 (currencyOnly Dollar)
+  }
+
+ruleOneDollarAnd :: Rule
+ruleOneDollarAnd = Rule
+  { name = "one dollar and x dimes (short form)"
+  , pattern =
+    [ regex "個"
+    , numberBetween 1 10
+    ]
+  , prod = \case
+      (_:Token Numeral NumeralData{TNumeral.value = v}:_) ->
+        Just . Token AmountOfMoney $ withValue (1 + decimalsToDouble(v)) (currencyOnly Dollar)
+  }
+
+
 ruleIntervalNumeralDash :: Rule
 ruleIntervalNumeralDash = Rule
   { name = "<numeral> - <amount-of-money>"
@@ -308,4 +330,6 @@ rules =
   , ruleIntervalBound2
   , rulePrecision
   , rulePrecision2
+  , ruleOneDollarAndAHalf
+  , ruleOneDollarAnd
   ]

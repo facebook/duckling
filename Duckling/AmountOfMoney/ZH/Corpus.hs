@@ -51,6 +51,13 @@ allExamples = concat
   , examples (simple Dollar 5.5)
              [ "五個半"
              ]
+  , examples (simple Dollar 1.5)
+             [ "個半"
+             , "一個半"
+             ]
+  , examples (simple Dollar 1.9)
+             [ "個九"
+             ]
   , examples (simple CNY 3.14)
              [ "3.14人民币"
              , "人民幣3.14"

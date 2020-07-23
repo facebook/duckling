@@ -75,6 +75,7 @@ allExamples = concat
   , examples (between Litre (2,3))
              [ "二至三公升"
              , "2-3L"
+             , "2~3公升"
              , "兩到三升"
              , "兩升到三升"
              ]
@@ -86,6 +87,7 @@ allExamples = concat
              [ "至少四ml"
              , "最少四毫升"
              , "四毫升或以上"
+             , "起碼四毫升"
              ]
   , examples (simple Millilitre 5)
              [ "一茶匙"

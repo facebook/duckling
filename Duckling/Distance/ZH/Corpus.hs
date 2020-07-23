@@ -78,4 +78,20 @@ allExamples = concat
              , "3.9米"
              , "三米九"
              ]
+  , examples (between Metre (1.6, 3.9))
+             [ "1.6m-3.9m"
+             , "1.6~3.9米"
+             , "一點六至三點九公尺"
+             , "米六到三米九"
+             ]
+  , examples (under Mile 3.5)
+             [ "最多三點五英里"
+             , "3.5英裏以下"
+             ]
+  , examples (above Inch 5)
+             [ "至少5\""
+             , "最少五吋"
+             , "五英吋以上"
+             , "起碼五英寸"
+             ]
   ]

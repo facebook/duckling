@@ -85,7 +85,7 @@ ruleIntervalBetweenNumeral = Rule
   { name = "between|from <numeral> and|to <volume>"
   , pattern =
     [ Predicate isPositive
-    , regex "-|至|到"
+    , regex "-|至|到|~"
     , Predicate isSimpleVolume
     ]
   , prod = \case
@@ -103,7 +103,7 @@ ruleIntervalBetween = Rule
   { name = "between|from <volume> to|and <volume>"
   , pattern =
     [ Predicate isSimpleVolume
-    , regex "-|至|到"
+    , regex "-|至|到|~"
     , Predicate isSimpleVolume
     ]
   , prod = \case
@@ -152,7 +152,7 @@ ruleIntervalMin :: Rule
 ruleIntervalMin = Rule
   { name = "more than <volume>"
   , pattern =
-      [ regex "至少|最少"
+      [ regex "至少|最少|起碼"
       , Predicate isSimpleVolume
       ]
     , prod = \case

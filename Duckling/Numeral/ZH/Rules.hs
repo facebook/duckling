@@ -403,7 +403,7 @@ ruleIntervalShort = Rule
   , prod = \case
       (Token Numeral NumeralData{TNumeral.value = Just from}:
        Token Numeral NumeralData{TNumeral.value = Just to}:
-       _) | from < to && (to - from == 1 || (diffIntegerDigits from 0) - (diffIntegerDigits (to-from) 0)  == 1) ->
+       _) | from < to && (to - from == 1 || floor(to-from) `mod` 10 == 0) && (diffIntegerDigits to from <= 1) ->
          Just . Token Numeral $ withIntervalNum (from, to)
       _ -> Nothing
   }

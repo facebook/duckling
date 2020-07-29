@@ -93,4 +93,13 @@ allExamples = concat
              [ "一茶匙"
              , "三分一湯匙"
              ]
+  , examples (between Litre (60, 70))
+             [ "六十到七十L"
+             , "六七十升"
+             , "六十七十公升左右"
+             ]
+  , examples (between Millilitre (300, 900))
+             [ "幾百毫升"
+             , "數百cc"
+             ]
   ]

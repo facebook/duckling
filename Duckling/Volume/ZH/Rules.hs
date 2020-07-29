@@ -20,7 +20,7 @@ import Duckling.Dimensions.Types
 import Duckling.Types
 import Duckling.Regex.Types
 import Duckling.Volume.Helpers
-import Duckling.Numeral.Helpers (isPositive)
+import Duckling.Numeral.Helpers (isPositive,isNumeralInterval)
 import qualified Duckling.Volume.Types as TVolume
 import qualified Duckling.Numeral.Types as TNumeral
 
@@ -40,6 +40,19 @@ rulesVolumes = map go volumes
         [ regex regexPattern
         ]
       , prod = \_ -> Just . Token Volume $ unitOnly u
+      }
+
+ruleIntervalFromNumeral :: [Rule]
+ruleIntervalFromNumeral = map go volumes
+  where
+    go :: (Text, String, TVolume.Unit) -> Rule
+    go (name, regexPattern, u) = Rule
+      { name = name
+      , pattern = [ Predicate isNumeralInterval, regex regexPattern ]
+      , prod = \case
+          (Token Numeral TNumeral.NumeralData{TNumeral.minValue = Just from, TNumeral.maxValue = Just to}:
+            _) -> Just . Token Volume $ withInterval (from, to) $ unitOnly u
+          _ -> Nothing
       }
 
 ruleUnitTeaspoon :: Rule
@@ -179,6 +192,17 @@ ruleIntervalMin2 = Rule
         _ -> Nothing
     }
 
+rulePrecision2 :: Rule
+rulePrecision2 = Rule
+  { name = "about <volume>"
+  , pattern =
+    [ dimension Volume
+    , regex "左右"
+    ]
+  , prod = \case
+      (token:_) -> Just token
+      _ -> Nothing
+  }
 
 rules :: [Rule]
 rules = [ ruleUnitTeaspoon
@@ -190,5 +214,7 @@ rules = [ ruleUnitTeaspoon
         , ruleIntervalMax2
         , ruleIntervalMin
         , ruleIntervalMin2
+        , rulePrecision2
         ]
         ++ rulesVolumes
+        ++ ruleIntervalFromNumeral

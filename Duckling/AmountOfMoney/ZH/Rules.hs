@@ -22,6 +22,7 @@ import Duckling.AmountOfMoney.Helpers
 import Duckling.AmountOfMoney.Types (Currency (..), AmountOfMoneyData (..))
 import Duckling.Dimensions.Types
 import Duckling.Numeral.Helpers (isNatural, isPositive, oneOf)
+import Duckling.Numeral.Helpers (isNatural, isPositive, oneOf, numberBetween,decimalsToDouble,isNumeralInterval)
 import Duckling.Numeral.Types (NumeralData (..))
 import Duckling.Regex.Types
 import Duckling.Types
@@ -215,6 +216,20 @@ ruleIntervalDash = Rule
       _ -> Nothing
   }
 
+ruleIntervalFromNumeral :: Rule
+ruleIntervalFromNumeral = Rule
+  { name = "<numeral interval> dollar"
+  , pattern =
+    [ Predicate isNumeralInterval
+    , regex "元|圆|块|蚊"
+    ]
+  , prod = \case
+      (Token Numeral NumeralData{TNumeral.minValue = Just from, 
+        TNumeral.maxValue = Just to}:_) | from < to ->
+        Just . Token AmountOfMoney . withInterval (from, to) $ currencyOnly Dollar
+      _ -> Nothing
+  }
+
 ruleIntervalBound :: Rule
 ruleIntervalBound = Rule
   { name = "under/less/lower/no more than <amount-of-money> (最多|至少|最少)"
@@ -270,4 +285,7 @@ rules =
   , ruleIntervalBound2
   , rulePrecision
   , rulePrecision2
+  , ruleOneDollarAndAHalf
+  , ruleOneDollarAnd
+  , ruleIntervalFromNumeral
   ]

@@ -64,4 +64,13 @@ allExamples = concat
              , "五元六角-五元七毛八分"
              , "五块六到五块七毛八"
              ]
+  , examples (between Dollar (2, 3))
+             [ "二到三元"
+             , "兩块到三块"
+             , "兩三蚊"
+             ]
+  , examples (between Dollar (300, 900))
+             [ "幾百块"
+             , "數百块"
+             ]
   ]

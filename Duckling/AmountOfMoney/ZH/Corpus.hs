@@ -84,4 +84,13 @@ allExamples = concat
              , "五块六到五块七毛八"
              , "五蚊六毫至五蚊七毫八"
              ]
+  , examples (between Dollar (2, 3))
+             [ "二到三元"
+             , "兩块到三块"
+             , "兩三蚊"
+             ]
+  , examples (between Dollar (300, 900))
+             [ "幾百块"
+             , "數百块"
+             ]
   ]

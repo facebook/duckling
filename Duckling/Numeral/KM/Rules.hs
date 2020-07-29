@@ -101,8 +101,8 @@ ruleCompositeTens = Rule
     , oneOf [1 .. 9]
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = v1}:
-       Token Numeral NumeralData{TNumeral.value = v2}:
+      (Token Numeral NumeralData{TNumeral.value = Just v1}:
+       Token Numeral NumeralData{TNumeral.value = Just v2}:
        _) -> double $ v1 + v2
       _ -> Nothing
   }
@@ -133,8 +133,8 @@ ruleSum = Rule
     , Predicate $ and . sequence [not . isMultipliable, isPositive]
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = val1, TNumeral.grain = Just g}:
-       Token Numeral NumeralData{TNumeral.value = val2}:
+      (Token Numeral NumeralData{TNumeral.value = Just val1, TNumeral.grain = Just g}:
+       Token Numeral NumeralData{TNumeral.value = Just val2}:
        _) | (10 ** fromIntegral g) > val2 -> double $ val1 + val2
       _ -> Nothing
   }

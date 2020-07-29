@@ -74,7 +74,7 @@ ruleNumeralQuotes = Rule
     , regex "(['\"])"
     ]
   , prod = \case
-      (Token Numeral NumeralData{TNumeral.value = v}:
+      (Token Numeral NumeralData{TNumeral.value = Just v}:
        Token RegexMatch (GroupMatch (x:_)):
        _) -> case x of
          "'"  -> Just . Token Duration . duration TG.Minute $ floor v
@@ -92,8 +92,8 @@ ruleDurationNumeralMore = Rule
     , dimension TimeGrain
     ]
   , prod = \case
-      (Token Numeral nd:_:Token TimeGrain grain:_) ->
-        Just . Token Duration . duration grain . floor $ TNumeral.value nd
+      (Token Numeral NumeralData{TNumeral.value = Just nd}:_:Token TimeGrain grain:_) ->
+        Just . Token Duration . duration grain . floor $ nd
       _ -> Nothing
   }
 
@@ -121,7 +121,7 @@ ruleDurationAndHalfHour = Rule
     , regex "and (an? )?half hours?"
     ]
   , prod = \case
-      (Token Numeral NumeralData{TNumeral.value = v}:_) ->
+      (Token Numeral NumeralData{TNumeral.value = Just v}:_) ->
         Just . Token Duration . duration TG.Minute $ 30 + 60 * floor v
       _ -> Nothing
   }
@@ -134,7 +134,7 @@ ruleDurationAndHalfMinute = Rule
     , regex "and (an? )?half min(ute)?s?"
     ]
   , prod = \case
-      (Token Numeral NumeralData{TNumeral.value = v}:_) ->
+      (Token Numeral NumeralData{TNumeral.value = Just v}:_) ->
         Just . Token Duration . duration TG.Second $ 30 + 60 * floor v
       _ -> Nothing
   }
@@ -185,11 +185,11 @@ ruleDurationHoursAndMinutes = Rule
     , Predicate isNatural
     ]
   , prod = \case
-      (Token Numeral h:
+      (Token Numeral NumeralData{TNumeral.value = Just h}:
        _:
-       Token Numeral m:
+       Token Numeral NumeralData{TNumeral.value = Just m}:
        _) -> Just . Token Duration . duration TG.Minute $
-         (floor $ TNumeral.value m) + 60 * floor (TNumeral.value h)
+         (floor $ m) + 60 * floor (h)
       _ -> Nothing
   }
 
@@ -216,7 +216,7 @@ ruleCompositeDurationCommasAnd = Rule
     , dimension Duration
     ]
   , prod = \case
-      (Token Numeral NumeralData{TNumeral.value = v}:
+      (Token Numeral NumeralData{TNumeral.value = Just v}:
        Token TimeGrain g:
        _:
        Token Duration dd@DurationData{TDuration.grain = dg}:
@@ -233,7 +233,7 @@ ruleCompositeDuration = Rule
     , dimension Duration
     ]
   , prod = \case
-      (Token Numeral NumeralData{TNumeral.value = v}:
+      (Token Numeral NumeralData{TNumeral.value = Just v}:
        Token TimeGrain g:
        Token Duration dd@DurationData{TDuration.grain = dg}:
        _) | g > dg -> Just . Token Duration $ duration g (floor v) <> dd
@@ -281,7 +281,7 @@ ruleDurationNumeralAndQuarterHour = Rule
     , Predicate $ isGrain TG.Hour
     ]
   , prod = \case
-      (Token Numeral NumeralData{TNumeral.value = h}:
+      (Token Numeral NumeralData{TNumeral.value = Just h}:
        Token RegexMatch (GroupMatch (match:_)):
        _) -> do
          q <- case Text.strip $ Text.toLower match of "a"     -> Just 1

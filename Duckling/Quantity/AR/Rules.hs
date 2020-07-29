@@ -103,12 +103,12 @@ ruleNumeralQuantities = map go quantities
     go :: (Text, String, TQuantity.Unit) -> Rule
     go (name, regexPattern, u) = Rule
       { name = name
-      , pattern = [ numberWith TNumeral.value (> 0), regex regexPattern ]
+      , pattern = [ Predicate isPositive, regex regexPattern ]
       , prod = \tokens -> case tokens of
-        (Token Numeral nd:
+        (Token Numeral TNumeral.NumeralData{TNumeral.value = Just nd}:
          Token RegexMatch (GroupMatch (match:_)):
          _) -> Just . Token Quantity $ quantity u value
-          where value = getValue opsMap match $ TNumeral.value nd
+          where value = getValue opsMap match $  nd
         _ -> Nothing
       }
 

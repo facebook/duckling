@@ -9,7 +9,7 @@
 {-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
 
-module Duckling.Volume.DE.Rules
+module Duckling.Volume.ZH.Rules
   ( rules ) where
 
 import Data.Text (Text)
@@ -25,9 +25,9 @@ import qualified Duckling.Volume.Types as TVolume
 import qualified Duckling.Numeral.Types as TNumeral
 
 volumes :: [(Text, String, TVolume.Unit)]
-volumes = [ ("<latent vol> ml", "m(l|illiliter[ns]?)", TVolume.Millilitre)
-          , ("<vol> hectoliters", "hektoliter[ns]?", TVolume.Hectolitre)
-          , ("<vol> liters", "l(iter[ns]?)?", TVolume.Litre)
+volumes = [ ("<latent vol> ml", "cc|ml|毫升", TVolume.Millilitre)
+          , ("<vol> liters", "l|L|公升|升", TVolume.Litre)
+          , ("<latent vol> gallon", "加侖", TVolume.Gallon)
           ]
 
 rulesVolumes :: [Rule]
@@ -42,38 +42,37 @@ rulesVolumes = map go volumes
       , prod = \_ -> Just . Token Volume $ unitOnly u
       }
 
-fractions :: [(Text, String, Double)]
-fractions = [ ("one","ein(e[ns])?", 1)
-            , ("half", "(ein(e[ns])? )?halb(e[rn])? ", 1/2)
-            , ("third", "(ein(e[ns])? )?dritttel ", 1/3)
-            , ("fourth", "(ein(e[ns])? )?viertel ", 1/4)
-            , ("fifth", "(ein(e[ns])? )?fünftel ", 1/5)
-            , ("tenth", "(ein(e[ns])? )?zehntel ", 1/10)
-            ]
+ruleUnitTeaspoon :: Rule
+ruleUnitTeaspoon = Rule
+  { name = "<numeral> teaspoon"
+  , pattern =
+    [ Predicate isPositive
+    , regex "茶匙"
+    ]
+    , prod = \case
+      (Token Numeral TNumeral.NumeralData{TNumeral.value = Just v}:_) ->
+        Just . Token Volume $ volume TVolume.Millilitre (5*v) 
+      _ -> Nothing
+  }
 
-rulesFractionalVolume :: [Rule]
-rulesFractionalVolume = map go fractions
-  where
-    go :: (Text, String, Double) -> Rule
-    go (name, regexPattern, f) = Rule
-      { name = name
-      , pattern =
-        [ regex regexPattern
-        , Predicate isUnitOnly
-        ]
-      , prod = \case
-        (_:
-         Token Volume TVolume.VolumeData{TVolume.unit = Just u}:
-         _) ->
-          Just . Token Volume $ volume u f
-        _ -> Nothing
-      }
+ruleUnitSoupspoon :: Rule
+ruleUnitSoupspoon = Rule
+  { name = "<numeral> soupspoon"
+  , pattern =
+    [ Predicate isPositive
+    , regex "湯匙"
+    ]
+    , prod = \case
+      (Token Numeral TNumeral.NumeralData{TNumeral.value = Just v}:_) ->
+        Just . Token Volume $ volume TVolume.Millilitre (15*v) 
+      _ -> Nothing
+  }
 
 rulePrecision :: Rule
 rulePrecision = Rule
   { name = "about <volume>"
   , pattern =
-    [ regex "\\~|(ganz )?genau|präzise|(in )?etwa|ungefähr|um( die)?|fast"
+    [ regex "\\~|大約|約"
     , dimension Volume
     ]
     , prod = \case
@@ -85,14 +84,12 @@ ruleIntervalBetweenNumeral :: Rule
 ruleIntervalBetweenNumeral = Rule
   { name = "between|from <numeral> and|to <volume>"
   , pattern =
-    [ regex "zwischen|von"
-    , Predicate isPositive
-    , regex "und|bis( zu)?"
+    [ Predicate isPositive
+    , regex "-|至|到|~"
     , Predicate isSimpleVolume
     ]
   , prod = \case
-      (_:
-       Token Numeral TNumeral.NumeralData{TNumeral.value = Just from}:
+      (Token Numeral TNumeral.NumeralData{TNumeral.value = Just from}:
        _:
        Token Volume TVolume.VolumeData{TVolume.value = Just to
                                   , TVolume.unit = Just u}:
@@ -105,14 +102,12 @@ ruleIntervalBetween :: Rule
 ruleIntervalBetween = Rule
   { name = "between|from <volume> to|and <volume>"
   , pattern =
-    [ regex "zwischen|von"
-    , Predicate isSimpleVolume
-    , regex "bis( zu)?|und"
+    [ Predicate isSimpleVolume
+    , regex "-|至|到|~"
     , Predicate isSimpleVolume
     ]
   , prod = \case
-      (_:
-       Token Volume TVolume.VolumeData{TVolume.value = Just from
+      (Token Volume TVolume.VolumeData{TVolume.value = Just from
                                   , TVolume.unit = Just u1}:
        _:
        Token Volume TVolume.VolumeData{TVolume.value = Just to
@@ -126,7 +121,7 @@ ruleIntervalMax :: Rule
 ruleIntervalMax = Rule
   { name = "at most <volume>"
   , pattern =
-    [ regex "unter|weniger( als)?|höchstens|nicht mehr als"
+    [ regex "最多"
     , Predicate isSimpleVolume
     ]
   , prod = \case
@@ -138,11 +133,26 @@ ruleIntervalMax = Rule
       _ -> Nothing
   }
 
+ruleIntervalMax2 :: Rule
+ruleIntervalMax2 = Rule
+  { name = "<volume> or below"
+  , pattern =
+    [ Predicate isSimpleVolume
+    , regex "(或)?以下"
+    ]
+  , prod = \case
+      (Token Volume TVolume.VolumeData{TVolume.value = Just to
+                                  , TVolume.unit = Just u}:
+       _) ->
+        Just . Token Volume . withMax to $ unitOnly u
+      _ -> Nothing
+  }
+
 ruleIntervalMin :: Rule
 ruleIntervalMin = Rule
   { name = "more than <volume>"
   , pattern =
-      [ regex "über|mindestens|wenigstens|mehr als|größer( als)?"
+      [ regex "至少|最少|起碼"
       , Predicate isSimpleVolume
       ]
     , prod = \case
@@ -154,12 +164,31 @@ ruleIntervalMin = Rule
         _ -> Nothing
     }
 
+ruleIntervalMin2 :: Rule
+ruleIntervalMin2 = Rule
+  { name = "<volume> or above"
+  , pattern =
+      [ Predicate isSimpleVolume
+      , regex "(或)?以上"
+      ]
+    , prod = \case
+        (Token Volume TVolume.VolumeData{TVolume.value = Just from
+                                    , TVolume.unit = Just u}:
+         _) ->
+          Just . Token Volume . withMin from $ unitOnly u
+        _ -> Nothing
+    }
+
+
 rules :: [Rule]
-rules = [ rulePrecision
+rules = [ ruleUnitTeaspoon
+        , ruleUnitSoupspoon
+        , rulePrecision
         , ruleIntervalBetweenNumeral
         , ruleIntervalBetween
         , ruleIntervalMax
+        , ruleIntervalMax2
         , ruleIntervalMin
+        , ruleIntervalMin2
         ]
         ++ rulesVolumes
-        ++ rulesFractionalVolume

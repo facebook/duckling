@@ -23,64 +23,64 @@ corpus = (testContext {locale = makeLocale SW Nothing}, testOptions, allExamples
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (NumeralValue 0)
+  [ examples (simple 0)
              [ "0"
              , "sufuri"
              , "zero"
              ]
-  , examples (NumeralValue 1)
+  , examples (simple 1)
              [ "moja"
              ]
-  , examples (NumeralValue 2)
+  , examples (simple 2)
              [ "mbili"
              ]
-  , examples (NumeralValue 3)
+  , examples (simple 3)
              [ "tatu"
              ]
-  , examples (NumeralValue 4)
+  , examples (simple 4)
              [ "nne"
              ]
-  , examples (NumeralValue 5)
+  , examples (simple 5)
              [ "tano"
              ]
-  , examples (NumeralValue 6)
+  , examples (simple 6)
              [ "sita"
              ]
-  , examples (NumeralValue 7)
+  , examples (simple 7)
              [ "saba"
              ]
-  , examples (NumeralValue 8)
+  , examples (simple 8)
              [ "nane"
              ]
-  , examples (NumeralValue 9)
+  , examples (simple 9)
              [ "tisa"
              ]
-  , examples (NumeralValue 10)
+  , examples (simple 10)
              [ "kumi"
              ]
-  , examples (NumeralValue 20)
+  , examples (simple 20)
              [ "ishirini"
              ]
-  , examples (NumeralValue 30)
+  , examples (simple 30)
              [ "thelathini"
              ]
-  , examples (NumeralValue 40)
+  , examples (simple 40)
              [ "arubaini"
              , "arobaini"
              ]
-  , examples (NumeralValue 50)
+  , examples (simple 50)
              [ "hamsini"
              ]
-  , examples (NumeralValue 60)
+  , examples (simple 60)
              [ "sitini"
              ]
-  , examples (NumeralValue 70)
+  , examples (simple 70)
              [ "sabini"
              ]
-  , examples (NumeralValue 80)
+  , examples (simple 80)
              [ "themanini"
              ]
-  , examples (NumeralValue 90)
+  , examples (simple 90)
              [ "tisini"
              ]
   ]

@@ -23,128 +23,128 @@ corpus = (testContext {locale = makeLocale IT Nothing}, testOptions, allExamples
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (NumeralValue 0)
+  [ examples (simple 0)
              [ "0"
              , "nulla"
              , "zero"
              ]
-  , examples (NumeralValue 1)
+  , examples (simple 1)
              [ "1"
              , "uno"
              , "Un"
              ]
-  , examples (NumeralValue 2)
+  , examples (simple 2)
              [ "2"
              , "due"
              ]
-  , examples (NumeralValue 3)
+  , examples (simple 3)
              [ "3"
              , "tre"
              ]
-  , examples (NumeralValue 4)
+  , examples (simple 4)
              [ "4"
              , "quattro"
              ]
-  , examples (NumeralValue 5)
+  , examples (simple 5)
              [ "5"
              , "cinque"
              ]
-  , examples (NumeralValue 6)
+  , examples (simple 6)
              [ "6"
              , "sei"
              ]
-  , examples (NumeralValue 7)
+  , examples (simple 7)
              [ "7"
              , "sette"
              ]
-  , examples (NumeralValue 8)
+  , examples (simple 8)
              [ "8"
              , "otto"
              ]
-  , examples (NumeralValue 9)
+  , examples (simple 9)
              [ "9"
              , "nove"
              ]
-  , examples (NumeralValue 10)
+  , examples (simple 10)
              [ "10"
              , "dieci"
              ]
-  , examples (NumeralValue 33)
+  , examples (simple 33)
              [ "33"
              , "trentatré"
              , "0033"
              ]
-  , examples (NumeralValue 11)
+  , examples (simple 11)
              [ "11"
              , "Undici"
              ]
-  , examples (NumeralValue 12)
+  , examples (simple 12)
              [ "12"
              , "dodici"
              ]
-  , examples (NumeralValue 13)
+  , examples (simple 13)
              [ "13"
              , "tredici"
              ]
-  , examples (NumeralValue 14)
+  , examples (simple 14)
              [ "14"
              , "quattordici"
              ]
-  , examples (NumeralValue 15)
+  , examples (simple 15)
              [ "15"
              , "quindici"
              ]
-  , examples (NumeralValue 16)
+  , examples (simple 16)
              [ "16"
              , "sedici"
              ]
-  , examples (NumeralValue 17)
+  , examples (simple 17)
              [ "17"
              , "diciassette"
              ]
-  , examples (NumeralValue 18)
+  , examples (simple 18)
              [ "18"
              , "diciotto"
              ]
-  , examples (NumeralValue 19)
+  , examples (simple 19)
              [ "19"
              , "diciannove"
              ]
-  , examples (NumeralValue 20)
+  , examples (simple 20)
              [ "20"
              , "venti"
              ]
-  , examples (NumeralValue 1.1)
+  , examples (simple 1.1)
              [ "1,1"
              , "1,10"
              , "01,10"
              ]
-  , examples (NumeralValue 0.77)
+  , examples (simple 0.77)
              [ "0,77"
              , ",77"
              ]
-  , examples (NumeralValue 100000)
+  , examples (simple 100000)
              [ "100.000"
              , "100000"
              , "100K"
              , "100k"
              , "100 000"
              ]
-  , examples (NumeralValue 3000000)
+  , examples (simple 3000000)
              [ "3M"
              , "3000K"
              , "3000000"
              , "3.000.000"
              , "3 000 000"
              ]
-  , examples (NumeralValue 1200000)
+  , examples (simple 1200000)
              [ "1.200.000"
              , "1200000"
              , "1,2M"
              , "1200K"
              , ",0012G"
              ]
-  , examples (NumeralValue (-1200000))
+  , examples (simple (-1200000))
              [ "- 1.200.000"
              , "-1200000"
              , "meno 1.200.000"
@@ -153,10 +153,10 @@ allExamples = concat
              , "-1200K"
              , "-,0012G"
              ]
-  , examples (NumeralValue 6.7)
+  , examples (simple 6.7)
              [ "6,7"
              ]
-  , examples (NumeralValue 6700.54)
+  , examples (simple 6700.54)
              [ "6.700,54"
              , "6 700,54"
              ]

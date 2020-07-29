@@ -176,8 +176,8 @@ ruleCompositeTens = Rule
     , numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = tens}:
-       Token Numeral NumeralData{TNumeral.value = units}:
+      (Token Numeral NumeralData{TNumeral.value = Just tens}:
+       Token Numeral NumeralData{TNumeral.value = Just units}:
        _) -> double $ tens + units
       _ -> Nothing
   }
@@ -191,9 +191,9 @@ ruleDecsAnd = Rule
     , numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = v1}:
+      (Token Numeral NumeralData{TNumeral.value = Just v1}:
        _:
-       Token Numeral NumeralData{TNumeral.value = v2}:
+       Token Numeral NumeralData{TNumeral.value = Just v2}:
        _) -> double $ v1 + v2
       _ -> Nothing
   }
@@ -206,8 +206,8 @@ ruleCompositeCents = Rule
     , numberBetween 1 100
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = hundreds}:
-       Token Numeral NumeralData{TNumeral.value = units}:
+      (Token Numeral NumeralData{TNumeral.value = Just hundreds}:
+       Token Numeral NumeralData{TNumeral.value = Just units}:
        _) -> double $ hundreds + units
       _ -> Nothing
   }
@@ -221,9 +221,9 @@ ruleCentsAnd = Rule
     , numberBetween 1 100
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = v1}:
+      (Token Numeral NumeralData{TNumeral.value = Just v1}:
        _:
-       Token Numeral NumeralData{TNumeral.value = v2}:
+       Token Numeral NumeralData{TNumeral.value = Just v2}:
        _) -> double $ v1 + v2
       _ -> Nothing
   }
@@ -236,8 +236,8 @@ ruleSkipHundreds = Rule
     , numberBetween 10 100
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = hundreds}:
-       Token Numeral NumeralData{TNumeral.value = rest}:
+      (Token Numeral NumeralData{TNumeral.value = Just hundreds}:
+       Token Numeral NumeralData{TNumeral.value = Just rest}:
        _) -> double $ hundreds*100 + rest
       _ -> Nothing
   }
@@ -251,8 +251,9 @@ ruleDotSpelledOut = Rule
     , Predicate $ not . hasGrain
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral nd1:_:Token Numeral nd2:_) ->
-        double $ TNumeral.value nd1 + decimalsToDouble (TNumeral.value nd2)
+      (Token Numeral NumeralData{TNumeral.value = Just nd1}:_:
+        Token Numeral NumeralData{TNumeral.value = Just nd2}:_) ->
+        double $ nd1 + decimalsToDouble (nd2)
       _ -> Nothing
   }
 
@@ -264,7 +265,8 @@ ruleLeadingDotSpelledOut = Rule
     , Predicate $ not . hasGrain
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Numeral nd:_) -> double . decimalsToDouble $ TNumeral.value nd
+      (_:Token Numeral NumeralData{TNumeral.value = Just nd}:_) ->
+       double . decimalsToDouble $ nd
       _ -> Nothing
   }
 
@@ -299,7 +301,7 @@ ruleSuffixes = Rule
     , regex "(k|m|g)(?=[\\W$€¢£]|$)"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = v}:
+      (Token Numeral NumeralData{TNumeral.value = Just v}:
        Token RegexMatch (GroupMatch (match:_)):
        _) -> case Text.toLower match of
         "k" -> double $ v * 1e3
@@ -317,7 +319,8 @@ ruleNegative = Rule
     , Predicate isPositive
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Numeral nd:_) -> double $ TNumeral.value nd * (-1)
+      (_:Token Numeral NumeralData{TNumeral.value = Just nd}:_) -> 
+       double $ nd * (-1)
       _ -> Nothing
   }
 
@@ -329,8 +332,8 @@ ruleSum = Rule
     , Predicate $ and . sequence [not . isMultipliable, isPositive]
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = val1, TNumeral.grain = Just g}:
-       Token Numeral NumeralData{TNumeral.value = val2}:
+      (Token Numeral NumeralData{TNumeral.value = Just val1, TNumeral.grain = Just g}:
+       Token Numeral NumeralData{TNumeral.value = Just val2}:
        _) | (10 ** fromIntegral g) > val2 -> double $ val1 + val2
       _ -> Nothing
   }
@@ -344,9 +347,9 @@ ruleSumAnd = Rule
     , Predicate $ and . sequence [not . isMultipliable, isPositive]
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = val1, TNumeral.grain = Just g}:
+      (Token Numeral NumeralData{TNumeral.value = Just val1, TNumeral.grain = Just g}:
        _:
-       Token Numeral NumeralData{TNumeral.value = val2}:
+       Token Numeral NumeralData{TNumeral.value = Just val2}:
        _) | (10 ** fromIntegral g) > val2 -> double $ val1 + val2
       _ -> Nothing
   }

@@ -39,7 +39,7 @@ ruleUnitAmount = Rule
     ]
   , prod = \case
       (Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.currency = c}:
-       Token Numeral NumeralData{TNumeral.value = v}:
+       Token Numeral NumeralData{TNumeral.value = Just v}:
        _) -> Just . Token AmountOfMoney . withValue v $ currencyOnly c
       _ -> Nothing
   }
@@ -78,7 +78,7 @@ ruleThousandShekel = Rule
       , regex "אש״?ח"
       ]
     , prod = \case
-        (Token Numeral NumeralData{TNumeral.value = v}:
+        (Token Numeral NumeralData{TNumeral.value = Just v}:
          _) -> Just . Token AmountOfMoney $ withValue (v*1000) $
                currencyOnly ILS
         _ -> Nothing
@@ -92,7 +92,7 @@ ruleMillionShekel = Rule
       , regex "מש״?ח"
       ]
     , prod = \case
-        (Token Numeral NumeralData{TNumeral.value = v}:
+        (Token Numeral NumeralData{TNumeral.value = Just v}:
          _) -> Just . Token AmountOfMoney $ withValue (v*1000000) $
                currencyOnly ILS
         _ -> Nothing
@@ -105,7 +105,7 @@ ruleAgura = Rule
       , regex "אגורות"
       ]
     , prod = \case
-        (Token Numeral NumeralData{TNumeral.value = v}:
+        (Token Numeral NumeralData{TNumeral.value = Just v}:
          _) -> Just . Token AmountOfMoney $ withValue (v*0.01) $
                currencyOnly ILS
         _ -> Nothing
@@ -123,7 +123,7 @@ ruleIntersect = Rule
       (Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just v,
                   TAmountOfMoney.currency = c}:
        _:
-       Token Numeral NumeralData { TNumeral.value = p }:
+       Token Numeral NumeralData { TNumeral.value = Just p}:
        _) -> Just . Token AmountOfMoney $ withValue (v + p) $ currencyOnly c
       _ -> Nothing
   }
@@ -221,7 +221,7 @@ ruleIntervalBetweenNumeral = Rule
       ]
   , prod = \case
       (_:
-       Token Numeral NumeralData { TNumeral.value = from }:
+       Token Numeral NumeralData { TNumeral.value = Just from }:
        _:
        Token AmountOfMoney AmountOfMoneyData { TAmountOfMoney.value = Just to,
                   TAmountOfMoney.currency = c }:
@@ -261,7 +261,7 @@ ruleIntervalNumeralDash = Rule
     , Predicate isSimpleAmountOfMoney
     ]
   , prod = \case
-      (Token Numeral NumeralData { TNumeral.value = from }:
+      (Token Numeral NumeralData { TNumeral.value = Just from }:
        _:
        Token AmountOfMoney AmountOfMoneyData { TAmountOfMoney.value = Just to,
                   TAmountOfMoney.currency = c }:

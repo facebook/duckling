@@ -23,82 +23,82 @@ corpus = (testContext {locale = makeLocale NB Nothing}, testOptions, allExamples
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (NumeralValue 0)
+  [ examples (simple 0)
              [ "0"
              , "null"
              ]
-  , examples (NumeralValue 1)
+  , examples (simple 1)
              [ "1"
              , "én"
              , "en"
              , "Ett"
              ]
-  , examples (NumeralValue 2)
+  , examples (simple 2)
              [ "2"
              , "to"
              , "et par"
              ]
-  , examples (NumeralValue 7)
+  , examples (simple 7)
              [ "7"
              , "syv"
              , "sju"
              ]
-  , examples (NumeralValue 14)
+  , examples (simple 14)
              [ "14"
              , "fjorten"
              ]
-  , examples (NumeralValue 16)
+  , examples (simple 16)
              [ "16"
              , "seksten"
              ]
-  , examples (NumeralValue 17)
+  , examples (simple 17)
              [ "17"
              , "sytten"
              , "søtten"
              ]
-  , examples (NumeralValue 18)
+  , examples (simple 18)
              [ "18"
              , "atten"
              ]
-  , examples (NumeralValue 20)
+  , examples (simple 20)
              [ "20"
              , "tyve"
              , "Tjue"
              ]
-  , examples (NumeralValue 30)
+  , examples (simple 30)
              [ "30"
              , "tretti"
              , "tredve"
              ]
-  , examples (NumeralValue 70)
+  , examples (simple 70)
              [ "70"
              , "søtti"
              , "sytti"
              ]
-  , examples (NumeralValue 1.1)
+  , examples (simple 1.1)
              [ "1,1"
              , "1,10"
              , "01,10"
              ]
-  , examples (NumeralValue 0.77)
+  , examples (simple 0.77)
              [ "0,77"
              , ",77"
              ]
-  , examples (NumeralValue 100000)
+  , examples (simple 100000)
              [ "100.000"
              , "100000"
              , "100K"
              , "100k"
              , "100 000"
              ]
-  , examples (NumeralValue 3000000)
+  , examples (simple 3000000)
              [ "3M"
              , "3000K"
              , "3000000"
              , "3.000.000"
              , "3 000 000"
              ]
-  , examples (NumeralValue 1200000)
+  , examples (simple 1200000)
              [ "1.200.000"
              , "1200000"
              , "1,2M"
@@ -106,7 +106,7 @@ allExamples = concat
              , ",0012G"
              , "1 200 000"
              ]
-  , examples (NumeralValue (-1200000))
+  , examples (simple (-1200000))
              [ "- 1.200.000"
              , "-1200000"
              , "minus 1.200.000"
@@ -116,311 +116,311 @@ allExamples = concat
              , "-,0012G"
              , "-1 200 000"
              ]
-  , examples (NumeralValue 5000)
+  , examples (simple 5000)
              [ "5 tusen"
              , "fem tusen"
              , "5 000"
              ]
-  , examples (NumeralValue 100)
+  , examples (simple 100)
              [ "hundre"
              ]
-  , examples (NumeralValue 5020)
+  , examples (simple 5020)
              [ "fem tusen og tjue"
              ]
-  , examples (NumeralValue 1e9)
+  , examples (simple 1e9)
              [ "en milliard"
              ]
-  , examples (NumeralValue 1e12)
+  , examples (simple 1e12)
              [ "en billion"
              ]
-  , examples (NumeralValue 1e15)
+  , examples (simple 1e15)
              [ "en billiard"
              ]
-  , examples (NumeralValue 1e18)
+  , examples (simple 1e18)
              [ "en trillion"
              ]
-  , examples (NumeralValue 1e21)
+  , examples (simple 1e21)
              [ "en trilliard"
              ]
-  , examples (NumeralValue 1e24)
+  , examples (simple 1e24)
              [ "en kvadrillion"
              ]
-  , examples (NumeralValue 1e27)
+  , examples (simple 1e27)
              [ "en kvadrilliard"
              ]
-  , examples (NumeralValue 6e10)
+  , examples (simple 6e10)
              [ "seksti milliarder"
              , "60 milliarder"
              ]
-  , examples (NumeralValue 3e12)
+  , examples (simple 3e12)
              [ "tre billioner"
              , "3 billioner"
              ]
-  , examples (NumeralValue 4e17)
+  , examples (simple 4e17)
              [ "fire hundre billiarder"
              , "400 billiarder"
              ]
-  , examples (NumeralValue 2e18)
+  , examples (simple 2e18)
              [ "to trillioner"
              , "2 trillioner"
              ]
-  , examples (NumeralValue 1.8e22)
+  , examples (simple 1.8e22)
              [ "atten trilliarder"
              , "18 trilliarder"
              ]
-  , examples (NumeralValue 1.8e22)
+  , examples (simple 1.8e22)
              [ "atten trilliarder"
              , "18 trilliarder"
              ]
-  , examples (NumeralValue 4.11e26)
+  , examples (simple 4.11e26)
              [ "fire hundre og elleve kvadrillioner"
              , "411 kvadrillioner"
              ]
-  , examples (NumeralValue 9e27)
+  , examples (simple 9e27)
              [ "ni kvadrilliarder"
              , "9 kvadrilliarder"
              ]
-  , examples (NumeralValue 21)
+  , examples (simple 21)
              [ "tjueen"
              , "tjueén"
              ]
-  , examples (NumeralValue 22)
+  , examples (simple 22)
              [ "tjueto"
              ]
-  , examples (NumeralValue 23)
+  , examples (simple 23)
              [ "tjuetre"
              ]
-  , examples (NumeralValue 24)
+  , examples (simple 24)
              [ "tjuefire"
              ]
-  , examples (NumeralValue 25)
+  , examples (simple 25)
              [ "tjuefem"
              ]
-  , examples (NumeralValue 26)
+  , examples (simple 26)
              [ "tjueseks"
              ]
-  , examples (NumeralValue 27)
+  , examples (simple 27)
              [ "tjuesju"
              , "tjuesyv"
              ]
-  , examples (NumeralValue 28)
+  , examples (simple 28)
              [ "tjueåtte"
              ]
-  , examples (NumeralValue 29)
+  , examples (simple 29)
              [ "tjueni"
              ]
-  , examples (NumeralValue 31)
+  , examples (simple 31)
              [ "trettien"
              , "trettién"
              ]
-  , examples (NumeralValue 32)
+  , examples (simple 32)
              [ "trettito"
              ]
-  , examples (NumeralValue 33)
+  , examples (simple 33)
              [ "trettitre"
              ]
-  , examples (NumeralValue 34)
+  , examples (simple 34)
              [ "trettifire"
              ]
-  , examples (NumeralValue 35)
+  , examples (simple 35)
              [ "trettifem"
              ]
-  , examples (NumeralValue 36)
+  , examples (simple 36)
              [ "trettiseks"
              ]
-  , examples (NumeralValue 37)
+  , examples (simple 37)
              [ "trettisju"
              , "trettisyv"
              ]
-  , examples (NumeralValue 38)
+  , examples (simple 38)
              [ "trettiåtte"
              ]
-  , examples (NumeralValue 39)
+  , examples (simple 39)
              [ "trettini"
              ]
-  , examples (NumeralValue 41)
+  , examples (simple 41)
              [ "førtien"
              , "førtién"
              ]
-  , examples (NumeralValue 42)
+  , examples (simple 42)
              [ "førtito"
              ]
-  , examples (NumeralValue 43)
+  , examples (simple 43)
              [ "førtitre"
              ]
-  , examples (NumeralValue 44)
+  , examples (simple 44)
              [ "førtifire"
              ]
-  , examples (NumeralValue 45)
+  , examples (simple 45)
              [ "førtifem"
              ]
-  , examples (NumeralValue 46)
+  , examples (simple 46)
              [ "førtiseks"
              ]
-  , examples (NumeralValue 47)
+  , examples (simple 47)
              [ "førtisju"
              , "førtisyv"
              ]
-  , examples (NumeralValue 48)
+  , examples (simple 48)
              [ "førtiåtte"
              ]
-  , examples (NumeralValue 49)
+  , examples (simple 49)
              [ "førtini"
              ]
-  , examples (NumeralValue 51)
+  , examples (simple 51)
              [ "femtien"
              , "femtién"
              ]
-  , examples (NumeralValue 52)
+  , examples (simple 52)
              [ "femtito"
              ]
-  , examples (NumeralValue 53)
+  , examples (simple 53)
              [ "femtitre"
              ]
-  , examples (NumeralValue 54)
+  , examples (simple 54)
              [ "femtifire"
              ]
-  , examples (NumeralValue 55)
+  , examples (simple 55)
              [ "femtifem"
              ]
-  , examples (NumeralValue 56)
+  , examples (simple 56)
              [ "femtiseks"
              ]
-  , examples (NumeralValue 57)
+  , examples (simple 57)
              [ "femtisju"
              , "femtisyv"
              ]
-  , examples (NumeralValue 58)
+  , examples (simple 58)
              [ "femtiåtte"
              ]
-  , examples (NumeralValue 59)
+  , examples (simple 59)
              [ "femtini"
              ]
-  , examples (NumeralValue 61)
+  , examples (simple 61)
              [ "sekstien"
              , "sekstién"
              ]
-  , examples (NumeralValue 62)
+  , examples (simple 62)
              [ "sekstito"
              ]
-  , examples (NumeralValue 63)
+  , examples (simple 63)
              [ "sekstitre"
              ]
-  , examples (NumeralValue 64)
+  , examples (simple 64)
              [ "sekstifire"
              ]
-  , examples (NumeralValue 65)
+  , examples (simple 65)
              [ "sekstifem"
              ]
-  , examples (NumeralValue 66)
+  , examples (simple 66)
              [ "sekstiseks"
              ]
-  , examples (NumeralValue 67)
+  , examples (simple 67)
              [ "sekstisju"
              , "sekstisyv"
              ]
-  , examples (NumeralValue 68)
+  , examples (simple 68)
              [ "sekstiåtte"
              ]
-  , examples (NumeralValue 69)
+  , examples (simple 69)
              [ "sekstini"
              ]
-  , examples (NumeralValue 71)
+  , examples (simple 71)
              [ "syttien"
              , "søttien"
              , "søttién"
              , "søttién"
              ]
-  , examples (NumeralValue 72)
+  , examples (simple 72)
              [ "syttito"
              , "søttito"
              ]
-  , examples (NumeralValue 73)
+  , examples (simple 73)
              [ "syttitre"
              , "søttitre"
              ]
-  , examples (NumeralValue 74)
+  , examples (simple 74)
              [ "syttifire"
              , "søttifire"
              ]
-  , examples (NumeralValue 75)
+  , examples (simple 75)
              [ "syttifem"
              , "søttifem"
              ]
-  , examples (NumeralValue 76)
+  , examples (simple 76)
              [ "syttiseks"
              , "søttiseks"
              ]
-  , examples (NumeralValue 77)
+  , examples (simple 77)
              [ "syttisju"
              , "syttisju"
              , "søttisyv"
              , "søttisyv"
              ]
-  , examples (NumeralValue 78)
+  , examples (simple 78)
              [ "søttiåtte"
              , "søttiåtte"
              ]
-  , examples (NumeralValue 79)
+  , examples (simple 79)
              [ "søttini"
              , "søttini"
              ]
-  , examples (NumeralValue 81)
+  , examples (simple 81)
              [ "åttien"
              , "åttién"
              ]
-  , examples (NumeralValue 82)
+  , examples (simple 82)
              [ "åttito"
              ]
-  , examples (NumeralValue 83)
+  , examples (simple 83)
              [ "åttitre"
              ]
-  , examples (NumeralValue 84)
+  , examples (simple 84)
              [ "åttifire"
              ]
-  , examples (NumeralValue 85)
+  , examples (simple 85)
              [ "åttifem"
              ]
-  , examples (NumeralValue 86)
+  , examples (simple 86)
              [ "åttiseks"
              ]
-  , examples (NumeralValue 87)
+  , examples (simple 87)
              [ "åttisju"
              , "åttisyv"
              ]
-  , examples (NumeralValue 88)
+  , examples (simple 88)
              [ "åttiåtte"
              ]
-  , examples (NumeralValue 89)
+  , examples (simple 89)
              [ "åttini"
              ]
-  , examples (NumeralValue 91)
+  , examples (simple 91)
              [ "nittien"
              , "nittién"
              ]
-  , examples (NumeralValue 92)
+  , examples (simple 92)
              [ "nittito"
              ]
-  , examples (NumeralValue 93)
+  , examples (simple 93)
              [ "nittitre"
              ]
-  , examples (NumeralValue 94)
+  , examples (simple 94)
              [ "nittifire"
              ]
-  , examples (NumeralValue 95)
+  , examples (simple 95)
              [ "nittifem"
              ]
-  , examples (NumeralValue 96)
+  , examples (simple 96)
              [ "nittiseks"
              ]
-  , examples (NumeralValue 97)
+  , examples (simple 97)
              [ "nittisju"
              , "nittisyv"
              ]
-  , examples (NumeralValue 98)
+  , examples (simple 98)
              [ "nittiåtte"
              ]
-  , examples (NumeralValue 99)
+  , examples (simple 99)
              [ "nittini"
              ]
   ]

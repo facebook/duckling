@@ -152,9 +152,9 @@ ruleCompositeTens = Rule
     , numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = tens}:
+      (Token Numeral NumeralData{TNumeral.value = Just tens}:
        _:
-       Token Numeral NumeralData{TNumeral.value = units}:
+       Token Numeral NumeralData{TNumeral.value = Just units}:
        _) -> double $ tens + units
       _ -> Nothing
   }
@@ -210,8 +210,9 @@ ruleDotSpelledOut = Rule
     , Predicate $ not . hasGrain
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral nd1:_:Token Numeral nd2:_) ->
-        double $ TNumeral.value nd1 + decimalsToDouble (TNumeral.value nd2)
+      (Token Numeral NumeralData{TNumeral.value = Just nd1}:_:
+        Token Numeral NumeralData{TNumeral.value = Just nd2}:_) ->
+        double $ nd1 + decimalsToDouble (nd2)
       _ -> Nothing
   }
 
@@ -223,7 +224,8 @@ ruleLeadingDotSpelledOut = Rule
     , Predicate $ not . hasGrain
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Numeral nd:_) -> double . decimalsToDouble $ TNumeral.value nd
+      (_:Token Numeral NumeralData{TNumeral.value = Just nd}:_) -> 
+       double . decimalsToDouble $ nd
       _ -> Nothing
   }
 
@@ -258,13 +260,13 @@ ruleSuffixes = Rule
     , regex "(k|m|g)(?=[\\W$€¢£]|$)"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral nd : Token RegexMatch (GroupMatch (match : _)):_) -> do
+      (Token Numeral NumeralData{TNumeral.value = Just nd} : Token RegexMatch (GroupMatch (match : _)):_) -> do
         x <- case Text.toLower match of
           "k" -> Just 1e3
           "m" -> Just 1e6
           "g" -> Just 1e9
           _ -> Nothing
-        double $ TNumeral.value nd * x
+        double $ nd * x
       _ -> Nothing
   }
 
@@ -276,7 +278,8 @@ ruleNegative = Rule
     , Predicate isPositive
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Numeral nd:_) -> double (TNumeral.value nd * (-1))
+      (_:Token Numeral NumeralData{TNumeral.value = Just nd}:_) -> 
+       double (nd * (-1))
       _ -> Nothing
   }
 
@@ -288,8 +291,8 @@ ruleSum = Rule
     , Predicate $ and . sequence [not . isMultipliable, isPositive]
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = val1, TNumeral.grain = Just g}:
-       Token Numeral NumeralData{TNumeral.value = val2}:
+      (Token Numeral NumeralData{TNumeral.value = Just val1, TNumeral.grain = Just g}:
+       Token Numeral NumeralData{TNumeral.value = Just val2}:
        _) | (10 ** fromIntegral g) > val2 -> double $ val1 + val2
       _ -> Nothing
   }
@@ -303,9 +306,9 @@ ruleSumAnd = Rule
     , Predicate $ and . sequence [not . isMultipliable, isPositive]
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = val1, TNumeral.grain = Just g}:
+      (Token Numeral NumeralData{TNumeral.value = Just val1, TNumeral.grain = Just g}:
        _:
-       Token Numeral NumeralData{TNumeral.value = val2}:
+       Token Numeral NumeralData{TNumeral.value = Just val2}:
        _) | (10 ** fromIntegral g) > val2 -> double $ val1 + val2
       _ -> Nothing
   }
@@ -319,6 +322,118 @@ ruleMultiply = Rule
     ]
   , prod = \tokens -> case tokens of
       (token1:token2:_) -> multiply token1 token2
+      _ -> Nothing
+  }
+
+rulePrecision :: Rule
+rulePrecision = Rule
+  { name = "about|exactly <numeral>"
+  , pattern =
+    [ regex "exactly|precisely|about|approx(\\.|imately)?|close to| near( to)?|around|almost"
+    , dimension Numeral
+    ]
+  , prod = \tokens -> case tokens of
+      (_:token:_) -> Just token
+      _ -> Nothing
+  }
+
+ruleIntervalBetweenNumeral :: Rule
+ruleIntervalBetweenNumeral = Rule
+  { name = "between|from <numeral> to|and <numeral>"
+  , pattern =
+    [ regex "between|from"
+    , Predicate isPositive
+    , regex "to|and"
+    , Predicate isSimpleNumeral
+    ]
+  , prod = \tokens -> case tokens of
+      (_:
+       Token Numeral NumeralData{TNumeral.value = Just from}:
+       _:
+       Token Numeral NumeralData{TNumeral.value= Just to}:
+       _) | from < to ->
+        Just . Token Numeral $ withIntervalNum (from, to)
+      _ -> Nothing
+  }
+
+ruleIntervalBetween :: Rule
+ruleIntervalBetween = Rule
+  { name = "between|from <numeral> to|and <numeral>"
+  , pattern =
+    [ regex "between|from"
+    , Predicate isSimpleNumeral
+    , regex "to|and"
+    , Predicate isSimpleNumeral
+    ]
+  , prod = \tokens -> case tokens of
+      (_:
+       Token Numeral NumeralData{TNumeral.value = Just from}:
+       _:
+       Token Numeral NumeralData{TNumeral.value = Just to}:
+       _) | from < to ->
+        Just . Token Numeral $ withIntervalNum (from, to)
+      _ -> Nothing
+  }
+
+ruleIntervalNumeralDash :: Rule
+ruleIntervalNumeralDash = Rule
+  { name = "<numeral> - <numeral>"
+  , pattern =
+    [ Predicate isPositive
+    , regex "-"
+    , Predicate isSimpleNumeral
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Numeral NumeralData{TNumeral.value = Just from}:
+       _:
+       Token Numeral NumeralData{TNumeral.value = Just to}:
+       _) | from < to ->
+         Just . Token Numeral $ withIntervalNum (from, to)
+      _ -> Nothing
+  }
+
+ruleIntervalDash :: Rule
+ruleIntervalDash = Rule
+  { name = "<numeral> - <numeral>"
+  , pattern =
+    [ Predicate isSimpleNumeral
+    , regex "-"
+    , Predicate isSimpleNumeral
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Numeral NumeralData{TNumeral.value = Just from}:
+       _:
+       Token Numeral NumeralData{TNumeral.value = Just to}:
+       _) | from < to ->
+         Just . Token Numeral $ withIntervalNum (from, to)
+      _ -> Nothing
+  }
+
+ruleIntervalMax :: Rule
+ruleIntervalMax = Rule
+  { name = "under/less/lower/no more than <numeral>"
+  , pattern =
+    [ regex "under|(less|lower|not? more) than"
+    , Predicate isSimpleNumeral
+    ]
+  , prod = \tokens -> case tokens of
+      (_:
+       Token Numeral NumeralData{TNumeral.value=Just to}:
+       _) -> Just . Token Numeral $ withMaxNum to
+      _ -> Nothing
+  }
+
+ruleIntervalMin :: Rule
+ruleIntervalMin = Rule
+  { name = "over/above/at least/more than <numeral>"
+  , pattern =
+    [ regex "over|above|at least|more than"
+    , Predicate isSimpleNumeral
+    ]
+  , prod = \tokens -> case tokens of
+      (_:
+       Token Numeral NumeralData{TNumeral.value=Just to}:
+       _) -> Just . Token Numeral $ withMinNum to
       _ -> Nothing
   }
 
@@ -340,4 +455,11 @@ rules =
   , ruleSumAnd
   , ruleMultiply
   , ruleDozen
+  , rulePrecision
+  , ruleIntervalBetweenNumeral
+  , ruleIntervalBetween
+  , ruleIntervalNumeralDash
+  , ruleIntervalDash
+  , ruleIntervalMax
+  , ruleIntervalMin
   ]

@@ -35,7 +35,7 @@ ruleUnitAmount = Rule
     ]
   , prod = \case
       (Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.currency = c}:
-       Token Numeral NumeralData{TNumeral.value = v}:
+       Token Numeral NumeralData{TNumeral.value = Just v}:
        _) -> Just . Token AmountOfMoney . withValue v $ currencyOnly c
       _ -> Nothing
   }
@@ -51,7 +51,7 @@ ruleIntersectAndNumeral = Rule
   , prod = \tokens -> case tokens of
       (Token AmountOfMoney fd:
        _:
-       Token Numeral NumeralData{TNumeral.value = c}:
+       Token Numeral NumeralData{TNumeral.value = Just c}:
        _) -> Just . Token AmountOfMoney $ withCents c fd
       _ -> Nothing
   }
@@ -102,7 +102,7 @@ ruleIntervalBetweenNumeral = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:
-       Token Numeral NumeralData{TNumeral.value = from}:
+       Token Numeral NumeralData{TNumeral.value = Just from}:
        _:
        Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just to,
                   TAmountOfMoney.currency = c}:
@@ -147,7 +147,7 @@ ruleIntervalNumeralDash = Rule
     , Predicate isSimpleAmountOfMoney
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = from}:
+      (Token Numeral NumeralData{TNumeral.value = Just from}:
        _:
        Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just to,
                   TAmountOfMoney.currency = c}:
@@ -239,7 +239,7 @@ ruleIntersect = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token AmountOfMoney fd:
-       Token Numeral NumeralData{TNumeral.value = c}:
+       Token Numeral NumeralData{TNumeral.value = Just c}:
        _) -> Just . Token AmountOfMoney $ withCents c fd
       _ -> Nothing
   }

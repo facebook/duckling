@@ -478,6 +478,27 @@ ruleYearNumericWithYearSymbol = Rule
       _ -> Nothing
   }
 
+ruleYearNumericWithYearSymbol2 :: Rule
+ruleYearNumericWithYearSymbol2 = Rule
+  { name = "xxxx year"
+  , pattern =
+    [ dimension Numeral
+    , dimension Numeral
+    , dimension Numeral
+    , dimension Numeral
+    , regex "年"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Numeral NumeralData{TNumeral.value = Just y1}:
+        Token Numeral NumeralData{TNumeral.value = Just y2}:
+        Token Numeral NumeralData{TNumeral.value = Just y3}:
+        Token Numeral NumeralData{TNumeral.value = Just y4}:
+        _) -> do
+        let v = floor(y1*1000 + y2*100 + y3*10 + y4)
+        tt $ year v
+      _ -> Nothing
+  }
+
 ruleDurationAgo :: Rule
 ruleDurationAgo = Rule
   { name = "<duration> ago"

@@ -18,7 +18,7 @@ import Prelude
 
 import Duckling.Dimensions.Types
 import Duckling.Duration.Helpers
-import Duckling.Numeral.Helpers (numberWith)
+import Duckling.Numeral.Helpers (numberWith,isPositive)
 import Duckling.Types
 import qualified Duckling.Numeral.Types as TNumeral
 import qualified Duckling.TimeGrain.Types as TG
@@ -78,15 +78,15 @@ ruleIntegerDeUnitofduration :: Rule
 ruleIntegerDeUnitofduration = Rule
   { name = "<integer> <unit-of-duration>"
   , pattern =
-    [ numberWith TNumeral.value (>= 20)
+    [ Predicate isPositive
     , regex "de"
     , dimension TimeGrain
     ]
   , prod = \case
-      (Token Numeral TNumeral.NumeralData{TNumeral.value = v}:
+      (Token Numeral TNumeral.NumeralData{TNumeral.value = Just v}:
        _:
        Token TimeGrain grain:
-       _) -> Just . Token Duration . duration grain $ floor v
+       _) -> if v >= 20 then Just . Token Duration . duration grain $ floor v else Nothing
       _ -> Nothing
   }
 

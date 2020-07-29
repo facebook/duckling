@@ -29,7 +29,7 @@ ruleNumeralsPrefixWithNegativeOrMinus = Rule
   { name = "numbers prefix with -, negative or minus"
   , pattern = [regex "-|menos", Predicate isPositive]
   , prod = \tokens -> case tokens of
-      (_ : Token Numeral NumeralData { TNumeral.value = v } : _) ->
+      (_ : Token Numeral NumeralData { TNumeral.value = Just v } : _) ->
         double $ v * (-1)
       _ -> Nothing
   }
@@ -141,9 +141,9 @@ ruleNumeral5 = Rule
 ruleNumeral3 :: Rule
 ruleNumeral3 = Rule
   { name = "number (16..19)"
-  , pattern = [numberWith TNumeral.value (== 10), regex "y", numberBetween 6 10]
+  , pattern = [oneOf[10], regex "y", numberBetween 6 10]
   , prod = \tokens -> case tokens of
-      (_ : _ : Token Numeral NumeralData { TNumeral.value = v } : _) ->
+      (_ : _ : Token Numeral NumeralData { TNumeral.value = Just v } : _) ->
         double $ 10 + v
       _ -> Nothing
   }
@@ -153,7 +153,7 @@ ruleNumeralsSuffixesKMG = Rule
   { name = "numbers suffixes (K, M, G)"
   , pattern = [dimension Numeral, regex "([kmg])(?=[\\W\\$€]|$)"]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData { TNumeral.value = v } : Token RegexMatch (GroupMatch (match : _)) : _) ->
+      (Token Numeral NumeralData { TNumeral.value = Just v } : Token RegexMatch (GroupMatch (match : _)) : _) ->
         case Text.toLower match of
           "k" -> double $ v * 1e3
           "m" -> double $ v * 1e6
@@ -198,7 +198,7 @@ ruleNumeral4 = Rule
   , pattern =
       [oneOf [70, 20, 60, 50, 40, 90, 30, 80], regex "y", numberBetween 1 10]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData { TNumeral.value = v1 } : _ : Token Numeral NumeralData { TNumeral.value = v2 } : _) ->
+      (Token Numeral NumeralData { TNumeral.value = Just v1 } : _ : Token Numeral NumeralData { TNumeral.value = Just v2 } : _) ->
         double $ v1 + v2
       _ -> Nothing
   }
@@ -208,11 +208,11 @@ ruleNumerals = Rule
   { name = "numbers 200..999"
   , pattern =
       [ numberBetween 2 10
-      , numberWith TNumeral.value (== 100)
+      , oneOf [100]
       , numberBetween 0 100
       ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData { TNumeral.value = v1 } : _ : Token Numeral NumeralData { TNumeral.value = v2 } : _) ->
+      (Token Numeral NumeralData { TNumeral.value = Just v1 } : _ : Token Numeral NumeralData { TNumeral.value = Just v2 } : _) ->
         double $ 100 * v1 + v2
       _ -> Nothing
   }
@@ -222,7 +222,7 @@ ruleNumeralDotNumeral = Rule
   { name = "number dot number"
   , pattern = [dimension Numeral, regex "punto", Predicate $ not . hasGrain]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData { TNumeral.value = v1 } : _ : Token Numeral NumeralData { TNumeral.value = v2 } : _) ->
+      (Token Numeral NumeralData { TNumeral.value = Just v1 } : _ : Token Numeral NumeralData { TNumeral.value = Just v2 } : _) ->
         double $ v1 + decimalsToDouble v2
       _ -> Nothing
   }
@@ -239,7 +239,7 @@ ruleBelowTenWithTwoDigits = Rule
   , prod = \case
       (
         _:
-        Token Numeral NumeralData { TNumeral.value = v }:
+        Token Numeral NumeralData { TNumeral.value = Just v }:
         _
         ) -> double v
       _ -> Nothing

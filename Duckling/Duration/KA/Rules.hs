@@ -40,7 +40,7 @@ ruleCompositeDuration = Rule
     , dimension Duration
     ]
   , prod = \case
-      (Token Numeral NumeralData{TNumeral.value = v}:
+      (Token Numeral NumeralData{TNumeral.value = Just v}:
        Token TimeGrain g:_:
        Token Duration dd@DurationData{TDuration.grain = dg}:
        _) | g > dg -> Just . Token Duration $ duration g (floor v) <> dd
@@ -70,7 +70,7 @@ ruleDurationYear = Rule
     , regex "წელიწად(ის)?(ი)?(ში)?|წლი(ის)?(ში)?|წელშ?ი"
     ]
   , prod = \case
-      (Token Numeral NumeralData{TNumeral.value = v}:_) ->
+      (Token Numeral NumeralData{TNumeral.value = Just v}:_) ->
         Just . Token Duration . duration TG.Month $ 12 * floor v
       _ -> Nothing
   }
@@ -83,7 +83,7 @@ ruleDurationAndHalfYear = Rule
     , regex "წელიწადნახევა?(რის)?(რი)?(რში)?|წლინახევრ(ის)?(არში)?"
     ]
   , prod = \case
-      (Token Numeral NumeralData{TNumeral.value = v}:_) ->
+      (Token Numeral NumeralData{TNumeral.value = Just v}:_) ->
         Just . Token Duration . duration TG.Month $ 6 + 12 * floor v
       _ -> Nothing
   }
@@ -105,7 +105,7 @@ ruleDurationAndHalfMonth = Rule
     , regex "თვენახევა?(რის)?(რი)?(რში)?"
     ]
   , prod = \case
-      (Token Numeral NumeralData{TNumeral.value = v}:_) ->
+      (Token Numeral NumeralData{TNumeral.value = Just v}:_) ->
         Just . Token Duration . duration TG.Day $ 15 + 30 * floor v
       _ -> Nothing
   }
@@ -127,7 +127,7 @@ ruleDurationAndHalfWeek = Rule
     , regex "თვენახევა?(რის)?(რი)?(რში)?"
     ]
   , prod = \case
-      (Token Numeral NumeralData{TNumeral.value = v}:_) ->
+      (Token Numeral NumeralData{TNumeral.value = Just v}:_) ->
         Just . Token Duration . duration TG.Day $ 3 + 7 * floor v
       _ -> Nothing
   }

@@ -24,12 +24,17 @@ module Duckling.Numeral.Helpers
   , numberWith
   , numeralMapEL
   , oneOf
+  , isSimpleNumeral
+  , isNumeralInterval
   , parseDouble
   , parseInt
   , parseInteger
   , withGrain
   , withMultipliable
   , parseDecimal
+  , withIntervalNum
+  , withMinNum
+  , withMaxNum
   ) where
 
 import Data.HashMap.Strict (HashMap)
@@ -104,17 +109,17 @@ numberWith f pred = Predicate $ \x ->
 numberBetween :: Double -> Double -> PatternItem
 numberBetween low up = Predicate $ \x ->
   case x of
-    (Token Numeral NumeralData {value = v, multipliable = False}) ->
+    (Token Numeral NumeralData {value = Just v, multipliable = False}) ->
       low <= v && v < up
     _ -> False
 
 isNatural :: Predicate
-isNatural (Token Numeral NumeralData {value = v}) =
+isNatural (Token Numeral NumeralData {value = Just v}) =
   isInteger v && v > 0
 isNatural _ = False
 
 isPositive :: Predicate
-isPositive (Token Numeral NumeralData{value = v}) = v >= 0
+isPositive (Token Numeral NumeralData{value = Just v}) = v >= 0
 isPositive _ = False
 
 isMultipliable :: Predicate
@@ -128,8 +133,18 @@ hasGrain _ = False
 oneOf :: [Double] -> PatternItem
 oneOf vs = Predicate $ \x ->
   case x of
-    (Token Numeral NumeralData {value = v}) -> elem v vs
+    (Token Numeral NumeralData {value = Just v}) -> elem v vs
     _ -> False
+
+isSimpleNumeral :: Predicate
+isSimpleNumeral (Token Numeral NumeralData
+  {value = Just _, minValue = Nothing, maxValue = Nothing}) = True
+isSimpleNumeral _ = False
+
+isNumeralInterval :: Predicate
+isNumeralInterval (Token Numeral NumeralData
+  {value = Nothing, minValue = Just _, maxValue = Just _}) = True
+isNumeralInterval _ = False
 
 -- -----------------------------------------------------------------
 -- Production
@@ -151,10 +166,12 @@ notOkForAnyTime _ = Nothing
 
 double :: Double -> Maybe Token
 double x = Just . Token Numeral $ NumeralData
-  { value = x
+  { value = Just x
   , grain = Nothing
   , multipliable = False
   , okForAnyTime = True
+  , minValue = Nothing
+  , maxValue = Nothing
   }
 
 integer :: Integer -> Maybe Token
@@ -162,8 +179,8 @@ integer = double . fromIntegral
 
 multiply :: Token -> Token -> Maybe Token
 multiply
-  (Token Numeral NumeralData{value = v1})
-  (Token Numeral NumeralData{value = v2, grain = g}) = case g of
+  (Token Numeral NumeralData{value = Just v1})
+  (Token Numeral NumeralData{value = Just v2, grain = g}) = case g of
   Nothing -> double $ v1 * v2
   Just grain | v2 > v1 -> double (v1 * v2) >>= withGrain grain
              | otherwise -> Nothing
@@ -171,8 +188,8 @@ multiply _ _ = Nothing
 
 divide :: Token -> Token -> Maybe Token
 divide
-  (Token Numeral NumeralData{value = v1})
-  (Token Numeral NumeralData{value = v2}) = case v1 / v2 of
+  (Token Numeral NumeralData{value = Just v1})
+  (Token Numeral NumeralData{value = Just v2}) = case v1 / v2 of
     x | isInfinite x || isNaN x -> Nothing
     x -> double x
 divide _ _ = Nothing
@@ -183,6 +200,36 @@ parseDecimal isDot match
   | otherwise =
     parseDouble (Text.replace comma dot match)
     >>= double
+
+withIntervalNum :: (Double, Double) -> NumeralData
+withIntervalNum (from, to) = NumeralData
+  { value = Nothing
+  , grain = Nothing
+  , multipliable = False
+  , okForAnyTime = True
+  , minValue = Just from
+  , maxValue = Just to
+  }
+
+withMinNum :: Double -> NumeralData
+withMinNum x = NumeralData 
+  { value = Nothing
+  , grain = Nothing
+  , multipliable = False
+  , okForAnyTime = True
+  , minValue = Just x
+  , maxValue = Nothing
+  }
+
+withMaxNum :: Double -> NumeralData
+withMaxNum x = NumeralData
+  { value = Nothing
+  , grain = Nothing
+  , multipliable = False
+  , okForAnyTime = True
+  , minValue = Nothing
+  , maxValue = Just x
+  }
 
 -- TODO: Single-word composition (#110)
 numeralMapEL :: HashMap Text Int

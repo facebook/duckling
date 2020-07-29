@@ -36,7 +36,7 @@ ruleNumeralsPrefixWithNegativeOrMinus = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:
-       Token Numeral NumeralData{TNumeral.value = v}:
+       Token Numeral NumeralData{TNumeral.value = Just v}:
        _) -> double $ v * (-1)
       _ -> Nothing
   }
@@ -111,7 +111,7 @@ ruleNumeralsSuffixesKMG = Rule
     , regex "([kmg])(?=[\\W\\$€]|$)"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = v}:
+      (Token Numeral NumeralData{TNumeral.value = Just v}:
        Token RegexMatch (GroupMatch (match:_)):
        _) -> case Text.toLower match of
          "k" -> double $ v * 1e3

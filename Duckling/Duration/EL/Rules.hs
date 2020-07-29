@@ -97,7 +97,7 @@ ruleNumeralQuotes = Rule
     , regex "(['\"])"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = v}:
+      (Token Numeral NumeralData{TNumeral.value = Just v}:
        Token RegexMatch (GroupMatch (x:_)):
        _) -> case x of
          "'"  -> Just . Token Duration . duration TG.Minute $ floor v
@@ -115,8 +115,8 @@ ruleDurationMoreNumeral = Rule
     , dimension TimeGrain
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral nd:_:Token TimeGrain grain:_) ->
-        Just . Token Duration . duration grain . floor $ TNumeral.value nd
+      (Token Numeral NumeralData{TNumeral.value = Just nd}:_:Token TimeGrain grain:_) ->
+        Just . Token Duration . duration grain . floor $ nd
       _ -> Nothing
   }
 
@@ -129,8 +129,8 @@ ruleDurationNumeralMore = Rule
     , regex "ακόμα|λιγότερ[οη]"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral nd:Token TimeGrain grain:_:_) ->
-        Just . Token Duration . duration grain . floor $ TNumeral.value nd
+      (Token Numeral NumeralData{TNumeral.value = Just nd}:Token TimeGrain grain:_:_) ->
+        Just . Token Duration . duration grain . floor $ nd
       _ -> Nothing
   }
 
@@ -171,8 +171,8 @@ ruleDurationAndAHalf = Rule
     , dimension TimeGrain
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral nd:_:Token TimeGrain grain:_) ->
-        nPlusOneHalf grain (floor $ TNumeral.value nd) >>=
+      (Token Numeral NumeralData{TNumeral.value = Just nd}:_:Token TimeGrain grain:_) ->
+        nPlusOneHalf grain (floor $ nd) >>=
         Just . Token Duration
       _ -> Nothing
   }

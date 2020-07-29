@@ -21,80 +21,80 @@ corpus = (testContext, testOptions, allExamples)
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (NumeralValue 0)
+  [ examples (simple 0)
              [ "0"
              , "naught"
              , "nought"
              , "zero"
              , "nil"
              ]
-  , examples (NumeralValue 1)
+  , examples (simple 1)
              [ "1"
              , "one"
              , "single"
              ]
-  , examples (NumeralValue 2)
+  , examples (simple 2)
              [ "2"
              , "two"
              , "a pair"
              , "a couple"
              , "a couple of"
              ]
-  , examples (NumeralValue 3)
+  , examples (simple 3)
              [ "3"
              , "three"
              , "a few"
              , "few"
              ]
-  , examples (NumeralValue 10)
+  , examples (simple 10)
              [ "10"
              , "ten"
              ]
-  , examples (NumeralValue 12)
+  , examples (simple 12)
              [ "12"
              , "twelve"
              , "a dozen"
              , "a dozen of"
              ]
-  , examples (NumeralValue 14)
+  , examples (simple 14)
              [ "14"
              , "fourteen"
              ]
-  , examples (NumeralValue 16)
+  , examples (simple 16)
              [ "16"
              , "sixteen"
              ]
-  , examples (NumeralValue 17)
+  , examples (simple 17)
              [ "17"
              , "seventeen"
              ]
-  , examples (NumeralValue 18)
+  , examples (simple 18)
              [ "18"
              , "eighteen"
              ]
-  , examples (NumeralValue 33)
+  , examples (simple 33)
              [ "33"
              , "thirty three"
              , "0033"
              ]
-  , examples (NumeralValue 24)
+  , examples (simple 24)
              [ "24"
              , "2 dozens"
              , "two dozen"
              , "Two dozen"
              ]
-  , examples (NumeralValue 1.1)
+  , examples (simple 1.1)
              [ "1.1"
              , "1.10"
              , "01.10"
              , "1 point 1"
              ]
-  , examples (NumeralValue 0.77)
+  , examples (simple 0.77)
              [ ".77"
              , "0.77"
              , "point 77"
              ]
-  , examples (NumeralValue 100000)
+  , examples (simple 100000)
              [ "100,000"
              , "100,000.0"
              , "100000"
@@ -102,13 +102,13 @@ allExamples = concat
              , "100k"
              , "one hundred thousand"
              ]
-  , examples (NumeralValue 0.2)
+  , examples (simple 0.2)
              [ "1/5"
              , "2/10"
              , "3/15"
              , "20/100"
              ]
-  , examples (NumeralValue 3e6)
+  , examples (simple 3e6)
              [ "3M"
              , "3000K"
              , "3000000"
@@ -116,7 +116,7 @@ allExamples = concat
              , "3 million"
              , "30 lakh"
              ]
-  , examples (NumeralValue 1.2e6)
+  , examples (simple 1.2e6)
              [ "1,200,000"
              , "1200000"
              , "1.2M"
@@ -124,15 +124,15 @@ allExamples = concat
              , ".0012G"
              , "12 lakhs"
              ]
-  , examples (NumeralValue 5000)
+  , examples (simple 5000)
              [ "5 thousand"
              , "five thousand"
              ]
-  , examples (NumeralValue (-504))
+  , examples (simple (-504))
              [ "-504"
              , "negative five hundred and four"
              ]
-  , examples (NumeralValue (-1.2e6))
+  , examples (simple (-1.2e6))
              [ "- 1,200,000"
              , "-1200000"
              , "minus 1,200,000"
@@ -141,39 +141,57 @@ allExamples = concat
              , "-1200K"
              , "-.0012G"
              ]
-  , examples (NumeralValue (-3200000))
+  , examples (simple (-3200000))
              [ "-3,200,000"
              , "-3200000"
              , "minus three million two hundred thousand"
              ]
-  , examples (NumeralValue 122)
+  , examples (simple 122)
              [ "one twenty two"
              , "ONE TwentY tWO"
              ]
-  , examples (NumeralValue 2e5)
+  , examples (simple 2e5)
              [ "two Hundred thousand"
              ]
-  , examples (NumeralValue 21011)
+  , examples (simple 21011)
              [ "twenty-one thousand Eleven"
              ]
-  , examples (NumeralValue 721012)
+  , examples (simple 721012)
              [ "seven hundred twenty-one thousand twelve"
              , "seven hundred twenty-one thousand and twelve"
              ]
-  , examples (NumeralValue 31256721)
+  , examples (simple 31256721)
              [ "thirty-one million two hundred fifty-six thousand seven hundred twenty-one"
              , "three crore twelve lakh fifty-six thousand seven hundred twenty-one"
              ]
-  , examples (NumeralValue 2400)
+  , examples (simple 2400)
              [ "two hundred dozens"
              , "200 dozens"
              ]
-  , examples (NumeralValue 2200000)
+  , examples (simple 2200000)
              [ "two point two million"
              ]
-  , examples (NumeralValue 3000000000)
+  , examples (simple 3000000000)
              [ "three billions"
              , "three thousand millions"
              , "three hundred crores"
+             ]
+  , examples (between (600,900))
+             [ "between 600 and 900"
+             , "from six hundred to nine hundred"
+             , "around 600-900"
+             , "about 600-900"
+             , "600-900"
+             ]
+  , examples (under 0.5)
+             [ "under 0.5"
+             , "less than 0.5"
+             , "lower than point five"
+             ]
+  , examples (above 3000)
+             [ "more than three thousand"
+             , "at least 3000"
+             , "over 3K"
+             , "above 3 thousand"
              ]
   ]

@@ -33,7 +33,7 @@ ruleNumeralUnits = Rule
     , regex "(de )?livr(a|e|ă)"
     ]
   , prod = \case
-      (Token Numeral NumeralData {TNumeral.value = v}:_) ->
+      (Token Numeral NumeralData {TNumeral.value = Just v}:_) ->
         Just . Token Quantity $ quantity TQuantity.Pound v
       _ -> Nothing
   }

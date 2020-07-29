@@ -36,7 +36,7 @@ ruleUnitAmount = Rule
     ]
   , prod = \case
       (Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.currency = c}:
-       Token Numeral NumeralData{TNumeral.value = v}:
+       Token Numeral NumeralData{TNumeral.value = Just v}:
        _) -> Just . Token AmountOfMoney . withValue v $ currencyOnly c
       _ -> Nothing
   }
@@ -126,7 +126,7 @@ ruleIntervalBetweenNumeral = Rule
     , regex "(-н\\s+)?(хооронд|хүртэл)"
     ]
   , prod = \case
-      (Token Numeral NumeralData{TNumeral.value = from}:
+      (Token Numeral NumeralData{TNumeral.value = Just from}:
        _:
        Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just to,
                   TAmountOfMoney.currency = c}:
@@ -148,7 +148,7 @@ ruleIntervalBetweenNumeral2 = Rule
       (Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just from,
                   TAmountOfMoney.currency = c}:
        _:
-       Token Numeral NumeralData{TNumeral.value = to}:
+       Token Numeral NumeralData{TNumeral.value = Just to}:
        _) | from < to ->
         Just . Token AmountOfMoney . withInterval (from, to) $ currencyOnly c
       _ -> Nothing
@@ -183,7 +183,7 @@ ruleIntervalNumeralDash = Rule
     , Predicate isSimpleAmountOfMoney
     ]
   , prod = \case
-      (Token Numeral NumeralData{TNumeral.value = from}:
+      (Token Numeral NumeralData{TNumeral.value = Just from}:
        _:
        Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just to,
                   TAmountOfMoney.currency = c}:

@@ -25,77 +25,77 @@ corpus = (testContext {locale = makeLocale BN Nothing}, testOptions,
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (NumeralValue 0)
+  [ examples (simple 0)
             [ "শূন্য"
             , "০"
             ]
-  , examples (NumeralValue 1)
+  , examples (simple 1)
             [ "এক"
             ]
-  , examples (NumeralValue 2)
+  , examples (simple 2)
             [ "দুই"
             ]
-  , examples (NumeralValue 3)
+  , examples (simple 3)
             [ "তিন"
             ]
-  , examples (NumeralValue 4)
+  , examples (simple 4)
             [ "চার"
             ]
-  , examples (NumeralValue 5)
+  , examples (simple 5)
             [ "পাঁচ"
             ]
-  , examples (NumeralValue 6)
+  , examples (simple 6)
             [ "ছয়"
             ]
-  , examples (NumeralValue 7)
+  , examples (simple 7)
             [ "সাত"
             ]
-  , examples (NumeralValue 8)
+  , examples (simple 8)
             [ "আট"
             ]
-  , examples (NumeralValue 9)
+  , examples (simple 9)
             [ "নয়"
             ]
-  , examples (NumeralValue 10)
+  , examples (simple 10)
             [ "দশ"
             ]
-  , examples (NumeralValue 11)
+  , examples (simple 11)
             [ "এগারো"
             ]
-  , examples (NumeralValue 15)
+  , examples (simple 15)
             [ "পনেরো"
             ]
-  , examples (NumeralValue 17)
+  , examples (simple 17)
             [ "সতেরো"
             ]
-  , examples (NumeralValue 20)
+  , examples (simple 20)
             [ "কুড়ি"
             ]
-  , examples (NumeralValue 22)
+  , examples (simple 22)
             [ "বাইশ"
             ]
-  , examples (NumeralValue 24)
+  , examples (simple 24)
             [ "চব্বিশ"
             ]
-  , examples (NumeralValue 25)
+  , examples (simple 25)
             [ "পঁচিশ"
             ]
-  , examples (NumeralValue 26)
+  , examples (simple 26)
             [ "ছাব্বিশ"
             ]
-  , examples (NumeralValue 28)
+  , examples (simple 28)
             [ "আঠাশ"
             ]
-  , examples (NumeralValue 30)
+  , examples (simple 30)
             [ "তিরিশ"
             ]
-  , examples (NumeralValue 40)
+  , examples (simple 40)
             [ "চল্লিশ"
             ]
-  , examples (NumeralValue 50)
+  , examples (simple 50)
             [ "পঞ্চাশ"
             ]
-  , examples (NumeralValue 70)
+  , examples (simple 70)
             [ "সত্তর"
             ]
   ]

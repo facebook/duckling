@@ -23,127 +23,127 @@ corpus = (testContext {locale = makeLocale EL Nothing}, testOptions, allExamples
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (NumeralValue 0)
+  [ examples (simple 0)
              [ "0"
              , "μηδέν"
              ]
-  , examples (NumeralValue 1)
+  , examples (simple 1)
              [ "1"
              , "ένα"
              ]
-  , examples (NumeralValue 2)
+  , examples (simple 2)
              [ "δύο"
              ]
-  , examples (NumeralValue 3)
+  , examples (simple 3)
              [ "τρία"
              ]
-  , examples (NumeralValue 4)
+  , examples (simple 4)
              [ "τέσσερα"
              ]
-  , examples (NumeralValue 5)
+  , examples (simple 5)
              [ "πέντε"
              ]
-  , examples (NumeralValue 6)
+  , examples (simple 6)
              [ "έξι"
              ]
-  , examples (NumeralValue 7)
+  , examples (simple 7)
              [ "επτά"
              , "εφτά"
              ]
-  , examples (NumeralValue 8)
+  , examples (simple 8)
              [ "οκτώ"
              , "οχτώ"
              ]
-  , examples (NumeralValue 9)
+  , examples (simple 9)
              [ "εννιά"
              , "εννέα"
              ]
-  , examples (NumeralValue 10)
+  , examples (simple 10)
              [ "δέκα"
              , "δεκαριά"
              ]
-  , examples (NumeralValue 11)
+  , examples (simple 11)
              [ "έντεκα"
              , "ένδεκα"
              ]
-  , examples (NumeralValue 15)
+  , examples (simple 15)
              [ "δεκαπέντε"
              ]
-  , examples (NumeralValue 20)
+  , examples (simple 20)
              [ "20"
              , "είκοσι"
              ]
-  , examples (NumeralValue 50)
+  , examples (simple 50)
              [ "πενήντα"
              ]
-  , examples (NumeralValue 33)
+  , examples (simple 33)
             [ "33"
             , "τριάντα τρία"
             , "τριάντα τρεις"
             ]
-  , examples (NumeralValue 24)
+  , examples (simple 24)
             [ "24"
             , "είκοσι τέσσερα"
             , "είκοσι τέσσερις"
             ]
-  , examples (NumeralValue 0.77)
+  , examples (simple 0.77)
             [ "μηδέν κόμμα εβδομήντα επτά"
             , "0,77"
             ]
-  , examples (NumeralValue 200032)
+  , examples (simple 200032)
             [ "διακόσιες χιλιάδες τριάντα δύο"
             ]
-  , examples (NumeralValue 7200032.356)
+  , examples (simple 7200032.356)
             [ "εφτά εκατομμύρια διακόσιες χιλιάδες τριάντα δύο κόμμα τριακόσια πενήντα έξι"
             , "7200032,356"
             , "7.200.032,356"
             ]
-  , examples (NumeralValue 100000)
+  , examples (simple 100000)
             [ "100000"
             , "100.000"
             , "εκατό χιλιάδες"
             ]
-  , examples (NumeralValue 3e6)
+  , examples (simple 3e6)
             [ "τρία εκατομμύρια"
             , "3 εκατομμύρια"
             ]
-  , examples (NumeralValue 1.2e6)
+  , examples (simple 1.2e6)
             [ "ένα εκατομμύριο διακόσιες χιλιάδες"
             , "1.200.000"
             , "1200000"
             ]
-  , examples (NumeralValue 5000)
+  , examples (simple 5000)
             [ "5 χιλιάδες"
             , "πέντε χιλιάδες"
             ]
-  , examples (NumeralValue 122)
+  , examples (simple 122)
             [ "εκατόν είκοσι δύο"
             ]
-  , examples (NumeralValue 743)
+  , examples (simple 743)
             [ "εφτακόσιοι σαράντα τρεις"
             , "εφτακόσια σαράντα τρία"
             , "εφτακόσιες σαράντα τρεις"
             ]
-  , examples (NumeralValue 398)
+  , examples (simple 398)
             [ "τριακόσια ενενήντα οχτώ"
             ]
-  , examples (NumeralValue 2e5)
+  , examples (simple 2e5)
             [ "διακόσιες χιλιάδες"
             ]
-  , examples (NumeralValue 21011)
+  , examples (simple 21011)
             [ "είκοσι μία χιλιάδες έντεκα"
             ]
-  , examples (NumeralValue 721012)
+  , examples (simple 721012)
             [ "εφτακόσιες είκοσι μία χιλιάδες δώδεκα"
             ]
-  , examples (NumeralValue 31256721)
+  , examples (simple 31256721)
             [ "τριάντα ένα εκατομμύρια διακόσιες πενήντα έξι χιλιάδες εφτακόσια είκοσι ένα"
             , "31.256.721"
             ]
-  , examples (NumeralValue 2400)
+  , examples (simple 2400)
             [ "δύο χιλιάδες τετρακόσια"
             ]
-  , examples (NumeralValue 2200000)
+  , examples (simple 2200000)
             [ "δύο κόμμα δύο εκατομμύρια"
             , "2,2 εκατομμύρια"
             ]

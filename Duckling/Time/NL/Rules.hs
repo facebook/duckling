@@ -108,7 +108,7 @@ ruleRelativeMinutesToOrAfterIntegerPartOfDay = Rule
     , Predicate isATimeOfDay
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = v}:
+      (Token Numeral NumeralData{TNumeral.value = Just v}:
        Token RegexMatch (GroupMatch (match:_)):
        Token Time td:
        _) -> case Text.toLower match of

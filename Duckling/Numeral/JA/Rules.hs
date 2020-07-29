@@ -43,7 +43,8 @@ ruleNumeralsPrefixWithNegativeOrMinus = Rule
     , Predicate isPositive
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Numeral nd:_) -> double (TNumeral.value nd * (-1))
+      (_:Token Numeral NumeralData{TNumeral.value = Just nd}:_) ->
+       double (nd * (-1))
       _ -> Nothing
   }
 
@@ -55,7 +56,7 @@ ruleInteger10 = Rule
     , numberBetween 1 1000
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Numeral NumeralData{TNumeral.value = v}:_) ->
+      (_:Token Numeral NumeralData{TNumeral.value = Just v}:_) ->
         double $ v + 1000
       _ -> Nothing
   }
@@ -80,7 +81,7 @@ ruleInteger15 = Rule
     , regex "万"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = v}:_) -> double $ v * 10000
+      (Token Numeral NumeralData{TNumeral.value = Just v}:_) -> double $ v * 10000
       _ -> Nothing
   }
 
@@ -115,7 +116,7 @@ ruleInteger3 = Rule
     , regex "十"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = v}:_) -> double $ v * 10
+      (Token Numeral NumeralData{TNumeral.value = Just v}:_) -> double $ v * 10
       _ -> Nothing
   }
 
@@ -136,7 +137,7 @@ ruleInteger6 = Rule
     , numberBetween 1 100
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Numeral NumeralData{TNumeral.value = v}:_) -> double $ v + 100
+      (_:Token Numeral NumeralData{TNumeral.value = Just v}:_) -> double $ v + 100
       _ -> Nothing
   }
 
@@ -148,8 +149,8 @@ ruleInteger12 = Rule
     , numberBetween 1 1000
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = v1}:
-       Token Numeral NumeralData{TNumeral.value = v2}:
+      (Token Numeral NumeralData{TNumeral.value = Just v1}:
+       Token Numeral NumeralData{TNumeral.value = Just v2}:
        _) -> double $ v1 + v2
       _ -> Nothing
   }
@@ -162,7 +163,7 @@ ruleNumeralsSuffixesKMG = Rule
     , regex "(k|m|g|千|万)"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = v}:
+      (Token Numeral NumeralData{TNumeral.value = Just v}:
        Token RegexMatch (GroupMatch (match:_)):
        _) -> case Text.toLower match of
           "k"      -> double $ v * 1e3
@@ -182,7 +183,7 @@ ruleInteger7 = Rule
     , regex "百"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = v}:_) -> double $ v * 100
+      (Token Numeral NumeralData{TNumeral.value = Just v}:_) -> double $ v * 100
       _ -> Nothing
   }
 
@@ -194,7 +195,7 @@ ruleInteger14 = Rule
     , numberBetween 1 10000
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Numeral NumeralData{TNumeral.value = v}:_) ->
+      (_:Token Numeral NumeralData{TNumeral.value = Just v}:_) ->
         double $ v + 10000
       _ -> Nothing
   }
@@ -207,8 +208,8 @@ ruleInteger8 = Rule
     , numberBetween 1 100
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = v1}:
-       Token Numeral NumeralData{TNumeral.value = v2}:
+      (Token Numeral NumeralData{TNumeral.value = Just v1}:
+       Token Numeral NumeralData{TNumeral.value = Just v2}:
        _) -> double $ v1 + v2
       _ -> Nothing
   }
@@ -221,8 +222,8 @@ ruleInteger16 = Rule
     , numberBetween 1 10000
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = v1}:
-       Token Numeral NumeralData{TNumeral.value = v2}:
+      (Token Numeral NumeralData{TNumeral.value = Just v1}:
+       Token Numeral NumeralData{TNumeral.value = Just v2}:
        _) -> double $ v1 + v2
       _ -> Nothing
   }
@@ -272,8 +273,8 @@ ruleInteger4 = Rule
     , numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = v1}:
-       Token Numeral NumeralData{TNumeral.value = v2}:
+      (Token Numeral NumeralData{TNumeral.value = Just v1}:
+       Token Numeral NumeralData{TNumeral.value = Just v2}:
        _) -> double $ v1 + v2
       _ -> Nothing
   }
@@ -286,7 +287,7 @@ ruleInteger2 = Rule
     , numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Numeral NumeralData{TNumeral.value = v}:_) -> double $ v + 10
+      (_:Token Numeral NumeralData{TNumeral.value = Just v}:_) -> double $ v + 10
       _ -> Nothing
   }
 
@@ -298,7 +299,7 @@ ruleInteger11 = Rule
     , regex "千"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = v}:_) -> double $ v * 1000
+      (Token Numeral NumeralData{TNumeral.value = Just v}:_) -> double $ v * 1000
       _ -> Nothing
   }
 

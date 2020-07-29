@@ -34,7 +34,8 @@ ruleNumeralsPrefixWithNegativeOrMinus = Rule
     , Predicate isPositive
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Numeral nd:_) -> double (TNumeral.value nd * (-1))
+      (_:Token Numeral NumeralData{TNumeral.value = Just nd}:_) ->
+       double (nd * (-1))
       _ -> Nothing
   }
 
@@ -162,9 +163,9 @@ ruleNumeral3 = Rule
     , numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = v1}:
+      (Token Numeral NumeralData{TNumeral.value = Just v1}:
        _:
-       Token Numeral NumeralData{TNumeral.value = v2}:
+       Token Numeral NumeralData{TNumeral.value = Just v2}:
        _) -> double $ v1 + v2
       _ -> Nothing
   }
@@ -177,7 +178,7 @@ ruleNumeralsSuffixesKMG = Rule
     , regex "([kmg])(?=[\\W\\$€]|$)"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = v}:
+      (Token Numeral NumeralData{TNumeral.value = Just v}:
        Token RegexMatch (GroupMatch (match:_)):
        _) -> case Text.toLower match of
          "k" -> double $ v * 1e3
@@ -288,13 +289,13 @@ ruleNumerals = Rule
   { name = "numbers 200..999"
   , pattern =
     [ numberBetween 2 10
-    , numberWith TNumeral.value (== 100)
+    , oneOf[100]
     , numberBetween 0 100
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = v1}:
-       Token Numeral NumeralData{TNumeral.value = v2}:
-       Token Numeral NumeralData{TNumeral.value = v3}:
+      (Token Numeral NumeralData{TNumeral.value = Just v1}:
+       Token Numeral NumeralData{TNumeral.value = Just v2}:
+       Token Numeral NumeralData{TNumeral.value = Just v3}:
        _) -> double $ v1 * v2 + v3
       _ -> Nothing
   }

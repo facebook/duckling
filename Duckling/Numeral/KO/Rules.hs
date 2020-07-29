@@ -89,9 +89,9 @@ ruleFraction = Rule
     , dimension Numeral
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = v1}:
+      (Token Numeral NumeralData{TNumeral.value = Just v1}:
        _:
-       Token Numeral NumeralData{TNumeral.value = v2}:
+       Token Numeral NumeralData{TNumeral.value = Just v2}:
        _) -> double $ v2 / v1
       _ -> Nothing
   }
@@ -104,7 +104,8 @@ ruleNumeralsPrefixWithOr = Rule
     , dimension Numeral
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Numeral nd:_) -> double (TNumeral.value nd * (-1))
+      (_:Token Numeral NumeralData{TNumeral.value = Just nd}:_) ->
+       double (nd * (-1))
       _ -> Nothing
   }
 
@@ -209,8 +210,8 @@ ruleSum = Rule
     , Predicate $ and . sequence [not . isMultipliable, isPositive]
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = val1, TNumeral.grain = Just g}:
-       Token Numeral NumeralData{TNumeral.value = val2}:
+      (Token Numeral NumeralData{TNumeral.value = Just val1, TNumeral.grain = Just g}:
+       Token Numeral NumeralData{TNumeral.value = Just val2}:
        _) | (10 ** fromIntegral g) > val2 -> double $ val1 + val2
       _ -> Nothing
   }
@@ -260,7 +261,7 @@ ruleNumeralDotNumeral = Rule
     , regex "(점|쩜)((영|일|이|삼|사|오|육|칠|팔|구)+)"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = v1}:
+      (Token Numeral NumeralData{TNumeral.value = Just v1}:
        Token RegexMatch (GroupMatch (_:match:_)):
        _) -> do
         let getDigit '영' = Just "0"
@@ -287,8 +288,8 @@ ruleIntegerType3 = Rule
     , oneOf [1 .. 9]
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = v1}:
-       Token Numeral NumeralData{TNumeral.value = v2}:
+      (Token Numeral NumeralData{TNumeral.value = Just v1}:
+       Token Numeral NumeralData{TNumeral.value = Just v2}:
        _) -> double $ v1 + v2
       _ -> Nothing
   }

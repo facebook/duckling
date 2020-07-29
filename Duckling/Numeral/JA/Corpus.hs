@@ -23,86 +23,86 @@ corpus = (testContext {locale = makeLocale JA Nothing}, testOptions, allExamples
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (NumeralValue 0)
+  [ examples (simple 0)
              [ "0"
              , "零"
              , "ゼロ"
              ]
-  , examples (NumeralValue 1)
+  , examples (simple 1)
              [ "1"
              , "一"
              ]
-  , examples (NumeralValue 33)
+  , examples (simple 33)
              [ "33"
              , "三十三"
              , "0033"
              ]
-  , examples (NumeralValue 14)
+  , examples (simple 14)
              [ "14"
              , "十四"
              ]
-  , examples (NumeralValue 16)
+  , examples (simple 16)
              [ "16"
              , "十六"
              ]
-  , examples (NumeralValue 17)
+  , examples (simple 17)
              [ "17"
              , "十七"
              ]
-  , examples (NumeralValue 18)
+  , examples (simple 18)
              [ "18"
              , "十八"
              ]
-  , examples (NumeralValue 100)
+  , examples (simple 100)
              [ "100"
              , "百"
              ]
-  , examples (NumeralValue 101)
+  , examples (simple 101)
              [ "101"
              , "百一"
              ]
-  , examples (NumeralValue 200)
+  , examples (simple 200)
              [ "200"
              ]
-  , examples (NumeralValue 1.1)
+  , examples (simple 1.1)
              [ "1.1"
              , "1.10"
              , "01.10"
              ]
-  , examples (NumeralValue 0.77)
+  , examples (simple 0.77)
              [ "0.77"
              , ".77"
              ]
-  , examples (NumeralValue 100000)
+  , examples (simple 100000)
              [ "100,000"
              , "100000"
              , "100K"
              , "100k"
              ]
-  , examples (NumeralValue 3000000)
+  , examples (simple 3000000)
              [ "3M"
              , "3000K"
              , "3000000"
              , "3,000,000"
              ]
-  , examples (NumeralValue 1200000)
+  , examples (simple 1200000)
              [ "1,200,000"
              , "1200000"
              , "1.2M"
              , "1200K"
              , ".0012G"
              ]
-  , examples (NumeralValue (-1200000))
+  , examples (simple (-1200000))
              [ "- 1,200,000"
              , "-1200000"
              , "-1.2M"
              , "-1200K"
              , "-.0012G"
              ]
-  , examples (NumeralValue 5000)
+  , examples (simple 5000)
              [ "5千"
              ]
-  , examples (NumeralValue 20000)
+  , examples (simple 20000)
              [ "2万"
              ]
   ]

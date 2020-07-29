@@ -36,7 +36,8 @@ ruleNumeralsPrefixWithOrMinus = Rule
     , Predicate isPositive
     ]
   , prod = \case
-      (_:Token Numeral nd:_) -> double (TNumeral.value nd * (-1))
+      (_:Token Numeral NumeralData{TNumeral.value = Just nd}:_) ->
+       double (nd * (-1))
       _ -> Nothing
   }
 
@@ -72,8 +73,8 @@ ruleInteger3 = Rule
     , numberBetween 1 10
     ]
   , prod = \case
-      (Token Numeral NumeralData{TNumeral.value = v1}:
-       Token Numeral NumeralData{TNumeral.value = v2}:
+      (Token Numeral NumeralData{TNumeral.value = Just v1}:
+       Token Numeral NumeralData{TNumeral.value = Just v2}:
        _) -> double $ v1 + v2
       _ -> Nothing
   }
@@ -94,12 +95,14 @@ ruleMultiplyDe :: Rule
 ruleMultiplyDe = Rule
   { name = "compose by multiplication"
   , pattern =
-    [ numberWith TNumeral.value (>= 20)
+    [ Predicate isPositive
     , regex "de"
     , Predicate isMultipliable
     ]
   , prod = \case
-      (token1:_:token2:_) -> multiply token1 token2
+      (Token Numeral NumeralData{TNumeral.value = Just t1}:_:
+        Token Numeral NumeralData{TNumeral.value = Just t2}:_) ->
+       if t1 >= 20 then double $ (t1*t2) else Nothing
       _ -> Nothing
   }
 
@@ -111,8 +114,8 @@ ruleIntersect = Rule
     , Predicate $ and . sequence [not . isMultipliable, isPositive]
     ]
   , prod = \case
-      (Token Numeral NumeralData{TNumeral.value = val1, TNumeral.grain = Just g}:
-       Token Numeral NumeralData{TNumeral.value = val2}:
+      (Token Numeral NumeralData{TNumeral.value = Just val1, TNumeral.grain = Just g}:
+       Token Numeral NumeralData{TNumeral.value = Just val2}:
        _) | (10 ** fromIntegral g) > val2 -> double $ val1 + val2
       _ -> Nothing
   }
@@ -126,9 +129,9 @@ ruleIntersectCuI = Rule
     , Predicate $ and . sequence [not . isMultipliable, isPositive]
     ]
   , prod = \case
-      (Token Numeral NumeralData{TNumeral.value = val1, TNumeral.grain = Just g}:
+      (Token Numeral NumeralData{TNumeral.value = Just val1, TNumeral.grain = Just g}:
        _:
-       Token Numeral NumeralData{TNumeral.value = val2}:
+       Token Numeral NumeralData{TNumeral.value = Just val2}:
        _) | (10 ** fromIntegral g) > val2 -> double $ val1 + val2
       _ -> Nothing
   }
@@ -141,7 +144,7 @@ ruleNumeralsSuffixesWithNegativ = Rule
     , regex "neg(ativ)?"
     ]
   , prod = \case
-      (Token Numeral NumeralData{TNumeral.value = v}:
+      (Token Numeral NumeralData{TNumeral.value = Just v}:
        _) -> double $ v * (-1)
       _ -> Nothing
   }

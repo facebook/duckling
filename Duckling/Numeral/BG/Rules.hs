@@ -114,9 +114,9 @@ ruleCompositeTens = Rule
     , numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = tens}:
+      (Token Numeral NumeralData{TNumeral.value = Just tens}:
        _:
-       Token Numeral NumeralData{TNumeral.value = units}:
+       Token Numeral NumeralData{TNumeral.value = Just units}:
        _) -> double $ tens + units
       _ -> Nothing
   }
@@ -150,8 +150,8 @@ ruleCompositeHundreds = Rule
     , numberBetween 1 100
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = hundreds}:
-       Token Numeral NumeralData{TNumeral.value = tens}:
+      (Token Numeral NumeralData{TNumeral.value = Just hundreds}:
+       Token Numeral NumeralData{TNumeral.value = Just tens}:
        _) -> double $ hundreds + tens
       _ -> Nothing
   }
@@ -165,8 +165,9 @@ ruleDotSpelledOut = Rule
     , Predicate $ not . hasGrain
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral nd1:_:Token Numeral nd2:_) ->
-        double $ TNumeral.value nd1 + decimalsToDouble (TNumeral.value nd2)
+      (Token Numeral NumeralData{TNumeral.value = Just nd1}:_:
+        Token Numeral NumeralData{TNumeral.value = Just nd2}:_) ->
+        double $ nd1 + decimalsToDouble (nd2)
       _ -> Nothing
   }
 
@@ -202,7 +203,7 @@ ruleSuffixes = Rule
     ]
   , prod = \tokens ->
       case tokens of
-        (Token Numeral nd : Token RegexMatch (GroupMatch (match : _)):_) -> do
+        (Token Numeral NumeralData{TNumeral.value = Just nd} : Token RegexMatch (GroupMatch (match : _)):_) -> do
           x <- case Text.toLower match of
             "к" -> Just 1e3
             "К" -> Just 1e3
@@ -211,7 +212,7 @@ ruleSuffixes = Rule
             "г" -> Just 1e9
             "Г" -> Just 1e9
             _ -> Nothing
-          double $ TNumeral.value nd * x
+          double $ nd * x
         _ -> Nothing
   }
 
@@ -223,7 +224,8 @@ ruleNegative = Rule
     , dimension Numeral
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Numeral nd:_) -> double (TNumeral.value nd * (-1))
+      (_:Token Numeral NumeralData{TNumeral.value = Just nd}:_) -> 
+       double (nd * (-1))
       _ -> Nothing
   }
 

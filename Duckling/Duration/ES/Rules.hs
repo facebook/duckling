@@ -62,7 +62,7 @@ ruleCompositeDurationCommasAnd = Rule
     , dimension Duration
     ]
   , prod = \case
-      (Token Numeral NumeralData{TNumeral.value = v}:
+      (Token Numeral NumeralData{TNumeral.value = Just v}:
        Token TimeGrain g:
        _:
        Token Duration dd@DurationData{TDuration.grain = dg}:
@@ -81,7 +81,7 @@ ruleCompositeDuration = Rule
     , dimension Duration
     ]
   , prod = \case
-      (Token Numeral NumeralData{TNumeral.value = v}:
+      (Token Numeral NumeralData{TNumeral.value = Just v}:
        Token TimeGrain g:
        Token Duration dd@DurationData{TDuration.grain = dg}:
        _) | g > dg -> Just $ Token Duration $ duration g (floor v) <> dd

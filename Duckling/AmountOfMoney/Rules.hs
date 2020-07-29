@@ -143,7 +143,7 @@ ruleAmountUnit = Rule
     , Predicate isCurrencyOnly
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = v}:
+      (Token Numeral NumeralData{TNumeral.value = Just v}:
        Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.currency = c}:
        _) -> Just . Token AmountOfMoney . withValue v $ currencyOnly c
       _ -> Nothing
@@ -156,7 +156,7 @@ ruleAmountLatent = Rule
     [ Predicate isPositive
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = v}:_) ->
+      (Token Numeral NumeralData{TNumeral.value = Just v}:_) ->
         Just . Token AmountOfMoney . mkLatent $ valueOnly v
       _ -> Nothing
   }

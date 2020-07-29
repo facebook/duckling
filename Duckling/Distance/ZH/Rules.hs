@@ -48,6 +48,34 @@ ruleDistMeters = Rule
       _ -> Nothing
   }
 
+ruleDistOneMeterAnd :: Rule
+ruleDistOneMeterAnd = Rule
+  { name = "one meter and <dist>"
+  , pattern =
+    [ regex "米"
+    , Predicate isPositive
+    ]
+  , prod = \case
+      (_:Token Numeral NumeralData{TNumeral.value = Just v}:_) ->
+        Just . Token Distance $ withUnit TDistance.Metre (distance (1 + v/10))
+      _ -> Nothing
+  }
+
+ruleDistMetersAnd :: Rule
+ruleDistMetersAnd = Rule
+  { name = "<dist> meters and <dist>"
+  , pattern =
+    [ Predicate isPositive
+    , regex "米"
+    , Predicate isPositive
+    ]
+  , prod = \case
+      (Token Numeral NumeralData{TNumeral.value = Just v1}:_:
+        Token Numeral NumeralData{TNumeral.value = Just v2}:_) ->
+        Just . Token Distance $ withUnit TDistance.Metre (distance (v1 + v2/10)) 
+      _ -> Nothing
+  }
+
 ruleDistKm :: Rule
 ruleDistKm = Rule
   { name = "<dist> km"
@@ -113,6 +141,80 @@ ruleDistMiles = Rule
   , prod = \case
       (Token Distance dd:_) ->
         Just . Token Distance $ withUnit TDistance.Mile dd
+      _ -> Nothing
+  }
+
+ruleIntervalNumeralDash :: Rule
+ruleIntervalNumeralDash = Rule
+  { name = "<numeral> - <dist>"
+  , pattern =
+    [ Predicate isPositive
+    , regex "-|~|到|至"
+    , Predicate isSimpleDistance
+    ]
+  , prod = \case
+      (Token Numeral NumeralData{TNumeral.value = Just from}:
+       _:
+       Token Distance DistanceData{TDistance.value = Just to,
+       TDistance.unit = Just u}:_) | from < to ->
+         Just . Token Distance . withInterval (from, to) $ unitOnly u
+      _ -> Nothing
+  }
+
+ruleIntervalDash :: Rule
+ruleIntervalDash = Rule
+  { name = "<dist> - <dist>"
+  , pattern =
+    [ Predicate isSimpleDistance
+    , regex "-|~|到|至"
+    , Predicate isSimpleDistance
+    ]
+  , prod = \case
+      (Token Distance DistanceData{TDistance.value = Just from,
+                  TDistance.unit = Just u1}:
+       _:
+       Token Distance DistanceData{TDistance.value = Just to,
+                  TDistance.unit = Just u2}:
+       _) | from < to && u1 == u2 ->
+        Just . Token Distance . withInterval (from, to) $ unitOnly u1
+      _ -> Nothing
+  }
+
+ruleIntervalBound :: Rule
+ruleIntervalBound = Rule
+  { name = "under/less/lower/no more than <amount-of-money> (最多|至少|最少)"
+  , pattern =
+    [ regex "(最多|至少|最少|起碼)"
+    , Predicate isSimpleDistance
+    ]
+  , prod = \case
+      (Token RegexMatch (GroupMatch (match:_)):
+       Token Distance DistanceData{TDistance.value = Just to,
+                  TDistance.unit = Just u}:
+       _) -> case match of
+        "最多" -> Just . Token Distance . withMax to $ unitOnly u
+        "最少" -> Just . Token Distance . withMin to $ unitOnly u
+        "至少" -> Just . Token Distance . withMin to $ unitOnly u
+        "起碼" -> Just . Token Distance . withMin to $ unitOnly u
+        _ -> Nothing
+      _ -> Nothing
+  }
+
+ruleIntervalBound2 :: Rule
+ruleIntervalBound2 = Rule
+  { name = "under/less/lower/no more than <amount-of-money> (以下|以上)"
+  , pattern =
+    [ Predicate isSimpleDistance
+    , regex "(以下|以上)"
+    ]
+  , prod = \case
+      (Token Distance DistanceData{TDistance.value = Just to,
+                  TDistance.unit = Just u}:
+       Token RegexMatch (GroupMatch (match:_)):
+       _) -> case match of
+        "以下" -> Just . Token Distance . withMax to $ unitOnly u
+        "以上" -> Just . Token Distance . withMin to $ unitOnly u
+        _ -> Nothing
       _ -> Nothing
   }
 

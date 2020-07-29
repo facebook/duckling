@@ -29,73 +29,73 @@ corpus =
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (NumeralValue 0)
+  [ examples (simple 0)
              [ "0"
              , "nula"
              ]
-  , examples (NumeralValue 1)
+  , examples (simple 1)
              [ "1"
              , "jeden"
              , "jedna"
              ]
-  , examples (NumeralValue 2)
+  , examples (simple 2)
              [ "2"
              , "dva"
              , "dve"
              ]
-  , examples (NumeralValue 7)
+  , examples (simple 7)
              [ "7"
              , "sedem"
              ]
-  , examples (NumeralValue 14)
+  , examples (simple 14)
              [ "14"
              , "štrnásť"
              ]
-  , examples (NumeralValue 16)
+  , examples (simple 16)
              [ "16"
              , "šestnásť"
              ]
-  , examples (NumeralValue 17)
+  , examples (simple 17)
              [ "17"
              , "sedemnásť"
              ]
-  , examples (NumeralValue 18)
+  , examples (simple 18)
              [ "18"
              , "osemnásť"
              ]
-  , examples (NumeralValue 20)
+  , examples (simple 20)
              [ "20"
              , "dvadsať"
              ]
-  , examples (NumeralValue 1.1)
+  , examples (simple 1.1)
              [ "1,1"
              , "1,10"
              , "01,10"
              ]
-  , examples (NumeralValue 0.77)
+  , examples (simple 0.77)
              [ "0,77"
              , ",77"
              ]
-  , examples (NumeralValue 100000)
+  , examples (simple 100000)
              [ "100.000"
              , "100000"
              , "100K"
              , "100k"
              ]
-  , examples (NumeralValue 3000000)
+  , examples (simple 3000000)
              [ "3M"
              , "3000K"
              , "3000000"
              , "3.000.000"
              ]
-  , examples (NumeralValue 1200000)
+  , examples (simple 1200000)
              [ "1.200.000"
              , "1200000"
              , "1,2M"
              , "1200K"
              , ",0012G"
              ]
-  , examples (NumeralValue (-1200000))
+  , examples (simple (-1200000))
              [ "- 1.200.000"
              , "-1200000"
              , "mínus 1.200.000"
@@ -103,7 +103,7 @@ allExamples = concat
              , "-1200K"
              , "-,0012G"
              ]
-  , examples (NumeralValue 5000)
+  , examples (simple 5000)
              [ "5 tisíc"
              , "päť tisíc"
              ]

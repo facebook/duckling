@@ -23,24 +23,24 @@ corpus = (testContext {locale = makeLocale CS Nothing}, testOptions, allExamples
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (NumeralValue 0)
+  [ examples (simple 0)
              [ "0"
              , "nula"
              ]
-  , examples (NumeralValue 1)
+  , examples (simple 1)
              [ "1"
              , "jeden"
              , "jedna"
              , "jedno"
              ]
-  , examples (NumeralValue 2)
+  , examples (simple 2)
              [ "dva"
              , "dvĕ"
              ]
-  , examples (NumeralValue 3)
+  , examples (simple 3)
              [ "tři"
              ]
-  , examples (NumeralValue 4)
+  , examples (simple 4)
              [ "čtyři"
              ]
   ]

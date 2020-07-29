@@ -23,58 +23,58 @@ corpus = (testContext {locale = makeLocale ET Nothing}, testOptions, allExamples
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (NumeralValue 0)
+  [ examples (simple 0)
              [ "0"
              , "null"
              ]
-  , examples (NumeralValue 1)
+  , examples (simple 1)
              [ "1"
              , "üks"
              ]
-  , examples (NumeralValue 33)
+  , examples (simple 33)
              [ "33"
              , "Kolmkümmend kolm"
              ]
-  , examples (NumeralValue 14)
+  , examples (simple 14)
              [ "14"
              , "neliteist"
              ]
-  , examples (NumeralValue 16)
+  , examples (simple 16)
              [ "16"
              , "kuusteist"
              ]
-  , examples (NumeralValue 17)
+  , examples (simple 17)
              [ "17"
              , "Seitseteist"
              ]
-  , examples (NumeralValue 18)
+  , examples (simple 18)
              [ "18"
              , "kaheksateist"
              ]
-  , examples (NumeralValue 1.1)
+  , examples (simple 1.1)
              [ "1.1"
              , "1.10"
              , "01.10"
              ]
-  , examples (NumeralValue 0.77)
+  , examples (simple 0.77)
              [ "0.77"
              , ".77"
              ]
-  , examples (NumeralValue 100000)
+  , examples (simple 100000)
              [ "100,000"
              , "100000"
              , "100K"
              , "100k"
              , "100 000"
              ]
-  , examples (NumeralValue 3000000)
+  , examples (simple 3000000)
              [ "3M"
              , "3000K"
              , "3000000"
              , "3,000,000"
              , "3 000 000"
              ]
-  , examples (NumeralValue 1200000)
+  , examples (simple 1200000)
              [ "1,200,000"
              , "1200000"
              , "1.2M"
@@ -82,7 +82,7 @@ allExamples = concat
              , ".0012G"
              , "1 200 000"
              ]
-  , examples (NumeralValue (-1200000))
+  , examples (simple (-1200000))
              [ "- 1,200,000"
              , "-1200000"
              , "miinus 1,200,000"
@@ -90,19 +90,19 @@ allExamples = concat
              , "-1200K"
              , "-.0012G"
              ]
-  , examples (NumeralValue 5000)
+  , examples (simple 5000)
              [ "viis tuhat"
              ]
-  , examples (NumeralValue 200000)
+  , examples (simple 200000)
              [ "kakssada tuhat"
              ]
-  , examples (NumeralValue 21011)
+  , examples (simple 21011)
              [ "kakskümmend üks Tuhat üksteist"
              ]
-  , examples (NumeralValue 721012)
+  , examples (simple 721012)
              [ "seitsesada kakskümmend üks tuhat kaksteist"
              ]
-  , examples (NumeralValue 31256721)
+  , examples (simple 31256721)
              [ "kolmkümmend üks miljonit kakssada viiskümmend kuus tuhat seitsesada kakskümmend üks"
              ]
   ]

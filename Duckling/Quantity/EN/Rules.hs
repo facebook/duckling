@@ -58,10 +58,10 @@ ruleNumeralQuantities = map go quantities
       { name = name
       , pattern = [Predicate isPositive, regex regexPattern]
       , prod = \case
-        (Token Numeral nd:
+        (Token Numeral NumeralData{TNumeral.value = Just nd}:
          Token RegexMatch (GroupMatch (match:_)):
          _) -> Just . Token Quantity $ quantity u value
-          where value = getValue opsMap match $ TNumeral.value nd
+          where value = getValue opsMap match $ nd
         _ -> Nothing
       }
 
@@ -114,7 +114,7 @@ ruleIntervalBetweenNumeral = Rule
       ]
     , prod = \case
         (_:
-         Token Numeral NumeralData{TNumeral.value = from}:
+         Token Numeral NumeralData{TNumeral.value = Just from}:
          _:
          Token Quantity QuantityData{TQuantity.value = Just to
                                     , TQuantity.unit = Just u
@@ -156,7 +156,7 @@ ruleIntervalNumeralDash = Rule
       , Predicate isSimpleQuantity
       ]
     , prod = \case
-        (Token Numeral NumeralData{TNumeral.value = from}:
+        (Token Numeral NumeralData{TNumeral.value = Just from}:
          _:
          Token Quantity QuantityData{TQuantity.value = Just to
                                     , TQuantity.unit = Just u
@@ -226,7 +226,7 @@ ruleQuantityLatent = Rule
     [ Predicate isPositive
     ]
   , prod = \case
-      (Token Numeral NumeralData{TNumeral.value = v}: _) ->
+      (Token Numeral NumeralData{TNumeral.value = Just v}: _) ->
         Just $ (Token Quantity . mkLatent) $ valueOnly v
       _ -> Nothing
   }

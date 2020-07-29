@@ -24,62 +24,62 @@ corpus = (testContext {locale = makeLocale HI Nothing}, testOptions, allExamples
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (NumeralValue 0)
+  [ examples (simple 0)
              [ "शून्य"
              , "०"
              ]
-  , examples (NumeralValue 1)
+  , examples (simple 1)
              [ "एक"
              ]
-  , examples (NumeralValue 2)
+  , examples (simple 2)
              [ "दो"
              ]
-  , examples (NumeralValue 3)
+  , examples (simple 3)
              [ "तीन"
              ]
-  , examples (NumeralValue 4)
+  , examples (simple 4)
              [ "चार"
              ]
-  , examples (NumeralValue 5)
+  , examples (simple 5)
              [ "पाँच"
              ]
-  , examples (NumeralValue 6)
+  , examples (simple 6)
              [ "छह"
              ]
-  , examples (NumeralValue 7)
+  , examples (simple 7)
              [ "सात"
              ]
-  , examples (NumeralValue 8)
+  , examples (simple 8)
              [ "आठ"
              ]
-  , examples (NumeralValue 9)
+  , examples (simple 9)
              [ "नौ"
              ]
-  , examples (NumeralValue 10)
+  , examples (simple 10)
              [ "दस"
              ]
-  , examples (NumeralValue 15)
+  , examples (simple 15)
              [ "पन्द्रह"
              ]
-  , examples (NumeralValue 17)
+  , examples (simple 17)
              [ "सत्रह"
              ]
-  , examples (NumeralValue 20)
+  , examples (simple 20)
              [ "बीस"
              ]
-  , examples (NumeralValue 22)
+  , examples (simple 22)
              [ "बाईस"
              ]
-  , examples (NumeralValue 24)
+  , examples (simple 24)
              [ "चौबीस"
              ]
-  , examples (NumeralValue 26)
+  , examples (simple 26)
              [ "छब्बीस"
              ]
-  , examples (NumeralValue 28)
+  , examples (simple 28)
              [ "अट्ठाईस"
              ]
-  , examples (NumeralValue 50)
+  , examples (simple 50)
              [ "५०"
              , "पचास"
              ]

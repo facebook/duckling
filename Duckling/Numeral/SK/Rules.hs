@@ -38,9 +38,9 @@ ruleIntersectWithAnd = Rule
     , Predicate $ and . sequence [not . isMultipliable, isPositive]
     ]
   , prod = \case
-      (Token Numeral NumeralData{TNumeral.value = val1, TNumeral.grain = Just g}:
+      (Token Numeral NumeralData{TNumeral.value = Just val1, TNumeral.grain = Just g}:
        _:
-       Token Numeral NumeralData{TNumeral.value = val2}:
+       Token Numeral NumeralData{TNumeral.value = Just val2}:
        _) | (10 ** fromIntegral g) > val2 -> double $ val1 + val2
       _ -> Nothing
   }
@@ -54,7 +54,7 @@ ruleNumeralsPrefixWithNegativeOrMinus = Rule
     ]
   , prod = \case
       (_:
-       Token Numeral NumeralData{TNumeral.value = v}:
+       Token Numeral NumeralData{TNumeral.value = Just v}:
        _) -> double $ v * (-1)
       _ -> Nothing
   }
@@ -101,8 +101,8 @@ ruleIntegerCompositeTens = Rule
     , numberBetween 1 10
     ]
   , prod = \case
-      (Token Numeral NumeralData{TNumeral.value = tens}:
-       Token Numeral NumeralData{TNumeral.value = units}:
+      (Token Numeral NumeralData{TNumeral.value = Just tens}:
+       Token Numeral NumeralData{TNumeral.value = Just units}:
        _) -> double $ tens + units
       _ -> Nothing
   }
@@ -124,8 +124,8 @@ ruleSum = Rule
     , Predicate $ and . sequence [not . isMultipliable, isPositive]
     ]
   , prod = \case
-      (Token Numeral NumeralData{TNumeral.value = val1, TNumeral.grain = Just g}:
-       Token Numeral NumeralData{TNumeral.value = val2}:
+      (Token Numeral NumeralData{TNumeral.value = Just val1, TNumeral.grain = Just g}:
+       Token Numeral NumeralData{TNumeral.value = Just val2}:
        _) | (10 ** fromIntegral g) > val2 -> double $ val1 + val2
       _ -> Nothing
   }
@@ -150,7 +150,7 @@ ruleNumeralsSuffixesKMG = Rule
     , regex "([kmg])(?=[\\W\\$€]|$)"
     ]
   , prod = \case
-      (Token Numeral NumeralData{TNumeral.value = v}:
+      (Token Numeral NumeralData{TNumeral.value = Just v}:
        Token RegexMatch (GroupMatch (match:_)):
        _) -> case Text.toLower match of
          "k" -> double $ v * 1e3
@@ -269,8 +269,9 @@ ruleNumeralDotNumeral = Rule
     , Predicate $ not . hasGrain
     ]
   , prod = \case
-      (Token Numeral nd1:_:Token Numeral nd2:_) ->
-        double $ TNumeral.value nd1 + decimalsToDouble (TNumeral.value nd2)
+      (Token Numeral NumeralData{TNumeral.value = Just nd1}:_:
+        Token Numeral NumeralData{TNumeral.value = Just nd2}:_) ->
+        double $ nd1 + decimalsToDouble (nd2)
       _ -> Nothing
   }
 

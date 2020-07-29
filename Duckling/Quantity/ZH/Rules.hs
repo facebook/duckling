@@ -59,10 +59,10 @@ ruleNumeralQuantities = map go quantities
         , regex regexPattern
         ]
       , prod = \case
-        (Token Numeral nd:
+        (Token Numeral TNumeral.NumeralData{TNumeral.value = Just nd}:
          Token RegexMatch (GroupMatch (match:_)):
          _) -> Just . Token Quantity $ quantity u value
-          where value = getValue match $ TNumeral.value nd
+          where value = getValue match $ nd
         _ -> Nothing
       }
 
@@ -76,9 +76,9 @@ ruleCattyTael = Rule
     , regex "两|兩"
     ]
   , prod = \case
-    (Token Numeral TNumeral.NumeralData{TNumeral.value = x}:
+    (Token Numeral TNumeral.NumeralData{TNumeral.value = Just x}:
      Token RegexMatch (GroupMatch _):
-     Token Numeral TNumeral.NumeralData{TNumeral.value = y}:
+     Token Numeral TNumeral.NumeralData{TNumeral.value = Just y}:
      Token RegexMatch (GroupMatch _):
      _) -> Just . Token Quantity $ quantity TQuantity.Gram (x * 500 + y * 50)
     _ -> Nothing
@@ -92,7 +92,7 @@ ruleCattyHalf = Rule
     , regex "斤半"
     ]
   , prod = \case
-    (Token Numeral TNumeral.NumeralData{TNumeral.value = x}:
+    (Token Numeral TNumeral.NumeralData{TNumeral.value = Just x}:
      Token RegexMatch (GroupMatch _):
      _) -> Just . Token Quantity $ quantity TQuantity.Gram (x * 500 + 250)
     _ -> Nothing
@@ -106,7 +106,7 @@ ruleTaelHalf = Rule
     , regex "(两|兩)半"
     ]
   , prod = \case
-    (Token Numeral TNumeral.NumeralData{TNumeral.value = x}:
+    (Token Numeral TNumeral.NumeralData{TNumeral.value = Just x}:
      Token RegexMatch (GroupMatch _):
      _) -> Just . Token Quantity $ quantity TQuantity.Gram (x * 50 + 25)
     _ -> Nothing

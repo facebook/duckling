@@ -23,67 +23,67 @@ corpus = (testContext {locale = makeLocale LO Nothing}, testOptions, allExamples
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (NumeralValue 0)
+  [ examples (simple 0)
              [ "ສູນ"
              ]
-  , examples (NumeralValue 1)
+  , examples (simple 1)
              [ "ໜຶ່ງ"
              ]
-  , examples (NumeralValue 2)
+  , examples (simple 2)
              [ "ສອງ"
              ]
-  , examples (NumeralValue 3)
+  , examples (simple 3)
              [ "ສາມ"
              ]
-  , examples (NumeralValue 4)
+  , examples (simple 4)
              [ "ສີ່"
              ]
-  , examples (NumeralValue 5)
+  , examples (simple 5)
              [ "ຫ້າ"
              ]
-  , examples (NumeralValue 6)
+  , examples (simple 6)
              [ "ຫົກ"
              ]
-  , examples (NumeralValue 7)
+  , examples (simple 7)
              [ "ເຈັດ"
              ]
-  , examples (NumeralValue 8)
+  , examples (simple 8)
              [ "ແປດ"
              ]
-  , examples (NumeralValue 9)
+  , examples (simple 9)
              [ "ເກົ້າ"
              ]
-  , examples (NumeralValue 11)
+  , examples (simple 11)
              [ "ສິບເອັດ"
              ]
-  , examples (NumeralValue 15)
+  , examples (simple 15)
              [ "ສິບຫ້າ"
              ]
-  , examples (NumeralValue 17)
+  , examples (simple 17)
              [ "ສິບເຈັດ"
              ]
-  , examples (NumeralValue 22)
+  , examples (simple 22)
              [ "ຊາວສອງ"
              ]
-  , examples (NumeralValue 24)
+  , examples (simple 24)
              [ "ຊາວສີ່"
              ]
-  , examples (NumeralValue 26)
+  , examples (simple 26)
              [ "ຊາວຫົກ"
              ]
-  , examples (NumeralValue 28)
+  , examples (simple 28)
              [ "ຊາວແປດ"
              ]
-  , examples (NumeralValue 34)
+  , examples (simple 34)
              [ "ສາມສິບສີ່"
              ]
-  , examples (NumeralValue 10)
+  , examples (simple 10)
              [ "ສິບ"
              ]
-  , examples (NumeralValue 20)
+  , examples (simple 20)
              [ "ຊາວ"
              ]
-  , examples (NumeralValue 50)
+  , examples (simple 50)
              [ "ຫ້າສິບ"
              ]
   ]

@@ -58,7 +58,7 @@ ruleNumeralUnits = Rule
     , regex "(개|판|그(램|람)|근|파운(드|즈)|접1시|그릇|컵)"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData {TNumeral.value = v}:
+      (Token Numeral NumeralData {TNumeral.value = Just v}:
        Token RegexMatch (GroupMatch (match:_)):
        _) -> case match of
          "개"             -> Just . Token Quantity $ quantity TQuantity.Unnamed v

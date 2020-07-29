@@ -62,6 +62,11 @@ allExamples = concat
              , "4英吋"
              , "四吋"
              ]
+  , examples (simple Inch 15)
+             [  "15\""
+             , "十五英寸"
+             , "一呎三吋"
+             ]
   , examples (simple Mile 1)
              [ "1 mile"
              , "1 miles"
@@ -93,5 +98,14 @@ allExamples = concat
              , "最少五吋"
              , "五英吋以上"
              , "起碼五英寸"
+             ]
+  , examples (between Kilometre (2, 3))
+             [ "二到三km"
+             , "兩公里到三公里"
+             , "兩三公里"
+             ]
+  , examples (between Metre (30, 90))
+             [ "幾十米"
+             , "數十公尺"
              ]
   ]

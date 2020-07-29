@@ -277,12 +277,14 @@ ruleIntervalFromNumeral = Rule
   { name = "<numeral interval> dollar"
   , pattern =
     [ Predicate isNumeralInterval
-    , regex "元|圆|块|蚊"
+    , Predicate isCurrencyOnly
     ]
   , prod = \case
       (Token Numeral NumeralData{TNumeral.minValue = Just from, 
-        TNumeral.maxValue = Just to}:_) | from < to ->
-        Just . Token AmountOfMoney . withInterval (from, to) $ currencyOnly Dollar
+        TNumeral.maxValue = Just to}:
+        Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.currency = c}:
+        _) | from < to ->
+        Just . Token AmountOfMoney . withInterval (from, to) $ currencyOnly c
       _ -> Nothing
   }
 

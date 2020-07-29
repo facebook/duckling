@@ -32,7 +32,7 @@ ruleNumeralAsVolume = Rule
     [ Predicate isPositive
     ]
   , prod = \case
-    (Token Numeral TNumeral.NumeralData {TNumeral.value = v}:
+    (Token Numeral TNumeral.NumeralData {TNumeral.value = Just v}:
      _) ->
       Just . Token Volume $ valueOnly v
     _ -> Nothing
@@ -46,7 +46,7 @@ ruleNumeralVolumes = Rule
     , Predicate isUnitOnly
     ]
   , prod = \case
-    (Token Numeral TNumeral.NumeralData{TNumeral.value = v}:
+    (Token Numeral TNumeral.NumeralData{TNumeral.value = Just v}:
      Token Volume TVolume.VolumeData{TVolume.unit = Just u}:
      _) ->
       Just . Token Volume $ volume u v
@@ -62,7 +62,7 @@ ruleIntervalNumeralDash = Rule
     , Predicate isSimpleVolume
     ]
   , prod = \case
-      (Token Numeral TNumeral.NumeralData{TNumeral.value = from}:
+      (Token Numeral TNumeral.NumeralData{TNumeral.value = Just from}:
        _:
        Token Volume TVolume.VolumeData{TVolume.value = Just to
                                   , TVolume.unit = Just u}:

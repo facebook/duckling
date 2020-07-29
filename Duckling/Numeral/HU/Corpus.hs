@@ -23,75 +23,75 @@ corpus = (testContext {locale = makeLocale HU Nothing}, testOptions, allExamples
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (NumeralValue 0)
+  [ examples (simple 0)
              [ "0"
              , "nulla"
              , "zéró"
              ]
-  , examples (NumeralValue 1)
+  , examples (simple 1)
              [ "1"
              , "egy"
              ]
-  , examples (NumeralValue 2)
+  , examples (simple 2)
              [ "kettő"
              ]
-  , examples (NumeralValue 3)
+  , examples (simple 3)
              [ "három"
              ]
-  , examples (NumeralValue 4)
+  , examples (simple 4)
              [ "négy"
              ]
-  , examples (NumeralValue 5)
+  , examples (simple 5)
              [ "öt"
              ]
-  , examples (NumeralValue 6)
+  , examples (simple 6)
              [ "hat"
              ]
-  , examples (NumeralValue 7)
+  , examples (simple 7)
              [ "hét"
              ]
-  , examples (NumeralValue 8)
+  , examples (simple 8)
              [ "nyolc"
              ]
-  , examples (NumeralValue 9)
+  , examples (simple 9)
              [ "kilenc"
              ]
-  , examples (NumeralValue 11)
+  , examples (simple 11)
              [ "tizenegy"
              ]
-  , examples (NumeralValue 15)
+  , examples (simple 15)
              [ "tizenöt"
              ]
-  , examples (NumeralValue 17)
+  , examples (simple 17)
              [ "tizenhét"
              ]
-  , examples (NumeralValue 20)
+  , examples (simple 20)
              [ "20"
              , "húsz"
              ]
-  , examples (NumeralValue 22)
+  , examples (simple 22)
              [ "huszonkettő"
              ]
-  , examples (NumeralValue 24)
+  , examples (simple 24)
              [ "24"
              , "huszonnégy"
              ]
-  , examples (NumeralValue 26)
+  , examples (simple 26)
              [ "huszonhat"
              ]
-  , examples (NumeralValue 28)
+  , examples (simple 28)
              [ "huszonnyolc"
              ]
-  , examples (NumeralValue 10)
+  , examples (simple 10)
              [ "tíz"
              ]
-  , examples (NumeralValue 20)
+  , examples (simple 20)
              [ "húsz"
              ]
-  , examples (NumeralValue 50)
+  , examples (simple 50)
              [ "ötven"
              ]
-  , examples (NumeralValue 34)
+  , examples (simple 34)
              [ "harmincnégy"
              ]
   ]

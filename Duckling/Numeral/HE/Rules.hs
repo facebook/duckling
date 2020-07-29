@@ -41,8 +41,8 @@ ruleIntersectNumerals = Rule
     , Predicate $ and . sequence [not . isMultipliable, isPositive]
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = val1, TNumeral.grain = Just g}:
-       Token Numeral NumeralData{TNumeral.value = val2}:
+      (Token Numeral NumeralData{TNumeral.value = Just val1, TNumeral.grain = Just g}:
+       Token Numeral NumeralData{TNumeral.value = Just val2}:
        _) | (10 ** fromIntegral g) > val2 -> double $ val1 + val2
       _ -> Nothing
   }
@@ -56,9 +56,9 @@ ruleIntersectWithAnd = Rule
     , Predicate isMultipliable
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = val1, TNumeral.grain = Just g}:
+      (Token Numeral NumeralData{TNumeral.value = Just val1, TNumeral.grain = Just g}:
        _:
-       Token Numeral NumeralData{TNumeral.value = val2}:
+       Token Numeral NumeralData{TNumeral.value = Just val2}:
        _) | (10 ** fromIntegral g) > val2 -> double $ val1 + val2
       _ -> Nothing
   }
@@ -71,8 +71,8 @@ ruleCompositeTens = Rule
     , numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = tens}:
-       Token Numeral NumeralData{TNumeral.value = units}:
+      (Token Numeral NumeralData{TNumeral.value = Just tens}:
+       Token Numeral NumeralData{TNumeral.value = Just units}:
        _) -> double $ tens + units
       _ -> Nothing
   }
@@ -86,9 +86,9 @@ ruleCompositeTensWithAnd = Rule
     , numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = tens}:
+      (Token Numeral NumeralData{TNumeral.value = Just tens}:
        _:
-       Token Numeral NumeralData{TNumeral.value = units}:
+       Token Numeral NumeralData{TNumeral.value = Just units}:
        _) -> double $ tens + units
       _ -> Nothing
   }
@@ -101,7 +101,8 @@ ruleNumeralsPrefixWithNegativeOrMinus = Rule
     , Predicate isPositive
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Numeral nd:_) -> double (TNumeral.value nd * (-1))
+      (_:Token Numeral NumeralData{TNumeral.value = Just nd}:_) ->
+       double (nd * (-1))
       _ -> Nothing
   }
 
@@ -231,11 +232,11 @@ ruleInteger14 = Rule
   { name = "integer 11..19"
   , pattern =
     [ numberBetween 1 10
-    , numberWith TNumeral.value (== 10)
+    , oneOf[10]
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = v1}:
-       Token Numeral NumeralData{TNumeral.value = v2}:
+      (Token Numeral NumeralData{TNumeral.value = Just v1}:
+       Token Numeral NumeralData{TNumeral.value = Just v2}:
        _) -> double $ v1 + v2
       _ -> Nothing
   }
@@ -266,8 +267,8 @@ ruleInteger16 = Rule
     , numberBetween 1 100
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = v1}:
-       Token Numeral NumeralData{TNumeral.value = v2}:
+      (Token Numeral NumeralData{TNumeral.value = Just v1}:
+       Token Numeral NumeralData{TNumeral.value = Just v2}:
        _) -> double $ v1 + v2
       _ -> Nothing
   }
@@ -326,8 +327,9 @@ ruleNumeralDotNumeral = Rule
     , Predicate $ not . hasGrain
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral nd1:_:Token Numeral nd2:_) ->
-        double $ TNumeral.value nd1 + decimalsToDouble (TNumeral.value nd2)
+      (Token Numeral NumeralData{TNumeral.value = Just nd1}:_:
+        Token Numeral NumeralData{TNumeral.value = Just nd2}:_) ->
+        double $ nd1 + decimalsToDouble (nd2)
       _ -> Nothing
   }
 

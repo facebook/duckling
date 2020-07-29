@@ -38,7 +38,7 @@ ruleDurationNFiveMinutes = Rule
     , regex "個字"
     ]
   , prod = \case
-      (Token Numeral NumeralData{TNumeral.value = v}:_) -> 
+      (Token Numeral NumeralData{TNumeral.value = Just v}:_) -> 
         Just . Token Duration . duration TG.Minute $ floor(v) * 5
       _ -> Nothing
   }
@@ -88,7 +88,7 @@ ruleDurationAndHalfGrain = Rule
     , regex "半(鐘)?"
     ]
   , prod = \case
-      (Token Numeral NumeralData{TNumeral.value = v}:Token TimeGrain grain:_) -> do
+      (Token Numeral NumeralData{TNumeral.value = Just v}:Token TimeGrain grain:_) -> do
         let vv = floor v
         Token Duration <$> nPlusOneHalf grain vv
       _ -> Nothing
@@ -103,7 +103,7 @@ ruleDurationAndHalfGrain2 = Rule
     , dimension TimeGrain
     ]
   , prod = \case
-      (Token Numeral NumeralData{TNumeral.value = v}:_:Token TimeGrain grain:_) -> do
+      (Token Numeral NumeralData{TNumeral.value = Just v}:_:Token TimeGrain grain:_) -> do
         let vv = floor v
         Token Duration <$> nPlusOneHalf grain vv
       _ -> Nothing
@@ -135,9 +135,9 @@ ruleDurationDotNumeralHours2 = Rule
     , Predicate $ isGrain TG.Hour
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = m}:
+      (Token Numeral NumeralData{TNumeral.value = Just m}:
        _:
-       Token Numeral NumeralData{TNumeral.value = s}:
+       Token Numeral NumeralData{TNumeral.value = Just s}:
        _) -> Just . Token Duration . duration TG.Minute $
         floor ((m + decimalsToDouble (s)) * 60)
       _ -> Nothing
@@ -169,9 +169,9 @@ ruleDurationDotNumeralMinutes2 = Rule
     , Predicate $ isGrain TG.Minute
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = m}:
+      (Token Numeral NumeralData{TNumeral.value = Just m}:
        _:
-       Token Numeral NumeralData{TNumeral.value = s}:
+       Token Numeral NumeralData{TNumeral.value = Just s}:
        _) -> Just . Token Duration . duration TG.Second $
         floor ((m + decimalsToDouble (s)) * 60)
       _ -> Nothing
@@ -187,11 +187,11 @@ ruleDurationHoursAndMinutes = Rule
     , Predicate $ isGrain TG.Minute
     ]
   , prod = \case
-      (Token Numeral h:
+      (Token Numeral NumeralData{TNumeral.value = Just h}:
        _:
-       Token Numeral m:
+       Token Numeral NumeralData{TNumeral.value = Just m}:
        _) -> Just . Token Duration . duration TG.Minute $
-         (floor $ TNumeral.value m) + 60 * floor (TNumeral.value h)
+         (floor $ m) + 60 * floor (h)
       _ -> Nothing
   }
 
@@ -205,11 +205,11 @@ ruleDurationMinutesAndSeconds = Rule
     , Predicate $ isGrain TG.Second
     ]
   , prod = \case
-      (Token Numeral m:
+      (Token Numeral NumeralData{TNumeral.value = Just m}:
        _:
-       Token Numeral s:
+       Token Numeral NumeralData{TNumeral.value = Just s}:
        _) -> Just . Token Duration . duration TG.Second $
-         (floor $ TNumeral.value s) + 60 * floor (TNumeral.value m)
+         (floor $ s) + 60 * floor (m)
       _ -> Nothing
   }
 
@@ -223,11 +223,11 @@ ruleDurationHoursAndSeconds = Rule
     , Predicate $ isGrain TG.Second
     ]
   , prod = \case
-      (Token Numeral h:
+      (Token Numeral NumeralData{TNumeral.value = Just h}:
        _:
-       Token Numeral s:
+       Token Numeral NumeralData{TNumeral.value = Just s}:
        _) -> Just . Token Duration . duration TG.Second $
-         (floor $ TNumeral.value s) + 3600 * floor (TNumeral.value h)
+         (floor $ s) + 3600 * floor (h)
       _ -> Nothing
   }
 
@@ -243,13 +243,13 @@ ruleDurationHoursAndMinutesAndSeconds = Rule
     , Predicate $ isGrain TG.Second
     ]
   , prod = \case
-      (Token Numeral h:
+      (Token Numeral NumeralData{TNumeral.value = Just h}:
        _:
-       Token Numeral m:
+       Token Numeral NumeralData{TNumeral.value = Just m}:
        _:
-       Token Numeral s:
+       Token Numeral NumeralData{TNumeral.value = Just s}:
        _) -> Just . Token Duration . duration TG.Second $
-         (floor $ TNumeral.value s) + 60 * floor (TNumeral.value m) + 3600 * floor (TNumeral.value h)
+         (floor $ s) + 60 * floor (m) + 3600 * floor (h)
       _ -> Nothing
   }
 

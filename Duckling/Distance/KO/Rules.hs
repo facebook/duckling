@@ -108,7 +108,7 @@ ruleHalf = Rule
     [ regex "반"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData {TNumeral.value = v}:_) ->
+      (Token Numeral NumeralData {TNumeral.value = Just v}:_) ->
         Just . Token Distance $ distance v
       _ -> Nothing
   }

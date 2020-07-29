@@ -624,10 +624,10 @@ ruleYearNumericWithYearSymbol2 = Rule
     , regex "年"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = y1}:
-        Token Numeral NumeralData{TNumeral.value = y2}:
-        Token Numeral NumeralData{TNumeral.value = y3}:
-        Token Numeral NumeralData{TNumeral.value = y4}:
+      (Token Numeral NumeralData{TNumeral.value = Just y1}:
+        Token Numeral NumeralData{TNumeral.value = Just y2}:
+        Token Numeral NumeralData{TNumeral.value = Just y3}:
+        Token Numeral NumeralData{TNumeral.value = Just y4}:
         _) -> do
         let v = floor(y1*1000 + y2*100 + y3*10 + y4)
         tt $ year v

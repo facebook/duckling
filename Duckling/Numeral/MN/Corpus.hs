@@ -27,78 +27,78 @@ corpus = (context, testOptions, allExamples)
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (NumeralValue 0)
+  [ examples (simple 0)
              [ "0"
              , "нойл"
              , "тэг"
              ]
-  , examples (NumeralValue 1)
+  , examples (simple 1)
              [ "1"
              , "нэг"
              ]
-  , examples (NumeralValue 2)
+  , examples (simple 2)
              [ "хоёр"
              ]
-  , examples (NumeralValue 3)
+  , examples (simple 3)
              [ "гурав"
              ]
-  , examples (NumeralValue 4)
+  , examples (simple 4)
              [ "дөрөв"
              ]
-  , examples (NumeralValue 5)
+  , examples (simple 5)
              [ "тав"
              ]
-  , examples (NumeralValue 6)
+  , examples (simple 6)
              [ "зургаа"
              ]
-  , examples (NumeralValue 7)
+  , examples (simple 7)
              [ "долоо"
              ]
-  , examples (NumeralValue 8)
+  , examples (simple 8)
              [ "найм"
              ]
-  , examples (NumeralValue 9)
+  , examples (simple 9)
              [ "ес"
              ]
-  , examples (NumeralValue 11)
+  , examples (simple 11)
              [ "арван нэг"
              ]
-  , examples (NumeralValue 15)
+  , examples (simple 15)
              [ "арван тав"
              ]
-  , examples (NumeralValue 17)
+  , examples (simple 17)
              [ "арван долоо"
              ]
-  , examples (NumeralValue 20)
+  , examples (simple 20)
              [ "20"
              , "хорь"
              ]
-  , examples (NumeralValue 22)
+  , examples (simple 22)
              [ "хорин хоёр"
              ]
-  , examples (NumeralValue 24)
+  , examples (simple 24)
              [ "24"
              , "хорин дөрөв"
              ]
-  , examples (NumeralValue 26)
+  , examples (simple 26)
              [ "хорин зургаа"
              ]
-  , examples (NumeralValue 28)
+  , examples (simple 28)
              [ "хорин найм"
              ]
-  , examples (NumeralValue 10)
+  , examples (simple 10)
              [ "арав"
              ]
-  , examples (NumeralValue 20)
+  , examples (simple 20)
              [ "хорь"
              ]
-  , examples (NumeralValue 50)
+  , examples (simple 50)
              [ "тавь"
              ]
-  , examples (NumeralValue 34)
+  , examples (simple 34)
              [ "гучин дөрөв"
              ]
-  , examples (NumeralValue 99)
+  , examples (simple 99)
              [ "ерэн ес"
              ]
   ]

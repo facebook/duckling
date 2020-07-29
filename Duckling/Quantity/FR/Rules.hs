@@ -33,7 +33,7 @@ ruleNumeralUnits = Rule
     , regex "(tasses?|cuill?(e|è)res? (a|à) soupe?)"
     ]
   , prod = \case
-      (Token Numeral NumeralData {TNumeral.value = v}:
+      (Token Numeral NumeralData {TNumeral.value = Just v}:
        Token RegexMatch (GroupMatch (match:_)):
        _) -> case Text.toLower match of
          "tasse"  -> Just . Token Quantity $ quantity TQuantity.Cup v

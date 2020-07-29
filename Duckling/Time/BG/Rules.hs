@@ -1552,7 +1552,7 @@ ruleNDOWago = Rule
     , Predicate isADayOfWeek
     ]
   , prod = \case
-      (_:Token Numeral NumeralData{TNumeral.value = v}:Token Time td:_) ->
+      (_:Token Numeral NumeralData{TNumeral.value = Just v}:Token Time td:_) ->
         tt $ predNth (- (floor v)) False td
       _ -> Nothing
   }
@@ -1580,7 +1580,7 @@ ruleInNumeral = Rule
     , Predicate $ isIntegerBetween 0 60
     ]
   , prod = \case
-      (_:Token Numeral NumeralData{TNumeral.value = v}:_) ->
+      (_:Token Numeral NumeralData{TNumeral.value = Just v}:_) ->
         tt . inDuration . duration TG.Minute $ floor v
       _ -> Nothing
   }

@@ -89,7 +89,7 @@ ruleIntervalBetweenNumeral = Rule
     ]
   , prod = \case
       (_:
-       Token Numeral TNumeral.NumeralData{TNumeral.value = from}:
+       Token Numeral TNumeral.NumeralData{TNumeral.value = Just from}:
        _:
        Token Volume TVolume.VolumeData{TVolume.value = Just to
                                   , TVolume.unit = Just u}:

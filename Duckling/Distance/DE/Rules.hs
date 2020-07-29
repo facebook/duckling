@@ -70,7 +70,7 @@ ruleIntervalBetweenNumeral = Rule
     ]
   , prod = \case
       (_:
-       Token Numeral NumeralData{TNumeral.value = from}:
+       Token Numeral NumeralData{TNumeral.value = Just from}:
        _:
        Token Distance DistanceData{TDistance.value = Just to, TDistance.unit = Just u}:
        _) | from < to ->
@@ -106,7 +106,7 @@ ruleIntervalNumeralDash = Rule
     , Predicate isSimpleDistance
     ]
   , prod = \case
-      (Token Numeral NumeralData{TNumeral.value = from}:
+      (Token Numeral NumeralData{TNumeral.value = Just from}:
        _:
        Token Distance DistanceData{TDistance.value = Just to, TDistance.unit = Just u}:
        _) | from < to ->

@@ -75,7 +75,7 @@ ruleDurationAndHalfHour = Rule
     , regex "\x00E9s f\x00E9l[\\s-]?\x00F3ra"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = v}:_) ->
+      (Token Numeral NumeralData{TNumeral.value = Just v}:_) ->
         Just . Token Duration . duration TG.Minute $ 30 + 60 * floor v
       _ -> Nothing
   }

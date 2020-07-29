@@ -24,22 +24,22 @@ corpus = (testContext {locale = makeLocale NL Nothing}, testOptions, allExamples
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (NumeralValue 0)
+  [ examples (simple 0)
              [ "0"
              , "nul"
              , "geen"
              , "niks"
              ]
-  , examples (NumeralValue 1)
+  , examples (simple 1)
              [ "1"
              , "een"
              , "één"
              ]
-  , examples (NumeralValue 2)
+  , examples (simple 2)
              [ "2"
              , "twee"
              ]
-  , examples (NumeralValue 33)
+  , examples (simple 33)
              [ "33"
              , "3 en 30"
              , "drieendertig"
@@ -47,55 +47,55 @@ allExamples = concat
              , "drie en dertig"
              , "0033"
              ]
-  , examples (NumeralValue 12)
+  , examples (simple 12)
              [ "twaalf"
              , "dozijn"
              ]
-  , examples (NumeralValue 14)
+  , examples (simple 14)
              [ "14"
              , "veertien"
              ]
-  , examples (NumeralValue 16)
+  , examples (simple 16)
              [ "16"
              , "zestien"
              ]
-  , examples (NumeralValue 17)
+  , examples (simple 17)
              [ "17"
              , "zeventien"
              ]
-  , examples (NumeralValue 18)
+  , examples (simple 18)
              [ "18"
              , "achtien"
              ]
-  , examples (NumeralValue 1.1)
+  , examples (simple 1.1)
              [ "1,1"
              , "1,10"
              , "01,10"
              ]
-  , examples (NumeralValue 0.77)
+  , examples (simple 0.77)
              [ "0,77"
              , ",77"
              ]
-  , examples (NumeralValue 300)
+  , examples (simple 300)
              [ "3 honderd"
              , "drie honderd"
              ]
-  , examples (NumeralValue 5000)
+  , examples (simple 5000)
              [ "5 duizend"
              , "vijf duizend"
              ]
-  , examples (NumeralValue 144)
+  , examples (simple 144)
              [ "gros"
              ]
-  , examples (NumeralValue 122)
+  , examples (simple 122)
              [ "honderd tweeëntwintig"
              , "honderd tweeentwintig"
              , "honderd twee en twintig"
              ]
-  , examples (NumeralValue 20000)
+  , examples (simple 20000)
              [ "twintig duizend"
              ]
-  , examples (NumeralValue 0.2)
+  , examples (simple 0.2)
              [ "1/5"
              , "2/10"
              , "3/15"

@@ -59,7 +59,7 @@ ruleDistOneMeterAnd = Rule
     , Predicate isPositive
     ]
   , prod = \case
-      (_:Token Numeral NumeralData{TNumeral.value = v}:_) ->
+      (_:Token Numeral NumeralData{TNumeral.value = Just v}:_) ->
         Just . Token Distance $ withUnit TDistance.Metre (distance (1 + v/10))
       _ -> Nothing
   }
@@ -73,8 +73,8 @@ ruleDistMetersAnd = Rule
     , Predicate isPositive
     ]
   , prod = \case
-      (Token Numeral NumeralData{TNumeral.value = v1}:_:
-        Token Numeral NumeralData{TNumeral.value = v2}:_) ->
+      (Token Numeral NumeralData{TNumeral.value = Just v1}:_:
+        Token Numeral NumeralData{TNumeral.value = Just v2}:_) ->
         Just . Token Distance $ withUnit TDistance.Metre (distance (v1 + v2/10)) 
       _ -> Nothing
   }
@@ -156,7 +156,7 @@ ruleIntervalNumeralDash = Rule
     , Predicate isSimpleDistance
     ]
   , prod = \case
-      (Token Numeral NumeralData{TNumeral.value = from}:
+      (Token Numeral NumeralData{TNumeral.value = Just from}:
        _:
        Token Distance DistanceData{TDistance.value = Just to,
        TDistance.unit = Just u}:_) | from < to ->

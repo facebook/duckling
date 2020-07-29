@@ -24,64 +24,64 @@ corpus = (testContext {locale = makeLocale TA Nothing}, testOptions, allExamples
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (NumeralValue 0)
+  [ examples (simple 0)
              [ "பூஜ்ஜியம்"
              ]
-  , examples (NumeralValue 1)
+  , examples (simple 1)
              [ "ஒன்று"
              ]
-  , examples (NumeralValue 2)
+  , examples (simple 2)
              [ "இரண்டு"
              ]
-  , examples (NumeralValue 3)
+  , examples (simple 3)
              [ "மூன்று"
              ]
-  , examples (NumeralValue 4)
+  , examples (simple 4)
              [ "நான்கு"
              ]
-  , examples (NumeralValue 5)
+  , examples (simple 5)
              [ "ஐந்து"
              ]
-  , examples (NumeralValue 6)
+  , examples (simple 6)
              [ "ஆறு"
              ]
-  , examples (NumeralValue 7)
+  , examples (simple 7)
              [ "ஏழு"
              ]
-  , examples (NumeralValue 8)
+  , examples (simple 8)
              [ "எட்டு"
              ]
-  , examples (NumeralValue 9)
+  , examples (simple 9)
              [ "ஒன்பது"
              ]
-  , examples (NumeralValue 10)
+  , examples (simple 10)
              [ "பத்து"
              ]
-  , examples (NumeralValue 11)
+  , examples (simple 11)
              [ "பதினொன்று"
              ]
-  , examples (NumeralValue 12)
+  , examples (simple 12)
              [ "பன்னிரண்டு"
              ]
-  , examples (NumeralValue 20)
+  , examples (simple 20)
              [ "இருபது"
              ]
-  , examples (NumeralValue 21)
+  , examples (simple 21)
              [ "இருபத்திஒன்று"
              ]
-  , examples (NumeralValue 22)
+  , examples (simple 22)
              [ "இருபத்திஇரண்டு"
              ]
-  , examples (NumeralValue 26)
+  , examples (simple 26)
              [ "இருபத்திஆறு"
              ]
-  , examples (NumeralValue 30)
+  , examples (simple 30)
              [ "முப்பது"
              ]
-   , examples (NumeralValue 33)
+   , examples (simple 33)
              [ "முப்பத்துமூன்று"
              ]
-  , examples (NumeralValue 50)
+  , examples (simple 50)
              [ "ஐம்பது"
              ]
   ]

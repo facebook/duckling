@@ -28,73 +28,73 @@ corpus = (context, testOptions, allExamples)
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (NumeralValue 0)
+  [ examples (simple 0)
              [ "പൂജ്യം"
              ]
-  , examples (NumeralValue 1)
+  , examples (simple 1)
              [ "ഒന്ന്"
              ]
-  , examples (NumeralValue 2)
+  , examples (simple 2)
              [ "രണ്ട്"
              ]
-  , examples (NumeralValue 3)
+  , examples (simple 3)
              [ "മുന്ന്"
              ]
-  , examples (NumeralValue 4)
+  , examples (simple 4)
              [ "നാല്"
              ]
-  , examples (NumeralValue 5)
+  , examples (simple 5)
              [ "അഞ്ച്"
              ]
-  , examples (NumeralValue 6)
+  , examples (simple 6)
              [ "ആറ്"
              ]
-  , examples (NumeralValue 7)
+  , examples (simple 7)
              [ "ഏഴ്"
              ]
-  , examples (NumeralValue 8)
+  , examples (simple 8)
              [ "എട്ട്"
              ]
-  , examples (NumeralValue 9)
+  , examples (simple 9)
              [ "ഒൻപത്"
              ]
-  , examples (NumeralValue 10)
+  , examples (simple 10)
              [ "പത്ത്"
              ]
-  , examples (NumeralValue 11)
+  , examples (simple 11)
              [ "പതിനൊന്ന്"
              ]
-  , examples (NumeralValue 12)
+  , examples (simple 12)
              [ "പന്ത്രണ്ട്"
              ]
-  , examples (NumeralValue 13)
+  , examples (simple 13)
              [ "പതിമൂന്ന്"
              ]
-  , examples (NumeralValue 19)
+  , examples (simple 19)
              [ "പത്തൊമ്പത്"
              ]
-  , examples (NumeralValue 20)
+  , examples (simple 20)
              [ "ഇരുപത്"
              ]
-  , examples (NumeralValue 21)
+  , examples (simple 21)
              [ "ഇരുപത്തിഒന്ന്"
              ]
-  , examples (NumeralValue 22)
+  , examples (simple 22)
              [ "ഇരുപത്തിരണ്ട്"
              ]
-  , examples (NumeralValue 26)
+  , examples (simple 26)
              [ "ഇരുപത്തിആറ്"
              ]
-  , examples (NumeralValue 30)
+  , examples (simple 30)
              [ "മുപ്പത്"
              ]
-   , examples (NumeralValue 33)
+   , examples (simple 33)
              [ "മുപ്പത്തിമുന്ന്"
              ]
-  , examples (NumeralValue 50)
+  , examples (simple 50)
              [ "അമ്പത്"
              ]
-  , examples (NumeralValue 51)
+  , examples (simple 51)
              [ "അമ്പത്തിഒന്ന്"
              ]
   ]

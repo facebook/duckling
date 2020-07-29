@@ -30,8 +30,8 @@ ruleNumeralAsTemp = Rule
     [ dimension Numeral
     ]
   , prod = \case
-      (Token Numeral nd:_) ->
-        Just . Token Temperature $ valueOnly $ TNumeral.value nd
+      (Token Numeral TNumeral.NumeralData{TNumeral.value = Just nd}:_) ->
+        Just . Token Temperature $ valueOnly $ nd
       _ -> Nothing
   }
 

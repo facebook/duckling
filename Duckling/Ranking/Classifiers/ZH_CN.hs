@@ -240,6 +240,17 @@ classifiers
                    koData =
                      ClassData{prior = -infinity, unseen = -0.6931471805599453,
                                likelihoods = HashMap.fromList [], n = 0}}),
+       ("<numeral> - <numeral>",
+        Classifier{okData =
+                     ClassData{prior = -infinity, unseen = -0.6931471805599453,
+                               likelihoods = HashMap.fromList [], n = 0},
+                   koData =
+                     ClassData{prior = 0.0, unseen = -1.3862943611198906,
+                               likelihoods =
+                                 HashMap.fromList
+                                   [("numbers prefix with -, negative or minusinteger (numeric)",
+                                     0.0)],
+                               n = 2}}),
        ("\20803\26086",
         Classifier{okData =
                      ClassData{prior = -1.0986122886681098, unseen = -1.791759469228055,
@@ -511,6 +522,15 @@ classifiers
                    koData =
                      ClassData{prior = -infinity, unseen = -0.6931471805599453,
                                likelihoods = HashMap.fromList [], n = 0}}),
+       ("<numeral> <numeral>",
+        Classifier{okData =
+                     ClassData{prior = -infinity, unseen = -0.6931471805599453,
+                               likelihoods = HashMap.fromList [], n = 0},
+                   koData =
+                     ClassData{prior = 0.0, unseen = -1.3862943611198906,
+                               likelihoods =
+                                 HashMap.fromList [("integer (0..10)integer (0..10)", 0.0)],
+                               n = 2}}),
        ("<time> <day-of-month>",
         Classifier{okData =
                      ClassData{prior = -0.24946085963158313,

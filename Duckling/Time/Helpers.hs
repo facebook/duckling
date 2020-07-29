@@ -72,7 +72,7 @@ import qualified Duckling.Time.Types as TTime
 import qualified Duckling.TimeGrain.Types as TG
 
 getIntValue :: Token -> Maybe Int
-getIntValue (Token Numeral nd) = TNumeral.getIntValue $ TNumeral.value nd
+getIntValue (Token Numeral TNumeral.NumeralData{TNumeral.value = Just nd}) = TNumeral.getIntValue $ nd
 getIntValue (Token Ordinal OrdinalData {TOrdinal.value = x}) = Just x
 getIntValue _ = Nothing
 
@@ -334,8 +334,8 @@ hasNoDirection (Token Time td) = isNothing $ TTime.direction td
 hasNoDirection _ = False
 
 isIntegerBetween :: Int -> Int -> Predicate
-isIntegerBetween low high (Token Numeral nd) = TNumeral.okForAnyTime nd
-  && TNumeral.isIntegerBetween (TNumeral.value nd) low high
+isIntegerBetween low high (Token Numeral TNumeral.NumeralData{TNumeral.value = Just v, TNumeral.okForAnyTime = t}) =
+  t && TNumeral.isIntegerBetween v low high
 isIntegerBetween _ _ _ = False
 
 isOrdinalBetween :: Int -> Int -> Predicate

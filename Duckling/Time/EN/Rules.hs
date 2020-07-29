@@ -2279,7 +2279,7 @@ ruleNDOWago = Rule
     , regex "ago|back"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = v}:Token Time td:_) ->
+      (Token Numeral NumeralData{TNumeral.value = Just v}:Token Time td:_) ->
         tt $ predNth (- (floor v)) False td
       _ -> Nothing
   }
@@ -2355,7 +2355,7 @@ ruleInNumeral = Rule
     , Predicate $ isIntegerBetween 0 60
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Numeral NumeralData{TNumeral.value = v}:_) ->
+      (_:Token Numeral NumeralData{TNumeral.value = Just v}:_) ->
         tt . inDuration . duration TG.Minute $ floor v
       _ -> Nothing
   }
@@ -2493,7 +2493,7 @@ ruleUpcomingGrain = Rule
     ]
   , prod = \case
       ( _:
-        Token Numeral NumeralData{ TNumeral.value = numOfTimeGrain }:
+        Token Numeral NumeralData{ TNumeral.value = Just numOfTimeGrain }:
         Token TimeGrain grain:
         _) -> tt $ cycleNth grain $ floor numOfTimeGrain
       _ -> Nothing
@@ -2508,7 +2508,7 @@ ruleUpcomingGrainAlt = Rule
     , dimension TimeGrain
     ]
   , prod = \case
-      ( Token Numeral NumeralData{ TNumeral.value = numOfTimeGrain }:
+      ( Token Numeral NumeralData{ TNumeral.value = Just numOfTimeGrain }:
         _:
         Token TimeGrain grain:
         _) -> tt $ cycleNth grain $ floor numOfTimeGrain

@@ -28,7 +28,7 @@ ruleOrdinalDigits = Rule
     , dimension Numeral
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Numeral NumeralData{TNumeral.value = v}:_) ->
+      (_:Token Numeral NumeralData{TNumeral.value = Just v}:_) ->
         Just . ordinal $ floor v
       _ -> Nothing
   }

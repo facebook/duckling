@@ -1413,7 +1413,7 @@ ruleNDOWago = Rule
     , regex " ?დღის წინ| ?დღის უკან"
     ]
   , prod = \case
-      (Token Numeral NumeralData{TNumeral.value = v}:Token Time td:_) ->
+      (Token Numeral NumeralData{TNumeral.value = Just v}:Token Time td:_) ->
         tt $ predNth (- (floor v)) False td
       _ -> Nothing
   }
@@ -1461,7 +1461,7 @@ ruleInNumeral = Rule
     , regex " ?წუთში"
     ]
   , prod = \case
-      (Token Numeral NumeralData{TNumeral.value = v}:_) ->
+      (Token Numeral NumeralData{TNumeral.value = Just v}:_) ->
         tt . inDuration . duration TG.Minute $ floor v
       _ -> Nothing
   }

@@ -31,7 +31,7 @@ ruleNumeralUnits = Rule
     , regex "(libra|copo)s?"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData {TNumeral.value = v}:
+      (Token Numeral NumeralData {TNumeral.value = Just v}:
        Token RegexMatch (GroupMatch (match:_)):
        _) -> case Text.toLower match of
          "copo"   -> Just . Token Quantity $ quantity TQuantity.Cup v

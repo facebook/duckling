@@ -26,96 +26,96 @@ corpus = (context, testOptions, allExamples)
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (NumeralValue 0)
+  [ examples (simple 0)
              [ "0"
              , "nolla"
              ]
-  , examples (NumeralValue 1)
+  , examples (simple 1)
              [ "1"
              , "yksi"
              ]
-  , examples (NumeralValue 2)
+  , examples (simple 2)
              [ "kaksi"
              ]
-  , examples (NumeralValue 3)
+  , examples (simple 3)
              [ "kolme"
              ]
-  , examples (NumeralValue 4)
+  , examples (simple 4)
              [ "neljä"
              ]
-  , examples (NumeralValue 5)
+  , examples (simple 5)
              [ "viisi"
              ]
-  , examples (NumeralValue 6)
+  , examples (simple 6)
              [ "kuusi"
              ]
-  , examples (NumeralValue 7)
+  , examples (simple 7)
              [ "seitsemän"
              ]
-  , examples (NumeralValue 8)
+  , examples (simple 8)
              [ "kahdeksan"
              ]
-  , examples (NumeralValue 9)
+  , examples (simple 9)
              [ "yhdeksän"
              ]
-  , examples (NumeralValue 10)
+  , examples (simple 10)
              [ "10"
              , "kymmenen"
              ]
-  , examples (NumeralValue 11)
+  , examples (simple 11)
              [ "yksitoista"
              ]
-  , examples (NumeralValue 12)
+  , examples (simple 12)
              [ "kaksitoista"
              ]
-  , examples (NumeralValue 13)
+  , examples (simple 13)
              [ "kolmetoista"
              ]
-  , examples (NumeralValue 14)
+  , examples (simple 14)
              [ "neljätoista"
              ]
-  , examples (NumeralValue 15)
+  , examples (simple 15)
              [ "viisitoista"
              ]
-  , examples (NumeralValue 16)
+  , examples (simple 16)
              [ "kuusitoista"
              ]
-  , examples (NumeralValue 17)
+  , examples (simple 17)
              [ "seitsemäntoista"
              ]
-  , examples (NumeralValue 18)
+  , examples (simple 18)
              [ "kahdeksantoista"
              ]
-  , examples (NumeralValue 19)
+  , examples (simple 19)
              [ "yhdeksäntoista"
              ]
-  , examples (NumeralValue 20)
+  , examples (simple 20)
              [ "20"
              , "kaksikymmentä"
              ]
-  , examples (NumeralValue 24)
+  , examples (simple 24)
              [ "24"
              , "kaksikymmentäneljä"
              ]
-  , examples (NumeralValue 35)
+  , examples (simple 35)
              [ "kolmekymmentäviisi"
              ]
-  , examples (NumeralValue 42)
+  , examples (simple 42)
              [ "neljäkymmentäkaksi"
              ]
-  , examples (NumeralValue 52)
+  , examples (simple 52)
              [ "viisikymmentäkaksi"
              ]
-  , examples (NumeralValue 62)
+  , examples (simple 62)
              [ "kuusikymmentäkaksi"
              ]
-  , examples (NumeralValue 72)
+  , examples (simple 72)
              [ "seitsemänkymmentäkaksi"
              ]
-  , examples (NumeralValue 82)
+  , examples (simple 82)
              [ "kahdeksankymmentäkaksi"
              ]
-  , examples (NumeralValue 99)
+  , examples (simple 99)
              [ "99"
              , "yhdeksänkymmentäyhdeksän"
              ]

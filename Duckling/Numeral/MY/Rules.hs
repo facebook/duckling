@@ -34,9 +34,9 @@ ruleInteger5 = Rule
     , numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = v1}:
+      (Token Numeral NumeralData{TNumeral.value = Just v1}:
        _:
-       Token Numeral NumeralData{TNumeral.value = v2}:
+       Token Numeral NumeralData{TNumeral.value = Just v2}:
        _) -> double $ v1 + v2 * 10
       _ -> Nothing
   }
@@ -75,7 +75,7 @@ ruleInteger3 = Rule
     , numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Numeral NumeralData{TNumeral.value = v}:_) -> double $ v + 10
+      (_:Token Numeral NumeralData{TNumeral.value = Just v}:_) -> double $ v + 10
       _ -> Nothing
   }
 
@@ -106,7 +106,7 @@ ruleInteger6 = Rule
     , regex "ရာ"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = v}:_) -> double $ v * 100
+      (Token Numeral NumeralData{TNumeral.value = Just v}:_) -> double $ v * 100
       _ -> Nothing
   }
 
@@ -118,7 +118,7 @@ ruleInteger7 = Rule
     , regex "ထောင်"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = v}:_) -> double $ v * 1000
+      (Token Numeral NumeralData{TNumeral.value = Just v}:_) -> double $ v * 1000
       _ -> Nothing
   }
 
@@ -130,7 +130,7 @@ ruleInteger8 = Rule
     , regex "သောင်း"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = v}:_) -> double $ v * 10000
+      (Token Numeral NumeralData{TNumeral.value = Just v}:_) -> double $ v * 10000
       _ -> Nothing
   }
 
@@ -151,7 +151,7 @@ ruleInteger4 = Rule
     , regex "ဆယ်"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = v}:_) -> double $ v * 10
+      (Token Numeral NumeralData{TNumeral.value = Just v}:_) -> double $ v * 10
       _ -> Nothing
   }
 

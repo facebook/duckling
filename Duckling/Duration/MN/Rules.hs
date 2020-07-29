@@ -22,7 +22,7 @@ import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
 import Duckling.Duration.Helpers
-import Duckling.Numeral.Helpers (numberWith)
+import Duckling.Numeral.Helpers (numberWith, isPositive)
 import Duckling.Numeral.Types (NumeralData(..), isInteger)
 import Duckling.Duration.Types (DurationData (DurationData))
 import Duckling.Regex.Types
@@ -61,7 +61,7 @@ ruleNumeralQuotes = Rule
     , regex "(['\"])"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = v}:
+      (Token Numeral NumeralData{TNumeral.value = Just v}:
        Token RegexMatch (GroupMatch (x:_)):
        _) -> case x of
          "'"  -> Just . Token Duration . duration Minute $ floor v
@@ -97,13 +97,13 @@ rulePositiveDuration :: Rule
 rulePositiveDuration = Rule
   { name = "<positive-numeral> <time-grain>"
   , pattern =
-    [ numberWith TNumeral.value $ and . sequence [not . isInteger, (>0)]
+    [ Predicate isPositive
     , dimension TimeGrain
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = v}:
+      (Token Numeral NumeralData{TNumeral.value = Just v}:
        Token TimeGrain grain:
-       _) -> Just . Token Duration . duration Second . floor $ inSeconds grain v
+       _) -> if isInteger v then Nothing else Just . Token Duration . duration Second . floor $ inSeconds grain v
       _ -> Nothing
   }
 

@@ -48,7 +48,7 @@ parseTest = testCase "Parse Test" $
       assertEqual "end" 6 end
   where
     sentence = "hey 42 there"
-    val = toJText TNumeral.NumeralValue {TNumeral.vValue = 42.0}
+    val = toJText TNumeral.SingleValue {TNumeral.vValue = 42.0}
 
 rankTest :: TestTree
 rankTest = testGroup "Rank Tests"

@@ -23,21 +23,21 @@ corpus = (testContext {locale = makeLocale ZH Nothing}, testOptions, allExamples
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (NumeralValue 0)
+  [ examples (simple 0)
              [ "0"
              , "〇"
              , "零"
              , "零个"
              , "0个"
              ]
-  , examples (NumeralValue 1)
+  , examples (simple 1)
              [ "1"
              , "一"
              , "一个"
              , "1个"
              , "壹"
              ]
-  , examples (NumeralValue 2)
+  , examples (simple 2)
              [ "2"
              , "二個"
              , "二个"
@@ -45,61 +45,61 @@ allExamples = concat
              , "一對"
              , "一雙"
              ]
-  , examples (NumeralValue 10)
+  , examples (simple 10)
              [ "10"
              , "十"
              , "拾"
              , "五對"
              , "五雙"
              ]
-  , examples (NumeralValue 11)
+  , examples (simple 11)
              [ "11"
              , "十一"
              , "拾壹"
              ]
-  , examples (NumeralValue 20)
+  , examples (simple 20)
              [ "20"
              , "二十"
              , "貳拾"
              , "廿"
              ]
-  , examples (NumeralValue 60)
+  , examples (simple 60)
              [ "60"
              , "六十"
              , "陸拾"
              , "五打"
              ]
-  , examples (NumeralValue 33)
+  , examples (simple 33)
              [ "33"
              , "三十三"
              , "參拾參"
              , "卅三"
              ]
-  , examples (NumeralValue 96)
+  , examples (simple 96)
              [ "96"
              , "九十六"
              , "玖拾陸"
              , "八打"
              ]
-  , examples (NumeralValue 203)
+  , examples (simple 203)
              [ "203"
              , "二百零三"
              , "貳佰零參"
              ]
-  , examples (NumeralValue 534)
+  , examples (simple 534)
              [ "534"
              , "五百三十四"
              , "伍佰參拾肆" 
              , "五百卅四"
              ]
-  , examples (NumeralValue 34567)
+  , examples (simple 34567)
              [ "34567"
              , "34,567"
              , "三万四千五百六十七"
              , "三萬四千五百六十七"
              , "參萬肆仟伍佰陸拾柒"
              ]
-  , examples (NumeralValue 10040)
+  , examples (simple 10040)
              [ "10040"
              , "10,040"
              , "一万零四十"
@@ -107,7 +107,7 @@ allExamples = concat
              , "壹萬零肆拾"
              , "一萬零卌"
              ]
-  , examples (NumeralValue 1.1)
+  , examples (simple 1.1)
              [ "1.1"
              , "1.10"
              , "01.10"
@@ -116,19 +116,19 @@ allExamples = concat
              , "十份十一"
              , "一又十分一"
              ]
-  , examples (NumeralValue 0.77)
+  , examples (simple 0.77)
              [ "0.77"
              , ".77"
              , "零點77"
              ]
-  , examples (NumeralValue 34507)
+  , examples (simple 34507)
              [ "34507"
              , "34,507"
              , "三万四千五百零七"
              , "三萬四千五百零七"
              , "參萬肆仟伍佰零柒"
              ]
-  , examples (NumeralValue 100000)
+  , examples (simple 100000)
              [ "100,000"
              , "100000"
              , "100K"
@@ -137,7 +137,7 @@ allExamples = concat
              , "十萬"
              , "拾萬"
              ]
-  , examples (NumeralValue 3000000)
+  , examples (simple 3000000)
              [ "3M"
              , "3000000"
              , "3,000,000"
@@ -145,7 +145,7 @@ allExamples = concat
              , "三百萬"
              , "參佰萬"
              ]
-  , examples (NumeralValue 1040000)
+  , examples (simple 1040000)
              [ "1,040,000"
              , "1040000"
              , "1.04M"
@@ -153,7 +153,7 @@ allExamples = concat
              , "一百零四萬"
              , "壹佰零肆萬"
              ]
-  , examples (NumeralValue 1200000)
+  , examples (simple 1200000)
              [ "1,200,000"
              , "1200000"
              , "1.2M"
@@ -163,7 +163,7 @@ allExamples = concat
              , "壹佰貳拾萬"
              , "百二萬"
              ]
-  , examples (NumeralValue (-1200000))
+  , examples (simple (-1200000))
              [ "- 1,200,000"
              , "-1200000"
              , "负1,200,000"
@@ -178,7 +178,7 @@ allExamples = concat
              , "負一百二十萬"
              , "負壹佰貳拾萬"
              ]
-    , examples (NumeralValue 0.5)
+    , examples (simple 0.5)
              [ "0.5"
              , "一半"
              , "一半半"
@@ -189,11 +189,65 @@ allExamples = concat
              , "二分之一"
              , "二份一"
              ]
-    , examples (NumeralValue 1100)
+    , examples (simple 1100)
              [ "千一"
              , "一千一百"
              ]
-    , examples (NumeralValue 19000)
+    , examples (simple 19000)
              [ "萬九"
+             ]
+    , examples (between (2,3))
+             [ "兩個到三個"
+             , "二至三"
+             , "兩三個"
+             ]
+    , examples (under 20)
+             [ "二十以下"
+             , "最多廿個"
+             ]
+    , examples (above 45) 
+             [ "四十五以上"
+             , "至少卌五"
+             , "最少四十五"
+             , "起碼四十五個"
+             ]
+    , examples (between (3,9))
+             [ "三個到九個"
+             , "三至九"
+             , "幾個"
+             , "數個"
+             , "若干個"
+             ]
+    , examples (between (500,600))
+             [ "五六百左右"
+             , "五至六百"
+             ]
+    , examples (between (13,14))
+             [ "十三十四個左右"
+             , "十三四個"
+             ]
+    , examples (between (60000,70000))
+             [ "六至七萬"
+             , "六七萬"
+             ]
+    , examples (between (16000,17000))
+             [ "萬六到萬七"
+             , "萬六七"
+             , "萬六萬七左右"
+             ]
+    , examples (between (13,19))
+             [ "十幾個"
+             , "十數個"
+             ]
+    , examples (between (30,90))
+             [ "幾十個"
+             , "數十個"
+             ]
+    , examples (between (3000,9000))
+             [ "幾千個"
+             , "數千"
+             ]
+    , examples (simple 90)
+             [ "九十"
              ]
   ]

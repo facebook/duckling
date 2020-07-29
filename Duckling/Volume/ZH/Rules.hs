@@ -50,7 +50,7 @@ ruleUnitTeaspoon = Rule
     , regex "茶匙"
     ]
     , prod = \case
-      (Token Numeral TNumeral.NumeralData{TNumeral.value = v}:_) ->
+      (Token Numeral TNumeral.NumeralData{TNumeral.value = Just v}:_) ->
         Just . Token Volume $ volume TVolume.Millilitre (5*v) 
       _ -> Nothing
   }
@@ -63,7 +63,7 @@ ruleUnitSoupspoon = Rule
     , regex "湯匙"
     ]
     , prod = \case
-      (Token Numeral TNumeral.NumeralData{TNumeral.value = v}:_) ->
+      (Token Numeral TNumeral.NumeralData{TNumeral.value = Just v}:_) ->
         Just . Token Volume $ volume TVolume.Millilitre (15*v) 
       _ -> Nothing
   }
@@ -89,7 +89,7 @@ ruleIntervalBetweenNumeral = Rule
     , Predicate isSimpleVolume
     ]
   , prod = \case
-      (Token Numeral TNumeral.NumeralData{TNumeral.value = from}:
+      (Token Numeral TNumeral.NumeralData{TNumeral.value = Just from}:
        _:
        Token Volume TVolume.VolumeData{TVolume.value = Just to
                                   , TVolume.unit = Just u}:

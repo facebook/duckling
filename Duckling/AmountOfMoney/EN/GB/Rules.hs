@@ -45,7 +45,7 @@ ruleGrand = Rule
     , regex "grand"
     ]
   , prod = \case
-      (Token Numeral TNumeral.NumeralData{TNumeral.value = v}:_)
+      (Token Numeral TNumeral.NumeralData{TNumeral.value = Just v}:_)
         -> Just . Token AmountOfMoney . withValue (1000 * v) $ currencyOnly GBP
       _ -> Nothing
   }

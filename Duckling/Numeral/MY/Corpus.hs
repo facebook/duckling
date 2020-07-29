@@ -23,49 +23,49 @@ corpus = (testContext {locale = makeLocale MY Nothing}, testOptions, allExamples
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (NumeralValue 0)
+  [ examples (simple 0)
              [ "၀"
              , "သုံည"
              , "မရှိ"
              ]
-  , examples (NumeralValue 1)
+  , examples (simple 1)
              [ "၁"
              , "တစ်"
              , "ပထမ"
              ]
-  , examples (NumeralValue 2)
+  , examples (simple 2)
              [ "၂"
              , "နှစ်"
              , "ဒုတိယ"
              ]
-  , examples (NumeralValue 3)
+  , examples (simple 3)
              [ "၃"
              , "သုံး"
              , "တတိယ"
              , "3"
              ]
-  , examples (NumeralValue 30)
+  , examples (simple 30)
              [ "သုံးဆယ်"
              ]
-  , examples (NumeralValue 33)
+  , examples (simple 33)
              [ "သုံးဆယ့်သုံး"
              ]
-  , examples (NumeralValue 14)
+  , examples (simple 14)
              [ "ဆယ့်လေး"
              ]
-  , examples (NumeralValue 17)
+  , examples (simple 17)
              [ "ဆယ့်ခုနှစ်"
              ]
-  , examples (NumeralValue 200)
+  , examples (simple 200)
              [ "နှစ်ရာ"
              ]
-  , examples (NumeralValue 900)
+  , examples (simple 900)
              [ "ကိုးရာ"
              ]
-  , examples (NumeralValue 5000)
+  , examples (simple 5000)
              [ "ငါးထောင်"
              ]
-  , examples (NumeralValue 80000)
+  , examples (simple 80000)
              [ "ရှစ်သောင်း"
              ]
   ]

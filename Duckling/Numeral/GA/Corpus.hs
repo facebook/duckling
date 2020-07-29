@@ -24,28 +24,28 @@ corpus = (testContext {locale = makeLocale GA Nothing}, testOptions, allExamples
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (NumeralValue 0)
+  [ examples (simple 0)
              [ "0"
              , "a náid"
              ]
-  , examples (NumeralValue 1)
+  , examples (simple 1)
              [ "1"
              , "aon"
              , "a haon"
              , "Amháin"
              ]
-  , examples (NumeralValue 20)
+  , examples (simple 20)
              [ "20"
              , "Fiche"
              ]
-  , examples (NumeralValue 30)
+  , examples (simple 30)
              [ "déag is fiche"
              ]
-  , examples (NumeralValue 40)
+  , examples (simple 40)
              [ "is dha fhichead"
              , "is dá fhichead"
              ]
-  , examples (NumeralValue 50)
+  , examples (simple 50)
              [ "deag is dha fhichead"
              , "deag is dá fhichead"
              ]

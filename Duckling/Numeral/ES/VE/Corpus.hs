@@ -17,16 +17,16 @@ import Duckling.Testing.Types
 allExamples :: [Example]
 allExamples =
   concat
-    [ examples (NumeralValue 1) ["1"]
-    , examples (NumeralValue 33) ["33"]
-    , examples (NumeralValue 1.1) ["1,1", "1,10", "01,10"]
-    , examples (NumeralValue 0.77) ["0,77", ",77"]
-    , examples (NumeralValue 100000) ["100.000", "100000"]
-    , examples (NumeralValue 243) ["243"]
-    , examples (NumeralValue 3000000) ["3000000", "3.000.000"]
-    , examples (NumeralValue 1200000) ["1.200.000", "1200000"]
+    [ examples (simple 1) ["1"]
+    , examples (simple 33) ["33"]
+    , examples (simple 1.1) ["1,1", "1,10", "01,10"]
+    , examples (simple 0.77) ["0,77", ",77"]
+    , examples (simple 100000) ["100.000", "100000"]
+    , examples (simple 243) ["243"]
+    , examples (simple 3000000) ["3000000", "3.000.000"]
+    , examples (simple 1200000) ["1.200.000", "1200000"]
     , examples
-        (NumeralValue (-1200000))
+        (simple (-1200000))
         ["- 1.200.000", "menos 1.200.000", "-1,2M", "-,0012G"]
-    , examples (NumeralValue 1.5) ["1,5"]
+    , examples (simple 1.5) ["1,5"]
     ]

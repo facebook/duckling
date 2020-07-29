@@ -31,8 +31,8 @@ ruleNumerals4 :: Rule
 ruleNumerals4 = Rule
   { name = "numbers 81"
   , pattern =
-    [ numberWith TNumeral.value (== 80)
-    , numberWith TNumeral.value (== 1)
+    [ oneOf[80]
+    , oneOf[1]
     ]
   , prod = \_ -> integer 81
   }
@@ -46,7 +46,7 @@ ruleNumeralsPrefixWithNegativeOrMinus = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:
-       Token Numeral NumeralData{TNumeral.value = v}:
+       Token Numeral NumeralData{TNumeral.value = Just v}:
        _) -> double $ v * (-1)
       _ -> Nothing
   }
@@ -60,9 +60,9 @@ ruleNumerals2 = Rule
     , numberBetween 2 10
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = v1}:
+      (Token Numeral NumeralData{TNumeral.value = Just v1}:
        _:
-       Token Numeral NumeralData{TNumeral.value = v2}:
+       Token Numeral NumeralData{TNumeral.value = Just v2}:
        _) -> double $ v1 + v2
       _ -> Nothing
   }
@@ -122,9 +122,9 @@ ruleNumerals5 = Rule
     , numberBetween 2 20
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = v1}:
+      (Token Numeral NumeralData{TNumeral.value = Just v1}:
        _:
-       Token Numeral NumeralData{TNumeral.value = v2}:
+       Token Numeral NumeralData{TNumeral.value = Just v2}:
        _) -> double $ v1 + v2
       _ -> Nothing
   }
@@ -168,14 +168,14 @@ ruleNumeral3 :: Rule
 ruleNumeral3 = Rule
   { name = "number (17..19)"
   , pattern =
-    [ numberWith TNumeral.value (== 10)
+    [ oneOf[10]
     , regex "[\\s\\-]+"
     , numberBetween 7 10
     ]
   , prod = \tokens -> case tokens of
       (_:
        _:
-       Token Numeral NumeralData{TNumeral.value = v}:
+       Token Numeral NumeralData{TNumeral.value = Just v}:
        _) -> double $ 10 + v
       _ -> Nothing
   }
@@ -184,14 +184,14 @@ ruleNumerals3 :: Rule
 ruleNumerals3 = Rule
   { name = "numbers 61 71"
   , pattern =
-    [ numberWith TNumeral.value (== 60)
+    [ oneOf [60]
     , regex "-?et-?"
     , oneOf [1, 11]
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = v1}:
+      (Token Numeral NumeralData{TNumeral.value = Just v1}:
        _:
-       Token Numeral NumeralData{TNumeral.value = v2}:
+       Token Numeral NumeralData{TNumeral.value = Just v2}:
        _) -> double $ v1 + v2
       _ -> Nothing
   }
@@ -204,7 +204,7 @@ ruleNumeralsSuffixesKMG = Rule
     , regex "([kmg])(?=[\\W$€¢£]|$)"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = v}:
+      (Token Numeral NumeralData{TNumeral.value = Just v}:
        Token RegexMatch (GroupMatch (match:_)):
        _) -> case Text.toLower match of
          "k" -> double $ v * 1e3
@@ -230,12 +230,12 @@ ruleNumerals = Rule
   , pattern =
     [ oneOf [20, 50, 40, 30]
     , regex "-?et-?"
-    , numberWith TNumeral.value (== 1)
+    , oneOf[1]
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = v1}:
+      (Token Numeral NumeralData{TNumeral.value = Just v1}:
        _:
-       Token Numeral NumeralData{TNumeral.value = v2}:
+       Token Numeral NumeralData{TNumeral.value = Just v2}:
        _) -> double $ v1 + v2
       _ -> Nothing
   }
@@ -279,8 +279,8 @@ ruleSum = Rule
     , Predicate $ and . sequence [not . isMultipliable, isPositive]
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = val1, TNumeral.grain = Just g}:
-       Token Numeral NumeralData{TNumeral.value = val2}:
+      (Token Numeral NumeralData{TNumeral.value = Just val1, TNumeral.grain = Just g}:
+       Token Numeral NumeralData{TNumeral.value = Just val2}:
        _) | (10 ** fromIntegral g) > val2 -> double $ val1 + val2
       _ -> Nothing
   }

@@ -27,52 +27,52 @@ corpus = (context, testOptions, allExamples)
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (NumeralValue 0)
+  [ examples (simple 0)
              [ "0"
              , "núll"
              , "null"
              ]
-  , examples (NumeralValue 1)
+  , examples (simple 1)
              [ "1"
              , "einn"
              ]
-  , examples (NumeralValue 2)
+  , examples (simple 2)
              [ "tveir"
              ]
-  , examples (NumeralValue 3)
+  , examples (simple 3)
              [ "þrír"
              ]
-  , examples (NumeralValue 4)
+  , examples (simple 4)
              [ "fjórir"
              ]
-  , examples (NumeralValue 5)
+  , examples (simple 5)
              [ "fimm"
              ]
-  , examples (NumeralValue 6)
+  , examples (simple 6)
              [ "sex"
              ]
-  , examples (NumeralValue 7)
+  , examples (simple 7)
              [ "sjö"
              ]
-  , examples (NumeralValue 8)
+  , examples (simple 8)
              [ "átta"
              ]
-  , examples (NumeralValue 9)
+  , examples (simple 9)
              [ "níu"
              ]
-  , examples (NumeralValue 10)
+  , examples (simple 10)
              [ "tíu"
              ]
-  , examples (NumeralValue 11)
+  , examples (simple 11)
              [ "ellefu"
              ]
-  , examples (NumeralValue 15)
+  , examples (simple 15)
              [ "fimmtán"
              ]
-  , examples (NumeralValue 17)
+  , examples (simple 17)
              [ "sautján"
              ]
-  , examples (NumeralValue 20)
+  , examples (simple 20)
              [ "20"
              , "tuttugu"
              ]

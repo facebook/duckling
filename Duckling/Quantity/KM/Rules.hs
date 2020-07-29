@@ -71,7 +71,7 @@ ruleNumeralUnits = Rule
     , regex "(ចាន|ពែង|កែវ|ថូ|ស្លាបព្រា|ស្លាបព្រាបាយ|ស្លាបព្រាកាហ្វេ|នាក់|ក្បាល|ដើម|ទង|ខ្នង|គ្រឿង|កញ្ចប់|ឈុត)"
     ]
   , prod = \case
-      (Token Numeral NumeralData{TNumeral.value = v}:
+      (Token Numeral NumeralData{TNumeral.value = Just v}:
        Token RegexMatch (GroupMatch (match:_)):
        _) -> do
          unit <- HashMap.lookup match unitsMap
@@ -98,10 +98,10 @@ ruleNumeralUnits2 = map go quantities
       { name = name
       , pattern = [dimension Numeral, regex regexPattern]
       , prod = \case
-        (Token Numeral nd:
+        (Token Numeral NumeralData{TNumeral.value = Just nd}:
          Token RegexMatch (GroupMatch (match:_)):
          _) -> Just . Token Quantity $ quantity u value
-          where value = getValue opsMap match $ TNumeral.value nd
+          where value = getValue opsMap match $ nd
         _ -> Nothing
       }
 
@@ -128,7 +128,7 @@ ruleIntervalBetweenNumeral = Rule
       ]
     , prod = \case
         (_:
-         Token Numeral NumeralData{TNumeral.value = from}:
+         Token Numeral NumeralData{TNumeral.value = Just from}:
          _:
          Token Quantity QuantityData{TQuantity.value = Just to
                                     , TQuantity.unit = Just u
@@ -170,7 +170,7 @@ ruleIntervalNumeralDash = Rule
       , Predicate isSimpleQuantity
       ]
     , prod = \case
-        (Token Numeral NumeralData{TNumeral.value = from}:
+        (Token Numeral NumeralData{TNumeral.value = Just from}:
          _:
          Token Quantity QuantityData{TQuantity.value = Just to
                                     , TQuantity.unit = Just u

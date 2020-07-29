@@ -35,7 +35,7 @@ ruleUnitAmount = Rule
     ]
   , prod = \case
       (Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.currency = c}:
-       Token Numeral NumeralData{TNumeral.value = v}:
+       Token Numeral NumeralData{TNumeral.value = Just v}:
        _) -> Just . Token AmountOfMoney . withValue v $ currencyOnly c
       _ -> Nothing
   }
@@ -171,7 +171,7 @@ ruleIntervalBetweenNumeral = Rule
     , Predicate isSimpleAmountOfMoney
     ]
   , prod = \case
-      (Token Numeral NumeralData {TNumeral.value = from}:
+      (Token Numeral NumeralData {TNumeral.value = Just from}:
        _:
        Token AmountOfMoney AmountOfMoneyData {TAmountOfMoney.value = Just to, TAmountOfMoney.currency = c}:
        _) ->
@@ -205,7 +205,7 @@ ruleIntervalNumeralDash = Rule
     , Predicate isSimpleAmountOfMoney
     ]
   , prod = \case
-      (Token Numeral NumeralData {TNumeral.value = from}:
+      (Token Numeral NumeralData {TNumeral.value = Just from}:
        _:
        Token AmountOfMoney AmountOfMoneyData {TAmountOfMoney.value = Just to, TAmountOfMoney.currency = c}:
        _) ->

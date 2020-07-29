@@ -30,7 +30,7 @@ ruleNumberUnits = Rule
     , regex "k(il(o|e|a))?(g(rama?)?)?"
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData {TNumeral.value = v}:_) ->
+      (Token Numeral NumeralData {TNumeral.value = Just v}:_) ->
         Just . Token Quantity $ quantity TQuantity.Gram (1000 * v)
       _ -> Nothing
   }

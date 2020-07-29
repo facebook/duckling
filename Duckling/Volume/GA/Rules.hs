@@ -55,7 +55,7 @@ ruleKiloliter = Rule
     , regex "(kl\\.?|g?ch?illil(í|i)t(ea|i)r)"
     ]
   , prod = \case
-    (Token Numeral TNumeral.NumeralData{TNumeral.value = v}:
+    (Token Numeral TNumeral.NumeralData{TNumeral.value = Just v}:
      _:_) ->
       Just . Token Volume . withUnit TVolume.Hectolitre $ valueOnly (10.0 * v)
     _ -> Nothing

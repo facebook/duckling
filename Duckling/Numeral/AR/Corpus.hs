@@ -24,19 +24,19 @@ corpus = (testContext {locale = makeLocale AR Nothing}, testOptions, allExamples
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (NumeralValue 0)
+  [ examples (simple 0)
              [ "0"
              , "صفر"
              , "٠"
              , "٠٫٠"
              ]
-  , examples (NumeralValue 1)
+  , examples (simple 1)
              [ "1"
              , "واحد"
              , "١"
              , "١٫٠"
              ]
-  , examples (NumeralValue 4)
+  , examples (simple 4)
              [ "4"
              , "أربعة"
              , "أربع"
@@ -44,7 +44,7 @@ allExamples = concat
              , "٤"
              , "٤٫٠"
              ]
-  , examples (NumeralValue 6)
+  , examples (simple 6)
              [ "6"
              , "ستة"
              , "ست"
@@ -52,14 +52,14 @@ allExamples = concat
              , "٦"
              , "٦٫٠"
              ]
-  , examples (NumeralValue 10)
+  , examples (simple 10)
              [ "10"
              , "عشرة"
              , "عشره"
              , "١٠"
              , "١٠٫٠"
              ]
-  , examples (NumeralValue 11)
+  , examples (simple 11)
              [ "11"
              , "إحدى عشرة"
              , "إحدى عشر"
@@ -67,117 +67,117 @@ allExamples = concat
              , "١١"
              , "١١٫٠"
              ]
-  , examples (NumeralValue 12)
+  , examples (simple 12)
              [ "12"
              , "إثنتى عشر"
              , "إثنى عشر"
              , "١٢"
              , "١٢٫٠"
              ]
-  , examples (NumeralValue 14)
+  , examples (simple 14)
              [ "14"
              , "أربع عشر"
              , "١٤"
              , "١٤٫٠"
              ]
-  , examples (NumeralValue 16)
+  , examples (simple 16)
              [ "16"
              , "ستة عشر"
              , "١٦"
              , "١٦٫٠"
              ]
-  , examples (NumeralValue 17)
+  , examples (simple 17)
              [ "17"
              , "سبع عشر"
              , "١٧"
              , "١٧٫٠"
              ]
-  , examples (NumeralValue 18)
+  , examples (simple 18)
              [ "18"
              , "ثمان عشرة"
              , "١٨"
              , "١٨٫٠"
              ]
-  , examples (NumeralValue 20)
+  , examples (simple 20)
              [ "عشرون"
              , "عشرين"
              , "٢٠"
              , "٢٠٫٠"
              ]
-  , examples (NumeralValue 21)
+  , examples (simple 21)
              [ "واحدة و عشرون"
              , "21"
              , "٢١"
              , "٢١٫٠"
              ]
-  , examples (NumeralValue 24)
+  , examples (simple 24)
              [ "أربعة و عشرون"
              , "24"
              , "٢٤"
              , "٢٤٫٠"
              ]
-  , examples (NumeralValue 26)
+  , examples (simple 26)
              [ "ستة و عشرون"
              , "26"
              , "٢٦"
              , "٢٦٫٠"
              ]
-  , examples (NumeralValue 20)
+  , examples (simple 20)
              [ "عشرون"
              , "عشرين"
              , "٢٠"
              ]
-  , examples (NumeralValue 30)
+  , examples (simple 30)
              [ "ثلاثون"
              , "ثلاثين"
              , "٣٠"
              , "٣٠٫٠"
              ]
-  , examples (NumeralValue 33)
+  , examples (simple 33)
              [ "33"
              , "ثلاث و ثلاثون"
              , "٣٣"
              , "٣٣٫٠"
              ]
-  , examples (NumeralValue 40)
+  , examples (simple 40)
              [ "اربعون"
              , "أربعين"
              , "٤٠"
              , "٤٠٫٠"
              ]
-  , examples (NumeralValue 200)
+  , examples (simple 200)
              [ "مائتين"
              , "مائتان"
              , "٢٠٠"
              , "٢٠٠٫٠"
              ]
-  , examples (NumeralValue 300)
+  , examples (simple 300)
              [ "ثلاثمائة"
              , "٣٠٠"
              , "٣٠٠٫٠"
              ]
-  , examples (NumeralValue 350)
+  , examples (simple 350)
              [ "ثلاثمائة وخمسين"
              , "٣٥٠"
              , "٣٥٠٫٠"
              ]
-  , examples (NumeralValue 500)
+  , examples (simple 500)
              [ "خمسمائة"
              , "٥٠٠"
              , "٥٠٠٫٠"
              ]
-  , examples (NumeralValue 525)
+  , examples (simple 525)
              [ "خمسمائة و خمسة و عشرون"
              , "525"
              , "٥٢٥"
              , "٥٢٥٫٠"
              ]
-  , examples (NumeralValue 700)
+  , examples (simple 700)
              [ "سبعمائة"
              , "٧٠٠"
              , "٧٠٠٫٠"
              ]
-  , examples (NumeralValue 1.1)
+  , examples (simple 1.1)
              [ "1.1"
              , "1.10"
              , "01.10"
@@ -187,7 +187,7 @@ allExamples = concat
              , "١٫١"
              , "١٫١٠"
              ]
-  , examples (NumeralValue 0.77)
+  , examples (simple 0.77)
              [ "0.77"
              , ".77"
              , "٧٧/١٠٠"
@@ -195,13 +195,13 @@ allExamples = concat
              , "٠٫٧٧"
              , "٠٫٧٧٠"
              ]
-  , examples (NumeralValue 2000)
+  , examples (simple 2000)
              [ "2000"
              , "الفان"
              , "٢٠٠٠"
              , "الفين"
              ]
-  , examples (NumeralValue 100000)
+  , examples (simple 100000)
              [ "100000"
              , "100 الف"
              , "١٠٠٠٠٠"
@@ -209,7 +209,7 @@ allExamples = concat
              , "١٠٠٬٠٠٠"
              , "١٠٠٬٠٠٠٫٠"
              ]
-  , examples (NumeralValue 10000)
+  , examples (simple 10000)
              [ "10000"
              , "10 آلاف"
              , "١٠٠٠٠"
@@ -217,7 +217,7 @@ allExamples = concat
              , "١٠٬٠٠٠"
              , "١٠٬٠٠٠٫٠٠"
              ]
-  , examples (NumeralValue 1000000)
+  , examples (simple 1000000)
              [ "1000000"
              , "مليون"
              , "١٠٠٠٠٠٠"
@@ -225,7 +225,7 @@ allExamples = concat
              , "١٬٠٠٠٬٠٠٠"
              , "١٬٠٠٠٬٠٠٠٫٠٠"
              ]
-  , examples (NumeralValue 2000000)
+  , examples (simple 2000000)
              [ "2000000"
              , "2 مليون"
              , "مليونان"
@@ -235,7 +235,7 @@ allExamples = concat
              , "٢٬٠٠٠٬٠٠٠"
              , "٢٬٠٠٠٬٠٠٠٫٠٠"
              ]
-  , examples (NumeralValue 3000000)
+  , examples (simple 3000000)
              [ "3 ملايين"
              , "3000000"
              , "3 مليون"
@@ -244,14 +244,14 @@ allExamples = concat
              , "٣٬٠٠٠٬٠٠٠"
              , "٣٬٠٠٠٬٠٠٠٫٠٠"
              ]
-  , examples (NumeralValue (-1200000))
+  , examples (simple (-1200000))
              [ "-1200000"
              , "-١٢٠٠٠٠٠"
              , "-١٢٠٠٠٠٠٫٠٠"
              , "-١٬٢٠٠٬٠٠٠"
              , "-١٬٢٠٠٬٠٠٠٫٠٠"
              ]
-  , examples (NumeralValue (-1.2))
+  , examples (simple (-1.2))
              [ "-١٢/١٠"
              , "-1.2"
              , "-١٫٢"

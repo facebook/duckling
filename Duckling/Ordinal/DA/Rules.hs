@@ -21,7 +21,7 @@ import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
-import Duckling.Numeral.Helpers (parseInt, numberWith)
+import Duckling.Numeral.Helpers (parseInt, numberWith, isPositive)
 import Duckling.Numeral.Types (NumeralData (..), getIntValue)
 import Duckling.Ordinal.Helpers
 import Duckling.Ordinal.Types (OrdinalData (..))
@@ -135,14 +135,14 @@ ruleSpelledOutBigOrdinals :: Rule
 ruleSpelledOutBigOrdinals = Rule
   { name = "ordinals, above 99, spelled out"
   , pattern =
-    [ numberWith TNumeral.value (> 99)
+    [ Predicate isPositive
     , regex "og"
     , dimension Ordinal
     ]
   , prod = \case
-      Token Numeral NumeralData {TNumeral.value=maybenumnum}:_:Token Ordinal (OrdinalData ordnum):_ ->
+      Token Numeral NumeralData {TNumeral.value= Just maybenumnum}:_:Token Ordinal (OrdinalData ordnum):_ ->
             case getIntValue maybenumnum of
-              Just numnum -> Just $ ordinal (numnum + ordnum)
+              Just numnum -> if numnum > 99 then Just $ ordinal (numnum + ordnum) else Nothing
               Nothing -> Nothing
       _ -> Nothing
   }

@@ -24,43 +24,43 @@ corpus = (testContext {locale = makeLocale KN Nothing}, testOptions, allExamples
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (NumeralValue 0)
+  [ examples (simple 0)
              [ "ಸೊನ್ನೆ"
              , "೦"
              ]
-  , examples (NumeralValue 1)
+  , examples (simple 1)
              [ "ಒಂದು"
              , "೧"
              ]
-  , examples (NumeralValue 2)
+  , examples (simple 2)
              [ "ಎರಡು"
              , "೨"
              ]
-  , examples (NumeralValue 3)
+  , examples (simple 3)
              [ "ಮೂರು"
              , "೩"
              ]
-  , examples (NumeralValue 4)
+  , examples (simple 4)
              [ "ನಾಲ್ಕು"
              , "೪"
              ]
-  , examples (NumeralValue 5)
+  , examples (simple 5)
              [ "ಐದು"
              , "೫"
              ]
-  , examples (NumeralValue 6)
+  , examples (simple 6)
              [ "ಆರು"
              , "೬"
              ]
-  , examples (NumeralValue 7)
+  , examples (simple 7)
              [ "ಏಳು"
              , "೭"
              ]
-  , examples (NumeralValue 8)
+  , examples (simple 8)
              [ "ಎಂಟು"
              , "೮"
              ]
-  , examples (NumeralValue 9)
+  , examples (simple 9)
              [ "ಒಂಬತ್ತು"
              , "೯"
              ]

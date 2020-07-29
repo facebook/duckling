@@ -23,100 +23,100 @@ corpus = (testContext {locale = makeLocale BG Nothing}, testOptions, allExamples
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (NumeralValue 0)
+  [ examples (simple 0)
              [ "0"
              , "нула"
              ]
-  , examples (NumeralValue 1)
+  , examples (simple 1)
              [ "1"
              , "един"
              , "една"
              , "едно"
              ]
-  , examples (NumeralValue 2)
+  , examples (simple 2)
              [ "2"
              , "02"
              , "две"
              , "два"
              ]
-  , examples (NumeralValue 3)
+  , examples (simple 3)
              [ "3"
              , "03"
              , "три"
              ]
-  , examples (NumeralValue 4)
+  , examples (simple 4)
              [ "4"
              , "04"
              , "четири"
              ]
-  , examples (NumeralValue 5)
+  , examples (simple 5)
              [ "5"
              , "05"
              , "пет"
              ]
-  , examples (NumeralValue 33)
+  , examples (simple 33)
              [ "33"
              , "0033"
              , "тридесет и три"
              ]
-  , examples (NumeralValue 14)
+  , examples (simple 14)
              [ "14"
              , "четиринадесет"
              , "четиринайсет"
              ]
-  , examples (NumeralValue 15)
+  , examples (simple 15)
              [ "15"
              , "петнадесет"
              , "петнайсет"
              ]
-  , examples (NumeralValue 16)
+  , examples (simple 16)
              [ "16"
              , "шестнадесет"
              , "шестнайсет"
              ]
-  , examples (NumeralValue 17)
+  , examples (simple 17)
              [ "17"
              , "седемнадесет"
              , "седемнайсет"
              ]
-  , examples (NumeralValue 18)
+  , examples (simple 18)
              [ "18"
              , "осемнадесет"
              , "осемнайсет"
              ]
-  , examples (NumeralValue 525)
+  , examples (simple 525)
              [ "525"
              , "петстотин двадесет и пет"
              ]
-  , examples (NumeralValue 1.1)
+  , examples (simple 1.1)
              [ "1.1"
              , "1.10"
              , "01.10"
              , "1 цяло и 1"
              , "едно цяло и едно"
              ]
-  , examples (NumeralValue 0.77)
+  , examples (simple 0.77)
              [ "0.77"
              , ".77"
              ]
-  , examples (NumeralValue 100000)
+  , examples (simple 100000)
              [ "100000"
              , "100к"
              , "100К"
              ]
-  , examples (NumeralValue 3000000)
+  , examples (simple 3000000)
              [ "3М"
              , "3000К"
              , "3000000"
              , "3,000,000"
              ]
-  , examples (NumeralValue 1200000)
+  , examples (simple 1200000)
              [ "1200000"
              , "1.2М"
              , "1200К"
              , ".0012Г"
              ]
-  , examples (NumeralValue (-1200000))
+  , examples (simple (-1200000))
              [ "-1200000"
              , "минус 1200000"
              , "-1.2М"

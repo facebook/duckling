@@ -22,74 +22,74 @@ corpus = (testContext {locale = makeLocale HE Nothing}, testOptions, allExamples
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (NumeralValue 0)
+  [ examples (simple 0)
              [ "0"
              , "אפס"
              ]
-  , examples (NumeralValue 1)
+  , examples (simple 1)
              [ "1"
              , "אחד"
              , "אחת"
              , "יחיד"
              ]
-  , examples (NumeralValue 2)
+  , examples (simple 2)
              [ "2"
              , "שתיים"
              , "שניים"
              , "זוג"
              ]
-  , examples (NumeralValue 33)
+  , examples (simple 33)
              [ "33"
              , "שלושים ושלוש"
              , "שלושים ושלושה"
              , "0033"
              ]
-  , examples (NumeralValue 14)
+  , examples (simple 14)
              [ "14"
              , "ארבעה עשר"
              , "ארבע עשרה"
              ]
-  , examples (NumeralValue 16)
+  , examples (simple 16)
              [ "16"
              , "ששה עשר"
              , "שש עשרה"
              ]
-  , examples (NumeralValue 17)
+  , examples (simple 17)
              [ "17"
              , "שבעה עשר"
              , "שבע עשרה"
              ]
-  , examples (NumeralValue 18)
+  , examples (simple 18)
              [ "18"
              , "שמונה עשר"
              , "שמונה עשרה"
              ]
-  , examples (NumeralValue 1.1)
+  , examples (simple 1.1)
              [ "1.1"
              , "1.10"
              , "01.10"
              ]
-  , examples (NumeralValue 0.5)
+  , examples (simple 0.5)
              [ "חצי"
              , "0.5"
              ]
-  , examples (NumeralValue 0.77)
+  , examples (simple 0.77)
              [ "0.77"
              , ".77"
              ]
-  , examples (NumeralValue 100000)
+  , examples (simple 100000)
              [ "100,000"
              , "100000"
              ]
-  , examples (NumeralValue 3000000)
+  , examples (simple 3000000)
              [ "3000000"
              , "3,000,000"
              ]
-  , examples (NumeralValue 1200000)
+  , examples (simple 1200000)
              [ "1,200,000"
              , "1200000"
              ]
-  , examples (NumeralValue (-1200000))
+  , examples (simple (-1200000))
              [ "- 1,200,000"
              , "-1200000"
              , "מינוס 1,200,000"

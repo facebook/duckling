@@ -37,14 +37,14 @@ surroundTests = testCase "Surround Tests" $
     withTargets [This Numeral]) xs
   where
     xs = concat
-      [ examples (NumeralValue 3)
+      [ examples (simple 3)
                  [ "3km"
                  ]
-      , examples (NumeralValue 100000)
+      , examples (simple 100000)
                  [ "100k€"
                  , "100k\x20ac"
                  ]
-      , examples (NumeralValue 10.99)
+      , examples (simple 10.99)
                  [ "10.99$"
                  ]
       ]

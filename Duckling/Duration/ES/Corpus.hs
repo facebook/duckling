@@ -25,19 +25,19 @@ corpus = (testContext {locale = makeLocale ES Nothing}, testOptions, allExamples
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (DurationData 30 Minute)
+  [ examples (single 30 Minute)
              [ "media hora"
              , "media horas"
              , "30 minutos"
              , "treinta minutos"
              ]
-  , examples (DurationData 15 Minute)
+  , examples (single 15 Minute)
              [  "cuarto de hora"
              ,  "cuartos de hora"
              ,  "quince minutos"
              ,  "15 minutos"
              ]
-  , examples (DurationData 45 Minute)
+  , examples (single 45 Minute)
              [  "tres cuartos de hora"
              ,  "tres cuartos de horas"
              ,  "tres cuarto de hora"
@@ -45,12 +45,12 @@ allExamples = concat
              ,  "cuarenta y cinco minutos"
              ,  "45 minutos"
              ]
-  , examples (DurationData 92 Minute)
+  , examples (single 92 Minute)
              [
                "una hora y treinta y dos minutos"
              , "una hora treinta y dos minutos"
              ]
-  , examples (DurationData 155 Minute)
+  , examples (single 155 Minute)
              [
                "dos hora y treinta y cinco minutos"
              , "dos hora  treinta y cinco minutos"

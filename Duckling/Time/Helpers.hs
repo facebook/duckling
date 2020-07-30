@@ -77,12 +77,12 @@ getIntValue (Token Ordinal OrdinalData {TOrdinal.value = x}) = Just x
 getIntValue _ = Nothing
 
 timeNegPeriod :: DurationData -> DurationData
-timeNegPeriod (DurationData v g) = DurationData
-  {TDuration.grain = g, TDuration.value = negate v}
+timeNegPeriod (DurationData{TDuration.value = Just v, TDuration.grain = g}) = 
+  DurationData{TDuration.grain = g, TDuration.value = Just (negate v), TDuration.minValue = Nothing, TDuration.maxValue = Nothing}
 
 timeShiftPeriod :: Int -> DurationData -> DurationData
-timeShiftPeriod n dd@DurationData{TDuration.value = v} =
-  dd{TDuration.value = v + n}
+timeShiftPeriod n dd@DurationData{TDuration.value = Just v} =
+  dd{TDuration.value = Just (v + n)}
 
 -- -----------------------------------------------------------------
 -- Time predicates
@@ -234,10 +234,11 @@ timeComposeWithReplacement pred1 pred2 pred3 =
   mkReplaceIntersectPredicate pred1 pred2 pred3
 
 addDuration :: DurationData -> TTime.TimeObject -> TTime.TimeObject
-addDuration (DurationData n g) t = TTime.timePlus t g $ toInteger n
+addDuration (DurationData{TDuration.value = Just n, TDuration.grain = g}) t
+ = TTime.timePlus t g $ toInteger n
 
 mergeDuration :: TTime.Predicate -> DurationData -> TTime.Predicate
-mergeDuration pred1 dd@(DurationData _ g) =
+mergeDuration pred1 dd@(DurationData _ g _ _) =
   mkSeriesPredicate $! TTime.timeSeqMap False f pred1
   where
     f x@TTime.TimeObject{TTime.grain = tg} _ = Just $ addDuration dd t'
@@ -246,7 +247,7 @@ mergeDuration pred1 dd@(DurationData _ g) =
         t' = if g' == tg then x else TTime.timeRound x g'
 
 shiftDuration :: TTime.Predicate -> DurationData -> TTime.Predicate
-shiftDuration pred1 dd@(DurationData _ g) =
+shiftDuration pred1 dd@(DurationData _ g _ _) =
   mkSeriesPredicate $! TTime.timeSeqMap False f pred1
   where
     f x _ = Just . addDuration dd . TTime.timeRound x $ TG.lower g

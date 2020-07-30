@@ -730,28 +730,29 @@ classifiers
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("in|within|after <duration>",
         Classifier{okData =
-                     ClassData{prior = -0.178691788743376, unseen = -4.718498871295094,
+                     ClassData{prior = -0.17520408902509063,
+                               unseen = -4.736198448394496,
                                likelihoods =
                                  HashMap.fromList
-                                   [("week", -3.3232358401924436),
-                                    ("<integer> more <unit-of-duration>", -4.0163830207523885),
-                                    ("three-quarters of an hour", -3.100092288878234),
-                                    ("<integer> + '\"", -3.3232358401924436),
-                                    ("number.number hours", -4.0163830207523885),
-                                    ("second", -3.6109179126442243),
-                                    ("half a <time-grain>", -3.100092288878234),
-                                    ("day", -3.3232358401924436), ("year", -4.0163830207523885),
-                                    ("<integer> <unit-of-duration>", -1.6184877479540183),
-                                    ("a <unit-of-duration>", -3.100092288878234),
-                                    ("quarter of an hour", -3.100092288878234),
-                                    ("hour", -2.512305623976115),
-                                    ("about|exactly <duration>", -4.0163830207523885),
-                                    ("half an hour (abbrev).", -3.6109179126442243),
-                                    ("<integer> and an half hour", -4.0163830207523885),
-                                    ("minute", -1.3083328196501787)],
-                               n = 46},
+                                   [("week", -3.34109345759245),
+                                    ("<integer> more <unit-of-duration>", -4.034240638152395),
+                                    ("three-quarters of an hour", -3.1179499062782403),
+                                    ("<integer> + '\"", -3.34109345759245),
+                                    ("number.number hours", -4.034240638152395),
+                                    ("second", -3.628775530044231),
+                                    ("half a <time-grain>", -3.1179499062782403),
+                                    ("day", -3.34109345759245), ("year", -4.034240638152395),
+                                    ("<integer> <unit-of-duration>", -1.6363453653540248),
+                                    ("a <unit-of-duration>", -3.1179499062782403),
+                                    ("quarter of an hour", -3.1179499062782403),
+                                    ("hour", -2.5301632413761213),
+                                    ("about|exactly <duration>", -3.628775530044231),
+                                    ("half an hour (abbrev).", -3.628775530044231),
+                                    ("<integer> and an half hour", -4.034240638152395),
+                                    ("minute", -1.2934006142271943)],
+                               n = 47},
                    koData =
-                     ClassData{prior = -1.8101086078962516,
+                     ClassData{prior = -1.8281271133989299,
                                unseen = -3.6375861597263857,
                                likelihoods =
                                  HashMap.fromList
@@ -3381,12 +3382,12 @@ classifiers
                                n = 42}}),
        ("about|exactly <duration>",
         Classifier{okData =
-                     ClassData{prior = 0.0, unseen = -1.6094379124341003,
+                     ClassData{prior = 0.0, unseen = -1.9459101490553135,
                                likelihoods =
                                  HashMap.fromList
                                    [("half a <time-grain>", -0.6931471805599453),
                                     ("minute", -0.6931471805599453)],
-                               n = 1},
+                               n = 2},
                    koData =
                      ClassData{prior = -infinity, unseen = -1.0986122886681098,
                                likelihoods = HashMap.fromList [], n = 0}}),

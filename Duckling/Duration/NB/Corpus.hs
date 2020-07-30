@@ -25,20 +25,20 @@ corpus = (testContext {locale = makeLocale NB Nothing}, testOptions, allExamples
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (DurationData 1 Second)
+  [ examples (single 1 Second)
              [ "1 sek"
              , "en sek"
              , "ett sekund"
              , "e sekunder"
              ]
-  , examples (DurationData 30 Minute)
+  , examples (single 30 Minute)
              [ "tredve min"
              , "30 minutt"
              , "30 minutter"
              , "1/2 time"
              , "en halv time"
              ]
-  , examples (DurationData 2 Day)
+  , examples (single 2 Day)
              [ "et par dager"
              , "2 dag"
              , "to dag"

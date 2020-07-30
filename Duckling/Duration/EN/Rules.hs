@@ -249,7 +249,7 @@ ruleCompositeDurationAnd = Rule
     , dimension Duration
     ]
   , prod = \case
-      (Token Duration DurationData{TDuration.value = v, TDuration.grain = g}:
+      (Token Duration DurationData{TDuration.value = Just v, TDuration.grain = g}:
        _:
        Token Duration dd@DurationData{TDuration.grain = dg}:
        _) | g > dg -> Just . Token Duration $ duration g (v) <> dd
@@ -294,6 +294,116 @@ ruleDurationNumeralAndQuarterHour = Rule
       _ -> Nothing
   }
 
+rulePrecision :: Rule
+rulePrecision = Rule
+  { name = "about|exactly <duration>"
+  , pattern =
+    [ regex "exactly|precisely|about|approx(\\.|imately)?|close to| near( to)?|around|almost"
+    , dimension Duration
+    ]
+  , prod = \tokens -> case tokens of
+      (_:token:_) -> Just token
+      _ -> Nothing
+  }
+
+ruleIntervalBetweenNumeral :: Rule
+ruleIntervalBetweenNumeral = Rule
+  { name = "between|from <numeral> to|and <duration>"
+  , pattern =
+    [ regex "between|from"
+    , Predicate isNatural
+    , regex "to|and"
+    , Predicate isSimpleDuration
+    ]
+  , prod = \tokens -> case tokens of
+      (_:
+       Token Numeral NumeralData{TNumeral.value = Just from}:
+       _:
+       Token Duration DurationData{TDuration.value = Just to,TDuration.grain = g}:
+       _) | floor(from) < to ->
+        Just . Token Duration . withInterval (floor(from), to) $ grainOnly g
+      _ -> Nothing
+  }
+
+ruleIntervalBetween :: Rule
+ruleIntervalBetween = Rule
+  { name = "between|from <duration> to|and <duration>"
+  , pattern =
+    [ regex "between|from"
+    , Predicate isSimpleDuration
+    , regex "to|and"
+    , Predicate isSimpleDuration
+    ]
+  , prod = \tokens -> case tokens of
+      (_:
+       Token Duration DurationData{TDuration.value = Just from,TDuration.grain = g1}:
+       _:
+       Token Duration DurationData{TDuration.value = Just to,TDuration.grain = g2}:
+       _) | from < to && g1 == g2 ->
+        Just . Token Duration . withInterval (from, to) $ grainOnly g1
+      _ -> Nothing
+  }
+
+ruleIntervalNumeralDash :: Rule
+ruleIntervalNumeralDash = Rule
+  { name = "<numeral> - <duration>"
+  , pattern =
+    [ Predicate isNatural
+    , regex "-"
+    , Predicate isSimpleDuration
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Numeral NumeralData{TNumeral.value = Just from}:
+       _:Token Duration DurationData{TDuration.value = Just to,TDuration.grain = g}:
+       _) | floor(from) < to ->
+         Just . Token Duration . withInterval (floor(from), to) $ grainOnly g
+      _ -> Nothing
+  }
+
+ruleIntervalDash :: Rule
+ruleIntervalDash = Rule
+  { name = "<duration> - <duration>"
+  , pattern =
+    [ Predicate isSimpleDuration
+    , regex "-"
+    , Predicate isSimpleDuration
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Duration DurationData{TDuration.value = Just from,TDuration.grain = g1}:
+       _:Token Duration DurationData{TDuration.value = Just to,TDuration.grain = g2}:
+       _) | from < to && g1 == g2 ->
+        Just . Token Duration . withInterval (from, to) $ grainOnly g1
+      _ -> Nothing
+  }
+
+ruleIntervalMax :: Rule
+ruleIntervalMax = Rule
+  { name = "under/less/lower/no more than <duration>"
+  , pattern =
+    [ regex "under|(less|lower|not? more) than"
+    , Predicate isSimpleDuration
+    ]
+  , prod = \tokens -> case tokens of
+      (_:
+       Token Duration DurationData{TDuration.value = Just to,TDuration.grain = g}:
+       _) -> Just . Token Duration . withMax to $ grainOnly g
+      _ -> Nothing
+  }
+
+ruleIntervalMin :: Rule
+ruleIntervalMin = Rule
+  { name = "over/above/at least/more than <duration>"
+  , pattern =
+    [ regex "over|above|at least|more than"
+    , Predicate isSimpleDuration
+    ]
+  , prod = \tokens -> case tokens of
+      (_:
+       Token Duration DurationData{TDuration.value = Just to,TDuration.grain = g}:
+       _) -> Just . Token Duration . withMin to $ grainOnly g
+      _ -> Nothing
+  }
+
 rules :: [Rule]
 rules =
   [ ruleCompositeDurationCommasAnd
@@ -316,4 +426,11 @@ rules =
   , ruleCompositeDurationCommasAnd
   , ruleDurationDotNumeralMinutes
   , ruleDurationNumeralAndQuarterHour
+  , rulePrecision
+  , ruleIntervalBetweenNumeral
+  , ruleIntervalBetween
+  , ruleIntervalNumeralDash
+  , ruleIntervalDash
+  , ruleIntervalMax
+  , ruleIntervalMin
   ]

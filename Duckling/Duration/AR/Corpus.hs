@@ -25,33 +25,33 @@ corpus = (testContext {locale = makeLocale AR Nothing}, testOptions, allExamples
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (DurationData 1 Second)
+  [ examples (single 1 Second)
              [ "ثانية"
              , "لحظة"
              ]
-  , examples (DurationData 2 Minute)
+  , examples (single 2 Minute)
              [ "دقيقتان"
              , "دقيقتين"
              ]
-  , examples (DurationData 5 Hour)
+  , examples (single 5 Hour)
              [ "خمسة ساعات"
              ]
-  , examples (DurationData 30 Day)
+  , examples (single 30 Day)
              [ "30 يوم"
              ]
-  , examples (DurationData 1 Week)
+  , examples (single 1 Week)
              [ "اسبوع"
              ]
-  , examples (DurationData 7 Week)
+  , examples (single 7 Week)
              [ "سبع اسابيع"
              ]
-  , examples (DurationData 1 Month)
+  , examples (single 1 Month)
              [ "شهر"
              ]
-  , examples (DurationData 2 Month)
+  , examples (single 2 Month)
              [ "شهرين"
              ]
-  , examples (DurationData 2 Year)
+  , examples (single 2 Year)
              [ "سنتين"
              , "سنتان"
              , "عامين"

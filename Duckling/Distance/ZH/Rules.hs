@@ -77,9 +77,22 @@ ruleDistFeetAndDistInch = Rule
       _ -> Nothing
   }
 
-ruleDistInch :: Rule
-ruleDistInch = Rule
-  { name = "<dist> inch"
+ruleIntervalFromNumeral :: [Rule]
+ruleIntervalFromNumeral = map go distances
+  where
+    go :: (Text, String, TDistance.Unit) -> Rule
+    go (name, regexPattern, u) = Rule
+      { name = name
+      , pattern = [ Predicate isNumeralInterval, regex regexPattern ]
+      , prod = \case
+          (Token Numeral NumeralData{TNumeral.minValue = Just from, TNumeral.maxValue = Just to}:
+            _) -> Just . Token Distance $ withInterval (from, to) $ unitOnly u
+          _ -> Nothing
+      }
+
+ruleIntervalBound :: Rule
+ruleIntervalBound = Rule
+  { name = "under/less/lower/no more than <distance> (最多|至少|最少)"
   , pattern =
     [ dimension Distance
     , regex "''|inch(es)?|英寸|英吋|吋"
@@ -90,9 +103,9 @@ ruleDistInch = Rule
       _ -> Nothing
   }
 
-ruleDistFeet :: Rule
-ruleDistFeet = Rule
-  { name = "<dist> feet"
+ruleIntervalBound2 :: Rule
+ruleIntervalBound2 = Rule
+  { name = "under/less/lower/no more than <distance> (以下|以上)"
   , pattern =
     [ dimension Distance
     , regex "'|f(oo|ee)?ts?|英尺|呎"

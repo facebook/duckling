@@ -25,7 +25,7 @@ corpus = (testContext {locale = makeLocale SV Nothing}, testOptions, allExamples
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (DurationData 1 Second)
+  [ examples (single 1 Second)
              [ "enkel sek"
              , "1 sekund fler"
              , "1 sekunder mer"
@@ -33,14 +33,14 @@ allExamples = concat
              , "et sek"
              , "ett sek"
              ]
-  , examples (DurationData 30 Minute)
+  , examples (single 30 Minute)
              [ "1/2 timme"
              , "en halv timme"
              , "0,5 timmar"
              , "30 minuterna"
              , "trettio min"
              ]
-  , examples (DurationData 5 Year)
+  , examples (single 5 Year)
              [ "5 år"
              , "fem år"
              , "omkring fem år"

@@ -10,10 +10,15 @@
 module Duckling.Duration.Helpers
   ( duration
   , isGrain
+  , isSimpleDuration
   , isNatural
   , minutesFromHourMixedFraction
   , nPlusOneHalf
   , secondsFromHourMixedFraction
+  , grainOnly
+  , withInterval
+  , withMin
+  , withMax
   ) where
 
 import Prelude
@@ -32,11 +37,19 @@ isGrain :: TG.Grain -> Predicate
 isGrain value (Token TimeGrain grain) = grain == value
 isGrain _ _ = False
 
+isSimpleDuration :: Predicate
+isSimpleDuration (Token Duration DurationData {TDuration.value = Just _
+                                              , TDuration.grain = _}) = True
+isSimpleDuration _ = False
+
 -- -----------------------------------------------------------------
 -- Production
 
 duration :: TG.Grain -> Int -> DurationData
-duration grain n = DurationData {TDuration.grain = grain, TDuration.value = n}
+duration grain n = DurationData { TDuration.grain = grain
+                                , TDuration.value = Just n
+                                , TDuration.minValue = Nothing
+                                , TDuration.maxValue = Nothing}
 
 minutesFromHourMixedFraction :: Integer -> Integer -> Integer -> DurationData
 minutesFromHourMixedFraction h n d =
@@ -54,3 +67,19 @@ nPlusOneHalf grain = case grain of
 secondsFromHourMixedFraction :: Integer -> Integer -> Integer -> DurationData
 secondsFromHourMixedFraction m s d =
   duration TG.Second $ fromIntegral $ 60 * m + quot (s * 60) d
+
+grainOnly :: TG.Grain -> DurationData
+grainOnly g = DurationData {TDuration.grain = g
+                          , TDuration.value = Nothing
+                          , TDuration.minValue = Nothing
+                          , TDuration.maxValue = Nothing}
+
+withInterval :: (Int, Int) -> DurationData -> DurationData
+withInterval (from, to) dd = dd {TDuration.minValue = Just from
+                                , TDuration.maxValue = Just to}
+
+withMin :: Int -> DurationData -> DurationData
+withMin from dd = dd {TDuration.minValue = Just from}
+
+withMax :: Int -> DurationData -> DurationData
+withMax to dd = dd {TDuration.maxValue = Just to}

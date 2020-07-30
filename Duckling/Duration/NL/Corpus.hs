@@ -37,57 +37,57 @@ negativeCorpus = (testContext {locale = makeLocale NL Nothing}, testOptions, exa
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (DurationData 1 Second)
+  [ examples (single 1 Second)
              [ "een seconde"
              , "één seconde"
              , "1 secondes"
              , "1 s"
              , "1\""
              ]
-  , examples (DurationData 14 Second)
+  , examples (single 14 Second)
              [ "veertien seconden"
              , "14 s"
              ]
-  , examples (DurationData 2 Minute)
+  , examples (single 2 Minute)
              [ "2 min"
              , "twee minuten"
              , "2 m"
              , "2'"
              ]
-  , examples (DurationData 45 Minute)
+  , examples (single 45 Minute)
              [ "3 kwartier"
              ]
-  , examples (DurationData 1 Hour)
+  , examples (single 1 Hour)
              [ "een uur"
              , "één uur"
              , "1 u"
              , "1 h"
              ]
-  , examples (DurationData 30 Day)
+  , examples (single 30 Day)
              [ "30 dagen"
              ]
-  , examples (DurationData 7 Day)
+  , examples (single 7 Day)
              [ "7 dagen"
              ]
-  , examples (DurationData 7 Week)
+  , examples (single 7 Week)
              [ "zeven weken"
              , "7 w"
              ]
-  , examples (DurationData 1 Month)
+  , examples (single 1 Month)
              [ "1 mnd"
              , "een maand"
              , "één maand"
              ]
-  , examples (DurationData 3 Quarter)
+  , examples (single 3 Quarter)
              [ "drie kwartalen"
              ]
-  , examples (DurationData 2 Year)
+  , examples (single 2 Year)
              [ "2 jaar"
              , "2 jaren"
              , "twee jaren"
              , "2 j"
              ]
-  , examples (DurationData 150 Minute)
+  , examples (single 150 Minute)
             [ "twee en een half uur"
             , "2,5 uur"
             ]

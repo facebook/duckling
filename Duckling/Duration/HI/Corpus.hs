@@ -25,23 +25,23 @@ corpus = (testContext {locale = makeLocale HI Nothing}, testOptions, allExamples
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (DurationData 15 Minute)
+  [ examples (single 15 Minute)
              [ "पंद्रह मिनट"
              , "लगभग पंद्रह मिनट"
              ]
-  , examples (DurationData 30 Minute)
+  , examples (single 30 Minute)
              [ "आधा घंटा"
              ]
-  , examples (DurationData 1 Day)
+  , examples (single 1 Day)
              [ "दिवस"
              , "एक दिन"
              , "बिल्कुल एक दिन"
              ]
-  , examples (DurationData 14 Day)
+  , examples (single 14 Day)
              [ "पखवाड़ा"
              , "एक पखवाड़ा"
              ]
-  , examples (DurationData 1 Year)
+  , examples (single 1 Year)
              [ "एक साल"
              , "केवल एक वर्ष"
              , "लगभग एक साल"

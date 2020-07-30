@@ -27,32 +27,32 @@ corpus = (testContext {locale = makeLocale KA Nothing},
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (DurationData 1 Second)
+  [ examples (single 1 Second)
              [ "ერთი წამი"
              , "1 წამი"
              ]
-  , examples (DurationData 2 Minute)
+  , examples (single 2 Minute)
              [ "2 წუთი"
              , "ორი წუთი"
              ]
-  , examples (DurationData 30 Day)
+  , examples (single 30 Day)
              [ "30 დღე"
              ]
-  , examples (DurationData 7 Week)
+  , examples (single 7 Week)
              [ "შვიდი კვირა"
              ]
-  , examples (DurationData 1 Month)
+  , examples (single 1 Month)
              [ "1 თვე"
              , "ერთი თვე"
              ]
-  , examples (DurationData 3 Quarter)
+  , examples (single 3 Quarter)
              [ "3 კვარტალი"
              ]
-  , examples (DurationData 27 Month)
+  , examples (single 27 Month)
              [ "2 წელი და 3 თვე"
              , "2 წელი, 3 თვე"
              ]
-  , examples (DurationData 31719604 Second)
+  , examples (single 31719604 Second)
              [ "1 წელი, 2 დღე, 3 საათი და 4 წამი"
              ]
   ]

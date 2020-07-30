@@ -25,14 +25,14 @@ corpus = (testContext {locale = makeLocale JA Nothing}, testOptions, allExamples
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (DurationData 1 Second)
+  [ examples (single 1 Second)
              [ "1 秒"
              , "一 秒間"
              ]
-  , examples (DurationData 4 Minute)
+  , examples (single 4 Minute)
              [ "四 分間"
              ]
-  , examples (DurationData 100 Day)
+  , examples (single 100 Day)
              [ "百 日"
              , "百 日間"
              ]

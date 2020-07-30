@@ -25,15 +25,15 @@ corpus = (testContext {locale = makeLocale KO Nothing}, testOptions, allExamples
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (DurationData 1 Second)
+  [ examples (single 1 Second)
              [ "1 초"
              ]
-  , examples (DurationData 30 Minute)
+  , examples (single 30 Minute)
              [ "시간반"
              , "시반"
              , "서른분"
              ]
-  , examples (DurationData 66 Minute)
+  , examples (single 66 Minute)
              [ "1.1 시간"
              ]
   ]

@@ -25,28 +25,28 @@ corpus = (testContext {locale = makeLocale RO Nothing}, testOptions, allExamples
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (DurationData 1 Second)
+  [ examples (single 1 Second)
              [ "o sec"
              , "1 secunda"
              ]
-  , examples (DurationData 30 Minute)
+  , examples (single 30 Minute)
              [ "jumatate ora"
              , "1/2h"
              , "treizeci minute"
              ]
-  , examples (DurationData 45 Minute)
+  , examples (single 45 Minute)
              [ "trei sferturi de oră"
              , "45min"
              , "45 de minute"
              ]
-  , examples (DurationData 12 Week)
+  , examples (single 12 Week)
              [ "doișpe saptamanile"
              , "doisprezece saptămâni"
              ]
-  , examples (DurationData 2 Month)
+  , examples (single 2 Month)
              [ "2 luni"
              ]
-  , examples (DurationData 1 Quarter)
+  , examples (single 1 Quarter)
              [ "un trimestru"
              ]
   ]

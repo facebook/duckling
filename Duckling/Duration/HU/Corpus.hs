@@ -24,50 +24,50 @@ corpus = (testContext {locale = makeLocale HU Nothing}, testOptions, allExamples
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (DurationData 1 Second)
+  [ examples (single 1 Second)
              [ "egy másodperc"
              , "1 másodperc"
              ]
-  , examples (DurationData 2 Minute)
+  , examples (single 2 Minute)
              [ "2 perc"
              , "kettő perc"
              ]
-  , examples (DurationData 15 Minute)
+  , examples (single 15 Minute)
              [ "negyed óra"
              , "negyedóra"
              , "negyed-óra"
              ]
-  , examples (DurationData 30 Minute)
+  , examples (single 30 Minute)
              [ "fél óra"
              , "félóra"
              , "fél-óra"
              ]
-  , examples (DurationData 45 Minute)
+  , examples (single 45 Minute)
              [ "háromnegyed óra"
              , "háromnegyed-óra"
              , "háromnegyedóra"
              , "3/4 óra"
              , "3/4óra"
              ]
-  , examples (DurationData 150 Minute)
+  , examples (single 150 Minute)
              [ "2.5 óra"
              , "kettő és fél óra"
              , "kettő és fél-óra"
              , "kettő és félóra"
              ]
-  , examples (DurationData 30 Day)
+  , examples (single 30 Day)
              [ "30 nap"
              ]
-  , examples (DurationData 7 Week)
+  , examples (single 7 Week)
              [ "hét hét"
              ]
-  , examples (DurationData 1 Month)
+  , examples (single 1 Month)
              [ "egy hónap"
              ]
-  , examples (DurationData 3 Quarter)
+  , examples (single 3 Quarter)
              [ "3 negyedév"
              ]
-  , examples (DurationData 2 Year)
+  , examples (single 2 Year)
              [ "2 év"
              ]
   ]

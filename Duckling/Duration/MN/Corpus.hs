@@ -25,43 +25,43 @@ corpus = (testContext {locale = makeLocale MN Nothing}, testOptions, allExamples
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (DurationData 1 Second)
+  [ examples (single 1 Second)
              [ "1 сек"
              , "1 секунд"
              , "секунд"
              , "1\""
              ]
-  , examples (DurationData 15 Minute)
+  , examples (single 15 Minute)
              [ "15 мин"
              , "15'"
              ]
-  , examples (DurationData 30 Minute)
+  , examples (single 30 Minute)
              [ "30 минут"
              ]
-  , examples (DurationData 5400 Second)
+  , examples (single 5400 Second)
              [ "5400 секунд"
              ]
-  , examples (DurationData 8 Hour)
+  , examples (single 8 Hour)
              [ "8 цаг"
              , "8 ц"
              ]
-  , examples (DurationData 15 Day)
+  , examples (single 15 Day)
              [ "15 өдөр"
              ]
-  , examples (DurationData 7 Week)
+  , examples (single 7 Week)
              [ "7 долоо хоног"
              ]
-  , examples (DurationData 1 Month)
+  , examples (single 1 Month)
              [ "1 сар"
              , "сар"
              ]
-  , examples (DurationData 6 Month)
+  , examples (single 6 Month)
              [ "6 сар"
              ]
-  , examples (DurationData 2 Year)
+  , examples (single 2 Year)
              [ "2 жил"
              ]
-  , examples (DurationData 12 Hour)
+  , examples (single 12 Hour)
              [ "12 цаг"
              ]
   ]

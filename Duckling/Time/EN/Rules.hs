@@ -255,8 +255,8 @@ ruleLastNight = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
-        let hours = if Text.toLower match == "late " then 3 else 6
-            start = durationBefore (DurationData hours TG.Hour) today
+        let hours = if Text.toLower match == "late " then Just 3 else Just 6
+            start = durationBefore (DurationData hours TG.Hour Nothing Nothing) today
         in Token Time . partOfDay . notLatent <$> interval TTime.Open start today
       _ -> Nothing
   }
@@ -2261,11 +2261,11 @@ ruleDurationLastNext = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):
-       Token Duration DurationData{TDuration.grain, TDuration.value}:
+       Token Duration DurationData{TDuration.grain, TDuration.value = Just v}:
        _) -> case Text.toLower match of
-         "next" -> tt $ cycleN True grain value
-         "last" -> tt $ cycleN True grain (- value)
-         "past" -> tt $ cycleN True grain (- value)
+         "next" -> tt $ cycleN True grain v
+         "last" -> tt $ cycleN True grain (- v)
+         "past" -> tt $ cycleN True grain (- v)
          _      -> Nothing
       _ -> Nothing
   }

@@ -25,20 +25,20 @@ corpus = (testContext {locale = makeLocale GA Nothing}, testOptions, allExamples
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (DurationData 1 Second)
+  [ examples (single 1 Second)
              [ "aon soicind amhain"
              , "aon soicind"
              , "1 tshoicindi"
              , "1 tsoicind"
              ]
-  , examples (DurationData 30 Minute)
+  , examples (single 30 Minute)
              [ "leathuair"
              , "30 noimead"
              ]
-  , examples (DurationData 27 Minute)
+  , examples (single 27 Minute)
              [ "7 noimead 20"
              ]
-  , examples (DurationData 14 Day)
+  , examples (single 14 Day)
              [ "coicís"
              ]
   ]

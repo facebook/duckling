@@ -146,7 +146,7 @@ ruleIntervalFromNumeral = map go distances
 
 ruleIntervalBound :: Rule
 ruleIntervalBound = Rule
-  { name = "under/less/lower/no more than <amount-of-money> (最多|至少|最少)"
+  { name = "under/less/lower/no more than <distance> (最多|至少|最少)"
   , pattern =
     [ regex "(最多|至少|最少|起碼)"
     , Predicate isSimpleDistance
@@ -166,7 +166,7 @@ ruleIntervalBound = Rule
 
 ruleIntervalBound2 :: Rule
 ruleIntervalBound2 = Rule
-  { name = "under/less/lower/no more than <amount-of-money> (以下|以上)"
+  { name = "under/less/lower/no more than <distance> (以下|以上)"
   , pattern =
     [ Predicate isSimpleDistance
     , regex "(以下|以上)"

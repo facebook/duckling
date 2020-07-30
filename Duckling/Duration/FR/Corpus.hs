@@ -36,30 +36,30 @@ negativeCorpus = (testContext {locale = makeLocale FR Nothing}, testOptions, exa
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (DurationData 1 Second)
+  [ examples (single 1 Second)
              [ "une sec"
              , "1 seconde"
              , "1\""
              ]
-  , examples (DurationData 2 Minute)
+  , examples (single 2 Minute)
              [ "2 mins"
              , "deux minutes"
              , "2'"
              ]
-  , examples (DurationData 30 Day)
+  , examples (single 30 Day)
              [ "30 jours"
              ]
-  , examples (DurationData 7 Week)
+  , examples (single 7 Week)
              [ "sept semaines"
              ]
-  , examples (DurationData 1 Month)
+  , examples (single 1 Month)
              [ "1 mois"
              , "un mois"
              ]
-  , examples (DurationData 3 Quarter)
+  , examples (single 3 Quarter)
              [ "3 trimestres"
              ]
-  , examples (DurationData 2 Year)
+  , examples (single 2 Year)
              [ "2 ans"
              ]
   ]

@@ -25,30 +25,30 @@ corpus = (testContext {locale = makeLocale TR Nothing}, testOptions, allExamples
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (DurationData 1 Second)
+  [ examples (single 1 Second)
              [ "bir sn"
              , "1 saniye"
              , "1\""
              ]
-  , examples (DurationData 2 Minute)
+  , examples (single 2 Minute)
              [ "2 dk"
              , "iki dakika"
              , "2'"
              ]
-  , examples (DurationData 30 Day)
+  , examples (single 30 Day)
              [ "30 gün"
              ]
-  , examples (DurationData 7 Week)
+  , examples (single 7 Week)
              [ "yedi hafta"
              ]
-  , examples (DurationData 1 Month)
+  , examples (single 1 Month)
              [ "1 ay"
              , "bir ay"
              ]
-  , examples (DurationData 3 Quarter)
+  , examples (single 3 Quarter)
              [ "3 çeyrek yıl"
              ]
-  , examples (DurationData 2 Year)
+  , examples (single 2 Year)
              [ "2 yıl"
              ]
   ]

@@ -268,8 +268,8 @@ ruleLastNight = Rule
     ]
   , prod = \case
       (Token RegexMatch (GroupMatch (match:_)):_) ->
-        let hours = if Text.toLower match == "късно " then 3 else 6
-            start = durationBefore (DurationData hours TG.Hour) today
+        let hours = if Text.toLower match == "късно " then Just 3 else Just 6
+            start = durationBefore (DurationData hours TG.Hour Nothing Nothing) today
         in Token Time . partOfDay . notLatent <$> interval TTime.Open start today
       _ -> Nothing
   }

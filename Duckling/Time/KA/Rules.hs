@@ -1393,13 +1393,13 @@ ruleDurationLastNext = Rule
     ]
   , prod = \case
       (Token RegexMatch (GroupMatch (match:_)):
-       Token Duration DurationData{TDuration.grain, TDuration.value}:
+       Token Duration DurationData{TDuration.grain, TDuration.value = Just v}:
        _) -> case Text.toLower match of
-         "მომდევნო" -> tt $ cycleN True grain value
-         "მომავალ" -> tt $ cycleN True grain value
-         "წინა" -> tt $ cycleN True grain (- value)
-         "გასული" -> tt $ cycleN True grain (- value)
-         "გასულ" -> tt $ cycleN True grain (- value)
+         "მომდევნო" -> tt $ cycleN True grain v
+         "მომავალ" -> tt $ cycleN True grain v
+         "წინა" -> tt $ cycleN True grain (- v)
+         "გასული" -> tt $ cycleN True grain (- v)
+         "გასულ" -> tt $ cycleN True grain (- v)
          _      -> Nothing
       _ -> Nothing
   }

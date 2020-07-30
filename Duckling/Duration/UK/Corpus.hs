@@ -38,41 +38,41 @@ negativeCorpus = (context, testOptions, examples)
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (DurationData 1 Second)
+  [ examples (single 1 Second)
              [ "1 секунда"
              , "одна сек"
              ]
-  , examples (DurationData 2 Minute)
+  , examples (single 2 Minute)
              [ "2 хв"
              , "дві хвилини"
              ]
-  , examples (DurationData 30 Day)
+  , examples (single 30 Day)
              [ "30 днів"
              ]
-  , examples (DurationData 7 Week)
+  , examples (single 7 Week)
              [ "сім тижнів"
              ]
-  , examples (DurationData 1 Month)
+  , examples (single 1 Month)
              [ "1 місяць"
              ]
-  , examples (DurationData 2 Year)
+  , examples (single 2 Year)
              [ "2 роки"
              ]
-  , examples (DurationData 30 Minute)
+  , examples (single 30 Minute)
              [ "півгодини"
              , "1/2 години"
              ]
-  , examples (DurationData 12 Hour)
+  , examples (single 12 Hour)
              [ "пів дня"
              ]
-  , examples (DurationData 90 Minute)
+  , examples (single 90 Minute)
              [ "півтори години"
              ]
-  , examples (DurationData 27 Month)
+  , examples (single 27 Month)
              [ "2 роки і 3 місяці"
              , "2 роки, 3 місяці"
              ]
-  , examples (DurationData 31719604 Second)
+  , examples (single 31719604 Second)
              [ "1 рік, 2 дня, 3 години і 4 секунди"
              ]
   ]

@@ -22,7 +22,7 @@ import qualified Data.Text as Text
 import Duckling.Dimensions.Types
 import Duckling.Duration.Helpers
 import Duckling.Duration.Types (DurationData(..))
-import Duckling.Numeral.Helpers (parseInt, parseInteger, decimalsToDouble)
+import Duckling.Numeral.Helpers (parseInt, parseInteger, decimalsToDouble, isNumeralInterval)
 import Duckling.Numeral.Types (NumeralData(..))
 import Duckling.Regex.Types
 import Duckling.Types
@@ -257,19 +257,111 @@ ruleCompositeDurationAnd :: Rule
 ruleCompositeDurationAnd = Rule
   { name = "composite <duration> and <duration>"
   , pattern =
-    [ dimension Duration
+    [ Predicate isSimpleDuration
     , regex "零"
-    , dimension Duration
+    , Predicate isSimpleDuration
     ]
   , prod = \case
-      (Token Duration DurationData{TDuration.value = v, TDuration.grain = g}:
+      (Token Duration DurationData{TDuration.value = Just v, TDuration.grain = g}:
        _:
        Token Duration dd@DurationData{TDuration.grain = dg}:
        _) | g > dg -> Just . Token Duration $ duration g (v) <> dd
       _ -> Nothing
   }
 
+ruleIntervalNumeralDash :: Rule
+ruleIntervalNumeralDash = Rule
+  { name = "<numeral> - <duration>"
+  , pattern =
+    [ Predicate isNatural
+    , regex "-|~|到|至"
+    , Predicate isSimpleDuration
+    ]
+  , prod = \case
+      (Token Numeral NumeralData{TNumeral.value = Just from}:
+       _:Token Duration DurationData{TDuration.value = Just to,TDuration.grain = g}:
+       _) | floor(from) < to ->
+         Just . Token Duration . withInterval (floor(from), to) $ grainOnly g
+      _ -> Nothing
+  }
 
+ruleIntervalDash :: Rule
+ruleIntervalDash = Rule
+  { name = "<duration> - <duration>"
+  , pattern =
+    [ Predicate isSimpleDuration
+    , regex "-|~|到|至"
+    , Predicate isSimpleDuration
+    ]
+  , prod = \case
+      (Token Duration DurationData{TDuration.value = Just from,TDuration.grain = g1}:
+       _:Token Duration DurationData{TDuration.value = Just to,TDuration.grain = g2}:
+       _) | from < to && g1 == g2 ->
+        Just . Token Duration . withInterval (from, to) $ grainOnly g1
+      _ -> Nothing
+  }
+
+ruleIntervalFromNumeral :: Rule
+ruleIntervalFromNumeral = Rule
+  { name = "<numeral interval> duration"
+  , pattern =
+    [ Predicate isNumeralInterval
+    , dimension TimeGrain
+    ]
+  , prod = \case
+      (Token Numeral NumeralData{TNumeral.minValue = Just from, TNumeral.maxValue = Just to}:
+        Token TimeGrain g:_) | from < to ->
+        Just . Token Duration . withInterval (floor(from), floor(to)) $ grainOnly g
+      _ -> Nothing
+  }
+
+ruleIntervalBound :: Rule
+ruleIntervalBound = Rule
+  { name = "under/less/lower/no more than <duration> (最多|至少|最少)"
+  , pattern =
+    [ regex "(最多|至少|最少|起碼)"
+    , Predicate isSimpleDuration
+    ]
+  , prod = \case
+      (Token RegexMatch (GroupMatch (match:_)):
+       Token Duration DurationData{TDuration.value = Just to,TDuration.grain = g}:
+       _) -> case match of
+        "最多" -> Just . Token Duration . withMax to $ grainOnly g
+        "最少" -> Just . Token Duration . withMin to $ grainOnly g
+        "至少" -> Just . Token Duration . withMin to $ grainOnly g
+        "起碼" -> Just . Token Duration . withMin to $ grainOnly g
+        _ -> Nothing
+      _ -> Nothing
+  }
+
+ruleIntervalBound2 :: Rule
+ruleIntervalBound2 = Rule
+  { name = "under/less/lower/no more than <duration> (以下|以上)"
+  , pattern =
+    [ Predicate isSimpleDuration
+    , regex "(以內|以上)"
+    ]
+  , prod = \case
+      (Token Duration DurationData{TDuration.value = Just to,TDuration.grain = g}:
+       Token RegexMatch (GroupMatch (match:_)):
+       _) -> case match of
+        "以內" -> Just . Token Duration . withMax to $ grainOnly g
+        "以上" -> Just . Token Duration . withMin to $ grainOnly g
+        _ -> Nothing
+      _ -> Nothing
+  }
+
+rulePrecision :: Rule
+rulePrecision = Rule
+  { name = "about <duration>"
+  , pattern =
+    [ dimension Duration
+    , regex "左右"
+    ]
+  , prod = \case
+      (token:_) -> Just token
+      _ -> Nothing
+  }
 
 
 rules :: [Rule]
@@ -289,4 +381,10 @@ rules =
   , ruleDurationHoursAndSeconds
   , ruleDurationHoursAndMinutesAndSeconds
   , ruleCompositeDurationAnd
+  , ruleIntervalNumeralDash
+  , ruleIntervalDash
+  , ruleIntervalFromNumeral
+  , ruleIntervalBound
+  , ruleIntervalBound2
+  , rulePrecision
   ]

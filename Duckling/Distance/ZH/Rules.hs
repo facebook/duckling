@@ -61,15 +61,30 @@ ruleDistKm = Rule
       _ -> Nothing
   }
 
+ruleIntervalNumeralDash :: Rule
+ruleIntervalNumeralDash = Rule
+  { name = "<numeral> - <dist>"
+  , pattern =
+    [ Predicate isPositive
+    , regex "-|~|到|至|或"
+    , Predicate isSimpleDistance
+    ]
+  , prod = \case
+      (Token Numeral NumeralData{TNumeral.value = Just from}:
+       _:
+       Token Distance DistanceData{TDistance.value = Just to,
+       TDistance.unit = Just u}:_) | from < to ->
+         Just . Token Distance . withInterval (from, to) $ unitOnly u
+      _ -> Nothing
+  }
 
 ruleDistFeetAndDistInch :: Rule
 ruleDistFeetAndDistInch = Rule
   { name = "<dist> feet and <dist> inch "
   , pattern =
-    [ dimension Distance
-    , regex "'|f(oo|ee)?ts?|英尺|呎"
-    , dimension Distance
-    , regex "''|inch(es)?|英寸|英吋|吋"
+    [ Predicate isSimpleDistance
+    , regex "-|~|到|至|或"
+    , Predicate isSimpleDistance
     ]
   , prod = \case
       (Token Distance dd:_) ->

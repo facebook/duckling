@@ -47,4 +47,99 @@ allExamples = concat
              [ "10 月"
              , "十 月"
              ]
+  , examples (single 30 Minute)
+             [ "30分鐘"
+             , "半個鐘"
+             , "半小時"
+             , "三十分鐘"
+             , "卅分鐘"
+             ]
+  , examples (single 12 Hour)
+             [ "半日"
+             , "半天"
+             , "十二小時"
+             , "十二個鐘"
+             ]
+  , examples (single 90 Minute)
+             [ "一個半小時"
+             , "個半小時"
+             , "個半鐘"
+             , "一個半鐘"
+             , "1.5小時"
+             , "一個小時三十分鐘"
+             , "一小時零三十分鐘"
+             ]
+  , examples (single 130 Minute)
+             [ "兩小時十分"
+             , "一百三十分鐘"
+             ]
+  , examples (single 3615 Second)
+             [ "一小時零十五秒"
+             , "一個鐘零十五秒"
+             ]
+  , examples (single 45 Day)
+             [ "一個半月"
+             , "個半月"
+             ]
+  , examples (single 27 Month)
+             [ "兩年零三個月"
+             , "廿七個月"
+             ]
+  , examples (single 330 Second)
+             [ "五個半分鐘"
+             , "五點五分鐘"
+             , "5.5分鐘"
+             , "五分三十秒"
+             , "五分半鐘"
+             , "五分半"
+             ]
+  , examples (single 90 Second)
+             [ "一分半鐘"
+             , "一分半"
+             , "分半鐘"
+             , "分半"
+             ]
+  , examples (single 15 Minute)
+             [ "3個字"
+             , "三個字"
+             ]
+  , examples (single 15 Day)
+             [ "半個月"
+             ]
+  , examples (between (3,4) Month)
+             [ "三四個月"
+             , "三至四個月"
+             , "三到四個月左右"
+             , "三或四個月"
+             ]
+  , examples (under 2 Week)
+             [ "兩星期以內"
+             , "最多兩個禮拜"
+             ]
+  , examples (above 90 Minute) 
+             [ "九十分鐘以上"
+             , "至少個半鐘"
+             , "最少一個半鐘"
+             , "起碼1.5小時"
+             ]
+  , examples (between (3,9) Hour)
+             [ "三到九個鐘左右"
+             , "幾個鐘"
+             , "數小時"
+             , "若干小時"
+             ]
+  , examples (between (30,90) Day)
+             [ "幾十日"
+             , "數十天"
+             ]
+  , examples (between (11,12) Year)
+             [ "十一二年"
+             , "十一十二年左右"
+             ]
+  , examples (between (200,300) Second)
+             [ "二百三百秒左右"
+             , "二三百秒"
+             , "二百至三百秒鐘"
+             , "二百或三百秒"
+             ]
   ]

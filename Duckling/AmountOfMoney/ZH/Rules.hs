@@ -183,7 +183,7 @@ ruleIntervalNumeralDash = Rule
   { name = "<numeral> - <amount-of-money>"
   , pattern =
     [ Predicate isPositive
-    , regex "-|~|到"
+    , regex "-|~|到|至|或"
     , Predicate isSimpleAmountOfMoney
     ]
   , prod = \case
@@ -201,7 +201,7 @@ ruleIntervalDash = Rule
   { name = "<amount-of-money> - <amount-of-money>"
   , pattern =
     [ Predicate isSimpleAmountOfMoney
-    , regex "-|~|到"
+    , regex "-|~|到|至|或"
     , Predicate isSimpleAmountOfMoney
     ]
   , prod = \case

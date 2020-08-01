@@ -884,7 +884,7 @@ ruleInterval = Rule
   { name = "<time> - <time>"
   , pattern =
     [ Predicate isNotLatent
-    , regex "-|~|至|到"
+    , regex "-|~|至|到|或"
     , Predicate isNotLatent
     ]
   , prod = \tokens -> case tokens of
@@ -898,7 +898,7 @@ ruleIntervalDayOfWeek = Rule
   { name = "<day-of-week> - <numeral>"
   , pattern =
     [ Predicate isADayOfWeek
-    , regex "-|~|至|到"
+    , regex "-|~|至|到|或"
     , regex "(一|二|三|四|五|六|日)" 
     ]
   , prod = \tokens -> case tokens of
@@ -943,7 +943,7 @@ ruleIntervalMonth = Rule
   { name = "<numeral> - <month>"
   , pattern =
     [ Predicate $ isIntegerBetween 1 12
-    , regex "-|~|至|到"
+    , regex "-|~|至|到|或"
     , Predicate isAMonth
     ]
   , prod = \tokens -> case tokens of
@@ -959,7 +959,7 @@ ruleIntervalDOM = Rule
   , pattern =
     [ Predicate isAMonth
     , Predicate isDOMInteger
-    , regex "(号|號|日)?(-|~|至|到)"
+    , regex "(号|號|日)?(-|~|至|到|或)"
     , Predicate isDOMInteger
     ]
   , prod = \tokens -> case tokens of
@@ -976,7 +976,7 @@ ruleIntervalDOM2 = Rule
   , pattern =
     [ Predicate isAMonth
     , Predicate isDOMInteger
-    , regex "(号|號|日)?(-|~|至|到)"
+    , regex "(号|號|日)?(-|~|至|到|或)"
     , Predicate isDOMInteger
     , regex "号|號|日"
     ]

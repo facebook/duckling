@@ -88,6 +88,8 @@ allExamples = concat
              [ "二到三元"
              , "兩块到三块"
              , "兩三蚊"
+             , "三兩蚊"
+             , "二或三元"
              ]
   , examples (between Dollar (300, 900))
              [ "幾百块"

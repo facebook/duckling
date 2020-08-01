@@ -78,6 +78,8 @@ allExamples = concat
              , "2~3公升"
              , "兩到三升"
              , "兩升到三升"
+             , "兩升或三升"
+             , "三兩升"
              ]
   , examples (under Gallon 6)
              [ "最多六個加侖"
@@ -97,6 +99,7 @@ allExamples = concat
              [ "六十到七十L"
              , "六七十升"
              , "六十七十公升左右"
+             , "六十或七十升"
              ]
   , examples (between Millilitre (300, 900))
              [ "幾百毫升"

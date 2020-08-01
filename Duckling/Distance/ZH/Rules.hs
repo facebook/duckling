@@ -100,7 +100,7 @@ ruleIntervalNumeralDash = Rule
   { name = "<numeral> - <dist>"
   , pattern =
     [ Predicate isPositive
-    , regex "-|~|到|至"
+    , regex "-|~|到|至|或"
     , Predicate isSimpleDistance
     ]
   , prod = \case
@@ -117,7 +117,7 @@ ruleIntervalDash = Rule
   { name = "<dist> - <dist>"
   , pattern =
     [ Predicate isSimpleDistance
-    , regex "-|~|到|至"
+    , regex "-|~|到|至|或"
     , Predicate isSimpleDistance
     ]
   , prod = \case

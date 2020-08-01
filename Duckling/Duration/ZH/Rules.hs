@@ -274,7 +274,7 @@ ruleIntervalNumeralDash = Rule
   { name = "<numeral> - <duration>"
   , pattern =
     [ Predicate isNatural
-    , regex "-|~|到|至"
+    , regex "-|~|到|至|或"
     , Predicate isSimpleDuration
     ]
   , prod = \case
@@ -290,7 +290,7 @@ ruleIntervalDash = Rule
   { name = "<duration> - <duration>"
   , pattern =
     [ Predicate isSimpleDuration
-    , regex "-|~|到|至"
+    , regex "-|~|到|至|或"
     , Predicate isSimpleDuration
     ]
   , prod = \case

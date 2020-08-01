@@ -200,6 +200,8 @@ allExamples = concat
              [ "兩個到三個"
              , "二至三"
              , "兩三個"
+             , "三兩個"
+             , "兩個或三個"
              ]
     , examples (under 20)
              [ "二十以下"
@@ -221,6 +223,7 @@ allExamples = concat
     , examples (between (500,600))
              [ "五六百左右"
              , "五至六百"
+             , "五或六百"
              ]
     , examples (between (13,14))
              [ "十三十四個左右"

@@ -364,7 +364,7 @@ ruleIntervalNumeralDash = Rule
   { name = "<numeral> - <numeral>"
   , pattern =
     [ Predicate isPositive
-    , regex "-|~|到|至"
+    , regex "-|~|到|至|或"
     , Predicate isSimpleNumeral
     ]
   , prod = \case
@@ -381,7 +381,7 @@ ruleIntervalDash = Rule
   { name = "<numeral> - <numeral>"
   , pattern =
     [ Predicate isSimpleNumeral
-    , regex "-|~|到|至"
+    , regex "-|~|到|至|或"
     , Predicate isSimpleNumeral
     ]
   , prod = \case
@@ -405,6 +405,18 @@ ruleIntervalShort = Rule
        Token Numeral NumeralData{TNumeral.value = Just to}:
        _) | from < to && (to - from == 1 || floor(to-from) `mod` 10 == 0) && (diffIntegerDigits to from <= 1) ->
          Just . Token Numeral $ withIntervalNum (from, to)
+      _ -> Nothing
+  }
+
+ruleInterval2To3 :: Rule
+ruleInterval2To3 = Rule
+  { name = "two to three (special)"
+  , pattern =
+    [ regex "三兩個?"
+    ]
+  , prod = \case
+      (_:_) ->
+         Just . Token Numeral $ withIntervalNum (2, 3)
       _ -> Nothing
   }
 
@@ -544,5 +556,6 @@ rules =
   , ruleIntervalBound2
   , rulePrecision
   , ruleAFew
+  , ruleInterval2To3
   ]
   ++ ruleNumeralSuffixes

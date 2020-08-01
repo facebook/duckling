@@ -103,6 +103,8 @@ allExamples = concat
              [ "二到三km"
              , "兩公里到三公里"
              , "兩三公里"
+             , "兩或三公里"
+             , "三兩公里"
              ]
   , examples (between Metre (30, 90))
              [ "幾十米"

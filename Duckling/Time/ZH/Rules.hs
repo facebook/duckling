@@ -746,6 +746,32 @@ ruleNamedmonthDayofmonth = Rule
       _ -> Nothing
   }
 
+ruleNamedmonthDayofmonth2 :: Rule
+ruleNamedmonthDayofmonth2 = Rule
+  { name = "<named-month> <day-of-month>"
+  , pattern =
+    [ Predicate isAMonth
+    , dimension Numeral
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Time td:token:_) -> Token Time <$> intersectDOM td token
+      _ -> Nothing
+  }
+
+ruleDayofmonth :: Rule
+ruleDayofmonth = Rule
+  { name = "<time> <day-of-month>"
+  , pattern =
+    [ Predicate $ isIntegerBetween 1 31
+    , regex "号|號|日"
+    ]
+  , prod = \tokens -> case tokens of
+      (token:_) -> do
+        v <- getIntValue token
+        tt $ dayOfMonth v
+      _ -> Nothing
+  }
+
 rulePartofdayDimTime :: Rule
 rulePartofdayDimTime = Rule
   { name = "<part-of-day> <dim time>"
@@ -807,7 +833,7 @@ ruleEveningnight :: Rule
 ruleEveningnight = Rule
   { name = "evening|night"
   , pattern =
-    [ regex "晚上|晚间"
+    [ regex "晚(上|间)?"
     ]
   , prod = \_ ->
       let from = hour False 18
@@ -850,6 +876,201 @@ ruleTimeofdayOclock = Rule
   , prod = \tokens -> case tokens of
       (Token Time td:_) ->
         tt $ notLatent td
+      _ -> Nothing
+  }
+
+ruleInterval :: Rule
+ruleInterval = Rule
+  { name = "<time> - <time>"
+  , pattern =
+    [ Predicate isNotLatent
+    , regex "-|~|至|到"
+    , Predicate isNotLatent
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Time td1:_:Token Time td2:_) ->
+        Token Time <$> interval TTime.Closed td1 td2
+      _ -> Nothing
+  }
+
+ruleIntervalDayOfWeek :: Rule
+ruleIntervalDayOfWeek = Rule
+  { name = "<day-of-week> - <numeral>"
+  , pattern =
+    [ Predicate isADayOfWeek
+    , regex "-|~|至|到"
+    , regex "(一|二|三|四|五|六|日)" 
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Time td:_:Token RegexMatch (GroupMatch (match:_)):_) -> do
+        x <- case match of
+          "一" -> Just 1
+          "二" -> Just 2
+          "三" -> Just 3
+          "四" -> Just 4
+          "五" -> Just 5
+          "六" -> Just 6
+          "日" -> Just 7
+          _ -> Nothing
+        Token Time <$> interval TTime.Closed td (dayOfWeek x)
+      _ -> Nothing
+  }
+
+ruleIntervalDayOfWeek2 :: Rule
+ruleIntervalDayOfWeek2 = Rule
+  { name = "<day-of-week> <numeral>"
+  , pattern =
+    [ Predicate isADayOfWeek
+    , regex "(一|二|三|四|五|六|日)" 
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Time td:Token RegexMatch (GroupMatch (match:_)):_) -> do
+        x <- case match of
+          "一" -> Just 1
+          "二" -> Just 2
+          "三" -> Just 3
+          "四" -> Just 4
+          "五" -> Just 5
+          "六" -> Just 6
+          "日" -> Just 7
+          _ -> Nothing
+        Token Time <$> interval TTime.Closed td (dayOfWeek x)
+      _ -> Nothing
+  }
+
+ruleIntervalMonth :: Rule
+ruleIntervalMonth = Rule
+  { name = "<numeral> - <month>"
+  , pattern =
+    [ Predicate $ isIntegerBetween 1 12
+    , regex "-|~|至|到"
+    , Predicate isAMonth
+    ]
+  , prod = \tokens -> case tokens of
+      (token:_:Token Time td:_) -> do
+        n <- getIntValue token
+        Token Time <$> interval TTime.Closed (month n) td 
+      _ -> Nothing
+  }
+
+ruleIntervalDOM :: Rule
+ruleIntervalDOM = Rule
+  { name = "<month> <day-of-month> - <day-of-month>"
+  , pattern =
+    [ Predicate isAMonth
+    , Predicate isDOMInteger
+    , regex "(号|號|日)?(-|~|至|到)"
+    , Predicate isDOMInteger
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Time m:dom1:__:dom2:_) -> do
+        d1 <- intersectDOM m dom1
+        d2 <- intersectDOM m dom2
+        Token Time <$> interval TTime.Closed d1 d2
+      _ -> Nothing
+  }
+
+ruleIntervalDOM2 :: Rule
+ruleIntervalDOM2 = Rule
+  { name = "<month> <day-of-month> - <day-of-month>"
+  , pattern =
+    [ Predicate isAMonth
+    , Predicate isDOMInteger
+    , regex "(号|號|日)?(-|~|至|到)"
+    , Predicate isDOMInteger
+    , regex "号|號|日"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Time m:dom1:__:dom2:_) -> do
+        d1 <- intersectDOM m dom1
+        d2 <- intersectDOM m dom2
+        Token Time <$> interval TTime.Closed d1 d2
+      _ -> Nothing
+  }
+
+rulePartOfMonth :: Rule
+rulePartOfMonth = Rule
+  { name = "part of <named-month>"
+  , pattern =
+    [ Predicate $ isGrainOfTime TG.Month
+    , regex "(頭|中|尾)"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Time td:Token RegexMatch (GroupMatch (match:_)):_) -> do
+        (sd, ed) <- case match of
+          "頭" -> Just (1, 10)
+          "中" -> Just (11, 20)
+          "尾" -> Just (21, -1)
+          _ -> Nothing
+        start <- intersect td $ dayOfMonth sd
+        end <- if ed /= -1
+          then intersect td $ dayOfMonth ed
+          else Just $ cycleLastOf TG.Day td
+        Token Time <$> interval TTime.Open start end
+      _ -> Nothing
+  }
+
+rulePartOfMonth2 :: Rule
+rulePartOfMonth2 = Rule
+  { name = "part of this month"
+  , pattern =
+    [ regex "(今個(月)?)?月"
+    , regex "(頭|中|尾)"
+    ]
+  , prod = \tokens -> case tokens of
+      (_:Token RegexMatch (GroupMatch (match:_)):_) -> do
+        (sd, ed) <- case match of
+          "頭" -> Just (1, 10)
+          "中" -> Just (11, 20)
+          "尾" -> Just (21, -1)
+          _ -> Nothing
+        start <- intersect (cycleNth TG.Month 0) $ dayOfMonth sd
+        end <- if ed /= -1
+          then intersect (cycleNth TG.Month 0) $ dayOfMonth ed
+          else Just $ cycleLastOf TG.Day (cycleNth TG.Month 0)
+        Token Time <$> interval TTime.Open start end
+      _ -> Nothing
+  }
+
+ruleEndOrBeginningOfYear :: Rule
+ruleEndOrBeginningOfYear = Rule
+  { name = "at the beginning|end of <year>"
+  , pattern =
+    [ Predicate $ isGrainOfTime TG.Year
+    , regex "(頭|尾)"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Time td:Token RegexMatch (GroupMatch (match:_)):_) -> do
+        (sd, ed) <- case match of
+          "頭" -> Just (1, 4)
+          "尾" -> Just (9, -1)
+          _ -> Nothing
+        start <- intersect td $ month sd
+        end <- if ed /= -1
+          then intersect td $ cycleLastOf TG.Month $ month ed
+          else cycleNthAfter False TG.Year 1 <$> intersect td (month 1)
+        Token Time <$> interval TTime.Open start end
+      _ -> Nothing
+  }
+
+ruleEndOrBeginningOfYear2 :: Rule
+ruleEndOrBeginningOfYear2 = Rule
+  { name = "at the beginning|end of this year"
+  , pattern =
+    [ regex "(今(年)?)?年"
+    , regex "(頭|尾)"
+    ]
+  , prod = \tokens -> case tokens of
+      (_:Token RegexMatch (GroupMatch (match:_)):_) -> do
+        (sd, ed) <- case match of
+          "頭" -> Just (1, 4)
+          "尾" -> Just (9, -1)
+          _ -> Nothing
+        start <- intersect (cycleNth TG.Year 0) $ month sd
+        end <- if ed /= -1
+          then intersect (cycleNth TG.Year 0) $ cycleLastOf TG.Month $ month ed
+          else cycleNthAfter False TG.Year 1 <$> intersect (cycleNth TG.Year 0) (month 1)
+        Token Time <$> interval TTime.Open start end
       _ -> Nothing
   }
 
@@ -1129,6 +1350,7 @@ rules =
   , ruleMmddyyyy
   , ruleMorning
   , ruleNamedmonthDayofmonth
+  , ruleNamedmonthDayofmonth2
   , ruleNextCycle
   , ruleNextNCycle
   , ruleNCycleNext
@@ -1171,6 +1393,24 @@ rules =
   , ruleYesterday
   , ruleYyyymmdd
   , ruleTimezone
+  , ruleRelativeMinutesAfterpastIntegerHourofday2
+  , ruleRelativeMinutesAfterpastIntegerHourofday3
+  , ruleRelativeMinutesAfterpastIntegerHourofday4
+  , ruleRelativeMinutesAfterpastIntegerHourofday5
+  , ruleRelativeMinutesAfterpastIntegerHourofday6
+  , ruleRelativeMinutesAfterpastIntegerHourofday7
+  , ruleLastDuration
+  , ruleDayofmonth
+  , ruleInterval
+  , ruleIntervalDayOfWeek
+  , ruleIntervalDayOfWeek2
+  , ruleIntervalMonth
+  , ruleIntervalDOM
+  , ruleIntervalDOM2
+  , rulePartOfMonth
+  , rulePartOfMonth2
+  , ruleEndOrBeginningOfYear
+  , ruleEndOrBeginningOfYear2
   ]
   ++ ruleDaysOfWeek
   ++ ruleMonths

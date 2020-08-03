@@ -15,7 +15,6 @@ module Duckling.Time.EN.Rules where
 
 import Control.Applicative ((<|>))
 import Data.Maybe
-import Data.Text (Text)
 import Prelude
 import qualified Data.Text as Text
 
@@ -148,11 +147,19 @@ ruleNextDOW :: Rule
 ruleNextDOW = Rule
   { name = "this|next <day-of-week>"
   , pattern =
-    [ regex "this|next"
+    [ regex "(this|next)"
     , Predicate isADayOfWeek
     ]
-  , prod = \tokens -> case tokens of
-      (_:Token Time td:_) -> tt $ predNth 0 True td
+  , prod = \case
+      (
+        Token RegexMatch (GroupMatch (match:_)):
+        Token Time dow:
+        _) -> do
+          td <- case Text.toLower match of
+                  "this" -> Just $ predNth 0 True dow
+                  "next" -> intersect dow $ cycleNth TG.Week 1
+                  _ -> Nothing
+          tt td
       _ -> Nothing
   }
 
@@ -217,6 +224,28 @@ ruleTimeBeforeLastAfterNext = Rule
       _ -> Nothing
   }
 
+ruleOrdinalDOWOfTime :: Rule
+ruleOrdinalDOWOfTime = Rule
+  { name = "first|second|third|fourth|fifth <day-of-week> of <time>"
+  , pattern =
+    [ Predicate $ isOrdinalBetween 1 5
+    , Predicate isADayOfWeek
+    , regex "(of|in)"
+    , dimension Time
+    ]
+  , prod = \case
+      (
+        token:
+        Token Time td1:
+        _:
+        Token Time td2:
+        _) -> do
+          ord <- getIntValue token
+          td <- Just $ predNthAfter (ord-1) td1 td2
+          tt td
+      _ -> Nothing
+  }
+
 ruleLastDOWOfTime :: Rule
 ruleLastDOWOfTime = Rule
   { name = "last <day-of-week> of <time>"
@@ -226,9 +255,13 @@ ruleLastDOWOfTime = Rule
     , regex "(of|in)"
     , dimension Time
     ]
-  , prod = \tokens -> case tokens of
-      (_:Token Time td1:_:Token Time td2:_) ->
-        tt $ predLastOf td1 td2
+  , prod = \case
+      (
+        _:
+        Token Time td1:
+        _:
+        Token Time td2:
+        _) -> tt $ predLastOf td1 td2
       _ -> Nothing
   }
 
@@ -707,6 +740,29 @@ ruleHONumeral = Rule
         if isLatent
           then tt . mkLatent $ hourMinute is12H hours n
           else tt $ hourMinute is12H hours n
+      _ -> Nothing
+  }
+
+ruleHONumeralAlt :: Rule
+ruleHONumeralAlt = Rule
+  { name = "<hour-of-day> zero <integer>"
+  , pattern =
+    [ Predicate isAnHourOfDay
+    , regex "(zero|o(h|u)?)"
+    , Predicate $ isIntegerBetween 1 9
+    ]
+  , prod = \case
+      (
+        Token Time TimeData{TTime.form = Just (TTime.TimeOfDay
+                                              (Just hours) is12H)
+                          , TTime.latent = isLatent}:
+        _:
+        token:
+        _) -> do
+          n <- getIntValue token
+          if isLatent
+            then tt $ mkLatent $ hourMinute is12H hours n
+            else tt $ hourMinute is12H hours n
       _ -> Nothing
   }
 
@@ -2004,20 +2060,23 @@ ruleCycleThisLastNext = Rule
     [ regex "(this|current|coming|next|(the( following)?)|last|past|previous|upcoming)"
     , dimension TimeGrain
     ]
-  , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):Token TimeGrain grain:_) ->
-        case Text.toLower match of
-          "this"          -> tt $ cycleNth grain 0
-          "coming"        -> tt $ cycleNth grain 0
-          "current"       -> tt $ cycleNth grain 0
-          "last"          -> tt . cycleNth grain $ - 1
-          "past"          -> tt . cycleNth grain $ - 1
-          "previous"      -> tt . cycleNth grain $ - 1
-          "next"          -> tt $ cycleNth grain 1
-          "upcoming"      -> tt $ cycleNth grain 1
-          "the following" -> tt $ cycleNth grain 1
-          "the"           -> tt $ cycleNth grain 0
-          _ -> Nothing
+  , prod = \case
+      (
+        Token RegexMatch (GroupMatch (match:_)):
+        Token TimeGrain grain:
+        _) ->
+          case Text.toLower match of
+            "this"          -> tt $ cycleNth grain 0
+            "coming"        -> tt $ cycleNth grain 1
+            "current"       -> tt $ cycleNth grain 0
+            "last"          -> tt $ cycleNth grain $ - 1
+            "past"          -> tt $ cycleNth grain $ - 1
+            "previous"      -> tt $ cycleNth grain $ - 1
+            "next"          -> tt $ cycleNth grain 1
+            "upcoming"      -> tt $ cycleNth grain 1
+            "the following" -> tt $ cycleNth grain 1
+            "the"           -> tt $ cycleNth grain 0
+            _ -> Nothing
       _ -> Nothing
   }
 
@@ -2545,6 +2604,7 @@ rules =
   , ruleThisTime
   , ruleLastTime
   , ruleTimeBeforeLastAfterNext
+  , ruleOrdinalDOWOfTime
   , ruleLastDOWOfTime
   , ruleLastCycleOfTime
   , ruleLastNight
@@ -2579,6 +2639,7 @@ rules =
   , ruleMilitarySpelledOutAMPM2
   , ruleTODAMPM
   , ruleHONumeral
+  , ruleHONumeralAlt
   , ruleHODHalf
   , ruleHODQuarter
   , ruleNumeralToHOD

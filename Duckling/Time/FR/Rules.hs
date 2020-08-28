@@ -202,7 +202,7 @@ ruleLeLendemainDuTime = Rule
   { name = "le lendemain du <time>"
   , pattern =
     [ regex "(le|au)? ?lendemain du"
-    , dimension Time
+    , Predicate $ isGrainCoarserThan TG.Hour
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td:_) ->
@@ -231,8 +231,7 @@ ruleCeTime = Rule
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td:_) ->
-        tt $ predNth 0 False td
+      (_:Token Time td:_) -> tt $ predNth 0 False td
       _ -> Nothing
   }
 
@@ -341,7 +340,8 @@ ruleEntreDatetimeEtDatetimeInterval = Rule
     , dimension Time
     ]
   , prod = \case
-      (_:Token Time td1:_:Token Time td2:_) ->
+      (_:Token Time td1:_:Token Time td2:_)
+        | sameGrain td1 td2 ->
         Token Time <$> interval TTime.Closed td1 td2
       _ -> Nothing
   }
@@ -352,7 +352,7 @@ ruleDuDatetimedayofweekDdMonthinterval = Rule
   , pattern =
     [ regex "du"
     , dimension Time
-    , regex "\\-|au|jusqu'au"
+    , regex "\\-|(jusqu')?au"
     , Predicate isADayOfWeek
     , Predicate isDOMValue
     , Predicate isAMonth
@@ -371,7 +371,7 @@ ruleDuDdAuDdLatentMonthInterval = Rule
   , pattern =
     [ regex "du"
     , Predicate isDOMValue
-    , regex "au|jusqu'au"
+    , regex "(jusqu')?au"
     , Predicate isDOMValue
     ]
   , prod = \case
@@ -386,7 +386,7 @@ ruleDatetimedayofweekDdMonthinterval :: Rule
 ruleDatetimedayofweekDdMonthinterval = Rule
   { name = "<datetime>-<day-of-week> dd <month>(interval)"
   , pattern =
-    [ dimension Time
+    [ Predicate $ isGrainOfTime TG.Day
     , regex "\\-|(jusqu')?au"
     , Predicate isADayOfWeek
     , Predicate isDOMValue
@@ -422,8 +422,8 @@ ruleDatetimeddMonthinterval :: Rule
 ruleDatetimeddMonthinterval = Rule
   { name = "<datetime>-dd <month>(interval)"
   , pattern =
-    [ dimension Time
-    , regex "\\-|au|jusqu'au"
+    [ Predicate $ isGrainOfTime TG.Day
+    , regex "\\-|(jusqu')?au"
     , Predicate isDOMValue
     , Predicate isAMonth
     ]
@@ -852,7 +852,7 @@ ruleNamedmonthnameddayDernierpass :: Rule
 ruleNamedmonthnameddayDernierpass = Rule
   { name = "<named-month|named-day> dernier|passé"
   , pattern =
-    [ dimension Time
+    [ Predicate $ isGrainCoarserThan TG.Hour
     , regex "derni(e|é|è)re?|pass(é|e)e?"
     ]
   , prod = \tokens -> case tokens of
@@ -905,7 +905,7 @@ ruleDdddMonthinterval = Rule
   { name = "dd-dd <month>(interval)"
   , pattern =
     [ regex "(3[01]|[12]\\d|0?[1-9])"
-    , regex "\\-|au|jusqu'au"
+    , regex "\\-|(jusqu')?au"
     , regex "(3[01]|[12]\\d|0?[1-9])"
     , Predicate isAMonth
     ]
@@ -938,7 +938,7 @@ ruleDuDddayofweekDdMonthinterval = Rule
   , pattern =
     [ regex "du"
     , regex "(3[01]|[12]\\d|0?[1-9])"
-    , regex "\\-|au|jusqu'au"
+    , regex "\\-|(jusqu')?au"
     , Predicate isADayOfWeek
     , regex "(3[01]|[12]\\d|0?[1-9])"
     , Predicate isAMonth
@@ -1039,7 +1039,7 @@ ruleDemain :: Rule
 ruleDemain = Rule
   { name = "demain"
   , pattern =
-    [ regex "(demain)|(le lendemain)"
+    [ regex "(le len)?demain"
     ]
   , prod = \_ -> tt $ cycleNth TG.Day 1
   }
@@ -1048,7 +1048,7 @@ ruleNamedmonthnameddaySuivantdaprs :: Rule
 ruleNamedmonthnameddaySuivantdaprs = Rule
   { name = "<named-month|named-day> suivant|d'après"
   , pattern =
-    [ dimension Time
+    [ Predicate $ isGrainCoarserThan TG.Hour
     , regex "suivante?s?|d'apr(e|é|è)s"
     ]
   , prod = \tokens -> case tokens of
@@ -1101,7 +1101,7 @@ ruleDimTimeDuSoir = Rule
 
 ruleAprsTimeofday :: Rule
 ruleAprsTimeofday = Rule
-  { name = "après <time-of-day>"
+  { name = "après <time-of-day|day>"
   , pattern =
     [ regex "(apr(e|è)s|(a|à) partir de|(un peu )?plus tard que)"
     , dimension Time
@@ -1170,7 +1170,8 @@ ruleDeDatetimeDatetimeInterval = Rule
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td1:_:Token Time td2:_) ->
+      (_:Token Time td1:_:Token Time td2:_)
+        | sameGrain td1 td2 ->
         Token Time <$> interval TTime.Closed td1 td2
       _ -> Nothing
   }
@@ -1215,7 +1216,7 @@ ruleLeDayofmonthDatetime = Rule
     [ regex "le"
     , Predicate isDOMInteger
     , regex "(a|à)"
-    , dimension Time
+    , Predicate $ isGrainFinerThan TG.Day
     ]
   , prod = \tokens -> case tokens of
       (_:token:_:Token Time td:_) -> do
@@ -1317,7 +1318,7 @@ ruleDimTimePartofday :: Rule
 ruleDimTimePartofday = Rule
   { name = "<dim time> <part-of-day>"
   , pattern =
-    [ dimension Time
+    [ Predicate $ isGrainOfTime TG.Day
     , Predicate isAPartOfDay
     ]
   , prod = \tokens -> case tokens of
@@ -1705,7 +1706,7 @@ ruleLeVeilleDuTime = Rule
   { name = "le veille du <time>"
   , pattern =
     [ regex "(la )?veille du"
-    , dimension Time
+    , Predicate $ isGrainCoarserThan TG.Hour
     ]
   , prod = \tokens -> case tokens of
       (_:Token Time td:_) ->
@@ -1806,7 +1807,7 @@ ruleDayofweekErdayofweekDdMonthinterval = Rule
   , pattern =
     [ Predicate isADayOfWeek
     , regex "premier|prem\\.?|1er|1 er"
-    , regex "\\-|au|jusqu'au"
+    , regex "\\-|(jusqu')?au"
     , Predicate isADayOfWeek
     , regex "(3[01]|[12]\\d|0?[1-9])"
     , Predicate isAMonth

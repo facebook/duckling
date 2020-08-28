@@ -1292,10 +1292,8 @@ ruleIntervalSlash = Rule
     , Predicate isNotLatent
     ]
   , prod = \tokens -> case tokens of
-      (Token Time td1:_:Token Time td2:_) ->
-        if sameGrain td1 td2 then
-          Token Time <$> interval TTime.Closed td1 td2
-        else Nothing
+      (Token Time td1:_:Token Time td2:_) | sameGrain td1 td2 ->
+        Token Time <$> interval TTime.Closed td1 td2
       _ -> Nothing
   }
 

@@ -35,6 +35,7 @@ negativeCorpus = (context, testOptions, examples)
       [ "ein Hotel"
       , "ein Angebot"
       , "nächsten 5"
+      , "so"
       ]
 
 allExamples :: [Example]

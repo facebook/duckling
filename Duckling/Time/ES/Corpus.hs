@@ -20,7 +20,6 @@ import Duckling.Resolve
 import Duckling.Time.Corpus
 import Duckling.TimeGrain.Types hiding (add)
 import Duckling.Testing.Types hiding (examples)
-import Duckling.Time.Types hiding (Month)
 
 context :: Context
 context = testContext {locale = makeLocale ES Nothing}
@@ -56,8 +55,63 @@ allExamples = concat
              [ "anteayer"
              , "antier"
              ]
+  {--
+    This is intentional
+    The purpose is to steer the classifier towards "tomorrow" rule
+    instead of "morning" rule.
+  --}
   , examples (datetime (2013, 2, 13, 0, 0, 0) Day)
              [ "mañana"
+             , "manana"
+             , "mañana"
+             , "manana"
+             , "mañana"
+             , "manana"
+             , "manana"
+             , "mañana"
+             , "manana"
+             , "mañana"
+             , "manana"
+             , "manana"
+             , "mañana"
+             , "manana"
+             , "mañana"
+             , "manana"
+             , "manana"
+             , "mañana"
+             , "manana"
+             , "mañana"
+             , "manana"
+             , "manana"
+             , "mañana"
+             , "manana"
+             , "mañana"
+             , "manana"
+             , "manana"
+             , "mañana"
+             , "manana"
+             , "mañana"
+             , "manana"
+             , "manana"
+             , "mañana"
+             , "manana"
+             , "mañana"
+             , "manana"
+             , "manana"
+             , "mañana"
+             , "manana"
+             , "mañana"
+             , "manana"
+             , "manana"
+             , "mañana"
+             , "manana"
+             , "mañana"
+             , "manana"
+             , "manana"
+             , "mañana"
+             , "manana"
+             , "mañana"
+             , "manana"
              ]
   , examples (datetime (2013, 2, 14, 0, 0, 0) Day)
              [ "pasado mañana"
@@ -175,6 +229,10 @@ allExamples = concat
              [ "la semana que viene"
              , "la proxima semana"
              , "semana que viene"
+             , "proxima semana"
+             , "proximas semana"
+             , "próxima semana"
+             , "siguiente semana"
              ]
   , examples (datetime (2013, 1, 1, 0, 0, 0) Month)
              [ "el pasado mes"
@@ -477,8 +535,17 @@ allExamples = concat
              , "para las 6 0 2 pm"
              , "a las 6 0 2 pm"
              , "al las 6 0 2 pm"
+             , "seis cero dos pm"
              ]
   , examples (datetime (2013, 2, 12, 18, 2, 0) Minute)
              [ "seis dos de la tarde"
+             ]
+  , examples (datetime (1990, 0, 0, 0, 0, 0) Year)
+             [
+               "mil novecientos noventa"
+             ]
+  , examples (datetime (1990, 5, 4, 0, 0, 0) Day)
+             [
+               "cuatro de mayo de mil novecientos noventa"
              ]
   ]

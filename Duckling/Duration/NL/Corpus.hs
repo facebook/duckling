@@ -57,6 +57,9 @@ allExamples = concat
   , examples (DurationData 45 Minute)
              [ "3 kwartier"
              ]
+  , examples (DurationData 90 Minute)
+             [ "anderhalf uur"
+             ]
   , examples (DurationData 1 Hour)
              [ "een uur"
              , "één uur"

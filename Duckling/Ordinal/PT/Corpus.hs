@@ -33,35 +33,35 @@ allExamples = concat
              , "segundas"
              ]
   , examples (OrdinalData 7)
-             [ "setimo"
+             [ "sétimo"
              , "sétimas"
              ]
   , examples (OrdinalData 10)
              [ "décimos"
-             , "decimos"
+             , "décimos"
              , "décima"
-             , "decimas"
+             , "décimas"
              ]
   , examples (OrdinalData 11)
              [ "décimos primeiros"
-             , "decimo primeiro"
+             , "décimo primeiro"
              , "décimas primeiras"
-             , "decima primeira"
+             , "décima primeira"
              ]
   , examples (OrdinalData 12)
              [ "décimos segundos"
-             , "decimo segundo"
+             , "décimo segundo"
              , "décimas segundas"
-             , "decima segunda"
+             , "décima segunda"
              ]
   , examples (OrdinalData 17)
              [ "décimos setimos"
-             , "decimo sétimo"
-             , "decimas sétimas"
-             , "decima setima"
+             , "décimo sétimo"
+             , "décimas sétimas"
+             , "décima setima"
              ]
   , examples (OrdinalData 58)
-             [ "quinquagesimas oitavas"
-             , "qüinquagesimo oitavo"
+             [ "quinquagésimas oitavas"
+             , "quinquagésimo oitavo"
              ]
   ]

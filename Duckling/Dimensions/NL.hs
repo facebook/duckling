@@ -11,13 +11,13 @@ module Duckling.Dimensions.NL
 
 import Duckling.Dimensions.Types
 
-allDimensions :: [Some Dimension]
+allDimensions :: [Seal Dimension]
 allDimensions =
-  [ This Distance
-  , This Duration
-  , This Numeral
-  , This Ordinal
-  , This Quantity
-  , This Time
-  , This Volume
+  [ Seal Distance
+  , Seal Duration
+  , Seal Numeral
+  , Seal Ordinal
+  , Seal Quantity
+  , Seal Time
+  , Seal Volume
   ]

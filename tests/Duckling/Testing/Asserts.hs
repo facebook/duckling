@@ -40,20 +40,20 @@ newtype ExampleInput = ExampleInput Text
 instance Show ExampleInput where
   show (ExampleInput input) = "\"" ++ Text.unpack input ++ "\""
 
-withTargets :: [Some Dimension] -> (Text, a) -> (Text, [Some Dimension], a)
+withTargets :: [Seal Dimension] -> (Text, a) -> (Text, [Seal Dimension], a)
 withTargets targets (input, expected) = (input, targets, expected)
 
-analyzedTargetTest :: Context -> Options -> (Text, Some Dimension) -> IO ()
+analyzedTargetTest :: Context -> Options -> (Text, Seal Dimension) -> IO ()
 analyzedTargetTest context options (input, target) =
   assertBool msg $ all (== target) dimensions
   where
     msg = "analyze " ++ show (ExampleInput input, [target])
           ++ "dimensions = " ++ show dimensions
     dimensions = flip map (analyze input context options $ HashSet.singleton target) $
-      \(Resolved{node=Node{token=Token dimension _}}) -> This dimension
+      \(Resolved{node=Node{token=Token dimension _}}) -> Seal dimension
 
 analyzedFirstTest :: Context -> Options ->
-  (Text, [Some Dimension], TestPredicate) -> IO ()
+  (Text, [Seal Dimension], TestPredicate) -> IO ()
 analyzedFirstTest context options (input, targets, predicate) =
   case tokens of
     [] -> assertFailure
@@ -65,7 +65,7 @@ analyzedFirstTest context options (input, targets, predicate) =
       tokens = analyze input context options $ HashSet.fromList targets
 
 analyzedAmbiguousTest :: Context -> Options ->
-  (Text, [Some Dimension], [TestPredicate]) -> IO ()
+  (Text, [Seal Dimension], [TestPredicate]) -> IO ()
 analyzedAmbiguousTest context options (input, targets, predicates) =
   case tokens of
     [] -> assertFailure
@@ -75,7 +75,7 @@ analyzedAmbiguousTest context options (input, targets, predicates) =
     where
       tokens = analyze input context options $ HashSet.fromList targets
 
-makeCorpusTest :: [Some Dimension] -> Corpus -> TestTree
+makeCorpusTest :: [Seal Dimension] -> Corpus -> TestTree
 makeCorpusTest targets (context, options, xs) = testCase "Corpus Tests" $
   mapM_ check xs
   where
@@ -101,12 +101,12 @@ makeCorpusTest targets (context, options, xs) = testCase "Corpus Tests" $
           ++ " different ambiguous parses on " ++ show (ExampleInput input)
 
 
-makeNegativeCorpusTest :: [Some Dimension] -> NegativeCorpus -> TestTree
+makeNegativeCorpusTest :: [Seal Dimension] -> NegativeCorpus -> TestTree
 makeNegativeCorpusTest targets (context, options, xs) =
   testCase "Negative Corpus Tests"
   $ mapM_ (analyzedNothingTest context options . (, targets)) xs
 
-analyzedRangeTest :: Context -> Options -> (Text, [Some Dimension], Range)
+analyzedRangeTest :: Context -> Options -> (Text, [Seal Dimension], Range)
   -> IO ()
 analyzedRangeTest context options  (input, targets, expRange) = case tokens of
   [] -> assertFailure $ "empty result on " ++ show (ExampleInput input)
@@ -118,11 +118,11 @@ analyzedRangeTest context options  (input, targets, expRange) = case tokens of
   where
     tokens = analyze input context options $ HashSet.fromList targets
 
-analyzedNothingTest :: Context -> Options -> (Text, [Some Dimension]) -> IO ()
+analyzedNothingTest :: Context -> Options -> (Text, [Seal Dimension]) -> IO ()
 analyzedNothingTest context options (input, targets) =
   analyzedNTest context options (input, targets, 0)
 
-analyzedNTest :: Context -> Options -> (Text, [Some Dimension], Int) -> IO ()
+analyzedNTest :: Context -> Options -> (Text, [Seal Dimension], Int) -> IO ()
 analyzedNTest context options (input, targets, n) =
   assertBool msg . (== n) $ length tokens
   where

@@ -19,5 +19,5 @@ import Duckling.Testing.Asserts
 
 tests :: TestTree
 tests = testGroup "KA Tests"
-  [ makeCorpusTest [This Ordinal] corpus
+  [ makeCorpusTest [Seal Ordinal] corpus
   ]

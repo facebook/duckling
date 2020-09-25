@@ -23,14 +23,14 @@ import Duckling.Testing.Types
 
 tests :: TestTree
 tests = testGroup "ZH Tests"
-  [ makeCorpusTest [This Distance] corpus
+  [ makeCorpusTest [Seal Distance] corpus
   , ambiguousTests
   ]
 
 ambiguousTests :: TestTree
 ambiguousTests = testCase "Ambiguous Tests" $
   analyzedAmbiguousTest context testOptions
-    (testText, [This Distance], predicates)
+    (testText, [Seal Distance], predicates)
   where
     context = testContext {locale = makeLocale ZH Nothing}
     testText = "3千米"

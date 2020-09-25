@@ -20,6 +20,6 @@ import Duckling.Testing.Asserts
 
 tests :: TestTree
 tests = testGroup "CreditCardNumber Tests"
-  [ makeCorpusTest [This CreditCardNumber] corpus
-  , makeNegativeCorpusTest [This CreditCardNumber] negativeCorpus
+  [ makeCorpusTest [Seal CreditCardNumber] corpus
+  , makeNegativeCorpusTest [Seal CreditCardNumber] negativeCorpus
   ]

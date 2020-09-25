@@ -11,7 +11,7 @@ module Duckling.Dimensions.AF
 
 import Duckling.Dimensions.Types
 
-allDimensions :: [Some Dimension]
+allDimensions :: [Seal Dimension]
 allDimensions =
-  [ This Numeral
+  [ Seal Numeral
   ]

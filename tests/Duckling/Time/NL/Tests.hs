@@ -22,17 +22,17 @@ import qualified Duckling.Time.NL.BE.Corpus as BE
 
 tests :: TestTree
 tests = testGroup "NL Tests"
-  [ makeCorpusTest [This Time] corpus
-  , makeCorpusTest [This Time] latentCorpus
-  , makeNegativeCorpusTest [This Time] negativeCorpus
+  [ makeCorpusTest [Seal Time] corpus
+  , makeCorpusTest [Seal Time] latentCorpus
+  , makeNegativeCorpusTest [Seal Time] negativeCorpus
   , localeTests
   ]
 
 localeTests :: TestTree
 localeTests = testGroup "Locale Tests"
   [ testGroup "NL_BE Tests"
-    [ makeCorpusTest [This Time] $ withLocale corpus localeBE BE.allExamples
-    , makeNegativeCorpusTest [This Time] $ withLocale negativeCorpus localeBE []
+    [ makeCorpusTest [Seal Time] $ withLocale corpus localeBE BE.allExamples
+    , makeNegativeCorpusTest [Seal Time] $ withLocale negativeCorpus localeBE []
     ]
   ]
   where

@@ -17,5 +17,5 @@ import Duckling.Testing.Asserts
 
 tests :: TestTree
 tests = testGroup "CS Tests"
-  [ makeCorpusTest [This Distance] corpus
+  [ makeCorpusTest [Seal Distance] corpus
   ]

@@ -55,52 +55,52 @@ import qualified Duckling.Time.EN.ZA.Rules as TimeZA
 import qualified Duckling.TimeGrain.EN.Rules as TimeGrain
 import qualified Duckling.Volume.EN.Rules as Volume
 
-defaultRules :: Some Dimension -> [Rule]
-defaultRules dim@(This Time) = TimeUS.rulesBackwardCompatible ++ langRules dim
+defaultRules :: Seal Dimension -> [Rule]
+defaultRules dim@(Seal Time) = TimeUS.rulesBackwardCompatible ++ langRules dim
 defaultRules dim             = langRules dim
 
-localeRules :: Region -> Some Dimension -> [Rule]
-localeRules AU (This AmountOfMoney) = AmountOfMoneyAU.rules
-localeRules BZ (This AmountOfMoney) = AmountOfMoneyBZ.rules
-localeRules CA (This AmountOfMoney) = AmountOfMoneyCA.rules
-localeRules GB (This AmountOfMoney) = AmountOfMoneyGB.rules
-localeRules IE (This AmountOfMoney) = AmountOfMoneyIE.rules
-localeRules IN (This AmountOfMoney) = AmountOfMoneyIN.rules
-localeRules JM (This AmountOfMoney) = AmountOfMoneyJM.rules
-localeRules NZ (This AmountOfMoney) = AmountOfMoneyNZ.rules
-localeRules PH (This AmountOfMoney) = AmountOfMoneyPH.rules
-localeRules TT (This AmountOfMoney) = AmountOfMoneyTT.rules
-localeRules US (This AmountOfMoney) = AmountOfMoneyUS.rules
-localeRules ZA (This AmountOfMoney) = AmountOfMoneyZA.rules
-localeRules AU (This Time) = TimeAU.rules
-localeRules BZ (This Time) = TimeBZ.rules
-localeRules CA (This Time) = TimeCA.rules
-localeRules GB (This Time) = TimeGB.rules
-localeRules IE (This Time) = TimeIE.rules
-localeRules IN (This Time) = TimeIN.rules
-localeRules JM (This Time) = TimeJM.rules
-localeRules NZ (This Time) = TimeNZ.rules
-localeRules PH (This Time) = TimePH.rules
-localeRules TT (This Time) = TimeTT.rules
-localeRules US (This Time) = TimeUS.rules
-localeRules ZA (This Time) = TimeZA.rules
-localeRules region (This (CustomDimension dim)) = dimLocaleRules region dim
+localeRules :: Region -> Seal Dimension -> [Rule]
+localeRules AU (Seal AmountOfMoney) = AmountOfMoneyAU.rules
+localeRules BZ (Seal AmountOfMoney) = AmountOfMoneyBZ.rules
+localeRules CA (Seal AmountOfMoney) = AmountOfMoneyCA.rules
+localeRules GB (Seal AmountOfMoney) = AmountOfMoneyGB.rules
+localeRules IE (Seal AmountOfMoney) = AmountOfMoneyIE.rules
+localeRules IN (Seal AmountOfMoney) = AmountOfMoneyIN.rules
+localeRules JM (Seal AmountOfMoney) = AmountOfMoneyJM.rules
+localeRules NZ (Seal AmountOfMoney) = AmountOfMoneyNZ.rules
+localeRules PH (Seal AmountOfMoney) = AmountOfMoneyPH.rules
+localeRules TT (Seal AmountOfMoney) = AmountOfMoneyTT.rules
+localeRules US (Seal AmountOfMoney) = AmountOfMoneyUS.rules
+localeRules ZA (Seal AmountOfMoney) = AmountOfMoneyZA.rules
+localeRules AU (Seal Time) = TimeAU.rules
+localeRules BZ (Seal Time) = TimeBZ.rules
+localeRules CA (Seal Time) = TimeCA.rules
+localeRules GB (Seal Time) = TimeGB.rules
+localeRules IE (Seal Time) = TimeIE.rules
+localeRules IN (Seal Time) = TimeIN.rules
+localeRules JM (Seal Time) = TimeJM.rules
+localeRules NZ (Seal Time) = TimeNZ.rules
+localeRules PH (Seal Time) = TimePH.rules
+localeRules TT (Seal Time) = TimeTT.rules
+localeRules US (Seal Time) = TimeUS.rules
+localeRules ZA (Seal Time) = TimeZA.rules
+localeRules region (Seal (CustomDimension dim)) = dimLocaleRules region dim
 localeRules _ _ = []
 
-langRules :: Some Dimension -> [Rule]
-langRules (This AmountOfMoney) = AmountOfMoney.rules
-langRules (This CreditCardNumber) = []
-langRules (This Distance) = Distance.rules
-langRules (This Duration) = Duration.rules
-langRules (This Email) = Email.rules
-langRules (This Numeral) = Numeral.rules
-langRules (This Ordinal) = Ordinal.rules
-langRules (This PhoneNumber) = []
-langRules (This Quantity) = Quantity.rules
-langRules (This RegexMatch) = []
-langRules (This Temperature) = Temperature.rules
-langRules (This Time) = Time.rules
-langRules (This TimeGrain) = TimeGrain.rules
-langRules (This Url) = []
-langRules (This Volume) = Volume.rules
-langRules (This (CustomDimension dim)) = dimLangRules EN dim
+langRules :: Seal Dimension -> [Rule]
+langRules (Seal AmountOfMoney) = AmountOfMoney.rules
+langRules (Seal CreditCardNumber) = []
+langRules (Seal Distance) = Distance.rules
+langRules (Seal Duration) = Duration.rules
+langRules (Seal Email) = Email.rules
+langRules (Seal Numeral) = Numeral.rules
+langRules (Seal Ordinal) = Ordinal.rules
+langRules (Seal PhoneNumber) = []
+langRules (Seal Quantity) = Quantity.rules
+langRules (Seal RegexMatch) = []
+langRules (Seal Temperature) = Temperature.rules
+langRules (Seal Time) = Time.rules
+langRules (Seal TimeGrain) = TimeGrain.rules
+langRules (Seal Url) = []
+langRules (Seal Volume) = Volume.rules
+langRules (Seal (CustomDimension dim)) = dimLangRules EN dim

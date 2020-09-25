@@ -25,7 +25,7 @@ import Duckling.Types (Range(..))
 
 tests :: TestTree
 tests = testGroup "EN Tests"
-  [ makeCorpusTest [This Numeral] corpus
+  [ makeCorpusTest [Seal Numeral] corpus
   , surroundTests
   , intersectTests
   , rangeTests
@@ -34,7 +34,7 @@ tests = testGroup "EN Tests"
 surroundTests :: TestTree
 surroundTests = testCase "Surround Tests" $
   mapM_ (analyzedFirstTest testContext testOptions .
-    withTargets [This Numeral]) xs
+    withTargets [Seal Numeral]) xs
   where
     xs = concat
       [ examples (NumeralValue 3)
@@ -51,14 +51,14 @@ surroundTests = testCase "Surround Tests" $
 
 intersectTests :: TestTree
 intersectTests = testCase "Intersect Test" $
-  mapM_ (analyzedNTest testContext testOptions . withTargets [This Numeral]) xs
+  mapM_ (analyzedNTest testContext testOptions . withTargets [Seal Numeral]) xs
   where
     xs = [ ("10 millions minus 10", 2)
          ]
 
 rangeTests :: TestTree
 rangeTests = testCase "Range Test" $
-  mapM_ (analyzedRangeTest testContext testOptions . withTargets [This Numeral]) xs
+  mapM_ (analyzedRangeTest testContext testOptions . withTargets [Seal Numeral]) xs
   where
     xs = [ ("negative negative 5", Range 9 19) -- prevent double negatives
          , ("negative-5", Range 8 10) -- prevent double negatives

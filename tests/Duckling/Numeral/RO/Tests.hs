@@ -23,13 +23,13 @@ import Duckling.Testing.Types
 
 tests :: TestTree
 tests = testGroup "RO Tests"
-  [ makeCorpusTest [This Numeral] corpus
+  [ makeCorpusTest [Seal Numeral] corpus
   , intersectTests
   ]
 
 intersectTests :: TestTree
 intersectTests = testCase "Intersect Test" $
-  mapM_ (analyzedNTest context testOptions . withTargets [This Numeral])
+  mapM_ (analyzedNTest context testOptions . withTargets [Seal Numeral])
     [ ("19 de milioane", 2) -- make sure ruleMultiplyDe only takes >= 20
     ]
   where

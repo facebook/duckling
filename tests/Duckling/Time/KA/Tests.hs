@@ -19,6 +19,6 @@ import Duckling.Time.KA.Corpus
 
 tests :: TestTree
 tests = testGroup "KA Tests"
-  [ makeCorpusTest [This Time] corpus
-  , makeCorpusTest [This Time] latentCorpus
+  [ makeCorpusTest [Seal Time] corpus
+  , makeCorpusTest [Seal Time] latentCorpus
   ]

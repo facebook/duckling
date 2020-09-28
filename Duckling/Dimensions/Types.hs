@@ -10,7 +10,7 @@
 
 
 module Duckling.Dimensions.Types
-  ( Some(..)
+  ( Seal(..)
   , Dimension(..)
 
   , fromName
@@ -18,7 +18,6 @@ module Duckling.Dimensions.Types
   ) where
 
 import Data.Maybe
-import Data.Some
 import Data.Text (Text)
 import Prelude
 import qualified Data.HashMap.Strict as HashMap
@@ -44,22 +43,22 @@ toName Url = "url"
 toName Volume = "volume"
 toName (CustomDimension dim) = Text.pack (show dim)
 
-fromName :: Text -> Maybe (Some Dimension)
+fromName :: Text -> Maybe (Seal Dimension)
 fromName name = HashMap.lookup name m
   where
     m = HashMap.fromList
-      [ ("amount-of-money", This AmountOfMoney)
-      , ("credit-card-number", This CreditCardNumber)
-      , ("distance", This Distance)
-      , ("duration", This Duration)
-      , ("email", This Email)
-      , ("number", This Numeral)
-      , ("ordinal", This Ordinal)
-      , ("phone-number", This PhoneNumber)
-      , ("quantity", This Quantity)
-      , ("temperature", This Temperature)
-      , ("time", This Time)
-      , ("time-grain", This TimeGrain)
-      , ("url", This Url)
-      , ("volume", This Volume)
+      [ ("amount-of-money", Seal AmountOfMoney)
+      , ("credit-card-number", Seal CreditCardNumber)
+      , ("distance", Seal Distance)
+      , ("duration", Seal Duration)
+      , ("email", Seal Email)
+      , ("number", Seal Numeral)
+      , ("ordinal", Seal Ordinal)
+      , ("phone-number", Seal PhoneNumber)
+      , ("quantity", Seal Quantity)
+      , ("temperature", Seal Temperature)
+      , ("time", Seal Time)
+      , ("time-grain", Seal TimeGrain)
+      , ("url", Seal Url)
+      , ("volume", Seal Volume)
       ]

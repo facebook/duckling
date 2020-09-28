@@ -19,5 +19,5 @@ import Duckling.Testing.Asserts
 
 tests :: TestTree
 tests = testGroup "MN Tests"
-  [ makeCorpusTest [This Quantity] corpus
+  [ makeCorpusTest [Seal Quantity] corpus
   ]

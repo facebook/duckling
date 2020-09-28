@@ -44,66 +44,66 @@ import qualified Duckling.Time.EN.ZA.Corpus as ZA
 
 tests :: TestTree
 tests = testGroup "EN Tests"
-  [ makeCorpusTest [This Time] defaultCorpus
-  , makeNegativeCorpusTest [This Time] negativeCorpus
-  , makeCorpusTest [This Time] diffCorpus
+  [ makeCorpusTest [Seal Time] defaultCorpus
+  , makeNegativeCorpusTest [Seal Time] negativeCorpus
+  , makeCorpusTest [Seal Time] diffCorpus
   , exactSecondTests
   , valuesTest
   , intersectTests
   , rangeTests
   , localeTests
-  , makeCorpusTest [This Time] latentCorpus
+  , makeCorpusTest [Seal Time] latentCorpus
   ]
 
 localeTests :: TestTree
 localeTests = testGroup "Locale Tests"
   [ testGroup "EN_AU Tests"
-    [ makeCorpusTest [This Time] $ withLocale corpus localeAU AU.allExamples
-    , makeNegativeCorpusTest [This Time] $ withLocale negativeCorpus localeAU []
+    [ makeCorpusTest [Seal Time] $ withLocale corpus localeAU AU.allExamples
+    , makeNegativeCorpusTest [Seal Time] $ withLocale negativeCorpus localeAU []
     ]
   , testGroup "EN_BZ Tests"
-    [ makeCorpusTest [This Time] $ withLocale corpus localeBZ BZ.allExamples
-    , makeNegativeCorpusTest [This Time] $ withLocale negativeCorpus localeBZ []
+    [ makeCorpusTest [Seal Time] $ withLocale corpus localeBZ BZ.allExamples
+    , makeNegativeCorpusTest [Seal Time] $ withLocale negativeCorpus localeBZ []
     ]
   , testGroup "EN_CA Tests"
-    [ makeCorpusTest [This Time] $ withLocale corpus localeCA CA.allExamples
-    , makeNegativeCorpusTest [This Time] $ withLocale negativeCorpus localeCA []
+    [ makeCorpusTest [Seal Time] $ withLocale corpus localeCA CA.allExamples
+    , makeNegativeCorpusTest [Seal Time] $ withLocale negativeCorpus localeCA []
     ]
   , testGroup "EN_GB Tests"
-    [ makeCorpusTest [This Time] $ withLocale corpus localeGB GB.allExamples
-    , makeNegativeCorpusTest [This Time] $ withLocale negativeCorpus localeGB []
+    [ makeCorpusTest [Seal Time] $ withLocale corpus localeGB GB.allExamples
+    , makeNegativeCorpusTest [Seal Time] $ withLocale negativeCorpus localeGB []
     ]
   , testGroup "EN_IE Tests"
-    [ makeCorpusTest [This Time] $ withLocale corpus localeIE IE.allExamples
-    , makeNegativeCorpusTest [This Time] $ withLocale negativeCorpus localeIE []
+    [ makeCorpusTest [Seal Time] $ withLocale corpus localeIE IE.allExamples
+    , makeNegativeCorpusTest [Seal Time] $ withLocale negativeCorpus localeIE []
     ]
   , testGroup "EN_IN Tests"
-    [ makeCorpusTest [This Time] $ withLocale corpus localeIN IN.allExamples
-    , makeNegativeCorpusTest [This Time] $ withLocale negativeCorpus localeIN []
+    [ makeCorpusTest [Seal Time] $ withLocale corpus localeIN IN.allExamples
+    , makeNegativeCorpusTest [Seal Time] $ withLocale negativeCorpus localeIN []
     ]
   , testGroup "EN_JM Tests"
-    [ makeCorpusTest [This Time] $ withLocale corpus localeJM JM.allExamples
-    , makeNegativeCorpusTest [This Time] $ withLocale negativeCorpus localeJM []
+    [ makeCorpusTest [Seal Time] $ withLocale corpus localeJM JM.allExamples
+    , makeNegativeCorpusTest [Seal Time] $ withLocale negativeCorpus localeJM []
     ]
   , testGroup "EN_NZ Tests"
-    [ makeCorpusTest [This Time] $ withLocale corpus localeNZ NZ.allExamples
-    , makeNegativeCorpusTest [This Time] $ withLocale negativeCorpus localeNZ []
+    [ makeCorpusTest [Seal Time] $ withLocale corpus localeNZ NZ.allExamples
+    , makeNegativeCorpusTest [Seal Time] $ withLocale negativeCorpus localeNZ []
     ]
   , testGroup "EN_PH Tests"
-    [ makeCorpusTest [This Time] $ withLocale corpus localePH PH.allExamples
-    , makeNegativeCorpusTest [This Time] $ withLocale negativeCorpus localePH []
+    [ makeCorpusTest [Seal Time] $ withLocale corpus localePH PH.allExamples
+    , makeNegativeCorpusTest [Seal Time] $ withLocale negativeCorpus localePH []
     ]
   , testGroup "EN_TT Tests"
-    [ makeCorpusTest [This Time] $ withLocale corpus localeTT TT.allExamples
-    , makeNegativeCorpusTest [This Time] $ withLocale negativeCorpus localeTT []
+    [ makeCorpusTest [Seal Time] $ withLocale corpus localeTT TT.allExamples
+    , makeNegativeCorpusTest [Seal Time] $ withLocale negativeCorpus localeTT []
     ]
   , testGroup "EN_US Tests"
-    [ makeCorpusTest [This Time] $ withLocale corpus localeUS US.allExamples
-    , makeNegativeCorpusTest [This Time] $ withLocale negativeCorpus localeUS []
+    [ makeCorpusTest [Seal Time] $ withLocale corpus localeUS US.allExamples
+    , makeNegativeCorpusTest [Seal Time] $ withLocale negativeCorpus localeUS []
     ]
   , testGroup "EN_ZA Tests"
-    [ makeCorpusTest [This Time] $ withLocale corpus localeZA ZA.allExamples
-    , makeNegativeCorpusTest [This Time] $ withLocale negativeCorpus localeZA []
+    [ makeCorpusTest [Seal Time] $ withLocale corpus localeZA ZA.allExamples
+    , makeNegativeCorpusTest [Seal Time] $ withLocale negativeCorpus localeZA []
     ]
   ]
   where
@@ -122,7 +122,7 @@ localeTests = testGroup "Locale Tests"
 
 exactSecondTests :: TestTree
 exactSecondTests = testCase "Exact Second Tests" $
-  mapM_ (analyzedFirstTest context testOptions . withTargets [This Time]) xs
+  mapM_ (analyzedFirstTest context testOptions . withTargets [Seal Time]) xs
   where
     context = testContext {referenceTime = refTime (2016, 12, 6, 13, 21, 42) 1}
     xs = concat
@@ -141,7 +141,7 @@ exactSecondTests = testCase "Exact Second Tests" $
 
 valuesTest :: TestTree
 valuesTest = testCase "Values Test" $
-  mapM_ (analyzedFirstTest testContext testOptions . withTargets [This Time]) xs
+  mapM_ (analyzedFirstTest testContext testOptions . withTargets [Seal Time]) xs
   where
     xs = examplesCustom (parserCheck 1 parseValuesSize)
                         [ "now"
@@ -155,7 +155,7 @@ valuesTest = testCase "Values Test" $
 
 intersectTests :: TestTree
 intersectTests = testCase "Intersect Test" $
-  mapM_ (analyzedNTest testContext testOptions . withTargets [This Time]) xs
+  mapM_ (analyzedNTest testContext testOptions . withTargets [Seal Time]) xs
   where
     xs = [ ("tomorrow July", 2)
          , ("Mar tonight", 2)
@@ -164,7 +164,7 @@ intersectTests = testCase "Intersect Test" $
 
 rangeTests :: TestTree
 rangeTests = testCase "Range Test" $
-  mapM_ (analyzedRangeTest testContext testOptions . withTargets [This Time]) xs
+  mapM_ (analyzedRangeTest testContext testOptions . withTargets [Seal Time]) xs
   where
     xs = [ ("at 615.", Range 0 6) -- make sure ruleHHMMLatent allows this
          , ("last in 2'", Range 5 10) -- ruleLastTime too eager

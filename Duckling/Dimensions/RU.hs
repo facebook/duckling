@@ -11,12 +11,12 @@ module Duckling.Dimensions.RU
 
 import Duckling.Dimensions.Types
 
-allDimensions :: [Some Dimension]
+allDimensions :: [Seal Dimension]
 allDimensions =
-  [ This Distance
-  , This Duration
-  , This Numeral
-  , This Ordinal
-  , This Quantity
-  , This Volume
+  [ Seal Distance
+  , Seal Duration
+  , Seal Numeral
+  , Seal Ordinal
+  , Seal Quantity
+  , Seal Volume
   ]

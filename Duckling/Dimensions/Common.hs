@@ -11,11 +11,11 @@ module Duckling.Dimensions.Common
 
 import Duckling.Dimensions.Types
 
-allDimensions :: [Some Dimension]
+allDimensions :: [Seal Dimension]
 allDimensions =
-  [ This AmountOfMoney
-  , This Email
-  , This Numeral
-  , This PhoneNumber
-  , This Url
+  [ Seal AmountOfMoney
+  , Seal Email
+  , Seal Numeral
+  , Seal PhoneNumber
+  , Seal Url
   ]

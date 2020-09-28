@@ -19,27 +19,27 @@ import Duckling.Locale
 import Duckling.Types
 import qualified Duckling.Numeral.AF.Rules as Numeral
 
-defaultRules :: Some Dimension -> [Rule]
+defaultRules :: Seal Dimension -> [Rule]
 defaultRules = langRules
 
-localeRules :: Region -> Some Dimension -> [Rule]
-localeRules region (This (CustomDimension dim)) = dimLocaleRules region dim
+localeRules :: Region -> Seal Dimension -> [Rule]
+localeRules region (Seal (CustomDimension dim)) = dimLocaleRules region dim
 localeRules _ _ = []
 
-langRules :: Some Dimension -> [Rule]
-langRules (This AmountOfMoney) = []
-langRules (This CreditCardNumber) = []
-langRules (This Distance) = []
-langRules (This Duration) = []
-langRules (This Email) = []
-langRules (This Numeral) = Numeral.rules
-langRules (This Ordinal) = []
-langRules (This PhoneNumber) = []
-langRules (This Quantity) = []
-langRules (This RegexMatch) = []
-langRules (This Temperature) = []
-langRules (This Time) = []
-langRules (This TimeGrain) = []
-langRules (This Url) = []
-langRules (This Volume) = []
-langRules (This (CustomDimension dim)) = dimLangRules AF dim
+langRules :: Seal Dimension -> [Rule]
+langRules (Seal AmountOfMoney) = []
+langRules (Seal CreditCardNumber) = []
+langRules (Seal Distance) = []
+langRules (Seal Duration) = []
+langRules (Seal Email) = []
+langRules (Seal Numeral) = Numeral.rules
+langRules (Seal Ordinal) = []
+langRules (Seal PhoneNumber) = []
+langRules (Seal Quantity) = []
+langRules (Seal RegexMatch) = []
+langRules (Seal Temperature) = []
+langRules (Seal Time) = []
+langRules (Seal TimeGrain) = []
+langRules (Seal Url) = []
+langRules (Seal Volume) = []
+langRules (Seal (CustomDimension dim)) = dimLangRules AF dim

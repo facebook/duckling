@@ -11,10 +11,10 @@ module Duckling.Dimensions.KA
 
 import Duckling.Dimensions.Types
 
-allDimensions :: [Some Dimension]
+allDimensions :: [Seal Dimension]
 allDimensions =
-  [ This Numeral
-  , This Ordinal
-  , This Duration
-  , This Time
+  [ Seal Numeral
+  , Seal Ordinal
+  , Seal Duration
+  , Seal Time
   ]

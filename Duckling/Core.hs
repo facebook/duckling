@@ -20,7 +20,8 @@ module Duckling.Core
   , Range(..)
   , Region(..)
   , ResolvedVal(..)
-  , Some(..)
+  , Seal(..)
+  , withSeal
   , fromName
   , makeLocale
   , toJText

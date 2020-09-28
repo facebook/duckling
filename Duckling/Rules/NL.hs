@@ -30,29 +30,29 @@ import qualified Duckling.Time.NL.NL.Rules as TimeNL
 import qualified Duckling.TimeGrain.NL.Rules as TimeGrain
 import qualified Duckling.Volume.NL.Rules as Volume
 
-defaultRules :: Some Dimension -> [Rule]
-defaultRules dim@(This Time) = TimeNL.rulesBackwardCompatible ++ langRules dim
+defaultRules :: Seal Dimension -> [Rule]
+defaultRules dim@(Seal Time) = TimeNL.rulesBackwardCompatible ++ langRules dim
 defaultRules dim = langRules dim
 
-localeRules :: Region -> Some Dimension -> [Rule]
-localeRules region (This (CustomDimension dim)) = dimLocaleRules region dim
-localeRules BE (This Time) = TimeBE.rules
+localeRules :: Region -> Seal Dimension -> [Rule]
+localeRules region (Seal (CustomDimension dim)) = dimLocaleRules region dim
+localeRules BE (Seal Time) = TimeBE.rules
 localeRules _ _ = []
 
-langRules :: Some Dimension -> [Rule]
-langRules (This AmountOfMoney) = AmountOfMoney.rules
-langRules (This CreditCardNumber) = []
-langRules (This Distance) = Distance.rules
-langRules (This Duration) = Duration.rules
-langRules (This Email) = []
-langRules (This Numeral) = Numeral.rules
-langRules (This Ordinal) = Ordinal.rules
-langRules (This PhoneNumber) = []
-langRules (This Quantity) = Quantity.rules
-langRules (This RegexMatch) = []
-langRules (This Temperature) = []
-langRules (This Time) = Time.rules
-langRules (This TimeGrain) = TimeGrain.rules
-langRules (This Url) = []
-langRules (This Volume) = Volume.rules
-langRules (This (CustomDimension dim)) = dimLangRules NL dim
+langRules :: Seal Dimension -> [Rule]
+langRules (Seal AmountOfMoney) = AmountOfMoney.rules
+langRules (Seal CreditCardNumber) = []
+langRules (Seal Distance) = Distance.rules
+langRules (Seal Duration) = Duration.rules
+langRules (Seal Email) = []
+langRules (Seal Numeral) = Numeral.rules
+langRules (Seal Ordinal) = Ordinal.rules
+langRules (Seal PhoneNumber) = []
+langRules (Seal Quantity) = Quantity.rules
+langRules (Seal RegexMatch) = []
+langRules (Seal Temperature) = []
+langRules (Seal Time) = Time.rules
+langRules (Seal TimeGrain) = TimeGrain.rules
+langRules (Seal Url) = []
+langRules (Seal Volume) = Volume.rules
+langRules (Seal (CustomDimension dim)) = dimLangRules NL dim

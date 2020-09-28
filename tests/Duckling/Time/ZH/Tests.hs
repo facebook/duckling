@@ -25,23 +25,23 @@ import qualified Duckling.Time.ZH.TW.Corpus as TW
 
 tests :: TestTree
 tests = testGroup "ZH Tests"
-  [ makeCorpusTest [This Time] defaultCorpus
+  [ makeCorpusTest [Seal Time] defaultCorpus
   , localeTests
   ]
 
 localeTests :: TestTree
 localeTests = testGroup "Locale Tests"
   [ testGroup "ZH_CN Tests"
-    [ makeCorpusTest [This Time] $ withLocale corpus localeCN CN.allExamples
+    [ makeCorpusTest [Seal Time] $ withLocale corpus localeCN CN.allExamples
     ]
   , testGroup "ZH_HK Tests"
-    [ makeCorpusTest [This Time] $ withLocale corpus localeHK HK.allExamples
+    [ makeCorpusTest [Seal Time] $ withLocale corpus localeHK HK.allExamples
     ]
   , testGroup "ZH_MO Tests"
-    [ makeCorpusTest [This Time] $ withLocale corpus localeMO MO.allExamples
+    [ makeCorpusTest [Seal Time] $ withLocale corpus localeMO MO.allExamples
     ]
   , testGroup "ZH_TW Tests"
-    [ makeCorpusTest [This Time] $ withLocale corpus localeTW TW.allExamples
+    [ makeCorpusTest [Seal Time] $ withLocale corpus localeTW TW.allExamples
     ]
   ]
   where

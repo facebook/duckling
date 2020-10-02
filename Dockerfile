@@ -9,13 +9,11 @@ RUN mkdir /log
 
 WORKDIR /duckling
 
-ADD stack.yaml .
+COPY . .
 
 ENV LANG=C.UTF-8
 
 RUN stack setup
-
-ADD . .
 
 # NOTE:`stack build` will use as many cores as are available to build
 # in parallel. However, this can cause OOM issues as the linking step

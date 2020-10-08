@@ -18,5 +18,5 @@ import Duckling.AmountOfMoney.GA.Corpus
 
 tests :: TestTree
 tests = testGroup "GA Tests"
-  [ makeCorpusTest [This AmountOfMoney] corpus
+  [ makeCorpusTest [Seal AmountOfMoney] corpus
   ]

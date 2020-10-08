@@ -95,7 +95,7 @@ regenClassifiers locale = do
 
     filepath = "Duckling/Ranking/Classifiers/" ++ moduleName ++ ".hs"
 
-    rules = rulesFor locale . HashSet.singleton $ This Time
+    rules = rulesFor locale . HashSet.singleton $ Seal Time
 
     -- | The trained classifier to write out
     classifiers = makeClassifiers rules trainSet

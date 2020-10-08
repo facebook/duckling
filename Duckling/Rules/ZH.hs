@@ -30,31 +30,31 @@ import qualified Duckling.Time.ZH.MO.Rules as TimeMO
 import qualified Duckling.Time.ZH.TW.Rules as TimeTW
 import qualified Duckling.TimeGrain.ZH.Rules as TimeGrain
 
-defaultRules :: Some Dimension -> [Rule]
+defaultRules :: Seal Dimension -> [Rule]
 defaultRules = langRules
 
-localeRules :: Region -> Some Dimension -> [Rule]
-localeRules CN (This Time) = TimeCN.rules
-localeRules HK (This Time) = TimeHK.rules
-localeRules MO (This Time) = TimeMO.rules
-localeRules TW (This Time) = TimeTW.rules
-localeRules region (This (CustomDimension dim)) = dimLocaleRules region dim
+localeRules :: Region -> Seal Dimension -> [Rule]
+localeRules CN (Seal Time) = TimeCN.rules
+localeRules HK (Seal Time) = TimeHK.rules
+localeRules MO (Seal Time) = TimeMO.rules
+localeRules TW (Seal Time) = TimeTW.rules
+localeRules region (Seal (CustomDimension dim)) = dimLocaleRules region dim
 localeRules _ _ = []
 
-langRules :: Some Dimension -> [Rule]
-langRules (This AmountOfMoney) = AmountOfMoney.rules
-langRules (This CreditCardNumber) = []
-langRules (This Distance) = Distance.rules
-langRules (This Duration) = []
-langRules (This Email) = []
-langRules (This Numeral) = Numeral.rules
-langRules (This Ordinal) = Ordinal.rules
-langRules (This PhoneNumber) = []
-langRules (This Quantity) = Quantity.rules
-langRules (This RegexMatch) = []
-langRules (This Temperature) = Temperature.rules
-langRules (This Time) = Time.rules
-langRules (This TimeGrain) = TimeGrain.rules
-langRules (This Url) = []
-langRules (This Volume) = []
-langRules (This (CustomDimension dim)) = dimLangRules ZH dim
+langRules :: Seal Dimension -> [Rule]
+langRules (Seal AmountOfMoney) = AmountOfMoney.rules
+langRules (Seal CreditCardNumber) = []
+langRules (Seal Distance) = Distance.rules
+langRules (Seal Duration) = []
+langRules (Seal Email) = []
+langRules (Seal Numeral) = Numeral.rules
+langRules (Seal Ordinal) = Ordinal.rules
+langRules (Seal PhoneNumber) = []
+langRules (Seal Quantity) = Quantity.rules
+langRules (Seal RegexMatch) = []
+langRules (Seal Temperature) = Temperature.rules
+langRules (Seal Time) = Time.rules
+langRules (Seal TimeGrain) = TimeGrain.rules
+langRules (Seal Url) = []
+langRules (Seal Volume) = []
+langRules (Seal (CustomDimension dim)) = dimLangRules ZH dim

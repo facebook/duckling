@@ -102,6 +102,13 @@ ruleDurationAndHalfHour = Rule
       _ -> Nothing
   }
 
+ruleDurationOneAndHalfHour :: Rule
+ruleDurationOneAndHalfHour = Rule
+  { name = "1 and an half hour"
+  , pattern = [ regex "anderhalf uur"]
+  , prod = \_ -> Just . Token Duration $ duration TG.Minute 90
+  }
+
 ruleDurationPrecision :: Rule
 ruleDurationPrecision = Rule
   { name = "about|exactly <duration>"
@@ -122,6 +129,7 @@ rules =
   , ruleDurationThreeQuartersOfAnHour
   , ruleDurationDotNumeralHours
   , ruleDurationAndHalfHour
+  , ruleDurationOneAndHalfHour
   , ruleDurationPrecision
   , ruleNumeralQuotes
   ]

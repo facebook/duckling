@@ -23,6 +23,6 @@ import Duckling.Types (Range(..))
 
 tests :: TestTree
 tests = testGroup "UK Tests"
-  [ makeCorpusTest [This Time] corpus
-  , makeNegativeCorpusTest [This Time] negativeCorpus
+  [ makeCorpusTest [Seal Time] corpus
+  , makeNegativeCorpusTest [Seal Time] negativeCorpus
   ]

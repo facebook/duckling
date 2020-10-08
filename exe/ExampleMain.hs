@@ -76,8 +76,8 @@ targetsHandler = do
   writeLBS $ encode $
     HashMap.fromList . map dimText $ HashMap.toList supportedDimensions
   where
-    dimText :: (Lang, [Some Dimension]) -> (Text, [Text])
-    dimText = (Text.toLower . showt) *** map (\(This d) -> toName d)
+    dimText :: (Lang, [Seal Dimension]) -> (Text, [Text])
+    dimText = (Text.toLower . showt) *** map (\(Seal d) -> toName d)
 
 
 -- | Parse some text into the given dimensions
@@ -118,10 +118,10 @@ parseHandler tzs = do
     defaultTimeZone = "America/Los_Angeles"
     defaultLatent = False
 
-    parseDimension :: Text -> Maybe (Some Dimension)
+    parseDimension :: Text -> Maybe (Seal Dimension)
     parseDimension x = fromName x <|> fromCustomName x
       where
-        fromCustomName :: Text -> Maybe (Some Dimension)
+        fromCustomName :: Text -> Maybe (Seal Dimension)
         fromCustomName name = HashMap.lookup name m
         m = HashMap.fromList
           [ -- ("my-dimension", This (CustomDimension MyDimension))

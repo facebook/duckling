@@ -33,32 +33,32 @@ import qualified Duckling.Region as R
 
 tests :: TestTree
 tests = testGroup "ES Tests"
-  [ makeCorpusTest [This Numeral] corpus
+  [ makeCorpusTest [Seal Numeral] corpus
   , localeTests
   ]
 
 localeTests :: TestTree
 localeTests = testGroup "Locale Tests"
   [ testGroup "ES_AR Tests"
-    [ makeCorpusTest [This Numeral] $ withLocale corpus localeAR AR.allExamples
+    [ makeCorpusTest [Seal Numeral] $ withLocale corpus localeAR AR.allExamples
     ]
   , testGroup "ES_CL Tests"
-    [ makeCorpusTest [This Numeral] $ withLocale corpus localeCL CL.allExamples
+    [ makeCorpusTest [Seal Numeral] $ withLocale corpus localeCL CL.allExamples
     ]
   , testGroup "ES_CO Tests"
-    [ makeCorpusTest [This Numeral] $ withLocale corpus localeCO CO.allExamples
+    [ makeCorpusTest [Seal Numeral] $ withLocale corpus localeCO CO.allExamples
     ]
   , testGroup "ES_ES Tests"
-    [ makeCorpusTest [This Numeral] $ withLocale corpus localeES ES.allExamples
+    [ makeCorpusTest [Seal Numeral] $ withLocale corpus localeES ES.allExamples
     ]
   , testGroup "ES_MX Tests"
-    [ makeCorpusTest [This Numeral] $ withLocale corpus localeMX MX.allExamples
+    [ makeCorpusTest [Seal Numeral] $ withLocale corpus localeMX MX.allExamples
     ]
   , testGroup "ES_PE Tests"
-    [ makeCorpusTest [This Numeral] $ withLocale corpus localePE PE.allExamples
+    [ makeCorpusTest [Seal Numeral] $ withLocale corpus localePE PE.allExamples
     ]
   , testGroup "ES_VE Tests"
-    [ makeCorpusTest [This Numeral] $ withLocale corpus localeVE VE.allExamples
+    [ makeCorpusTest [Seal Numeral] $ withLocale corpus localeVE VE.allExamples
     ]
   ]
   where

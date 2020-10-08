@@ -38,37 +38,38 @@ import qualified Duckling.Time.ES.Rules as Time
 import qualified Duckling.TimeGrain.ES.Rules as TimeGrain
 import Duckling.Types
 import qualified Duckling.Volume.ES.Rules as Volume
+import qualified Duckling.Duration.ES.Rules as Duration
 
-defaultRules :: Some Dimension -> [Rule]
-defaultRules dim@(This Numeral) =
+defaultRules :: Seal Dimension -> [Rule]
+defaultRules dim@(Seal Numeral) =
   NumeralES.rulesBackwardCompatible ++ langRules dim
 defaultRules dim = langRules dim
 
-localeRules :: Region -> Some Dimension -> [Rule]
-localeRules R.AR (This Numeral) = NumeralAR.rules
-localeRules CL (This Numeral) = NumeralCL.rules
-localeRules CO (This Numeral) = NumeralCO.rules
-localeRules R.ES (This Numeral) = NumeralES.rules
-localeRules MX (This Numeral) = NumeralMX.rules
-localeRules PE (This Numeral) = NumeralPE.rules
-localeRules VE (This Numeral) = NumeralVE.rules
-localeRules region (This (CustomDimension dim)) = dimLocaleRules region dim
+localeRules :: Region -> Seal Dimension -> [Rule]
+localeRules R.AR (Seal Numeral) = NumeralAR.rules
+localeRules CL (Seal Numeral) = NumeralCL.rules
+localeRules CO (Seal Numeral) = NumeralCO.rules
+localeRules R.ES (Seal Numeral) = NumeralES.rules
+localeRules MX (Seal Numeral) = NumeralMX.rules
+localeRules PE (Seal Numeral) = NumeralPE.rules
+localeRules VE (Seal Numeral) = NumeralVE.rules
+localeRules region (Seal (CustomDimension dim)) = dimLocaleRules region dim
 localeRules _ _ = []
 
-langRules :: Some Dimension -> [Rule]
-langRules (This AmountOfMoney) = AmountOfMoney.rules
-langRules (This CreditCardNumber) = []
-langRules (This Distance) = Distance.rules
-langRules (This Duration) = []
-langRules (This Email) = []
-langRules (This Numeral) = Numeral.rules
-langRules (This Ordinal) = Ordinal.rules
-langRules (This PhoneNumber) = []
-langRules (This Quantity) = []
-langRules (This RegexMatch) = []
-langRules (This Temperature) = Temperature.rules
-langRules (This Time) = Time.rules
-langRules (This TimeGrain) = TimeGrain.rules
-langRules (This Url) = []
-langRules (This Volume) = Volume.rules
-langRules (This (CustomDimension dim)) = dimLangRules ES dim
+langRules :: Seal Dimension -> [Rule]
+langRules (Seal AmountOfMoney) = AmountOfMoney.rules
+langRules (Seal CreditCardNumber) = []
+langRules (Seal Distance) = Distance.rules
+langRules (Seal Duration) = Duration.rules
+langRules (Seal Email) = []
+langRules (Seal Numeral) = Numeral.rules
+langRules (Seal Ordinal) = Ordinal.rules
+langRules (Seal PhoneNumber) = []
+langRules (Seal Quantity) = []
+langRules (Seal RegexMatch) = []
+langRules (Seal Temperature) = Temperature.rules
+langRules (Seal Time) = Time.rules
+langRules (Seal TimeGrain) = TimeGrain.rules
+langRules (Seal Url) = []
+langRules (Seal Volume) = Volume.rules
+langRules (Seal (CustomDimension dim)) = dimLangRules ES dim

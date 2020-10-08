@@ -69,36 +69,36 @@ import qualified Duckling.Dimensions.VI as VIDimensions
 import qualified Duckling.Dimensions.ZH as ZHDimensions
 
 
-allDimensions :: Lang -> [Some Dimension]
+allDimensions :: Lang -> [Seal Dimension]
 allDimensions lang = CommonDimensions.allDimensions ++ langDimensions lang
 
 -- | Augments `targets` with all dependent dimensions.
-explicitDimensions :: HashSet (Some Dimension) -> HashSet (Some Dimension)
+explicitDimensions :: HashSet (Seal Dimension) -> HashSet (Seal Dimension)
 explicitDimensions targets = HashSet.union targets deps
   where
     deps = HashSet.unions . map dependents $ HashSet.toList targets
 
 -- | Ordinal depends on Numeral for JA, KO, and ZH.
-dependents :: Some Dimension -> HashSet (Some Dimension)
-dependents (This CreditCardNumber) = HashSet.empty
-dependents (This Distance) = HashSet.singleton (This Numeral)
-dependents (This Duration) = HashSet.fromList [This Numeral, This TimeGrain]
-dependents (This Numeral) = HashSet.empty
-dependents (This Email) = HashSet.empty
-dependents (This AmountOfMoney) = HashSet.singleton (This Numeral)
-dependents (This Ordinal) = HashSet.singleton (This Numeral)
-dependents (This PhoneNumber) = HashSet.empty
-dependents (This Quantity) = HashSet.singleton (This Numeral)
-dependents (This RegexMatch) = HashSet.empty
-dependents (This Temperature) = HashSet.singleton (This Numeral)
-dependents (This Time) =
-  HashSet.fromList [This Numeral, This Duration, This Ordinal, This TimeGrain]
-dependents (This TimeGrain) = HashSet.empty
-dependents (This Url) = HashSet.empty
-dependents (This Volume) = HashSet.singleton (This Numeral)
-dependents (This (CustomDimension dim)) = dimDependents dim
+dependents :: Seal Dimension -> HashSet (Seal Dimension)
+dependents (Seal CreditCardNumber) = HashSet.empty
+dependents (Seal Distance) = HashSet.singleton (Seal Numeral)
+dependents (Seal Duration) = HashSet.fromList [Seal Numeral, Seal TimeGrain]
+dependents (Seal Numeral) = HashSet.empty
+dependents (Seal Email) = HashSet.empty
+dependents (Seal AmountOfMoney) = HashSet.singleton (Seal Numeral)
+dependents (Seal Ordinal) = HashSet.singleton (Seal Numeral)
+dependents (Seal PhoneNumber) = HashSet.empty
+dependents (Seal Quantity) = HashSet.singleton (Seal Numeral)
+dependents (Seal RegexMatch) = HashSet.empty
+dependents (Seal Temperature) = HashSet.singleton (Seal Numeral)
+dependents (Seal Time) =
+  HashSet.fromList [Seal Numeral, Seal Duration, Seal Ordinal, Seal TimeGrain]
+dependents (Seal TimeGrain) = HashSet.empty
+dependents (Seal Url) = HashSet.empty
+dependents (Seal Volume) = HashSet.singleton (Seal Numeral)
+dependents (Seal (CustomDimension dim)) = dimDependents dim
 
-langDimensions :: Lang -> [Some Dimension]
+langDimensions :: Lang -> [Seal Dimension]
 langDimensions AF = AFDimensions.allDimensions
 langDimensions AR = ARDimensions.allDimensions
 langDimensions BG = BGDimensions.allDimensions

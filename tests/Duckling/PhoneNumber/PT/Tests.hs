@@ -18,5 +18,5 @@ import Duckling.Testing.Asserts
 
 tests :: TestTree
 tests = testGroup "PhoneNumber Tests"
-  [ makeCorpusTest [This PhoneNumber] corpus
+  [ makeCorpusTest [Seal PhoneNumber] corpus
   ]

@@ -19,6 +19,6 @@ import Duckling.Testing.Asserts
 
 tests :: TestTree
 tests = testGroup "RO Tests"
-  [ makeCorpusTest [This AmountOfMoney] corpus
-  , makeNegativeCorpusTest [This AmountOfMoney] negativeCorpus
+  [ makeCorpusTest [Seal AmountOfMoney] corpus
+  , makeNegativeCorpusTest [Seal AmountOfMoney] negativeCorpus
   ]

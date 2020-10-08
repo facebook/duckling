@@ -36,8 +36,8 @@ import qualified Duckling.AmountOfMoney.EN.ZA.Corpus as ZA
 
 tests :: TestTree
 tests = testGroup "EN Tests"
-  [ makeCorpusTest [This AmountOfMoney] corpus
-  , makeNegativeCorpusTest [This AmountOfMoney] negativeCorpus
+  [ makeCorpusTest [Seal AmountOfMoney] corpus
+  , makeNegativeCorpusTest [Seal AmountOfMoney] negativeCorpus
   , localeTests
   , intersectTests
   , rangeTests
@@ -47,75 +47,75 @@ tests = testGroup "EN Tests"
 localeTests :: TestTree
 localeTests = testGroup "Locale Tests"
   [ testGroup "EN_AU Tests"
-    [ makeCorpusTest [This AmountOfMoney]
+    [ makeCorpusTest [Seal AmountOfMoney]
       $ withLocale corpus localeAU AU.allExamples
-    , makeNegativeCorpusTest [This AmountOfMoney]
+    , makeNegativeCorpusTest [Seal AmountOfMoney]
       $ withLocale negativeCorpus localeAU AU.negativeExamples
     ]
    , testGroup "EN_BZ Tests"
-    [ makeCorpusTest [This AmountOfMoney]
+    [ makeCorpusTest [Seal AmountOfMoney]
       $ withLocale corpus localeBZ BZ.allExamples
-    , makeNegativeCorpusTest [This AmountOfMoney]
+    , makeNegativeCorpusTest [Seal AmountOfMoney]
       $ withLocale negativeCorpus localeBZ BZ.negativeExamples
     ]
    , testGroup "EN_CA Tests"
-    [ makeCorpusTest [This AmountOfMoney]
+    [ makeCorpusTest [Seal AmountOfMoney]
       $ withLocale corpus localeCA CA.allExamples
-    , makeNegativeCorpusTest [This AmountOfMoney]
+    , makeNegativeCorpusTest [Seal AmountOfMoney]
       $ withLocale negativeCorpus localeCA CA.negativeExamples
     ]
    , testGroup "EN_GB Tests"
-    [ makeCorpusTest [This AmountOfMoney]
+    [ makeCorpusTest [Seal AmountOfMoney]
       $ withLocale corpus localeGB GB.allExamples
-    , makeNegativeCorpusTest [This AmountOfMoney]
+    , makeNegativeCorpusTest [Seal AmountOfMoney]
       $ withLocale negativeCorpus localeGB GB.negativeExamples
     ]
    , testGroup "EN_IE Tests"
-    [ makeCorpusTest [This AmountOfMoney]
+    [ makeCorpusTest [Seal AmountOfMoney]
       $ withLocale corpus localeIE IE.allExamples
-    , makeNegativeCorpusTest [This AmountOfMoney]
+    , makeNegativeCorpusTest [Seal AmountOfMoney]
       $ withLocale negativeCorpus localeIE IE.negativeExamples
     ]
    , testGroup "EN_IN Tests"
-    [ makeCorpusTest [This AmountOfMoney]
+    [ makeCorpusTest [Seal AmountOfMoney]
       $ withLocale corpus localeIN IN.allExamples
-    , makeNegativeCorpusTest [This AmountOfMoney]
+    , makeNegativeCorpusTest [Seal AmountOfMoney]
       $ withLocale negativeCorpus localeIN IN.negativeExamples
     ]
    , testGroup "EN_JM Tests"
-    [ makeCorpusTest [This AmountOfMoney]
+    [ makeCorpusTest [Seal AmountOfMoney]
       $ withLocale corpus localeJM JM.allExamples
-    , makeNegativeCorpusTest [This AmountOfMoney]
+    , makeNegativeCorpusTest [Seal AmountOfMoney]
       $ withLocale negativeCorpus localeJM JM.negativeExamples
     ]
    , testGroup "EN_NZ Tests"
-    [ makeCorpusTest [This AmountOfMoney]
+    [ makeCorpusTest [Seal AmountOfMoney]
       $ withLocale corpus localeNZ NZ.allExamples
-    , makeNegativeCorpusTest [This AmountOfMoney]
+    , makeNegativeCorpusTest [Seal AmountOfMoney]
       $ withLocale negativeCorpus localeNZ NZ.negativeExamples
     ]
    , testGroup "EN_PH Tests"
-    [ makeCorpusTest [This AmountOfMoney]
+    [ makeCorpusTest [Seal AmountOfMoney]
       $ withLocale corpus localePH PH.allExamples
-    , makeNegativeCorpusTest [This AmountOfMoney]
+    , makeNegativeCorpusTest [Seal AmountOfMoney]
       $ withLocale negativeCorpus localePH PH.negativeExamples
     ]
     , testGroup "EN_TT Tests"
-    [ makeCorpusTest [This AmountOfMoney]
+    [ makeCorpusTest [Seal AmountOfMoney]
       $ withLocale corpus localeTT TT.allExamples
-    , makeNegativeCorpusTest [This AmountOfMoney]
+    , makeNegativeCorpusTest [Seal AmountOfMoney]
       $ withLocale negativeCorpus localeTT TT.negativeExamples
     ]
     , testGroup "EN_US Tests"
-    [ makeCorpusTest [This AmountOfMoney]
+    [ makeCorpusTest [Seal AmountOfMoney]
       $ withLocale corpus localeUS US.allExamples
-    , makeNegativeCorpusTest [This AmountOfMoney]
+    , makeNegativeCorpusTest [Seal AmountOfMoney]
       $ withLocale negativeCorpus localeUS US.negativeExamples
     ]
     , testGroup "EN_ZA Tests"
-    [ makeCorpusTest [This AmountOfMoney]
+    [ makeCorpusTest [Seal AmountOfMoney]
       $ withLocale corpus localeZA ZA.allExamples
-    , makeNegativeCorpusTest [This AmountOfMoney]
+    , makeNegativeCorpusTest [Seal AmountOfMoney]
       $ withLocale negativeCorpus localeZA ZA.negativeExamples
     ]
   ]
@@ -136,7 +136,7 @@ localeTests = testGroup "Locale Tests"
 
 intersectTests :: TestTree
 intersectTests = testCase "Intersect Test" $
-  mapM_ (analyzedNTest testContext testOptions . withTargets [This AmountOfMoney]) xs
+  mapM_ (analyzedNTest testContext testOptions . withTargets [Seal AmountOfMoney]) xs
   where
     xs = [ ("7c7", 2)
          , ("7c7c", 3)
@@ -150,7 +150,7 @@ intersectTests = testCase "Intersect Test" $
 
 rangeTests :: TestTree
 rangeTests = testCase "Range Test" $
-  mapM_ (analyzedRangeTest testContext testOptions . withTargets [This AmountOfMoney]) xs
+  mapM_ (analyzedRangeTest testContext testOptions . withTargets [Seal AmountOfMoney]) xs
   where
     xs = [ ("between 3 and 1 dollars", Range 14 23)
          , ("between 1 and between 2 and 3 dollars", Range 14 37)
@@ -159,4 +159,4 @@ rangeTests = testCase "Range Test" $
          ]
 
 latentTests :: TestTree
-latentTests = makeCorpusTest [This AmountOfMoney] latentCorpus
+latentTests = makeCorpusTest [Seal AmountOfMoney] latentCorpus

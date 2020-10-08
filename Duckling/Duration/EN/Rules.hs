@@ -240,9 +240,64 @@ ruleCompositeDuration = Rule
       _ -> Nothing
   }
 
+ruleCompositeDurationAnd :: Rule
+ruleCompositeDurationAnd = Rule
+  { name = "composite <duration> and <duration>"
+  , pattern =
+    [ dimension Duration
+    , regex ",|and"
+    , dimension Duration
+    ]
+  , prod = \case
+      (Token Duration DurationData{TDuration.value = v, TDuration.grain = g}:
+       _:
+       Token Duration dd@DurationData{TDuration.grain = dg}:
+       _) | g > dg -> Just . Token Duration $ duration g (v) <> dd
+      _ -> Nothing
+  }
+
+ruleDurationDotNumeralMinutes :: Rule
+ruleDurationDotNumeralMinutes = Rule
+  { name = "number.number minutes"
+  , pattern =
+    [ regex "(\\d+)\\.(\\d+)"
+    , Predicate $ isGrain TG.Minute
+    ]
+  , prod = \case
+      (Token RegexMatch (GroupMatch (m:s:_)):_) -> do
+        mm <- parseInteger m
+        ss <- parseInteger s
+        let sden = 10 ^ Text.length s
+        Just $ Token Duration $ secondsFromHourMixedFraction mm ss sden
+      _ -> Nothing
+  }
+
+ruleDurationNumeralAndQuarterHour :: Rule
+ruleDurationNumeralAndQuarterHour = Rule
+  { name = "<Integer> and <Integer> quarter of hour"
+  , pattern =
+    [ Predicate isNatural
+    , regex "and (a |an |one |two |three )?quarters?( of)?( an)?"
+    , Predicate $ isGrain TG.Hour
+    ]
+  , prod = \case
+      (Token Numeral NumeralData{TNumeral.value = h}:
+       Token RegexMatch (GroupMatch (match:_)):
+       _) -> do
+         q <- case Text.strip $ Text.toLower match of "a"     -> Just 1
+                                                      "an"    -> Just 1
+                                                      "one"   -> Just 1
+                                                      "two"   -> Just 2
+                                                      "three" -> Just 3
+                                                      _       -> Just 1
+         Just . Token Duration . duration TG.Minute $ 15 * q + 60 * floor h
+      _ -> Nothing
+  }
+
 rules :: [Rule]
 rules =
-  [ ruleDurationQuarterOfAnHour
+  [ ruleCompositeDurationCommasAnd
+  , ruleDurationQuarterOfAnHour
   , ruleDurationHalfAnHourAbbrev
   , ruleDurationThreeQuartersOfAnHour
   , ruleDurationFortnight
@@ -257,5 +312,8 @@ rules =
   , ruleDurationPrecision
   , ruleNumeralQuotes
   , ruleCompositeDuration
+  , ruleCompositeDurationAnd
   , ruleCompositeDurationCommasAnd
+  , ruleDurationDotNumeralMinutes
+  , ruleDurationNumeralAndQuarterHour
   ]

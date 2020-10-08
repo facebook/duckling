@@ -156,6 +156,12 @@ latentCorpus = (testContext, testOptions {withLatent = True}, xs)
       , examples (datetimeInterval ((2013, 2, 12, 0, 0, 0), (2013, 2, 17, 0, 0, 0)) Day)
                  [ "the week"
                  ]
+      , examples (datetime (2013, 2, 12, 12, 3, 0) Minute)
+             [  "twelve zero three"
+             ,  "twelve o three"
+             ,  "twelve ou three"
+             ,  "twelve oh three"
+             ]
       ]
 
 diffContext :: Context
@@ -311,7 +317,9 @@ allExamples = concat
   , examples (datetime (2013, 2, 11, 0, 0, 0) Week)
              [ "this week"
              , "current week"
-             , "coming week"
+             ]
+  , examples (datetime (2013, 2, 18, 0, 0, 0) Week)
+             [ "coming week"
              ]
   , examples (datetime (2013, 2, 4, 0, 0, 0) Week)
              [ "last week"
@@ -322,6 +330,7 @@ allExamples = concat
              [ "next week"
              , "the following week"
              , "around next week"
+             , "upcoming week"
              ]
   , examples (datetime (2013, 1, 1, 0, 0, 0) Month)
              [ "last month"
@@ -395,10 +404,7 @@ allExamples = concat
   , examples (datetime (2013, 2, 5, 0, 0, 0) Day)
              [ "last tuesday"
              ]
-  , examples (datetime (2013, 2, 19, 0, 0, 0) Day)
-             [ "next tuesday"
-             ]
-  , examples (datetime (2013, 2, 13, 0, 0, 0) Day)
+  , examples (datetime (2013, 2, 20, 0, 0, 0) Day)
              [ "next wednesday"
              ]
   , examples (datetime (2013, 2, 20, 0, 0, 0) Day)
@@ -1290,6 +1296,9 @@ allExamples = concat
   , examples (datetime (2013, 2, 12, 12, 0, 0) Hour)
              [ "at 12pm"
              , "at noon"
+             , "midday"
+             , "the midday"
+             , "mid day"
              ]
   , examples (datetime (2013, 2, 13, 0, 0, 0) Hour)
              [ "at 12am"
@@ -1439,9 +1448,11 @@ allExamples = concat
   , examples (datetimeInterval ((2013, 2, 11, 0, 0, 0), (2013, 2, 14, 0, 0, 0)) Day)
              [ "beginning of this week"
              , "beginning of current week"
-             , "beginning of coming week"
              , "at the beginning of this week"
              , "at the beginning of current week"
+             ]
+  , examples (datetimeInterval ((2013, 2, 18, 0, 0, 0), (2013, 2, 21, 0, 0, 0)) Day)
+             [ "beginning of coming week"
              , "at the beginning of coming week"
              ]
   , examples (datetimeInterval ((2013, 2, 4, 0, 0, 0), (2013, 2, 7, 0, 0, 0)) Day)
@@ -1463,9 +1474,11 @@ allExamples = concat
   , examples (datetimeInterval ((2013, 2, 15, 0, 0, 0), (2013, 2, 18, 0, 0, 0)) Day)
              [ "end of this week"
              , "end of current week"
-             , "end of coming week"
              , "at the end of this week"
              , "at the end of current week"
+             ]
+   , examples (datetimeInterval ((2013, 2, 22, 0, 0, 0), (2013, 2, 25, 0, 0, 0)) Day)
+             [ "end of coming week"
              , "at the end of coming week"
              ]
   , examples (datetimeInterval ((2013, 2, 8, 0, 0, 0), (2013, 2, 11, 0, 0, 0)) Day)
@@ -1841,4 +1854,77 @@ allExamples = concat
   , examples (datetimeHoliday (2011, 12, 25, 0, 0, 0) Day "Christmas")
             [ "the 3rd closest xmas to today"
             ]
+  , examples (datetime (2013, 10, 25, 0, 0, 0) Day)
+            [ "last friday of october"
+            , "last friday in october"
+            ]
+  , examples (datetime (2013, 2, 25, 0, 0, 0) Week)
+            [ "upcoming two weeks"
+            , "upcoming two week"
+            , "upcoming 2 weeks"
+            , "upcoming 2 week"
+            , "two upcoming weeks"
+            , "two upcoming week"
+            , "2 upcoming weeks"
+            , "2 upcoming week"
+            ]
+  , examples (datetime (2013, 2, 14, 0, 0, 0) Day)
+            [ "upcoming two days"
+            , "upcoming two day"
+            , "upcoming 2 days"
+            , "upcoming 2 day"
+            , "two upcoming days"
+            , "two upcoming day"
+            , "2 upcoming days"
+            , "2 upcoming day"
+            ]
+  , examples (datetime (2013, 4, 1, 0, 0, 0) Month)
+            [ "upcoming two months"
+            , "upcoming two month"
+            , "upcoming 2 months"
+            , "upcoming 2 month"
+            , "two upcoming months"
+            , "two upcoming month"
+            , "2 upcoming months"
+            , "2 upcoming month"
+            ]
+  , examples (datetime (2013, 7, 1, 0, 0, 0) Quarter)
+            [ "upcoming two quarters"
+            , "upcoming two quarter"
+            , "upcoming 2 quarters"
+            , "upcoming 2 quarter"
+            , "two upcoming quarters"
+            , "two upcoming quarter"
+            , "2 upcoming quarters"
+            , "2 upcoming quarter"
+            ]
+  , examples (datetime (2015, 1, 1, 0, 0, 0) Year)
+            [ "upcoming two years"
+            , "upcoming two year"
+            , "upcoming 2 years"
+            , "upcoming 2 year"
+            , "two upcoming years"
+            , "two upcoming year"
+            , "2 upcoming years"
+            , "2 upcoming year"
+            ]
+  , examples (datetime (2013, 2, 13, 13, 40, 0) Minute)
+             [ "20 minutes to 2pm tomorrow"
+             ]
+  , examples (datetime (2013, 1, 7, 0, 0, 0) Day)
+             [
+               "first monday of last month"
+             ]
+  , examples (datetime (2013, 1, 1, 0, 0, 0) Day)
+             [
+               "first tuesday of last month"
+             ]
+  , examples (datetime (2013, 1, 14, 0, 0, 0) Day)
+             [
+               "second monday of last month"
+             ]
+  , examples (datetime (2013, 2, 23, 0, 0, 0) Day)
+             [ "next saturday" ]
+  , examples (datetime (2013, 2, 18, 0, 0, 0) Day)
+             [ "next monday" ]
   ]

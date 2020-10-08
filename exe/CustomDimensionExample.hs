@@ -21,7 +21,6 @@ import Control.Monad
 import Data.Aeson
 import Data.Hashable
 import Data.Semigroup ((<>))
-import Data.Some
 import Data.Text (Text)
 import Data.Typeable
 import GHC.Generics
@@ -107,5 +106,5 @@ myDimensionRule' = Rule
 main :: IO ()
 main = do
   let en = makeLocale EN Nothing
-  debug en "testing my dimension" [This (CustomDimension MyDimension)] >>= print
-  debug en "testing my dimension pattern match" [This (CustomDimension MyDimension)] >>= print
+  debug en "testing my dimension" [Seal (CustomDimension MyDimension)] >>= print
+  debug en "testing my dimension pattern match" [Seal (CustomDimension MyDimension)] >>= print

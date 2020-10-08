@@ -33,7 +33,6 @@ import Data.HashSet (HashSet)
 import Data.List (intersperse, sortOn)
 import Data.Maybe
 import Data.Semigroup ((<>))
-import Data.Some
 import Data.Text (Text, toLower, unpack)
 import Data.Typeable ((:~:)(Refl), eqT, Typeable)
 import GHC.Generics
@@ -84,6 +83,23 @@ instance NFData Token where
   rnf (Token _ v) = rnf v
 
 -- -----------------------------------------------------------------
+-- Seal
+
+data Seal s where
+  Seal :: s a -> Seal s
+
+instance GEq s => Eq (Seal s) where
+  Seal x == Seal y =
+    defaultEq x y
+
+instance GShow s => Show (Seal s) where
+  showsPrec p (Seal s)
+    = showParen (p > 10) (showString "Seal " . gshowsPrec 11 s)
+
+withSeal :: Seal s -> (forall t. s t -> r) -> r
+withSeal (Seal x) f = f x
+
+-- -----------------------------------------------------------------
 -- Dimension
 
 class (Show a, Typeable a, Typeable (DimensionData  a)) =>
@@ -92,7 +108,7 @@ class (Show a, Typeable a, Typeable (DimensionData  a)) =>
   dimRules :: a -> [Rule]
   dimLangRules :: Lang -> a -> [Rule]
   dimLocaleRules :: Region -> a -> [Rule]
-  dimDependents :: a -> HashSet (Some Dimension)
+  dimDependents :: a -> HashSet (Seal Dimension)
 
 -- | GADT for differentiating between dimensions
 -- Each dimension should have its own constructor and provide the data structure
@@ -138,12 +154,12 @@ instance GShow Dimension where gshowsPrec = showsPrec
 -- TextShow
 instance TextShow (Dimension a) where
   showb d = TS.fromString $ show d
-instance TextShow (Some Dimension) where
-  showb (This d) = showb d
+instance TextShow (Seal Dimension) where
+  showb (Seal d) = showb d
 
 -- Hashable
-instance Hashable (Some Dimension) where
-  hashWithSalt s (This a) = hashWithSalt s a
+instance Hashable (Seal Dimension) where
+  hashWithSalt s (Seal a) = hashWithSalt s a
 instance Hashable (Dimension a) where
   hashWithSalt s RegexMatch          = hashWithSalt s (0::Int)
   hashWithSalt s Distance            = hashWithSalt s (1::Int)

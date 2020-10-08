@@ -24,8 +24,8 @@ import qualified Duckling.Email.IT.Tests as IT
 
 tests :: TestTree
 tests = testGroup "Email Tests"
-  [ makeCorpusTest [This Email] corpus
-  , makeNegativeCorpusTest [This Email] negativeCorpus
+  [ makeCorpusTest [Seal Email] corpus
+  , makeNegativeCorpusTest [Seal Email] negativeCorpus
   , DE.tests
   , EN.tests
   , FR.tests

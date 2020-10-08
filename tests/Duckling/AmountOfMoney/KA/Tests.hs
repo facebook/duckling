@@ -18,5 +18,5 @@ import Duckling.AmountOfMoney.KA.Corpus
 
 tests :: TestTree
 tests = testGroup "KA Tests"
-  [ makeCorpusTest [This AmountOfMoney] corpus
+  [ makeCorpusTest [Seal AmountOfMoney] corpus
   ]

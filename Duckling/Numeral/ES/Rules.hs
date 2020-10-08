@@ -7,6 +7,8 @@
 
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE LambdaCase #-}
+
 module Duckling.Numeral.ES.Rules (rules) where
 
 import qualified Data.HashMap.Strict as HashMap
@@ -225,9 +227,28 @@ ruleNumeralDotNumeral = Rule
       _ -> Nothing
   }
 
+ruleBelowTenWithTwoDigits :: Rule
+ruleBelowTenWithTwoDigits = Rule
+  {
+    name = "integer (0-9) with two digits"
+  , pattern =
+      [
+        regex "((c|z)ero)|0"
+      , numberBetween 1 10
+      ]
+  , prod = \case
+      (
+        _:
+        Token Numeral NumeralData { TNumeral.value = v }:
+        _
+        ) -> double v
+      _ -> Nothing
+  }
+
 rules :: [Rule]
 rules =
-  [ ruleNumeral
+  [ ruleBelowTenWithTwoDigits
+  , ruleNumeral
   , ruleNumeral2
   , ruleNumeral3
   , ruleNumeral4

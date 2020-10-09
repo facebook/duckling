@@ -18,6 +18,6 @@ import Duckling.Testing.Asserts
 
 tests :: TestTree
 tests = testGroup "PhoneNumber Tests"
-  [ makeCorpusTest [This PhoneNumber] corpus
-  , makeNegativeCorpusTest [This PhoneNumber] negativeCorpus
+  [ makeCorpusTest [Seal PhoneNumber] corpus
+  , makeNegativeCorpusTest [Seal PhoneNumber] negativeCorpus
   ]

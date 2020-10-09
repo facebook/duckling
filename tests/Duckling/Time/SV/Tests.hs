@@ -29,7 +29,7 @@ import Duckling.TimeGrain.Types (Grain(..))
 
 tests :: TestTree
 tests = testGroup "SV Tests"
-  [ makeCorpusTest [This Time] corpus
+  [ makeCorpusTest [Seal Time] corpus
   , ambiguousTests
   ]
 
@@ -43,7 +43,7 @@ ambiguousTests = testCase "Ambiguous Tests" $ mapM_ check xs
                   [ "i morgonen"
                   ]
     ctx = testContext {locale = makeLocale SV Nothing}
-    dims = HashSet.singleton $ This Time
+    dims = HashSet.singleton $ Seal Time
     check :: Example -> IO ()
     check (input, predicate) = case analyze input ctx testOptions dims of
       [] -> assertFailure $ "empty result on " ++ show input

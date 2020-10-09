@@ -18,5 +18,5 @@ import Duckling.Distance.RO.Corpus
 
 tests :: TestTree
 tests = testGroup "RO Tests"
-  [ makeCorpusTest [This Distance] corpus
+  [ makeCorpusTest [Seal Distance] corpus
   ]

@@ -53,7 +53,7 @@ winners xs = filter (\x -> all ((/=) LT . compare x) xs) xs
 -- | Return a curated list of tokens
 rank
   :: Classifiers
-  -> HashSet (Some Dimension)
+  -> HashSet (Seal Dimension)
   -> [ResolvedToken]
   -> [ResolvedToken]
 rank classifiers targets tokens =
@@ -64,4 +64,4 @@ rank classifiers targets tokens =
   where
     makeCandidate :: ResolvedToken -> Candidate
     makeCandidate token@Resolved {node = n@Node {token = Token d _}} =
-      Candidate token (score classifiers n) $ HashSet.member (This d) targets
+      Candidate token (score classifiers n) $ HashSet.member (Seal d) targets

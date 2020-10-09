@@ -35,22 +35,22 @@ import Duckling.Rules
 import Duckling.Types
 
 -- | Parses `input` and returns a curated list of entities found.
-parse :: Text -> Context -> Options -> [Some Dimension] -> [Entity]
+parse :: Text -> Context -> Options -> [Seal Dimension] -> [Entity]
 parse input ctx options = map (formatToken input) . analyze input ctx options .
   HashSet.fromList
 
-supportedDimensions :: HashMap Lang [Some Dimension]
+supportedDimensions :: HashMap Lang [Seal Dimension]
 supportedDimensions =
   HashMap.fromList [ (l, allDimensions l) | l <- [minBound..maxBound] ]
 
 -- | Returns a curated list of resolved tokens found
 -- When `targets` is non-empty, returns only tokens of such dimensions.
-analyze :: Text -> Context -> Options -> HashSet (Some Dimension)
+analyze :: Text -> Context -> Options -> HashSet (Seal Dimension)
   -> [ResolvedToken]
 analyze input context@Context{..} options targets =
   rank (classifiers locale) targets
   . filter (\Resolved{node = Node{token = (Token d _)}} ->
-      HashSet.null targets || HashSet.member (This d) targets
+      HashSet.null targets || HashSet.member (Seal d) targets
     )
   $ parseAndResolve (rulesFor locale targets) input context options
 

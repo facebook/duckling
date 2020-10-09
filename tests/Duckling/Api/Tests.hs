@@ -38,7 +38,7 @@ tests = testGroup "API Tests"
 
 parseTest :: TestTree
 parseTest = testCase "Parse Test" $
-  case parse sentence testContext testOptions [This Numeral] of
+  case parse sentence testContext testOptions [Seal Numeral] of
     [] -> assertFailure "empty result"
     (Entity dim body (RVal _ v) start end _ _:_) -> do
       assertEqual "dim" "number" dim
@@ -60,39 +60,39 @@ rankFilterTest :: TestTree
 rankFilterTest = testCase "Rank Filter Tests" $ do
   mapM_ check
     [ ( "in 2 minutes"
-      , [This Numeral, This Duration, This Time]
-      , [This Time]
+      , [Seal Numeral, Seal Duration, Seal Time]
+      , [Seal Time]
       )
     , ( "in 2 minutes, about 42 degrees"
-      , [This Numeral, This Temperature, This Time]
-      , [This Time, This Temperature]
+      , [Seal Numeral, Seal Temperature, Seal Time]
+      , [Seal Time, Seal Temperature]
       )
     , ( "today works... and tomorrow at 9pm too"
-      , [This Numeral, This Time]
-      , [This Time, This Time]
+      , [Seal Numeral, Seal Time]
+      , [Seal Time, Seal Time]
       )
     , ( "between 9:30 and 11:00 on thursday or Saturday and Thanksgiving Day"
-      , [This Numeral, This Time]
-      , [This Time, This Time, This Time]
+      , [Seal Numeral, Seal Time]
+      , [Seal Time, Seal Time, Seal Time]
       )
-    , ("the day after tomorrow 5pm", [This Time], [This Time])
-    , ("the day after tomorrow 5pm", [This Time, This Numeral], [This Time])
-    , ("the day after tomorrow 5pm", [], [This Time])
+    , ("the day after tomorrow 5pm", [Seal Time], [Seal Time])
+    , ("the day after tomorrow 5pm", [Seal Time, Seal Numeral], [Seal Time])
+    , ("the day after tomorrow 5pm", [], [Seal Time])
     ]
   where
-    check :: (Text, [Some Dimension], [Some Dimension]) -> IO ()
+    check :: (Text, [Seal Dimension], [Seal Dimension]) -> IO ()
     check (sentence, targets, expected) =
       let go = analyze sentence testContext testOptions $ HashSet.fromList targets
           actual = flip map go $
-                     \(Resolved{node=Node{token=Token d _}}) -> This d
+                     \(Resolved{node=Node{token=Token d _}}) -> Seal d
       in assertEqual ("wrong winners for " ++ show sentence) expected actual
 
 rankOrderTest :: TestTree
 rankOrderTest = testCase "Rank Order Tests" $ do
   mapM_ check
-    [ ("tomorrow at 5PM or 8PM", [This Time])
-    , ("321 12 3456 ... 7", [This Numeral])
-    , ("42 today 23 tomorrow", [This Numeral, This Time])
+    [ ("tomorrow at 5PM or 8PM", [Seal Time])
+    , ("321 12 3456 ... 7", [Seal Numeral])
+    , ("42 today 23 tomorrow", [Seal Numeral, Seal Time])
     ]
   where
     check (s, targets) =
@@ -104,13 +104,13 @@ rangeTest = testCase "Range Tests" $ do
   mapM_ (analyzedFirstTest testContext testOptions) xs
   where
     xs = map (\(input, targets, range) -> (input, targets, f range))
-             [ ( "order status 3233763377", [This PhoneNumber], Range 13 23 )
-             , ( "  3233763377  "         , [This PhoneNumber], Range  2 12 )
-             , ( " -3233763377"           , [This PhoneNumber], Range  2 12 )
-             , ( "  now"                  , [This Time]       , Range  2  5 )
-             , ( "   Monday  "            , [This Time]       , Range  3  9 )
-             , ( "  next   week "         , [This Time]       , Range  2 13 )
-             , ( "   42\n\n"              , [This Numeral]    , Range  3  5 )
+             [ ( "order status 3233763377", [Seal PhoneNumber], Range 13 23 )
+             , ( "  3233763377  "         , [Seal PhoneNumber], Range  2 12 )
+             , ( " -3233763377"           , [Seal PhoneNumber], Range  2 12 )
+             , ( "  now"                  , [Seal Time]       , Range  2  5 )
+             , ( "   Monday  "            , [Seal Time]       , Range  3  9 )
+             , ( "  next   week "         , [Seal Time]       , Range  2 13 )
+             , ( "   42\n\n"              , [Seal Numeral]    , Range  3  5 )
              ]
     f :: Range -> TestPredicate
     f expected _ (Resolved {range = actual}) = expected == actual
@@ -119,19 +119,19 @@ supportedDimensionsTest :: TestTree
 supportedDimensionsTest = testCase "Supported Dimensions Test" $ do
   mapM_ check
     [ ( AR
-      , [ This Email, This AmountOfMoney, This PhoneNumber, This Url
-        , This Duration, This Numeral, This Ordinal, This Time, This Volume
-        , This Temperature, This Quantity
+      , [ Seal Email, Seal AmountOfMoney, Seal PhoneNumber, Seal Url
+        , Seal Duration, Seal Numeral, Seal Ordinal, Seal Time, Seal Volume
+        , Seal Temperature, Seal Quantity
         ]
       )
     , ( PL
-      , [ This Email, This AmountOfMoney, This PhoneNumber, This Url
-        , This Duration, This Numeral, This Ordinal, This Time
+      , [ Seal Email, Seal AmountOfMoney, Seal PhoneNumber, Seal Url
+        , Seal Duration, Seal Numeral, Seal Ordinal, Seal Time
         ]
       )
     ]
   where
-    check :: (Lang, [Some Dimension]) -> IO ()
+    check :: (Lang, [Seal Dimension]) -> IO ()
     check (l, expected) = case HashMap.lookup l supportedDimensions of
       Nothing -> assertFailure $ "no dimensions for " ++ show l
       Just actual ->

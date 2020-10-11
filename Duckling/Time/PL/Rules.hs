@@ -378,7 +378,7 @@ ruleToday :: Rule
 ruleToday = Rule
   { name = "today"
   , pattern =
-    [ regex "dzisiejszy|dzisiaj|dzi[śs]|w ten dzień|w ten dzien|w obecny dzień|w obecny dzien|obecnego dnia"
+    [ regex "dzisiejsz[yaą]|dzisiaj|dzi[śs]|w ten dzień|w ten dzien|w obecny dzień|w obecny dzien|obecnego dnia"
     ]
   , prod = \_ -> tt today
   }

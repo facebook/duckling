@@ -761,7 +761,7 @@ ruleDaybeforeyesterdaySingleword = Rule
   , pattern =
     [ regex "przedwczoraj"
     ]
-  , prod = \_ -> tt $ cycleNth TG.Day 2
+  , prod = \_ -> tt . cycleNth TG.Day $ - 2
   }
 
 ruleLastNCycle :: Rule

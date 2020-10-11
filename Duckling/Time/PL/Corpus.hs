@@ -57,6 +57,9 @@ allExamples = concat
   , examples (datetime (2013, 2, 11, 0, 0, 0) Day)
              [ "wczoraj"
              ]
+  , examples (datetime (2013, 2, 10, 0, 0, 0) Day)
+             [ "przedwczoraj"
+             ]
   , examples (datetime (2013, 2, 13, 0, 0, 0) Day)
              [ "jutro"
              ]

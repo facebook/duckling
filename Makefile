@@ -6,11 +6,15 @@ package = duckling
 # We disable optimizations for local builds, to speed them up
 .PHONY: configure
 configure:
-	$(CABAL) configure --ghc-options="-j" --disable-optimization
+	$(CABAL) configure --ghc-options="-j -O0" --disable-optimization
 
 .PHONY: build
 build: configure
 	$(CABAL) build
+
+.PHONY: test
+test: configure
+	$(CABAL) test
 
 .PHONY: haddock
 haddock:

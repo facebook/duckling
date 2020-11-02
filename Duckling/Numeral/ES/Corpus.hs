@@ -42,4 +42,25 @@ allExamples =
     , examples (NumeralValue 1200000) ["1200000", "1200K"]
     , examples (NumeralValue (-1200000)) ["-1200000", "-1200K"]
     , examples (NumeralValue 1.5) ["1 punto cinco", "una punto cinco"]
+    , examples (NumeralValue 1) ["cero uno", "zero uno"]
+    , examples (NumeralValue 2) ["cero dos", "zero dos"]
+    , examples (NumeralValue 3)
+               [
+                 "cero tres",
+                 "cero trés",
+                 "zero tres",
+                 "zero trés"
+               ]
+    , examples (NumeralValue 4) ["cero cuatro", "zero cuatro"]
+    , examples (NumeralValue 5) ["cero cinco", "zero cinco"]
+    , examples (NumeralValue 6)
+               [
+                 "cero seis",
+                 "cero séis",
+                 "zero seis",
+                 "zero séis"
+               ]
+    , examples (NumeralValue 7) ["cero siete", "zero siete"]
+    , examples (NumeralValue 8) ["cero ocho", "zero ocho"]
+    , examples (NumeralValue 9) ["cero nueve", "zero nueve"]
     ]

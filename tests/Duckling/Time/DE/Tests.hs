@@ -23,15 +23,15 @@ import Duckling.Types (Range(..))
 
 tests :: TestTree
 tests = testGroup "DE Tests"
-  [ makeCorpusTest [This Time] corpus
-  , makeNegativeCorpusTest [This Time] negativeCorpus
+  [ makeCorpusTest [Seal Time] corpus
+  , makeNegativeCorpusTest [Seal Time] negativeCorpus
   , rangeTests
   ]
 
 rangeTests :: TestTree
 rangeTests = testCase "Range Test" $
   mapM_ (analyzedRangeTest (testContext{locale = makeLocale DE Nothing})
-         testOptions . withTargets [This Time]) xs
+         testOptions . withTargets [Seal Time]) xs
   where
     xs = [ ("Wir treffen uns am 17 Uhr am KiLa.", Range 16 25)
          ]

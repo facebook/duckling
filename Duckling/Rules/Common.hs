@@ -25,20 +25,20 @@ import qualified Duckling.Temperature.Rules as Temperature
 import qualified Duckling.Url.Rules as Url
 import qualified Duckling.Volume.Rules as Volume
 
-rules :: Some Dimension -> [Rule]
-rules (This AmountOfMoney) = AmountOfMoney.rules
-rules (This CreditCardNumber) = CreditCardNumber.rules
-rules (This Distance) = Distance.rules
-rules (This Duration) = Duration.rules
-rules (This Email) = Email.rules
-rules (This Numeral) = Numeral.rules
-rules (This Ordinal) = []
-rules (This PhoneNumber) = PhoneNumber.rules
-rules (This Quantity) = []
-rules (This RegexMatch) = []
-rules (This Temperature) = Temperature.rules
-rules (This Time) = []
-rules (This TimeGrain) = []
-rules (This Url) = Url.rules
-rules (This Volume) = Volume.rules
-rules (This (CustomDimension dim)) = dimRules dim
+rules :: Seal Dimension -> [Rule]
+rules (Seal AmountOfMoney) = AmountOfMoney.rules
+rules (Seal CreditCardNumber) = CreditCardNumber.rules
+rules (Seal Distance) = Distance.rules
+rules (Seal Duration) = Duration.rules
+rules (Seal Email) = Email.rules
+rules (Seal Numeral) = Numeral.rules
+rules (Seal Ordinal) = []
+rules (Seal PhoneNumber) = PhoneNumber.rules
+rules (Seal Quantity) = []
+rules (Seal RegexMatch) = []
+rules (Seal Temperature) = Temperature.rules
+rules (Seal Time) = []
+rules (Seal TimeGrain) = []
+rules (Seal Url) = Url.rules
+rules (Seal Volume) = Volume.rules
+rules (Seal (CustomDimension dim)) = dimRules dim

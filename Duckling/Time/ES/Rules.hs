@@ -8,6 +8,7 @@
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE NoRebindableSyntax #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE LambdaCase #-}
 
 module Duckling.Time.ES.Rules
   ( rules
@@ -281,7 +282,7 @@ ruleNoon :: Rule
 ruleNoon = Rule
   { name = "noon"
   , pattern =
-    [ regex "mediod(í|i)a"
+    [ regex "medio(\\s*)d(í|i)a"
     ]
   , prod = \_ -> tt $ hour False 12
   }
@@ -390,14 +391,14 @@ ruleHourofdayIntegerAsRelativeMinutes :: Rule
 ruleHourofdayIntegerAsRelativeMinutes = Rule
   { name = "<hour-of-day> <integer> (as relative minutes)"
   , pattern =
-    [ Predicate $ and . sequence [isNotLatent, isAnHourOfDay]
+    [ Predicate $ and . sequence [isAnHourOfDay]
     , Predicate $ isIntegerBetween 1 59
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Time TimeData {TTime.form = Just (TTime.TimeOfDay (Just hours) is12H)}:
-       token:
+       minutes:
        _) -> do
-        n <- getIntValue token
+        n <- getIntValue minutes
         tt $ hourMinute is12H hours n
       _ -> Nothing
   }
@@ -688,6 +689,28 @@ ruleDimTimeDeLaTarde = Rule
       _ -> Nothing
   }
 
+ruleDimTimeDeLaTarde2 :: Rule
+ruleDimTimeDeLaTarde2 = Rule
+  { name = "<time-of-day> de la tarde"
+  , pattern =
+    [ Predicate isAnHourOfDay
+    , Predicate $ isIntegerBetween 1 59
+    , regex "(a|en|de) la tarde"
+    ]
+  , prod = \case
+      (Token Time TimeData {
+          TTime.form = Just (TTime.TimeOfDay (Just hours) is12H)
+        }:
+        minutesToken:
+       _:
+       _) -> do
+         minutes <- getIntValue minutesToken
+         let td = hourMinute is12H hours minutes
+         tarde <- interval TTime.Open (hour False 12) (hour False 21)
+         Token Time <$> intersect td (mkLatent $ partOfDay tarde)
+      _ -> Nothing
+  }
+
 ruleIntegerInThePartofday :: Rule
 ruleIntegerInThePartofday = Rule
   { name = "<integer> in the <part-of-day>"
@@ -866,7 +889,7 @@ ruleTimeofdayHoras = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_) ->
-        tt $ notLatent td
+        tt $ mkLatent td
       _ -> Nothing
   }
 
@@ -929,8 +952,10 @@ ruleALasHourmintimeofday = Rule
     , Predicate isATimeOfDay
     , regex "horas?"
     ]
-  , prod = \tokens -> case tokens of
-      (_:x:_) -> Just x
+  , prod = \case
+      ( _:
+        x:
+        _) -> Just x
       _ -> Nothing
   }
 
@@ -1131,7 +1156,7 @@ ruleALasTimeofday :: Rule
 ruleALasTimeofday = Rule
   { name = "a las <time-of-day>"
   , pattern =
-    [ regex "(al?)( las?)?|las?"
+    [ regex "((para)|(al?))( las?)?|las?"
     , Predicate isATimeOfDay
     ]
   , prod = \tokens -> case tokens of
@@ -1264,6 +1289,17 @@ ruleTimezone = Rule
        Token RegexMatch (GroupMatch (tz:_)):
        _) -> Token Time <$> inTimezone (Text.toUpper tz) td
       _ -> Nothing
+  }
+
+ruleNextWeek :: Rule
+ruleNextWeek = Rule
+  {
+    name = "next week"
+  , pattern =
+    [ Predicate $ isGrain TG.Week
+    , regex "que viene"
+    ]
+  , prod = \_ -> tt $ cycleNth TG.Week 1
   }
 
 rulePeriodicHolidays :: [Rule]
@@ -1469,6 +1505,53 @@ rulePeriodicHolidays = mkRuleHolidays
     , predNthClosest 0 weekday (monthDay 10 16) )
   ]
 
+ruleElDayofmonthNonOrdinalWithDia :: Rule
+ruleElDayofmonthNonOrdinalWithDia = Rule
+  { name = "dia <day-of-month> (non ordinal)"
+  , pattern =
+    [ regex "día"
+    , Predicate $ isIntegerBetween 1 31
+    ]
+  , prod = \tokens -> case tokens of
+      (_:token:_) -> do
+        v <- getIntValue token
+        tt $ dayOfMonth v
+      _ -> Nothing
+  }
+
+ruleNextWeekAlt :: Rule
+ruleNextWeekAlt = Rule
+  {
+    name = "next week (alt)"
+  , pattern =
+    [
+      regex "pr(ó|o)xim(o|a)s?|siguientes?"
+    , Predicate $ isGrain TG.Week
+    ]
+  , prod = \_ -> tt $ cycleNth TG.Week 1
+  }
+
+ruleYearByAddingThreeNumbers :: Rule
+ruleYearByAddingThreeNumbers = Rule
+  { name    = "year (value by adding three composing numbers together)"
+  , pattern =
+    [
+      regex "mil"
+    , Predicate $ isIntegerBetween 100 1000
+    , Predicate $ isIntegerBetween 1 100
+    ]
+  , prod    = \case
+      (
+        _:
+        t1:
+        t2:
+        _) -> do
+          v1 <- getIntValue t1
+          v2 <- getIntValue t2
+          tt $ year $ 1000 + v1 + v2
+      _ -> Nothing
+  }
+
 rules :: [Rule]
 rules =
   [ ruleALasHourmintimeofday
@@ -1489,6 +1572,7 @@ rules =
   , ruleDentroDeDuration
   , ruleDimTimeDeLaManana
   , ruleDimTimeDeLaTarde
+  , ruleDimTimeDeLaTarde2
   , ruleElCycleAntesTime
   , ruleElCycleProximoqueViene
   , ruleElCycleProximoqueVieneTime
@@ -1560,6 +1644,10 @@ rules =
   , ruleHourofdayMinusQuarter
   , ruleHourofdayMinusIntegerAsRelativeMinutes2
   , ruleTimezone
+  , ruleElDayofmonthNonOrdinalWithDia
+  , ruleNextWeek
+  , ruleNextWeekAlt
+  , ruleYearByAddingThreeNumbers
   ]
   ++ ruleDaysOfWeek
   ++ ruleMonths

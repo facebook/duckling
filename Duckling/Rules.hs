@@ -70,7 +70,7 @@ import qualified Duckling.Rules.VI as VIRules
 import qualified Duckling.Rules.ZH as ZHRules
 
 -- | Returns the minimal set of rules required for `targets`.
-rulesFor :: Locale -> HashSet (Some Dimension) -> [Rule]
+rulesFor :: Locale -> HashSet (Seal Dimension) -> [Rule]
 rulesFor locale targets
   | HashSet.null targets = allRules locale
   | otherwise = [ rules | dims <- HashSet.toList $ explicitDimensions targets
@@ -82,14 +82,14 @@ allRules :: Locale -> [Rule]
 allRules locale@(Locale lang _) = concatMap (rulesFor' locale) . HashSet.toList
   . explicitDimensions . HashSet.fromList $ allDimensions lang
 
-rulesFor' :: Locale -> Some Dimension -> [Rule]
+rulesFor' :: Locale -> Seal Dimension -> [Rule]
 rulesFor' (Locale lang (Just region)) dim =
   CommonRules.rules dim ++ langRules lang dim ++ localeRules lang region dim
 rulesFor' (Locale lang Nothing) dim =
   CommonRules.rules dim ++ defaultRules lang dim
 
 -- | Default rules when no locale, for backward compatibility.
-defaultRules :: Lang -> Some Dimension -> [Rule]
+defaultRules :: Lang -> Seal Dimension -> [Rule]
 defaultRules AF = AFRules.defaultRules
 defaultRules AR = ARRules.defaultRules
 defaultRules BG = BGRules.defaultRules
@@ -137,7 +137,7 @@ defaultRules UK = UKRules.defaultRules
 defaultRules VI = VIRules.defaultRules
 defaultRules ZH = ZHRules.defaultRules
 
-localeRules :: Lang -> Region -> Some Dimension -> [Rule]
+localeRules :: Lang -> Region -> Seal Dimension -> [Rule]
 localeRules AF = AFRules.localeRules
 localeRules AR = ARRules.localeRules
 localeRules BG = BGRules.localeRules
@@ -185,7 +185,7 @@ localeRules UK = UKRules.localeRules
 localeRules VI = VIRules.localeRules
 localeRules ZH = ZHRules.localeRules
 
-langRules :: Lang -> Some Dimension -> [Rule]
+langRules :: Lang -> Seal Dimension -> [Rule]
 langRules AF = AFRules.langRules
 langRules AR = ARRules.langRules
 langRules BG = BGRules.langRules

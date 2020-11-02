@@ -11,8 +11,8 @@ module Duckling.Dimensions.CS
 
 import Duckling.Dimensions.Types
 
-allDimensions :: [Some Dimension]
+allDimensions :: [Seal Dimension]
 allDimensions =
-  [ This Distance
-  , This Numeral
+  [ Seal Distance
+  , Seal Numeral
   ]

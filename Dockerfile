@@ -1,4 +1,4 @@
-FROM haskell:8 AS builder
+FROM haskell:8-buster AS builder
 
 RUN apt-get update -qq && \
   apt-get install -qq -y libpcre3 libpcre3-dev build-essential --fix-missing --no-install-recommends && \
@@ -9,7 +9,7 @@ RUN mkdir /log
 
 WORKDIR /duckling
 
-ADD stack.yaml .
+ADD . .
 
 ENV LANG=C.UTF-8
 
@@ -23,7 +23,7 @@ ADD . .
 # '-j1' flag to force the build to run sequentially.
 RUN stack install
 
-FROM debian:stretch
+FROM debian:buster
 
 ENV LANG C.UTF-8
 

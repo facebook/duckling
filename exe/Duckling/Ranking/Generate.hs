@@ -29,6 +29,7 @@ import Duckling.Rules
 import Duckling.Testing.Types
 import qualified Duckling.Time.AR.Corpus as ARTime
 import qualified Duckling.Time.BG.Corpus as BGTime
+import qualified Duckling.Time.CA.Corpus as CATime
 import qualified Duckling.Time.DA.Corpus as DATime
 import qualified Duckling.Time.DE.Corpus as DETime
 import qualified Duckling.Time.EL.Corpus as ELTime
@@ -174,6 +175,7 @@ getCorpusForLang AF = (testContext, testOptions, [])
 getCorpusForLang AR = ARTime.corpus
 getCorpusForLang BG = BGTime.corpus
 getCorpusForLang BN = (testContext, testOptions, [])
+getCorpusForLang CA = CATime.corpus
 getCorpusForLang CS = (testContext, testOptions, [])
 getCorpusForLang DA = DATime.corpus
 getCorpusForLang DE = DETime.corpus
@@ -218,7 +220,7 @@ getCorpusForLang VI = VITime.corpus
 getCorpusForLang ZH = ZHTime.corpus
 
 getExamplesForLocale :: Lang -> Region -> [Example]
-getExamplesForLocale EN CA = EN_CATime.allExamples
+-- getExamplesForLocale EN CA = EN_CATime.allExamples
 getExamplesForLocale EN GB = EN_GBTime.allExamples
 getExamplesForLocale EN US = EN_USTime.allExamples
 getExamplesForLocale NL BE = NL_BETime.allExamples

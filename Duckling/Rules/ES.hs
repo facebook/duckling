@@ -14,10 +14,10 @@ module Duckling.Rules.ES
 
 import Prelude
 
-import qualified Duckling.AmountOfMoney.ES.Rules as AmountOfMoney
 import Duckling.Dimensions.Types
-import qualified Duckling.Distance.ES.Rules as Distance
 import Duckling.Locale
+import qualified Duckling.AmountOfMoney.ES.Rules as AmountOfMoney
+import qualified Duckling.Distance.ES.Rules as Distance
 import qualified Duckling.Numeral.ES.AR.Rules as NumeralAR
 import qualified Duckling.Numeral.ES.CL.Rules as NumeralCL
 import qualified Duckling.Numeral.ES.CO.Rules as NumeralCO

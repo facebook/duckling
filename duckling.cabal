@@ -52,6 +52,7 @@ library
                      , Duckling.Rules.AR
                      , Duckling.Rules.BG
                      , Duckling.Rules.BN
+                     , Duckling.Rules.CA
                      , Duckling.Rules.CS
                      , Duckling.Rules.DA
                      , Duckling.Rules.DE
@@ -105,6 +106,7 @@ library
                      , Duckling.Ranking.Classifiers.AR_XX
                      , Duckling.Ranking.Classifiers.BG_XX
                      , Duckling.Ranking.Classifiers.BN_XX
+                     , Duckling.Ranking.Classifiers.CA_XX
                      , Duckling.Ranking.Classifiers.CS_XX
                      , Duckling.Ranking.Classifiers.DA_XX
                      , Duckling.Ranking.Classifiers.DE_XX
@@ -166,6 +168,7 @@ library
                      , Duckling.Dimensions.AR
                      , Duckling.Dimensions.BG
                      , Duckling.Dimensions.BN
+                     , Duckling.Dimensions.CA
                      , Duckling.Dimensions.CS
                      , Duckling.Dimensions.DA
                      , Duckling.Dimensions.DE
@@ -214,6 +217,8 @@ library
                      , Duckling.AmountOfMoney.AR.Rules
                      , Duckling.AmountOfMoney.BG.Corpus
                      , Duckling.AmountOfMoney.BG.Rules
+                     , Duckling.AmountOfMoney.CA.Corpus
+                     , Duckling.AmountOfMoney.CA.Rules
                      , Duckling.AmountOfMoney.EN.AU.Corpus
                      , Duckling.AmountOfMoney.EN.AU.Rules
                      , Duckling.AmountOfMoney.EN.BZ.Corpus
@@ -283,6 +288,8 @@ library
                      -- Distance
                      , Duckling.Distance.BG.Corpus
                      , Duckling.Distance.BG.Rules
+                     , Duckling.Distance.CA.Corpus
+                     , Duckling.Distance.CA.Rules
                      , Duckling.Distance.CS.Corpus
                      , Duckling.Distance.CS.Rules
                      , Duckling.Distance.DE.Corpus
@@ -329,6 +336,8 @@ library
                      , Duckling.Duration.AR.Rules
                      , Duckling.Duration.BG.Corpus
                      , Duckling.Duration.BG.Rules
+                     , Duckling.Duration.CA.Corpus
+                     , Duckling.Duration.CA.Rules
                      , Duckling.Duration.DA.Rules
                      , Duckling.Duration.DE.Rules
                      , Duckling.Duration.EL.Corpus
@@ -402,6 +411,8 @@ library
                      , Duckling.Numeral.BG.Rules
                      , Duckling.Numeral.BN.Corpus
                      , Duckling.Numeral.BN.Rules
+                     , Duckling.Numeral.CA.Corpus
+                     , Duckling.Numeral.CA.Rules
                      , Duckling.Numeral.CS.Corpus
                      , Duckling.Numeral.CS.Rules
                      , Duckling.Numeral.DA.Corpus
@@ -509,6 +520,8 @@ library
                      , Duckling.Ordinal.AR.Rules
                      , Duckling.Ordinal.BG.Corpus
                      , Duckling.Ordinal.BG.Rules
+                     , Duckling.Ordinal.CA.Corpus
+                     , Duckling.Ordinal.CA.Rules
                      , Duckling.Ordinal.DA.Corpus
                      , Duckling.Ordinal.DA.Rules
                      , Duckling.Ordinal.DE.Corpus
@@ -619,6 +632,8 @@ library
                      -- Temperature
                      , Duckling.Temperature.AR.Corpus
                      , Duckling.Temperature.AR.Rules
+                     , Duckling.Temperature.CA.Corpus
+                     , Duckling.Temperature.CA.Rules
                      , Duckling.Temperature.EN.Corpus
                      , Duckling.Temperature.EN.Rules
                      , Duckling.Temperature.ES.Corpus
@@ -658,6 +673,8 @@ library
                      , Duckling.Time.AR.Rules
                      , Duckling.Time.BG.Corpus
                      , Duckling.Time.BG.Rules
+                     , Duckling.Time.CA.Corpus
+                     , Duckling.Time.CA.Rules
                      , Duckling.Time.DA.Corpus
                      , Duckling.Time.DA.Rules
                      , Duckling.Time.DE.Corpus
@@ -749,6 +766,7 @@ library
                      , Duckling.TimeGrain.AR.Rules
                      , Duckling.TimeGrain.BG.Rules
                      , Duckling.TimeGrain.DA.Rules
+                     , Duckling.TimeGrain.CA.Rules
                      , Duckling.TimeGrain.DE.Rules
                      , Duckling.TimeGrain.EN.Rules
                      , Duckling.TimeGrain.EL.Rules
@@ -787,6 +805,8 @@ library
                      -- Volume
                      , Duckling.Volume.AR.Corpus
                      , Duckling.Volume.AR.Rules
+                     , Duckling.Volume.CA.Corpus
+                     , Duckling.Volume.CA.Rules
                      , Duckling.Volume.DE.Corpus
                      , Duckling.Volume.DE.Rules
                      , Duckling.Volume.EN.Corpus
@@ -870,6 +890,7 @@ test-suite duckling-test
 
                      -- AmountOfMoney
                      , Duckling.AmountOfMoney.AR.Tests
+                     , Duckling.AmountOfMoney.CA.Tests
                      , Duckling.AmountOfMoney.EN.Tests
                      , Duckling.AmountOfMoney.BG.Tests
                      , Duckling.AmountOfMoney.ES.Tests
@@ -894,6 +915,7 @@ test-suite duckling-test
 
                      -- Distance
                      , Duckling.Distance.BG.Tests
+                     , Duckling.Distance.CA.Tests
                      , Duckling.Distance.CS.Tests
                      , Duckling.Distance.DE.Tests
                      , Duckling.Distance.EN.Tests

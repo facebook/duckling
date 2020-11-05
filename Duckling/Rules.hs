@@ -26,6 +26,7 @@ import qualified Duckling.Rules.AR as ARRules
 import qualified Duckling.Rules.Common as CommonRules
 import qualified Duckling.Rules.BG as BGRules
 import qualified Duckling.Rules.BN as BNRules
+import qualified Duckling.Rules.CA as CARules
 import qualified Duckling.Rules.CS as CSRules
 import qualified Duckling.Rules.DA as DARules
 import qualified Duckling.Rules.DE as DERules
@@ -94,6 +95,7 @@ defaultRules AF = AFRules.defaultRules
 defaultRules AR = ARRules.defaultRules
 defaultRules BG = BGRules.defaultRules
 defaultRules BN = BNRules.defaultRules
+defaultRules CA = CARules.defaultRules
 defaultRules CS = CSRules.defaultRules
 defaultRules DA = DARules.defaultRules
 defaultRules DE = DERules.defaultRules

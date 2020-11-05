@@ -6,8 +6,6 @@
 
 
 {-# LANGUAGE GADTs #-}
-
-
 module Duckling.Rules.EN
   ( defaultRules
   , langRules
@@ -54,6 +52,11 @@ import qualified Duckling.Time.EN.US.Rules as TimeUS
 import qualified Duckling.Time.EN.ZA.Rules as TimeZA
 import qualified Duckling.TimeGrain.EN.Rules as TimeGrain
 import qualified Duckling.Volume.EN.Rules as Volume
+import qualified Duckling.Region as R
+  ( Region
+      ( CA
+      )
+  )
 
 defaultRules :: Seal Dimension -> [Rule]
 defaultRules dim@(Seal Time) = TimeUS.rulesBackwardCompatible ++ langRules dim
@@ -62,7 +65,7 @@ defaultRules dim             = langRules dim
 localeRules :: Region -> Seal Dimension -> [Rule]
 localeRules AU (Seal AmountOfMoney) = AmountOfMoneyAU.rules
 localeRules BZ (Seal AmountOfMoney) = AmountOfMoneyBZ.rules
-localeRules CA (Seal AmountOfMoney) = AmountOfMoneyCA.rules
+localeRules R.CA (Seal AmountOfMoney) = AmountOfMoneyCA.rules
 localeRules GB (Seal AmountOfMoney) = AmountOfMoneyGB.rules
 localeRules IE (Seal AmountOfMoney) = AmountOfMoneyIE.rules
 localeRules IN (Seal AmountOfMoney) = AmountOfMoneyIN.rules
@@ -74,7 +77,7 @@ localeRules US (Seal AmountOfMoney) = AmountOfMoneyUS.rules
 localeRules ZA (Seal AmountOfMoney) = AmountOfMoneyZA.rules
 localeRules AU (Seal Time) = TimeAU.rules
 localeRules BZ (Seal Time) = TimeBZ.rules
-localeRules CA (Seal Time) = TimeCA.rules
+localeRules R.CA (Seal Time) = TimeCA.rules
 localeRules GB (Seal Time) = TimeGB.rules
 localeRules IE (Seal Time) = TimeIE.rules
 localeRules IN (Seal Time) = TimeIN.rules

@@ -6,131 +6,244 @@
 
 
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Duration.DE.Rules
   ( rules ) where
 
-import Control.Monad (join)
-import qualified Data.Text as Text
-import Prelude
-import Data.String
 
 import Duckling.Dimensions.Types
 import Duckling.Duration.Helpers
-import Duckling.Numeral.Helpers (parseInteger)
-import Duckling.Numeral.Types (NumeralData (..))
-import qualified Duckling.Numeral.Types as TNumeral
 import Duckling.Regex.Types
+import Control.Monad (join)
+import qualified Data.Text as Text
+import Prelude
+import Duckling.Numeral.Helpers (parseInteger)
+import Duckling.Duration.Types (DurationData(..))
+import qualified Duckling.Duration.Types as TDuration
+import Data.String
+import Duckling.Numeral.Types (NumeralData(..))
 import qualified Duckling.TimeGrain.Types as TG
+import qualified Duckling.Numeral.Types as TNumeral
 import Duckling.Types
+
+ruleQuarterOfAnHour :: Rule
+ruleQuarterOfAnHour = Rule
+  { name = "quarter of an hour"
+  , pattern =
+    [ regex "(einer? )?Viertelstunde"
+    ]
+  , prod = \_ -> Just $ Token Duration $ duration TG.Minute 15
+  }
 
 ruleHalfAnHour :: Rule
 ruleHalfAnHour = Rule
   { name = "half an hour"
   , pattern =
-    [ regex "(1/2\\s?|(einer )halbe?n? )stunde"
+    [ regex "(1/2\\s?|(eine )?halbe |(einer )?halben )stunde"
     ]
-  , prod = \_ -> Just . Token Duration $ duration TG.Minute 30
+  , prod = \_ -> Just $ Token Duration $ duration TG.Minute 30
+  }
+
+ruleThreeQuartersOfAnHour :: Rule
+ruleThreeQuartersOfAnHour = Rule
+  { name = "three-quarters of an hour"
+  , pattern =
+    [ regex "3/4\\s?stunde|(einer? )?dreiviertel stunde|drei viertelstunden"
+    ]
+  , prod = \_ -> Just $ Token Duration $ duration TG.Minute 45
   }
 
 ruleFortnight :: Rule
 ruleFortnight = Rule
   { name = "fortnight"
   , pattern =
-    [ regex "(a|one)? fortnight"
+    [ regex "zwei Wochen"
     ]
-  , prod = \_ -> Just . Token Duration $ duration TG.Day 14
+  , prod = \_ -> Just $ Token Duration $ duration TG.Day 14
   }
 
-ruleIntegerMoreUnitofduration :: Rule
-ruleIntegerMoreUnitofduration = Rule
-  { name = "<integer> more <unit-of-duration>"
+rulePrecision :: Rule
+rulePrecision = Rule
+  { name = "about|exactly <duration>"
   , pattern =
-    [ Predicate isNatural
-    , regex "mehr|weniger"
-    , dimension TimeGrain
+    [ regex "ungef(ä|a)hr|zirka|genau|exakt"
+    , dimension Duration
     ]
-  , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = v}:
-       _:
-       Token TimeGrain grain:
-       _) -> Just . Token Duration . duration grain $ floor v
+  , prod = \case
+      (_:token:_) -> Just token
       _ -> Nothing
   }
 
-ruleNumeralnumberHours :: Rule
-ruleNumeralnumberHours = Rule
-  { name = "number.number hours"
+ruleCommaNumeralHours :: Rule
+ruleCommaNumeralHours = Rule
+  { name = "number,number hours"
   , pattern =
-    [ regex "(\\d+)\\.(\\d+) stunden?"
+    [ regex "(\\d+),(\\d+)"
+    , Predicate $ isGrain TG.Hour
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token RegexMatch (GroupMatch (h:m:_)):_) -> do
         hh <- parseInteger h
         mnum <- parseInteger m
         let mden = 10 ^ Text.length m
-        Just . Token Duration $ minutesFromHourMixedFraction hh mnum mden
+        Just $ Token Duration $ minutesFromHourMixedFraction hh mnum mden
       _ -> Nothing
   }
 
-ruleIntegerAndAnHalfHours :: Rule
-ruleIntegerAndAnHalfHours = Rule
-  { name = "<integer> and an half hours"
+ruleCommaNumeralMinutes :: Rule
+ruleCommaNumeralMinutes = Rule
+  { name = "number,number minutes"
+  , pattern =
+    [ regex "(\\d+),(\\d+)"
+    , Predicate $ isGrain TG.Minute
+    ]
+  , prod = \case
+      (Token RegexMatch (GroupMatch (m:s:_)):_) -> do
+        mm <- parseInteger m
+        ss <- parseInteger s
+        let sden = 10 ^ Text.length s
+        Just $ Token Duration $ secondsFromHourMixedFraction mm ss sden
+      _ -> Nothing
+  }
+
+ruleAndHalfHour :: Rule
+ruleAndHalfHour = Rule
+  { name = "<integer> and a half hour"
   , pattern =
     [ Predicate isNatural
-    , regex "ein ?halb stunden?"
+    , regex "(und )?(ein(en?)? )?halb(en?)?"
+    , Predicate $ isGrain TG.Hour
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Numeral NumeralData{TNumeral.value = v}:_) ->
-        Just . Token Duration . duration TG.Minute $ 30 + 60 * floor v
+        Just $ Token Duration $ duration TG.Minute $ 30 + 60 * floor v
       _ -> Nothing
   }
 
-ruleAUnitofduration :: Rule
-ruleAUnitofduration = Rule
+ruleAndHalfMinute :: Rule
+ruleAndHalfMinute = Rule
+  { name = "<integer> and a half minutes"
+  , pattern =
+    [ Predicate isNatural
+    , regex "(und )?(ein(en?)? ?)?halb(en?)?"
+    , Predicate $ isGrain TG.Minute
+    ]
+  , prod = \case
+      (Token Numeral NumeralData{TNumeral.value = v}:_) ->
+        Just $ Token Duration $ duration TG.Second $ 30 + 60 * floor v
+      _ -> Nothing
+  }
+
+ruleArticle :: Rule
+ruleArticle = Rule
   { name = "a <unit-of-duration>"
   , pattern =
-    [ regex "eine?(r|n)?"
+    [ regex "ein(en?)?"
     , dimension TimeGrain
     ]
-  , prod = \tokens -> case tokens of
-      (_:Token TimeGrain grain:_) -> Just . Token Duration $ duration grain 1
+  , prod = \case
+      (_:Token TimeGrain grain:_) -> Just $ Token Duration $ duration grain 1
       _ -> Nothing
   }
 
-ruleAboutDuration :: Rule
-ruleAboutDuration = Rule
-  { name = "about <duration>"
+ruleHalfTimeGrain :: Rule
+ruleHalfTimeGrain = Rule
+  { name = "half a <time-grain>"
   , pattern =
-    [ regex "ungefähr|zirka"
-    , dimension Duration
+    [ regex "(ein(en)?)?(1/2|halbe?)"
+    , dimension TimeGrain
     ]
-  , prod = \tokens -> case tokens of
-      (_:token:_) -> Just token
+  , prod = \case
+      (_:Token TimeGrain grain:_) -> Token Duration <$> nPlusOneHalf grain 0
       _ -> Nothing
   }
 
-ruleExactlyDuration :: Rule
-ruleExactlyDuration = Rule
-  { name = "exactly <duration>"
+ruleCompositeDurationCommasAnd :: Rule
+ruleCompositeDurationCommasAnd = Rule
+  { name = "composite <duration> (with ,/and)"
   , pattern =
-    [ regex "genau|exakt"
+    [ Predicate isNatural
+    , dimension TimeGrain
+    , regex ",|und"
     , dimension Duration
     ]
-  , prod = \tokens -> case tokens of
-      (_:token:_) -> Just token
+  , prod = \case
+      (Token Numeral NumeralData{TNumeral.value = v}:
+       Token TimeGrain g:
+       _:
+       Token Duration dd@DurationData{TDuration.grain = dg}:
+       _) | g > dg -> Just $ Token Duration $ duration g (floor v) <> dd
+      _ -> Nothing
+  }
+
+ruleCompositeDuration :: Rule
+ruleCompositeDuration = Rule
+  { name = "composite <duration>"
+  , pattern =
+    [ Predicate isNatural
+    , dimension TimeGrain
+    , dimension Duration
+    ]
+  , prod = \case
+      (Token Numeral NumeralData{TNumeral.value = v}:
+       Token TimeGrain g:
+       Token Duration dd@DurationData{TDuration.grain = dg}:
+       _) | g > dg -> Just $ Token Duration $ duration g (floor v) <> dd
+      _ -> Nothing
+  }
+
+ruleCompositeDurationAnd :: Rule
+ruleCompositeDurationAnd = Rule
+  { name = "composite <duration> and <duration>"
+  , pattern =
+    [ dimension Duration
+    , regex ",|und"
+    , dimension Duration
+    ]
+  , prod = \case
+      (Token Duration DurationData{TDuration.value = v, TDuration.grain = g}:
+       _:
+       Token Duration dd@DurationData{TDuration.grain = dg}:
+       _) | g > dg -> Just $ Token Duration $ duration g v <> dd
+      _ -> Nothing
+  }
+
+ruleHoursAndMinutes :: Rule
+ruleHoursAndMinutes = Rule
+  { name = "<integer> hour and <integer>"
+  , pattern =
+    [ Predicate isNatural
+    , regex "(ein(en?) )?stunden?( und)?"
+    , Predicate isNatural
+    , Predicate $ isGrain TG.Minute
+    ]
+  , prod = \case
+      (Token Numeral h:
+       _:
+       Token Numeral m:
+       _) -> Just $ Token Duration $ duration TG.Minute $
+                floor (TNumeral.value m) + 60 * floor (TNumeral.value h)
       _ -> Nothing
   }
 
 rules :: [Rule]
 rules =
-  [ ruleAUnitofduration
-  , ruleAboutDuration
-  , ruleExactlyDuration
-  , ruleFortnight
+  [ ruleQuarterOfAnHour
   , ruleHalfAnHour
-  , ruleIntegerAndAnHalfHours
-  , ruleIntegerMoreUnitofduration
-  , ruleNumeralnumberHours
+  , ruleThreeQuartersOfAnHour
+  , rulePrecision
+  , ruleCommaNumeralHours
+  , ruleCommaNumeralMinutes
+  , ruleFortnight
+  , ruleAndHalfHour
+  , ruleAndHalfMinute
+  , ruleArticle
+  , ruleHalfTimeGrain
+  , ruleCompositeDurationCommasAnd
+  , ruleCompositeDuration
+  , ruleCompositeDurationAnd
+  , ruleHoursAndMinutes
+  , ruleAndHalfMinute
   ]

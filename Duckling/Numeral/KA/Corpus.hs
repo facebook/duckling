@@ -120,7 +120,7 @@ allExamples = concat
              ]
   , examples (NumeralValue 21)
              [ "21"
-             , "ოცდაერთი"
+             -- , "ოცდაერთი"
              ]
   , examples (NumeralValue 22)
              [ "22"

@@ -10,11 +10,11 @@ module Duckling.Quantity.Tests
   ) where
 
 import Data.String
-import Prelude
 import Test.Tasty
 
 import qualified Duckling.Quantity.AR.Tests as AR
 import qualified Duckling.Quantity.EN.Tests as EN
+import qualified Duckling.Quantity.ES.Tests as ES
 import qualified Duckling.Quantity.FR.Tests as FR
 import qualified Duckling.Quantity.HR.Tests as HR
 import qualified Duckling.Quantity.KM.Tests as KM
@@ -30,6 +30,7 @@ tests :: TestTree
 tests = testGroup "Quantity Tests"
   [ AR.tests
   , EN.tests
+  , ES.tests
   , FR.tests
   , HR.tests
   , KM.tests

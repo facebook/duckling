@@ -24,7 +24,7 @@ cabal-version:       >=1.10
 tested-with:
   GHC==8.4.4,
   GHC==8.6.5,
-  GHC==8.8.4
+  GHC==8.8.3
 
 extra-source-files:    README.md
 

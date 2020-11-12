@@ -27,8 +27,8 @@ allExamples = concat
   [ examples (simple Dollar 10)
              [ "$10"
              , "10$"
-             , "diez dollars"
-             , "diez dólares"
+             , "deu dolars"
+             , "deu dòlars"
              ]
   , examples (simple Dollar 10000)
              [ "$10.000"
@@ -44,20 +44,29 @@ allExamples = concat
              , "20 Euro"
              , "20 Euros"
              , "EUR 20"
+             , "vint euros"
              ]
   , examples (simple EUR 29.99)
              [ "EUR29,99"
+             , "29,99 euros"
+             , "29,99 €"
+             , "29,99€"
              ]
   , examples (simple Pound 9)
              [ "£9"
-             , "nueve pounds"
-             , "9 libras"
+             , "nou lliures"
+             , "9 lliures"
+             ]
+  ,examples (simple Pound 1)
+             [ "£1"
+             , "una lliura"
+             , "1 lliura"
              ]
   , examples (simple GBP 3.01)
              [ "GBP3,01"
              , "GBP 3,01"
-             , "3 gbp 1 centavo"
-             , "3 gbp y 1 centavo"
+             , "3 gbp 1 cèntims"
+             , "3 gbp i 1 cèntims"
              ]
   , examples (simple PTS 15)
              [ "15 Pt"
@@ -65,17 +74,17 @@ allExamples = concat
              , "15Ptas"
              ]
   , examples (between Dollar (10, 20))
-             [ "entre 10 y 20 dólares"
-             , "de $10 y $20"
-             , "$10 - 20 dólares"
+             [ "entre 10 i 20 dòlars"
+             , "de $10 a $20"
+             , "10$ - 20 dolars"
              , "10 - 20 $"
              ]
   , examples (under Dollar 10)
-             [ "menos de 10 dólares"
-             , "no más de $10"
+             [ "menys de 10 dolars"
+             , "no més de 10$"
              ]
   , examples (above Dollar 10)
-             [ "no menos de 10 dólares"
-             , "más de $10"
+             [ "no menys de 10 dòlars"
+             , "més de 10$"
              ]
   ]

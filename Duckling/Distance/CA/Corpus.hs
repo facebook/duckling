@@ -25,8 +25,10 @@ corpus = (testContext {locale = makeLocale ES Nothing}, testOptions, allExamples
 allExamples :: [Example]
 allExamples = concat
   [ examples (simple Kilometre 3)
-             [ "3 kilómetros"
-             , "3 kilometros"
+             [ "3 kilòmetres"
+             , "3 kilometres"
+             , "3 kilómetres"
+             , "3 quilòmetres"
              , "3 km"
              , "3km"
              , "3k"
@@ -35,14 +37,20 @@ allExamples = concat
              [ "3,0 km"
              ]
   , examples (simple Mile 8)
-             [ "8 miles"
+             [ "8 milles"
              ]
   , examples (simple Metre 9)
              [ "9m"
-             , "9 metros"
+             , "9 metres"
+             , "9 m"
+             ]
+  , examples (simple Metre 1)
+             [ "1m"
+             , "1 metre"
              ]
   , examples (simple Centimetre 2)
              [ "2cm"
-             , "2 centímetros"
+             , "2 centímetres"
+             , "2 cm"
              ]
   ]

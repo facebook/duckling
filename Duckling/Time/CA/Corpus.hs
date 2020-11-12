@@ -39,21 +39,20 @@ corpus = (context, testOptions, allExamples)
 allExamples :: [Example]
 allExamples = concat
   [ examples (datetime (2013, 2, 12, 4, 30, 0) Second)
-             [ "ahora"
-             , "ya"
-             , "ahorita"
-             , "cuanto antes"
+             [ "ara"
+             , "ja"
+             , "en aquest moment"
+             , "en aquests moments"
+             , "ara mateix"
              ]
   , examples (datetime (2013, 2, 12, 0, 0, 0) Day)
-             [ "hoy"
-             , "en este momento"
+             [ "avui"
              ]
   , examples (datetime (2013, 2, 11, 0, 0, 0) Day)
-             [ "ayer"
+             [ "ahir"
              ]
   , examples (datetime (2013, 2, 10, 0, 0, 0) Day)
-             [ "anteayer"
-             , "antier"
+             [ "abans d'ahir"
              ]
   {--
     This is intentional
@@ -61,122 +60,90 @@ allExamples = concat
     instead of "morning" rule.
   --}
   , examples (datetime (2013, 2, 13, 0, 0, 0) Day)
-             [ "mañana"
-             , "manana"
-             , "mañana"
-             , "manana"
-             , "mañana"
-             , "manana"
-             , "manana"
-             , "mañana"
-             , "manana"
-             , "mañana"
-             , "manana"
-             , "manana"
-             , "mañana"
-             , "manana"
-             , "mañana"
-             , "manana"
-             , "manana"
-             , "mañana"
-             , "manana"
-             , "mañana"
-             , "manana"
-             , "manana"
-             , "mañana"
-             , "manana"
-             , "mañana"
-             , "manana"
-             , "manana"
-             , "mañana"
-             , "manana"
-             , "mañana"
-             , "manana"
-             , "manana"
-             , "mañana"
-             , "manana"
-             , "mañana"
-             , "manana"
-             , "manana"
-             , "mañana"
-             , "manana"
-             , "mañana"
-             , "manana"
-             , "manana"
-             , "mañana"
-             , "manana"
-             , "mañana"
-             , "manana"
-             , "manana"
-             , "mañana"
-             , "manana"
-             , "mañana"
-             , "manana"
+             [ "demà"
              ]
   , examples (datetime (2013, 2, 14, 0, 0, 0) Day)
-             [ "pasado mañana"
+             [ "demà passat"
              ]
   , examples (datetime (2013, 2, 18, 0, 0, 0) Day)
-             [ "lunes"
-             , "lu"
-             , "lun."
-             , "este lunes"
+             [ "dilluns"
+             , "dl"
+             , "dl."
+             , "proper dilluns"
              ]
   , examples (datetime (2013, 2, 18, 0, 0, 0) Day)
-             [ "lunes, 18 de febrero"
+             [ "dillus, 18 de febrero"
              ]
   , examples (datetime (2013, 2, 19, 0, 0, 0) Day)
-             [ "martes"
-             , "ma"
-             , "ma."
+             [ "dimarts"
+             , "dm"
+             , "dm."
+             , "dimarts 19"
              ]
   , examples (datetime (2013, 2, 13, 0, 0, 0) Day)
-             [ "miercoles"
-             , "miércoles"
-             , "mx"
-             , "mié."
+             [ "dimecres"
+             , "dc"
+             , "dc."
+             , "dimecres 13"
              ]
   , examples (datetime (2013, 2, 14, 0, 0, 0) Day)
-             [ "jueves"
+             [ "dijous"
+             , "dc"
+             , "dc."
              ]
   , examples (datetime (2013, 2, 15, 0, 0, 0) Day)
-             [ "viernes"
+             [ "divendres"
+             , "dv"
+             , "dv."
+             , "dv. 15"
              ]
   , examples (datetime (2013, 2, 16, 0, 0, 0) Day)
-             [ "sabado"
+             [ "dissabte"
+             , "ds"
+             , "ds."
              ]
   , examples (datetime (2013, 2, 17, 0, 0, 0) Day)
-             [ "domingo"
+             [ "diumenge"
+             , "dg"
+             , "dg."
              ]
   , examples (datetime (2013, 5, 5, 0, 0, 0) Day)
-             [ "el 5 de mayo"
-             , "el cinco de mayo"
+             [ "el 5 de maig"
+             , "el cinc de maig"
              ]
   , examples (datetime (2013, 5, 5, 0, 0, 0) Day)
-             [ "el cinco de mayo de 2013"
-             , "mayo 5 del 2013"
+             [ "el cinc de maig de 2013"
              , "5-5-2013"
              ]
   , examples (datetime (2013, 7, 4, 0, 0, 0) Day)
-             [ "el 4 de julio"
+             [ "el 4 de juliol"
              , "el 4/7"
              ]
+   , examples (datetime (2013, 8, 4, 0, 0, 0) Day)
+             [ "el 4 d'agost"
+             , "el 4/8"
+             ]
   , examples (datetime (2013, 3, 3, 0, 0, 0) Day)
-             [ "el 3 de marzo"
-             , "3 de marzo"
+             [ "el 3 de març"
+             , "3 de març"
              , "el 3-3"
              ]
+   , examples (datetime (2013, 10, 24, 0, 0, 0) Day)
+             [ "el 24 d'octubre"
+             , "el 4/10"
+             ]
   , examples (datetime (2013, 4, 5, 0, 0, 0) Day)
-             [ "el 5 de abril"
-             , "5 de abril"
+             [ "el 5 d'abril"
+             , "5 d'abril"
              ]
   , examples (datetime (2013, 3, 1, 0, 0, 0) Day)
-             [ "el 1 de marzo"
-             , "1 de marzo"
-             , "el primero de marzo"
-             , "el uno de marzo"
-             , "primero de marzo"
-             , "uno de marzo"
+             [ "el 1 de març"
+             , "l'1 de març"
+             , "1 de març"
+             , "el primer de març"
+             , "l'u de març"
+             , "el primer dia de març"
+             , "u de març"
              ]
   , examples (datetime (2013, 3, 1, 0, 0, 0) Day)
              [ "1-3-2013"
@@ -185,11 +152,11 @@ allExamples = concat
              ]
   , examples (datetime (2013, 2, 16, 0, 0, 0) Day)
              [ "el 16"
-             , "16 de febrero"
+             , "16 de febrer"
              ]
   , examples (datetime (2013, 2, 17, 0, 0, 0) Day)
              [ "el 17"
-             , "17 de febrero"
+             , "17 de febrer"
              , "17-2"
              , "el 17/2"
              ]
@@ -203,349 +170,373 @@ allExamples = concat
              , "31/10/74"
              ]
   , examples (datetime (2013, 2, 19, 0, 0, 0) Day)
-             [ "el martes que viene"
+             [ "el dimarts vinent"
+             , "dimarts vinent"
+             , "el proper dimarts"
              ]
   , examples (datetime (2013, 2, 20, 0, 0, 0) Day)
-             [ "miércoles que viene"
-             , "el miércoles de la semana que viene"
-             , "miercoles de la próxima semana"
+             [ "dimecres vinent"
+             , "el dimecres de la setmana vinent"
+             , "dimecres de la propera setmana"
              ]
   , examples (datetime (2013, 2, 11, 0, 0, 0) Day)
-             [ "el lunes de esta semana"
+             [ "el dilluns d'aquesta setmana"
              ]
   , examples (datetime (2013, 2, 12, 0, 0, 0) Day)
-             [ "martes de esta semana"
+             [ "dimarts d'aquesta setmana"
              ]
   , examples (datetime (2013, 2, 13, 0, 0, 0) Day)
-             [ "el miércoles de esta semana"
+             [ "el dimecres d'aquesta setmana"
              ]
   , examples (datetime (2013, 2, 11, 0, 0, 0) Week)
-             [ "esta semana"
+             [ "aquesta setmana"
              ]
   , examples (datetime (2013, 2, 4, 0, 0, 0) Week)
-             [ "la semana pasada"
+             [ "la setmana passada"
              ]
   , examples (datetime (2013, 2, 18, 0, 0, 0) Week)
-             [ "la semana que viene"
-             , "la proxima semana"
-             , "semana que viene"
-             , "proxima semana"
-             , "proximas semana"
-             , "próxima semana"
-             , "siguiente semana"
+             [ "la setmana vinent"
+             , "la propera setmana"
+             , "setmana vinent"
+             , "propera setmana"
+             , "properes setmanes"
+             , "la setmana següent"
              ]
   , examples (datetime (2013, 1, 1, 0, 0, 0) Month)
-             [ "el pasado mes"
+             [ "el passat mes"
              ]
   , examples (datetime (2013, 3, 0, 0, 0, 0) Month)
-             [ "el mes que viene"
-             , "el proximo mes"
+             [ "el mes vinent"
+             , "el proper mes"
              ]
   , examples (datetime (2012, 0, 0, 0, 0, 0) Year)
-             [ "el año pasado"
+             [ "l'any passat"
              ]
   , examples (datetime (2013, 0, 0, 0, 0, 0) Year)
-             [ "este ano"
+             [ "aquest any"
              ]
-  , examples (datetime (2014, 0, 0, 0, 0, 0) Year)
-             [ "el año que viene"
-             , "el proximo ano"
+  , examples (datetime (2014, 0, 0, 0, 0, 0) Year) 
+             [ "l'any vinent"
+             , "el proper any"
              ]
   , examples (datetime (2013, 2, 10, 0, 0, 0) Day)
-             [ "el domingo pasado"
-             , "el domingo de la semana pasada"
+             [ "el diumenge passat"  -- proppassat?
+             , "el diumenge de la setmana passada"
              ]
   , examples (datetime (2013, 2, 5, 0, 0, 0) Day)
-             [ "el martes pasado"
+             [ "el dimarts passat"
              ]
   , examples (datetime (2013, 2, 12, 15, 0, 0) Hour)
-             [ "a las tres de la tarde"
-             , "a las tres"
-             , "a las 3 pm"
+             [ "a les tres de la tarda"
+             , "a les tres"
+             , "a les 3 pm"
              , "a las 15 horas"
              ]
   , examples (datetime (2013, 2, 12, 20, 0, 0) Hour)
-             [ "a las ocho de la tarde"
+             [ "a les vuit del vespre"
              ]
   , examples (datetime (2013, 2, 12, 15, 0, 0) Minute)
              [ "15:00"
              , "15.00"
              ]
   , examples (datetime (2013, 2, 13, 0, 0, 0) Hour)
-             [ "medianoche"
+             [ "mitja nit"
              ]
   , examples (datetime (2013, 2, 12, 12, 0, 0) Hour)
-             [ "mediodía"
-             , "las doce"
-             , "medio dia"
-             , "medio día"
+             [ "mig dia"
+             , "les dotze"
+             , "migdia"
              ]
   , examples (datetime (2013, 2, 12, 12, 15, 0) Minute)
-             [ "las doce y cuarto"
+             [ "un quart d'una"
              ]
-  , examples (datetime (2013, 2, 12, 11, 55, 0) Minute)
-             [ "las doce menos cinco"
+  , examples (datetime (2013, 2, 12, 11, 55, 0) Minute) --dubte
+             [ "tres quarts i deu minuts de dotze"
+             , "tres qiarts i deu de dotze"
+             , "les dotze menys cinc minuts"
+             , "les dotze menys cinc"
+             , "tres quarts i mig passats de dotze"
              ]
   , examples (datetime (2013, 2, 12, 12, 30, 0) Minute)
-             [ "las doce y media"
+             [ "dos quarts d'una"
+             , "2/4 d'una"
              ]
   , examples (datetime (2013, 2, 13, 3, 0, 0) Hour)
-             [ "las tres de la manana"
-             , "las tres en la manana"
+             [ "les tres de la matinada"
              ]
   , examples (datetime (2013, 2, 12, 15, 15, 0) Minute)
-             [ "a las tres y quince"
-             , "a las 3 y cuarto"
-             , "a las tres y cuarto de la tarde"
-             , "a las tres y cuarto en la tarde"
+             [ "un quart de quatre"
+             , "a un quart de quatre"
+             , "1/4 de quatre"
+             , "un quart de 4"
+             , "un quart de quatre de la tarda"
+             , "1 quart de quatre de la tarda"
              , "15:15"
-             , "15.15"
              ]
   , examples (datetime (2013, 2, 12, 15, 30, 0) Minute)
-             [ "a las tres y media"
-             , "a las 3 y treinta"
-             , "a las tres y media de la tarde"
-             , "a las 3 y treinta del mediodía"
+             [ "dos quarts de quatre"
+             , "a dos quarts de quatre"
+             , "a dos quarts de 4 de la tarda"
+             , "a 2/4 de quatre de la tarda"
              , "15:30"
-             , "15.30"
              ]
   , examples (datetime (2013, 2, 12, 11, 45, 0) Minute)
-             [ "las doce menos cuarto"
+             [ "tres quarts de 12"
              , "11:45"
-             , "las once y cuarenta y cinco"
-             , "hoy a las doce menos cuarto"
-             , "hoy a las once y cuarenta y cinco"
+             , "tres quats de dotze"
+             , "avui a tres quarts de 12"
+             , "avui a tres quarts de dotze"
              ]
   , examples (datetime (2013, 2, 12, 5, 15, 0) Minute)
-             [ "5 y cuarto"
+             [ "un quart de 6"
              ]
   , examples (datetime (2013, 2, 12, 6, 0, 0) Hour)
-             [ "6 de la mañana"
+             [ "6 del matí"
              ]
   , examples (datetime (2013, 2, 13, 11, 0, 0) Hour)
-             [ "miércoles a las once de la mañana"
+             [ "dimecres a les onze del matí"
              ]
   , examples (datetime (2013, 2, 13, 11, 0, 0) Hour)
-             [ "mañana a las once"
-             , "mañana a 11"
+             [ "demà a les onze"
+             , "demà a les 11"
              ]
   , examples (datetime (2014, 9, 12, 0, 0, 0) Day)
-             [ "viernes, el 12 de septiembre de 2014"
+             [ "divedres, 12 de setembre de 2014"
              ]
   , examples (datetime (2013, 2, 12, 4, 30, 1) Second)
-             [ "en un segundo"
+             [ "en un segon"
              ]
   , examples (datetime (2013, 2, 12, 4, 31, 0) Second)
-             [ "en un minuto"
+             [ "en un minut"
              , "en 1 min"
              ]
   , examples (datetime (2013, 2, 12, 4, 32, 0) Second)
-             [ "en 2 minutos"
-             , "en dos minutos"
+             [ "en 2 minuts"
+             , "en dos minuts"
              ]
   , examples (datetime (2013, 2, 12, 5, 30, 0) Second)
-             [ "en 60 minutos"
+             [ "en 60 minuts"
              ]
   , examples (datetime (2013, 2, 12, 5, 30, 0) Minute)
              [ "en una hora"
              ]
   , examples (datetime (2013, 2, 12, 2, 30, 0) Minute)
-             [ "hace dos horas"
+             [ "fa dues hores"
              ]
   , examples (datetime (2013, 2, 13, 4, 30, 0) Minute)
-             [ "en 24 horas"
-             , "en veinticuatro horas"
+             [ "en 24 hores"
+             , "en vint-i-quatre hores"
              ]
   , examples (datetime (2013, 2, 13, 4, 0, 0) Hour)
              [ "en un dia"
              ]
   , examples (datetime (2013, 2, 19, 4, 0, 0) Hour)
-             [ "en 7 dias"
+             [ "en 7 dies"
              ]
   , examples (datetime (2013, 2, 19, 0, 0, 0) Day)
-             [ "en una semana"
+             [ "en una setmana"
              ]
   , examples (datetime (2013, 1, 22, 0, 0, 0) Day)
-             [ "hace tres semanas"
+             [ "fa tres setmanas"
              ]
   , examples (datetime (2013, 4, 12, 0, 0, 0) Day)
-             [ "en dos meses"
+             [ "en dos mesos"
              ]
   , examples (datetime (2012, 11, 12, 0, 0, 0) Day)
-             [ "hace tres meses"
+             [ "fa tres mesos"
              ]
   , examples (datetime (2014, 2, 0, 0, 0, 0) Month)
-             [ "en un ano"
-             , "en 1 año"
+             [ "en un any"
+             , "en 1 any"
              ]
   , examples (datetime (2011, 2, 0, 0, 0, 0) Month)
-             [ "hace dos años"
+             [ "fa dos anys"
              ]
   , examples (datetimeInterval ((2013, 6, 21, 0, 0, 0), (2013, 9, 24, 0, 0, 0)) Day)
-             [ "este verano"
+             [ "aquest estiu"
              ]
   , examples (datetimeInterval ((2012, 12, 21, 0, 0, 0), (2013, 3, 21, 0, 0, 0)) Day)
-             [ "este invierno"
+             [ "aquest hivern"
              ]
   , examples (datetime (2013, 12, 25, 0, 0, 0) Day)
-             [ "Navidad"
-             , "la Navidad"
+             [ "Nadal"
+             , "el Nadal"
              ]
   , examples (datetime (2013, 12, 31, 0, 0, 0) Day)
-             [ "Nochevieja"
+             [ "nit de cap d'any"
              ]
   , examples (datetime (2014, 1, 1, 0, 0, 0) Day)
-             [ "ano nuevo"
-             , "año nuevo"
+             [ "dia de cap d'any"
+             , "cap d'any"
              ]
   , examples (datetime (2013, 2, 12, 21, 0, 0) Hour)
-             [ "nueve de la noche"
+             [ "nou del vespre"
              ]
-  , examples (datetimeInterval ((2013, 2, 12, 18, 0, 0), (2013, 2, 13, 0, 0, 0)) Hour)
-             [ "esta noche"
+  , examples (datetimeInterval ((2013, 2, 12, 15, 0, 0), (2013, 2, 12, 19, 59, 0)) Hour)
+             [ "aquesta tarda"
              ]
-  , examples (datetimeInterval ((2013, 2, 13, 18, 0, 0), (2013, 2, 14, 0, 0, 0)) Hour)
-             [ "mañana por la noche"
+  , examples (datetimeInterval ((2013, 2, 13, 15, 0, 0), (2013, 2, 13, 19, 59, 0)) Hour)
+             [ "demà a la tarda"
              ]
-  , examples (datetimeInterval ((2013, 2, 11, 18, 0, 0), (2013, 2, 12, 0, 0, 0)) Hour)
-             [ "ayer por la noche"
+  , examples (datetimeInterval ((2013, 2, 11, 15, 0, 0), (2013, 2, 11, 19, 59, 0)) Hour)
+             [ "ahir per la tarda"
+             ]
+  , examples (datetimeInterval ((2013, 2, 12, 20, 0, 0), (2013, 2, 12, 22, 59, 0)) Hour)
+             [ "aquest vespre"
+             ]
+  , examples (datetimeInterval ((2013, 2, 13, 20, 0, 0), (2013, 2, 11, 22, 59, 0)) Hour)
+             [ "demà al vespre"
+             ]
+  , examples (datetimeInterval ((2013, 2, 11, 20, 0, 0), (2013, 2, 13, 22, 59, 0)) Hour)
+             [ "ahir al vespre"
+             ]
+, examples (datetimeInterval ((2013, 2, 12, 23, 0, 0), (2013, 2, 13, 0, 59, 0)) Hour)
+             [ "aquesta nit"
+             ]
+  , examples (datetimeInterval ((2013, 2, 13, 23, 0, 0), (2013, 2, 14, 0, 59, 0)) Hour)
+             [ "demà a la nit"
+             ]
+  , examples (datetimeInterval ((2013, 2, 11, 23, 0, 0), (2013, 2, 12, 0, 59, 0)) Hour)
+             [ "ahir per la nit"
              ]
   , examples (datetimeInterval ((2013, 2, 15, 18, 0, 0), (2013, 2, 18, 0, 0, 0)) Hour)
-             [ "este weekend"
-             , "este fin de semana"
+             [ "aquest weekend"
+             , "aquest cap de setmana"
              ]
-  , examples (datetimeInterval ((2013, 2, 18, 4, 0, 0), (2013, 2, 18, 12, 0, 0)) Hour)
-             [ "lunes por la mañana"
+  , examples (datetimeInterval ((2013, 2, 18, 6, 0, 0), (2013, 2, 18, 11, 59, 0)) Hour)
+             [ "dilluns pel matí"
+             , "el matí de dilluns"
              ]
-  , examples (datetimeInterval ((2013, 2, 15, 4, 0, 0), (2013, 2, 15, 12, 0, 0)) Hour)
-             [ "el 15 de febrero por la mañana"
+  , examples (datetimeInterval ((2013, 2, 18, 1, 0, 0), (2013, 2, 18, 5, 59, 0)) Hour)
+             [ "dilluns a la matínada"
+             , "la matinada de dilluns"
+             ]
+  , examples (datetimeInterval ((2013, 2, 15, 6, 0, 0), (2013, 2, 15, 11, 59, 0)) Hour)
+             [ "el 15 de febrer pel matí"
              ]
   , examples (datetime (2013, 2, 12, 20, 0, 0) Hour)
-             [ "a las 8 de la tarde"
+             [ "a les 8 del vespre"
              ]
   , examples (datetimeInterval ((2013, 2, 12, 4, 29, 58), (2013, 2, 12, 4, 30, 0)) Second)
-             [ "pasados 2 segundos"
+             [ "darrers 2 segons" -- texte original pasados 2 segundos
              ]
   , examples (datetimeInterval ((2013, 2, 12, 4, 30, 1), (2013, 2, 12, 4, 30, 4)) Second)
-             [ "proximos 3 segundos"
+             [ "propers 3 segons"
              ]
   , examples (datetimeInterval ((2013, 2, 12, 4, 28, 0), (2013, 2, 12, 4, 30, 0)) Minute)
-             [ "pasados 2 minutos"
+             [ "darrers 2 minuts"
              ]
   , examples (datetimeInterval ((2013, 2, 12, 4, 31, 0), (2013, 2, 12, 4, 34, 0)) Minute)
-             [ "proximos 3 minutos"
+             [ "propers 3 minuts"
              ]
   , examples (datetimeInterval ((2013, 2, 12, 5, 0, 0), (2013, 2, 12, 8, 0, 0)) Hour)
-             [ "proximas 3 horas"
+             [ "properes 3 hores"
              ]
   , examples (datetimeInterval ((2013, 2, 10, 0, 0, 0), (2013, 2, 12, 0, 0, 0)) Day)
-             [ "pasados 2 dias"
+             [ "darrers 2 dies"
              ]
   , examples (datetimeInterval ((2013, 2, 13, 0, 0, 0), (2013, 2, 16, 0, 0, 0)) Day)
-             [ "proximos 3 dias"
+             [ "propers 3 dies"
              ]
   , examples (datetimeInterval ((2013, 1, 28, 0, 0, 0), (2013, 2, 11, 0, 0, 0)) Week)
-             [ "pasadas dos semanas"
+             [ "darreres dues setmanes"
              ]
   , examples (datetimeInterval ((2013, 2, 18, 0, 0, 0), (2013, 3, 11, 0, 0, 0)) Week)
-             [ "3 proximas semanas"
-             , "3 semanas que vienen"
+             [ "3 properes setmanes"
              ]
   , examples (datetimeInterval ((2012, 12, 0, 0, 0, 0), (2013, 2, 0, 0, 0, 0)) Month)
-             [ "pasados 2 meses"
-             , "dos pasados meses"
+             [ "darrers 2 mesos"
+             , "dos últims mesos"
              ]
   , examples (datetimeInterval ((2013, 3, 0, 0, 0, 0), (2013, 6, 0, 0, 0, 0)) Month)
-             [ "3 próximos meses"
-             , "proximos tres meses"
-             , "tres meses que vienen"
+             [ "3 propers mesos"
+             , "propers tres mesos"
              ]
   , examples (datetimeInterval ((2011, 0, 0, 0, 0, 0), (2013, 0, 0, 0, 0, 0)) Year)
-             [ "pasados 2 anos"
-             , "dos pasados años"
+             [ "darrers 2 anys"
+             , "dos últims anys"
              ]
   , examples (datetimeInterval ((2014, 0, 0, 0, 0, 0), (2017, 0, 0, 0, 0, 0)) Year)
-             [ "3 próximos años"
-             , "proximo tres años"
-             , "3 años que vienen"
+             [ "3 propers anys"
+             , "propers tres amys"
              ]
   , examples (datetimeInterval ((2013, 7, 13, 0, 0, 0), (2013, 7, 16, 0, 0, 0)) Day)
-             [ "13 a 15 de julio"
-             , "13 - 15 de julio de 2013"
+             [ "13 a 15 de juliol"
+             , "13 - 15 de juliol de 2013"
+             , "del 13 al 15 de juliol"
+             , "des del 13 fins al 15 de juliol"
+             ]
+  , examples (datetimeInterval ((2013, 7, 1, 0, 0, 0), (2013, 7, 16, 0, 0, 0)) Day)
+             [ "1 a 15 de juliol"
+             , "1 - 15 de juliol de 2013"
+             , "de l'1 al 15 de juliol"
+             , "des de l'1 fins al 15 de juliol"
              ]
   , examples (datetimeInterval ((2013, 2, 12, 9, 30, 0), (2013, 2, 12, 11, 0, 0)) Minute)
              [ "9:30 - 11:00"
              ]
   , examples (datetimeInterval ((2013, 12, 21, 0, 0, 0), (2014, 1, 7, 0, 0, 0)) Day)
-             [ "21 de Dic. a 6 de Ene"
+             [ "21 de des. al 6 de gen"
              ]
   , examples (datetimeInterval ((2013, 2, 12, 4, 30, 0), (2013, 2, 12, 7, 30, 0)) Second)
-             [ "dentro de tres horas"
+             [ "dintre de tres hores"
              ]
   , examples (datetime (2013, 2, 12, 16, 0, 0) Hour)
-             [ "a las cuatro de la tarde"
+             [ "a les quatre de la tarda"
              ]
   , examples (datetime (2013, 2, 12, 13, 0, 0) Minute)
-             [ "a las cuatro CET"
+             [ "a les quatre CET"
              ]
   , examples (datetime (2013, 8, 15, 0, 0, 0) Day)
-             [ "jue 15"
+             [ "dj 15"
+             , "dj. 15"
+             , "dijous 15"
              ]
   , examples (datetimeHoliday (2013, 12, 18, 0, 0, 0) Day "Día Mundial de la Lengua Árabe")
-             [ "dia mundial de la lengua arabe"
-             , "día mundial de la lengua árabe"
+             [ "dia mundial de la llegua àrab"
              ]
   , examples (datetimeHoliday (2013, 3, 1, 0, 0, 0) Day "Día de la Cero Discriminación")
-             [ "dia de la cero discriminacion"
-             , "día de la cero discriminación"
+             [ "dia de la zero discriminació"
              ]
   , examples (datetimeHoliday (2019, 7, 6, 0, 0, 0) Day "Día Internacional de las Cooperativas")
-             [ "día internacional de las cooperativas del 2019"
+             [ "dia internacional de les cooperatives del 2019"
              ]
   , examples (datetimeHoliday (2013, 11, 17, 0, 0, 0) Day "Día de la Prematuridad Mundial")
-             [ "día de la prematuridad mundial"
-             , "día mundial del prematuro"
-             , "día mundial del niño prematuro"
+             [ "dia de la prematuritat mundial"
+             , "dia mundial del prematur"
+             , "dia mundial del nen prematur"
              ]
   , examples (datetimeHoliday (2013, 4, 1, 0, 0, 0) Day "Día de los Inocentes de Abril")
-             [ "día de los inocentes"
-             , "día de los inocentes de abril"
-             , "día de las bromas de abril"
-             , "día de las bromas"
+             [ "dia dels innocents d'abril"
              ]
   , examples (datetime (2013, 3, 9, 0, 0, 0) Day)
-             [ "día nueve"
+             [ "dia nou"
              ]
   , examples (datetime (2013, 2, 15, 0, 0, 0) Day)
-             [ "día quince"
+             [ "dia quinze"
              ]
   , examples (datetime (2013, 3, 11, 0, 0, 0) Day)
-             [ "día once"
+             [ "dia onze"
              ]
   , examples (datetime (2013, 2, 12, 18, 2, 0) Minute)
              [
-               "las seis cero dos pm"
-             , "las seis zero dos pm"
-             , "para las seis cero dos pm"
-             , "para las seis zero dos pm"
-             , "a las seis cero dos pm"
-             , "a las seis zero dos pm"
-             , "al las seis cero dos pm"
-             , "al las seis zero dos pm"
-             , "para las 6 0 2 pm"
-             , "a las 6 0 2 pm"
-             , "al las 6 0 2 pm"
-             , "seis cero dos pm"
+               "les sis cero dos pm"
+             , "a les sis zero dos pm"
+             , "a les 6 0 2 pm"
+             , "sis zero dos pm"
              ]
   , examples (datetime (2013, 2, 12, 18, 2, 0) Minute)
-             [ "seis dos de la tarde"
+             [ "les sis i dos de la tarde"
              ]
   , examples (datetime (1990, 0, 0, 0, 0, 0) Year)
              [
-               "mil novecientos noventa"
+               "mil nou-cents noranta"
              ]
   , examples (datetime (1990, 5, 4, 0, 0, 0) Day)
              [
-               "cuatro de mayo de mil novecientos noventa"
+               "quatre de maig de mil nou-cents noranta"
+             ]
+  , examples (datetimeInterval ((2013, 4, 1, 0, 0, 0), (2013, 7, 1, 0, 0, 0)) Second)
+             [ "segon trimestre de 2013"
              ]
   ]

@@ -44,7 +44,7 @@ ruleDollar :: Rule
 ruleDollar = Rule
   { name = "dollar"
   , pattern =
-    [ regex "d(ó|o)lar(es)?"
+    [ regex "d(ò|o|ó)lar(s)?"
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly Dollar
   }
@@ -53,7 +53,7 @@ ruleCent :: Rule
 ruleCent = Rule
   { name = "cent"
   , pattern =
-    [ regex "centavos?"
+    [ regex "c(e|è)ntims?"
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly Cent
   }
@@ -62,7 +62,7 @@ rulePounds :: Rule
 rulePounds = Rule
   { name = "£"
   , pattern =
-    [ regex "(pound|libra)s?"
+    [ regex "(lliure|libra)s?"
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly Pound
   }
@@ -72,7 +72,7 @@ ruleIntersectAndNumeral = Rule
   { name = "intersect (and number)"
   , pattern =
     [ Predicate isWithoutCents
-    , regex "y"
+    , regex "i"
     , Predicate isNatural
     ]
   , prod = \tokens -> case tokens of
@@ -102,7 +102,7 @@ ruleIntersectAndXCents = Rule
   { name = "intersect (and X cents)"
   , pattern =
     [ Predicate isWithoutCents
-    , regex "y"
+    , regex "i"
     , Predicate isCents
     ]
   , prod = \tokens -> case tokens of
@@ -131,9 +131,9 @@ ruleIntervalBetweenNumeral :: Rule
 ruleIntervalBetweenNumeral = Rule
   { name = "between|from <numeral> to|and <amount-of-money>"
   , pattern =
-    [ regex "de|entre"
+    [ regex "des de|des d'|entre"
     , Predicate isPositive
-    , regex "a|y"
+    , regex "fins a|i"
     , Predicate isSimpleAmountOfMoney
     ]
   , prod = \case
@@ -151,9 +151,9 @@ ruleIntervalBetween :: Rule
 ruleIntervalBetween = Rule
   { name = "between|from <amount-of-money> to|and <amount-of-money>"
   , pattern =
-    [ regex "de|entre"
+    [ regex "des de|des d'|entre"
     , Predicate isSimpleAmountOfMoney
-    , regex "a|y"
+    , regex "fins a|i"
     , Predicate isSimpleAmountOfMoney
     ]
   , prod = \case
@@ -209,7 +209,7 @@ ruleIntervalMax :: Rule
 ruleIntervalMax = Rule
   { name = "less/no more than <amount-of-money>"
   , pattern =
-    [ regex "menos de|no más de"
+    [ regex "menys de|no m(e|é)s de|no m(e|é)s d'|menys d'"
     , Predicate isSimpleAmountOfMoney
     ]
   , prod = \case
@@ -224,7 +224,7 @@ ruleIntervalMin :: Rule
 ruleIntervalMin = Rule
   { name = "no less/more than <amount-of-money>"
   , pattern =
-    [ regex "más de|no menos de"
+    [ regex "m(e|é)s de|no menys de|m(e|é)s d'|no menys d'"
     , Predicate isSimpleAmountOfMoney
     ]
   , prod = \case

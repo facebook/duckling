@@ -39,7 +39,7 @@ ruleTempCelsius = Rule
   { name = "<temp> Celsius"
   , pattern =
     [ Predicate $ isValueOnly True
-    , regex "(cent(i|í)grados?|c(el[cs]?(ius)?)?\\.?)"
+    , regex "(cent(i|í)grads?|c(el[cs]?(ius)?)?\\.?)"
     ]
   , prod = \case
       (Token Temperature td:_) -> Just . Token Temperature $
@@ -65,7 +65,7 @@ ruleLatentTempTempBajoCero = Rule
   { name = "<latent temp> temp bajo cero"
   , pattern =
     [ Predicate $ isValueOnly True
-    , regex "bajo cero"
+    , regex "sota zero"
     ]
   , prod = \case
       (Token Temperature td@TemperatureData{TTemperature.value = Just v}:_) ->

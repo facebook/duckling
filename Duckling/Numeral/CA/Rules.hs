@@ -27,32 +27,38 @@ import Duckling.Types
 ruleNumeralsPrefixWithNegativeOrMinus :: Rule
 ruleNumeralsPrefixWithNegativeOrMinus = Rule
   { name = "numbers prefix with -, negative or minus"
-  , pattern = [regex "-|menos", Predicate isPositive]
+  , pattern = [regex "-|menys", Predicate isPositive]
   , prod = \tokens -> case tokens of
       (_ : Token Numeral NumeralData { TNumeral.value = v } : _) ->
         double $ v * (-1)
       _ -> Nothing
   }
 
+-- Ull, si a la següent no comença per 20 aquí tampoc
 byTensMap :: HashMap.HashMap Text.Text Integer
 byTensMap =
   HashMap.fromList
-    [ ("veinte", 20)
-    , ("treinta", 30)
-    , ("cuarenta", 40)
-    , ("cincuenta", 50)
-    , ("sesenta", 60)
-    , ("setenta", 70)
-    , ("ochenta", 80)
-    , ("noventa", 90)
+    [ ("vint", 20)
+    , ("trenta", 30)
+    , ("quaranta", 40)
+    , ("cinquanta", 50)
+    , ("seixanta", 60)
+    , ("setanta", 70)
+    , ("vuitanta", 80)
+    , ("noranta", 90)
     ]
 
+
+-- Ull, no tinc clar que hagi de començar per 20 donat que la vintena no s'escriu igual que de la 
+--   trentena en amunt vint-i-u trenta-u
+
+-- fico les variantas de curanta (incorrecte) i huitanta (correcte però no habitual)
 ruleNumeral2 :: Rule
 ruleNumeral2 = Rule
   { name = "number (20..90)"
   , pattern =
       [ regex
-          "(veinte|treinta|cuarenta|cincuenta|sesenta|setenta|ochenta|noventa)"
+          "(vint|trenta|quaranta|cinquanta|seixanta|setanta|vuitanta|noranta)"
       ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match : _)) : _) ->
@@ -65,26 +71,23 @@ zeroToFifteenMap =
   HashMap.fromList
     [ ("zero", 0)
     , ("cero", 0)
-    , ("un", 1)
+    , ("u", 1)
     , ("una", 1)
-    , ("uno", 1)
+    , ("un", 1)
     , ("dos", 2)
-    , ("trés", 3)
     , ("tres", 3)
-    , ("cuatro", 4)
+    , ("quatre", 4)
     , ("cinco", 5)
-    , ("seis", 6)
-    , ("séis", 6)
-    , ("siete", 7)
-    , ("ocho", 8)
-    , ("nueve", 9)
-    , ("diez", 10)
-    , ("dies", 10)
-    , ("once", 11)
-    , ("doce", 12)
-    , ("trece", 13)
-    , ("catorce", 14)
-    , ("quince", 15)
+    , ("sis", 6)
+    , ("set", 7)
+    , ("vuit", 8)
+    , ("nou", 9)
+    , ("deu", 10)
+    , ("onze", 11)
+    , ("dotze", 12)
+    , ("tretze", 13)
+    , ("catorze", 14)
+    , ("quinze", 15)
     ]
 
 ruleNumeral :: Rule
@@ -92,7 +95,7 @@ ruleNumeral = Rule
   { name = "number (0..15)"
   , pattern =
       [ regex
-          "((c|z)ero|un(o|a)?|dos|tr(é|e)s|cuatro|cinco|s(e|é)is|siete|ocho|nueve|die(z|s)|once|doce|trece|catorce|quince)"
+          "((c|z)ero|u(n|na)?|dos|tres|quatre|cinc|sis|set|vuit|nou|deu|onze|dotze|tretze|catorze|quinze)"
       ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match : _)) : _) ->
@@ -103,26 +106,20 @@ ruleNumeral = Rule
 sixteenToTwentyNineMap :: HashMap.HashMap Text.Text Integer
 sixteenToTwentyNineMap =
   HashMap.fromList
-    [ ("dieciseis", 16)
-    , ("diesiséis", 16)
-    , ("diesiseis", 16)
-    , ("dieciséis", 16)
-    , ("diecisiete", 17)
-    , ("dieciocho", 18)
-    , ("diecinueve", 19)
-    , ("veintiuno", 21)
-    , ("veintiuna", 21)
-    , ("veintidos", 22)
-    , ("veintidós", 22)
-    , ("veintitrés", 23)
-    , ("veintitres", 23)
-    , ("veinticuatro", 24)
-    , ("veinticinco", 25)
-    , ("veintiséis", 26)
-    , ("veintiseis", 26)
-    , ("veintisiete", 27)
-    , ("veintiocho", 28)
-    , ("veintinueve", 29)
+    [ ("setze", 16)
+    , ("disset", 17)
+    , ("divuit", 18)
+    , ("dinou", 19)
+    , ("vint-i-u", 21)
+    , ("vint-i-una", 21)
+    , ("vint-i-dos", 22)
+    , ("vint-i-tres", 23)
+    , ("vint-i-quatre", 24)
+    , ("vint-i-cinc", 25)
+    , ("vint-i-sis", 26)
+    , ("vint-i-set", 27)
+    , ("vint-i-vuit", 28)
+    , ("vint-i-nou", 29)
     ]
 
 ruleNumeral5 :: Rule
@@ -130,7 +127,7 @@ ruleNumeral5 = Rule
   { name = "number (16..19 21..29)"
   , pattern =
       [ regex
-          "(die(c|s)is(é|e)is|diecisiete|dieciocho|diecinueve|veintiun(o|a)|veintid(o|ó)s|veintitr(é|e)s|veinticuatro|veinticinco|veintis(é|e)is|veintisiete|veintiocho|veintinueve|treinta)"
+          "(setze|disset|divuit|dinou|vint-i-u(na)?|vint-i-dos|vint-i-tres|vint-i-quatre|vint-i-cinc|vint-i-sis|vint-i-set|vint-i-vuit|vint-i-nou)"
       ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match : _)) : _) ->
@@ -138,6 +135,9 @@ ruleNumeral5 = Rule
       _ -> Nothing
   }
 
+-- Aquesta no aplica donat que no es composa com el castellà diez y siete, sino que te nom propi
+-- es pot esborrar directament a la brava?
+{- 
 ruleNumeral3 :: Rule
 ruleNumeral3 = Rule
   { name = "number (16..19)"
@@ -147,6 +147,7 @@ ruleNumeral3 = Rule
         double $ 10 + v
       _ -> Nothing
   }
+   -}
 
 ruleNumeralsSuffixesKMG :: Rule
 ruleNumeralsSuffixesKMG = Rule
@@ -165,17 +166,16 @@ ruleNumeralsSuffixesKMG = Rule
 oneHundredToThousandMap :: HashMap.HashMap Text.Text Integer
 oneHundredToThousandMap =
   HashMap.fromList
-    [ ("cien", 100)
-    , ("cientos", 100)
-    , ("ciento", 100)
-    , ("doscientos", 200)
-    , ("trescientos", 300)
-    , ("cuatrocientos", 400)
-    , ("quinientos", 500)
-    , ("seiscientos", 600)
-    , ("setecientos", 700)
-    , ("ochocientos", 800)
-    , ("novecientos", 900)
+    [ ("cent", 100)
+    , ("cents", 100)
+    , ("dos-cents", 200)
+    , ("tres-cents", 300)
+    , ("quatre-cents", 400)
+    , ("cinc-cents", 500)
+    , ("sis-cents", 600)
+    , ("set-cents", 700)
+    , ("vuit-cents", 800)
+    , ("nou-cents", 900)
     , ("mil", 1000)
     ]
 
@@ -184,7 +184,7 @@ ruleNumeral6 = Rule
   { name = "number 100..1000 "
   , pattern =
       [ regex
-          "(cien(to)?s?|doscientos|trescientos|cuatrocientos|quinientos|seiscientos|setecientos|ochocientos|novecientos|mil)"
+          "(cent(s)?|dos-cents|tres-cents|quatre-cents|cinc-cents|sis-cents|set-cents|vuit-cents|nou-cents|mil)"
       ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match : _)) : _) ->
@@ -192,6 +192,9 @@ ruleNumeral6 = Rule
       _ -> Nothing
   }
 
+-- S'ha de dividir en dos del 21 al 29 unit per '-i-' 
+--    i de la trentena en endevant unit per '-'
+{- 
 ruleNumeral4 :: Rule
 ruleNumeral4 = Rule
   { name = "number (21..29 31..39 41..49 51..59 61..69 71..79 81..89 91..99)"
@@ -201,13 +204,37 @@ ruleNumeral4 = Rule
       (Token Numeral NumeralData { TNumeral.value = v1 } : _ : Token Numeral NumeralData { TNumeral.value = v2 } : _) ->
         double $ v1 + v2
       _ -> Nothing
+  } -}
+
+ruleNumeral4 :: Rule
+ruleNumeral4 = Rule
+  { name = "number (21..29)"
+  , pattern =
+      [oneOf [20], regex "-i-", numberBetween 1 10]
+  , prod = \tokens -> case tokens of
+      (Token Numeral NumeralData { TNumeral.value = v1 } : _ : Token Numeral NumeralData { TNumeral.value = v2 } : _) ->
+        double $ v1 + v2
+      _ -> Nothing
   }
 
+ruleNumeral7 :: Rule
+ruleNumeral7 = Rule
+  { name = "number (31..39 41..49 51..59 61..69 71..79 81..89 91..99)"
+  , pattern =
+      [oneOf [70, 60, 50, 40, 90, 30, 80], regex "-", numberBetween 1 10]
+  , prod = \tokens -> case tokens of
+      (Token Numeral NumeralData { TNumeral.value = v1 } : _ : Token Numeral NumeralData { TNumeral.value = v2 } : _) ->
+        double $ v1 + v2
+      _ -> Nothing
+  }
+
+-- Afegeixo regex "-" perque les centenes s'escriuen dos-cent, tres-cent
 ruleNumerals :: Rule
 ruleNumerals = Rule
   { name = "numbers 200..999"
   , pattern =
       [ numberBetween 2 10
+      , regex "-"
       , numberWith TNumeral.value (== 100)
       , numberBetween 0 100
       ]
@@ -220,7 +247,7 @@ ruleNumerals = Rule
 ruleNumeralDotNumeral :: Rule
 ruleNumeralDotNumeral = Rule
   { name = "number dot number"
-  , pattern = [dimension Numeral, regex "punto", Predicate $ not . hasGrain]
+  , pattern = [dimension Numeral, regex "coma", Predicate $ not . hasGrain]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData { TNumeral.value = v1 } : _ : Token Numeral NumeralData { TNumeral.value = v2 } : _) ->
         double $ v1 + decimalsToDouble v2
@@ -233,7 +260,7 @@ ruleBelowTenWithTwoDigits = Rule
     name = "integer (0-9) with two digits"
   , pattern =
       [
-        regex "((c|z)ero)|0"
+        regex "zero|0"
       , numberBetween 1 10
       ]
   , prod = \case
@@ -250,8 +277,9 @@ rules =
   [ ruleBelowTenWithTwoDigits
   , ruleNumeral
   , ruleNumeral2
-  , ruleNumeral3
+  -- , ruleNumeral3
   , ruleNumeral4
+  , ruleNumeral7  -- afegida per 30..90
   , ruleNumeral5
   , ruleNumeral6
   , ruleNumeralDotNumeral

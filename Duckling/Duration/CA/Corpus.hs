@@ -26,33 +26,40 @@ corpus = (testContext {locale = makeLocale ES Nothing}, testOptions, allExamples
 allExamples :: [Example]
 allExamples = concat
   [ examples (DurationData 30 Minute)
-             [ "media hora"
-             , "media horas"
-             , "30 minutos"
-             , "treinta minutos"
+             [ "mitja hora"
+             , "dos quarts"
+             , "30 minuts"
+             , "trenta minuts"
              ]
   , examples (DurationData 15 Minute)
-             [  "cuarto de hora"
-             ,  "cuartos de hora"
-             ,  "quince minutos"
-             ,  "15 minutos"
+             [  "quart d'hora"
+             ,  "un quart d'hora"
+             ,  "1 quart d'hora"
+             ,  "1/4 d'hora"
+             ,  "quinze minuts"
+             ,  "15 minuts"
              ]
   , examples (DurationData 45 Minute)
-             [  "tres cuartos de hora"
-             ,  "tres cuartos de horas"
-             ,  "tres cuarto de hora"
-             ,  "tres cuarto de horas"
-             ,  "cuarenta y cinco minutos"
-             ,  "45 minutos"
+             [  "tres quarts d'hora"
+             ,  "3/4 de horas"
+             ,  "3 quarts d'hora"
+             ,  "tres quarts"
+             ,  "quaranta-cinc minuts"
+             ,  "quaranta cinc minuts"
+             ,  "curanta-cinc minuts"
+             ,  "curanta cinc minuts"
+             ,  "45 minuts"
              ]
   , examples (DurationData 92 Minute)
              [
-               "una hora y treinta y dos minutos"
-             , "una hora treinta y dos minutos"
+               "una hora i trenta-dos minuts"
+             , "una hora trenta-dos minuts" 
+             , "una hora trenta dos minuts" 
              ]
   , examples (DurationData 155 Minute)
              [
-               "dos hora y treinta y cinco minutos"
-             , "dos hora  treinta y cinco minutos"
+               "dues hores i trenta-cinc minuts"
+             , "dues hores trenta-cinc minuts"
+             , "dues hores trenta cinc minuts"
              ]
   ]

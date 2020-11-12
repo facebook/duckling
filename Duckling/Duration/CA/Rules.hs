@@ -29,7 +29,7 @@ ruleDurationQuarterOfAnHour :: Rule
 ruleDurationQuarterOfAnHour = Rule
   { name = "quarter of an hour"
   , pattern =
-    [ regex "cuartos? de hora"
+    [ regex "quarts? d'hora"
     ]
   , prod = \_ -> Just $ Token Duration $ duration TG.Minute 15
   }
@@ -38,7 +38,7 @@ ruleDurationHalfOfAnHour :: Rule
 ruleDurationHalfOfAnHour = Rule
   { name = "half of an hour"
   , pattern =
-    [ regex "media horas?"
+    [ regex "mitja hora"
     ]
   , prod = \_ -> Just $ Token Duration $ duration TG.Minute 30
   }
@@ -47,7 +47,7 @@ ruleDurationThreeQuartersOfAnHour :: Rule
 ruleDurationThreeQuartersOfAnHour = Rule
   { name = "three-quarters of an hour"
   , pattern =
-    [ regex "tres cuartos? de horas?"
+    [ regex "(tres quarts|3/4) d'hor([a]|(es))"
     ]
   , prod = \_ -> Just $ Token Duration $ duration TG.Minute 45
   }
@@ -58,7 +58,7 @@ ruleCompositeDurationCommasAnd = Rule
   , pattern =
     [ Predicate isNatural
     , dimension TimeGrain
-    , regex "y"
+    , regex "i"
     , dimension Duration
     ]
   , prod = \case

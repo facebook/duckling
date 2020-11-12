@@ -23,44 +23,45 @@ corpus =
 allExamples :: [Example]
 allExamples =
   concat
-    [ examples (NumeralValue 1) ["1", "uno", "una"]
-    , examples (NumeralValue 11) ["once"]
-    , examples
-        (NumeralValue 16)
-        ["dieciséis", "dieciseis", "Diesiseis", "diez y seis"]
-    , examples (NumeralValue 21) ["veintiuno", "veinte y uno"]
-    , examples (NumeralValue 22) ["veintidós"]
-    , examples (NumeralValue 23) ["veintitrés", "veinte y tres"]
+    [ examples (NumeralValue 1) ["1", "u", "una"]
+    , examples (NumeralValue 11) ["onze"]
+    , examples (NumeralValue 12) ["dotze"]
+    , examples (NumeralValue 13) ["tretze"]
+    , examples (NumeralValue 14) ["catorze"]
+    , examples (NumeralValue 15) ["quinze"]
+    , examples (NumeralValue 16) ["setze"]
+    , examples (NumeralValue 17) ["disset", "diset", "dèsset"]
+    , examples (NumeralValue 18) ["divuit", "dihuit"]
+    , examples (NumeralValue 19) ["dinou", "dènou"]
+    , examples (NumeralValue 20) ["vint"]
+    , examples (NumeralValue 21) ["vint-i-un", "vint i un"]
+    , examples (NumeralValue 22) ["vint-i-dos", "vint i dos"]
+    , examples (NumeralValue 23) ["vint-i-tres", "vint i tres"]
+    , examples (NumeralValue 40) ["quaranta"]
     , examples (NumeralValue 70) ["setenta"]
-    , examples (NumeralValue 78) ["Setenta y ocho"]
+    , examples (NumeralValue 78) ["Setenta-vuit"]
     , examples (NumeralValue 80) ["ochenta"]
-    , examples (NumeralValue 33) ["33", "treinta y tres", "treinta y 3"]
+    , examples (NumeralValue 33) ["33", "trenta-tres", "treinta y 3"]
     , examples (NumeralValue 100000) ["100000", "100K", "100k"]
-    , examples (NumeralValue 300) ["trescientos"]
-    , examples (NumeralValue 243) ["243"]
+    , examples (NumeralValue 300) ["tres-cents"]
+    , examples (NumeralValue 243) ["243", "dos-cents quaranta-tres"]
     , examples (NumeralValue 3000000) ["3M", "3000K", "3000000"]
     , examples (NumeralValue 1200000) ["1200000", "1200K"]
     , examples (NumeralValue (-1200000)) ["-1200000", "-1200K"]
-    , examples (NumeralValue 1.5) ["1 punto cinco", "una punto cinco"]
-    , examples (NumeralValue 1) ["cero uno", "zero uno"]
-    , examples (NumeralValue 2) ["cero dos", "zero dos"]
+    , examples (NumeralValue 1.5) ["1 coma cinc", "una coma cinc"]
+    , examples (NumeralValue 1) ["zero u", "zero un"]
+    , examples (NumeralValue 2) ["zero dos"]
     , examples (NumeralValue 3)
                [
-                 "cero tres",
-                 "cero trés",
                  "zero tres",
                  "zero trés"
                ]
-    , examples (NumeralValue 4) ["cero cuatro", "zero cuatro"]
-    , examples (NumeralValue 5) ["cero cinco", "zero cinco"]
-    , examples (NumeralValue 6)
-               [
-                 "cero seis",
-                 "cero séis",
-                 "zero seis",
-                 "zero séis"
-               ]
-    , examples (NumeralValue 7) ["cero siete", "zero siete"]
-    , examples (NumeralValue 8) ["cero ocho", "zero ocho"]
-    , examples (NumeralValue 9) ["cero nueve", "zero nueve"]
+    , examples (NumeralValue 4) ["zero quatre", "zero cuatro"]
+    , examples (NumeralValue 5) ["zero cinc"]
+    , examples (NumeralValue 6) ["zero sis"]
+    , examples (NumeralValue 7) ["zero set"]
+    , examples (NumeralValue 8) ["zero vuit"]
+    , examples (NumeralValue 9) ["zero nou"]
     ]
+
+-- Ull, revisar la xifra amb decimals

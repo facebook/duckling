@@ -24,20 +24,20 @@ corpus = (testContext {locale = makeLocale ES Nothing}, testOptions, allExamples
 allExamples :: [Example]
 allExamples = concat
   [ examples (simple Millilitre 250)
-             [ "250 mililitros"
+             [ "250 mililitres"
              , "250ml"
              , "250 ml"
              ]
   , examples (simple Litre 2)
-             [ "2 litros"
+             [ "2 litres"
              ]
   , examples (simple Gallon 3)
-             [ "3 galón"
+             [ "3 galó"
              ]
   , examples (simple Hectolitre 3)
-             [ "3 hectolitros"
+             [ "3 hectolitres"
              ]
   , examples (simple Litre 0.5)
-             [ "medio litro"
+             [ "mig litre"
              ]
   ]

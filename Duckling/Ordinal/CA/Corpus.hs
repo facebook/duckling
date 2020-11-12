@@ -25,17 +25,20 @@ allExamples :: [Example]
 allExamples = concat
   [ examples (OrdinalData 1)
              [ "primer"
-             , "primero"
-             , "primeras"
+             , "primera"
+             , "primers"
+             , "primeres"
              ]
   , examples (OrdinalData 2)
-             [ "segundo"
-             , "segunda"
-             , "segundos"
+             [ "segon"
+             , "segona"
+             , "segons"
+             , "segones"
              ]
   , examples (OrdinalData 10)
-             [ "decimo"
-             , "decimas"
-             , "décimos"
+             [ "desè"
+             , "desena"
+             , "desens"
+             , "desenes"
              ]
   ]

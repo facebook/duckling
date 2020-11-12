@@ -20,14 +20,14 @@ import qualified Duckling.TimeGrain.Types as TG
 import Duckling.Types
 
 grains :: [(Text, String, TG.Grain)]
-grains = [ ("segundo (grain)", "seg(undo)?s?", TG.Second)
-         , ("minutos (grain)", "min(uto)?s?", TG.Minute)
-         , ("hora (grain)", "h(ora)?s?", TG.Hour)
-         , ("dia (grain)", "d(í|i)as?", TG.Day)
-         , ("semana (grain)", "semanas?", TG.Week)
-         , ("mes (grain)", "mes(es)?", TG.Month)
+grains = [ ("segon (grain)", "seg(on)?s?", TG.Second)
+         , ("minuts (grain)", "min(ut)?s?", TG.Minute)
+         , ("hora (grain)", "h(or(a|es))?", TG.Hour)
+         , ("dia (grain)", "d(í|i)(a|es)", TG.Day)
+         , ("setmana (grain)", "setman(a|es)", TG.Week)
+         , ("mes (grain)", "mes(os)?", TG.Month)
          , ("trimestre (grain)", "trimestres?", TG.Quarter)
-         , ("año (grain)", "a(n|ñ)os?", TG.Year)
+         , ("any (grain)", "anys?", TG.Year)
          ]
 
 rules :: [Rule]

@@ -1,9 +1,9 @@
+cabal-version:       2.2
 -- Copyright (c) 2016-present, Facebook, Inc.
 -- All rights reserved.
 --
 -- This source code is licensed under the BSD-style license found in the
 -- LICENSE file in the root directory of this source tree.
-
 
 name:                duckling
 version:             0.1.6.1
@@ -12,7 +12,7 @@ description:
   Duckling is a library for parsing text into structured data.
 homepage:            https://github.com/facebook/duckling#readme
 bug-reports:         https://github.com/facebook/duckling/issues
-license:             BSD3
+license:             BSD-3-Clause
 license-files:       LICENSE
 author:              Facebook, Inc.
 maintainer:          duckling-team@fb.com
@@ -20,7 +20,6 @@ copyright:           Copyright (c) 2014-present, Facebook, Inc.
 category:            Systems
 build-type:          Simple
 stability:           alpha
-cabal-version:       >=1.10
 tested-with:
   GHC==8.4.4,
   GHC==8.6.5,
@@ -828,7 +827,7 @@ library
                      , Duckling.CreditCardNumber.Helpers
                      , Duckling.CreditCardNumber.Rules
                      , Duckling.CreditCardNumber.Types
-  build-depends:       base                  >= 4.8.2 && < 5.0
+  build-depends:     , base                  >= 4.8.2 && < 5.0
                      , array                 >= 0.5.1.1 && < 0.6
                      , attoparsec            >= 0.13.1.0 && < 0.14
                      , aeson                 >= 0.11.3.0 && < 1.6
@@ -839,12 +838,16 @@ library
                      , extra                 >= 1.4.10 && < 1.8
                      , hashable              >= 1.2.4.0 && < 1.4
                      , regex-base            >= 0.93.2 && < 0.95
-                     , regex-pcre            >= 0.94.4 && < 0.96
                      , text                  >= 1.2.2.1 && < 1.3
                      , text-show             >= 2.1.2 && < 3.9
                      , time                  >= 1.5.0.1 && < 2
                      , timezone-series       >= 0.1.5.1 && < 0.2
                      , unordered-containers  >= 0.2.7.2 && < 0.3
+  if os(windows)
+    build-depends: , regex-pcre-builtin      >= 0.94.4 && < 0.96
+  else
+    build-depends: , regex-pcre              >= 0.94.4 && < 0.96
+
   default-language:    Haskell2010
   default-extensions:  OverloadedStrings
 

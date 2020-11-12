@@ -40,7 +40,6 @@ import Data.Text (Text)
 import Data.Tuple.Extra (both)
 import Prelude
 import qualified Data.Time as Time
-import qualified Data.Time.Calendar.WeekDate as Time
 import qualified Data.Time.LocalTime.TimeZone.Series as Series
 
 import Duckling.Dimensions.Types

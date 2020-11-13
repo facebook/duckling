@@ -158,6 +158,30 @@ ruleTens = Rule
       _ -> Nothing
   }
 
+rulePowersOfTen :: Rule
+rulePowersOfTen = Rule
+  { name = "powers of tens"
+  , pattern = [regex "(सौ|हज़ार)"]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (match : _)) : _) ->
+        case Text.toLower match of
+          "सौ" -> double 1e2 >>= withGrain 2 >>= withMultipliable
+          "हज़ार" -> double 1e3 >>= withGrain 3 >>= withMultipliable
+          _ -> Nothing
+      _ -> Nothing
+  }
+
+ruleMultiply :: Rule
+ruleMultiply = Rule
+  { name = "compose by multiplication"
+  , pattern =
+    [ Predicate isPositive
+    , Predicate isMultipliable
+    ]
+  , prod = \tokens -> case tokens of
+      (token1:token2:_) -> multiply token1 token2
+      _ -> Nothing
+  }
 
 rules :: [Rule]
 rules =
@@ -166,4 +190,6 @@ rules =
   , ruleElevenToNineteen
   , ruleTwentyoneToTwentynine
   , ruleTens
+  , rulePowersOfTen
+  , ruleMultiply
   ]

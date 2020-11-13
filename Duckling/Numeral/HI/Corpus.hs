@@ -83,4 +83,7 @@ allExamples = concat
              [ "५०"
              , "पचास"
              ]
+  , examples (NumeralValue 300)
+             [ "तीन सौ"
+             ]
   ]

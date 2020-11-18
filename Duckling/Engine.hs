@@ -4,11 +4,9 @@
 -- This source code is licensed under the BSD-style license found in the
 -- LICENSE file in the root directory of this source tree.
 
-
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE NamedFieldPuns #-}
 {-# LANGUAGE NoRebindableSyntax #-}
-
 
 module Duckling.Engine
   ( parseAndResolve
@@ -91,8 +89,9 @@ lookupRegexCommon doc regex position matchFun = return nodes
   -- on here
   (substring, rangeToText, translateRange) =
     Document.byteStringFromPos doc position
-  nodes = mapMaybe (f . Array.elems) $ Foldable.toList $
-    matchFun regex substring
+  nodes = mapMaybe (f . Array.elems)
+    $ Foldable.toList
+    $ matchFun regex substring
   f :: [(Int, Int)] -> Maybe Node
   f [] = Nothing
   f ((0,0):_) = Nothing

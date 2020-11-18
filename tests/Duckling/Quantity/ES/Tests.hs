@@ -5,20 +5,18 @@
 -- LICENSE file in the root directory of this source tree.
 
 
-module Duckling.Dimensions.ES
-  ( allDimensions
+module Duckling.Quantity.ES.Tests
+  ( tests
   ) where
 
-import Duckling.Dimensions.Types
+import Data.String
+import Test.Tasty
 
-allDimensions :: [Seal Dimension]
-allDimensions =
-  [ Seal Distance
-  , Seal Duration
-  , Seal Numeral
-  , Seal Ordinal
-  , Seal Quantity
-  , Seal Temperature
-  , Seal Time
-  , Seal Volume
+import Duckling.Dimensions.Types
+import Duckling.Quantity.ES.Corpus
+import Duckling.Testing.Asserts
+
+tests :: TestTree
+tests = testGroup "ES Tests"
+  [ makeCorpusTest [Seal Quantity] corpus
   ]

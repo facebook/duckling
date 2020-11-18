@@ -15,14 +15,13 @@ module Duckling.Duration.EN.Rules
   ) where
 
 import Data.Semigroup ((<>))
-import Data.String
 import Prelude
 import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
 import Duckling.Duration.Helpers
 import Duckling.Duration.Types (DurationData(..))
-import Duckling.Numeral.Helpers (parseInt, parseInteger)
+import Duckling.Numeral.Helpers (parseInteger)
 import Duckling.Numeral.Types (NumeralData(..))
 import Duckling.Regex.Types
 import Duckling.Types

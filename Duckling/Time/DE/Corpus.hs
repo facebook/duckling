@@ -352,7 +352,7 @@ allExamples = concat
              , "in 30 minuten"
              ]
   , examples (datetime (2013, 2, 12, 7, 0, 0) Second)
-             [ "in 2.5 stunden"
+             [ "in 2,5 stunden"
              , "in zwei ein halb stunden"
              ]
   , examples (datetime (2013, 2, 12, 5, 30, 0) Minute)

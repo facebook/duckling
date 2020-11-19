@@ -76,6 +76,7 @@ data Lang
   | EN
   | ES
   | ET
+  | FA
   | FI
   | FR
   | GA

@@ -83,4 +83,21 @@ allExamples = concat
              [ "५०"
              , "पचास"
              ]
+  , examples (NumeralValue 300)
+             [ "तीन सौ"
+             ]
+  , examples (NumeralValue 81)
+             [ "इक्यासी"
+             ]
+  , examples (NumeralValue 150)
+             [ "एक सौ पचास"
+             ]
+  , examples (NumeralValue 1000)
+             [ "हज़ार"
+             , "एक हज़ार"
+             , "हज़ार" -- हज़ार using a different character scheme
+             ]
+  , examples (NumeralValue 1520)
+             [ "एक हज़ार पाँच सौ बीस"
+             ]
   ]

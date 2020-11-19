@@ -15,7 +15,6 @@ module Duckling.Numeral.HI.Rules
 
 import Data.HashMap.Strict (HashMap)
 import Data.Maybe
-import Data.String
 import Data.Text (Text)
 import Prelude
 import qualified Data.HashMap.Strict as HashMap
@@ -57,36 +56,20 @@ ruleDevanagari = Rule
       _ -> Nothing
   }
 
-ruleNumeralMap :: HashMap Text Integer
-ruleNumeralMap = HashMap.fromList
+ruleZeroToNinetyNineMap :: HashMap Text Integer
+ruleZeroToNinetyNineMap = HashMap.fromList
   [ ( "शून्य", 0 )
   , ( "एक", 1 )
-  , ( "दो" , 2 )
+  , ( "दो", 2 )
   , ( "तीन", 3 )
   , ( "चार", 4 )
   , ( "पाँच", 5 )
+  , ( "छः", 6 )
   , ( "छह", 6 )
   , ( "सात", 7 )
   , ( "आठ", 8 )
-  , ( "नौ" , 9 )
-  , ( "दस", 10 )
-  ]
-
-ruleNumeral :: Rule
-ruleNumeral = Rule
-  { name = "number (0..10)"
-  , pattern =
-    [ regex "(शून्य|एक|दो|तीन|चार|पाँच|छह|सात|आठ|नौ|दस)"
-    ]
-  , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) ->
-        HashMap.lookup match ruleNumeralMap >>= integer
-      _ -> Nothing
-  }
-
-elevenToNineteenMap :: HashMap Text Integer
-elevenToNineteenMap = HashMap.fromList
-  [ ( "ग्यारह", 11 )
+  , ( "नौ", 9 )
+  , ( "ग्यारह", 11 )
   , ( "बारह", 12 )
   , ( "तेरह", 13 )
   , ( "चौदह", 14 )
@@ -95,23 +78,7 @@ elevenToNineteenMap = HashMap.fromList
   , ( "सत्रह", 17 )
   , ( "अठारह", 18 )
   , ( "उन्नीस", 19 )
-  ]
-
-ruleElevenToNineteen :: Rule
-ruleElevenToNineteen = Rule
-  { name = "number (11..19)"
-  , pattern =
-    [ regex "(ग्यारह|बारह|तेरह|चौदह|पन्द्रह|सोलह|सत्रह|अठारह|उन्नीस)"
-    ]
-  , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) ->
-        HashMap.lookup match elevenToNineteenMap >>= integer
-      _ -> Nothing
-  }
-
-twentyoneToTwentynineMap :: HashMap Text Integer
-twentyoneToTwentynineMap = HashMap.fromList
-  [ ( "इक्कीस", 21 )
+  , ( "इक्कीस", 21 )
   , ( "बाईस", 22 )
   , ( "तेईस", 23 )
   , ( "चौबीस", 24 )
@@ -120,23 +87,88 @@ twentyoneToTwentynineMap = HashMap.fromList
   , ( "सत्ताईस", 27 )
   , ( "अट्ठाईस", 28 )
   , ( "उनतीस", 29 )
+  , ( "इकतीस", 31 )
+  , ( "इकत्तीस", 31 )
+  , ( "बत्तीस", 32 )
+  , ( "तैंतीस", 33 )
+  , ( "चौंतीस", 34 )
+  , ( "पैंतीस", 35 )
+  , ( "छत्तीस", 36 )
+  , ( "सैंतीस", 37 )
+  , ( "अड़तीस", 38 )
+  , ( "उनतालीस", 39 )
+  , ( "इकतालीस", 41 )
+  , ( "बयालीस", 42 )
+  , ( "तैंतालीस", 43 )
+  , ( "चौवालीस", 44 )
+  , ( "पैंतालीस", 45 )
+  , ( "छियालीस", 46 )
+  , ( "सैंतालीस", 47 )
+  , ( "अड़तालीस", 48 )
+  , ( "उनचास", 49 )
+  , ( "इक्यावन", 51 )
+  , ( "बावन", 52 )
+  , ( "तिरेपन", 53 )
+  , ( "चौवन", 54 )
+  , ( "पचपन", 55 )
+  , ( "छप्पन", 56 )
+  , ( "सत्तावन", 57 )
+  , ( "अट्ठावन", 58 )
+  , ( "उनसठ", 59 )
+  , ( "इकसठ", 61 )
+  , ( "बासठ", 62 )
+  , ( "तिरेसठ", 63 )
+  , ( "चौंसठ", 64 )
+  , ( "पैंसठ", 65 )
+  , ( "छियासठ", 66 )
+  , ( "सड़सठ", 67 )
+  , ( "अड़सठ", 68 )
+  , ( "उनहत्तर", 69 )
+  , ( "इकहत्तर", 71 )
+  , ( "बहत्तर", 72 )
+  , ( "तिहत्तर", 73 )
+  , ( "चौहत्तर", 74 )
+  , ( "पचहत्तर", 75 )
+  , ( "छिहत्तर", 76 )
+  , ( "सतहत्तर", 77 )
+  , ( "अठहत्तर", 78 )
+  , ( "उनासी", 79 )
+  , ( "इक्यासी", 81 )
+  , ( "बयासी", 82 )
+  , ( "तिरासी", 83 )
+  , ( "चौरासी", 84 )
+  , ( "पचासी", 85 )
+  , ( "छियासी", 86 )
+  , ( "सतासी", 87 )
+  , ( "अट्ठासी", 88 )
+  , ( "नवासी", 89 )
+  , ( "इक्यानवे", 91 )
+  , ( "बानवे", 92 )
+  , ( "तिरानवे", 93 )
+  , ( "चौरानवे", 94 )
+  , ( "पचानवे", 95 )
+  , ( "छियानवे", 96 )
+  , ( "सत्तानवे", 97 )
+  , ( "अट्ठानवे", 98 )
+  , ( "निन्यानवे", 99 )
   ]
 
-ruleTwentyoneToTwentynine :: Rule
-ruleTwentyoneToTwentynine = Rule
-  { name = "number (21..29)"
+ruleZeroToNinetyNine :: Rule
+ruleZeroToNinetyNine = Rule
+  { name = "number (0..99)"
   , pattern =
-    [ regex "(इक्कीस|बाईस|तेईस|चौबीस|पच्चीस|छब्बीस|सत्ताईस|अट्ठाईस|उनतीस)"
+    [ regex "(शून्य|एक|दो|तीन|चार|पाँच|छे|छह|सात|आठ|नौ|ग्यारह|बारह|तेरह|चौदह|पन्द्रह|सोलह|सत्रह|अठारह|उन्नीस|इक्कीस|बाईस|तेईस|चौबीस|पच्चीस|छब्बीस|सत्ताईस|अट्ठाईस|उनतीस|इकतीस|बत्तीस|तैंतीस|चौंतीस|पैंतीस|छत्तीस|सैंतीस|अड़तीस|उनतालीस|इकतालीस|बयालीस|तैंतालीस|चौवालीस|पैंतालीस|छियालीस|सैंतालीस|अड़तालीस|उनचास|इक्यावन|बावन|तिरेपन|चौवन|पचपन|छप्पन|सत्तावन|अट्ठावन|उनसठ|इकसठ|बासठ|तिरेसठ|चौंसठ|पैंसठ|छियासठ|सड़सठ|अड़सठ|उनहत्तर|इकहत्तर|बहत्तर|तिहत्तर|चौहत्तर|पचहत्तर|छिहत्तर|सतहत्तर|अठहत्तर|उनासी|इक्यासी|बयासी|तिरासी|चौरासी|पचासी|छियासी|सतासी|अट्ठासी|नवासी|इक्यानवे|बानवे|तिरानवे|चौरानवे|पचानवे|छियानवे|सत्तानवे|अट्ठानवे|निन्यानवे)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
-        HashMap.lookup match twentyoneToTwentynineMap >>= integer
+        HashMap.lookup match ruleZeroToNinetyNineMap >>= integer
       _ -> Nothing
   }
 
 tensMap :: HashMap Text Integer
 tensMap = HashMap.fromList
-  [ ( "बीस", 20 )
+  [ ("दस", 10)
+  , ( "बीस", 20 )
   , ( "तीस", 30 )
   , ( "चालीस", 40 )
   , ( "पचास", 50 )
@@ -150,7 +182,7 @@ ruleTens :: Rule
 ruleTens = Rule
   { name = "integer (20,30..90)"
   , pattern =
-    [ regex "(बीस|तीस|चालीस|पचास|साठ|सत्तर|अस्सी|नब्बे)"
+    [ regex "(दस|बीस|तीस|चालीस|पचास|साठ|सत्तर|अस्सी|नब्बे)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
@@ -158,12 +190,72 @@ ruleTens = Rule
       _ -> Nothing
   }
 
+rulePowersOfTen :: Rule
+rulePowersOfTen = Rule
+  { name = "powers of tens"
+  , pattern = [regex "(सौ|हज़ार|हज़ार)"]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (match : _)) : _) ->
+        case Text.toLower match of
+          "सौ" -> double 1e2 >>= withGrain 2 >>= withMultipliable
+          "हज़ार" -> double 1e3 >>= withGrain 3 >>= withMultipliable
+          "हज़ार" -> double 1e3 >>= withGrain 3 >>= withMultipliable
+          _ -> Nothing
+      _ -> Nothing
+  }
+
+ruleMultiply :: Rule
+ruleMultiply = Rule
+  { name = "compose by multiplication"
+  , pattern =
+    [ Predicate isPositive
+    , Predicate isMultipliable
+    ]
+  , prod = \tokens -> case tokens of
+      (token1:token2:_) -> multiply token1 token2
+      _ -> Nothing
+  }
+
+ruleCompositeHundreds :: Rule
+ruleCompositeHundreds = Rule
+  { name = "integer 100s.."
+  , pattern =
+    [ oneOf [100,200..5000]
+    , regex "[\\s\\-]+"
+    , numberBetween 1 99
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Numeral NumeralData{TNumeral.value = hundreds}:
+       _:
+       Token Numeral NumeralData{TNumeral.value = remaining}:
+       _) -> double $ hundreds + remaining
+      _ -> Nothing
+  }
+
+
+ruleCompositeThousands :: Rule
+ruleCompositeThousands = Rule
+  { name = "integer 100s.."
+  , pattern =
+    [ oneOf [1000,2000..50000]
+    , regex "[\\s\\-]+"
+    , numberBetween 1 999
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Numeral NumeralData{TNumeral.value = thousands}:
+       _:
+       Token Numeral NumeralData{TNumeral.value = remaining}:
+       _) -> double $ thousands + remaining
+      _ -> Nothing
+  }
 
 rules :: [Rule]
 rules =
   [ ruleDevanagari
-  , ruleNumeral
-  , ruleElevenToNineteen
-  , ruleTwentyoneToTwentynine
+  , ruleZeroToNinetyNine
   , ruleTens
+  , rulePowersOfTen
+  , ruleMultiply
+  , ruleCompositeHundreds
+  , ruleCompositeThousands
   ]

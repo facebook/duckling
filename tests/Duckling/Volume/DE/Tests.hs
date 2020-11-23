@@ -19,5 +19,5 @@ import Duckling.Volume.DE.Corpus
 
 tests :: TestTree
 tests = testGroup "DE Tests"
-  [ makeCorpusTest [This Volume] corpus
+  [ makeCorpusTest [Seal Volume] corpus
   ]

@@ -12,7 +12,9 @@
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE NoRebindableSyntax #-}
+{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE StandaloneDeriving #-}
@@ -26,15 +28,19 @@ import Data.Aeson
 import Data.GADT.Compare
 import Data.GADT.Show
 import Data.Hashable
+import Data.HashMap.Strict (HashMap)
 import Data.HashSet (HashSet)
+import Data.List (intersperse, sortOn)
 import Data.Maybe
-import Data.Some
-import Data.Text (Text)
+import Data.Semigroup ((<>))
+import Data.Text (Text, toLower, unpack)
 import Data.Typeable ((:~:)(Refl), eqT, Typeable)
 import GHC.Generics
 import Prelude
 import TextShow (TextShow(..))
 import qualified Data.ByteString.Lazy as LB
+import qualified Data.HashMap.Strict as HashMap
+import qualified Data.Text as TT
 import qualified Data.Text.Encoding as Text
 import qualified Text.Regex.Base as R
 import qualified Text.Regex.PCRE as PCRE
@@ -50,7 +56,7 @@ import Duckling.Numeral.Types (NumeralData)
 import Duckling.Ordinal.Types (OrdinalData)
 import Duckling.PhoneNumber.Types (PhoneNumberData)
 import Duckling.Quantity.Types (QuantityData)
-import Duckling.Regex.Types (GroupMatch)
+import Duckling.Regex.Types
 import Duckling.Resolve
 import Duckling.Temperature.Types (TemperatureData)
 import Duckling.Time.Types (TimeData)
@@ -77,6 +83,23 @@ instance NFData Token where
   rnf (Token _ v) = rnf v
 
 -- -----------------------------------------------------------------
+-- Seal
+
+data Seal s where
+  Seal :: s a -> Seal s
+
+instance GEq s => Eq (Seal s) where
+  Seal x == Seal y =
+    defaultEq x y
+
+instance GShow s => Show (Seal s) where
+  showsPrec p (Seal s)
+    = showParen (p > 10) (showString "Seal " . gshowsPrec 11 s)
+
+withSeal :: Seal s -> (forall t. s t -> r) -> r
+withSeal (Seal x) f = f x
+
+-- -----------------------------------------------------------------
 -- Dimension
 
 class (Show a, Typeable a, Typeable (DimensionData  a)) =>
@@ -85,7 +108,7 @@ class (Show a, Typeable a, Typeable (DimensionData  a)) =>
   dimRules :: a -> [Rule]
   dimLangRules :: Lang -> a -> [Rule]
   dimLocaleRules :: Region -> a -> [Rule]
-  dimDependents :: a -> HashSet (Some Dimension)
+  dimDependents :: a -> HashSet (Seal Dimension)
 
 -- | GADT for differentiating between dimensions
 -- Each dimension should have its own constructor and provide the data structure
@@ -131,12 +154,12 @@ instance GShow Dimension where gshowsPrec = showsPrec
 -- TextShow
 instance TextShow (Dimension a) where
   showb d = TS.fromString $ show d
-instance TextShow (Some Dimension) where
-  showb (This d) = showb d
+instance TextShow (Seal Dimension) where
+  showb (Seal d) = showb d
 
 -- Hashable
-instance Hashable (Some Dimension) where
-  hashWithSalt s (This a) = hashWithSalt s a
+instance Hashable (Seal Dimension) where
+  hashWithSalt s (Seal a) = hashWithSalt s a
 instance Hashable (Dimension a) where
   hashWithSalt s RegexMatch          = hashWithSalt s (0::Int)
   hashWithSalt s Distance            = hashWithSalt s (1::Int)
@@ -314,3 +337,21 @@ regex = Regex . R.makeRegexOpts compOpts execOpts
 
 dimension :: Typeable a => Dimension a -> PatternItem
 dimension value = Predicate $ isDimension value
+
+-- -----------------------------------------------------------------
+-- Rule Construction helpers
+
+singleStringLookupRule :: HashMap Text a -> Text -> (a -> Maybe Token) -> Rule
+singleStringLookupRule hashMap name production = Rule
+  { name = name
+  , pattern = [ regex $ unpack regexString ]
+  , prod = \case
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        HashMap.lookup (toLower match) hashMap >>= production
+      _ -> Nothing
+  }
+  where
+    regexString =
+      "(" <> mconcat
+      (intersperse "|" $ sortOn (negate . TT.length) $ HashMap.keys hashMap)
+      <> ")"

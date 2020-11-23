@@ -36,7 +36,7 @@ ruleHalves = Rule
     , dimension TimeGrain
     ]
   , prod = \tokens -> case tokens of
-      (_:Token TimeGrain grain:_) -> Token Duration <$> timesOneAndAHalf grain 0
+      (_:Token TimeGrain grain:_) -> Token Duration <$> nPlusOneHalf grain 0
       _ -> Nothing
   }
 
@@ -48,7 +48,7 @@ ruleGrainAndAHalf = Rule
     , regex "и половина"
     ]
   , prod = \tokens -> case tokens of
-      (Token TimeGrain grain:_) -> Token Duration <$> timesOneAndAHalf grain 1
+      (Token TimeGrain grain:_) -> Token Duration <$> nPlusOneHalf grain 1
       _ -> Nothing
   }
 
@@ -63,7 +63,7 @@ ruleDurationAndAHalf = Rule
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData{TNumeral.value = v}:
        Token TimeGrain grain:
-       _) -> timesOneAndAHalf grain (floor $ v) >>= Just . Token Duration
+       _) -> nPlusOneHalf grain (floor $ v) >>= Just . Token Duration
       _ -> Nothing
   }
 

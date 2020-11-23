@@ -49,6 +49,8 @@ allExamples = concat
              , "2 extra minutes"
              , "2 less minutes"
              , "2 fewer minutes"
+             , "2m"
+             , "2 m"
              ]
   , examples (DurationData 30 Day)
              [ "30 days"
@@ -81,6 +83,32 @@ allExamples = concat
   , examples (DurationData 90 Minute)
              [ "an hour and a half"
              , "one hour and half"
+             , "1 hour thirty"
+             , "1 hour and thirty"
+             , "1.5 hours"
+             , "1.5 hrs"
+             , "one and two quarter hour"
+             , "one and two quarters hour"
+             , "one and two quarter of hour"
+             , "one and two quarters of hour"
+             ]
+  , examples (DurationData 75 Minute)
+             [ "1 hour fifteen"
+             , "1 hour and fifteen"
+             , "one and quarter hour"
+             , "one and a quarter hour"
+             , "one and one quarter hour"
+             , "one and quarter of hour"
+             , "one and a quarter of hour"
+             , "one and one quarter of hour"
+             ]
+  , examples (DurationData 130 Minute)
+             [ "2 hours ten"
+             , "2 hour and 10"
+             ]
+  , examples (DurationData 3615 Second)
+             [ "1 hour fifteen seconds"
+             , "1 hour and fifteen seconds"
              ]
   , examples (DurationData 45 Day)
              [ "a month and a half"
@@ -102,4 +130,34 @@ allExamples = concat
              , "five and half min"
              , "5 and an half minute"
              ]
+  , examples (DurationData 105 Minute)
+              [ "one and three quarter hour"
+              , "one and three quarters hour"
+              , "one and three quarter of hour"
+              , "one and three quarters of hour"
+              , "one and three quarter of hours"
+              , "one and three quarters of hours"
+              ]
+  , examples (DurationData 135 Minute)
+             [ "two and quarter hour"
+             , "two and a quarter of hour"
+             , "two and quarter of hours"
+             , "two and a quarter of hours"
+             ]
+  , examples (DurationData 105 Minute)
+              [ "an hour and 45 minutes"
+              , "one hour and 45 minutes"
+              ]
+  , examples (DurationData 90 Second)
+              [ "a minute and 30 seconds"
+              , "one minute and 30 seconds"
+              ]
+  , examples (DurationData 3630 Second)
+              [ "an hour and 30 seconds"]
+  , examples (DurationData 930 Second)
+              [ "15.5 minutes"
+              , "15.5 minute"
+              , "15.5 mins"
+              , "15.5 min"
+              ]
   ]

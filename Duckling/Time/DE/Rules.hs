@@ -18,13 +18,14 @@ import Data.Text (Text)
 import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
+import Duckling.Duration.Helpers (isGrain)
 import Duckling.Numeral.Helpers (parseInt)
-import Duckling.Ordinal.Types (OrdinalData (..))
+import Duckling.Ordinal.Types (OrdinalData(..))
 import Duckling.Regex.Types (GroupMatch(..))
 import Duckling.Time.Computed
 import Duckling.Time.Helpers
 import Duckling.Time.HolidayHelpers
-import Duckling.Time.Types (TimeData (..))
+import Duckling.Time.Types (TimeData(..))
 import Duckling.Types
 import qualified Duckling.Ordinal.Types as TOrdinal
 import qualified Duckling.Time.Types as TTime
@@ -54,7 +55,7 @@ ruleDaysOfWeek = mkRuleDaysOfWeek
   , ( "Donnerstag", "donn?erstag|do\\.?"           )
   , ( "Freitag"   , "freitags?|fr\\.?"             )
   , ( "Samstag"   , "samstags?|sonnabends?|sa\\.?" )
-  , ( "Sonntag"   , "sonntags?|so\\.?"             )
+  , ( "Sonntag"   , "sonntags?|so\\."             )
   ]
 
 ruleMonths :: [Rule]
@@ -711,7 +712,7 @@ ruleTimeofdayApproximately = Rule
   { name = "<time-of-day> approximately"
   , pattern =
     [ Predicate isATimeOfDay
-    , regex "(um )?zirka|ungef(ä)hr|etwa"
+    , regex "ca\\.?|circa|zirka|ungef(ä)hr|(in )?etwa"
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_) -> tt $ notLatent td
@@ -1102,7 +1103,7 @@ ruleAboutTimeofday :: Rule
 ruleAboutTimeofday = Rule
   { name = "about <time-of-day>"
   , pattern =
-    [ regex "(um )?zirka|ca\\.?|ungef(ä)hr|etwa|gegen"
+    [ regex "so( um)?|(so |um |so um )?circa|zirka|ca\\.?|ungef(ä)hr|(etwa|gegen)( so| um| so um)?"
     , Predicate isATimeOfDay
     ]
   , prod = \tokens -> case tokens of

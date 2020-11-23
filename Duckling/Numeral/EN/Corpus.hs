@@ -141,6 +141,11 @@ allExamples = concat
              , "-1200K"
              , "-.0012G"
              ]
+  , examples (NumeralValue (-3200000))
+             [ "-3,200,000"
+             , "-3200000"
+             , "minus three million two hundred thousand"
+             ]
   , examples (NumeralValue 122)
              [ "one twenty two"
              , "ONE TwentY tWO"

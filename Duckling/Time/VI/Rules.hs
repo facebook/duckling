@@ -9,19 +9,21 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Time.VI.Rules
-  ( rules ) where
+  ( rules
+  ) where
 
 import Prelude
 import Data.Text (Text)
 import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
+import Duckling.Duration.Helpers (isGrain)
 import Duckling.Numeral.Helpers (parseInt)
 import Duckling.Numeral.Types (NumeralData(..))
 import Duckling.Ordinal.Types (OrdinalData(..))
 import Duckling.Regex.Types
 import Duckling.Time.Helpers
-import Duckling.Time.Types (TimeData (..))
+import Duckling.Time.Types (TimeData(..))
 import Duckling.Types
 import qualified Duckling.Numeral.Types as TNumeral
 import qualified Duckling.Ordinal.Types as TOrdinal

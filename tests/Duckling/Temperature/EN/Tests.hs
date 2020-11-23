@@ -22,14 +22,14 @@ import Duckling.Types (Range(..))
 
 tests :: TestTree
 tests = testGroup "EN Tests"
-  [ makeCorpusTest [This Temperature] corpus
+  [ makeCorpusTest [Seal Temperature] corpus
   , rangeTests
   ]
 
 rangeTests :: TestTree
 rangeTests = testCase "Range Test" $
   mapM_ (analyzedRangeTest testContext testOptions
-          . withTargets [This Temperature]) xs
+          . withTargets [Seal Temperature]) xs
   where
     xs = [ ("between 40 and 30 degrees", Range 15 25 )
          , ("30 degrees degrees", Range 0 10 )

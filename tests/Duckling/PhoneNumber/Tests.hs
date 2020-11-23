@@ -26,8 +26,8 @@ import qualified Duckling.PhoneNumber.PT.Tests as PT
 
 tests :: TestTree
 tests = testGroup "PhoneNumber Tests"
-  [ makeCorpusTest [This PhoneNumber] corpus
-  , makeNegativeCorpusTest [This PhoneNumber] negativeCorpus
+  [ makeCorpusTest [Seal PhoneNumber] corpus
+  , makeNegativeCorpusTest [Seal PhoneNumber] negativeCorpus
   , surroundTests
   , PT.tests
   , AR.tests
@@ -36,7 +36,7 @@ tests = testGroup "PhoneNumber Tests"
 surroundTests :: TestTree
 surroundTests = testCase "Surround Tests" $
   mapM_ (analyzedFirstTest testContext testOptions .
-    withTargets [This PhoneNumber]) xs
+    withTargets [Seal PhoneNumber]) xs
   where
     xs = examples (PhoneNumberValue "06354640807")
                   [ "hey 06354640807"

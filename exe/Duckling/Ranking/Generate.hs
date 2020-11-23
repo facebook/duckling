@@ -28,6 +28,7 @@ import Duckling.Ranking.Types
 import Duckling.Rules
 import Duckling.Testing.Types
 import qualified Duckling.Time.AR.Corpus as ARTime
+import qualified Duckling.Time.BG.Corpus as BGTime
 import qualified Duckling.Time.DA.Corpus as DATime
 import qualified Duckling.Time.DE.Corpus as DETime
 import qualified Duckling.Time.EL.Corpus as ELTime
@@ -94,7 +95,7 @@ regenClassifiers locale = do
 
     filepath = "Duckling/Ranking/Classifiers/" ++ moduleName ++ ".hs"
 
-    rules = rulesFor locale . HashSet.singleton $ This Time
+    rules = rulesFor locale . HashSet.singleton $ Seal Time
 
     -- | The trained classifier to write out
     classifiers = makeClassifiers rules trainSet
@@ -169,8 +170,9 @@ getDefaultCorpusForLang NL = NLTime.defaultCorpus
 getDefaultCorpusForLang lang = getCorpusForLang lang
 
 getCorpusForLang :: Lang -> Corpus
+getCorpusForLang AF = (testContext, testOptions, [])
 getCorpusForLang AR = ARTime.corpus
-getCorpusForLang BG = (testContext, testOptions, [])
+getCorpusForLang BG = BGTime.corpus
 getCorpusForLang BN = (testContext, testOptions, [])
 getCorpusForLang CS = (testContext, testOptions, [])
 getCorpusForLang DA = DATime.corpus
@@ -180,6 +182,7 @@ getCorpusForLang EN = ENTime.corpus
 getCorpusForLang ES = ESTime.corpus
 getCorpusForLang ET = (testContext, testOptions, [])
 getCorpusForLang FI = (testContext, testOptions, [])
+getCorpusForLang FA = (testContext, testOptions, [])
 getCorpusForLang FR = FRTime.corpus
 getCorpusForLang GA = GATime.corpus
 getCorpusForLang HR = HRTime.corpus
@@ -205,9 +208,11 @@ getCorpusForLang PL = PLTime.corpus
 getCorpusForLang PT = PTTime.corpus
 getCorpusForLang RO = ROTime.corpus
 getCorpusForLang RU = (testContext, testOptions, [])
+getCorpusForLang SK = (testContext, testOptions, [])
 getCorpusForLang SV = SVTime.corpus
 getCorpusForLang SW = (testContext, testOptions, [])
 getCorpusForLang TA = (testContext, testOptions, [])
+getCorpusForLang TH = (testContext, testOptions, [])
 getCorpusForLang TR = (testContext, testOptions, [])
 getCorpusForLang UK = UKTime.corpus
 getCorpusForLang VI = VITime.corpus

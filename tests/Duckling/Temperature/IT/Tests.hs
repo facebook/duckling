@@ -17,5 +17,5 @@ import Duckling.Testing.Asserts
 
 tests :: TestTree
 tests = testGroup "IT Tests"
-  [ makeCorpusTest [This Temperature] corpus
+  [ makeCorpusTest [Seal Temperature] corpus
   ]

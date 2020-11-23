@@ -89,7 +89,7 @@ ruleInteger3 :: Rule
 ruleInteger3 = Rule
   { name = "integer ([2-9][1-9])"
   , pattern =
-    [ regex "(ein|zwei|drei|vier|fünf|sechs|sieben|acht|neun)und(zwanzig|dreissig|vierzig|fünfzig|sechzig|siebzig|achtzig|neunzig)"
+    [ regex "(ein|zwei|drei|vier|fünf|sechs|sieben|acht|neun)und(zwanzig|dreissig|dreißig|vierzig|fünfzig|sechzig|siebzig|achtzig|neunzig)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (m1:m2:_)):_) -> do
@@ -107,6 +107,7 @@ ruleInteger3 = Rule
         v2 <- case Text.toLower m2 of
           "zwanzig" -> Just 20
           "dreissig" -> Just 30
+          "dreißig" -> Just 30
           "vierzig" -> Just 40
           "fünfzig" -> Just 50
           "sechzig" -> Just 60
@@ -266,6 +267,7 @@ tensMap :: HashMap Text Integer
 tensMap = HashMap.fromList
   [ ( "zwanzig" , 20 )
   , ( "dreissig", 30 )
+  , ( "dreißig" , 30 )
   , ( "vierzig" , 40 )
   , ( "fünfzig" , 50 )
   , ( "sechzig" , 60 )
@@ -279,7 +281,7 @@ ruleInteger2 :: Rule
 ruleInteger2 = Rule
   { name = "integer (20..90)"
   , pattern =
-    [ regex "(zwanzig|dreissig|vierzig|fünfzig|sechzig|siebzig|achtzig|neunzig)"
+    [ regex "(zwanzig|dreissig|dreißig|vierzig|fünfzig|sechzig|siebzig|achtzig|neunzig)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->

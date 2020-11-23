@@ -33,6 +33,11 @@ allExamples = concat
              , "segunda"
              , "segundos"
              ]
+  , examples (OrdinalData 3)
+             [ "tercero"
+             , "tercera"
+             , "terceros"
+             ]
   , examples (OrdinalData 10)
              [ "decimo"
              , "decimas"

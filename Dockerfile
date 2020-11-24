@@ -18,7 +18,7 @@ RUN stack setup
 # NOTE:`stack build` will use as many cores as are available to build
 # in parallel. However, this can cause OOM issues as the linking step
 # in GHC can be expensive. If the build fails, try specifying the
-# # '-j1' flag to force the build to run sequentially.
+# '-j1' flag to force the build to run sequentially.
 RUN stack install
 
 FROM debian:buster
@@ -26,7 +26,7 @@ FROM debian:buster
 ENV LANG C.UTF-8
 
 RUN apt-get update -qq && \
-  apt-get install -qq -y libpcre3 libgmp10 libssl-dev ca-certificates --no-install-recommends && \
+  apt-get install -qq -y libpcre3 libgmp10 libssl-dev --no-install-recommends && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 

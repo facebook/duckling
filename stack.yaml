@@ -5,6 +5,8 @@ packages:
 
 extra-deps: []
 
-flags: {}
+flags:
+  snap-server:
+    openssl: True
 
 extra-package-dbs: []

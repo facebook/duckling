@@ -1,7 +1,7 @@
 FROM haskell:8 AS builder
 
 RUN apt-get update -qq && \
-  apt-get install -qq -y libpcre3 libpcre3-dev build-essential --fix-missing --no-install-recommends && \
+  apt-get install -qq -y libssl-dev libpcre3 libpcre3-dev build-essential --fix-missing --no-install-recommends && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
@@ -15,7 +15,6 @@ ENV LANG=C.UTF-8
 
 RUN stack setup
 
-
 # NOTE:`stack build` will use as many cores as are available to build
 # in parallel. However, this can cause OOM issues as the linking step
 # in GHC can be expensive. If the build fails, try specifying the
@@ -27,7 +26,7 @@ FROM debian:buster
 ENV LANG C.UTF-8
 
 RUN apt-get update -qq && \
-  apt-get install -qq -y libpcre3 libgmp10 --no-install-recommends && \
+  apt-get install -qq -y libpcre3 libgmp10 libssl-dev --no-install-recommends && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 

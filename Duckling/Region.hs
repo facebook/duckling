@@ -30,6 +30,7 @@ data Region
   | CL
   | CN
   | CO
+  | EG
   | ES
   | GB
   | HK

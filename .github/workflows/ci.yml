@@ -43,7 +43,7 @@ jobs:
     - name: Build
       run: |
         cabal configure --enable-tests --enable-benchmarks --test-show-details=direct
-        cabal build all
+        cabal build lib:duckling test:duckling-test
 
     - name: Test
       run: |
@@ -75,7 +75,7 @@ jobs:
 
     - name: Build
       run: |
-        stack build --system-ghc --test --bench --no-run-tests --no-run-benchmarks
+        stack build duckling:lib --system-ghc --test --bench --no-run-tests --no-run-benchmarks
 
     - name: Test
       run: |

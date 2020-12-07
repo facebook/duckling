@@ -76,7 +76,6 @@ classifiers (Locale EN (Just GB)) = EN_GBClassifiers.classifiers
 classifiers (Locale EN (Just US)) = EN_USClassifiers.classifiers
 classifiers (Locale EN _) = EN_XXClassifiers.classifiers
 classifiers (Locale ES _) = ES_XXClassifiers.classifiers
--- classifiers (Locale ES (Just CA)) = CA_XXClassifiers.classifiers
 classifiers (Locale ET _) = ET_XXClassifiers.classifiers
 classifiers (Locale FI _) = FI_XXClassifiers.classifiers
 classifiers (Locale FR _) = FR_XXClassifiers.classifiers

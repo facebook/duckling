@@ -390,7 +390,7 @@ allExamples = concat
   , examples (datetimeInterval ((2013, 2, 11, 20, 0, 0), (2013, 2, 13, 22, 59, 0)) Hour)
              [ "ahir al vespre"
              ]
-, examples (datetimeInterval ((2013, 2, 12, 23, 0, 0), (2013, 2, 13, 0, 59, 0)) Hour)
+  , examples (datetimeInterval ((2013, 2, 12, 23, 0, 0), (2013, 2, 13, 0, 59, 0)) Hour)
              [ "aquesta nit"
              ]
   , examples (datetimeInterval ((2013, 2, 13, 23, 0, 0), (2013, 2, 14, 0, 59, 0)) Hour)

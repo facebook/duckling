@@ -33,6 +33,11 @@ import qualified Duckling.AmountOfMoney.EN.PH.Corpus as PH
 import qualified Duckling.AmountOfMoney.EN.TT.Corpus as TT
 import qualified Duckling.AmountOfMoney.EN.US.Corpus as US
 import qualified Duckling.AmountOfMoney.EN.ZA.Corpus as ZA
+import qualified Duckling.Region as R
+  ( Region
+      ( CA
+      )
+  )
 
 tests :: TestTree
 tests = testGroup "EN Tests"
@@ -122,7 +127,7 @@ localeTests = testGroup "Locale Tests"
   where
     localeAU = makeLocale EN $ Just AU
     localeBZ = makeLocale EN $ Just BZ
-    localeCA = makeLocale EN $ Just CA
+    localeCA = makeLocale EN $ Just R.CA
     localeGB = makeLocale EN $ Just GB
     localeIE = makeLocale EN $ Just IE
     localeIN = makeLocale EN $ Just IN

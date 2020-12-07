@@ -26,26 +26,25 @@ allExamples = concat
   [ examples (simple Celsius 37)
              [ "37°C"
              , "37 ° celsius"
-             , "37 graus Celsius"
-             , "37 graus C"
-             , "trenta-set grays"
-             , "37 centígrads"
-             , "37 graus centígrads"
-             , "37 Celsius"
+             , "37 grados Celsius"
+             , "37 grados C"
+             , "treinta y siete celsius"
+             , "37 centígrados"
+             , "37 grados centígrados"
              ]
   , examples (simple Fahrenheit 70)
              [ "70°F"
              , "70 ° Fahrenheit"
-             , "70 graus F"
+             , "70 grados F"
              , "setenta Fahrenheit"
              ]
   , examples (simple Degree 45)
              [ "45°"
-             , "45 graus"
+             , "45 grados"
              ]
   , examples (simple Degree (-10))
              [ "-10°"
-             , "- deu graus"
-             , "10 sota zero"
+             , "- diez grados"
+             , "10 bajo cero"
              ]
   ]

@@ -939,6 +939,7 @@ test-suite duckling-test
                      -- Duration
                      , Duckling.Duration.AR.Tests
                      , Duckling.Duration.BG.Tests
+                     , Duckling.Duration.CA.Tests
                      , Duckling.Duration.EL.Tests
                      , Duckling.Duration.EN.Tests
                      , Duckling.Duration.ES.Tests
@@ -975,6 +976,7 @@ test-suite duckling-test
                      , Duckling.Numeral.AR.Tests
                      , Duckling.Numeral.BG.Tests
                      , Duckling.Numeral.BN.Tests
+                     , Duckling.Numeral.CA.Tests
                      , Duckling.Numeral.CS.Tests
                      , Duckling.Numeral.DA.Tests
                      , Duckling.Numeral.DE.Tests
@@ -1022,6 +1024,7 @@ test-suite duckling-test
                      -- Ordinal
                      , Duckling.Ordinal.AR.Tests
                      , Duckling.Ordinal.BG.Tests
+                     , Duckling.Ordinal.CA.Tests
                      , Duckling.Ordinal.DA.Tests
                      , Duckling.Ordinal.DE.Tests
                      , Duckling.Ordinal.EL.Tests
@@ -1078,6 +1081,7 @@ test-suite duckling-test
 
                      -- Temperature
                      , Duckling.Temperature.AR.Tests
+                     , Duckling.Temperature.CA.Tests
                      , Duckling.Temperature.EN.Tests
                      , Duckling.Temperature.ES.Tests
                      , Duckling.Temperature.FR.Tests
@@ -1098,6 +1102,7 @@ test-suite duckling-test
                      -- Time
                      , Duckling.Time.AR.Tests
                      , Duckling.Time.BG.Tests
+                     , Duckling.Time.CA.Tests
                      , Duckling.Time.DA.Tests
                      , Duckling.Time.DE.Tests
                      , Duckling.Time.EL.Tests
@@ -1127,6 +1132,7 @@ test-suite duckling-test
 
                      -- Volume
                      , Duckling.Volume.AR.Tests
+                     , Duckling.Volume.CA.Tests
                      , Duckling.Volume.DE.Tests
                      , Duckling.Volume.EN.Tests
                      , Duckling.Volume.ES.Tests

@@ -6,6 +6,7 @@
 
 
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE TypeApplications #-}
 
 import Control.Applicative hiding (empty)
 import Control.Arrow ((***))
@@ -34,6 +35,7 @@ import Snap.Http.Server
 
 import Duckling.Core
 import Duckling.Data.TimeZone
+import Duckling.Dimensions (allDimensions)
 import Duckling.Resolve (DucklingTime)
 
 createIfMissing :: FilePath -> IO ()
@@ -92,14 +94,18 @@ parseHandler tzs = do
       let timezone = parseTimeZone tz
       now <- liftIO $ currentReftime tzs timezone
       let
+        lang = parseLang l
+
         context = Context
           { referenceTime = maybe now (parseRefTime timezone) ref
-          , locale = maybe (makeLocale (parseLang l) Nothing) parseLocale loc
+          , locale = maybe (makeLocale lang Nothing) parseLocale loc
           }
         options = Options {withLatent = parseLatent latent}
 
-        dimParse = fromMaybe [] $ decode $ LBS.fromStrict $ fromMaybe "" ds
-        dims = mapMaybe parseDimension dimParse
+        dims = fromMaybe (allDimensions lang) $ do
+          queryDims <- ds
+          txtDims <- decode @[Text] $ LBS.fromStrict queryDims
+          pure $ mapMaybe parseDimensions txtDims
 
         parsedResult = parse (Text.decodeUtf8 tx) context options dims
 
@@ -144,4 +150,3 @@ parseHandler tzs = do
     parseLatent :: Maybe ByteString -> Bool
     parseLatent x = fromMaybe defaultLatent
       (readMaybe (Text.unpack $ Text.toTitle $ Text.decodeUtf8 $ fromMaybe empty x)::Maybe Bool)
-

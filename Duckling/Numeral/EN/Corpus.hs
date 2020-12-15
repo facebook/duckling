@@ -115,6 +115,8 @@ allExamples = concat
              , "3,000,000"
              , "3 million"
              , "30 lakh"
+             , "30 lkh"
+             , "30 l"
              ]
   , examples (NumeralValue 1.2e6)
              [ "1,200,000"
@@ -123,6 +125,7 @@ allExamples = concat
              , "1200k"
              , ".0012G"
              , "12 lakhs"
+             , "12 lkhs"
              ]
   , examples (NumeralValue 5000)
              [ "5 thousand"
@@ -163,6 +166,7 @@ allExamples = concat
   , examples (NumeralValue 31256721)
              [ "thirty-one million two hundred fifty-six thousand seven hundred twenty-one"
              , "three crore twelve lakh fifty-six thousand seven hundred twenty-one"
+             , "three cr twelve lac fifty-six thousand seven hundred twenty-one"
              ]
   , examples (NumeralValue 2400)
              [ "two hundred dozens"
@@ -175,5 +179,9 @@ allExamples = concat
              [ "three billions"
              , "three thousand millions"
              , "three hundred crores"
+             , "three hundred Cr"
+             , "three hundred koti"
+             , "three hundred krores"
+             , "three hundred Kr"
              ]
   ]

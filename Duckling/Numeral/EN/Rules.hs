@@ -16,7 +16,6 @@ module Duckling.Numeral.EN.Rules
 import Control.Applicative ((<|>))
 import Data.HashMap.Strict (HashMap)
 import Data.Maybe
-import Data.String
 import Data.Text (Text)
 import Prelude
 import qualified Data.HashMap.Strict as HashMap
@@ -126,20 +125,32 @@ ruleTens = Rule
       _ -> Nothing
   }
 
+powersOfTensMap :: HashMap Text Int
+powersOfTensMap = HashMap.fromList
+  [ ("hundred", 2)
+  , ("thousand", 3)
+  , ("lakh", 5)
+  , ("lkh", 5)
+  , ("l", 5)
+  , ("lac", 5)
+  , ("million", 6)
+  , ("cr", 7)
+  , ("crore", 7)
+  , ("krore", 7)
+  , ("kr", 7)
+  , ("koti", 7)
+  , ("billion", 9)
+  , ("trillion", 12)
+  ]
+
 rulePowersOfTen :: Rule
 rulePowersOfTen = Rule
   { name = "powers of tens"
-  , pattern = [regex "(hundred|thousand|lakh|million|crore|billion)s?"]
+  , pattern = [regex "(hundred|thousand|l(ac|(a?kh)?)|million|((k|c)r(ore)?|koti)|billion)s?"]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match : _)) : _) ->
-        case Text.toLower match of
-          "hundred" -> double 1e2 >>= withGrain 2 >>= withMultipliable
-          "thousand" -> double 1e3 >>= withGrain 3 >>= withMultipliable
-          "lakh" -> double 1e5 >>= withGrain 5 >>= withMultipliable
-          "million" -> double 1e6 >>= withGrain 6 >>= withMultipliable
-          "crore" -> double 1e7 >>= withGrain 7 >>= withMultipliable
-          "billion" -> double 1e9 >>= withGrain 9 >>= withMultipliable
-          _ -> Nothing
+      (Token RegexMatch (GroupMatch (match : _)) : _) -> do
+        grain <- HashMap.lookup (Text.toLower match) powersOfTensMap
+        double (10 ^ grain) >>= withGrain grain >>= withMultipliable
       _ -> Nothing
   }
 

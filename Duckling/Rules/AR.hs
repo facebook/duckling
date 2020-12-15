@@ -20,6 +20,7 @@ import Duckling.Types
 import qualified Duckling.AmountOfMoney.AR.Rules as AmountOfMoney
 import qualified Duckling.Duration.AR.Rules as Duration
 import qualified Duckling.Numeral.AR.Rules as Numeral
+import qualified Duckling.Numeral.AR.EG.Rules as NumeralEG
 import qualified Duckling.Ordinal.AR.Rules as Ordinal
 import qualified Duckling.PhoneNumber.AR.Rules as PhoneNumber
 import qualified Duckling.Quantity.AR.Rules as Quantity
@@ -32,6 +33,7 @@ defaultRules :: Seal Dimension -> [Rule]
 defaultRules = langRules
 
 localeRules :: Region -> Seal Dimension -> [Rule]
+localeRules EG (Seal Numeral) = NumeralEG.rules
 localeRules region (Seal (CustomDimension dim)) = dimLocaleRules region dim
 localeRules _ _ = []
 

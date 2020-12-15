@@ -400,6 +400,9 @@ library
                      , Duckling.Numeral.AR.Corpus
                      , Duckling.Numeral.AR.Helpers
                      , Duckling.Numeral.AR.Rules
+                     , Duckling.Numeral.AR.EG.Corpus
+                     , Duckling.Numeral.AR.EG.Helpers
+                     , Duckling.Numeral.AR.EG.Rules
                      , Duckling.Numeral.BG.Corpus
                      , Duckling.Numeral.BG.Rules
                      , Duckling.Numeral.BN.Corpus

@@ -105,7 +105,7 @@ parseHandler tzs = do
         dims = fromMaybe (allDimensions lang) $ do
           queryDims <- ds
           txtDims <- decode @[Text] $ LBS.fromStrict queryDims
-          pure $ mapMaybe parseDimensions txtDims
+          pure $ mapMaybe parseDimension txtDims
 
         parsedResult = parse (Text.decodeUtf8 tx) context options dims
 

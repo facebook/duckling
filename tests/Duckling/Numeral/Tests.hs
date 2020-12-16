@@ -53,6 +53,7 @@ import qualified Duckling.Numeral.SK.Tests as SK
 import qualified Duckling.Numeral.SV.Tests as SV
 import qualified Duckling.Numeral.SW.Tests as SW
 import qualified Duckling.Numeral.TA.Tests as TA
+import qualified Duckling.Numeral.TE.Tests as TE
 import qualified Duckling.Numeral.TH.Tests as TH
 import qualified Duckling.Numeral.TR.Tests as TR
 import qualified Duckling.Numeral.UK.Tests as UK
@@ -103,6 +104,7 @@ tests = testGroup "Numeral Tests"
   , SV.tests
   , SW.tests
   , TA.tests
+  , TE.tests
   , TH.tests
   , TR.tests
   , UK.tests

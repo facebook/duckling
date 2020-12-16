@@ -108,6 +108,7 @@ data Lang
   | SV
   | SW
   | TA
+  | TE
   | TH
   | TR
   | UK

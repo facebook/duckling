@@ -212,6 +212,7 @@ getCorpusForLang SK = (testContext, testOptions, [])
 getCorpusForLang SV = SVTime.corpus
 getCorpusForLang SW = (testContext, testOptions, [])
 getCorpusForLang TA = (testContext, testOptions, [])
+getCorpusForLang TE = (testContext, testOptions, [])
 getCorpusForLang TH = (testContext, testOptions, [])
 getCorpusForLang TR = (testContext, testOptions, [])
 getCorpusForLang UK = UKTime.corpus

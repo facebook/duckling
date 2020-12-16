@@ -63,6 +63,7 @@ import qualified Duckling.Dimensions.SK as SKDimensions
 import qualified Duckling.Dimensions.SV as SVDimensions
 import qualified Duckling.Dimensions.SW as SWDimensions
 import qualified Duckling.Dimensions.TA as TADimensions
+import qualified Duckling.Dimensions.TE as TEDimensions
 import qualified Duckling.Dimensions.TH as THDimensions
 import qualified Duckling.Dimensions.TR as TRDimensions
 import qualified Duckling.Dimensions.UK as UKDimensions
@@ -142,6 +143,7 @@ langDimensions SK = SKDimensions.allDimensions
 langDimensions SV = SVDimensions.allDimensions
 langDimensions SW = SWDimensions.allDimensions
 langDimensions TA = TADimensions.allDimensions
+langDimensions TE = TEDimensions.allDimensions
 langDimensions TH = THDimensions.allDimensions
 langDimensions TR = TRDimensions.allDimensions
 langDimensions UK = UKDimensions.allDimensions

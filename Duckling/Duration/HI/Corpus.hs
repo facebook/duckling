@@ -48,4 +48,22 @@ allExamples = concat
              , "एक बरस"
              , "केवल एक साल"
              ]
+  , examples (DurationData 21 Month)
+             [ "पौने 2 साल"
+             ]
+  , examples (DurationData 105 Minute)
+             [ "पौने 2 घंटा"
+             ]
+  , examples (DurationData 27 Month)
+             [ "सवा 2 साल"
+             ]
+  , examples (DurationData 135 Minute)
+             [ "सवा 2 घंटा"
+             ]
+  , examples (DurationData 42 Month)
+             [ "साड़े 3 साल"
+             ]
+  , examples (DurationData 210 Minute)
+             [ "साड़े 3 घंटा"
+             ]
   ]

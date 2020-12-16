@@ -6,13 +6,13 @@
 
 
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Duration.HI.Rules
   ( rules
   ) where
 
-import Control.Monad (join)
 import Data.String
 import Data.HashMap.Strict (HashMap)
 import Data.Text (Text)
@@ -22,7 +22,6 @@ import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
 import Duckling.Duration.Helpers
-import Duckling.Numeral.Helpers (parseInteger)
 import Duckling.Numeral.Types (NumeralData (..))
 import Duckling.Regex.Types
 import Duckling.Types
@@ -63,7 +62,7 @@ ruleDurationPandrahMinat = Rule
   , pattern =
     [ regex "पंद्रह मिनट"
     ]
-  , prod = \_ -> Just . Token Duration $ duration TG.Minute 15
+  , prod = \_ -> Just $ Token Duration $ duration TG.Minute 15
   }
 
 ruleDurationPakhwaada :: Rule
@@ -72,7 +71,7 @@ ruleDurationPakhwaada = Rule
   , pattern =
     [ regex "((एक पखवाड़ा)|(पखवाड़ा))"
     ]
-  , prod = \_ -> Just . Token Duration $ duration TG.Day 14
+  , prod = \_ -> Just $ Token Duration $ duration TG.Day 14
   }
 
 ruleDurationDin :: Rule
@@ -81,7 +80,7 @@ ruleDurationDin = Rule
   , pattern =
     [ regex "((एक दिन)|(एक दिवस)|(दिन|दिवस))"
     ]
-  , prod = \_ -> Just . Token Duration $ duration TG.Day 1
+  , prod = \_ -> Just $ Token Duration $ duration TG.Day 1
   }
 
 ruleDurationEkSaal :: Rule
@@ -90,7 +89,7 @@ ruleDurationEkSaal = Rule
   , pattern =
     [ regex "एक (साल|वर्ष|बरस)"
     ]
-  , prod = \_ -> Just . Token Duration $ duration TG.Year 1
+  , prod = \_ -> Just $ Token Duration $ duration TG.Year 1
   }
 
 ruleDurationPreciseImprecise :: Rule
@@ -105,6 +104,53 @@ ruleDurationPreciseImprecise = Rule
         _ -> Nothing
   }
 
+rulePauneDuration :: Rule
+rulePauneDuration = Rule
+  { name = "Paune duration"
+  , pattern =
+    [ regex "पौने"
+    , Predicate isNatural
+    , dimension TimeGrain
+    ]
+  , prod = \case
+      (_:
+       Token Numeral NumeralData{TNumeral.value = v}:
+       Token TimeGrain grain:
+       _) -> Token Duration <$> timesThreeQuarter grain (floor (v - 1))
+      _ -> Nothing
+  }
+
+ruleSavaDuration :: Rule
+ruleSavaDuration = Rule
+  { name = "Sava duration"
+  , pattern =
+    [ regex "सवा"
+    , Predicate isNatural
+    , dimension TimeGrain
+    ]
+  , prod = \case
+      (_:
+       Token Numeral NumeralData{TNumeral.value = v}:
+       Token TimeGrain grain:
+       _) -> Token Duration <$> timesOneQuarter grain (floor v)
+      _ -> Nothing
+  }
+
+ruleSaadeDuration :: Rule
+ruleSaadeDuration = Rule
+  { name = "Saade duration"
+  , pattern =
+    [ regex "साढ़े|साड़े"
+    , Predicate isNatural
+    , dimension TimeGrain
+    ]
+  , prod = \case
+      (_:
+        Token Numeral NumeralData{TNumeral.value = v}:
+        Token TimeGrain grain:
+        _) -> Token Duration <$> nPlusOneHalf grain (floor v)
+      _ -> Nothing
+  }
 
 rules :: [Rule]
 rules =
@@ -114,4 +160,7 @@ rules =
   ,  ruleAadha
   ,  ruleDurationEkSaal
   ,  ruleDurationPreciseImprecise
+  ,  rulePauneDuration
+  ,  ruleSavaDuration
+  ,  ruleSaadeDuration
   ]

@@ -378,7 +378,7 @@ ruleToday :: Rule
 ruleToday = Rule
   { name = "today"
   , pattern =
-    [ regex "dzisiejszy|dzisiaj|dzi[śs]|w ten dzień|w ten dzien|w obecny dzień|w obecny dzien|obecnego dnia"
+    [ regex "dzisiejsz[yaą]|dzisiaj|dzi[śs]|w ten dzień|w ten dzien|w obecny dzień|w obecny dzien|obecnego dnia"
     ]
   , prod = \_ -> tt today
   }
@@ -755,13 +755,13 @@ ruleByTheEndOfTime = Rule
       _ -> Nothing
   }
 
-ruleDaybeforeyesterdaySingleword :: Rule
-ruleDaybeforeyesterdaySingleword = Rule
+ruleDayBeforeYesterdaySingleWord :: Rule
+ruleDayBeforeYesterdaySingleWord = Rule
   { name = "day-before-yesterday (single-word)"
   , pattern =
     [ regex "przedwczoraj"
     ]
-  , prod = \_ -> tt $ cycleNth TG.Day 2
+  , prod = \_ -> tt $ cycleNth TG.Day (-2)
   }
 
 ruleLastNCycle :: Rule
@@ -1633,7 +1633,7 @@ rules =
   , ruleCycleBeforeTime
   , ruleDatetimeDatetimeInterval
   , ruleDayaftertomorrowSingleword
-  , ruleDaybeforeyesterdaySingleword
+  , ruleDayBeforeYesterdaySingleWord
   , ruleDayofmonthNonOrdinalNamedmonth
   , ruleDayofmonthNonOrdinalOfNamedmonth
   , ruleDayofmonthOrdinal

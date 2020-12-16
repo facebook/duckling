@@ -177,11 +177,11 @@ classifiers
                                n = 58}}),
        ("today",
         Classifier{okData =
-                     ClassData{prior = -0.25131442828090605,
-                               unseen = -2.1972245773362196,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 7},
+                     ClassData{prior = -0.2006706954621511,
+                               unseen = -2.3978952727983707,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 9},
                    koData =
-                     ClassData{prior = -1.5040773967762742,
+                     ClassData{prior = -1.7047480922384253,
                                unseen = -1.3862943611198906,
                                likelihoods = HashMap.fromList [("", 0.0)], n = 2}}),
        ("mm/dd",
@@ -1678,6 +1678,13 @@ classifiers
                                     ("day", -1.6739764335716716), ("year", -2.0794415416798357),
                                     ("month", -2.0794415416798357)],
                                n = 5}}),
+       ("day-before-yesterday (single-word)",
+        Classifier{okData =
+                     ClassData{prior = 0.0, unseen = -1.0986122886681098,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 1},
+                   koData =
+                     ClassData{prior = -infinity, unseen = -0.6931471805599453,
+                               likelihoods = HashMap.fromList [], n = 0}}),
        ("Constitution Day",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -1.6094379124341003,

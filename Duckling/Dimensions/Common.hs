@@ -14,6 +14,7 @@ import Duckling.Dimensions.Types
 allDimensions :: [Seal Dimension]
 allDimensions =
   [ Seal AmountOfMoney
+  , Seal CreditCardNumber
   , Seal Email
   , Seal Numeral
   , Seal PhoneNumber

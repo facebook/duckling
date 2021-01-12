@@ -158,7 +158,7 @@ tzs = HashMap.fromList
   , ( "CHADT", TimeZone 825 True "CHADT" )
   , ( "CET", TimeZone 60 False "CET" )
   , ( "CEST", TimeZone 120 True "CEST" )
-  , ( "CDT", TimeZone 540 True "CDT" )
+  , ( "CDT", TimeZone (-300) True "CDT" )
   , ( "CCT", TimeZone 390 False "CCT" )
   , ( "CAT", TimeZone 120 False "CAT" )
   , ( "CAST", TimeZone 180 True "CAST" )

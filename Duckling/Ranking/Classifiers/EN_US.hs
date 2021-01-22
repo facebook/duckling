@@ -1895,6 +1895,13 @@ classifiers
                      ClassData{prior = -3.8066624897703196,
                                unseen = -1.0986122886681098,
                                likelihoods = HashMap.fromList [("", 0.0)], n = 1}}),
+       ("as soon as possible",
+        Classifier{okData =
+                     ClassData{prior = 0.0, unseen = -1.3862943611198906,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 2},
+                   koData =
+                     ClassData{prior = -infinity, unseen = -0.6931471805599453,
+                               likelihoods = HashMap.fromList [], n = 0}}),
        ("Memorial Day",
         Classifier{okData =
                      ClassData{prior = -0.1823215567939546,
@@ -2239,12 +2246,11 @@ classifiers
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("now",
         Classifier{okData =
-                     ClassData{prior = -8.004270767353637e-2,
-                               unseen = -2.639057329615259,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 12},
+                     ClassData{prior = -6.899287148695143e-2,
+                               unseen = -2.772588722239781,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 14},
                    koData =
-                     ClassData{prior = -2.5649493574615367,
-                               unseen = -1.0986122886681098,
+                     ClassData{prior = -2.70805020110221, unseen = -1.0986122886681098,
                                likelihoods = HashMap.fromList [("", 0.0)], n = 1}}),
        ("<day-of-month> (ordinal or number) of <named-month>",
         Classifier{okData =

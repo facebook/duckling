@@ -185,6 +185,8 @@ allExamples = concat
              [ "now"
              , "right now"
              , "just now"
+             , "at the moment"
+             , "ATM"
              ]
   , examples (datetime (2013, 2, 12, 0, 0, 0) Day)
              [ "today"
@@ -1236,6 +1238,10 @@ allExamples = concat
              ]
   , examples (datetime (2013, 2, 12, 5, 30, 0) Minute)
              [ "today in one hour"
+             ]
+  , examples (datetimeOpenInterval After (2013, 2, 12, 4, 30, 0) Second)
+             [ "ASAP"
+             , "as soon as possible"
              ]
   , examples (datetimeOpenInterval Before (2013, 2, 12, 14, 0, 0) Minute)
              [ "until 2:00pm"

@@ -138,9 +138,18 @@ ruleNow :: Rule
 ruleNow = Rule
   { name = "now"
   , pattern =
-    [ regex "now"
+    [ regex "now|at\\sthe\\smoment|atm"
     ]
   , prod = \_ -> tt now
+  }
+
+ruleASAP :: Rule
+ruleASAP = Rule
+  { name = "as soon as possible"
+  , pattern =
+    [ regex "asap|as\\ssoon\\sas\\spossible"
+    ]
+  , prod = \_ -> tt . withDirection TTime.After $ now
   }
 
 ruleNextDOW :: Rule
@@ -2730,6 +2739,7 @@ rules =
   , ruleEndOrBeginningOfYear
   , ruleEndOrBeginningOfWeek
   , ruleNow
+  , ruleASAP
   , ruleSeason
   , ruleEndOfMonth
   , ruleBeginningOfMonth

@@ -76,6 +76,14 @@ allExamples = concat
              [ "0,77"
              , ",77"
              ]
+  , examples (NumeralValue 100000)
+             [ "100.000"
+             , "100.000,0"
+             , "100000"
+             , "100K"
+             , "100k"
+             , "honderd duizend"
+             ]
   , examples (NumeralValue 300)
              [ "3 honderd"
              , "drie honderd"
@@ -83,6 +91,8 @@ allExamples = concat
   , examples (NumeralValue 5000)
              [ "5 duizend"
              , "vijf duizend"
+             , "5.000"
+             , "5.000,00"
              ]
   , examples (NumeralValue 144)
              [ "gros"
@@ -94,6 +104,9 @@ allExamples = concat
              ]
   , examples (NumeralValue 20000)
              [ "twintig duizend"
+             , "20.000"
+             , "20000"
+             , "20.000,00"
              ]
   , examples (NumeralValue 0.2)
              [ "1/5"

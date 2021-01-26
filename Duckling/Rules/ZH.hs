@@ -19,6 +19,7 @@ import Duckling.Locale
 import Duckling.Types
 import qualified Duckling.AmountOfMoney.ZH.Rules as AmountOfMoney
 import qualified Duckling.Distance.ZH.Rules as Distance
+import qualified Duckling.Duration.ZH.Rules as Duration
 import qualified Duckling.Numeral.ZH.Rules as Numeral
 import qualified Duckling.Ordinal.ZH.Rules as Ordinal
 import qualified Duckling.Quantity.ZH.Rules as Quantity
@@ -45,7 +46,7 @@ langRules :: Seal Dimension -> [Rule]
 langRules (Seal AmountOfMoney) = AmountOfMoney.rules
 langRules (Seal CreditCardNumber) = []
 langRules (Seal Distance) = Distance.rules
-langRules (Seal Duration) = []
+langRules (Seal Duration) = Duration.rules
 langRules (Seal Email) = []
 langRules (Seal Numeral) = Numeral.rules
 langRules (Seal Ordinal) = Ordinal.rules

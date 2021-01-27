@@ -160,9 +160,9 @@ ruleNit = Rule
 
 ruleMigdia:: Rule
 ruleMigdia = Rule
-  { name = "matinada"
+  { name = "migdia"
   , pattern =
-    [ regex "matinada"
+    [ regex "migdia|mig dia"
     ]
   , prod = \_ ->
       let from = hour False 11
@@ -182,7 +182,7 @@ ruleDayOfMonthSt :: Rule
 ruleDayOfMonthSt = Rule
   { name = "day of month (1st)"
   , pattern =
-    [ regex "primer|u|1er"
+    [ regex "primer|u|1er( de)?"
     ]
   , prod = \_ -> tt $ dayOfMonth 1
   }
@@ -204,7 +204,7 @@ ruleNow :: Rule
 ruleNow = Rule
   { name = "now"
   , pattern =
-    [ regex "(avui)|(en aquest moment)"
+    [ regex "avui"
     ]
   , prod = \_ -> tt today
   }
@@ -238,8 +238,6 @@ ruleEntreDatetimeEtDatetimeInterval = Rule
         Token Time <$> interval TTime.Open td1 td2
       _ -> Nothing
   }
-
-
 
 ruleHhhmmTimeofday :: Rule
 ruleHhhmmTimeofday = Rule
@@ -288,7 +286,7 @@ ruleElProximoCycle :: Rule
 ruleElProximoCycle = Rule
   { name = "el proximo <cycle> "
   , pattern =
-    [ regex "(el|els|la|les) ?"
+    [ regex "((el|els|la|les) )?"
     , regex "proper(a|s|es)?"
     , dimension TimeGrain
     ]
@@ -331,11 +329,10 @@ ruleNoon :: Rule
 ruleNoon = Rule
   { name = "noon"
   , pattern =
-    [ regex "noon"
+    [ regex "migdia|mig dia"
     ]
   , prod = \_ -> tt $ hour False 12
   }
-
 
 ruleProximasNCycle :: Rule
 ruleProximasNCycle = Rule
@@ -360,8 +357,6 @@ ruleNochevieja = Rule
     ]
   , prod = \_ -> tt $ monthDay 12 31
   }
-
-
 
 ruleTheDayBeforeYesterday :: Rule
 ruleTheDayBeforeYesterday = Rule
@@ -484,7 +479,7 @@ ruleHourofdayUnQuartiCinc :: Rule
 ruleHourofdayUnQuartiCinc = Rule
   { name = "un quart i cinc de <hour-of-day>"
   , pattern =
-    [ regex "((un|1)(\\squart|\\/4) i cinc|(dos|2)(\\squarts|\\/4) menys deu) (de |d')"
+    [ regex "((un quart|1\\/4) i cinc|(dos|2)(\\squarts|\\/4) menys deu) (de |d')"
     , Predicate isAnHourOfDay
     ]
   , prod = \tokens -> case tokens of
@@ -773,17 +768,33 @@ ruleDelYear = Rule
       _ -> Nothing
   }
 
+-- Revisar per que diria que no va bé
 ruleDdmm :: Rule
 ruleDdmm = Rule
   { name = "dd[/-]mm"
   , pattern =
-    [ regex "(3[01]|[12]\\d|0?[1-9])[/-](0?[1-9]|1[0-2])" -- Revisar per que diria que no va bé
+    [ regex "(3[01]|[12]\\d|0?[1-9])[/-](0?[1-9]|1[0-2])( |$)" 
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (m1:m2:_)):_) -> do
         d <- parseInt m1
         m <- parseInt m2
         tt $ monthDay m d
+      _ -> Nothing
+  }
+
+ruleDdmmyyyy :: Rule
+ruleDdmmyyyy = Rule
+  { name = "dd[/-.]mm[/-.]yyyy"
+  , pattern =
+    [ regex "(3[01]|[12]\\d|0?[1-9])[\\./-](0?[1-9]|1[0-2])[\\./-](\\d{2,4})"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (m1:m2:m3:_)):_) -> do
+        d <- parseInt m1
+        m <- parseInt m2
+        y <- parseInt m3
+        tt $ yearMonthDay y m d
       _ -> Nothing
   }
 
@@ -804,7 +815,7 @@ ruleMidnight :: Rule
 ruleMidnight = Rule
   { name = "midnight"
   , pattern =
-    [ regex "mitjanit"
+    [ regex "mitjanit|mitja nit"
     ]
   , prod = \_ -> tt $ hour False 0
   }
@@ -898,7 +909,7 @@ ruleRightNow :: Rule
 ruleRightNow = Rule
   { name = "right now"
   , pattern =
-    [ regex "ara( mateix)?|ja|tant aviat com puguis?"
+    [ regex "ara( mateix)?|ja|en aquests? moments?|tant aviat com puguis?"
     ]
   , prod = \_ -> tt now
   }
@@ -1124,8 +1135,9 @@ ruleTimeofdayHoras :: Rule
 ruleTimeofdayHoras = Rule
   { name = "<time-of-day> horas"
   , pattern =
-    [ Predicate isATimeOfDay
-    , regex "h\\.?(ore)?s?"
+    [ regex "(la | les )?"
+    , Predicate isATimeOfDay
+    , regex "h?\\.?(or(e|a))?s?"
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:_) ->
@@ -1404,21 +1416,6 @@ ruleALasTimeofday = Rule
   , prod = \tokens -> case tokens of
       (_:Token Time td:_) ->
         tt $ notLatent td
-      _ -> Nothing
-  }
-
-ruleDdmmyyyy :: Rule
-ruleDdmmyyyy = Rule
-  { name = "dd[/-.]mm[/-.]yyyy"
-  , pattern =
-    [ regex "(3[01]|[12]\\d|0?[1-9])[\\./-](0?[1-9]|1[0-2])[\\./-](\\d{2,4})"
-    ]
-  , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (m1:m2:m3:_)):_) -> do
-        d <- parseInt m1
-        m <- parseInt m2
-        y <- parseInt m3
-        tt $ yearMonthDay y m d
       _ -> Nothing
   }
 

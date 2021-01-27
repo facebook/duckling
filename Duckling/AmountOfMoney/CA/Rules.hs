@@ -62,7 +62,7 @@ rulePounds :: Rule
 rulePounds = Rule
   { name = "£"
   , pattern =
-    [ regex "(lliure|libra)s?"
+    [ regex "(lliure|lliura)s?"
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly Pound
   }

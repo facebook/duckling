@@ -19,7 +19,7 @@ import Duckling.Resolve
 import Duckling.Testing.Types
 
 corpus :: Corpus
-corpus = (testContext {locale = makeLocale ES Nothing}, testOptions, allExamples)
+corpus = (testContext {locale = makeLocale CA Nothing}, testOptions, allExamples)
 
 allExamples :: [Example]
 allExamples = concat
@@ -29,16 +29,16 @@ allExamples = concat
              , "primers"
              , "primeres"
              ]
-  , examples (OrdinalData 2)
-             [ "segon"
-             , "segona"
-             , "segons"
-             , "segones"
-             ]
-  , examples (OrdinalData 10)
-             [ "desè"
-             , "desena"
-             , "desens"
-             , "desenes"
-             ]
+   , examples (OrdinalData 2)
+              [ "segon"
+              , "segona"
+              , "segons"
+              , "segones"
+              ]
+   , examples (OrdinalData 10)
+              [ "desè"
+              , "desena"
+              , "desens"
+              , "desenes"
+              ]
   ]

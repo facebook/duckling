@@ -576,6 +576,21 @@ ruleDdmm = Rule
       _ -> Nothing
   }
 
+ruleDdmmyyyy :: Rule
+ruleDdmmyyyy = Rule
+  { name = "dd[/-.]mm[/-.]yyyy"
+  , pattern =
+    [ regex "(3[01]|[12]\\d|0?[1-9])[\\./-](0?[1-9]|1[0-2])[\\./-](\\d{2,4})"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (m1:m2:m3:_)):_) -> do
+        d <- parseInt m1
+        m <- parseInt m2
+        y <- parseInt m3
+        tt $ yearMonthDay y m d
+      _ -> Nothing
+  }
+
 ruleAfternoon :: Rule
 ruleAfternoon = Rule
   { name = "afternoon"
@@ -1162,21 +1177,6 @@ ruleALasTimeofday = Rule
   , prod = \tokens -> case tokens of
       (_:Token Time td:_) ->
         tt $ notLatent td
-      _ -> Nothing
-  }
-
-ruleDdmmyyyy :: Rule
-ruleDdmmyyyy = Rule
-  { name = "dd[/-.]mm[/-.]yyyy"
-  , pattern =
-    [ regex "(3[01]|[12]\\d|0?[1-9])[\\./-](0?[1-9]|1[0-2])[\\./-](\\d{2,4})"
-    ]
-  , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (m1:m2:m3:_)):_) -> do
-        d <- parseInt m1
-        m <- parseInt m2
-        y <- parseInt m3
-        tt $ yearMonthDay y m d
       _ -> Nothing
   }
 

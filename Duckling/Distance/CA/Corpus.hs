@@ -20,7 +20,7 @@ import Duckling.Resolve
 import Duckling.Testing.Types
 
 corpus :: Corpus
-corpus = (testContext {locale = makeLocale ES Nothing}, testOptions, allExamples)
+corpus = (testContext {locale = makeLocale CA Nothing}, testOptions, allExamples)
 
 allExamples :: [Example]
 allExamples = concat
@@ -34,7 +34,7 @@ allExamples = concat
              , "3k"
              ]
   , examples (simple Kilometre 3.0)
-             [ "3,0 km"
+             [ "3 km" 
              ]
   , examples (simple Mile 8)
              [ "8 milles"

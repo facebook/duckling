@@ -20,7 +20,7 @@ import Duckling.Ranking.Types
 
 classifiers :: Classifiers
 classifiers
-  = HashMap.fromList
+  = HashMap.fromList 
       [("midnight",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -1.0986122886681098,

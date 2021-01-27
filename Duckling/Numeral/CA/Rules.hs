@@ -48,7 +48,6 @@ byTensMap =
     , ("noranta", 90)
     ]
 
-
 -- Ull, no tinc clar que hagi de començar per 20 donat que la vintena no s'escriu igual que de la 
 --   trentena en amunt vint-i-u trenta-u
 
@@ -72,12 +71,13 @@ zeroToFifteenMap =
     [ ("zero", 0)
     , ("cero", 0)
     , ("u", 1)
-    , ("una", 1)
     , ("un", 1)
+    , ("una", 1)
     , ("dos", 2)
+    , ("dues", 2)
     , ("tres", 3)
     , ("quatre", 4)
-    , ("cinco", 5)
+    , ("cinc", 5)
     , ("sis", 6)
     , ("set", 7)
     , ("vuit", 8)
@@ -95,7 +95,7 @@ ruleNumeral = Rule
   { name = "number (0..15)"
   , pattern =
       [ regex
-          "((c|z)ero|u(n|na)?|dos|tres|quatre|cinc|sis|set|vuit|nou|deu|onze|dotze|tretze|catorze|quinze)"
+          "((c|z)ero|u(na|n)?|d(o|ue)s|tres|quatre|cinc|sis|set|vuit|nou|deu|onze|dotze|tretze|catorze|quinze)"
       ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match : _)) : _) ->
@@ -108,8 +108,13 @@ sixteenToTwentyNineMap =
   HashMap.fromList
     [ ("setze", 16)
     , ("disset", 17)
+    , ("diset", 17)
+    , ("dèsset", 17)
     , ("divuit", 18)
+    , ("dihuit", 18)
     , ("dinou", 19)
+    , ("dènou", 19)
+    , ("denou", 19)
     , ("vint-i-u", 21)
     , ("vint-i-una", 21)
     , ("vint-i-dos", 22)
@@ -127,7 +132,7 @@ ruleNumeral5 = Rule
   { name = "number (16..19 21..29)"
   , pattern =
       [ regex
-          "(setze|disset|divuit|dinou|vint-i-u(na)?|vint-i-dos|vint-i-tres|vint-i-quatre|vint-i-cinc|vint-i-sis|vint-i-set|vint-i-vuit|vint-i-nou)"
+          "(setze|d(i|e|è)ss?et|di(v|h)uit|d(i|e|è)nou|vint-i-u(na)?|vint-i-dos|vint-i-tres|vint-i-quatre|vint-i-cinc|vint-i-sis|vint-i-set|vint-i-vuit|vint-i-nou)"
       ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match : _)) : _) ->
@@ -210,7 +215,7 @@ ruleNumeral4 :: Rule
 ruleNumeral4 = Rule
   { name = "number (21..29)"
   , pattern =
-      [oneOf [20], regex "-i-", numberBetween 1 10]
+      [oneOf [20], regex "(-i-| i )", numberBetween 1 10]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData { TNumeral.value = v1 } : _ : Token Numeral NumeralData { TNumeral.value = v2 } : _) ->
         double $ v1 + v2
@@ -272,6 +277,37 @@ ruleBelowTenWithTwoDigits = Rule
       _ -> Nothing
   }
 
+ruleDecimalWithThousandsSeparator :: Rule
+ruleDecimalWithThousandsSeparator = Rule
+  { name = "decimal with thousands separator ."
+  , pattern = [regex "(\\d+(\\.\\d\\d\\d)+,\\d+)"]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (match : _)) : _) ->
+        let fmt = Text.replace "," "." $ Text.replace "." Text.empty match
+        in parseDouble fmt >>= double
+      _ -> Nothing
+  }
+
+ruleDecimalNumeral :: Rule
+ruleDecimalNumeral = Rule
+  { name = "decimal number ,"
+  , pattern = [regex "(\\d*,\\d+)"]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (match : _)) : _) ->
+        parseDecimal False match
+      _ -> Nothing
+  }
+
+ruleIntegerWithThousandsSeparator :: Rule
+ruleIntegerWithThousandsSeparator = Rule
+  { name = "integer with thousands separator ."
+  , pattern = [regex "(\\d{1,3}(\\.\\d\\d\\d){1,5})"]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (match : _)) : _) ->
+        parseDouble (Text.replace "." Text.empty match) >>= double
+      _ -> Nothing
+  }
+
 rules :: [Rule]
 rules =
   [ ruleBelowTenWithTwoDigits
@@ -286,4 +322,7 @@ rules =
   , ruleNumerals
   , ruleNumeralsPrefixWithNegativeOrMinus
   , ruleNumeralsSuffixesKMG
+  , ruleDecimalNumeral
+  , ruleDecimalWithThousandsSeparator
+  , ruleIntegerWithThousandsSeparator
   ]

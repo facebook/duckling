@@ -20,7 +20,7 @@ import Duckling.Resolve
 import Duckling.Testing.Types
 
 corpus :: Corpus
-corpus = (testContext {locale = makeLocale ES Nothing}, testOptions, allExamples)
+corpus = (testContext {locale = makeLocale CA Nothing}, testOptions, allExamples)
 
 allExamples :: [Example]
 allExamples = concat
@@ -75,7 +75,7 @@ allExamples = concat
              ]
   , examples (between Dollar (10, 20))
              [ "entre 10 i 20 dòlars"
-             , "de $10 a $20"
+             , "des de $10 fins a $20"
              , "10$ - 20 dolars"
              , "10 - 20 $"
              ]

@@ -61,7 +61,7 @@ ordinalsMap = HashMap.fromList
   , ( "novenes" , 9 )
   , ( "desè" , 10 )
   , ( "desena" , 10 )
-  , ( "decens" , 10 )
+  , ( "desens" , 10 )
   , ( "desenes" , 10 )
   , ( "onzè" , 11 )
   , ( "onzena" , 11 )
@@ -89,7 +89,7 @@ ruleOrdinalsPrimero :: Rule
 ruleOrdinalsPrimero = Rule
   { name = "ordinals (primero..10)"
   , pattern =
-    [ regex "((primer(a|s|es)?|segon(a|s|es)?|tercer(a|s|es)?|quart(a|s|es)?|cinqu(è|ena|ns|enes)|sis(è|ena|ns|enes)|set(è|ena|ns|enes)|vuit(è|ena|ns|enes)|nov(è|ena|ns|enes)|des(è|ena|ns|enes)|onz(è|ena)|dotz(è|ena)|tretz(è|ena)|catorz(è|ena)|quinz(è|ena)|setz(è|ena)|disset(è|ena)|divuit(è|ena)|dinov(è|ena)|vint(è|ena)"
+    [ regex "(primer(a|s|es)?|segon(a|s|es)?|tercer(a|s|es)?|quart(a|s|es)?|cinqu(è|ena|ens|enes)|sis(è|ena|ens|enes)|set(è|ena|ens|enes)|vuit(è|ena|ens|enes)|nov(è|ena|ens|enes)|des(è|ena|ens|enes)|onz(è|ena)|dotz(è|ena)|tretz(è|ena)|catorz(è|ena)|quinz(è|ena)|setz(è|ena)|disset(è|ena)|divuit(è|ena)|dinov(è|ena)|vint(è|ena))"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->

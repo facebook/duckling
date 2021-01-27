@@ -19,7 +19,7 @@ import Duckling.Temperature.Types
 import Duckling.Testing.Types
 
 corpus :: Corpus
-corpus = (testContext {locale = makeLocale ES Nothing}, testOptions, allExamples)
+corpus = (testContext {locale = makeLocale CA Nothing}, testOptions, allExamples)
 
 allExamples :: [Example]
 allExamples = concat
@@ -28,7 +28,6 @@ allExamples = concat
              , "37 ° celsius"
              , "37 graus Celsius"
              , "37 graus C"
-             , "trenta-set grays"
              , "37 centígrads"
              , "37 graus centígrads"
              , "37 Celsius"
@@ -37,11 +36,15 @@ allExamples = concat
              [ "70°F"
              , "70 ° Fahrenheit"
              , "70 graus F"
-             , "setenta Fahrenheit"
+             , "setanta Fahrenheit"
              ]
   , examples (simple Degree 45)
              [ "45°"
              , "45 graus"
+             ]
+  , examples (simple Degree 37)
+             [ "trenta-set graus"
+             , "37 grads"
              ]
   , examples (simple Degree (-10))
              [ "-10°"

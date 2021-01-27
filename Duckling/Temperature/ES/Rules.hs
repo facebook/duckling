@@ -65,7 +65,7 @@ ruleLatentTempTempBajoCero = Rule
   { name = "<latent temp> temp bajo cero"
   , pattern =
     [ Predicate $ isValueOnly True
-    , regex "sota zero"
+    , regex "bajo cero"
     ]
   , prod = \case
       (Token Temperature td@TemperatureData{TTemperature.value = Just v}:_) ->

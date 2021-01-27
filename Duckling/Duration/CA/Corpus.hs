@@ -21,7 +21,7 @@ import Duckling.Testing.Types
 import Duckling.TimeGrain.Types (Grain(..))
 
 corpus :: Corpus
-corpus = (testContext {locale = makeLocale ES Nothing}, testOptions, allExamples)
+corpus = (testContext {locale = makeLocale CA Nothing}, testOptions, allExamples)
 
 allExamples :: [Example]
 allExamples = concat
@@ -41,25 +41,25 @@ allExamples = concat
              ]
   , examples (DurationData 45 Minute)
              [  "tres quarts d'hora"
-             ,  "3/4 de horas"
+             ,  "3/4 d'hora"
              ,  "3 quarts d'hora"
              ,  "tres quarts"
              ,  "quaranta-cinc minuts"
-             ,  "quaranta cinc minuts"
-             ,  "curanta-cinc minuts"
-             ,  "curanta cinc minuts"
+             -- ,  "quaranta cinc minuts" variante mal escrita no contemplada en rules de Numeral
+             -- ,  "curanta-cinc minuts" variante mal escrita no contemplada en rules de Numeral
+             -- ,  "curanta cinc minuts" variante mal escrita no contemplada en rules de Numeral
              ,  "45 minuts"
              ]
   , examples (DurationData 92 Minute)
              [
                "una hora i trenta-dos minuts"
              , "una hora trenta-dos minuts" 
-             , "una hora trenta dos minuts" 
+             -- , "una hora trenta dos minuts" variante mal escrita no contemplada en rules de Numeral
              ]
   , examples (DurationData 155 Minute)
              [
                "dues hores i trenta-cinc minuts"
              , "dues hores trenta-cinc minuts"
-             , "dues hores trenta cinc minuts"
+             -- , "dues hores trenta cinc minuts" variante mal escrita no contemplada en rules de Numeral
              ]
   ]

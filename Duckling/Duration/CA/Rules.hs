@@ -29,7 +29,7 @@ ruleDurationQuarterOfAnHour :: Rule
 ruleDurationQuarterOfAnHour = Rule
   { name = "quarter of an hour"
   , pattern =
-    [ regex "quarts? d'hora"
+    [ regex "((1 |un )?quarts?|1/4) d'hora"
     ]
   , prod = \_ -> Just $ Token Duration $ duration TG.Minute 15
   }
@@ -38,7 +38,7 @@ ruleDurationHalfOfAnHour :: Rule
 ruleDurationHalfOfAnHour = Rule
   { name = "half of an hour"
   , pattern =
-    [ regex "mitja hora"
+    [ regex "(mitja hora|dos quarts)"
     ]
   , prod = \_ -> Just $ Token Duration $ duration TG.Minute 30
   }
@@ -47,7 +47,7 @@ ruleDurationThreeQuartersOfAnHour :: Rule
 ruleDurationThreeQuartersOfAnHour = Rule
   { name = "three-quarters of an hour"
   , pattern =
-    [ regex "(tres quarts|3/4) d'hor([a]|(es))"
+    [ regex "((tres|3) quarts|3/4)( d'hor([a]|(es)))?"
     ]
   , prod = \_ -> Just $ Token Duration $ duration TG.Minute 45
   }

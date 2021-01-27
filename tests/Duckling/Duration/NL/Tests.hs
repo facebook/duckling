@@ -10,7 +10,6 @@ module Duckling.Duration.NL.Tests
   ) where
 
 import Data.String
-import Prelude
 import Test.Tasty
 
 import Duckling.Dimensions.Types

@@ -1705,6 +1705,18 @@ classifiers
                    koData =
                      ClassData{prior = -infinity, unseen = -1.3862943611198906,
                                likelihoods = HashMap.fromList [], n = 0}}),
+       ("composite <duration>",
+        Classifier{okData =
+                     ClassData{prior = -infinity, unseen = -1.0986122886681098,
+                               likelihoods = HashMap.fromList [], n = 0},
+                   koData =
+                     ClassData{prior = 0.0, unseen = -1.9459101490553135,
+                               likelihoods =
+                                 HashMap.fromList
+                                   [("integer (numeric)hour (grain)<integer> + '\"",
+                                     -0.6931471805599453),
+                                    ("hourminute", -0.6931471805599453)],
+                               n = 2}}),
        ("summer",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -1.0986122886681098,

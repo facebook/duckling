@@ -7,6 +7,7 @@
 
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE LambdaCase #-}
 
 module Duckling.Duration.NL.Rules
   ( rules ) where
@@ -18,10 +19,12 @@ import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
 import Duckling.Duration.Helpers
+import Duckling.Duration.Types (DurationData(..))
 import Duckling.Numeral.Helpers (parseInt, parseInteger)
 import Duckling.Numeral.Types (NumeralData(..))
 import Duckling.Regex.Types
 import Duckling.Types
+import qualified Duckling.Duration.Types as TDuration
 import qualified Duckling.Numeral.Types as TNumeral
 import qualified Duckling.TimeGrain.Types as TG
 
@@ -109,6 +112,41 @@ ruleDurationOneAndHalfHour = Rule
   , prod = \_ -> Just . Token Duration $ duration TG.Minute 90
   }
 
+-- | NOTE: Oxford comma is not supported.
+ruleCompositeDurationCommasAnd :: Rule
+ruleCompositeDurationCommasAnd = Rule
+  { name = "composite <duration> (with ,/and)"
+  , pattern =
+    [ Predicate isNatural
+    , dimension TimeGrain
+    , regex ",|en|plus"
+    , dimension Duration
+    ]
+  , prod = \case
+      (Token Numeral NumeralData{TNumeral.value = v}:
+       Token TimeGrain g:
+       _:
+       Token Duration dd@DurationData{TDuration.grain = dg}:
+       _) | g > dg -> Just . Token Duration $ duration g (floor v) <> dd
+      _ -> Nothing
+  }
+
+ruleCompositeDuration :: Rule
+ruleCompositeDuration = Rule
+  { name = "composite <duration>"
+  , pattern =
+    [ Predicate isNatural
+    , dimension TimeGrain
+    , dimension Duration
+    ]
+  , prod = \case
+      (Token Numeral NumeralData{TNumeral.value = v}:
+       Token TimeGrain g:
+       Token Duration dd@DurationData{TDuration.grain = dg}:
+       _) | g > dg -> Just . Token Duration $ duration g (floor v) <> dd
+      _ -> Nothing
+  }
+
 ruleDurationPrecision :: Rule
 ruleDurationPrecision = Rule
   { name = "about|exactly <duration>"
@@ -125,6 +163,8 @@ rules :: [Rule]
 rules =
   [ ruleDurationQuarterOfAnHour
   , ruleDurationKwartier
+  , ruleCompositeDurationCommasAnd
+  , ruleCompositeDuration
   , ruleDurationHalfAnHour
   , ruleDurationThreeQuartersOfAnHour
   , ruleDurationDotNumeralHours

@@ -8,7 +8,6 @@
 module Duckling.Numeral.PL.Tests
   ( tests ) where
 
-import Prelude
 import Data.String
 import Test.Tasty
 

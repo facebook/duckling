@@ -12,7 +12,6 @@
 module Duckling.Time.RO.Rules
   ( rules ) where
 
-import Data.Text (Text)
 import Prelude
 
 import Duckling.Dimensions.Types
@@ -25,6 +24,15 @@ import Duckling.Types
 import qualified Data.Text as Text
 import qualified Duckling.Time.Types as TTime
 import qualified Duckling.TimeGrain.Types as TG
+
+ruleTheDayAfterTomorrow :: Rule
+ruleTheDayAfterTomorrow = Rule
+  { name = "the day after tomorrow"
+  , pattern =
+    [ regex "poim(a|â)ine"
+    ]
+  , prod = \_ -> tt $ cycleNth TG.Day 2
+  }
 
 ruleAcum :: Rule
 ruleAcum = Rule
@@ -1332,6 +1340,7 @@ rules =
   , ruleYearLatent
   , ruleYearLatent2
   , ruleYyyymmdd
+  , ruleTheDayAfterTomorrow
   ]
   ++ ruleDaysOfWeek
   ++ ruleMonths

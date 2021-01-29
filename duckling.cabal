@@ -103,6 +103,7 @@ library
                      , Duckling.Ranking.Rank
                      , Duckling.Ranking.Classifiers
                      , Duckling.Ranking.Classifiers.AF_XX
+                     , Duckling.Ranking.Classifiers.AR_EG
                      , Duckling.Ranking.Classifiers.AR_XX
                      , Duckling.Ranking.Classifiers.BG_XX
                      , Duckling.Ranking.Classifiers.BN_XX

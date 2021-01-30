@@ -14,6 +14,7 @@
 module Duckling.Time.EN.Rules where
 
 import Control.Applicative ((<|>))
+import Control.Monad (guard)
 import Data.Maybe
 import Prelude
 import qualified Data.Text as Text
@@ -388,10 +389,10 @@ ruleYearLatent = Rule
       [ Predicate $
         or . sequence [isIntegerBetween (- 10000) 0, isIntegerBetween 25 10000]
       ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (token:_) -> do
         n <- getIntValue token
-        tt . mkLatent $ year n
+        tt $ mkLatent $ year n
       _ -> Nothing
   }
 
@@ -1290,7 +1291,45 @@ ruleIntervalFromDDDDOfMonth = Rule
       _ -> Nothing
   }
 
--- Blocked for :latent time. May need to accept certain latents only, like hours
+-- In order to support latent year ranges, e.g. "1960 - 1961", we impose
+-- the following constraints:
+--   1. Neither year can be negative.
+--   2. The first year must be less than the second year.
+--   3. The years must be within the interval [1000,10000].
+-- (1): We could try to allow negative years, but years in natural language are
+--      almost never written as negative, so it's unnecessary complication.
+-- (2): Year ranges in natural language are written
+--      <earlier year> - <later year>. No need to derive the ordering from
+--      something which is not likely a year range.
+-- (3): Four+ digits prevents phone numbers (e.g. "333-444-5555") from
+--      registering false positives.
+--      In everyday language, people are more likely to mention years closer
+--      to the present than very far in the past or future (closer times are
+--      more relevant).
+--      Of course, this means we do not have the ability to parse something like
+--      "300 - 600" as a year interval. But, prior to implementing this
+--      rule, we already did not have that ability.
+--
+-- These guidelines are not perfect, but they work. They can be iterated on and
+-- improved going forward.
+ruleIntervalYearLatent :: Rule
+ruleIntervalYearLatent = Rule
+  { name = "<year> (latent) - <year> (latent) (interval)"
+  , pattern =
+    [ Predicate $ isIntegerBetween 1000 10000
+    , regex "\\-|to|th?ru|through|(un)?til(l)?"
+    , Predicate $ isIntegerBetween 1000 10000
+    ]
+  , prod = \case
+      (t1:_:t2:_) -> do
+        y1 <- getIntValue t1
+        y2 <- getIntValue t2
+        guard (y1 < y2)
+        Token Time <$> interval TTime.Closed (year y1) (year y2)
+      _ -> Nothing
+  }
+
+-- Blocked for :latent time.
 ruleIntervalDash :: Rule
 ruleIntervalDash = Rule
   { name = "<datetime> - <datetime> (interval)"
@@ -1299,7 +1338,7 @@ ruleIntervalDash = Rule
     , regex "\\-|to|th?ru|through|(un)?til(l)?"
     , Predicate isNotLatent
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Time td1:_:Token Time td2:_) ->
         Token Time <$> interval TTime.Closed td1 td2
       _ -> Nothing
@@ -1358,7 +1397,7 @@ ruleIntervalTODDash = Rule
     , regex "\\-|:|to|th?ru|through|(un)?til(l)?"
     , Predicate isATimeOfDay
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token Time td1:_:Token Time td2:_) ->
         Token Time <$> interval TTime.Closed td1 td2
       _ -> Nothing
@@ -1415,7 +1454,7 @@ ruleIntervalTODBetween = Rule
     , regex "and"
     , Predicate isATimeOfDay
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (_:Token Time td1:_:Token Time td2:_) ->
         Token Time <$> interval TTime.Closed td1 td2
       _ -> Nothing
@@ -1428,7 +1467,7 @@ ruleIntervalBy = Rule
     [ regex "by"
     , dimension Time
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (_:Token Time td:_) -> Token Time <$> interval TTime.Open now td
       _ -> Nothing
   }
@@ -2693,6 +2732,7 @@ rules =
   , ruleIntervalFromDDDDOfMonth
   , ruleIntervalMonthDDDD
   , ruleIntervalDDDDMonth
+  , ruleIntervalYearLatent
   , ruleIntervalDash
   , ruleIntervalSlash
   , ruleIntervalFrom

@@ -131,9 +131,9 @@ latentCorpus = (testContext, testOptions {withLatent = True}, xs)
       , examples (datetime (2013, 2, 12, 10, 30, 0) Minute)
                  [ "ten thirty"
                  ]
-      --, examples (datetime (1954, 1, 1, 0, 0, 0) Year)
-      --           [ "1954"
-      --           ]
+      , examples (datetime (1974, 1, 1, 0, 0, 0) Year)
+                 [ "1974"
+                 ]
       , examples (datetime (2013, 5, 1, 0, 0, 0) Month)
                  [ "May"
                  ]
@@ -161,6 +161,9 @@ latentCorpus = (testContext, testOptions {withLatent = True}, xs)
              ,  "twelve o three"
              ,  "twelve ou three"
              ,  "twelve oh three"
+             ]
+      , examples (datetimeInterval ((1960, 1, 1, 0, 0, 0), (1962, 1, 1, 0, 0, 0)) Year)
+             [ "1960 - 1961"
              ]
       ]
 

@@ -111,7 +111,7 @@ instance Resolve TimeData where
       ahead:nextAhead:_
         | notImmediate && isJust (timeIntersect ahead refTime) -> Just nextAhead
       ahead:_ -> Just ahead
-    values <- Just . take 3 $ if List.null future then past else future
+    values <- Just $ take 3 $ if List.null future then past else future
     Just $ case direction of
       Nothing -> (TimeValue (timeValue tzSeries value)
         (map (timeValue tzSeries) values) holiday, latent)

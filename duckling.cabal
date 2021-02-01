@@ -833,6 +833,8 @@ library
                      , Duckling.Volume.RU.Rules
                      , Duckling.Volume.TR.Corpus
                      , Duckling.Volume.TR.Rules
+                     , Duckling.Volume.ZH.Corpus
+                     , Duckling.Volume.ZH.Rules
                      , Duckling.Volume.Helpers
                      , Duckling.Volume.Rules
                      , Duckling.Volume.Types
@@ -1143,6 +1145,7 @@ test-suite duckling-test
                      , Duckling.Volume.RO.Tests
                      , Duckling.Volume.RU.Tests
                      , Duckling.Volume.TR.Tests
+                     , Duckling.Volume.ZH.Tests
                      , Duckling.Volume.Tests
 
                      -- CreditCardNumber

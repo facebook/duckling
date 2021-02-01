@@ -231,24 +231,29 @@ allExamples = concat
              , "no less than $1.42"
              ]
    , examples (simple INR 5e5)
-              [ "5 lakh rupees"
-              , "five lakhs rupees"
-              ]
+             [ "5 lakh rupees"
+             , "five lakhs rupees"
+             ]
    , examples (between INR (7, 9e5))
-              [ "7-9 lakh rupees"
-              ]
+             [ "7-9 lakh rupees"
+             ]
    , examples (simple INR 4e7)
-              [ "four crore rupees"
-              , "4 crores rupees"
-              ]
+             [ "four crore rupees"
+             , "4 crores rupees"
+             ]
    , examples (simple MNT 10)
-              [ "ten tugriks"
-              , "10 Tugrik"
-              , "10MNT"
-              ]
+             [ "ten tugriks"
+             , "10 Tugrik"
+             , "10MNT"
+             ]
    , examples (simple USD 4.7e9)
-              [ "US$4.7 billion"
-              , "a US$4.7 billion"
-              , "a US$ 4.7 billion"
-              ]
+             [ "US$4.7 billion"
+             , "a US$4.7 billion"
+             , "a US$ 4.7 billion"
+             ]
+  , examples (simple UAH 3.04)
+             [ "UAH3.04"
+             , "UAH 3.04"
+             , "3 UAH 4 kopiykas"
+             ]
   ]

@@ -110,6 +110,15 @@ ruleRinggit = Rule
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly MYR
   }
 
+ruleHryvnia :: Rule
+ruleHryvnia = Rule
+  { name = "hryvnia"
+  , pattern =
+      [ regex "hryvnia" -- TODO: complete
+      ]
+  , prod = \_ -> Just $ Token AmountOfMoney $ currencyOnly UAH
+  }
+
 ruleCent :: Rule
 ruleCent = Rule
   { name = "cent"
@@ -117,6 +126,15 @@ ruleCent = Rule
     [ regex "cents?|penn(y|ies)|pence|sens?"
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly Cent
+  }
+
+ruleKopiyka :: Rule
+ruleKopiyka = Rule
+  { name = "kopiyka"
+  , pattern =
+    [ regex "kopiy(ok|kas?)"
+    ]
+  , prod = \_ -> Just $ Token AmountOfMoney $ currencyOnly Cent
   }
 
 ruleBucks :: Rule
@@ -374,6 +392,7 @@ rules =
   , ruleNumDollarCoins
   , ruleDinars
   , ruleDirham
+  , ruleHryvnia
   , ruleIntersect
   , ruleIntersectAndNumeral
   , ruleIntersectAndXCents
@@ -384,6 +403,7 @@ rules =
   , ruleIntervalMin
   , ruleIntervalNumeralDash
   , ruleIntervalDash
+  , ruleKopiyka
   , ruleOtherPounds
   , rulePounds
   , rulePrecision

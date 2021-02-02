@@ -33,7 +33,7 @@ import qualified Duckling.Quantity.Types as TQuantity
 quantities :: [(Text, String, TQuantity.Unit)]
 quantities =
   [ ("<quantity> cups", "(cups?)", TQuantity.Cup)
-  , ("<quantity> grams", "(((m(illi)?)|(k(ilo)?))?g(ram)?s?)", TQuantity.Gram)
+  , ("<quantity> grams", "(((m(illi)?[.]?)|(k(ilo)?)[.]?)?g(ram)?s?[.]?)", TQuantity.Gram)
   , ("<quantity> lb", "((lb|pound)s?)", TQuantity.Pound)
   , ("<quantity> oz", "((ounces?)|oz)", TQuantity.Ounce)
   ]
@@ -44,10 +44,18 @@ opsMap = HashMap.fromList
   , ( "milligrams", (/ 1000))
   , ( "mg"        , (/ 1000))
   , ( "mgs"       , (/ 1000))
+  , ( "m.g"        , (/ 1000))
+  , ( "m.gs"       , (/ 1000))
+  , ( "m.g."        , (/ 1000))
+  , ( "m.g.s"       , (/ 1000))
   , ( "kilogram"  , (* 1000))
   , ( "kilograms" , (* 1000))
   , ( "kg"        , (* 1000))
   , ( "kgs"       , (* 1000))
+  , ( "k.g"        , (* 1000))
+  , ( "k.gs"        , (* 1000))
+  , ( "k.g."        , (* 1000))
+  , ( "k.g.s"        , (* 1000))
   ]
 
 ruleNumeralQuantities :: [Rule]

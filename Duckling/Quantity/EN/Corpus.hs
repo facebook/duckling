@@ -47,12 +47,18 @@ allExamples = concat
   , examples (simple Gram 2 Nothing)
              [ "2 grams"
              , "0.002 kg"
+             , "2 g."
+             , "2 gs"
              , "2/1000 kilograms"
              , "2000 milligrams"
+             , "2,000 milligrams"
              ]
   , examples (simple Gram 1000 Nothing)
              [ "a kilogram"
              , "a kg"
+             , "1 k.g."
+             , "1 k.gs"
+             , "1000 gs"
              ]
   , examples (simple Pound 1 Nothing)
              [ "a Pound"

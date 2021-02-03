@@ -156,7 +156,7 @@ ruleFraction = Rule
   { name = "fraction"
   , pattern =
     [ dimension Numeral
-    , regex "分之|分"
+    , regex "分之|分|份"
     , dimension Numeral
     ]
   , prod = \tokens -> case tokens of
@@ -164,6 +164,26 @@ ruleFraction = Rule
        _:
        Token Numeral NumeralData{TNumeral.value = v2}:
        _) -> double $ v2 / v1
+      _ -> Nothing
+  }
+
+ruleMixedFraction :: Rule
+ruleMixedFraction = Rule
+  { name = " mixed fraction"
+  , pattern =
+    [ dimension Numeral
+    , regex "又"
+    , dimension Numeral
+    , regex "分之|分|份"
+    , dimension Numeral
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Numeral NumeralData{TNumeral.value = v1}:
+       _:
+       Token Numeral NumeralData{TNumeral.value = v2}:
+       _:
+       Token Numeral NumeralData{TNumeral.value = v3}:
+       _) -> double $ v3 / v2 + v1
       _ -> Nothing
   }
 
@@ -183,7 +203,7 @@ ruleHalf :: Rule
 ruleHalf = Rule
   { name = "half"
   , pattern =
-    [ regex "半|1半|一半|半个|半個"
+    [ regex "(1|一)?半(半|个|個)?"
     ]
   , prod = \case
       (_:_) -> double 0.5 >>= withMultipliable
@@ -299,6 +319,45 @@ ruleNumeralsIntersectConsecutiveUnit = Rule
       | d == 1 = Just $ v1 + v2
       | otherwise = Nothing
 
+ruleHundredPrefix :: Rule
+ruleHundredPrefix = Rule
+  { name = "one hundred and <integer> (short form)"
+  , pattern =
+    [ regex "百|佰"
+    , numberBetween 1 10
+    ]
+  , prod = \case
+    (_:Token Numeral NumeralData{TNumeral.value = v}:_) ->
+      double $ 100 + v*10
+    _ -> Nothing
+  }
+
+ruleThousandPrefix :: Rule
+ruleThousandPrefix = Rule
+  { name = "one thousand and <integer> (short form)"
+  , pattern =
+    [ regex "千|仟"
+    , numberBetween 1 10
+    ]
+  , prod = \case
+    (_:Token Numeral NumeralData{TNumeral.value = v}:_) ->
+      double $ 1000 + v*100
+    _ -> Nothing
+  }
+
+ruleTenThousandPrefix :: Rule
+ruleTenThousandPrefix = Rule
+  { name = "ten thousand and <integer> (short form)"
+  , pattern =
+    [ regex "万|萬"
+    , numberBetween 1 10
+    ]
+  , prod = \case
+    (_:Token Numeral NumeralData{TNumeral.value = v}:_) ->
+      double $ 10000 + v*1000
+    _ -> Nothing
+  }
+
 rules :: [Rule]
 rules =
   [ ruleDecimalNumeral
@@ -317,5 +376,9 @@ rules =
   , ruleDozen
   , rulePair
   , ruleFraction
+  , ruleMixedFraction
+  , ruleHundredPrefix
+  , ruleThousandPrefix
+  , ruleTenThousandPrefix
   ]
   ++ ruleNumeralSuffixes

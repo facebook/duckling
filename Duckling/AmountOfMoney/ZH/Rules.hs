@@ -239,7 +239,7 @@ ruleIntervalNumeralDash = Rule
   { name = "<numeral> - <amount-of-money>"
   , pattern =
     [ Predicate isPositive
-    , regex "-|~|到"
+    , regex "-|~|到|至"
     , Predicate isSimpleAmountOfMoney
     ]
   , prod = \case
@@ -257,7 +257,7 @@ ruleIntervalDash = Rule
   { name = "<amount-of-money> - <amount-of-money>"
   , pattern =
     [ Predicate isSimpleAmountOfMoney
-    , regex "-|~|到"
+    , regex "-|~|到|至"
     , Predicate isSimpleAmountOfMoney
     ]
   , prod = \case
@@ -275,7 +275,7 @@ ruleIntervalBound :: Rule
 ruleIntervalBound = Rule
   { name = "under/less/lower/no more than <amount-of-money> (最多|至少|最少)"
   , pattern =
-    [ regex "(最多|至少|最少)"
+    [ regex "(最多|至少|最少|起碼)"
     , Predicate isSimpleAmountOfMoney
     ]
   , prod = \case
@@ -286,6 +286,7 @@ ruleIntervalBound = Rule
         "最多" -> Just $ Token AmountOfMoney $ withMax to $ currencyOnly c
         "最少" -> Just $ Token AmountOfMoney $ withMin to $ currencyOnly c
         "至少" -> Just $ Token AmountOfMoney $ withMin to $ currencyOnly c
+        "起碼" -> Just $ Token AmountOfMoney $ withMin to $ currencyOnly c
         _ -> Nothing
       _ -> Nothing
   }

@@ -75,6 +75,7 @@ allExamples = concat
   , examples (between Litre (2,3))
              [ "二至三公升"
              , "2-3L"
+             , "2~3公升"
              , "兩到三升"
              , "兩升到三升"
              ]

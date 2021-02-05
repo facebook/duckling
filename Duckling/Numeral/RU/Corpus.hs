@@ -55,6 +55,7 @@ allExamples = concat
   , examples (NumeralValue 33)
              [ "33"
              , "тридцать три"
+             , "тридцати три"
              , "0033"
              ]
   , examples (NumeralValue 11)
@@ -83,11 +84,33 @@ allExamples = concat
              ]
   , examples (NumeralValue 444)
              [ "четыреста сорок четыре"
+             , "четыреста сорока четыре"
              , "444"
              ]
   , examples (NumeralValue 525)
              [ "пятьсот двадцать пять"
+             , "пятьсот двадцати пять"
              , "525"
+             ]
+  , examples (NumeralValue 555)
+             [ "пятьсот пятьдесят пять"
+             , "пятьсот пятидесяти пять"
+             ]
+  , examples (NumeralValue 565)
+             [ "пятьсот шестьдесят пять"
+             , "пятьсот шестидесяти пять"
+             ]
+  , examples (NumeralValue 575)
+             [ "пятьсот семьдесят пять"
+             , "пятьсот семидесяти пять"
+             ]
+  , examples (NumeralValue 585)
+             [ "пятьсот восемьдесят пять"
+             , "пятьсот восьмидесяти пять"
+             ]
+  , examples (NumeralValue 595)
+             [ "пятьсот девяносто пять"
+             , "пятьсот девяноста пять"
              ]
   , examples (NumeralValue 1.5)
              [ "1.5"

@@ -56,6 +56,9 @@ allExamples = concat
              ]
   , examples (DurationData 27 Month)
              [ "सवा 2 साल"
+             , "2 साल और 3 महीना"
+             , "2 साल, 3 महीना"
+             , "2 साल 3 महीना"
              ]
   , examples (DurationData 135 Minute)
              [ "सवा 2 घंटा"
@@ -65,5 +68,9 @@ allExamples = concat
              ]
   , examples (DurationData 210 Minute)
              [ "साड़े 3 घंटा"
+             ]
+  , examples (DurationData 31719604 Second)
+             [ "1 साल, 2 दिन, 3 घंटा और 4 सेकंड"
+             , "1 साल 2 दिन 3 घंटा और 4 सेकंड"
              ]
   ]

@@ -37,7 +37,7 @@ classifiers
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("number of 5 minutes after|past <integer> (hour-of-day)",
         Classifier{okData =
-                     ClassData{prior = 0.0, unseen = -3.332204510175204,
+                     ClassData{prior = -0.2231435513142097, unseen = -3.332204510175204,
                                likelihoods =
                                  HashMap.fromList
                                    [("<integer> (latent time-of-day)integer (0..10)",
@@ -47,8 +47,14 @@ classifiers
                                      -2.1972245773362196)],
                                n = 12},
                    koData =
-                     ClassData{prior = -infinity, unseen = -1.3862943611198906,
-                               likelihoods = HashMap.fromList [], n = 0}}),
+                     ClassData{prior = -1.6094379124341003,
+                               unseen = -2.3025850929940455,
+                               likelihoods =
+                                 HashMap.fromList
+                                   [("<integer> (latent time-of-day)integer (0..10)",
+                                     -0.8109302162163288),
+                                    ("hour", -0.8109302162163288)],
+                               n = 3}}),
        ("\21360\24230\20016\25910\33410\31532\22235\22825",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -1.6094379124341003,
@@ -78,11 +84,11 @@ classifiers
                                likelihoods = HashMap.fromList [("", 0.0)], n = 3}}),
        ("integer (numeric)",
         Classifier{okData =
-                     ClassData{prior = -0.621403275701104, unseen = -4.204692619390966,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 65},
+                     ClassData{prior = -0.6931471805599453, unseen = -4.23410650459726,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 67},
                    koData =
-                     ClassData{prior = -0.7704388548615918, unseen = -4.060443010546419,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 56}}),
+                     ClassData{prior = -0.6931471805599453, unseen = -4.23410650459726,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 67}}),
        ("\21355\22622\33410",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -1.9459101490553135,
@@ -143,6 +149,13 @@ classifiers
                    koData =
                      ClassData{prior = -infinity, unseen = -1.0986122886681098,
                                likelihoods = HashMap.fromList [], n = 0}}),
+       ("September",
+        Classifier{okData =
+                     ClassData{prior = 0.0, unseen = -1.3862943611198906,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 2},
+                   koData =
+                     ClassData{prior = -infinity, unseen = -0.6931471805599453,
+                               likelihoods = HashMap.fromList [], n = 0}}),
        ("tonight",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -1.791759469228055,
@@ -159,29 +172,27 @@ classifiers
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("month (grain)",
         Classifier{okData =
-                     ClassData{prior = -1.0840134892469568,
-                               unseen = -3.2188758248682006,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 23},
+                     ClassData{prior = -0.963437510299857, unseen = -3.4339872044851463,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 29},
                    koData =
-                     ClassData{prior = -0.41284521540578695,
-                               unseen = -3.8501476017100584,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 45}}),
+                     ClassData{prior = -0.48058573857627246,
+                               unseen = -3.891820298110627,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 47}}),
        ("<time-of-day> o'clock",
         Classifier{okData =
-                     ClassData{prior = -1.2367626271489267, unseen = -3.044522437723423,
+                     ClassData{prior = -1.466337068793427, unseen = -3.044522437723423,
                                likelihoods =
                                  HashMap.fromList
                                    [("<integer> (latent time-of-day)", -0.6931471805599453),
                                     ("hour", -0.6931471805599453)],
                                n = 9},
                    koData =
-                     ClassData{prior = -0.3429447511268303,
-                               unseen = -3.8501476017100584,
+                     ClassData{prior = -0.262364264467491, unseen = -4.143134726391533,
                                likelihoods =
                                  HashMap.fromList
                                    [("<integer> (latent time-of-day)", -0.6931471805599453),
                                     ("hour", -0.6931471805599453)],
-                               n = 22}}),
+                               n = 30}}),
        ("national day",
         Classifier{okData =
                      ClassData{prior = -0.2231435513142097,
@@ -191,6 +202,13 @@ classifiers
                      ClassData{prior = -1.6094379124341003,
                                unseen = -1.3862943611198906,
                                likelihoods = HashMap.fromList [("", 0.0)], n = 2}}),
+       ("integer (20,30,40)",
+        Classifier{okData =
+                     ClassData{prior = 0.0, unseen = -1.3862943611198906,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 2},
+                   koData =
+                     ClassData{prior = -infinity, unseen = -0.6931471805599453,
+                               likelihoods = HashMap.fromList [], n = 0}}),
        ("Wednesday",
         Classifier{okData =
                      ClassData{prior = -5.715841383994864e-2,
@@ -239,73 +257,100 @@ classifiers
                                likelihoods = HashMap.fromList [("", 0.0)], n = 2}}),
        ("intersect",
         Classifier{okData =
-                     ClassData{prior = -0.3968813644167729, unseen = -5.247024072160486,
+                     ClassData{prior = -5.694137640013845e-2,
+                               unseen = -6.329720905522696,
                                likelihoods =
                                  HashMap.fromList
                                    [("\20799\31461\33410<part-of-day> <dim time>",
-                                     -3.632309102625542),
+                                     -4.718498871295094),
                                     ("year (numeric with year symbol)\20809\26126\33410",
-                                     -3.1623054733798064),
-                                    ("xxxx year<named-month> <day-of-month>", -3.855452653939752),
+                                     -4.248495242049359),
+                                    ("xxxx year<named-month> <day-of-month>", -4.941642422609305),
+                                    ("daymonth", -4.248495242049359),
+                                    ("monthday", -1.9459101490553135),
+                                    ("next yearSeptember", -5.2293244950610855),
                                     ("year (numeric with year symbol)\25995\26376",
-                                     -3.855452653939752),
+                                     -4.941642422609305),
                                     ("year (numeric with year symbol)\20061\22812\33410",
-                                     -3.855452653939752),
+                                     -4.941642422609305),
+                                    ("year (numeric with year symbol)February", -4.718498871295094),
+                                    ("xxxx yearintersect", -4.941642422609305),
+                                    ("March<time> <day-of-month>", -3.7629874262676584),
                                     ("year (numeric with year symbol)<named-month> <day-of-month>",
-                                     -2.4085336710034264),
+                                     -3.494723439672979),
+                                    ("monthhour", -3.7629874262676584),
                                     ("year (numeric with year symbol)\22320\29699\19968\23567\26102",
-                                     -4.143134726391533),
-                                    ("dayday", -2.5336968139574325),
-                                    ("hourhour", -3.632309102625542),
-                                    ("hourminute", -3.632309102625542),
+                                     -5.2293244950610855),
+                                    ("year (numeric with year symbol)April", -5.2293244950610855),
+                                    ("dayday", -2.284885515894645),
+                                    ("hourhour", -4.718498871295094),
+                                    ("xxxx yearFebruary", -5.634789603169249),
+                                    ("year (numeric with year symbol)March", -4.1307122063929755),
+                                    ("February<dim time> <part-of-day>", -3.7629874262676584),
+                                    ("hourminute", -4.718498871295094),
+                                    ("April<time> <day-of-month>", -5.2293244950610855),
+                                    ("February<time> <day-of-month>", -2.614364717024887),
                                     ("absorption of , after named day<named-month> <day-of-month>",
-                                     -2.5336968139574325),
+                                     -3.619886582626985),
                                     ("year (numeric with year symbol)\22823\25995\26399",
-                                     -3.855452653939752),
+                                     -4.941642422609305),
+                                    ("this <cycle><time> <day-of-month>", -4.941642422609305),
                                     ("year (numeric with year symbol)\22235\26092\33410",
-                                     -4.143134726391533),
+                                     -5.2293244950610855),
+                                    ("yearmonth", -3.332204510175204),
                                     ("year (numeric with year symbol)\20303\26842\33410",
-                                     -4.143134726391533),
-                                    ("dayminute", -3.632309102625542),
-                                    ("tonight<time-of-day> o'clock", -3.632309102625542),
-                                    ("yearday", -1.3099213823353166),
+                                     -5.2293244950610855),
+                                    ("dayminute", -4.718498871295094),
+                                    ("next <cycle>September", -5.634789603169249),
+                                    ("intersect by \",\"<time> <day-of-month>", -3.619886582626985),
+                                    ("xxxx yearMarch", -5.634789603169249),
+                                    ("absorption of , after named dayintersect",
+                                     -3.619886582626985),
+                                    ("intersect<time> <day-of-month>", -2.8015762591130335),
+                                    ("next <cycle><time> <day-of-month>", -4.941642422609305),
+                                    ("tonight<time-of-day> o'clock", -4.718498871295094),
+                                    ("year (numeric with year symbol)intersect",
+                                     -3.494723439672979),
+                                    ("yearday", -2.0794415416798357),
+                                    ("absorption of , after named dayFebruary", -4.248495242049359),
                                     ("year (numeric with year symbol)\19971\19971\33410",
-                                     -3.1623054733798064),
+                                     -4.248495242049359),
                                     ("year (numeric with year symbol)\36926\36234\33410",
-                                     -4.143134726391533),
+                                     -5.2293244950610855),
                                     ("year (numeric with year symbol)\29369\22826\26032\24180",
-                                     -4.143134726391533),
-                                    ("yearminute", -4.143134726391533),
+                                     -5.2293244950610855),
+                                    ("yearminute", -5.2293244950610855),
                                     ("<dim time> <part-of-day>relative (10-59) minutes after|past <integer> (hour-of-day)",
-                                     -3.632309102625542)],
-                               n = 78},
+                                     -4.718498871295094)],
+                               n = 256},
                    koData =
-                     ClassData{prior = -1.1160040313799788, unseen = -4.700480365792417,
+                     ClassData{prior = -2.894068619777491, unseen = -4.3694478524670215,
                                likelihoods =
                                  HashMap.fromList
                                    [("\20799\31461\33410<part-of-day> <dim time>",
-                                     -2.4941233048929243),
-                                    ("dayhour", -3.0819099697950434),
-                                    ("daymonth", -2.6119063405493077),
-                                    ("year (numeric with year symbol)February",
-                                     -3.0819099697950434),
-                                    ("year (numeric with year symbol)Sunday", -3.9982007016691985),
+                                     -2.159484249353372),
+                                    ("dayhour", -2.7472709142554916),
+                                    ("year (numeric with year symbol)Sunday", -3.6635616461296463),
                                     ("<dim time> <part-of-day><time-of-day> o'clock",
-                                     -3.592735593561034),
-                                    ("year (numeric with year symbol)April", -3.592735593561034),
-                                    ("hourhour", -3.592735593561034),
-                                    ("xxxx yearFebruary", -3.9982007016691985),
-                                    ("year (numeric with year symbol)March", -2.4941233048929243),
-                                    ("hourminute", -3.0819099697950434),
-                                    ("yearmonth", -1.8581345381729275),
-                                    ("dayminute", -3.0819099697950434),
-                                    ("xxxx yearMarch", -3.9982007016691985),
-                                    ("yearday", -3.9982007016691985),
-                                    ("absorption of , after named dayFebruary",
-                                     -2.6119063405493077),
+                                     -3.258096538021482),
+                                    ("hourhour", -3.258096538021482),
+                                    ("hourminute", -2.7472709142554916),
+                                    ("dayminute", -2.7472709142554916),
+                                    ("yearday", -3.6635616461296463),
                                     ("<dim time> <part-of-day>relative (10-59) minutes after|past <integer> (hour-of-day)",
-                                     -3.0819099697950434)],
-                               n = 38}}),
+                                     -2.7472709142554916)],
+                               n = 15}}),
+       ("half after|past <integer> (hour-of-day)",
+        Classifier{okData =
+                     ClassData{prior = 0.0, unseen = -2.5649493574615367,
+                               likelihoods =
+                                 HashMap.fromList
+                                   [("<integer> (latent time-of-day)", -0.6931471805599453),
+                                    ("hour", -0.6931471805599453)],
+                               n = 5},
+                   koData =
+                     ClassData{prior = -infinity, unseen = -1.0986122886681098,
+                               likelihoods = HashMap.fromList [], n = 0}}),
        ("\20399\20029\33410",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -2.3978952727983707,
@@ -315,11 +360,10 @@ classifiers
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("year (grain)",
         Classifier{okData =
-                     ClassData{prior = -1.6964492894237302,
-                               unseen = -2.5649493574615367,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 11},
+                     ClassData{prior = -1.625967214385311, unseen = -2.639057329615259,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 12},
                    koData =
-                     ClassData{prior = -0.2025242641114741,
+                     ClassData{prior = -0.21905356606268464,
                                unseen = -3.9318256327243257,
                                likelihoods = HashMap.fromList [("", 0.0)], n = 49}}),
        ("Saturday",
@@ -333,18 +377,17 @@ classifiers
                                likelihoods = HashMap.fromList [("", 0.0)], n = 7}}),
        ("next <cycle>",
         Classifier{okData =
-                     ClassData{prior = -0.7472144018302211,
-                               unseen = -3.2188758248682006,
+                     ClassData{prior = -0.570544858467613, unseen = -3.4965075614664802,
                                likelihoods =
                                  HashMap.fromList
-                                   [("week", -1.3862943611198906),
-                                    ("month (grain)", -1.791759469228055),
-                                    ("year (grain)", -2.4849066497880004),
-                                    ("week (grain)", -1.3862943611198906),
-                                    ("year", -2.4849066497880004), ("month", -1.791759469228055)],
-                               n = 9},
+                                   [("week", -1.6739764335716716),
+                                    ("month (grain)", -1.5198257537444133),
+                                    ("year (grain)", -2.367123614131617),
+                                    ("week (grain)", -1.6739764335716716),
+                                    ("year", -2.367123614131617), ("month", -1.5198257537444133)],
+                               n = 13},
                    koData =
-                     ClassData{prior = -0.6418538861723948, unseen = -3.295836866004329,
+                     ClassData{prior = -0.832909122935104, unseen = -3.295836866004329,
                                likelihoods =
                                  HashMap.fromList
                                    [("week", -0.8602012652231115),
@@ -463,11 +506,32 @@ classifiers
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("next year",
         Classifier{okData =
-                     ClassData{prior = 0.0, unseen = -1.3862943611198906,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 2},
+                     ClassData{prior = 0.0, unseen = -1.791759469228055,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 4},
                    koData =
                      ClassData{prior = -infinity, unseen = -0.6931471805599453,
                                likelihoods = HashMap.fromList [], n = 0}}),
+       ("<time> <day-of-month>",
+        Classifier{okData =
+                     ClassData{prior = -0.24946085963158313,
+                               unseen = -4.204692619390966,
+                               likelihoods =
+                                 HashMap.fromList
+                                   [("integer (numeric)", -1.3564413979702095),
+                                    ("integer (20,30,40)", -3.0910424533583156),
+                                    ("integer with consecutive unit modifiers", -1.245215762859985),
+                                    ("integer (0..10)", -1.4170660197866443),
+                                    ("number suffix: \21313|\25342", -2.1102132003465894),
+                                    ("compose by multiplication", -3.0910424533583156)],
+                               n = 60},
+                   koData =
+                     ClassData{prior = -1.5105920777974677,
+                               unseen = -3.1780538303479458,
+                               likelihoods =
+                                 HashMap.fromList
+                                   [("integer (0..10)", -0.3629054936893685),
+                                    ("number suffix: \21313|\25342", -2.03688192726104)],
+                               n = 17}}),
        ("\19996\27491\25945\22797\27963\33410",
         Classifier{okData =
                      ClassData{prior = -infinity, unseen = -0.6931471805599453,
@@ -477,8 +541,8 @@ classifiers
                                likelihoods = HashMap.fromList [("", 0.0)], n = 3}}),
        ("hh:mm (time-of-day)",
         Classifier{okData =
-                     ClassData{prior = 0.0, unseen = -2.4849066497880004,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 10},
+                     ClassData{prior = 0.0, unseen = -2.833213344056216,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 15},
                    koData =
                      ClassData{prior = -infinity, unseen = -0.6931471805599453,
                                likelihoods = HashMap.fromList [], n = 0}}),
@@ -496,20 +560,20 @@ classifiers
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("<integer> (latent time-of-day)",
         Classifier{okData =
-                     ClassData{prior = -0.3101549283038396,
-                               unseen = -3.6109179126442243,
+                     ClassData{prior = -0.2754119798599665,
+                               unseen = -3.8066624897703196,
                                likelihoods =
                                  HashMap.fromList
-                                   [("integer (numeric)", -1.9740810260220096),
-                                    ("integer (0..10)", -0.1823215567939546)],
-                               n = 33},
+                                   [("integer (numeric)", -2.174751721484161),
+                                    ("integer (0..10)", -0.1466034741918754)],
+                               n = 41},
                    koData =
-                     ClassData{prior = -1.3217558399823195, unseen = -2.772588722239781,
+                     ClassData{prior = -1.4240346891027378, unseen = -2.833213344056216,
                                likelihoods =
                                  HashMap.fromList
-                                   [("integer (numeric)", -0.5108256237659907),
-                                    ("one point 2", -1.0986122886681098)],
-                               n = 12}}),
+                                   [("integer (numeric)", -0.4700036292457356),
+                                    ("one point 2", -1.1631508098056809)],
+                               n = 13}}),
        ("\36926\36234\33410",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -1.3862943611198906,
@@ -575,23 +639,26 @@ classifiers
                                likelihoods = HashMap.fromList [("", 0.0)], n = 49}}),
        ("relative (10-59) minutes after|past <integer> (hour-of-day)",
         Classifier{okData =
-                     ClassData{prior = -0.5465437063680699, unseen = -3.891820298110627,
+                     ClassData{prior = -0.45198512374305727,
+                               unseen = -4.127134385045092,
                                likelihoods =
                                  HashMap.fromList
-                                   [("<integer> (latent time-of-day)integer with consecutive unit modifiers",
-                                     -0.7357067949787413),
-                                    ("hour", -0.7357067949787413)],
-                               n = 22},
+                                   [("<integer> (latent time-of-day)compose by multiplication",
+                                     -2.164963715117998),
+                                    ("<integer> (latent time-of-day)integer with consecutive unit modifiers",
+                                     -0.9753796482441617),
+                                    ("hour", -0.7435780341868373)],
+                               n = 28},
                    koData =
-                     ClassData{prior = -0.8649974374866046,
-                               unseen = -3.6109179126442243,
+                     ClassData{prior = -1.0116009116784799,
+                               unseen = -3.6375861597263857,
                                likelihoods =
                                  HashMap.fromList
                                    [("<integer> (latent time-of-day)number suffix: \21313|\25342",
-                                     -1.3862943611198906),
+                                     -1.413693335308005),
                                     ("<integer> (latent time-of-day)integer (0..10)",
-                                     -1.3862943611198906),
-                                    ("hour", -0.750305594399894)],
+                                     -1.413693335308005),
+                                    ("hour", -0.7777045685880083)],
                                n = 16}}),
        ("year (numeric with year symbol)",
         Classifier{okData =
@@ -723,8 +790,8 @@ classifiers
                                likelihoods = HashMap.fromList [("", 0.0)], n = 1}}),
        ("afternoon",
         Classifier{okData =
-                     ClassData{prior = 0.0, unseen = -3.367295829986474,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 27},
+                     ClassData{prior = 0.0, unseen = -3.6375861597263857,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 36},
                    koData =
                      ClassData{prior = -infinity, unseen = -0.6931471805599453,
                                likelihoods = HashMap.fromList [], n = 0}}),
@@ -758,31 +825,31 @@ classifiers
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("this <cycle>",
         Classifier{okData =
-                     ClassData{prior = -1.0185695809945732,
-                               unseen = -3.4339872044851463,
+                     ClassData{prior = -0.8909729238898653,
+                               unseen = -3.6635616461296463,
                                likelihoods =
                                  HashMap.fromList
-                                   [("week", -0.916290731874155),
-                                    ("year (grain)", -2.3025850929940455),
-                                    ("week (grain)", -0.916290731874155),
-                                    ("year", -2.3025850929940455)],
-                               n = 13},
+                                   [("week", -1.1526795099383855),
+                                    ("month (grain)", -2.2512917986064953),
+                                    ("year (grain)", -2.538973871058276),
+                                    ("week (grain)", -1.1526795099383855),
+                                    ("year", -2.538973871058276), ("month", -2.2512917986064953)],
+                               n = 16},
                    koData =
-                     ClassData{prior = -0.4480247225269604,
-                               unseen = -3.9318256327243257,
+                     ClassData{prior = -0.5280674302004967, unseen = -3.970291913552122,
                                likelihoods =
                                  HashMap.fromList
-                                   [("week", -0.7339691750802004),
-                                    ("week (grain)", -0.7339691750802004)],
+                                   [("week", -0.7731898882334817),
+                                    ("week (grain)", -0.7731898882334817)],
                                n = 23}}),
        ("minute (grain)",
         Classifier{okData =
-                     ClassData{prior = -0.3184537311185346, unseen = -2.890371757896165,
+                     ClassData{prior = -0.4462871026284195, unseen = -2.890371757896165,
                                likelihoods = HashMap.fromList [("", 0.0)], n = 16},
                    koData =
-                     ClassData{prior = -1.2992829841302609,
-                               unseen = -2.0794415416798357,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 6}}),
+                     ClassData{prior = -1.0216512475319814,
+                               unseen = -2.3978952727983707,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 9}}),
        ("xxxx year",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -1.3862943611198906,
@@ -796,81 +863,94 @@ classifiers
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("<dim time> <part-of-day>",
         Classifier{okData =
-                     ClassData{prior = 0.0, unseen = -4.07753744390572,
+                     ClassData{prior = -7.696104113612832e-2,
+                               unseen = -4.6913478822291435,
                                likelihoods =
                                  HashMap.fromList
-                                   [("dayhour", -0.7646061445420903),
-                                    ("national dayevening|night", -2.9618307218783095),
-                                    ("<named-month> <day-of-month>morning", -1.4954936530848826),
-                                    ("\24773\20154\33410evening|night", -2.9618307218783095),
-                                    ("\20799\31461\33410afternoon", -2.9618307218783095),
-                                    ("Mondaymorning", -1.8632184332102)],
-                               n = 26},
+                                   [("dayhour", -0.750305594399894),
+                                    ("national dayevening|night", -3.58351893845611),
+                                    ("<named-month> <day-of-month>morning", -2.117181869662683),
+                                    ("\24773\20154\33410evening|night", -3.58351893845611),
+                                    ("\20799\31461\33410afternoon", -3.58351893845611),
+                                    ("intersectmorning", -2.117181869662683),
+                                    ("<time> <day-of-month>morning", -2.117181869662683),
+                                    ("Mondaymorning", -2.4849066497880004)],
+                               n = 50},
                    koData =
-                     ClassData{prior = -infinity, unseen = -1.9459101490553135,
-                               likelihoods = HashMap.fromList [], n = 0}}),
+                     ClassData{prior = -2.6026896854443837, unseen = -2.833213344056216,
+                               likelihoods =
+                                 HashMap.fromList
+                                   [("dayhour", -1.1631508098056809),
+                                    ("<time> <day-of-month>morning", -1.1631508098056809)],
+                               n = 4}}),
        ("<part-of-day> <dim time>",
         Classifier{okData =
-                     ClassData{prior = -0.7507762933965817, unseen = -4.859812404361672,
+                     ClassData{prior = -0.7935659283069926,
+                               unseen = -5.0369526024136295,
                                likelihoods =
                                  HashMap.fromList
-                                   [("tonight<integer> (latent time-of-day)", -3.242592351485517),
+                                   [("tonight<integer> (latent time-of-day)", -3.4210000089583352),
                                     ("afternoonrelative (10-59) minutes after|past <integer> (hour-of-day)",
-                                     -1.7165360479904674),
-                                    ("hourhour", -2.1439800628174073),
-                                    ("afternoon<time-of-day> o'clock", -3.4657359027997265),
-                                    ("hourminute", -1.0233888674305223),
-                                    ("afternoon<integer> (latent time-of-day)",
-                                     -3.4657359027997265),
+                                     -1.6631420914059614),
+                                    ("hourhour", -2.322387720290225),
+                                    ("afternoon<time-of-day> o'clock", -3.644143560272545),
+                                    ("hourminute", -0.9699949108460162),
+                                    ("afternoon<integer> (latent time-of-day)", -3.644143560272545),
                                     ("afternoonrelative (1-9) minutes after|past <integer> (hour-of-day)",
-                                     -2.5494451709255714),
-                                    ("afternoonhh:mm (time-of-day)", -3.7534179752515073),
-                                    ("tonight<time-of-day> o'clock", -3.242592351485517),
+                                     -2.72785282839839),
+                                    ("afternoonhh:mm (time-of-day)", -3.644143560272545),
+                                    ("tonight<time-of-day> o'clock", -3.4210000089583352),
                                     ("afternoonnumber of 5 minutes after|past <integer> (hour-of-day)",
-                                     -2.2870809064580806)],
-                               n = 59},
+                                     -2.4654885639308985),
+                                    ("afternoonhalf after|past <integer> (hour-of-day)",
+                                     -3.2386784521643803)],
+                               n = 71},
                    koData =
-                     ClassData{prior = -0.6386589952758756, unseen = -4.962844630259907,
+                     ClassData{prior = -0.6018985090948004, unseen = -5.214935757608986,
                                likelihoods =
                                  HashMap.fromList
                                    [("afternoonrelative (10-59) minutes after|past <integer> (hour-of-day)",
-                                     -2.1226137135450447),
-                                    ("hourhour", -1.024001424876935),
-                                    ("afternoon<time-of-day> o'clock", -1.820332841672111),
-                                    ("hourminute", -2.1226137135450447),
-                                    ("afternoon<integer> (latent time-of-day)",
-                                     -1.5885312276147867)],
-                               n = 66}}),
+                                     -2.3762728087852047),
+                                    ("hourhour", -0.9899784476653142),
+                                    ("afternoon<time-of-day> o'clock", -1.7754989483562746),
+                                    ("hourminute", -2.21375387928743),
+                                    ("afternoon<integer> (latent time-of-day)", -1.571899993115035),
+                                    ("afternoonnumber of 5 minutes after|past <integer> (hour-of-day)",
+                                     -3.82319179172153)],
+                               n = 86}}),
        ("<integer> <unit-of-duration>",
         Classifier{okData =
-                     ClassData{prior = -infinity, unseen = -3.044522437723423,
+                     ClassData{prior = -infinity, unseen = -3.1354942159291497,
                                likelihoods = HashMap.fromList [], n = 0},
                    koData =
-                     ClassData{prior = 0.0, unseen = -6.18826412308259,
+                     ClassData{prior = 0.0, unseen = -6.244166900663736,
                                likelihoods =
                                  HashMap.fromList
                                    [("number suffix: \21313|\25342month (grain)",
-                                     -4.576770711466393),
-                                    ("week", -2.967332799032293),
-                                    ("integer (0..10)month (grain)", -2.720472721100767),
-                                    ("integer (0..10)hour (grain)", -3.050714407971344),
-                                    ("<number>\20010/\20491week (grain)", -3.788313351102123),
-                                    ("second", -3.5471512942852352),
-                                    ("integer (0..10)day (grain)", -3.050714407971344),
-                                    ("integer (0..10)year (grain)", -3.7013019741124937),
-                                    ("<number>\20010/\20491month (grain)", -3.4136199016607125),
-                                    ("integer (numeric)year (grain)", -2.315007612992603),
-                                    ("integer (0..10)second (grain)", -3.5471512942852352),
-                                    ("day", -3.050714407971344), ("year", -2.1086711799947744),
-                                    ("integer (0..10)minute (grain)", -3.050714407971344),
-                                    ("hour", -3.050714407971344),
-                                    ("integer (0..10)week (grain)", -3.4781584227982836),
-                                    ("month", -1.9815160045095277),
-                                    ("integer (numeric)month (grain)", -3.3529952798442775),
+                                     -4.632785353021065),
+                                    ("week", -3.0233474405869645),
+                                    ("integer (0..10)month (grain)", -2.745715703988685),
+                                    ("integer (0..10)hour (grain)", -3.1067290495260154),
+                                    ("<number>\20010/\20491week (grain)", -3.8443279926567944),
+                                    ("compose by multiplicationminute (grain)", -4.45046379622711),
+                                    ("second", -3.6031659358399066),
+                                    ("integer (0..10)day (grain)", -3.1067290495260154),
+                                    ("integer (0..10)year (grain)", -3.7573166156671647),
+                                    ("<number>\20010/\20491month (grain)", -3.469634543215384),
+                                    ("integer (numeric)year (grain)", -2.3710222545472743),
+                                    ("integer (0..10)second (grain)", -3.6031659358399066),
+                                    ("day", -3.1067290495260154), ("year", -2.1646858215494458),
+                                    ("integer (0..10)minute (grain)", -2.984126727433683),
+                                    ("number suffix: \21313|\25342minute (grain)",
+                                     -4.855928904335275),
+                                    ("hour", -3.1067290495260154),
+                                    ("integer (0..10)week (grain)", -3.534173064352955),
+                                    ("month", -2.008116760857906),
+                                    ("integer (numeric)month (grain)", -3.3518515075590005),
                                     ("integer with consecutive unit modifiersminute (grain)",
-                                     -4.24029847484518),
-                                    ("minute", -2.81891279391402)],
-                               n = 233}}),
+                                     -4.296313116399852),
+                                    ("minute", -2.553343811341229)],
+                               n = 246}}),
        ("\32769\26495\33410",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -1.3862943611198906,
@@ -887,15 +967,15 @@ classifiers
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("<time-of-day> am|pm",
         Classifier{okData =
-                     ClassData{prior = -0.5596157879354228, unseen = -3.044522437723423,
+                     ClassData{prior = -0.4353180712578455, unseen = -3.295836866004329,
                                likelihoods =
                                  HashMap.fromList
-                                   [("hh:mm (time-of-day)", -1.0498221244986778),
-                                    ("<integer> (latent time-of-day)", -1.8971199848858813),
-                                    ("hour", -1.8971199848858813), ("minute", -1.0498221244986778)],
-                               n = 8},
+                                   [("hh:mm (time-of-day)", -0.9555114450274363),
+                                    ("<integer> (latent time-of-day)", -2.159484249353372),
+                                    ("hour", -2.159484249353372), ("minute", -0.9555114450274363)],
+                               n = 11},
                    koData =
-                     ClassData{prior = -0.8472978603872037, unseen = -2.833213344056216,
+                     ClassData{prior = -1.041453874828161, unseen = -2.833213344056216,
                                likelihoods =
                                  HashMap.fromList
                                    [("<integer> (latent time-of-day)", -0.8266785731844679),
@@ -903,36 +983,36 @@ classifiers
                                n = 6}}),
        ("one point 2",
         Classifier{okData =
-                     ClassData{prior = -infinity, unseen = -1.6094379124341003,
+                     ClassData{prior = -infinity, unseen = -1.9459101490553135,
                                likelihoods = HashMap.fromList [], n = 0},
                    koData =
-                     ClassData{prior = 0.0, unseen = -3.5553480614894135,
+                     ClassData{prior = 0.0, unseen = -3.7612001156935624,
                                likelihoods =
                                  HashMap.fromList
-                                   [("integer (0..10)integer (0..10)", -0.8873031950009028),
+                                   [("integer (0..10)integer (0..10)", -0.9650808960435872),
                                     ("integer (0..10)number suffix: \21313|\25342",
-                                     -1.7346010553881064),
+                                     -1.9459101490553135),
                                     ("integer (0..10)integer with consecutive unit modifiers",
-                                     -1.128465251817791),
-                                    ("integer (0..10)<number>\20010/\20491", -2.4277482359480516)],
-                               n = 30}}),
+                                     -1.3397743454849977),
+                                    ("integer (0..10)<number>\20010/\20491", -2.639057329615259),
+                                    ("integer (0..10)compose by multiplication",
+                                     -2.639057329615259),
+                                    ("integer (0..10)half", -2.639057329615259)],
+                               n = 36}}),
        ("intersect by \",\"",
         Classifier{okData =
-                     ClassData{prior = -0.40546510810816444,
-                               unseen = -3.4965075614664802,
+                     ClassData{prior = 0.0, unseen = -4.330733340286331,
                                likelihoods =
                                  HashMap.fromList
-                                   [("Sunday<named-month> <day-of-month>", -0.7576857016975165),
-                                    ("dayday", -0.7576857016975165)],
-                               n = 14},
+                                   [("daymonth", -2.2380465718564744),
+                                    ("Sunday<named-month> <day-of-month>", -1.6094379124341003),
+                                    ("SundayFebruary", -2.2380465718564744),
+                                    ("dayday", -0.9501922835498364),
+                                    ("Sundayintersect", -1.6094379124341003)],
+                               n = 35},
                    koData =
-                     ClassData{prior = -1.0986122886681098,
-                               unseen = -2.9444389791664407,
-                               likelihoods =
-                                 HashMap.fromList
-                                   [("daymonth", -0.8109302162163288),
-                                    ("SundayFebruary", -0.8109302162163288)],
-                               n = 7}}),
+                     ClassData{prior = -infinity, unseen = -1.791759469228055,
+                               likelihoods = HashMap.fromList [], n = 0}}),
        ("\26837\26525\20027\26085",
         Classifier{okData =
                      ClassData{prior = -0.6931471805599453, unseen = -1.791759469228055,
@@ -1192,16 +1272,18 @@ classifiers
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("number.number minutes",
         Classifier{okData =
-                     ClassData{prior = -infinity, unseen = -1.0986122886681098,
+                     ClassData{prior = -infinity, unseen = -1.3862943611198906,
                                likelihoods = HashMap.fromList [], n = 0},
                    koData =
-                     ClassData{prior = 0.0, unseen = -2.3978952727983707,
+                     ClassData{prior = 0.0, unseen = -2.772588722239781,
                                likelihoods =
                                  HashMap.fromList
                                    [("integer (0..10)integer with consecutive unit modifiersminute (grain)",
-                                     -0.6931471805599453),
-                                    ("minute", -0.6931471805599453)],
-                               n = 4}}),
+                                     -1.0986122886681098),
+                                    ("integer (0..10)compose by multiplicationminute (grain)",
+                                     -1.6094379124341003),
+                                    ("minute", -0.7621400520468967)],
+                               n = 6}}),
        ("\32822\31267\21463\38590\26085",
         Classifier{okData =
                      ClassData{prior = -1.0296194171811581,
@@ -1259,6 +1341,13 @@ classifiers
                    koData =
                      ClassData{prior = -infinity, unseen = -0.6931471805599453,
                                likelihoods = HashMap.fromList [], n = 0}}),
+       ("half",
+        Classifier{okData =
+                     ClassData{prior = -infinity, unseen = -0.6931471805599453,
+                               likelihoods = HashMap.fromList [], n = 0},
+                   koData =
+                     ClassData{prior = 0.0, unseen = -1.9459101490553135,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 5}}),
        ("two days after tomorrow",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -1.3862943611198906,
@@ -1268,12 +1357,11 @@ classifiers
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("integer (0..10)",
         Classifier{okData =
-                     ClassData{prior = -0.6026331730191135,
-                               unseen = -5.3471075307174685,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 208},
+                     ClassData{prior = -0.5907987153721106, unseen = -5.407171771460119,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 221},
                    koData =
-                     ClassData{prior = -0.7926767759069784, unseen = -5.159055299214529,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 172}}),
+                     ClassData{prior = -0.8071778665977783, unseen = -5.19295685089021,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 178}}),
        ("last n <cycle>",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -4.605170185988091,
@@ -1297,6 +1385,20 @@ classifiers
                    koData =
                      ClassData{prior = -infinity, unseen = -2.772588722239781,
                                likelihoods = HashMap.fromList [], n = 0}}),
+       ("last <duration>",
+        Classifier{okData =
+                     ClassData{prior = -infinity, unseen = -2.0794415416798357,
+                               likelihoods = HashMap.fromList [], n = 0},
+                   koData =
+                     ClassData{prior = 0.0, unseen = -3.912023005428146,
+                               likelihoods =
+                                 HashMap.fromList
+                                   [("week", -2.2823823856765264), ("second", -2.505525936990736),
+                                    ("day", -2.793208009442517),
+                                    ("<integer> <unit-of-duration>", -0.8007778447523107),
+                                    ("hour", -2.2823823856765264), ("month", -2.2823823856765264),
+                                    ("minute", -2.2823823856765264)],
+                               n = 21}}),
        ("ordinal (digits)",
         Classifier{okData =
                      ClassData{prior = -1.252762968495368, unseen = -1.9459101490553135,
@@ -1354,12 +1456,11 @@ classifiers
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("number suffix: \21313|\25342",
         Classifier{okData =
-                     ClassData{prior = -0.18924199963852842,
-                               unseen = -3.258096538021482,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 24},
+                     ClassData{prior = -0.1590646946296874,
+                               unseen = -3.4339872044851463,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 29},
                    koData =
-                     ClassData{prior = -1.7578579175523736,
-                               unseen = -1.9459101490553135,
+                     ClassData{prior = -1.916922612182061, unseen = -1.9459101490553135,
                                likelihoods = HashMap.fromList [("", 0.0)], n = 5}}),
        ("\22320\29699\19968\23567\26102",
         Classifier{okData =
@@ -1408,6 +1509,22 @@ classifiers
                                    [("one point 2", -0.9808292530117262),
                                     ("integer (0..10)", -0.4700036292457356)],
                                n = 6}}),
+       ("compose by multiplication",
+        Classifier{okData =
+                     ClassData{prior = -0.3364722366212129,
+                               unseen = -2.0794415416798357,
+                               likelihoods =
+                                 HashMap.fromList
+                                   [("integer (0..10)number suffix: \21313|\25342",
+                                     -0.15415067982725836)],
+                               n = 5},
+                   koData =
+                     ClassData{prior = -1.252762968495368, unseen = -1.6094379124341003,
+                               likelihoods =
+                                 HashMap.fromList
+                                   [("one point 2number suffix: \21313|\25342",
+                                     -0.2876820724517809)],
+                               n = 2}}),
        ("\24773\20154\33410",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -1.9459101490553135,

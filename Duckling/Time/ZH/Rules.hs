@@ -13,7 +13,6 @@ module Duckling.Time.ZH.Rules
   ( rules
   ) where
 
-import Data.Text (Text)
 import Prelude
 import qualified Data.Text as Text
 
@@ -305,7 +304,7 @@ ruleHalfAfterpastIntegerHourofday = Rule
   { name = "half after|past <integer> (hour-of-day)"
   , pattern =
     [ Predicate isAnHourOfDay
-    , regex "点|點"
+    , regex "(点|點)(踏|搭)?"
     , regex "半"
     ]
   , prod = \tokens -> case tokens of
@@ -507,6 +506,20 @@ ruleLastCycle = Rule
   , prod = \tokens -> case tokens of
       (_:Token TimeGrain grain:_) ->
         tt . cycleNth grain $ - 1
+      _ -> Nothing
+  }
+
+
+ruleLastDuration :: Rule
+ruleLastDuration = Rule
+  { name = "last <duration>"
+  , pattern =
+    [ regex "上(个|個)?"
+    , dimension Duration
+    ]
+  , prod = \tokens -> case tokens of
+      (_:Token Duration dd:_) ->
+        tt $ durationAgo dd
       _ -> Nothing
   }
 
@@ -886,6 +899,20 @@ ruleNamedmonthDayofmonth = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td:token:_) -> Token Time <$> intersectDOM td token
+      _ -> Nothing
+  }
+
+ruleDayOfMonth :: Rule
+ruleDayOfMonth = Rule
+  { name = "<time> <day-of-month>"
+  , pattern =
+    [ Predicate $ isIntegerBetween 1 31
+    , regex "号|號|日"
+    ]
+  , prod = \tokens -> case tokens of
+      (token:_) -> do
+        v <- getIntValue token
+        tt $ dayOfMonth v
       _ -> Nothing
   }
 
@@ -1322,6 +1349,8 @@ rules =
   , ruleRelativeMinutesAfterpastIntegerHourofday5
   , ruleRelativeMinutesAfterpastIntegerHourofday6
   , ruleRelativeMinutesAfterpastIntegerHourofday7
+  , ruleLastDuration
+  , ruleDayOfMonth
   ]
   ++ ruleDaysOfWeek
   ++ ruleMonths

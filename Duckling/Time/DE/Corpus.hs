@@ -209,6 +209,14 @@ allExamples = concat
              , "mittwoch nächste woche"
              , "mittwoch nach dem nächsten"
              ]
+  , examples (datetime (2013, 2, 27, 0, 0, 0) Day)
+             [ "mittwoch in 2 wochen"
+             , "mittwoch in zwei wochen"
+             ]
+  , examples (datetime (2013, 1, 30, 0, 0, 0) Day)
+             [ "mittwoch vor 2 wochen"
+             , "mittwoch vor zwei wochen"
+             ]
   , examples (datetime (2013, 2, 22, 0, 0, 0) Day)
              [ "freitag nach dem nächsten"
              ]

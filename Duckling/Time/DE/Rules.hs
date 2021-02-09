@@ -6,6 +6,7 @@
 
 
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE NoRebindableSyntax #-}
 {-# LANGUAGE OverloadedStrings #-}
 
@@ -14,7 +15,6 @@ module Duckling.Time.DE.Rules
   ) where
 
 import Prelude
-import Data.Text (Text)
 import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
@@ -704,6 +704,19 @@ ruleNextCycle = Rule
   , prod = \tokens -> case tokens of
       (_:Token TimeGrain grain:_) ->
         tt $ cycleNth grain 1
+      _ -> Nothing
+  }
+
+ruleAfterNextCycle :: Rule
+ruleAfterNextCycle = Rule
+  { name = "after next <cycle>"
+  , pattern =
+    [ regex "(ü)ber ?n(ä)chste[ns]?"
+    , dimension TimeGrain
+    ]
+  , prod = \case
+      (_:Token TimeGrain grain:_) ->
+        tt $ cycleNth grain 2
       _ -> Nothing
   }
 
@@ -1844,6 +1857,7 @@ rules =
   , ruleNamedmonthDayofmonthNonOrdinal
   , ruleNamedmonthDayofmonthOrdinal
   , ruleNextCycle
+  , ruleAfterNextCycle
   , ruleNextNCycle
   , ruleNextTime
   , ruleNight

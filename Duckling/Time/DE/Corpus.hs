@@ -151,17 +151,26 @@ allExamples = concat
   , examples (datetime (2013, 2, 18, 0, 0, 0) Week)
              [ "nächste woche"
              ]
+  , examples (datetime (2013, 2, 25, 0, 0, 0) Week)
+             [ "übernächste woche"
+             ]
   , examples (datetime (2013, 1, 0, 0, 0, 0) Month)
              [ "letzten monat"
              ]
   , examples (datetime (2013, 3, 0, 0, 0, 0) Month)
              [ "nächsten monat"
              ]
+  , examples (datetime (2013, 4, 0, 0, 0, 0) Month)
+             [ "übernächsten monat"
+             ]
   , examples (datetime (2013, 1, 1, 0, 0, 0) Quarter)
              [ "dieses quartal"
              ]
   , examples (datetime (2013, 4, 1, 0, 0, 0) Quarter)
              [ "nächstes quartal"
+             ]
+  , examples (datetime (2013, 7, 1, 0, 0, 0) Quarter)
+             [ "übernächstes quartal"
              ]
   , examples (datetime (2013, 7, 1, 0, 0, 0) Quarter)
              [ "drittes quartal"
@@ -177,6 +186,9 @@ allExamples = concat
              ]
   , examples (datetime (2014, 0, 0, 0, 0, 0) Year)
              [ "nächstes jahr"
+             ]
+  , examples (datetime (2015, 0, 0, 0, 0, 0) Year)
+             [ "übernächstes jahr"
              ]
   , examples (datetime (2013, 2, 10, 0, 0, 0) Day)
              [ "letzten sonntag"

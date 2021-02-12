@@ -737,6 +737,8 @@ library
                      , Duckling.Time.PT.Rules
                      , Duckling.Time.RO.Corpus
                      , Duckling.Time.RO.Rules
+                     , Duckling.Time.RU.Corpus
+                     , Duckling.Time.RU.Rules
                      , Duckling.Time.SV.Corpus
                      , Duckling.Time.SV.Rules
                      , Duckling.Time.UK.Corpus
@@ -1119,6 +1121,7 @@ test-suite duckling-test
                      , Duckling.Time.PL.Tests
                      , Duckling.Time.PT.Tests
                      , Duckling.Time.RO.Tests
+                     , Duckling.Time.RU.Tests
                      , Duckling.Time.SV.Tests
                      , Duckling.Time.UK.Tests
                      , Duckling.Time.VI.Tests

@@ -32,7 +32,6 @@ import Data.HashMap.Strict (HashMap)
 import Data.HashSet (HashSet)
 import Data.List (intersperse, sortOn)
 import Data.Maybe
-import Data.Semigroup ((<>))
 import Data.Text (Text, toLower, unpack)
 import Data.Typeable ((:~:)(Refl), eqT, Typeable)
 import GHC.Generics

@@ -19,4 +19,5 @@ allDimensions =
   , Seal Ordinal
   , Seal Quantity
   , Seal Volume
+  , Seal Time
   ]

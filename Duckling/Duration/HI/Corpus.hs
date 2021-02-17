@@ -73,4 +73,10 @@ allExamples = concat
              [ "1 साल, 2 दिन, 3 घंटा और 4 सेकंड"
              , "1 साल 2 दिन 3 घंटा और 4 सेकंड"
              ]
+  , examples (DurationData 30 Month)
+             [ "ढाई साल"
+             ]
+  , examples (DurationData 90 Minute)
+             [ "डेढ़ घंटा"
+             ]
   ]

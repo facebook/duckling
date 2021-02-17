@@ -153,6 +153,7 @@ ruleSaadeDuration = Rule
         _) -> Token Duration <$> nPlusOneHalf grain (floor v)
       _ -> Nothing
   }
+
 ruleCompositeDuration :: Rule
 ruleCompositeDuration = Rule
   { name = "composite <duration>"
@@ -187,6 +188,25 @@ ruleCompositeDurationCommasAnd = Rule
       _ -> Nothing
   }
 
+ruleNAndHalfDuration :: Rule
+ruleNAndHalfDuration = Rule
+  { name = "डेढ़|ढाई <duration>"
+  , pattern =
+    [ regex "(डेढ़|ढाई)"
+    , dimension TimeGrain
+    ]
+  , prod = \case
+      (Token RegexMatch (GroupMatch (match:_)):
+       Token TimeGrain grain:
+       _) -> do
+        h <- case Text.toLower match of
+          "डेढ़" -> Just 1
+          "ढाई" -> Just 2
+          _ -> Nothing
+        Token Duration <$> nPlusOneHalf grain h
+      _ -> Nothing
+  }
+
 rules :: [Rule]
 rules =
   [  ruleDurationPandrahMinat
@@ -200,4 +220,5 @@ rules =
   ,  ruleSaadeDuration
   ,  ruleCompositeDuration
   ,  ruleCompositeDurationCommasAnd
+  ,  ruleNAndHalfDuration
   ]

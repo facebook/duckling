@@ -2258,6 +2258,21 @@ ruleCycleTheLastOrdinalOfTime = Rule
       _ -> Nothing
   }
 
+ruleCycleTheOfTimeGrain :: Rule
+ruleCycleTheOfTimeGrain = Rule
+  { name = "the <cycle> of the <time grain>"
+  , pattern =
+    [ regex "the"
+    , dimension TimeGrain
+    , regex "of( the)?"
+    , dimension TimeGrain
+    ]
+  , prod = \tokens -> case tokens of
+      (_:Token TimeGrain grain:_:Token TimeGrain time:_) ->
+        tt $ cycleNthAfter True grain 0 $ cycleNth time 0
+      _ -> Nothing
+  }
+
 ruleCycleTheOfTime :: Rule
 ruleCycleTheOfTime = Rule
   { name = "the <cycle> of <time>"
@@ -2753,6 +2768,7 @@ rules =
   , ruleCycleLastOrdinalOfTime
   , ruleCycleTheOrdinalOfTime
   , ruleCycleTheLastOrdinalOfTime
+  , ruleCycleTheOfTimeGrain
   , ruleCycleTheOfTime
   , ruleCycleOrdinalAfterTime
   , ruleCycleTheOrdinalAfterTime

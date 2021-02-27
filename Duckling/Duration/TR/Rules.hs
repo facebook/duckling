@@ -43,7 +43,7 @@ ruleDurationHalfAnHour = Rule
 ruleDurationThreeQuartersOfAnHour :: Rule
 ruleDurationThreeQuartersOfAnHour = Rule
   { name = "three-quarters of an hour"
-  , pattern = [regex "(3/4\\s?sa(at)?|üçe \231eyrek sa(at)?)"]
+  , pattern = [regex "(3/4\\s?sa(at)?|üç \231eyrek sa(at)?)"]
   , prod = \_ -> Just . Token Duration $ duration TG.Minute 45
   }
 

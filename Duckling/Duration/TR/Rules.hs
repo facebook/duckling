@@ -89,7 +89,7 @@ ruleDurationAndHalfHour = Rule
   { name = "<integer> and an half hour"
   , pattern =
     [ Predicate isNatural
-    , regex "buçeuk sa(at)?"
+    , regex "buçuk sa(at)?"
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData{TNumeral.value = v}:_) ->

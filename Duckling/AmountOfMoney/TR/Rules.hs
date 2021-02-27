@@ -46,7 +46,7 @@ rulePounds :: Rule
 rulePounds = Rule
   { name = "₺"
   , pattern =
-    [ regex "(lira|tl)"
+    [ regex "₺"
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly TRY
   }
@@ -64,7 +64,7 @@ ruleACurrency :: Rule
 ruleACurrency = Rule
   { name = "a <currency>"
   , pattern =
-    [ regex "(bir\\s)?\\s(lira|tl)"
+    [ regex "(lira|tl)"
     , Predicate isCurrencyOnly
     ]
   , prod = \tokens -> case tokens of

@@ -278,6 +278,7 @@ library
                      , Duckling.AmountOfMoney.RU.Rules
                      , Duckling.AmountOfMoney.SV.Corpus
                      , Duckling.AmountOfMoney.SV.Rules
+                     , Duckling.AmountOfMoney.TR.Rules
                      , Duckling.AmountOfMoney.VI.Corpus
                      , Duckling.AmountOfMoney.VI.Rules
                      , Duckling.AmountOfMoney.ZH.Corpus

@@ -81,6 +81,7 @@ data Currency
   | VND
   | ZAR
   | UAH
+  | TRY
   deriving (Eq, Generic, Hashable, Show, Ord, NFData)
 
 instance ToJSON Currency where
@@ -138,6 +139,7 @@ instance ToJSON Currency where
   toJSON VND     = "VND"
   toJSON ZAR     = "ZAR"
   toJSON UAH     = "UAH"
+  toJSON TRY     = "TRY"
 
 data AmountOfMoneyData = AmountOfMoneyData
   { value    :: Maybe Double

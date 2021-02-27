@@ -24,6 +24,7 @@ import qualified Duckling.Ordinal.TR.Rules as Ordinal
 import qualified Duckling.Temperature.TR.Rules as Temperature
 import qualified Duckling.TimeGrain.TR.Rules as TimeGrain
 import qualified Duckling.Volume.TR.Rules as Volume
+import qualified Duckling.AmountOfMoney.TR.Rules as AmountOfMoney
 
 defaultRules :: Seal Dimension -> [Rule]
 defaultRules = langRules
@@ -33,7 +34,7 @@ localeRules region (Seal (CustomDimension dim)) = dimLocaleRules region dim
 localeRules _ _ = []
 
 langRules :: Seal Dimension -> [Rule]
-langRules (Seal AmountOfMoney) = []
+langRules (Seal AmountOfMoney) = AmountOfMoney.rules
 langRules (Seal CreditCardNumber) = []
 langRules (Seal Distance) = Distance.rules
 langRules (Seal Duration) = Duration.rules

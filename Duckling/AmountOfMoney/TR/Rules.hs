@@ -60,20 +60,6 @@ ruleCent = Rule
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly Cent
   }
 
-ruleACurrency :: Rule
-ruleACurrency = Rule
-  { name = "a <currency>"
-  , pattern =
-    [ regex "(lira|tl)"
-    , Predicate isCurrencyOnly
-    ]
-  , prod = \tokens -> case tokens of
-      (_:
-       Token AmountOfMoney fd:
-       _) -> Just . Token AmountOfMoney $ fd {TAmountOfMoney.value = Just 1}
-      _ -> Nothing
-  }
-
 ruleADollarCoin :: Rule
 ruleADollarCoin = Rule
   { name = "a <dollar coin>"
@@ -166,7 +152,6 @@ ruleIntersectXCents = Rule
 rules :: [Rule]
 rules =
   [ ruleUnitAmount
-  , ruleACurrency
   , ruleCent
   , ruleADollarCoin
   , ruleNumDollarCoins

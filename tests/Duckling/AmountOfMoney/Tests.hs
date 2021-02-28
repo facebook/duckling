@@ -32,6 +32,7 @@ import qualified Duckling.AmountOfMoney.PT.Tests as PT
 import qualified Duckling.AmountOfMoney.RO.Tests as RO
 import qualified Duckling.AmountOfMoney.RU.Tests as RU
 import qualified Duckling.AmountOfMoney.SV.Tests as SV
+import qualified Duckling.AmountOfMoney.TR.Tests as TR
 import qualified Duckling.AmountOfMoney.VI.Tests as VI
 import qualified Duckling.AmountOfMoney.ZH.Tests as ZH
 
@@ -56,6 +57,7 @@ tests = testGroup "AmountOfMoney Tests"
   , RO.tests
   , RU.tests
   , SV.tests
+  , TR.tests
   , VI.tests
   , ZH.tests
   ]

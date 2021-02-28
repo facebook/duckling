@@ -7,16 +7,20 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.AmountOfMoney.TR.Corpus
-  ( allExamples
-  , negativeExamples
+  ( corpus
   ) where
 
-import Data.String
+
 import Data.Text (Text)
 import Prelude
 
 import Duckling.AmountOfMoney.Types
 import Duckling.Testing.Types
+import Duckling.Locale
+import Duckling.Resolve
+
+corpus :: Corpus
+corpus = (testContext {locale = makeLocale TR Nothing}, testOptions, allExamples)
 
 allExamples :: [Example]
 allExamples = concat
@@ -26,9 +30,7 @@ allExamples = concat
              , "10000 lira"
              ]
   , examples (simple TRY 1)
-             [ "lira"
-             , "bir lira"
-             , "bi lira"
+             [ "bir lira"
              , "1 lira"
              ]
   , examples (simple TRY 0.1)
@@ -44,9 +46,4 @@ allExamples = concat
              , "5 kuruş"
              ]
   ]
-
-negativeExamples :: [Text]
-negativeExamples =
-  [ "kuruş lira",
-    "300 kuruş 10 lira"
-  ]
+  

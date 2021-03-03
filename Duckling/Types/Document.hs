@@ -125,9 +125,28 @@ data CharClass
 -- the reasonability of the match to actually be a word.
 isRangeValid :: Lang -> Document -> Int -> Int -> Bool
 isRangeValid = \case
+  AR -> arIsRangeValid
   ZH -> zhIsRangeValid
   _ -> defaultIsRangeValid
   where
+    arIsRangeValid :: Document -> Int -> Int -> Bool
+    arIsRangeValid doc start end =
+      (start == 0 ||
+        isDifferent (doc ! (start - 1)) (doc ! start)) &&
+      (end == length doc ||
+        isDifferent (doc ! (end - 1)) (doc ! end))
+      where
+        charClass :: Char -> CharClass
+        charClass c
+          | Char.isLower c || Char.isUpper c || isArabic c = Alpha
+          | Char.isDigit c = Digit
+          | otherwise = Self c
+        isDifferent :: Char -> Char -> Bool
+        isDifferent a b = charClass a /= charClass b
+        -- This list isn't exhasutive since Arabic have some diacritics and rarely used characters in Unicode
+        isArabic :: Char -> Bool
+        isArabic c = elem c ['ا', 'ب', 'ت', 'ة', 'ث', 'ج', 'ح', 'خ', 'د', 'ذ', 'ر', 'ز', 'س', 'ش', 'ص', 'ض', 'ط', 'ظ', 'ع', 'غ', 'ف', 'ق', 'ك', 'ل', 'م', 'ن', 'ه', 'و', 'ي', 'ء', 'آ', 'أ', 'إ', 'ؤ', 'ئ', 'ى']
+
     zhIsRangeValid :: Document -> Int -> Int -> Bool
     zhIsRangeValid doc start end =
       (start == 0 ||

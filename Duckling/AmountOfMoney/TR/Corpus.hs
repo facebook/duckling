@@ -33,17 +33,25 @@ allExamples = concat
              [ "bir lira"
              , "1 lira"
              ]
-  , examples (simple TRY 0.1)
+  , examples (simple Cent 10)
              [ "on kuruş"
              , "10 kuruş"
              ]
-  , examples (simple TRY 0.25)
+  , examples (simple Cent 25)
              [ "25 kuruş"
              , "yirmi beş kuruş"
              ]
-  , examples (simple TRY 0.05)
+  , examples (simple Cent 5)
              [ "beş kuruş"
              , "5 kuruş"
+             ]
+  , examples (simple Cent 66)
+             [ "altmış altı kuruş"
+             , "66 kuruş"
+             ]
+  , examples (simple TRY 100.75)
+             [ "yüz lira yetmiş beş kuruş"
+             , "100 lira 75 kuruş"
              ]
   ]
   

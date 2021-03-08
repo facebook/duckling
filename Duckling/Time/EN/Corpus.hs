@@ -323,9 +323,6 @@ allExamples = concat
              [ "this week"
              , "current week"
              ]
-  , examples (datetime (2013, 2, 18, 0, 0, 0) Week)
-             [ "coming week"
-             ]
   , examples (datetime (2013, 2, 4, 0, 0, 0) Week)
              [ "last week"
              , "past week"
@@ -336,6 +333,7 @@ allExamples = concat
              , "the following week"
              , "around next week"
              , "upcoming week"
+             , "coming week"
              ]
   , examples (datetime (2013, 1, 1, 0, 0, 0) Month)
              [ "last month"

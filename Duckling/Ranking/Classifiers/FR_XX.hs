@@ -780,7 +780,7 @@ classifiers
                                      -6.215607598755275),
                                     ("intersectyear", -5.52246041819533),
                                     ("Fevrierfin de matin\233e", -6.215607598755275),
-                                    ("minuteday", -3.474767574830074),
+                                    ("minuteday", -3.4747675748300746),
                                     ("le <time>d\233but de matin\233e", -6.215607598755275),
                                     ("Mardile <time>", -4.829313237635384),
                                     ("aujourd'hui\224|vers <time-of-day>", -5.29931686688112),

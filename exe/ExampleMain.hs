@@ -6,10 +6,12 @@
 
 
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeApplications #-}
 
 import Control.Applicative hiding (empty)
 import Control.Arrow ((***))
+import Control.Exception (SomeException, catch)
 import Control.Monad (unless, when)
 import Control.Monad.IO.Class
 import Data.Aeson
@@ -57,9 +59,15 @@ setupLogs conf = do
   when shouldLogErrors $ createIfMissing "log/error.log"
   when shouldLogAccesses $ createIfMissing "log/access.log"
 
+loadTZs :: IO (HashMap Text TimeZoneSeries)
+loadTZs = do
+  let defaultPath = "/usr/share/zoneinfo/"
+  let fallbackPath = "/etc/zoneinfo/"
+  loadTimeZoneSeries defaultPath `catch` (\(_ :: SomeException) -> loadTimeZoneSeries fallbackPath)
+
 main :: IO ()
 main = do
-  tzs <- loadTimeZoneSeries "/usr/share/zoneinfo/"
+  tzs <- loadTZs
   p <- lookupEnv "PORT"
   conf <- commandLineConfig $
     maybe defaultConfig (`setPort` defaultConfig) (readMaybe =<< p)

@@ -55,8 +55,8 @@ allExamples = concat
              [ "sewe"
              ]
   , examples (NumeralValue 8)
-             [ "agt"
-             , "ag"
+             [ -- "agt"
+               "ag"
              ]
   , examples (NumeralValue 9)
              [ "nege"

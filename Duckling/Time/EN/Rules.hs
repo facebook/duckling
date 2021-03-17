@@ -520,7 +520,7 @@ ruleDOMMonthYear = Rule
     , regex "[-/\\s]"
     , Predicate isAMonth
     , regex "[-/\\s]"
-    , regex "(\\d{4})"
+    , regex "(\\d{2,4})"
     ]
   , prod = \tokens -> case tokens of
       (token:

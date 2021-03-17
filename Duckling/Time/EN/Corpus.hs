@@ -44,6 +44,7 @@ defaultCorpus = (testContext, testOptions, allExamples ++ custom)
                  , "10-31-74"
                  , "10.31.1974"
                  , "31/Oct/1974"
+                 , "31-Oct-74"
                  , "31st Oct 1974"
                  ]
       , examples (datetime (2013, 4, 25, 16, 0, 0) Minute)

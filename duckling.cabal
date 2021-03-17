@@ -278,6 +278,8 @@ library
                      , Duckling.AmountOfMoney.RU.Rules
                      , Duckling.AmountOfMoney.SV.Corpus
                      , Duckling.AmountOfMoney.SV.Rules
+                     , Duckling.AmountOfMoney.TR.Corpus
+                     , Duckling.AmountOfMoney.TR.Rules
                      , Duckling.AmountOfMoney.VI.Corpus
                      , Duckling.AmountOfMoney.VI.Rules
                      , Duckling.AmountOfMoney.ZH.Corpus
@@ -911,6 +913,7 @@ test-suite duckling-test
                      , Duckling.AmountOfMoney.RO.Tests
                      , Duckling.AmountOfMoney.RU.Tests
                      , Duckling.AmountOfMoney.SV.Tests
+                     , Duckling.AmountOfMoney.TR.Tests
                      , Duckling.AmountOfMoney.VI.Tests
                      , Duckling.AmountOfMoney.NL.Tests
                      , Duckling.AmountOfMoney.ZH.Tests

@@ -27,7 +27,7 @@ grains = [ ("saniye (grain)",     "sa?n(iye)?(nin)?",           TG.Second)
          , ("hafta (grain)",      "hafta(nın)?",                TG.Week)
          , ("ay (grain)",         "ay(ın)?",                   TG.Month)
          , ("çeyrek yıl (grain)", "\231eyrek y\305l(ın)?",     TG.Quarter)
-         , ("yıl (grain)",        "y\305l(ın)",               TG.Year)
+         , ("yıl (grain)",        "y\305l(ın)?",               TG.Year)
          ]
 
 rules :: [Rule]

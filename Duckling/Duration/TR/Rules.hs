@@ -1,3 +1,4 @@
+{-# LANGUAGE LambdaCase #-}
 -- Copyright (c) 2016-present, Facebook, Inc.
 -- All rights reserved.
 --
@@ -102,12 +103,24 @@ ruleDurationPrecision :: Rule
 ruleDurationPrecision = Rule
   { name = "<duration> about|exactly"
   , pattern =
-    [ regex "(gibi|civar\305nda|yaklaş\305k|tam( olarak)?)"
+    [ regex "(yaklaşık|tam(\\solarak)?)"
     , dimension Duration
     ]
     , prod = \tokens -> case tokens of
         (_:token:_) -> Just token
         _           -> Nothing
+  }
+
+ruleDurationPrecision2 :: Rule
+ruleDurationPrecision2 = Rule
+  { name = "<duration> about|exactly"
+  , pattern =
+    [ dimension Duration
+    , regex "gibi|civarında"
+    ]
+  , prod = \tokens -> case tokens of
+      (token:_:_) -> Just token
+      _           -> Nothing
   }
 
 rules :: [Rule]
@@ -119,5 +132,6 @@ rules =
   , ruleDurationDotNumeralHours
   , ruleDurationAndHalfHour
   , ruleDurationPrecision
+  , ruleDurationPrecision2
   , ruleNumeralQuotes
   ]

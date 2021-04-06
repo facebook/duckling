@@ -74,6 +74,15 @@ ruleEgpAbrreviation = Rule
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly EGP
   }
 
+ruleEgpArabizi :: Rule
+ruleEgpArabizi = Rule
+  { name = "geneh"
+  , pattern =
+    [ regex "[Gg][eiy]*n[eiy]*h(at)?( m[aiey]?sr[eiy]+a?)?"
+    ]
+  , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly EGP
+  }
+
 ruleRiyals :: Rule
 ruleRiyals = Rule
   { name = "riyals"
@@ -415,6 +424,7 @@ rules =
   , ruleKopiyka
   , ruleOtherPounds
   , ruleEgpAbrreviation
+  , ruleEgpArabizi
   , rulePounds
   , rulePrecision
   , ruleRinggit

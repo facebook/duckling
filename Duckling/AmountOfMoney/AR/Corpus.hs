@@ -86,6 +86,8 @@ allExamples = concat
              [ "42 EGP"
              , "42 جنيه مصري"
              , "42 جنيهات مصريه"
+             , "42 ج.م"
+             , "42 ج.م."
              ]
   , examples (simple QAR 42)
              [ "42 QAR"

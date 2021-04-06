@@ -149,6 +149,10 @@ allExamples = concat
   , examples (simple EGP 42)
              [ "42 EGP"
              , "42 egyptianpound"
+             , "42 LE"
+             , "42 L.E"
+             , "42 l.e."
+             , "42 le"
              ]
   , examples (simple QAR 42)
              [ "42 QAR"

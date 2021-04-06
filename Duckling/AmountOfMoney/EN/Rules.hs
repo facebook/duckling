@@ -65,6 +65,15 @@ ruleOtherPounds = Rule
       _ -> Nothing
   }
 
+ruleEgpAbrreviation :: Rule
+ruleEgpAbrreviation = Rule
+  { name = "livre égyptienne"
+  , pattern =
+    [ regex "[lL].?[eE].?"
+    ]
+  , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly EGP
+  }
+
 ruleRiyals :: Rule
 ruleRiyals = Rule
   { name = "riyals"
@@ -405,6 +414,7 @@ rules =
   , ruleIntervalDash
   , ruleKopiyka
   , ruleOtherPounds
+  , ruleEgpAbrreviation
   , rulePounds
   , rulePrecision
   , ruleRinggit

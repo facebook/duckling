@@ -20,14 +20,14 @@ import Duckling.Types
 import qualified Duckling.TimeGrain.Types  as TG
 
 grains :: [(Text, String, TG.Grain)]
-grains = [ ("saniye (grain)",     "sa?n(iye)?",           TG.Second)
-         , ("dakika (grain)",     "da?k(ika)?",           TG.Minute)
-         , ("saat (grain)",       "sa(at)?",              TG.Hour)
-         , ("gün (grain)",        "gün",             TG.Day)
-         , ("hafta (grain)",      "hafta",                TG.Week)
-         , ("ay (grain)",         "ay",                   TG.Month)
-         , ("çeyrek yıl (grain)", "\231eyrek y\305l",     TG.Quarter)
-         , ("yıl (grain)",        "y\305l",               TG.Year)
+grains = [ ("saniye (grain)",     "sa?n(iye)?(nin)?",           TG.Second)
+         , ("dakika (grain)",     "da?k(ika)?(nın)?",           TG.Minute)
+         , ("saat (grain)",       "sa(at)?(in)?",              TG.Hour)
+         , ("gün (grain)",        "gün(ün)?",             TG.Day)
+         , ("hafta (grain)",      "hafta(nın)?",                TG.Week)
+         , ("ay (grain)",         "ay(ın)?",                   TG.Month)
+         , ("çeyrek yıl (grain)", "\231eyrek y\305l(ın)?",     TG.Quarter)
+         , ("yıl (grain)",        "y\305l(ın)?",               TG.Year)
          ]
 
 rules :: [Rule]

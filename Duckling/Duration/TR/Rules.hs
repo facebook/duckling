@@ -4,8 +4,8 @@
 -- This source code is licensed under the BSD-style license found in the
 -- LICENSE file in the root directory of this source tree.
 
-
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Duration.TR.Rules
@@ -102,12 +102,24 @@ ruleDurationPrecision :: Rule
 ruleDurationPrecision = Rule
   { name = "<duration> about|exactly"
   , pattern =
-    [ regex "(gibi|civar\305nda|yaklaş\305k|tam( olarak)?)"
+    [ regex "(yaklaşık|tam(\\solarak)?)"
     , dimension Duration
     ]
     , prod = \tokens -> case tokens of
         (_:token:_) -> Just token
         _           -> Nothing
+  }
+
+ruleDurationPrecision2 :: Rule
+ruleDurationPrecision2 = Rule
+  { name = "<duration> about|exactly"
+  , pattern =
+    [ dimension Duration
+    , regex "gibi|civarında"
+    ]
+  , prod = \case
+      (token:_:_) -> Just token
+      _           -> Nothing
   }
 
 rules :: [Rule]
@@ -119,5 +131,6 @@ rules =
   , ruleDurationDotNumeralHours
   , ruleDurationAndHalfHour
   , ruleDurationPrecision
+  , ruleDurationPrecision2
   , ruleNumeralQuotes
   ]

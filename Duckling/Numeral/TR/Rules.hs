@@ -152,7 +152,7 @@ ruleNumeralSuffixesHalfsuffixText :: Rule
 ruleNumeralSuffixesHalfsuffixText = Rule
   { name = "number suffixes (half-suffix text) (1..9)"
   , pattern =
-    [ regex "((bir?|iki|üç|dört|beş|altı|yedi|sekiz|dokuz)(buçuk))"
+    [ regex "((bir?|iki|üçü?|dört|beş|altı|yedi|sekiz|dokuz)(buçuk))"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
@@ -514,7 +514,7 @@ ruleInteger9 :: Rule
 ruleInteger9 = Rule
   { name = "integer 11..19 21..29 31..39 41..49 51..59 61..69 71..79 81..89 91..99"
   , pattern =
-    [ regex "((on|yirmi|otuz|kırk|elli|atmış|altmış|yetmiş|seksen|doksan)(bir|bi|iki|üç|dört|beş|altı|yedi|sekiz|dokuz)(buçuk))"
+    [ regex "((on|yirmi|otuz|kırk|elli|atmış|altmış|yetmiş|seksen|doksan)(bir|bi|iki|üçü?|dört|beş|altı|yedi|sekiz|dokuz)(buçuk))"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
@@ -542,6 +542,7 @@ oneToNineMap = HashMap.fromList
   , ( "tek", 1)
   , ( "iki", 2)
   , ( "üç", 3)
+  , ( "üçü", 3)
   , ( "dört", 4)
   , ( "beş", 5)
   , ( "altı", 6)
@@ -554,7 +555,7 @@ ruleInteger :: Rule
 ruleInteger = Rule
   { name = "integer (0..9)"
   , pattern =
-    [ regex "(yok|hi(ç)|s(ı)f(ı)r|bir?|[ty]ek|iki|(ü)(ç)|d(ö)rt|be(ş)|alt(ı)|yedi|sekiz|dokuz)"
+    [ regex "(yok|hi(ç)|s(ı)f(ı)r|bir?|[ty]ek|iki|(ü)(ç)(ü)?|d(ö)rt|be(ş)|alt(ı)|yedi|sekiz|dokuz)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->

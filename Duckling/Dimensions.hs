@@ -25,6 +25,7 @@ import qualified Duckling.Dimensions.AF as AFDimensions
 import qualified Duckling.Dimensions.AR as ARDimensions
 import qualified Duckling.Dimensions.BG as BGDimensions
 import qualified Duckling.Dimensions.BN as BNDimensions
+import qualified Duckling.Dimensions.CA as CADimensions
 import qualified Duckling.Dimensions.CS as CSDimensions
 import qualified Duckling.Dimensions.DA as DADimensions
 import qualified Duckling.Dimensions.DE as DEDimensions
@@ -105,6 +106,7 @@ langDimensions AF = AFDimensions.allDimensions
 langDimensions AR = ARDimensions.allDimensions
 langDimensions BG = BGDimensions.allDimensions
 langDimensions BN = BNDimensions.allDimensions
+langDimensions CA = CADimensions.allDimensions
 langDimensions CS = CSDimensions.allDimensions
 langDimensions DA = DADimensions.allDimensions
 langDimensions DE = DEDimensions.allDimensions

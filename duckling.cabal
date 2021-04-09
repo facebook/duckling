@@ -530,6 +530,8 @@ library
                      , Duckling.Ordinal.AR.Rules
                      , Duckling.Ordinal.BG.Corpus
                      , Duckling.Ordinal.BG.Rules
+                     , Duckling.Ordinal.CA.Corpus
+                     , Duckling.Ordinal.CA.Rules
                      , Duckling.Ordinal.DA.Corpus
                      , Duckling.Ordinal.DA.Rules
                      , Duckling.Ordinal.DE.Corpus
@@ -1037,6 +1039,7 @@ test-suite duckling-test
                      -- Ordinal
                      , Duckling.Ordinal.AR.Tests
                      , Duckling.Ordinal.BG.Tests
+                     , Duckling.Ordinal.CA.Tests
                      , Duckling.Ordinal.DA.Tests
                      , Duckling.Ordinal.DE.Tests
                      , Duckling.Ordinal.EL.Tests

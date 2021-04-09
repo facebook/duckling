@@ -18,6 +18,7 @@ module Duckling.Rules.CA
 import Duckling.Dimensions.Types
 import Duckling.Locale
 import qualified Duckling.Numeral.CA.Rules as Numeral
+import qualified Duckling.Ordinal.CA.Rules as Ordinal
 import Duckling.Types
 
 defaultRules :: Seal Dimension -> [Rule]
@@ -34,7 +35,7 @@ langRules (Seal Distance) = []
 langRules (Seal Duration) = []
 langRules (Seal Email) = []
 langRules (Seal Numeral) = Numeral.rules
-langRules (Seal Ordinal) = []
+langRules (Seal Ordinal) = Ordinal.rules
 langRules (Seal PhoneNumber) = []
 langRules (Seal Quantity) = []
 langRules (Seal RegexMatch) = []

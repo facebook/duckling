@@ -17,7 +17,8 @@ jobs:
         ghc:
           - "8.6.5"
           - "8.8.4"
-          - "8.10.2"
+          - "8.10.3"
+          - "9.0.1"
 
     steps:
     - uses: actions/checkout@v2
@@ -51,11 +52,12 @@ jobs:
 
   stack:
     name: stack / ghc ${{ matrix.ghc }}
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
+        os: [ubuntu-latest, macOS-latest, windows-latest]
         stack: ["2.5.1"]
-        ghc: ["8.8.4"]
+        ghc: ["8.6.5", "8.8.4", "8.10.3", "9.0.1"]
 
     steps:
     - uses: actions/checkout@v2

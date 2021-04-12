@@ -6,7 +6,7 @@ cabal-version:       2.2
 -- LICENSE file in the root directory of this source tree.
 
 name:                duckling
-version:             0.1.6.1
+version:             0.2.0.0
 synopsis:            A Haskell library for parsing text into structured data.
 description:
   Duckling is a library for parsing text into structured data.

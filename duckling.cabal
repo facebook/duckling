@@ -23,7 +23,9 @@ stability:           alpha
 tested-with:
   GHC==8.4.4,
   GHC==8.6.5,
-  GHC==8.8.3
+  GHC==8.8.4,
+  GHC==8.10.3,
+  GHC==9.0.1
 
 extra-source-files:    README.md
 

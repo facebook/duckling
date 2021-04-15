@@ -65,7 +65,7 @@
   * Ordinal: **new!**
 
 * DA (Danish)
-  * Ordinal: Add support for larger spelled-out ordinals 
+  * Ordinal: Add support for larger spelled-out ordinals
   * Time: recognise abbreviation 'kl'
 
 * DE (German)
@@ -130,7 +130,7 @@
   * Time: Add rule for 'during \<month\>'
   * Time: Restrict 'on' absorption to days
   * Time: Fix durations, upper intervals should all be exclusive
-  * Time: Fix grain on some intervals for time-of-days 
+  * Time: Fix grain on some intervals for time-of-days
   * Time: Add rule 'in \<duration\> at \<time-ofday\>
   * Time: Add \<datetime\> - \<datetime\> (interval) timezone rule
   * Time: '\<day\> in \<duration\> should only operate on grain \> Hour
@@ -171,7 +171,7 @@
 * EN_UK (English, United Kingdom)
   * Duration: **new!**
   * Time: **new!**
-  
+
 * EN_US (English, United States)
   * Time: Super Tuesday
 
@@ -185,7 +185,7 @@
   * Numeral: composite numerals
   * Ordinal: Add missing 'tercer' regex
   * Quantity: **new!**
-  * Time: Add support for periodic holidays 
+  * Time: Add support for periodic holidays
   * Time: Fix `ruleYearLatent` to not match numerals that could be hours
   * Time: Make 'n horas' latent
   * Time: Fixed a problem with parsing 'day of month' that contains 'dia'
@@ -216,7 +216,7 @@
   * AmountOfMoney: add more rules
 
 * HI (Hindi)
-  * Duration: Pakhwada (पखवाड़ा) is 15 days n, not a fortnight 
+  * Duration: Pakhwada (पखवाड़ा) is 15 days n, not a fortnight
   * Duration: Add support for composite duration
   * Duration: Add support for specific times
   * Numeral: Support more numerals
@@ -230,12 +230,12 @@
   * Numeral: **new!**
 
 * IT (Italian)
-  * AmountOfMoney: **new!** 
-  * Distance: **new!** 
+  * AmountOfMoney: **new!**
+  * Distance: **new!**
   * Duration: Fix ruleDurationAgo
 
 * KA (Georgian)
-  * AmountOfMoney: **new!** 
+  * AmountOfMoney: **new!**
   * Duration: **new!**
   * Numeral: **new!**
   * Ordinal: **new!**
@@ -276,9 +276,9 @@
   * Time: stop 'for \<number\>' from resolving as times
   * Volume: remove gallon
   * Volume: Fix typo in milliliter
-  
+
 * NO (Norwegian)
-  * AmountOfMoney: Parse more currencies 
+  * AmountOfMoney: Parse more currencies
   * Numeral: The written numeral 8 had a typo: "otte" -> "åtte"
   * Numeral: Parse powers of ten with spaces as well as dots
   * Numeral: Add more textual powers of ten
@@ -289,8 +289,8 @@
   * Time: Add some more unambiguous datetime parsing
 
 * PL (Polish)
-  * Numeral: Add support for seventy, eighty, ninety 
-  * Duration: Fix typo: miej -> mniej 
+  * Numeral: Add support for seventy, eighty, ninety
+  * Duration: Fix typo: miej -> mniej
   * Time: Add 'evening' to corpus
 
 * PT (Portuguese)
@@ -506,7 +506,7 @@ The `value` field of `Entity` is now typed! Use `toJText` to get the JSON-encode
   * AmountOfMoney: **new!**
 
 * PL_XX
-  * Time: month regex fix 
+  * Time: month regex fix
 
 * RU_XX
   * Ordinal: refactor pattern match to hashmap lookup

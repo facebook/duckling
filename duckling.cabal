@@ -27,7 +27,7 @@ tested-with:
   GHC==8.10.3,
   GHC==9.0.1
 
-extra-source-files:    README.md
+extra-source-files:    README.md, CHANGELOG.md
 
 library
   exposed-modules:     Duckling.Core

@@ -1,5 +1,20 @@
 # Changelog for [`duckling` package](https://github.com/facebook/duckling)
 
+## 0.2.X.X
+
+### Core
+
+### Rulesets
+* EN (English)
+  * Time: Allow latent match for \<part-of-day\> \<latent-time-of-day\>
+
+* RU (Russian)
+  * Duration: Diminutives for minutes and hours
+  * Duration: quarters of an hour
+  * Duration: added 'сутки' (24-hour period)
+
+### Server
+
 ## 0.2.0.0
 
 ### Core

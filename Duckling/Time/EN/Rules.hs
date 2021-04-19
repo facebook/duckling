@@ -624,6 +624,21 @@ rulePODatTOD = Rule
 
   }
 
+rulePODintersectTODlatent :: Rule
+rulePODintersectTODlatent = Rule
+  { name = "<part-of-day> <latent-time-of-day> (latent)"
+  , pattern =
+    [ Predicate isAPartOfDay
+    , Predicate isATimeOfDay
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Time td1:Token Time td2:_)
+        | not (TTime.latent td1) || TTime.latent td2 ->
+        Token Time . mkLatent <$> intersect td1 td2
+      _ -> Nothing
+  }
+
+
 ruleHHMM :: Rule
 ruleHHMM = Rule
   { name = "hh:mm"
@@ -2705,6 +2720,7 @@ rules =
   , ruleAtTOD
   , ruleTODOClock
   , rulePODatTOD
+  , rulePODintersectTODlatent
   , ruleHHMM
   , ruleHHhMM
   , ruleHHMMLatent

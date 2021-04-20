@@ -65,7 +65,7 @@ allExamples = concat
              ]
   , examples (NumeralValue 18)
              [ "18"
-             , "achtien"
+             , "achttien"
              ]
   , examples (NumeralValue 1.1)
              [ "1,1"

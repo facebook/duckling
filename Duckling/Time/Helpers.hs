@@ -248,7 +248,7 @@ shiftDuration :: TTime.Predicate -> DurationData -> TTime.Predicate
 shiftDuration pred1 dd@(DurationData _ g) =
   mkSeriesPredicate $! TTime.timeSeqMap False f pred1
   where
-    f x _ = Just . addDuration dd . TTime.timeRound x $ TG.lower g
+    f x _ = Just $ addDuration dd $ TTime.timeRound x $ TG.lower g
 
 shiftTimezone :: Series.TimeZoneSeries -> TTime.Predicate -> TTime.Predicate
 shiftTimezone providedSeries pred1 =
@@ -260,7 +260,7 @@ shiftTimezone providedSeries pred1 =
           Time.TimeZone providedOffset _ _ =
             Series.timeZoneFromSeries providedSeries s
       -- This forgets about TTime.end, but it's OK since we act on time-of-days.
-      in Just . TTime.timePlus x TG.Minute . toInteger $
+      in Just $ TTime.timePlus x TG.Minute $ toInteger $
            ctxOffset - providedOffset
 
 -- -----------------------------------------------------------------
@@ -707,14 +707,14 @@ mkSingleRegexRule name pattern token = Rule
 mkRuleInstants :: [(Text, TG.Grain, Int, String)] -> [Rule]
 mkRuleInstants = map go
   where
-    go (name, grain, n, ptn) = mkSingleRegexRule name ptn . tt $
+    go (name, grain, n, ptn) = mkSingleRegexRule name ptn $ tt $
       cycleNth grain n
 
 mkRuleDaysOfWeek :: [(Text, String)] -> [Rule]
 mkRuleDaysOfWeek daysOfWeek = zipWith go daysOfWeek [1..7]
   where
     go (name, ptn) i =
-      mkSingleRegexRule name ptn . tt . mkOkForThisNext $ dayOfWeek i
+      mkSingleRegexRule name ptn $ tt $ mkOkForThisNext $ dayOfWeek i
 
 mkRuleMonths :: [(Text, String)] -> [Rule]
 mkRuleMonths = mkRuleMonthsWithLatent . map (uncurry (,, False))
@@ -723,8 +723,8 @@ mkRuleMonthsWithLatent :: [(Text, String, Bool)] -> [Rule]
 mkRuleMonthsWithLatent months  = zipWith go months [1..12]
   where
     go (name, ptn, latent) i =
-      mkSingleRegexRule name ptn . tt . (if latent then mkLatent else id)
-      . mkOkForThisNext $ month i
+      mkSingleRegexRule name ptn $ tt $ (if latent then mkLatent else id)
+      $ mkOkForThisNext $ month i
 
 mkRuleSeasons :: [(Text, String, TimeData, TimeData)] -> [Rule]
 mkRuleSeasons = map go
@@ -735,7 +735,7 @@ mkRuleSeasons = map go
 mkRuleHolidays :: [(Text, String, TimeData)] -> [Rule]
 mkRuleHolidays = map go
   where
-    go (name, ptn, td) = mkSingleRegexRule name ptn . tt
+    go (name, ptn, td) = mkSingleRegexRule name ptn $ tt
       $ withHoliday name $ mkOkForThisNext td
 
 mkRuleHolidays' :: [(Text, String, Maybe TimeData)] -> [Rule]

@@ -467,14 +467,14 @@ runMinutePredicate n = series
       Time.UTCTime _ diffTime = start t
       Time.TimeOfDay _ m _ = Time.timeToTimeOfDay diffTime
       rounded = timeRound t TG.Minute
-      anchor = timePlus rounded TG.Minute . toInteger $ mod (n - m) 60
+      anchor = timePlus rounded TG.Minute $ toInteger $ mod (n - m) 60
 
 runHourPredicate :: Maybe AMPM -> Bool -> Int -> SeriesPredicate
 runHourPredicate ampm is12H n = series
   where
   series t _ =
     ( drop 1 $
-        iterate (\t -> timePlus t TG.Hour . toInteger $ - step) anchor
+        iterate (\t -> timePlus t TG.Hour $ toInteger $ - step) anchor
     , iterate (\t -> timePlus t TG.Hour $ toInteger step) anchor
     )
     where
@@ -487,7 +487,7 @@ runHourPredicate ampm is12H n = series
             Just PM -> (n `mod` 12) + 12
             Nothing -> n
       rounded = timeRound t TG.Hour
-      anchor = timePlus rounded TG.Hour . toInteger $ mod (n' - h) step
+      anchor = timePlus rounded TG.Hour $ toInteger $ mod (n' - h) step
 
 runAMPMPredicate :: AMPM -> SeriesPredicate
 runAMPMPredicate ampm = series
@@ -495,7 +495,7 @@ runAMPMPredicate ampm = series
   series t _ = (past, future)
     where
     past = maybeShrinkFirst $
-      iterate (\t -> timePlusEnd t TG.Hour . toInteger $ - step) anchor
+      iterate (\t -> timePlusEnd t TG.Hour $ toInteger $ - step) anchor
     future = maybeShrinkFirst $
       iterate (\t -> timePlusEnd t TG.Hour $ toInteger step) anchor
     -- to produce time in the future/past we need to adjust
@@ -532,9 +532,9 @@ runDayOfTheMonthPredicate :: Int -> SeriesPredicate
 runDayOfTheMonthPredicate n = series
   where
   series t _ =
-    ( map addDays . filter enoughDays . iterate (addMonth $ - 1) $
+    ( map addDays $ filter enoughDays $ iterate (addMonth $ - 1) $
         addMonth (- 1) anchor
-    , map addDays . filter enoughDays $ iterate (addMonth 1) anchor
+    , map addDays $ filter enoughDays $ iterate (addMonth 1) anchor
     )
     where
       enoughDays :: TimeObject -> Bool
@@ -542,7 +542,7 @@ runDayOfTheMonthPredicate n = series
                          (year, month, _) = Time.toGregorian day
                      in n <= Time.gregorianMonthLength year month
       addDays :: TimeObject -> TimeObject
-      addDays t = timePlus t TG.Day . toInteger $ n - 1
+      addDays t = timePlus t TG.Day $ toInteger $ n - 1
       addMonth :: Int -> TimeObject -> TimeObject
       addMonth i t = timePlus t TG.Month $ toInteger i
       roundMonth :: TimeObject -> TimeObject
@@ -558,7 +558,7 @@ runMonthPredicate n = series
   series t _ = timeSequence TG.Year 1 anchor
     where
       rounded =
-        timePlus (timeRound t TG.Year) TG.Month . toInteger $ n - 1
+        timePlus (timeRound t TG.Year) TG.Month $ toInteger $ n - 1
       anchor = if timeStartsBeforeTheEndOf t rounded
         then rounded
         else timePlus rounded TG.Year 1
@@ -628,9 +628,9 @@ runCompose pred1 pred2 = series
     (past, future) = pred2 nowTime context
     computeSerie tokens =
       [t | time1 <- take safeMax tokens
-         , t <- mapMaybe (timeIntersect time1) .
-                takeWhile (startsBefore time1) .
-                snd . pred1 time1 $ fixedRange time1
+         , t <- mapMaybe (timeIntersect time1) $
+                takeWhile (startsBefore time1) $
+                snd $ pred1 time1 $ fixedRange time1
       ]
 
     startsBefore t1 this = timeStartsBeforeTheEndOf this t1
@@ -671,7 +671,7 @@ timeSeqMap dontReverse f g = series
   series nowTime context = (past, future)
     where
     -- computes a single interval from `f` based on each interval in the series
-    applyF series = mapMaybe (\x -> f x context) $ take safeMaxInterval series
+    applyF ts = mapMaybe (`f` context) $ take safeMaxInterval ts
 
     (firstPast, firstFuture) = runPredicate g nowTime context
     (past1, future1) = (applyF firstPast, applyF firstFuture)
@@ -693,7 +693,7 @@ timeSeqMap dontReverse f g = series
       stillFuture
 
     -- Reverse the list if needed?
-    applyRev series = if dontReverse then series else reverse series
+    applyRev ts = if dontReverse then ts else reverse ts
     (sortedPast, sortedFuture) = (applyRev newPast, applyRev newFuture)
 
     -- Past is the past from the future's series with the
@@ -747,7 +747,7 @@ toRFC3339 (Time.ZonedTime (Time.LocalTime day (Time.TimeOfDay h m s)) tz) =
     , ":"
     , pad 2 $ floor s
     , "."
-    , pad 3 . round $ (s - realToFrac (floor s :: Integer)) * 1000
+    , pad 3 $ round $ (s - realToFrac (floor s :: Integer)) * 1000
     , timezoneOffset tz
     ]
 
@@ -787,7 +787,7 @@ timeRound t TG.Quarter = newTime {grain = TG.Quarter}
     monthTime = timeRound t TG.Month
     Time.UTCTime day _ = start monthTime
     (_, month, _) = Time.toGregorian day
-    newTime = timePlus monthTime TG.Month . toInteger $ - (mod (month - 1) 3)
+    newTime = timePlus monthTime TG.Month $ toInteger $ - (mod (month - 1) 3)
 timeRound t grain = TimeObject {start = s, grain = grain, end = Nothing}
   where
     Time.UTCTime day diffTime = start t

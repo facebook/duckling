@@ -621,7 +621,6 @@ rulePODatTOD = Rule
         Token Time tod@TimeData{TTime.form = Just (TTime.TimeOfDay (Just hours) True)}:_) ->
         tt $ timeOfDayAMPM (start < 12 || hours == 12) tod
       _ -> Nothing
-
   }
 
 rulePODintersectTODlatent :: Rule

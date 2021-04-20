@@ -112,6 +112,7 @@ negativeCorpus = (testContext, testOptions, examples)
       , "A4 A5"
       , "palm"
       , "Martin Luther King' day"
+      , "two three"
       ]
 
 latentCorpus :: Corpus

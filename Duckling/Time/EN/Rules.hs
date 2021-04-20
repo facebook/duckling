@@ -766,7 +766,7 @@ ruleHONumeral = Rule
   { name = "<hour-of-day> <integer>"
   , pattern =
     [ Predicate isAnHourOfDay
-    , Predicate $ isIntegerBetween 1 59
+    , Predicate $ isIntegerBetween 10 59
     ]
   , prod = \tokens -> case tokens of
       (Token Time TimeData{TTime.form = Just (TTime.TimeOfDay (Just hours) is12H)

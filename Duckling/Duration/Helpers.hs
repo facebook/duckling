@@ -16,6 +16,7 @@ module Duckling.Duration.Helpers
   , secondsFromHourMixedFraction
   , timesOneQuarter
   , timesThreeQuarter
+  , inCoarsestGrain
   ) where
 
 import Prelude
@@ -25,6 +26,7 @@ import Duckling.Duration.Types (DurationData (DurationData))
 import Duckling.Numeral.Helpers (isNatural)
 import Duckling.Types
 import qualified Duckling.Duration.Types as TDuration
+import qualified Duckling.Numeral.Types as TNumeral
 import qualified Duckling.TimeGrain.Types as TG
 
 -- -----------------------------------------------------------------
@@ -74,3 +76,15 @@ timesThreeQuarter grain = case grain of
   TG.Month  -> Just . duration TG.Day    . (21+) . (30*)
   TG.Year   -> Just . duration TG.Month  . (9+)  . (12*)
   _         -> const Nothing
+
+inCoarsestGrain :: TG.Grain -> Double -> DurationData
+inCoarsestGrain g v =
+  go g
+  where
+    seconds = fromIntegral (floor $ TG.inSeconds g v :: Int)
+    go grain =
+      -- recursion terminates because `seconds` is an Integer
+      let inGrain = seconds / TG.inSeconds grain 1
+      in case TNumeral.getIntValue inGrain of
+        Just n -> duration grain n
+        Nothing -> go $ TG.lower grain

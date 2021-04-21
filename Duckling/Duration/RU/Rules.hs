@@ -97,7 +97,7 @@ ruleGrainAsDuration = Rule
 
 rulePositiveDuration :: Rule
 rulePositiveDuration = Rule
-  { name = "<positive-numeral> <time-grain>"
+  { name = "<positive-non-integer> <time-grain>"
   , pattern =
     [ numberWith TNumeral.value $ and . sequence [not . isInteger, (>0)]
     , dimension TimeGrain
@@ -105,7 +105,8 @@ rulePositiveDuration = Rule
   , prod = \case
       (Token Numeral NumeralData{TNumeral.value = v}:
        Token TimeGrain grain:
-       _) -> Just $ Token Duration $ duration Second $ floor $ inSeconds grain v
+       _) ->
+        Just $ Token Duration $ inCoarsestGrain grain v
       _ -> Nothing
   }
 

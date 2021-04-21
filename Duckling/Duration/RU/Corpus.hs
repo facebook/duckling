@@ -58,10 +58,12 @@ allExamples = concat
              , "3 четверти часа"
              , "три четверти часа"
              ]
-  , examples (DurationData 5400 Second)
+  , examples (DurationData 90 Minute)
              [ "полтора часа"
              , "1.5 часа"
-             , "5400 секунд"
+             ]
+  , examples (DurationData 5400 Second)
+             [ "5400 секунд"
              ]
   , examples (DurationData 8 Hour)
              [ "8 часов"
@@ -88,7 +90,7 @@ allExamples = concat
              , "полгода"
              , "пол года"
              ]
-  , examples (DurationData 9072000 Second)
+  , examples (DurationData 105 Day)
              [ "3.5 месяца"
              , "три с половиной месяца"
              , "приблизительно 3.5 месяца"

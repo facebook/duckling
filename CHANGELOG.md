@@ -13,6 +13,7 @@
   * Duration: Diminutives for minutes and hours
   * Duration: quarters of an hour
   * Duration: added 'сутки' (24-hour period)
+  * Duration: use coarsest reasonable grain for \<positive-non-integer\> \<time-grain\>
 
 ### Server
 

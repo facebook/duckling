@@ -780,6 +780,26 @@ ruleHONumeral = Rule
       _ -> Nothing
   }
 
+ruleHONumeralDash :: Rule
+ruleHONumeralDash = Rule
+  { name = "<hour-of-day> - <integer-as-word>"
+  , pattern =
+    [ Predicate isAnHourOfDay
+    , regex "-(?!\\d)"
+    , Predicate $ isIntegerBetween 10 59
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Time TimeData{TTime.form = Just (TTime.TimeOfDay (Just hours) is12H)
+                          ,TTime.latent = isLatent}:
+       _:
+       token:
+       _) -> do
+        n <- getIntValue token
+        let lt = if isLatent then mkLatent else id
+        tt $ lt $ hourMinute is12H hours n
+      _ -> Nothing
+  }
+
 ruleHONumeralAlt :: Rule
 ruleHONumeralAlt = Rule
   { name = "<hour-of-day> zero <integer>"
@@ -800,6 +820,30 @@ ruleHONumeralAlt = Rule
           if isLatent
             then tt $ mkLatent $ hourMinute is12H hours n
             else tt $ hourMinute is12H hours n
+      _ -> Nothing
+  }
+
+ruleHONumeralAltDash :: Rule
+ruleHONumeralAltDash = Rule
+  { name = "<hour-of-day> - zero - <integer>"
+  , pattern =
+    [ Predicate isAnHourOfDay
+    , regex "-"
+    , regex "(zero|o(h|u)?)"
+    , regex "-(?!\\d)"
+    , Predicate $ isIntegerBetween 1 9
+    ]
+  , prod = \case
+      (
+        Token Time TimeData{TTime.form = Just (TTime.TimeOfDay
+                                              (Just hours) is12H)
+                          , TTime.latent = isLatent}:
+        _:_:_:
+        token:
+        _) -> do
+          n <- getIntValue token
+          let lt = if isLatent then mkLatent else id
+          tt $ lt $ hourMinute is12H hours n
       _ -> Nothing
   }
 
@@ -2729,7 +2773,9 @@ rules =
   , ruleMilitarySpelledOutAMPM2
   , ruleTODAMPM
   , ruleHONumeral
+  , ruleHONumeralDash
   , ruleHONumeralAlt
+  , ruleHONumeralAltDash
   , ruleHODHalf
   , ruleHODQuarter
   , ruleNumeralToHOD

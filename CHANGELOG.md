@@ -8,6 +8,7 @@
 * EN (English)
   * Time: Allow latent match for \<part-of-day\> \<latent-time-of-day\>
   * Time: Avoid parsing phrases like 'two five' as times
+  * Time: Add support to parse spelled-out times like 'five-thirty'
 
 * RU (Russian)
   * Duration: Diminutives for minutes and hours

@@ -238,8 +238,8 @@ ruleNumeralHundredsAndSmaller = Rule
       , numberBetween 0 100
       ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData { TNumeral.value = v1 } : Token Numeral NumeralData { TNumeral.value = v2 } : _) ->
-        double $ v1 + v2
+      (Token Numeral NumeralData { TNumeral.value = v1 } : Token Numeral NumeralData { TNumeral.value = v2 } : _)
+        | v1 > 0 && v1 < 1000 -> double $ v1 + v2
       _ -> Nothing
   }
 
@@ -253,6 +253,32 @@ ruleNumeralMultiply = Rule
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData { TNumeral.value = v1 } : Token Numeral NumeralData { TNumeral.value = v2 } : _) ->
         double $ v1 * v2
+      _ -> Nothing
+  }
+
+ruleNumeralThousandsAnd :: Rule
+ruleNumeralThousandsAnd = Rule
+  { name = "<thousands> 0..999"
+  , pattern =
+      [ numberWith TNumeral.value (TNumeral.isMultiple 1000)
+      , numberBetween 0 999
+      ]
+  , prod = \tokens -> case tokens of
+      (Token Numeral NumeralData { TNumeral.value = v1 } : Token Numeral NumeralData { TNumeral.value = v2 } : _)
+       | 0 < v1 && v1 < 1000000 -> double $ v1 + v2
+      _ -> Nothing
+  }
+
+ruleNumeralMillionsAnd :: Rule
+ruleNumeralMillionsAnd = Rule
+  { name = "<millions> 0..999999"
+  , pattern =
+      [ numberWith TNumeral.value (TNumeral.isMultiple 1000000)
+      , numberBetween 0 999999
+      ]
+  , prod = \tokens -> case tokens of
+      (Token Numeral NumeralData { TNumeral.value = v1 } : Token Numeral NumeralData { TNumeral.value = v2 } : _)
+       | 0 < v1 -> double $ v1 + v2
       _ -> Nothing
   }
 
@@ -302,6 +328,8 @@ rules =
   , ruleBigNumeral
   , ruleBigNumeralMultipliable
   , ruleNumeralMultiply
+  , ruleNumeralThousandsAnd
+  , ruleNumeralMillionsAnd
   , ruleTwoPartHundreds
   , ruleNumeralHundredsAndSmaller
   , ruleNumeralDotNumeral

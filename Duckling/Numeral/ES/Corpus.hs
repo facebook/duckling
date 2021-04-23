@@ -67,4 +67,5 @@ allExamples =
     , examples (NumeralValue 203) ["dos cientos tres", "doscientos tres"]
     , examples (NumeralValue 203_000) ["doscientos tres mil", "203 mil"]
     , examples (NumeralValue 4_000_000) ["cuatro millones", "4 millones"]
+    , examples (NumeralValue 4_002_003) ["cuatro millones dos mil tres", "4 millones 2 mil 3"]
     ]

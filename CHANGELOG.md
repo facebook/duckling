@@ -12,7 +12,7 @@
 
 * ES (Spanish)
   * Numeral: Fix parsing for hundreds phrases like `doscientos tres`
-  * Numeral: Add basic support for thousands and millions
+  * Numeral: Add support for thousands and millions
 
 * RU (Russian)
   * Duration: Diminutives for minutes and hours

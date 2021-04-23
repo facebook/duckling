@@ -168,8 +168,8 @@ ruleNumeralTwentyOneToNinetyNine = Rule
       _ -> Nothing
   }
 
-oneHundredToThousandMap :: HashMap.HashMap Text.Text Integer
-oneHundredToThousandMap =
+bigNumbersMap :: HashMap.HashMap Text.Text Integer
+bigNumbersMap =
   HashMap.fromList
     [ ("cien", 100)
     , ("cientos", 100)
@@ -185,30 +185,42 @@ oneHundredToThousandMap =
     , ("mil", 1000)
     ]
 
-ruleNumeralHundredsToMil :: Rule
-ruleNumeralHundredsToMil = Rule
-  { name = "number 100..1000 "
+ruleBigNumeral :: Rule
+ruleBigNumeral = Rule
+  { name = "big number 100 to 1K"
   , pattern =
       [ regex
-          "(cien(to)?s?|doscientos|trescientos|cuatrocientos|quinientos|seiscientos|setecientos|ochocientos|novecientos|mil)"
+          "(cien(to|tos)?|doscientos|trescientos|cuatrocientos|quinientos|seiscientos|setecientos|ochocientos|novecientos|mil)"
       ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match : _)) : _) ->
-        HashMap.lookup (Text.toLower match) oneHundredToThousandMap >>= integer
+        HashMap.lookup (Text.toLower match) bigNumbersMap >>= integer
       _ -> Nothing
   }
 
-ruleNumeralThreePartHundreds :: Rule
-ruleNumeralThreePartHundreds = Rule
-  { name = "<2-10> cientos <0-99>"
+ruleTwoPartHundreds :: Rule
+ruleTwoPartHundreds = Rule
+ { name = "2..9 cientos"
+ , pattern =
+     [ numberBetween 2 10
+     , regex "cientos"
+     ]
+  , prod = \tokens -> case tokens of
+      (Token Numeral NumeralData { TNumeral.value = v1 } : _ : _) ->
+        double $ 100 * v1
+      _ -> Nothing
+  }
+
+ruleNumeralHundredsAndSmaller :: Rule
+ruleNumeralHundredsAndSmaller = Rule
+  { name = "<hundreds> 0..99"
   , pattern =
-      [ numberBetween 2 10
-      , numberWith TNumeral.value (== 100)
+      [ numberWith TNumeral.value (TNumeral.isMultiple 100)
       , numberBetween 0 100
       ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData { TNumeral.value = v1 } : _ : Token Numeral NumeralData { TNumeral.value = v2 } : _) ->
-        double $ 100 * v1 + v2
+      (Token Numeral NumeralData { TNumeral.value = v1 } : Token Numeral NumeralData { TNumeral.value = v2 } : _) ->
+        double $ v1 + v2
       _ -> Nothing
   }
 
@@ -255,8 +267,9 @@ rules =
   , ruleNumeralSixteenToNineteenWithDiez
   , ruleNumeralTwentyToNinetyTens
   , ruleNumeralTwentyOneToNinetyNine
-  , ruleNumeralHundredsToMil
-  , ruleNumeralThreePartHundreds
+  , ruleBigNumeral
+  , ruleTwoPartHundreds
+  , ruleNumeralHundredsAndSmaller
   , ruleNumeralDotNumeral
   , ruleNumeralsSuffixesKMG
   , ruleNumeralsPrefixWithNegativeOrMinus

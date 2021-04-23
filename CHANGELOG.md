@@ -10,6 +10,9 @@
   * Time: Avoid parsing phrases like 'two five' as times
   * Time: Add support to parse spelled-out times like 'five-thirty'
 
+* ES (Spanish)
+  * Numeral: Fix parsing for hundreds phrases like `doscientos tres`
+
 * RU (Russian)
   * Duration: Diminutives for minutes and hours
   * Duration: quarters of an hour

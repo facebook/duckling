@@ -63,4 +63,5 @@ allExamples =
     , examples (NumeralValue 7) ["cero siete", "zero siete"]
     , examples (NumeralValue 8) ["cero ocho", "zero ocho"]
     , examples (NumeralValue 9) ["cero nueve", "zero nueve"]
+    , examples (NumeralValue 203) ["dos cientos tres", "doscientos tres"]
     ]

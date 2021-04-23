@@ -242,13 +242,11 @@ classifiers
                                n = 1}}),
        ("big number 100 to 1K",
         Classifier{okData =
-                     ClassData{prior = -0.6931471805599453,
-                               unseen = -1.3862943611198906,
+                     ClassData{prior = 0.0, unseen = -1.3862943611198906,
                                likelihoods = HashMap.fromList [("", 0.0)], n = 2},
                    koData =
-                     ClassData{prior = -0.6931471805599453,
-                               unseen = -1.3862943611198906,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 2}}),
+                     ClassData{prior = -infinity, unseen = -0.6931471805599453,
+                               likelihoods = HashMap.fromList [], n = 0}}),
        ("del mediod\237a",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -1.0986122886681098,
@@ -786,6 +784,13 @@ classifiers
                    koData =
                      ClassData{prior = 0.0, unseen = -2.0794415416798357,
                                likelihoods = HashMap.fromList [("", 0.0)], n = 6}}),
+       ("1K or 1M in multipliable form",
+        Classifier{okData =
+                     ClassData{prior = -infinity, unseen = -0.6931471805599453,
+                               likelihoods = HashMap.fromList [], n = 0},
+                   koData =
+                     ClassData{prior = 0.0, unseen = -1.3862943611198906,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 2}}),
        ("afternoon",
         Classifier{okData =
                      ClassData{prior = -0.2876820724517809,
@@ -848,7 +853,7 @@ classifiers
                                likelihoods =
                                  HashMap.fromList
                                    [("integer (numeric)", -0.40546510810816444),
-                                    ("big number 100 to 1K", -1.0986122886681098)],
+                                    ("1K or 1M in multipliable form", -1.0986122886681098)],
                                n = 7}}),
        ("en <duration>",
         Classifier{okData =

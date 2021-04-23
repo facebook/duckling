@@ -183,6 +183,12 @@ bigNumbersMap =
     , ("ochocientos", 800)
     , ("novecientos", 900)
     , ("mil", 1000)
+    , ("millon", 1000000)
+    , ("millón", 1000000)
+    , ("un millon", 1000000)
+    , ("un millón", 1000000)
+    , ("millones", 1000000)
+    -- Note: billion and larger is ambiguous becaouse of long vs short scale
     ]
 
 ruleBigNumeral :: Rule
@@ -190,11 +196,24 @@ ruleBigNumeral = Rule
   { name = "big number 100 to 1K"
   , pattern =
       [ regex
-          "(cien(to|tos)?|doscientos|trescientos|cuatrocientos|quinientos|seiscientos|setecientos|ochocientos|novecientos|mil)"
+          "(cien(to|tos)?|doscientos|trescientos|cuatrocientos|quinientos|seiscientos|setecientos|ochocientos|novecientos|(un )?mill(o|ó)n)"
       ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match : _)) : _) ->
         HashMap.lookup (Text.toLower match) bigNumbersMap >>= integer
+      _ -> Nothing
+  }
+
+ruleBigNumeralMultipliable :: Rule
+ruleBigNumeralMultipliable = Rule
+  { name = "1K or 1M in multipliable form"
+  , pattern =
+      [ regex
+          "(mil(lones)?)"
+      ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (match : _)) : _) ->
+        HashMap.lookup (Text.toLower match) bigNumbersMap >>= integer >>= withMultipliable
       _ -> Nothing
   }
 
@@ -221,6 +240,19 @@ ruleNumeralHundredsAndSmaller = Rule
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData { TNumeral.value = v1 } : Token Numeral NumeralData { TNumeral.value = v2 } : _) ->
         double $ v1 + v2
+      _ -> Nothing
+  }
+
+ruleNumeralMultiply :: Rule
+ruleNumeralMultiply = Rule
+  { name = "2..999 <multipliable>"
+  , pattern =
+      [ numberBetween 2 1000
+      , Predicate isMultipliable
+      ]
+  , prod = \tokens -> case tokens of
+      (Token Numeral NumeralData { TNumeral.value = v1 } : Token Numeral NumeralData { TNumeral.value = v2 } : _) ->
+        double $ v1 * v2
       _ -> Nothing
   }
 
@@ -268,6 +300,8 @@ rules =
   , ruleNumeralTwentyToNinetyTens
   , ruleNumeralTwentyOneToNinetyNine
   , ruleBigNumeral
+  , ruleBigNumeralMultipliable
+  , ruleNumeralMultiply
   , ruleTwoPartHundreds
   , ruleNumeralHundredsAndSmaller
   , ruleNumeralDotNumeral

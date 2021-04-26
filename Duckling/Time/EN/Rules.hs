@@ -708,40 +708,6 @@ ruleMilitaryAMPM = Rule
       _ -> Nothing
   }
 
-ruleMilitarySpelledOutAMPM :: Rule
-ruleMilitarySpelledOutAMPM = Rule
-  { name = "military spelled out numbers am|pm"
-  , pattern =
-    [ Predicate $ isIntegerBetween 10 12
-    , Predicate $ isIntegerBetween 1 59
-    , regex "(in the )?([ap])(\\s|\\.)?m?\\.?"
-    ]
-    , prod = \tokens -> case tokens of
-        (h:m:Token RegexMatch (GroupMatch (_:ap:_)):_) -> do
-          hh <- getIntValue h
-          mm <- getIntValue m
-          tt $ timeOfDayAMPM (Text.toLower ap == "a") $ hourMinute True hh mm
-        _ -> Nothing
-  }
-
-ruleMilitarySpelledOutAMPM2 :: Rule
-ruleMilitarySpelledOutAMPM2 = Rule
-  { name = "six thirty six a.m."
-  , pattern =
-    [ Predicate $ isIntegerBetween 110 999
-    , regex "(in the )?([ap])(\\s|\\.)?m?\\.?"
-    ]
-  , prod = \tokens -> case tokens of
-      (token:Token RegexMatch (GroupMatch (_:ap:_)):_) -> do
-        n <- getIntValue token
-        m <- case mod n 100 of
-          v | v < 60 -> Just v
-          _          -> Nothing
-        let h = quot n 100
-        tt $ timeOfDayAMPM (Text.toLower ap == "a") $ hourMinute True h m
-      _ -> Nothing
-  }
-
 ruleTODAMPM :: Rule
 ruleTODAMPM = Rule
   { name = "<time-of-day> am|pm"
@@ -2769,8 +2735,6 @@ rules =
   , ruleHHMMLatent
   , ruleHHMMSS
   , ruleMilitaryAMPM
-  , ruleMilitarySpelledOutAMPM
-  , ruleMilitarySpelledOutAMPM2
   , ruleTODAMPM
   , ruleHONumeral
   , ruleHONumeralDash

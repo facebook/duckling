@@ -75,6 +75,7 @@ allExamples = concat
              ]
   , examples (datetime (2017, 2, 5, 0, 0, 0) Day)
              [ "chủ nhật"
+             , "chúa nhật"
              ]
   , examples (datetime (2017, 6, 1, 0, 0, 0) Month)
              [ "tháng 6"
@@ -124,6 +125,7 @@ allExamples = concat
   , examples (datetime (2017, 4, 9, 0, 0, 0) Day)
              [ "chủ nhật ngày mồng 9 tháng 4"
              , "chủ nhật ngày 9 tháng 4"
+             , "chúa nhật ngày 9 tháng 4"
              ]
   , examples (datetime (2017, 2, 6, 0, 0, 0) Day)
              [ "thứ 2 ngày 6 tháng 2"
@@ -292,6 +294,7 @@ allExamples = concat
              ]
   , examples (datetimeInterval ((2017, 2, 5, 4, 0, 0), (2017, 2, 5, 12, 0, 0)) Hour)
              [ "sáng chủ nhật"
+             , "sáng chúa nhật"
              ]
   , examples (datetimeInterval ((2017, 2, 2, 3, 54, 58), (2017, 2, 2, 3, 55, 0)) Second)
              [ "2 giây vừa rồi"

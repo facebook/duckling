@@ -110,6 +110,69 @@ ruleInteger21 = Rule
       _ -> Nothing
   }
 
+ruleInteger300 :: Rule
+ruleInteger300 = Rule
+  { name = "integer 300"
+  , pattern =
+    [ regex "(ثلاث)ما?[ئي][ةه]"
+    ]
+  , prod = \_ -> integer 300
+  }
+
+ruleInteger400 :: Rule
+ruleInteger400 = Rule
+  { name = "integer 400"
+  , pattern =
+    [ regex "([أا]ربع)ما?[ئي][ةه]"
+    ]
+  , prod = \_ -> integer 400
+  }
+
+ruleInteger500 :: Rule
+ruleInteger500 = Rule
+  { name = "integer 500"
+  , pattern =
+    [ regex "(خمس)ما?[ئي][ةه]"
+    ]
+  , prod = \_ -> integer 500
+  }
+
+ruleInteger600 :: Rule
+ruleInteger600 = Rule
+  { name = "integer 600"
+  , pattern =
+    [ regex "(ست)ما?[ئي][ةه]"
+    ]
+  , prod = \_ -> integer 600
+  }
+
+ruleInteger700 :: Rule
+ruleInteger700 = Rule
+  { name = "integer 700"
+  , pattern =
+    [ regex "(سبع)ما?[ئي][ةه]"
+    ]
+  , prod = \_ -> integer 700
+  }
+
+ruleInteger800 :: Rule
+ruleInteger800 = Rule
+  { name = "integer 800"
+  , pattern =
+    [ regex "(ثمان[ي]?)ما?[ئي][ةه]"
+    ]
+  , prod = \_ -> integer 800
+  }
+
+ruleInteger900 :: Rule
+ruleInteger900 = Rule
+  { name = "integer 900"
+  , pattern =
+    [ regex "(تسع)ما?[ئي][ةه]"
+    ]
+  , prod = \_ -> integer 900
+  }
+
 ruleDecimalWithThousandsSeparator :: Rule
 ruleDecimalWithThousandsSeparator = Rule
   { name = "decimal with thousands separator"
@@ -402,6 +465,13 @@ rules =
   , ruleInteger5
   , ruleInteger7
   , ruleInteger9
+  , ruleInteger300
+  , ruleInteger400
+  , ruleInteger500
+  , ruleInteger600
+  , ruleInteger700
+  , ruleInteger800
+  , ruleInteger900
   , ruleIntegerWithThousandsSeparator
   , ruleMultiply
   , ruleNumeralDotNumeral

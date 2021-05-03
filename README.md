@@ -5,7 +5,7 @@ Duckling is a Haskell library that parses text into structured data.
 
 # NOTE
 #### This repo is compiles for only Common dimensions menioned under Duckling/Dimensions/Common.hs file
-
+A docker image is already exits here for the same https://hub.docker.com/r/yesdeepakverma/duckling/tags?page=1&ordering=last_updated with tag commondims (yesdeepakverma/duckling:commondims)
 
 ```
 "the first Tuesday of October"

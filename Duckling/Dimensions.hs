@@ -71,9 +71,10 @@ import qualified Duckling.Dimensions.UK as UKDimensions
 import qualified Duckling.Dimensions.VI as VIDimensions
 import qualified Duckling.Dimensions.ZH as ZHDimensions
 
-
 allDimensions :: Lang -> [Seal Dimension]
-allDimensions lang = CommonDimensions.allDimensions ++ langDimensions lang
+-- | allDimensions lang = CommonDimensions.allDimensions ++ langDimensions lang
+-- | compile for only common dimensions
+allDimensions lang = CommonDimensions.allDimensions
 
 -- | Augments `targets` with all dependent dimensions.
 explicitDimensions :: HashSet (Seal Dimension) -> HashSet (Seal Dimension)

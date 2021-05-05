@@ -59,10 +59,11 @@ analyze
   -> [ResolvedToken]
 analyze input context@Context{..} options targets =
   rank (classifiers locale) targets
-  $ filter (\Resolved{node = Node{token = (Token d _)}} ->
-      HashSet.null targets || HashSet.member (Seal d) targets
-    )
+  $ filter isRelevantDimension
   $ parseAndResolve (rulesFor locale targets) input context options
+  where
+    isRelevantDimension Resolved{node = Node{token = (Token d _)}} =
+      HashSet.null targets || HashSet.member (Seal d) targets
 
 -- | Converts the resolved token to the API format
 formatToken :: Text -> ResolvedToken -> Entity

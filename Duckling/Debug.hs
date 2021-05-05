@@ -66,15 +66,14 @@ ptree sentence Entity {enode} = pnode sentence 0 enode
 
 parses :: Locale -> Text -> [Seal Dimension] -> [ResolvedToken]
 parses l sentence targets =
-  flip filter
-    tokens
-    $ \Resolved{node = Node{token = (Token d _)}} ->
-      case targets of
-        [] -> True
-        _ -> elem (Seal d) targets
+  filter isRelevantDimension tokens
   where
     tokens = parseAndResolve rules sentence testContext {locale = l} testOptions
     rules = rulesFor l $ HashSet.fromList targets
+    isRelevantDimension Resolved{node = Node{token = (Token d _)}} =
+      case targets of
+        [] -> True
+        _ -> elem (Seal d) targets
 
 debugTokens :: Text -> [ResolvedToken] -> IO [Entity]
 debugTokens sentence tokens = do

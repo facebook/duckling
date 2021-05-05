@@ -18,7 +18,6 @@ import Test.Tasty.HUnit
 
 import Duckling.Engine
 import Duckling.Types
-import Duckling.Dimensions.Types
 import Duckling.Regex.Types
 
 tests :: TestTree

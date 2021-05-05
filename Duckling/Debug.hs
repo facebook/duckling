@@ -43,15 +43,20 @@ allParses :: Locale -> Text -> [Seal Dimension] -> IO [Entity]
 allParses l sentence targets = debugTokens sentence $ parses l sentence targets
 
 fullParses :: Locale -> Text -> [Seal Dimension] -> IO [Entity]
-fullParses l sentence targets = debugTokens sentence .
-  filter (\Resolved{range = Range start end} -> start == 0 && end == n) $
-  parses l sentence targets
+fullParses l sentence targets =
+  debugTokens
+    sentence
+    $ filter
+      (\Resolved{range = Range start end} -> start == 0 && end == n)
+      $ parses l sentence targets
   where
     n = Text.length sentence
 
 debugCustom :: Context -> Options -> Text -> [Seal Dimension] -> IO [Entity]
-debugCustom context options sentence targets = debugTokens sentence .
-  analyze sentence context options $ HashSet.fromList targets
+debugCustom context options sentence targets =
+  debugTokens
+    sentence
+    $ analyze sentence context options $ HashSet.fromList targets
 
 ptree :: Text -> Entity -> IO ()
 ptree sentence Entity {enode} = pnode sentence 0 enode
@@ -60,11 +65,13 @@ ptree sentence Entity {enode} = pnode sentence 0 enode
 -- Internals
 
 parses :: Locale -> Text -> [Seal Dimension] -> [ResolvedToken]
-parses l sentence targets = flip filter tokens $
-  \Resolved{node = Node{token = (Token d _)}} ->
-    case targets of
-      [] -> True
-      _ -> elem (Seal d) targets
+parses l sentence targets =
+  flip filter
+    tokens
+    $ \Resolved{node = Node{token = (Token d _)}} ->
+      case targets of
+        [] -> True
+        _ -> elem (Seal d) targets
   where
     tokens = parseAndResolve rules sentence testContext {locale = l} testOptions
     rules = rulesFor l $ HashSet.fromList targets

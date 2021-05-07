@@ -160,8 +160,10 @@ parseHandler tzs = do
     parseRefTime :: Text -> ByteString -> DucklingTime
     parseRefTime timezone refTime = makeReftime tzs timezone utcTime
       where
-        msec = read $ Text.unpack $ Text.decodeUtf8 refTime
-        utcTime = posixSecondsToUTCTime $ fromInteger msec / 1000
+        milliseconds = readMaybe $ Text.unpack $ Text.decodeUtf8 refTime
+        utcTime = case milliseconds of
+          Just msec -> posixSecondsToUTCTime $ fromInteger msec / 1000
+          Nothing -> error "Please use milliseconds since epoch for reftime"
 
     parseLatent :: Maybe ByteString -> Bool
     parseLatent x = fromMaybe defaultLatent

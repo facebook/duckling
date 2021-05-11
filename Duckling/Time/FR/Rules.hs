@@ -14,7 +14,6 @@ module Duckling.Time.FR.Rules
   ( rules
   ) where
 
-import Data.Text (Text)
 import Prelude
 import qualified Data.Text as Text
 
@@ -24,6 +23,7 @@ import Duckling.Regex.Types
 import Duckling.Time.Helpers
 import Duckling.Time.Types (TimeData (..))
 import Duckling.Types
+import qualified Duckling.Ordinal.Types as TOrdinal
 import qualified Duckling.Time.Types as TTime
 import qualified Duckling.TimeGrain.Types as TG
 
@@ -314,6 +314,37 @@ ruleNDerniersCycle = Rule
       (token:_:Token TimeGrain grain:_) -> do
         n <- getIntValue token
         tt . cycleN True grain $ - n
+      _ -> Nothing
+  }
+
+ruleNthTimeOfTime :: Rule
+ruleNthTimeOfTime = Rule
+  { name = "nth <day-of-week> of <month-or-greater>"
+  , pattern =
+    [ dimension Ordinal
+    , Predicate isADayOfWeek
+    , regex "d[eu]"
+    , Predicate $ not . isGrainFinerThan TG.Month
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Ordinal od:Token Time td1:_:Token Time td2:_) -> Token Time .
+        predNth (TOrdinal.value od - 1) False <$> intersect td2 td1
+      _ -> Nothing
+  }
+
+ruleTheNthTimeOfTime :: Rule
+ruleTheNthTimeOfTime = Rule
+  { name = "the nth <day-of-week> of <month-or-greater>"
+  , pattern =
+    [ regex "le"
+    , dimension Ordinal
+    , Predicate isADayOfWeek
+    , regex "d[eu]"
+    , Predicate $ not . isGrainFinerThan TG.Month
+    ]
+  , prod = \tokens -> case tokens of
+      (_:Token Ordinal od:Token Time td1:_:Token Time td2:_) -> Token Time .
+         predNth (TOrdinal.value od - 1) False <$> intersect td2 td1
       _ -> Nothing
   }
 
@@ -2070,6 +2101,8 @@ rules =
   , ruleDbutDAnnee
   , rulePlusTard
   , rulePlusTardPartofday
+  , ruleNthTimeOfTime
+  , ruleTheNthTimeOfTime
   ]
   ++ ruleMonths
   ++ ruleDaysOfWeek

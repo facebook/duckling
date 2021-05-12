@@ -17,4 +17,5 @@ allDimensions =
   , Seal Distance
   , Seal Numeral
   , Seal Ordinal
+  , Seal Temperature
   ]

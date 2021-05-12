@@ -21,6 +21,7 @@ import qualified Duckling.AmountOfMoney.CA.Rules as AmountOfMoney
 import qualified Duckling.Distance.CA.Rules as Distance
 import qualified Duckling.Numeral.CA.Rules as Numeral
 import qualified Duckling.Ordinal.CA.Rules as Ordinal
+import qualified Duckling.Temperature.CA.Rules as Temperature
 import Duckling.Types
 
 defaultRules :: Seal Dimension -> [Rule]
@@ -41,7 +42,7 @@ langRules (Seal Ordinal) = Ordinal.rules
 langRules (Seal PhoneNumber) = []
 langRules (Seal Quantity) = []
 langRules (Seal RegexMatch) = []
-langRules (Seal Temperature) = []
+langRules (Seal Temperature) = Temperature.rules
 langRules (Seal Time) = []
 langRules (Seal TimeGrain) = []
 langRules (Seal Url) = []

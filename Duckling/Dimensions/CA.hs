@@ -13,5 +13,7 @@ import Duckling.Dimensions.Types
 
 allDimensions :: [Seal Dimension]
 allDimensions =
-  [ Seal Numeral
+  [ Seal AmountOfMoney
+  , Seal Numeral
+  , Seal Ordinal
   ]

@@ -22,6 +22,7 @@ import qualified Duckling.Distance.CA.Rules as Distance
 import qualified Duckling.Numeral.CA.Rules as Numeral
 import qualified Duckling.Ordinal.CA.Rules as Ordinal
 import qualified Duckling.Temperature.CA.Rules as Temperature
+import qualified Duckling.Volume.CA.Rules as Volume
 import Duckling.Types
 
 defaultRules :: Seal Dimension -> [Rule]
@@ -46,5 +47,5 @@ langRules (Seal Temperature) = Temperature.rules
 langRules (Seal Time) = []
 langRules (Seal TimeGrain) = []
 langRules (Seal Url) = []
-langRules (Seal Volume) = []
+langRules (Seal Volume) = Volume.rules
 langRules (Seal (CustomDimension _)) = []

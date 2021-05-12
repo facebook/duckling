@@ -9,6 +9,7 @@
   * AmountOfMoney: **new!**
   * Distance: **new!**
   * Temperature: **new!**
+  * Volume: **new!**
 
 * EN (English)
   * Time: Allow latent match for \<part-of-day\> \<latent-time-of-day\>

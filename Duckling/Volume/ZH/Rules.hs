@@ -79,6 +79,18 @@ rulePrecision = Rule
       _ -> Nothing
   }
 
+rulePrecision2 :: Rule
+rulePrecision2 = Rule
+  { name = "about <volume> (second rule)"
+  , pattern =
+    [ dimension Volume
+    , regex "左右"
+    ]
+  , prod = \case
+      (t:_) -> Just t
+      _ -> Nothing
+  }
+
 ruleIntervalBetweenNumeral :: Rule
 ruleIntervalBetweenNumeral = Rule
   { name = "between|from <numeral> and|to <volume>"
@@ -183,6 +195,7 @@ rules :: [Rule]
 rules = [ ruleUnitTeaspoon
         , ruleUnitSoupspoon
         , rulePrecision
+        , rulePrecision2
         , ruleIntervalBetweenNumeral
         , ruleIntervalBetween
         , ruleIntervalMax

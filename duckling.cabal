@@ -298,6 +298,8 @@ library
                      -- Distance
                      , Duckling.Distance.BG.Corpus
                      , Duckling.Distance.BG.Rules
+                     , Duckling.Distance.CA.Corpus
+                     , Duckling.Distance.CA.Rules
                      , Duckling.Distance.CS.Corpus
                      , Duckling.Distance.CS.Rules
                      , Duckling.Distance.DE.Corpus
@@ -935,6 +937,7 @@ test-suite duckling-test
 
                      -- Distance
                      , Duckling.Distance.BG.Tests
+                     , Duckling.Distance.CA.Tests
                      , Duckling.Distance.CS.Tests
                      , Duckling.Distance.DE.Tests
                      , Duckling.Distance.EN.Tests

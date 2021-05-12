@@ -785,6 +785,7 @@ library
                      -- TimeGrain
                      , Duckling.TimeGrain.AR.Rules
                      , Duckling.TimeGrain.BG.Rules
+                     , Duckling.TimeGrain.CA.Rules
                      , Duckling.TimeGrain.DA.Rules
                      , Duckling.TimeGrain.DE.Rules
                      , Duckling.TimeGrain.EN.Rules

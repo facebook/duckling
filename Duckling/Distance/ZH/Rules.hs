@@ -220,6 +220,19 @@ ruleIntervalBound2 = Rule
       _ -> Nothing
   }
 
+rulePrecision :: Rule
+rulePrecision = Rule
+  { name = "about <distance>"
+  , pattern =
+    [ dimension Distance
+    , regex "左右"
+    ]
+  , prod = \case
+      (t:_) -> Just t
+      _ -> Nothing
+
+  }
+
 rules :: [Rule]
 rules =
   [ ruleDistCentimeters
@@ -237,4 +250,5 @@ rules =
   , ruleIntervalDash
   , ruleIntervalBound
   , ruleIntervalBound2
+  , rulePrecision
   ]

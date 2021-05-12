@@ -72,6 +72,7 @@ allExamples = concat
              [ "1.9 m"
              , "1.9米"
              , "米九"
+             , "米九左右"
              ]
   , examples (simple Metre 3.9)
              [ "3.9 m"

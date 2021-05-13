@@ -306,12 +306,12 @@ ruleLastNight = Rule
 
 ruleNthTimeOfTime :: Rule
 ruleNthTimeOfTime = Rule
-  { name = "nth <time> of <time>"
+  { name = "nth <day-of-week> of <month-or-greater>"
   , pattern =
     [ dimension Ordinal
-    , dimension Time
+    , Predicate isADayOfWeek
     , regex "of|in"
-    , dimension Time
+    , Predicate $ not . isGrainFinerThan TG.Month
     ]
   , prod = \tokens -> case tokens of
       (Token Ordinal od:Token Time td1:_:Token Time td2:_) -> Token Time .
@@ -321,13 +321,13 @@ ruleNthTimeOfTime = Rule
 
 ruleTheNthTimeOfTime :: Rule
 ruleTheNthTimeOfTime = Rule
-  { name = "the nth <time> of <time>"
+  { name = "the nth <day-of-week> of <month-or-greater>"
   , pattern =
     [ regex "the"
     , dimension Ordinal
-    , dimension Time
+    , Predicate isADayOfWeek
     , regex "of|in"
-    , dimension Time
+    , Predicate $ not . isGrainFinerThan TG.Month
     ]
   , prod = \tokens -> case tokens of
       (_:Token Ordinal od:Token Time td1:_:Token Time td2:_) -> Token Time .

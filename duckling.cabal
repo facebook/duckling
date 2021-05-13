@@ -225,6 +225,8 @@ library
                      , Duckling.AmountOfMoney.AR.Rules
                      , Duckling.AmountOfMoney.BG.Corpus
                      , Duckling.AmountOfMoney.BG.Rules
+                     , Duckling.AmountOfMoney.CA.Corpus
+                     , Duckling.AmountOfMoney.CA.Rules
                      , Duckling.AmountOfMoney.EN.AU.Corpus
                      , Duckling.AmountOfMoney.EN.AU.Rules
                      , Duckling.AmountOfMoney.EN.BZ.Corpus
@@ -296,6 +298,8 @@ library
                      -- Distance
                      , Duckling.Distance.BG.Corpus
                      , Duckling.Distance.BG.Rules
+                     , Duckling.Distance.CA.Corpus
+                     , Duckling.Distance.CA.Rules
                      , Duckling.Distance.CS.Corpus
                      , Duckling.Distance.CS.Rules
                      , Duckling.Distance.DE.Corpus
@@ -342,6 +346,8 @@ library
                      , Duckling.Duration.AR.Rules
                      , Duckling.Duration.BG.Corpus
                      , Duckling.Duration.BG.Rules
+                     , Duckling.Duration.CA.Corpus
+                     , Duckling.Duration.CA.Rules
                      , Duckling.Duration.DA.Rules
                      , Duckling.Duration.DE.Rules
                      , Duckling.Duration.EL.Corpus
@@ -646,6 +652,8 @@ library
                      -- Temperature
                      , Duckling.Temperature.AR.Corpus
                      , Duckling.Temperature.AR.Rules
+                     , Duckling.Temperature.CA.Corpus
+                     , Duckling.Temperature.CA.Rules
                      , Duckling.Temperature.EN.Corpus
                      , Duckling.Temperature.EN.Rules
                      , Duckling.Temperature.ES.Corpus
@@ -779,6 +787,7 @@ library
                      -- TimeGrain
                      , Duckling.TimeGrain.AR.Rules
                      , Duckling.TimeGrain.BG.Rules
+                     , Duckling.TimeGrain.CA.Rules
                      , Duckling.TimeGrain.DA.Rules
                      , Duckling.TimeGrain.DE.Rules
                      , Duckling.TimeGrain.EN.Rules
@@ -818,6 +827,8 @@ library
                      -- Volume
                      , Duckling.Volume.AR.Corpus
                      , Duckling.Volume.AR.Rules
+                     , Duckling.Volume.CA.Corpus
+                     , Duckling.Volume.CA.Rules
                      , Duckling.Volume.DE.Corpus
                      , Duckling.Volume.DE.Rules
                      , Duckling.Volume.EN.Corpus
@@ -909,6 +920,7 @@ test-suite duckling-test
                      , Duckling.AmountOfMoney.AR.Tests
                      , Duckling.AmountOfMoney.EN.Tests
                      , Duckling.AmountOfMoney.BG.Tests
+                     , Duckling.AmountOfMoney.CA.Tests
                      , Duckling.AmountOfMoney.ES.Tests
                      , Duckling.AmountOfMoney.FR.Tests
                      , Duckling.AmountOfMoney.GA.Tests
@@ -932,6 +944,7 @@ test-suite duckling-test
 
                      -- Distance
                      , Duckling.Distance.BG.Tests
+                     , Duckling.Distance.CA.Tests
                      , Duckling.Distance.CS.Tests
                      , Duckling.Distance.DE.Tests
                      , Duckling.Distance.EN.Tests
@@ -955,6 +968,7 @@ test-suite duckling-test
                      -- Duration
                      , Duckling.Duration.AR.Tests
                      , Duckling.Duration.BG.Tests
+                     , Duckling.Duration.CA.Tests
                      , Duckling.Duration.EL.Tests
                      , Duckling.Duration.EN.Tests
                      , Duckling.Duration.ES.Tests
@@ -1099,6 +1113,7 @@ test-suite duckling-test
 
                      -- Temperature
                      , Duckling.Temperature.AR.Tests
+                     , Duckling.Temperature.CA.Tests
                      , Duckling.Temperature.EN.Tests
                      , Duckling.Temperature.ES.Tests
                      , Duckling.Temperature.FR.Tests
@@ -1149,6 +1164,7 @@ test-suite duckling-test
 
                      -- Volume
                      , Duckling.Volume.AR.Tests
+                     , Duckling.Volume.CA.Tests
                      , Duckling.Volume.DE.Tests
                      , Duckling.Volume.EN.Tests
                      , Duckling.Volume.ES.Tests

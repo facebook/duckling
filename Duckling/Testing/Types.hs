@@ -48,8 +48,8 @@ simpleCheck :: ToJSON a => a -> TestPredicate
 simpleCheck json _ Resolved{rval = RVal _ v} = toJSON json == toJSON v
 
 parserCheck :: Eq a => a -> (Value -> Maybe a) -> TestPredicate
-parserCheck expected parse _ Resolved{rval = RVal _ v} =
-  maybe False (expected ==) $ parse (toJSON v)
+parserCheck expected parseValue _ Resolved{rval = RVal _ v} =
+  Just expected == parseValue (toJSON v)
 
 examples :: ToJSON a => a -> [Text] -> [Example]
 examples output = examplesCustom (simpleCheck output)

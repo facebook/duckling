@@ -84,7 +84,7 @@ targetsHandler :: Snap ()
 targetsHandler = do
   modifyResponse $ setHeader "Content-Type" "application/json"
   writeLBS $ encode $
-    HashMap.fromList . map dimText $ HashMap.toList supportedDimensions
+    HashMap.fromList $ map dimText $ HashMap.toList supportedDimensions
   where
     dimText :: (Lang, [Seal Dimension]) -> (Text, [Text])
     dimText = (Text.toLower . showt) *** map (\(Seal d) -> toName d)
@@ -150,8 +150,8 @@ parseHandler tzs = do
         (mlang, mregion) = case chunks of
           [a, b] -> (readMaybe a :: Maybe Lang, readMaybe b :: Maybe Region)
           _      -> (Nothing, Nothing)
-        chunks = map Text.unpack . Text.split (== '_') . Text.toUpper
-          $ Text.decodeUtf8 x
+        chunks = map Text.unpack
+          $ Text.split (== '_') $ Text.toUpper $ Text.decodeUtf8 x
 
     parseLang :: Maybe ByteString -> Lang
     parseLang l = fromMaybe defaultLang $ l >>=
@@ -160,8 +160,10 @@ parseHandler tzs = do
     parseRefTime :: Text -> ByteString -> DucklingTime
     parseRefTime timezone refTime = makeReftime tzs timezone utcTime
       where
-        msec = read $ Text.unpack $ Text.decodeUtf8 refTime
-        utcTime = posixSecondsToUTCTime $ fromInteger msec / 1000
+        milliseconds = readMaybe $ Text.unpack $ Text.decodeUtf8 refTime
+        utcTime = case milliseconds of
+          Just msec -> posixSecondsToUTCTime $ fromInteger msec / 1000
+          Nothing -> error "Please use milliseconds since epoch for reftime"
 
     parseLatent :: Maybe ByteString -> Bool
     parseLatent x = fromMaybe defaultLatent

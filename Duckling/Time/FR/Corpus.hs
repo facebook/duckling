@@ -866,4 +866,8 @@ allExamples = concat
              [ "plus tard dans la soirée"
              , "un peu plus tard dans la soirée"
              ]
+  , examples (datetime (2013, 3, 6, 0, 0, 0) Day)
+             [ "le premier mercredi de mois prochain"
+             , "premier mercredi du mois prochain"
+             ]
   ]

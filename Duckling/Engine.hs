@@ -16,7 +16,6 @@ module Duckling.Engine
 
 import Control.DeepSeq
 import Control.Monad.Extra
-import Data.Aeson (toJSON)
 import Data.ByteString (ByteString)
 import Data.Functor.Identity
 import Data.Maybe
@@ -30,7 +29,7 @@ import qualified Text.Regex.PCRE as PCRE
 import Duckling.Dimensions.Types
 import Duckling.Regex.Types
 import Duckling.Resolve
-import Duckling.Types
+import Duckling.Types hiding (regex)
 import Duckling.Types.Document (Document)
 import Duckling.Types.Stash (Stash)
 import qualified Duckling.Engine.Regex as Regex
@@ -47,8 +46,10 @@ runDuckling ma = runIdentity ma
 
 parseAndResolve :: [Rule] -> Text -> Context -> Options -> [ResolvedToken]
 parseAndResolve rules input context options =
-  mapMaybe (resolveNode context options) . force $ Stash.toPosOrderedList $
-  runDuckling $ parseString rules (Document.fromText input)
+  mapMaybe
+    (resolveNode context options)
+    $ force $ Stash.toPosOrderedList
+      $ runDuckling $ parseString rules (Document.fromText input)
 
 produce :: Match -> Maybe Node
 produce (_, _, []) = Nothing
@@ -167,7 +168,7 @@ matchFirstAnywhere sentence stash rule@Rule{pattern = p : ps} =
 
 {-# INLINE mkMatch #-}
 mkMatch :: [Node] -> Rule -> Node -> Match
-mkMatch route newRule (node@Node {nodeRange = Range _ pos'}) =
+mkMatch route newRule node@Node{nodeRange = Range _ pos'} =
   newRoute `seq` (newRule, pos', newRoute)
   where newRoute = node:route
 

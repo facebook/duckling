@@ -20,6 +20,7 @@
 {-# LANGUAGE StandaloneDeriving #-}
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE TypeOperators #-}
+{-# LANGUAGE NamedFieldPuns #-}
 
 module Duckling.Types where
 
@@ -76,7 +77,7 @@ instance Eq Token where
     Nothing   -> False
 
 instance Hashable Token where
-  hashWithSalt s (Token dim v) = hashWithSalt s (dim, v)
+  hashWithSalt s (Token d v) = hashWithSalt s (d, v)
 
 instance NFData Token where
   rnf (Token _ v) = rnf v
@@ -147,7 +148,7 @@ instance Show (Dimension a) where
   show TimeGrain = "TimeGrain"
   show Url = "Url"
   show Volume = "Volume"
-  show (CustomDimension dim) = show dim
+  show (CustomDimension d) = show d
 instance GShow Dimension where gshowsPrec = showsPrec
 
 -- TextShow
@@ -300,7 +301,7 @@ data Rule = Rule
   }
 
 instance Show Rule where
-  show (Rule name _ _) = show name
+  show Rule{ name } = show name
 
 data Entity = Entity
   { dim    :: Text
@@ -335,14 +336,14 @@ regex = Regex . R.makeRegexOpts compOpts execOpts
     execOpts = PCRE.defaultExecOpt
 
 dimension :: Typeable a => Dimension a -> PatternItem
-dimension value = Predicate $ isDimension value
+dimension d = Predicate $ isDimension d
 
 -- -----------------------------------------------------------------
 -- Rule Construction helpers
 
 singleStringLookupRule :: HashMap Text a -> Text -> (a -> Maybe Token) -> Rule
 singleStringLookupRule hashMap name production = Rule
-  { name = name
+  { name
   , pattern = [ regex $ unpack regexString ]
   , prod = \case
       (Token RegexMatch (GroupMatch (match:_)):_) ->

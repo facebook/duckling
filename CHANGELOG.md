@@ -5,6 +5,13 @@
 ### Core
 
 ### Rulesets
+* CA (Catalan)
+  * AmountOfMoney: **new!**
+  * Distance: **new!**
+  * Duration: **new!**
+  * Temperature: **new!**
+  * Volume: **new!**
+
 * EN (English)
   * Time: Allow latent match for \<part-of-day\> \<latent-time-of-day\>
   * Time: Avoid parsing phrases like 'two five' as times

@@ -252,7 +252,12 @@ instance Ord ResolvedToken where
         z -> z
       z  -> z
 
-data Candidate = Candidate ResolvedToken Double Bool
+
+-- |A Candidate represents a potential match going into the ranker
+data Candidate = Candidate
+    ResolvedToken -- ^ The actual resolved token we are considering
+    Double -- ^ naive Bayes log-likelihood - sum of LL of all rules used
+    Bool -- ^ Does the ResolvedToken's dimension match the caller's request?
   deriving (Eq, Show)
 
 instance Ord Candidate where

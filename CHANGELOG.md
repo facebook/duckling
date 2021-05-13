@@ -8,6 +8,7 @@
 * CA (Catalan)
   * AmountOfMoney: **new!**
   * Distance: **new!**
+  * Duration: **new!**
   * Temperature: **new!**
   * Volume: **new!**
 

@@ -15,6 +15,7 @@ allDimensions :: [Seal Dimension]
 allDimensions =
   [ Seal AmountOfMoney
   , Seal Distance
+  , Seal Duration
   , Seal Numeral
   , Seal Ordinal
   , Seal Temperature

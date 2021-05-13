@@ -160,6 +160,18 @@ classifiers
                      ClassData{prior = -0.9740495660263475,
                                unseen = -5.0106352940962555,
                                likelihoods = HashMap.fromList [("", 0.0)], n = 148}}),
+       ("the nth <day-of-week> of <month-or-greater>",
+        Classifier{okData =
+                     ClassData{prior = 0.0, unseen = -1.6094379124341003,
+                               likelihoods =
+                                 HashMap.fromList
+                                   [("ordinals (premier..seizieme)Mercredi<cycle> prochain|suivant|d'apr\232s",
+                                     -0.6931471805599453),
+                                    ("daymonth", -0.6931471805599453)],
+                               n = 1},
+                   koData =
+                     ClassData{prior = -infinity, unseen = -1.0986122886681098,
+                               likelihoods = HashMap.fromList [], n = 0}}),
        ("<named-month>",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -1.6094379124341003,
@@ -513,18 +525,6 @@ classifiers
                                n = 9},
                    koData =
                      ClassData{prior = -infinity, unseen = -1.6094379124341003,
-                               likelihoods = HashMap.fromList [], n = 0}}),
-       ("the nth <time> of <time>",
-        Classifier{okData =
-                     ClassData{prior = 0.0, unseen = -1.6094379124341003,
-                               likelihoods =
-                                 HashMap.fromList
-                                   [("ordinals (premier..seizieme)Mercredi<cycle> prochain|suivant|d'apr\232s",
-                                     -0.6931471805599453),
-                                    ("daymonth", -0.6931471805599453)],
-                               n = 1},
-                   koData =
-                     ClassData{prior = -infinity, unseen = -1.0986122886681098,
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("de <datetime> - <datetime> (interval)",
         Classifier{okData =
@@ -1181,18 +1181,6 @@ classifiers
                                likelihoods = HashMap.fromList [("", 0.0)], n = 25},
                    koData =
                      ClassData{prior = -infinity, unseen = -0.6931471805599453,
-                               likelihoods = HashMap.fromList [], n = 0}}),
-       ("nth <time> of <time>",
-        Classifier{okData =
-                     ClassData{prior = 0.0, unseen = -1.9459101490553135,
-                               likelihoods =
-                                 HashMap.fromList
-                                   [("ordinals (premier..seizieme)Mercredi<cycle> prochain|suivant|d'apr\232s",
-                                     -0.6931471805599453),
-                                    ("daymonth", -0.6931471805599453)],
-                               n = 2},
-                   koData =
-                     ClassData{prior = -infinity, unseen = -1.0986122886681098,
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("Mardi",
         Classifier{okData =
@@ -1951,6 +1939,18 @@ classifiers
                    koData =
                      ClassData{prior = -infinity, unseen = -1.3862943611198906,
                                likelihoods = HashMap.fromList [], n = 0}}),
+       ("nth <day-of-week> of <month-or-greater>",
+        Classifier{okData =
+                     ClassData{prior = 0.0, unseen = -1.9459101490553135,
+                               likelihoods =
+                                 HashMap.fromList
+                                   [("ordinals (premier..seizieme)Mercredi<cycle> prochain|suivant|d'apr\232s",
+                                     -0.6931471805599453),
+                                    ("daymonth", -0.6931471805599453)],
+                               n = 2},
+                   koData =
+                     ClassData{prior = -infinity, unseen = -1.0986122886681098,
+                               likelihoods = HashMap.fromList [], n = 0}}),
        ("Mars",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -3.332204510175204,
@@ -2465,12 +2465,12 @@ classifiers
                                     ("intersect", -2.238406867302635),
                                     ("soir de no\235l", -5.156177599386914),
                                     ("en semaine", -3.4514295071484886),
-                                    ("nth <time> of <time>", -5.156177599386914),
                                     ("toussaint", -4.750712491278749), ("day", -1.2954478883463185),
                                     ("deuxi\232me quinzaine de <named-month>(interval)",
                                      -5.156177599386914),
                                     ("<dim time> <part-of-day>", -3.2102674503316004),
                                     ("dd/-mm", -3.903414630891546),
+                                    ("nth <day-of-week> of <month-or-greater>", -5.156177599386914),
                                     ("dd/-mm/-yyyy", -4.4630304188269685),
                                     ("dd mm yyyy", -3.903414630891546),
                                     ("day of month (premier)", -3.903414630891546),

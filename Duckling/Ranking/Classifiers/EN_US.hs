@@ -103,6 +103,21 @@ classifiers
                    koData =
                      ClassData{prior = -infinity, unseen = -0.6931471805599453,
                                likelihoods = HashMap.fromList [], n = 0}}),
+       ("the nth <day-of-week> of <month-or-greater>",
+        Classifier{okData =
+                     ClassData{prior = 0.0, unseen = -2.5649493574615367,
+                               likelihoods =
+                                 HashMap.fromList
+                                   [("daymonth", -1.0986122886681098),
+                                    ("dayyear", -1.791759469228055),
+                                    ("ordinals (first..twentieth,thirtieth,...)Mondaythis|last|next <cycle>",
+                                     -1.0986122886681098),
+                                    ("ordinals (first..twentieth,thirtieth,...)Sundayyear (latent)",
+                                     -1.791759469228055)],
+                               n = 4},
+                   koData =
+                     ClassData{prior = -infinity, unseen = -1.6094379124341003,
+                               likelihoods = HashMap.fromList [], n = 0}}),
        ("<duration> hence|ago",
         Classifier{okData =
                      ClassData{prior = -0.10008345855698253,
@@ -930,21 +945,6 @@ classifiers
                                     ("time-of-day (latent)in|during the <part-of-day>",
                                      -1.466337068793427)],
                                n = 2}}),
-       ("the nth <time> of <time>",
-        Classifier{okData =
-                     ClassData{prior = 0.0, unseen = -2.5649493574615367,
-                               likelihoods =
-                                 HashMap.fromList
-                                   [("daymonth", -1.0986122886681098),
-                                    ("dayyear", -1.791759469228055),
-                                    ("ordinals (first..twentieth,thirtieth,...)Mondaythis|last|next <cycle>",
-                                     -1.0986122886681098),
-                                    ("ordinals (first..twentieth,thirtieth,...)Sundayyear (latent)",
-                                     -1.791759469228055)],
-                               n = 4},
-                   koData =
-                     ClassData{prior = -infinity, unseen = -1.6094379124341003,
-                               likelihoods = HashMap.fromList [], n = 0}}),
        ("hour (grain)",
         Classifier{okData =
                      ClassData{prior = -1.3723081191451507, unseen = -2.995732273553991,
@@ -2041,34 +2041,6 @@ classifiers
                    koData =
                      ClassData{prior = -infinity, unseen = -0.6931471805599453,
                                likelihoods = HashMap.fromList [], n = 0}}),
-       ("nth <time> of <time>",
-        Classifier{okData =
-                     ClassData{prior = -0.3677247801253174, unseen = -3.332204510175204,
-                               likelihoods =
-                                 HashMap.fromList
-                                   [("daymonth", -0.9932517730102834),
-                                    ("ordinals (first..twentieth,thirtieth,...)Tuesdayintersect",
-                                     -2.6026896854443837),
-                                    ("ordinals (first..twentieth,thirtieth,...)Wednesdayintersect",
-                                     -2.1972245773362196),
-                                    ("ordinals (first..twentieth,thirtieth,...)Mondaythis|last|next <cycle>",
-                                     -1.6863989535702288),
-                                    ("ordinals (first..twentieth,thirtieth,...)TuesdayOctober",
-                                     -2.1972245773362196)],
-                               n = 9},
-                   koData =
-                     ClassData{prior = -1.1786549963416462, unseen = -2.890371757896165,
-                               likelihoods =
-                                 HashMap.fromList
-                                   [("daymonth", -1.4469189829363254),
-                                    ("dayyear", -2.1400661634962708),
-                                    ("ordinals (first..twentieth,thirtieth,...)TuesdaySeptember",
-                                     -2.1400661634962708),
-                                    ("ordinals (first..twentieth,thirtieth,...)WednesdayOctober",
-                                     -1.7346010553881064),
-                                    ("ordinals (first..twentieth,thirtieth,...)Sundayyear (latent)",
-                                     -2.1400661634962708)],
-                               n = 4}}),
        ("National Grandparents Day",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -1.0986122886681098,
@@ -3131,6 +3103,34 @@ classifiers
                                     ("<integer> <unit-of-duration><day-of-month> (ordinal or number) <named-month>",
                                      -3.56953269648137)],
                                n = 22}}),
+       ("nth <day-of-week> of <month-or-greater>",
+        Classifier{okData =
+                     ClassData{prior = -0.3677247801253174, unseen = -3.332204510175204,
+                               likelihoods =
+                                 HashMap.fromList
+                                   [("daymonth", -0.9932517730102834),
+                                    ("ordinals (first..twentieth,thirtieth,...)Tuesdayintersect",
+                                     -2.6026896854443837),
+                                    ("ordinals (first..twentieth,thirtieth,...)Wednesdayintersect",
+                                     -2.1972245773362196),
+                                    ("ordinals (first..twentieth,thirtieth,...)Mondaythis|last|next <cycle>",
+                                     -1.6863989535702288),
+                                    ("ordinals (first..twentieth,thirtieth,...)TuesdayOctober",
+                                     -2.1972245773362196)],
+                               n = 9},
+                   koData =
+                     ClassData{prior = -1.1786549963416462, unseen = -2.890371757896165,
+                               likelihoods =
+                                 HashMap.fromList
+                                   [("daymonth", -1.4469189829363254),
+                                    ("dayyear", -2.1400661634962708),
+                                    ("ordinals (first..twentieth,thirtieth,...)TuesdaySeptember",
+                                     -2.1400661634962708),
+                                    ("ordinals (first..twentieth,thirtieth,...)WednesdayOctober",
+                                     -1.7346010553881064),
+                                    ("ordinals (first..twentieth,thirtieth,...)Sundayyear (latent)",
+                                     -2.1400661634962708)],
+                               n = 4}}),
        ("quarter after|past <hour-of-day>",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -3.1780538303479458,
@@ -3648,9 +3648,9 @@ classifiers
                                unseen = -3.4657359027997265,
                                likelihoods =
                                  HashMap.fromList
-                                   [("ordinals (first..twentieth,thirtieth,...)Monday<named-month>|<named-day> <day-of-month> (ordinal)",
+                                   [("ordinals (first..twentieth,thirtieth,...)Super Tuesdaythe nth <day-of-week> of <month-or-greater>",
                                      -2.740840023925201),
-                                    ("ordinals (first..twentieth,thirtieth,...)Super Tuesdaythe nth <time> of <time>",
+                                    ("ordinals (first..twentieth,thirtieth,...)Monday<named-month>|<named-day> <day-of-month> (ordinal)",
                                      -2.740840023925201),
                                     ("ordinals (first..twentieth,thirtieth,...)Christmastoday",
                                      -2.740840023925201),
@@ -3804,6 +3804,8 @@ classifiers
                                     ("dayhour", -4.867534450455582),
                                     ("daymonth", -3.6147714819602146),
                                     ("Super TuesdayMarch", -4.867534450455582),
+                                    ("Tuesdaythe nth <day-of-week> of <month-or-greater>",
+                                     -4.867534450455582),
                                     ("Tuesdaythe <day-of-month> (ordinal)", -4.867534450455582),
                                     ("from|since|after <time><day-of-month> (ordinal or number) of <month>",
                                      -3.951243718581427),
@@ -3825,6 +3827,8 @@ classifiers
                                     ("Super Tuesdayintersect by \",\", \"of\", \"from\" for year",
                                      -4.462069342347418),
                                     ("hourminute", -4.867534450455582),
+                                    ("Super Tuesdaythe nth <day-of-week> of <month-or-greater>",
+                                     -4.867534450455582),
                                     ("TuesdayMarch", -4.867534450455582),
                                     ("minutehour", -3.951243718581427),
                                     ("<time> timezonehh:mm", -4.867534450455582),
@@ -3853,7 +3857,6 @@ classifiers
                                     ("<time-of-day> am|pmhh:mm", -4.867534450455582),
                                     ("Tuesday<named-month> <day-of-month> (non ordinal)",
                                      -4.867534450455582),
-                                    ("Super Tuesdaythe nth <time> of <time>", -4.867534450455582),
                                     ("from|since|after <time>the <day-of-month> (ordinal or number) of <named-month>",
                                      -3.3634570536793085),
                                     ("the <day-of-month> (ordinal)<day-of-month> (ordinal or number) <named-month>",
@@ -3868,7 +3871,6 @@ classifiers
                                     ("Super Tuesdaythe <day-of-month> (ordinal)",
                                      -4.867534450455582),
                                     ("Tuesdayintersect", -4.462069342347418),
-                                    ("Tuesdaythe nth <time> of <time>", -4.867534450455582),
                                     ("the <day-of-month> (ordinal)intersect", -4.462069342347418)],
                                n = 99}}),
        ("Tuesday",

@@ -19,10 +19,10 @@ import TextShow (showt)
 import Duckling.Dimensions.Types
 import Duckling.Duration.Types (DurationData (DurationData))
 import qualified Duckling.Duration.Types as TDuration
-import Duckling.Ranking.Types
+import Duckling.Ranking.Types (BagOfFeatures)
 import Duckling.Time.Types (TimeData (TimeData))
 import qualified Duckling.Time.Types as TTime
-import Duckling.Types
+import Duckling.Types (Node, Token(..), rule, children, token)
 
 
 -- | Feature extraction

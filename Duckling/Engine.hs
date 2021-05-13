@@ -86,8 +86,8 @@ lookupRegexCommon
   -> Duckling [Node]
 lookupRegexCommon doc regex position matchFun = return nodes
   where
-  -- See Note [Regular expressions and Text] to understand what's going
-  -- on here
+  -- See Note [Regular expressions and Text] from Document.hs to understand
+  -- what's going on here
   (substring, rangeToText, translateRange) =
     Document.byteStringFromPos doc position
   nodes = mapMaybe (f . Array.elems)

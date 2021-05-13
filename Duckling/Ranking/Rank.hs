@@ -57,9 +57,10 @@ rank
   -> [ResolvedToken]
   -> [ResolvedToken]
 rank classifiers targets tokens =
-  Set.toList . Set.fromList
-  . map (\(Candidate token _ _) -> token)
-  . winners
+  Set.toList
+  $ Set.fromList
+  $ map (\(Candidate token _ _) -> token)
+  $ winners
   $ map makeCandidate tokens
   where
     makeCandidate :: ResolvedToken -> Candidate

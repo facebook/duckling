@@ -285,7 +285,7 @@ ruleNumeralMillionsAnd = Rule
 ruleNumeralDotNumeral :: Rule
 ruleNumeralDotNumeral = Rule
   { name = "number dot number"
-  , pattern = [dimension Numeral, regex "punto", Predicate $ not . hasGrain]
+  , pattern = [dimension Numeral, regex "(con|punto)", Predicate $ not . hasGrain]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData { TNumeral.value = v1 } : _ : Token Numeral NumeralData { TNumeral.value = v2 } : _) ->
         double $ v1 + decimalsToDouble v2

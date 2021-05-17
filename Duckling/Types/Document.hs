@@ -6,6 +6,7 @@
 
 {-# LANGUAGE BangPatterns #-}
 {-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE RecordWildCards #-}
 
 module Duckling.Types.Document
@@ -32,6 +33,7 @@ import qualified Data.Text.Encoding as Text
 import qualified Data.Text as Text
 import qualified Data.Text.Internal.Unsafe.Char as UText
 
+import Duckling.Locale (Lang(..))
 
 data Document = Document
   { rawInput :: !Text
@@ -114,20 +116,24 @@ fromText rawInput = Document{..}
 
 -- As regexes are matched without whitespace delimitator, we need to check
 -- the reasonability of the match to actually be a word.
-isRangeValid :: Document -> Int -> Int -> Bool
-isRangeValid doc start end =
-  (start == 0 ||
-      isDifferent (doc ! (start - 1)) (doc ! start)) &&
-  (end == length doc ||
-      isDifferent (doc ! (end - 1)) (doc ! end))
+isRangeValid :: Lang -> Document -> Int -> Int -> Bool
+isRangeValid = \case
+  _ -> defaultIsRangeValid
   where
-    charClass :: Char -> Char
-    charClass c
-      | Char.isLower c || Char.isUpper c = 'c'
-      | Char.isDigit c = 'd'
-      | otherwise = c
-    isDifferent :: Char -> Char -> Bool
-    isDifferent a b = charClass a /= charClass b
+    defaultIsRangeValid :: Document -> Int -> Int -> Bool
+    defaultIsRangeValid doc start end =
+      (start == 0 ||
+        isDifferent (doc ! (start - 1)) (doc ! start)) &&
+      (end == length doc ||
+        isDifferent (doc ! (end - 1)) (doc ! end))
+      where
+        charClass :: Char -> Char
+        charClass c
+          | Char.isLower c || Char.isUpper c = 'c'
+          | Char.isDigit c = 'd'
+          | otherwise = c
+        isDifferent :: Char -> Char -> Bool
+        isDifferent a b = charClass a /= charClass b
 
 -- True iff a is followed by whitespaces and b.
 isAdjacent :: Document -> Int -> Int -> Bool

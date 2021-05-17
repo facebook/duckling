@@ -27,6 +27,7 @@ import qualified Data.List as L
 import qualified Text.Regex.PCRE as PCRE
 
 import Duckling.Dimensions.Types
+import Duckling.Locale
 import Duckling.Regex.Types
 import Duckling.Resolve
 import Duckling.Types hiding (regex)
@@ -40,11 +41,11 @@ import qualified Duckling.Types.Stash as Stash
 -- Engine
 
 parseAndResolve :: [Rule] -> Text -> Context -> Options -> [ResolvedToken]
-parseAndResolve rules input context options =
+parseAndResolve rules input context@Context{locale = Locale lang _} options =
   mapMaybe
     (resolveNode context options)
     $ force $ Stash.toPosOrderedList
-      $ runDuckling $ parseString rules (Document.fromText input)
+      $ runDuckling $ parseString lang rules (Document.fromText input)
 
 type Duckling a = Identity a
 
@@ -66,45 +67,45 @@ resolveNode context options n@Node{token = (Token dim dd), nodeRange = r}
     , isLatent = latent
     }
 
-parseString :: [Rule] -> Document -> Duckling Stash
-parseString rules sentence = do
+parseString :: Lang -> [Rule] -> Document -> Duckling Stash
+parseString lang rules sentence = do
   (new, partialMatches) <-
     -- One the first pass we try all the rules
-    parseString1 rules sentence Stash.empty Stash.empty []
+    parseString1 lang rules sentence Stash.empty Stash.empty []
   if Stash.null new
     then return Stash.empty
     else
     -- For subsequent passes, we only try rules starting with a predicate.
-    saturateParseString headPredicateRules sentence new new partialMatches
+    saturateParseString lang headPredicateRules sentence new new partialMatches
   where
   headPredicateRules =
     [ rule | rule@Rule{pattern = (Predicate _ : _)} <- rules ]
 
 -- | Produces all tokens recursively.
 saturateParseString
-  :: [Rule] -> Document -> Stash -> Stash -> [Match] -> Duckling Stash
-saturateParseString rules sentence stash new matches = do
-  (new', matches') <- parseString1 rules sentence stash new matches
+  :: Lang -> [Rule] -> Document -> Stash -> Stash -> [Match] -> Duckling Stash
+saturateParseString lang rules sentence stash new matches = do
+  (new', matches') <- parseString1 lang rules sentence stash new matches
   let stash' = Stash.union stash new'
   if Stash.null new'
     then return stash
-    else saturateParseString rules sentence stash' new' matches'
+    else saturateParseString lang rules sentence stash' new' matches'
 
 -- | Finds new matches resulting from newly added tokens.
 -- Produces new tokens from full matches.
 parseString1
-  :: [Rule] -> Document -> Stash -> Stash -> [Match]
+  :: Lang -> [Rule] -> Document -> Stash -> Stash -> [Match]
   -> Duckling (Stash, [Match])
-parseString1 rules sentence stash new matches = do
+parseString1 lang rules sentence stash new matches = do
   -- Recursively match patterns.
   -- Find which `matches` can advance because of `new`.
-  newPartial <- concatMapM (matchFirst sentence new) matches
+  newPartial <- concatMapM (matchFirst sentence lang new) matches
 
   -- Find new matches resulting from newly added tokens (`new`)
-  newMatches <- concatMapM (matchFirstAnywhere sentence new) rules
+  newMatches <- concatMapM (matchFirstAnywhere sentence lang new) rules
 
   (full, partial) <- L.partition (\(Rule {pattern}, _, _) -> null pattern)
-    <$> matchAll sentence stash (newPartial ++ newMatches)
+    <$> matchAll sentence lang stash (newPartial ++ newMatches)
 
   -- Produce full matches as new tokens
   return ( Stash.fromList $ mapMaybe produce full
@@ -113,13 +114,13 @@ parseString1 rules sentence stash new matches = do
 
 -- | Recursively augments `matches`.
 -- Discards partial matches stuck by a regex.
-matchAll :: Document -> Stash -> [Match] -> Duckling [Match]
-matchAll sentence stash matches = concatMapM mkNextMatches matches
+matchAll :: Document -> Lang -> Stash -> [Match] -> Duckling [Match]
+matchAll sentence lang stash matches = concatMapM mkNextMatches matches
   where
     mkNextMatches :: Match -> Duckling [Match]
     mkNextMatches match@(Rule {pattern = []}, _, _) = return [ match ]
     mkNextMatches match@(Rule {pattern = p:_}, _, _) = do
-      nextMatches <- matchAll sentence stash =<< matchFirst sentence stash match
+      nextMatches <- matchAll sentence lang stash =<< matchFirst sentence lang stash match
       return $ case p of
         Regex _ -> nextMatches
         Predicate _ -> match:nextMatches
@@ -140,37 +141,37 @@ produce (Rule name _ production, _, etuor@(Node {nodeRange = Range _ e}:_)) = do
 
 -- | Returns all matches matching the first pattern item of `match`,
 -- resuming from a Match position
-matchFirst :: Document -> Stash -> Match -> Duckling [Match]
-matchFirst _ _ (Rule {pattern = []}, _, _) = return []
-matchFirst sentence stash (rule@Rule{pattern = p : ps}, position, route) =
-  map (mkMatch route newRule) <$> lookupItem sentence p stash position
+matchFirst :: Document -> Lang -> Stash -> Match -> Duckling [Match]
+matchFirst _ _ _ (Rule {pattern = []}, _, _) = return []
+matchFirst sentence lang stash (rule@Rule{pattern = p : ps}, position, route) =
+  map (mkMatch route newRule) <$> lookupItem sentence lang p stash position
   where
   newRule = rule { pattern = ps }
 
 -- | Returns all matches matching the first pattern item of `match`,
 -- starting anywhere
-matchFirstAnywhere :: Document -> Stash -> Rule -> Duckling [Match]
-matchFirstAnywhere _sentence _stash Rule {pattern = []} = return []
-matchFirstAnywhere sentence stash rule@Rule{pattern = p : ps} =
-  map (mkMatch [] newRule) <$> lookupItemAnywhere sentence p stash
+matchFirstAnywhere :: Document -> Lang -> Stash -> Rule -> Duckling [Match]
+matchFirstAnywhere _sentence _lang _stash Rule {pattern = []} = return []
+matchFirstAnywhere sentence lang stash rule@Rule{pattern = p : ps} =
+  map (mkMatch [] newRule) <$> lookupItemAnywhere sentence lang p stash
   where
   newRule = rule { pattern = ps }
 
 -- | Handle one PatternItem at a given position
-lookupItem :: Document -> PatternItem -> Stash -> Int -> Duckling [Node]
-lookupItem doc (Regex re) _ position =
+lookupItem :: Document -> Lang -> PatternItem -> Stash -> Int -> Duckling [Node]
+lookupItem doc lang (Regex re) _ position =
   filter (isPositionValid position doc) <$>
-  lookupRegex doc re position
-lookupItem doc (Predicate p) stash position =
+  lookupRegex doc lang re position
+lookupItem doc _lang (Predicate p) stash position =
   return $
   filter (p . token) $
   takeWhile (isPositionValid position doc) $
   Stash.toPosOrderedListFrom stash position
 
 -- | Handle one PatternItem anywhere in the text
-lookupItemAnywhere :: Document -> PatternItem -> Stash -> Duckling [Node]
-lookupItemAnywhere doc (Regex re) _ = lookupRegexAnywhere doc re
-lookupItemAnywhere _doc (Predicate p) stash =
+lookupItemAnywhere :: Document -> Lang -> PatternItem -> Stash -> Duckling [Node]
+lookupItemAnywhere doc lang (Regex re) _ = lookupRegexAnywhere doc lang re
+lookupItemAnywhere _doc _lang (Predicate p) stash =
   return $ filter (p . token) $ Stash.toPosOrderedList stash
 
 isPositionValid :: Int -> Document -> Node -> Bool
@@ -184,25 +185,26 @@ mkMatch route newRule node@Node{nodeRange = Range _ pos'} =
   where newRoute = node:route
 
 -- | Handle a regex match at a given position
-lookupRegex :: Document -> PCRE.Regex -> Int -> Duckling [Node]
-lookupRegex doc _regex position | position >= Document.length doc = return []
-lookupRegex doc regex position =
-  lookupRegexCommon doc regex position Regex.matchOnce
+lookupRegex :: Document -> Lang -> PCRE.Regex -> Int -> Duckling [Node]
+lookupRegex doc _lang _regex position | position >= Document.length doc = return []
+lookupRegex doc lang regex position =
+  lookupRegexCommon doc lang regex position Regex.matchOnce
 
 -- | Handle a regex match anywhere in the text
-lookupRegexAnywhere :: Document -> PCRE.Regex -> Duckling [Node]
-lookupRegexAnywhere doc regex = lookupRegexCommon doc regex 0 Regex.matchAll
+lookupRegexAnywhere :: Document -> Lang -> PCRE.Regex -> Duckling [Node]
+lookupRegexAnywhere doc lang regex = lookupRegexCommon doc lang regex 0 Regex.matchAll
 
 {-# INLINE lookupRegexCommon #-}
 -- INLINE bloats the code a bit, but the code is better
 lookupRegexCommon
   :: Foldable t
   => Document
+  -> Lang
   -> PCRE.Regex
   -> Int
   -> (PCRE.Regex -> ByteString -> t PCRE.MatchArray)
   -> Duckling [Node]
-lookupRegexCommon doc regex position matchFun = return nodes
+lookupRegexCommon doc lang regex position matchFun = return nodes
   where
   -- See Note [Regular expressions and Text] from Document.hs to understand
   -- what's going on here
@@ -215,7 +217,7 @@ lookupRegexCommon doc regex position matchFun = return nodes
   f [] = Nothing
   f ((0,0):_) = Nothing
   f ((bsStart, bsLen):groups) =
-    if Document.isRangeValid doc start end
+    if Document.isRangeValid lang doc start end
       then Just node
       else Nothing
     where

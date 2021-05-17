@@ -3,6 +3,7 @@
 ## 0.2.X.X
 
 ### Core
+* Make `isRangeValid` behave differently based on lang
 
 ### Rulesets
 * CA (Catalan)

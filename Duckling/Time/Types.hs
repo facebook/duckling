@@ -24,7 +24,7 @@ import Data.Maybe
 import Data.Monoid
 import Data.Text (Text)
 import Data.Tuple.Extra (both)
-import GHC.Generics
+import GHC.Generics hiding (from, to)
 import Prelude
 import TextShow (showt)
 import qualified Data.HashMap.Strict as H
@@ -411,9 +411,9 @@ seasonPredicate = mkSeriesPredicate series
 weekdayPredicate :: Predicate
 weekdayPredicate = mkSeriesPredicate series
   where
-  series t = const (past,future)
+  series time = const (past,future)
     where
-    day = Time.utctDay (start t)
+    day = Time.utctDay (start time)
     (_,_,dayOfWeek) = Time.toWeekDate day
     past = toTimeObj . toMidnight . fst <$>
       iterate prevWeekday (prevWeekday (day,dayOfWeek))
@@ -472,13 +472,13 @@ runMinutePredicate n = series
 runHourPredicate :: Maybe AMPM -> Bool -> Int -> SeriesPredicate
 runHourPredicate ampm is12H n = series
   where
-  series t _ =
+  series time _ =
     ( drop 1 $
         iterate (\t -> timePlus t TG.Hour $ toInteger $ - step) anchor
     , iterate (\t -> timePlus t TG.Hour $ toInteger step) anchor
     )
     where
-      Time.UTCTime _ diffTime = start t
+      Time.UTCTime _ diffTime = start time
       Time.TimeOfDay h _ _ = Time.timeToTimeOfDay diffTime
       step :: Int
       step = if is12H && n <= 12 && isNothing ampm then 12 else 24
@@ -486,13 +486,13 @@ runHourPredicate ampm is12H n = series
             Just AM -> n `mod` 12
             Just PM -> (n `mod` 12) + 12
             Nothing -> n
-      rounded = timeRound t TG.Hour
+      rounded = timeRound time TG.Hour
       anchor = timePlus rounded TG.Hour $ toInteger $ mod (n' - h) step
 
 runAMPMPredicate :: AMPM -> SeriesPredicate
 runAMPMPredicate ampm = series
   where
-  series t _ = (past, future)
+  series time _ = (past, future)
     where
     past = maybeShrinkFirst $
       iterate (\t -> timePlusEnd t TG.Hour $ toInteger $ - step) anchor
@@ -501,7 +501,7 @@ runAMPMPredicate ampm = series
     -- to produce time in the future/past we need to adjust
     -- the start/end of the first interval
     maybeShrinkFirst (a:as) =
-      case timeIntersect (t { grain = TG.Day }) a of
+      case timeIntersect (time { grain = TG.Day }) a of
         Nothing -> as
         Just ii -> ii:as
     maybeShrinkFirst a = a
@@ -510,7 +510,7 @@ runAMPMPredicate ampm = series
     n = case ampm of
           AM -> 0
           PM -> 12
-    rounded = timeRound t TG.Day
+    rounded = timeRound time TG.Day
     anchorStart = timePlus rounded TG.Hour n
     anchorEnd = timePlus anchorStart TG.Hour 12
     -- an interval of length 12h starting either at 12am or 12pm,
@@ -531,15 +531,15 @@ runDayOfTheWeekPredicate n = series
 runDayOfTheMonthPredicate :: Int -> SeriesPredicate
 runDayOfTheMonthPredicate n = series
   where
-  series t _ =
+  series time _ =
     ( map addDays $ filter enoughDays $ iterate (addMonth $ - 1) $
         addMonth (- 1) anchor
     , map addDays $ filter enoughDays $ iterate (addMonth 1) anchor
     )
     where
       enoughDays :: TimeObject -> Bool
-      enoughDays t = let Time.UTCTime day _ = start t
-                         (year, month, _) = Time.toGregorian day
+      enoughDays t = let Time.UTCTime d _ = start t
+                         (year, month, _) = Time.toGregorian d
                      in n <= Time.gregorianMonthLength year month
       addDays :: TimeObject -> TimeObject
       addDays t = timePlus t TG.Day $ toInteger $ n - 1
@@ -547,8 +547,8 @@ runDayOfTheMonthPredicate n = series
       addMonth i t = timePlus t TG.Month $ toInteger i
       roundMonth :: TimeObject -> TimeObject
       roundMonth t = timeRound t TG.Month
-      rounded = roundMonth t
-      Time.UTCTime day _ = start t
+      rounded = roundMonth time
+      Time.UTCTime day _ = start time
       (_, _, dayOfMonth) = Time.toGregorian day
       anchor = if dayOfMonth <= n then rounded else addMonth 1 rounded
 

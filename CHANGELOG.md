@@ -11,6 +11,7 @@
   * Distance: **new!**
   * Duration: **new!**
   * Temperature: **new!**
+  * Time: **new!**
   * Volume: **new!**
 
 * EN (English)

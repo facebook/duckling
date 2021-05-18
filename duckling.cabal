@@ -693,6 +693,8 @@ library
                      , Duckling.Time.AR.Rules
                      , Duckling.Time.BG.Corpus
                      , Duckling.Time.BG.Rules
+                     , Duckling.Time.CA.Corpus
+                     , Duckling.Time.CA.Rules
                      , Duckling.Time.DA.Corpus
                      , Duckling.Time.DA.Rules
                      , Duckling.Time.DE.Corpus
@@ -1134,6 +1136,7 @@ test-suite duckling-test
                      -- Time
                      , Duckling.Time.AR.Tests
                      , Duckling.Time.BG.Tests
+                     , Duckling.Time.CA.Tests
                      , Duckling.Time.DA.Tests
                      , Duckling.Time.DE.Tests
                      , Duckling.Time.EL.Tests

@@ -30,6 +30,7 @@ import Duckling.Testing.Types
 import qualified Duckling.Region as R
 import qualified Duckling.Time.AR.Corpus as ARTime
 import qualified Duckling.Time.BG.Corpus as BGTime
+import qualified Duckling.Time.CA.Corpus as CATime
 import qualified Duckling.Time.DA.Corpus as DATime
 import qualified Duckling.Time.DE.Corpus as DETime
 import qualified Duckling.Time.EL.Corpus as ELTime
@@ -178,7 +179,7 @@ getCorpusForLang = \case
   AR -> ARTime.corpus
   BG -> BGTime.corpus
   BN -> (testContext, testOptions, [])
-  CA -> (testContext, testOptions, [])
+  CA -> CATime.corpus
   CS -> (testContext, testOptions, [])
   DA -> DATime.corpus
   DE -> DETime.corpus

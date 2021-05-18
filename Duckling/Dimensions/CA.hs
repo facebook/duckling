@@ -19,5 +19,6 @@ allDimensions =
   , Seal Numeral
   , Seal Ordinal
   , Seal Temperature
+  , Seal Time
   , Seal Volume
   ]

@@ -26,6 +26,7 @@ FROM debian:buster
 ENV LANG C.UTF-8
 
 RUN apt-get update -qq && \
+  apt-get dist-upgrade -qq -y --no-install-recommends && \
   apt-get install -qq -y libpcre3 libgmp10 libssl-dev --no-install-recommends && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*

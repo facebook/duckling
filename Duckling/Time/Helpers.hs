@@ -707,14 +707,14 @@ mkSingleRegexRule name pattern token = Rule
 mkRuleInstants :: [(Text, TG.Grain, Int, String)] -> [Rule]
 mkRuleInstants = map go
   where
-    go (name, grain, n, ptn) = mkSingleRegexRule name ptn $ tt $
+    go (name, grain, n, pattern) = mkSingleRegexRule name pattern $ tt $
       cycleNth grain n
 
 mkRuleDaysOfWeek :: [(Text, String)] -> [Rule]
 mkRuleDaysOfWeek daysOfWeek = zipWith go daysOfWeek [1..7]
   where
-    go (name, ptn) i =
-      mkSingleRegexRule name ptn $ tt $ mkOkForThisNext $ dayOfWeek i
+    go (name, pattern) i =
+      mkSingleRegexRule name pattern $ tt $ mkOkForThisNext $ dayOfWeek i
 
 mkRuleMonths :: [(Text, String)] -> [Rule]
 mkRuleMonths = mkRuleMonthsWithLatent . map (uncurry (,, False))
@@ -722,25 +722,25 @@ mkRuleMonths = mkRuleMonthsWithLatent . map (uncurry (,, False))
 mkRuleMonthsWithLatent :: [(Text, String, Bool)] -> [Rule]
 mkRuleMonthsWithLatent months  = zipWith go months [1..12]
   where
-    go (name, ptn, latent) i =
-      mkSingleRegexRule name ptn $ tt $ (if latent then mkLatent else id)
+    go (name, pattern, latent) i =
+      mkSingleRegexRule name pattern $ tt $ (if latent then mkLatent else id)
       $ mkOkForThisNext $ month i
 
 mkRuleSeasons :: [(Text, String, TimeData, TimeData)] -> [Rule]
 mkRuleSeasons = map go
   where
-    go (name, ptn, start, end) = mkSingleRegexRule name ptn $
+    go (name, pattern, start, end) = mkSingleRegexRule name pattern $
       Token Time <$> mkOkForThisNext <$> interval TTime.Open start end
 
 mkRuleHolidays :: [(Text, String, TimeData)] -> [Rule]
 mkRuleHolidays = map go
   where
-    go (name, ptn, td) = mkSingleRegexRule name ptn $ tt
+    go (name, pattern, td) = mkSingleRegexRule name pattern $ tt
       $ withHoliday name $ mkOkForThisNext td
 
 mkRuleHolidays' :: [(Text, String, Maybe TimeData)] -> [Rule]
 mkRuleHolidays' = map go
   where
-    go (name, ptn, td) = mkSingleRegexRule name ptn $ do
+    go (name, pattern, td) = mkSingleRegexRule name pattern $ do
       td <- td
       tt $ withHoliday name $ mkOkForThisNext td

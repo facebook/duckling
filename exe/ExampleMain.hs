@@ -27,6 +27,7 @@ import System.Environment (lookupEnv)
 import TextShow
 import Text.Read (readMaybe)
 import qualified Data.ByteString.Lazy as LBS
+import qualified Data.ByteString.Lazy.Char8 as LBS8
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
@@ -109,6 +110,7 @@ parseHandler tzs = do
     Just tx -> do
       let timezone = parseTimeZone tz
       now <- liftIO $ currentReftime tzs timezone
+
       let
         lang = parseLang l
 
@@ -119,8 +121,10 @@ parseHandler tzs = do
         options = Options {withLatent = parseLatent latent}
 
         dims = fromMaybe (allDimensions lang) $ do
-          queryDims <- ds
-          txtDims <- decode @[Text] $ LBS.fromStrict queryDims
+          queryDims <- LBS.stripSuffix "\""
+            =<< LBS.stripPrefix "\""
+            =<< fmap LBS.fromStrict ds
+          txtDims <- decode @[Text] $ LBS8.filter (/= '\\') queryDims
           pure $ mapMaybe parseDimension txtDims
 
         parsedResult = parse (Text.decodeUtf8 tx) context options dims

@@ -38,7 +38,7 @@ import Data.Maybe
 import Data.Ord (comparing)
 import Data.Text (Text)
 import Data.Tuple.Extra (both)
-import Prelude
+import Prelude hiding (pred)
 import qualified Data.Time as Time
 import qualified Data.Time.LocalTime.TimeZone.Series as Series
 
@@ -64,6 +64,12 @@ import Duckling.Time.Types
   , AMPM(..)
   )
 import Duckling.Types
+  ( Predicate
+  , Token(..)
+  , regex
+  , Rule
+  )
+import qualified Duckling.Types as Types
 import qualified Duckling.Duration.Types as TDuration
 import qualified Duckling.Numeral.Types as TNumeral
 import qualified Duckling.Ordinal.Types as TOrdinal
@@ -91,7 +97,7 @@ timeComputed xs = mkSeriesPredicate series
   where
     series t _ = (reverse start, end)
       where
-        (start, end) = span (flip TTime.timeBefore t) xs
+        (start, end) = span (`TTime.timeBefore` t) xs
 
 timeCycle :: TG.Grain -> TTime.Predicate
 timeCycle grain = mkSeriesPredicate series
@@ -199,16 +205,18 @@ takeNthClosest :: Int -> TTime.Predicate -> TTime.Predicate -> TTime.Predicate
 takeNthClosest n cyclicPred basePred =
   mkSeriesPredicate $! TTime.timeSeqMap False f basePred
   where
-  f t ctx = nth (n `max` 0) past future Nothing
+  f t ctx = mth (n `max` 0) past future Nothing
     where
     (past, future) = runPredicate cyclicPred t ctx
-    nth n pa fu res
-      | n < 0 = res
-      | otherwise = case comparing (against t) x y of
-          GT -> nth (n-1) (tailSafe pa) fu x
-          _ -> nth (n-1) pa (tailSafe fu) y
+    mth m pa fu res
+      | m < 0 = res
+      | otherwise = case comparing against x y of
+          GT -> mth (m-1) (tailSafe pa) fu x
+          _ -> mth (m-1) pa (tailSafe fu) y
       where (x,y) = both listToMaybe (pa,fu)
-    against t = fmap (negate . TTime.diffStartTime t)
+    against :: Maybe TTime.TimeObject -> Maybe Time.NominalDiffTime
+    against = fmap (negate . TTime.diffStartTime t)
+    tailSafe :: [a] -> [a]
     tailSafe (_:xs) = xs
     tailSafe [] = []
 
@@ -551,8 +559,8 @@ predEveryNDaysFrom period given = do
   return $ predEveryFrom TG.Day period date
 
 toTimeObjectM :: (Integer, Int, Int) -> Maybe TTime.TimeObject
-toTimeObjectM (year, month, day) = do
-  day <- Time.fromGregorianValid year month day
+toTimeObjectM (y, m, d) = do
+  day <- Time.fromGregorianValid y m d
   return TTime.TimeObject
     { TTime.start = Time.UTCTime day 0
     , TTime.grain = TG.Day
@@ -698,10 +706,10 @@ tt = Just . Token Time
 
 -- | Rule constructors
 mkSingleRegexRule :: Text -> String -> Maybe Token -> Rule
-mkSingleRegexRule name pattern token = Rule
-  { name = name
-  , pattern = [regex pattern]
-  , prod = const token
+mkSingleRegexRule name pattern token = Types.Rule
+  { Types.name = name
+  , Types.pattern = [regex pattern]
+  , Types.prod = const token
   }
 
 mkRuleInstants :: [(Text, TG.Grain, Int, String)] -> [Rule]
@@ -741,6 +749,6 @@ mkRuleHolidays = map go
 mkRuleHolidays' :: [(Text, String, Maybe TimeData)] -> [Rule]
 mkRuleHolidays' = map go
   where
-    go (name, pattern, td) = mkSingleRegexRule name pattern $ do
-      td <- td
-      tt $ withHoliday name $ mkOkForThisNext td
+    go (name, pattern, maybeTimeData) = mkSingleRegexRule name pattern $ do
+      timeData <- maybeTimeData
+      tt $ withHoliday name $ mkOkForThisNext timeData

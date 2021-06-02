@@ -70,7 +70,6 @@ import Duckling.Types
   , Rule
   )
 import qualified Duckling.Types as Types
-
 import qualified Duckling.Duration.Types as TDuration
 import qualified Duckling.Numeral.Types as TNumeral
 import qualified Duckling.Ordinal.Types as TOrdinal
@@ -209,13 +208,15 @@ takeNthClosest n cyclicPred basePred =
   f t ctx = mth (n `max` 0) past future Nothing
     where
     (past, future) = runPredicate cyclicPred t ctx
-    against = fmap (negate . TTime.diffStartTime t)
     mth m pa fu res
-      | n < 0 = res
+      | m < 0 = res
       | otherwise = case comparing against x y of
           GT -> mth (m-1) (tailSafe pa) fu x
           _ -> mth (m-1) pa (tailSafe fu) y
       where (x,y) = both listToMaybe (pa,fu)
+    against :: Maybe TTime.TimeObject -> Maybe Time.NominalDiffTime
+    against = fmap (negate . TTime.diffStartTime t)
+    tailSafe :: [a] -> [a]
     tailSafe (_:xs) = xs
     tailSafe [] = []
 

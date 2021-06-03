@@ -4,7 +4,8 @@ packages:
 - '.'
 
 extra-deps:
-  - dependent-sum
+  - dependent-sum-0.7.1.0
+  - constraints-extras-0.3.1.0
 
 flags: {}
 

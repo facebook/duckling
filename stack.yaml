@@ -3,7 +3,8 @@ resolver: lts-17.9
 packages:
 - '.'
 
-extra-deps: []
+extra-deps:
+  - dependent-sum
 
 flags: {}
 

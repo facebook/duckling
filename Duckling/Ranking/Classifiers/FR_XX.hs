@@ -153,13 +153,12 @@ classifiers
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("integer (numeric)",
         Classifier{okData =
-                     ClassData{prior = -0.4740936144972606,
-                               unseen = -5.5053315359323625,
+                     ClassData{prior = -0.479182684004732, unseen = -5.5053315359323625,
                                likelihoods = HashMap.fromList [("", 0.0)], n = 244},
                    koData =
-                     ClassData{prior = -0.9740495660263475,
-                               unseen = -5.0106352940962555,
-                               likelihoods = HashMap.fromList [("", 0.0)], n = 148}}),
+                     ClassData{prior = -0.9657156152016781,
+                               unseen = -5.0238805208462765,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 150}}),
        ("the nth <day-of-week> of <month-or-greater>",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -1.6094379124341003,
@@ -1850,11 +1849,13 @@ classifiers
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("Octobre",
         Classifier{okData =
-                     ClassData{prior = 0.0, unseen = -2.4849066497880004,
+                     ClassData{prior = -9.53101798043249e-2,
+                               unseen = -2.4849066497880004,
                                likelihoods = HashMap.fromList [("", 0.0)], n = 10},
                    koData =
-                     ClassData{prior = -infinity, unseen = -0.6931471805599453,
-                               likelihoods = HashMap.fromList [], n = 0}}),
+                     ClassData{prior = -2.3978952727983707,
+                               unseen = -1.0986122886681098,
+                               likelihoods = HashMap.fromList [("", 0.0)], n = 1}}),
        ("au d\233jeuner",
         Classifier{okData =
                      ClassData{prior = -0.40546510810816444,
@@ -2206,7 +2207,7 @@ classifiers
                                n = 42}}),
        ("<day-of-month> <named-month>",
         Classifier{okData =
-                     ClassData{prior = -0.2876820724517809, unseen = -4.718498871295094,
+                     ClassData{prior = -0.3022808718729337, unseen = -4.718498871295094,
                                likelihoods =
                                  HashMap.fromList
                                    [("integer (numeric)Juin", -3.3232358401924436),
@@ -2219,15 +2220,16 @@ classifiers
                                     ("integer (numeric)Mars", -1.936941479072553)],
                                n = 51},
                    koData =
-                     ClassData{prior = -1.3862943611198906, unseen = -3.784189633918261,
+                     ClassData{prior = -1.3437347467010947, unseen = -3.828641396489095,
                                likelihoods =
                                  HashMap.fromList
-                                   [("number (0..16)Juillet", -2.374905754573672),
-                                    ("integer (numeric)Juillet", -1.1962507582320256),
-                                    ("month", -0.8708283577973976),
-                                    ("integer (numeric)Septembre", -3.068052935133617),
-                                    ("integer (numeric)Mars", -3.068052935133617)],
-                               n = 17}}),
+                                   [("number (0..16)Juillet", -2.4203681286504293),
+                                    ("integer (numeric)Juillet", -1.241713132308783),
+                                    ("integer (numeric)Octobre", -3.1135153092103742),
+                                    ("month", -0.8622235106038793),
+                                    ("integer (numeric)Septembre", -3.1135153092103742),
+                                    ("integer (numeric)Mars", -3.1135153092103742)],
+                               n = 18}}),
        ("du dd/nth au dd/nth month (interval)",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -2.3978952727983707,

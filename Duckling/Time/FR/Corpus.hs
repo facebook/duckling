@@ -32,6 +32,7 @@ negativeCorpus = (testContext {locale = makeLocale FR Nothing}, testOptions, exa
       [ "Ana a un court de tennis"
       , "deux trois"
       , "deux trois minutes"
+      , "74"
       ]
 
 allExamples :: [Example]
@@ -215,6 +216,7 @@ allExamples = concat
   , examples (datetime (1974, 10, 31, 0, 0, 0) Day)
              [ "31/10/1974"
              , "31/10/74"
+             , "31 octobre 74"
              ]
   , examples (datetime (2013, 2, 18, 0, 0, 0) Day)
              [ "lundi prochain"

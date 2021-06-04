@@ -1914,6 +1914,24 @@ rulePlusTardPartofday = Rule
       _ -> Nothing
   }
 
+ruleDDMonthYY :: Rule
+ruleDDMonthYY = Rule
+  { name = "DD month YY"
+  , pattern =
+    [ Predicate $ isIntegerBetween 0 31
+    , Predicate isAMonth
+    , Predicate $ isIntegerBetween 32 99
+    ]
+  , prod = \case
+      (dayd:Token Time monthd:yeard:_) -> do
+        d <- getIntValue dayd
+        y <- getIntValue yeard
+        dayMonth <- intersect monthd (dayOfMonth d)
+        ymd <- intersect dayMonth (year y)
+        tt ymd
+      _ -> Nothing
+  }
+
 ruleTimezone :: Rule
 ruleTimezone = Rule
   { name = "<time> timezone"
@@ -2103,6 +2121,7 @@ rules =
   , rulePlusTardPartofday
   , ruleNthTimeOfTime
   , ruleTheNthTimeOfTime
+  , ruleDDMonthYY
   ]
   ++ ruleMonths
   ++ ruleDaysOfWeek

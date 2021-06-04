@@ -4,6 +4,7 @@
 
 ### Core
 * Make `isRangeValid` behave differently based on lang
+* Add custom `isRangeValid` implementation for ZH
 
 ### Rulesets
 * CA (Catalan)

@@ -57,7 +57,6 @@ allExamples = concat
   , examples (simple Inch 4)
              [ "4 inch"
              , "4 inches"
-             , "4''"
              , "4英寸"
              , "4英吋"
              , "四吋"

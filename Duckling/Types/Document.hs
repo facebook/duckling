@@ -13,6 +13,7 @@ module Duckling.Types.Document
   ( Document -- abstract
   , fromText
   , (!)
+  , (!?)
   , length
   , byteStringFromPos
   , isAdjacent
@@ -114,12 +115,44 @@ fromText rawInput = Document{..}
     where
     w = UText.ord c
 
--- As regexes are matched without whitespace delimitator, we need to check
+data CharClass
+  = Alpha
+  | Digit
+  | Self {-# unpack #-} !Char
+  deriving (Eq, Ord, Show)
+
+-- As regexes are matched without whitespace delimiter, we need to check
 -- the reasonability of the match to actually be a word.
 isRangeValid :: Lang -> Document -> Int -> Int -> Bool
 isRangeValid = \case
+  ZH -> zhIsRangeValid
   _ -> defaultIsRangeValid
   where
+    zhIsRangeValid :: Document -> Int -> Int -> Bool
+    zhIsRangeValid doc start end =
+      (start == 0 ||
+        isDifferent (doc !? (start - 1)) (doc !? start)) &&
+      (end == length doc ||
+        isDifferent (doc !? (end - 1)) (doc !? end))
+
+      --  start == 0 = isDifferent (doc !? (end - 1)) (doc !? end)
+      --  end == length doc = isDifferent (doc !? (start - 1)) (doc !? start)
+      --  otherwise = isDifferent (doc !? (start - 1)) (doc !? start)
+      --               && isDifferent (doc !? (end - 1)) (doc !? end)
+      where
+        charClass :: Char -> Maybe CharClass
+        charClass c
+          | Char.isLower c || Char.isUpper c = Just Alpha
+          | Char.isDigit c = Just Digit
+          | otherwise = Nothing
+        isDifferent :: Maybe Char -> Maybe Char -> Bool
+        isDifferent Nothing Nothing = False
+        isDifferent Nothing _       = True
+        isDifferent _       Nothing = True
+        isDifferent (Just c1) (Just c2) = case (charClass c1, charClass c2) of
+          (Nothing, Nothing) -> True
+          (cc1, cc2)         -> cc1 /= cc2
+
     defaultIsRangeValid :: Document -> Int -> Int -> Bool
     defaultIsRangeValid doc start end =
       (start == 0 ||
@@ -127,11 +160,11 @@ isRangeValid = \case
       (end == length doc ||
         isDifferent (doc ! (end - 1)) (doc ! end))
       where
-        charClass :: Char -> Char
+        charClass :: Char -> CharClass
         charClass c
-          | Char.isLower c || Char.isUpper c = 'c'
-          | Char.isDigit c = 'd'
-          | otherwise = c
+          | Char.isLower c || Char.isUpper c = Alpha
+          | Char.isDigit c = Digit
+          | otherwise = Self c
         isDifferent :: Char -> Char -> Bool
         isDifferent a b = charClass a /= charClass b
 
@@ -145,6 +178,13 @@ isAdjacentSeparator c = elem c [' ', '\t']
 
 (!) :: Document -> Int -> Char
 (!) Document { indexable = s } ix = s Array.! ix
+
+(!?) :: Document -> Int -> Maybe Char
+(!?) Document { indexable = s } ix = do
+  let (lo, hi) = Array.bounds s
+  case ix >= lo && ix <= hi of
+    True -> Just $ s Array.! ix
+    False -> Nothing
 
 length :: Document -> Int
 length Document { indexable = s } = Array.rangeSize $ Array.bounds s

@@ -91,16 +91,21 @@ ruleMonths = mkRuleMonths
   , ( "Diciembre" , "diciembre|dic\\.?")
   ]
 
-ruleThisDayofweek :: Rule
-ruleThisDayofweek = Rule
-  { name = "this <day-of-week>"
+ruleThisOrNextDayOfWeek :: Rule
+ruleThisOrNextDayOfWeek = Rule
+  { name = "this|next <day-of-week>"
   , pattern =
-    [ regex "este"
+    [ regex "(este|pr(o|ó)ximo)"
     , Predicate isADayOfWeek
     ]
-  , prod = \tokens -> case tokens of
-      (_:Token Time td:_) ->
-        tt $ predNth 0 True td
+  , prod = \case
+      (Token RegexMatch (GroupMatch (match:_)):Token Time dow:_) -> do
+        td <- case Text.toLower match of
+          "este" -> Just $ predNth 0 True dow
+          "próximo" -> intersect dow $ cycleNth TG.Week 1
+          "proximo" -> intersect dow $ cycleNth TG.Week 1
+          _ -> Nothing
+        tt td
       _ -> Nothing
   }
 
@@ -1617,7 +1622,7 @@ rules =
   , ruleRightNow
   , ruleTheDayAfterTomorrow
   , ruleTheDayBeforeYesterday
-  , ruleThisDayofweek
+  , ruleThisOrNextDayOfWeek
   , ruleThisPartofday
   , ruleTimeofdayAmpm
   , ruleTimeofdayHoras

@@ -9,7 +9,7 @@
 
 module Duckling.Time.ES.Corpus
   ( corpus
-    , latentCorpus
+  , latentCorpus
   ) where
 
 import Data.String
@@ -121,6 +121,10 @@ allExamples = concat
              , "lu"
              , "lun."
              , "este lunes"
+             ]
+  , examples (datetime (2013, 2, 22, 0, 0, 0) Day)
+             [ "el próximo viernes"
+             , "proximo viernes"
              ]
   , examples (datetime (2013, 2, 18, 0, 0, 0) Day)
              [ "lunes, 18 de febrero"

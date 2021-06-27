@@ -9,6 +9,7 @@
 
 module Duckling.Quantity.AR.Corpus
   ( corpus
+  , negativeCorpus
   ) where
 
 import Data.String
@@ -18,6 +19,15 @@ import Duckling.Locale
 import Duckling.Quantity.Types
 import Duckling.Resolve
 import Duckling.Testing.Types
+
+negativeCorpus :: NegativeCorpus
+negativeCorpus = (testContext, testOptions, examples)
+  where
+    examples =
+      [ "جمبري"
+      , "جمهور"
+      , "غمامة"
+      ]
 
 corpus :: Corpus
 corpus = (testContext {locale = makeLocale AR Nothing}, testOptions, allExamples)

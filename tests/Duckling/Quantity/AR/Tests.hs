@@ -20,4 +20,5 @@ import Duckling.Testing.Asserts
 tests :: TestTree
 tests = testGroup "AR Tests"
   [ makeCorpusTest [Seal Quantity] corpus
+  , makeNegativeCorpusTest [Seal Time] negativeCorpus
   ]

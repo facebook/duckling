@@ -156,7 +156,7 @@ isRangeValid = \case
       where
         -- This list isn't exhasutive since Arabic have some diacritics and rarely used characters in Unicode
         isArabic :: Char -> Bool
-        isArabic c = elem c ['ا', 'ب', 'ت', 'ة', 'ث', 'ج', 'ح', 'خ', 'د', 'ذ', 'ر', 'ز', 'س', 'ش', 'ص', 'ض', 'ط', 'ظ', 'ع', 'غ', 'ف', 'ق', 'ك', 'ل', 'م', 'ن', 'ه', 'ي', 'ء', 'آ', 'أ', 'إ', 'ؤ', 'ئ', 'ى']
+        isArabic c = elem c ['ا', 'ب', 'ت', 'ة', 'ث', 'ج', 'ح', 'خ', 'د', 'ذ', 'ر', 'ز', 'س', 'ش', 'ص', 'ض', 'ط', 'ظ', 'ع', 'غ', 'ف', 'ق', 'ك', 'ل', 'م', 'ن', 'ه', 'ي', 'ء', 'آ', 'أ', 'إ', 'ؤ', 'و', 'ئ', 'ى']
 
         -- TODO: Add all Arabic proclitics
         isArabicProclitic :: Char -> Bool

@@ -43,6 +43,8 @@ opsMap = HashMap.fromList
   , ( "mgs"        , (/ 1000))
   , ( "quilograma" , (* 1000))
   , ( "quilogramas", (* 1000))
+  , ( "quilo"      , (* 1000))
+  , ( "quilos"     , (* 1000))
   , ( "kg"         , (* 1000))
   , ( "kgs"        , (* 1000))
   ]

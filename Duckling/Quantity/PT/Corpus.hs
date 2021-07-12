@@ -28,7 +28,7 @@ allExamples = concat
              ]
   , examples (simple Gram 2 Nothing)
              [ "2 gramas"
-             , "0.002 kg"
+             , "0,002 kg"
              , "2 g"
              , "2/1000 quilogramas"
              , "2/1000 quilos"
@@ -48,18 +48,18 @@ allExamples = concat
              , "uma lb"
              ]
   , examples (simple Cup 3 (Just "acucar"))
-             [ "3 copos of acucar"
-             , "3 copos of AcucAr"
+             [ "3 copos de acucar"
+             , "3 copos de AcucAr"
              ]
   , examples (simple Cup 0.75 Nothing)
              [ "3/4 copo"
-             , "0.75 copo"
+             , "0,75 copo"
              ]
   , examples (simple Gram 500 (Just "morangos"))
              [ "500 gramas de morangos"
              , "500g de morangos"
-             , "0.5 quilos de morangos"
-             , "0.5 kg de morangos"
+             , "0,5 quilos de morangos"
+             , "0,5 kg de morangos"
              , "500000mg de morangos"
              ]
   ]

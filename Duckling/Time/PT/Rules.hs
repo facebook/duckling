@@ -1227,6 +1227,18 @@ ruleDOMMonth = Rule
       _ -> Nothing
   }
 
+ruleMonthDOM :: Rule
+ruleMonthDOM = Rule
+  { name = "<named-month> <day-of-month>"
+  , pattern =
+    [ Predicate isAMonth
+    , Predicate isDOMInteger
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Time td:token:_) -> Token Time <$> intersectDOM td token
+      _ -> Nothing
+  }
+
 ruleEntreDatetimeEDatetimeInterval :: Rule
 ruleEntreDatetimeEDatetimeInterval = Rule
   { name = "entre <datetime> e <datetime> (interval)"
@@ -1717,8 +1729,6 @@ rules =
   , ruleAntesDasTimeofday
   , ruleDatetimeDatetimeInterval
   , ruleDayOfMonthSt
-  , ruleDOMOfMonth
-  , ruleDOMMonth
   , ruleDayofweekSHourmin
   , ruleDdddMonthinterval
   , ruleDdmm
@@ -1733,6 +1743,8 @@ rules =
   , ruleDimTimeDaMadrugada
   , ruleDimTimeDaManha
   , ruleDimTimeDaTarde
+  , ruleDOMOfMonth
+  , ruleDOMMonth
   , ruleEmDuration
   , ruleEntreDatetimeEDatetimeInterval
   , ruleEntreDdEtDdMonthinterval
@@ -1764,6 +1776,7 @@ rules =
   , ruleIntersectByDaOrDe
   , ruleLastTime
   , ruleMidnight
+  , ruleMonthDOM
   , ruleMorning
   , ruleNCycleAtras
   , ruleNCycleProximoqueVem

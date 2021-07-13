@@ -23,10 +23,10 @@ grains = [ ("second (grain)", "שניות|שנייה", TG.Second)
          , ("minute (grain)", "דקה|דקות", TG.Minute)
          , ("hour (grain)", "שעות|שעה", TG.Hour)
          , ("day (grain)", "ימים|יום", TG.Day)
-         , ("week (grain)", "שבוע|שבועות", TG.Week)
-         , ("month (grain)", "חודש|חודשים", TG.Month)
-         , ("quarter (grain)", "רבע", TG.Quarter)
-         , ("year (grain)", "שנה", TG.Year)
+         , ("week (grain)", "שבוע(ות)?", TG.Week)
+         , ("month (grain)", "חודש(ים)?", TG.Month)
+         , ("quarter (grain)", "רבע(ון|ונים)?", TG.Quarter)
+         , ("year (grain)", "שנה|שנים", TG.Year)
          ]
 
 rules :: [Rule]

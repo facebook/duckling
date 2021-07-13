@@ -24,7 +24,7 @@ module Duckling.Time.Helpers
   , month, monthDay, notLatent, now, nthDOWOfMonth, partOfDay, predLastOf
   , predNth, predNthAfter, predNthClosest, season, second, timeOfDayAMPM
   , weekday, weekend, workweek, withDirection, year, yearMonthDay, tt, durationIntervalAgo
-  , inDurationInterval, intersectWithReplacement, yearADBC, yearMonth
+  , inDurationInterval, timeShiftPeriod, intersectWithReplacement, yearADBC, yearMonth
   , predEveryNDaysFrom, timeCycle
     -- Other
   , getIntValue, timeComputed, toTimeObjectM

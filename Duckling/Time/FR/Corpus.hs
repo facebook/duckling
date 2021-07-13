@@ -111,6 +111,14 @@ allExamples = concat
              , "2 mars"
              , "le 2/3"
              ]
+  , examples (datetime (2013, 7, 5, 0, 0, 0) Day)
+             [ "le 5 juillet"
+             , "5 juillet"
+             , "5 juil"
+             , "5 jui"
+             , "5 juil."
+             , "5 jui."
+             ]
   , examples (datetime (2013, 3, 2, 5, 0, 0) Hour)
              [ "le 2 mars à 5h"
              , "2 mars à 5h"

@@ -1948,17 +1948,17 @@ ruleTimezone = Rule
 
 ruleMonths :: [Rule]
 ruleMonths = mkRuleMonths
-  [ ( "Janvier"   , "janvier|janv\\.?"                    )
+  [ ( "Janvier"   , "janvier|janv\\.?"          )
   , ( "Fevrier"   , "f(é|e)vrier|f(é|e)v\\.?"   )
-  , ( "Mars"      , "mars|mar\\.?"                        )
-  , ( "Avril"     , "avril|avr\\.?"                       )
-  , ( "Mai"       , "mai"                                 )
-  , ( "Juin"      , "juin|jun\\.?"                        )
-  , ( "Juillet"   , "juillet|juil?\\."                    )
-  , ( "Aout"      , "ao(û|u)t|aou\\.?"               )
-  , ( "Septembre" , "septembre|sept?\\.?"                 )
-  , ( "Octobre"   , "octobre|oct\\.?"                     )
-  , ( "Novembre"  , "novembre|nov\\.?"                    )
+  , ( "Mars"      , "mars|mar\\.?"              )
+  , ( "Avril"     , "avril|avr\\.?"             )
+  , ( "Mai"       , "mai"                       )
+  , ( "Juin"      , "juin|jun\\.?"              )
+  , ( "Juillet"   , "juillet|juil?\\.?"         )
+  , ( "Aout"      , "ao(û|u)t|aou\\.?"          )
+  , ( "Septembre" , "septembre|sept?\\.?"       )
+  , ( "Octobre"   , "octobre|oct\\.?"           )
+  , ( "Novembre"  , "novembre|nov\\.?"          )
   , ( "Decembre"  ,  "d(é|e)cembre|d(é|e)c\\.?" )
   ]
 

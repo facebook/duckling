@@ -1202,16 +1202,28 @@ ruleTimeofdayAmpm = Rule
       _ -> Nothing
   }
 
-ruleDayofmonthDeNamedmonth :: Rule
-ruleDayofmonthDeNamedmonth = Rule
-  { name = "<day-of-month> de <named-month>"
+ruleDOMOfMonth :: Rule
+ruleDOMOfMonth = Rule
+  { name = "<day-of-month> (ordinal or number) de <named-month>"
   , pattern =
-    [ Predicate isDOMInteger
+    [ Predicate isDOMValue
     , regex "de|\\/"
     , Predicate isAMonth
     ]
   , prod = \tokens -> case tokens of
       (token:_:Token Time td:_) -> Token Time <$> intersectDOM td token
+      _ -> Nothing
+  }
+
+ruleDOMMonth :: Rule
+ruleDOMMonth = Rule
+  { name = "<day-of-month> (ordinal or number) <named-month>"
+  , pattern =
+    [ Predicate isDOMValue
+    , Predicate isAMonth
+    ]
+  , prod = \tokens -> case tokens of
+      (token:Token Time td:_) -> Token Time <$> intersectDOM td token
       _ -> Nothing
   }
 
@@ -1705,7 +1717,8 @@ rules =
   , ruleAntesDasTimeofday
   , ruleDatetimeDatetimeInterval
   , ruleDayOfMonthSt
-  , ruleDayofmonthDeNamedmonth
+  , ruleDOMOfMonth
+  , ruleDOMMonth
   , ruleDayofweekSHourmin
   , ruleDdddMonthinterval
   , ruleDdmm

@@ -25,6 +25,7 @@ allExamples :: [Example]
 allExamples =
   concat
     [ examples (NumeralValue 1) ["1", "uno", "una"]
+    , examples (NumeralValue (-1)) ["negativo 1", "menos 1", "negativo uno"]
     , examples (NumeralValue 11) ["once"]
     , examples
         (NumeralValue 16)
@@ -42,7 +43,8 @@ allExamples =
     , examples (NumeralValue 3_000_000) ["3M", "3000K", "3000000"]
     , examples (NumeralValue 1_200_000) ["1200000", "1200K"]
     , examples (NumeralValue (-1_200_000)) ["-1200000", "-1200K"]
-    , examples (NumeralValue 1.5) ["1 punto cinco", "una punto cinco", "1 con cinco", "1 con 5"]
+    , examples (NumeralValue 1.5) ["1 punto cinco", "una punto cinco", "1 con cinco", "1 con 5", "uno coma 5"]
+    , examples (NumeralValue 0.5) ["punto cinco", "coma 5"]
     , examples (NumeralValue 1) ["cero uno", "zero uno"]
     , examples (NumeralValue 2) ["cero dos", "zero dos"]
     , examples (NumeralValue 3)

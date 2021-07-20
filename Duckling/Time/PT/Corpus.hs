@@ -383,9 +383,19 @@ allExamples = concat
              ]
   , examples (datetimeInterval ((2013, 2, 13, 18, 0, 0), (2013, 2, 14, 0, 0, 0)) Hour)
              [ "amanhã a noite"
+             , "amanhã à noite"
              ]
   , examples (datetimeInterval ((2013, 2, 11, 18, 0, 0), (2013, 2, 12, 0, 0, 0)) Hour)
              [ "ontem a noite"
+             , "ontem à noite"
+             ]
+  , examples (datetimeInterval ((2013, 2, 13, 12, 0, 0), (2013, 2, 13, 19, 0, 0)) Hour)
+             [ "amanhã a tarde"
+             , "amanhã à tarde"
+             ]
+  , examples (datetimeInterval ((2013, 2, 11, 12, 0, 0), (2013, 2, 11, 19, 0, 0)) Hour)
+             [ "ontem a tarde"
+             , "ontem à tarde"
              ]
   , examples (datetimeInterval ((2013, 2, 15, 18, 0, 0), (2013, 2, 18, 0, 0, 0)) Hour)
              [ "este final de semana"

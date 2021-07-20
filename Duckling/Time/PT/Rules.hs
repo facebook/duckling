@@ -569,7 +569,7 @@ ruleInThePartofday :: Rule
 ruleInThePartofday = Rule
   { name = "in the <part-of-day>"
   , pattern =
-    [ regex "(de|pela)"
+    [ regex "(de|pela|a|à)"
     , Predicate isAPartOfDay
     ]
   , prod = \tokens -> case tokens of

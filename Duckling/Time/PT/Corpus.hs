@@ -169,6 +169,7 @@ allExamples = concat
              , "17/2"
              , "no domingo"
              , "no dia 17"
+             , "dia 17"
              ]
   , examples (datetime (2013, 2, 20, 0, 0, 0) Day)
              [ "esse dia 20"
@@ -245,9 +246,29 @@ allExamples = concat
   , examples (datetime (2013, 2, 12, 20, 0, 0) Hour)
              [ "às oito da noite"
              ]
+  , examples (datetime (2013, 2, 13, 20, 0, 0) Hour)
+             [ "amanhã às oito da noite"
+             ]
+  , examples (datetime (2013, 2, 15, 18, 0, 0) Hour)
+             [ "no dia 15 às 18"
+             , "dia 15 às 18"
+             , "dia 15 às 18 horas"
+             , "dia 15 às dezoito"
+             , "dia quinze às dezoito"
+             ]
+  , examples (datetime (2013, 2, 14, 18, 0, 0) Hour)
+             [ "quinta-feira às 18 horas"
+             , "quinta às 18"
+             ]
+  , examples (datetime (2013, 2, 15, 18, 15, 0) Minute)
+             [ "dia 15 de Fevereiro às 18:15"
+             , "dia 15 às 18:15"
+             ]
   , examples (datetime (2013, 2, 12, 15, 0, 0) Minute)
              [ "15:00"
              , "15.00"
+             , "às 15:00"
+             , "às 15.00"
              ]
   , examples (datetime (2013, 2, 13, 0, 0, 0) Hour)
              [ "meianoite"

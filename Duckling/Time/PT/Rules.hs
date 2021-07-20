@@ -1024,7 +1024,7 @@ ruleDiaDayofmonthNonOrdinal = Rule
   , prod = \tokens -> case tokens of
       (_:token:_) -> do
         v <- getIntValue token
-        tt . mkLatent $ dayOfMonth v
+        tt $ dayOfMonth v
       _ -> Nothing
   }
 

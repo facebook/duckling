@@ -23,13 +23,43 @@ corpus = (testContext {locale = makeLocale PT Nothing}, testOptions, allExamples
 
 allExamples :: [Example]
 allExamples = concat
-  [ examples (simple Cup 2 (Just "café"))
-             [ "2 copos de café"
+  [  examples (simple Pound 2 (Just "carne"))
+             [ "duas libras de carne"
              ]
-  , examples (simple Cup 1 Nothing)
-             [ "um Copo"
+  , examples (simple Gram 2 Nothing)
+             [ "2 gramas"
+             , "0,002 kg"
+             , "2 g"
+             , "2/1000 quilogramas"
+             , "2/1000 quilos"
+             , "2000 miligramas"
+             , "2000 miligramas"
              ]
-  , examples (simple Pound 100 (Just "acucar"))
-             [ "100 Libras de acucar"
+  , examples (simple Gram 1000 Nothing)
+             [ "um quilograma"
+             , "um quilo"
+             , "um kg"
+             , "1 kg"
+             , "1000 g"
+             ]
+  , examples (simple Pound 1 Nothing)
+             [ "uma Libra"
+             , "1 lb"
+             , "uma lb"
+             ]
+  , examples (simple Cup 3 (Just "acucar"))
+             [ "3 copos de acucar"
+             , "3 copos de AcucAr"
+             ]
+  , examples (simple Cup 0.75 Nothing)
+             [ "3/4 copo"
+             , "0,75 copo"
+             ]
+  , examples (simple Gram 500 (Just "morangos"))
+             [ "500 gramas de morangos"
+             , "500g de morangos"
+             , "0,5 quilos de morangos"
+             , "0,5 kg de morangos"
+             , "500000mg de morangos"
              ]
   ]

@@ -123,17 +123,30 @@ allExamples = concat
              ]
   , examples (datetime (2013, 5, 5, 0, 0, 0) Day)
              [ "5 de maio"
+             , "5 maio"
+             , "05 maio"
              , "cinco de maio"
+             , "cinco maio"
+             , "maio 5"
+             , "maio cinco"
              ]
   , examples (datetime (2013, 5, 5, 0, 0, 0) Day)
              [ "cinco de maio de 2013"
              , "5 de maio de 2013"
+             , "5 maio de 2013"
+             , "5 de maio 2013"
+             , "5 maio 2013"
              , "5/5"
              , "5/5/2013"
              ]
   , examples (datetime (2013, 7, 4, 0, 0, 0) Day)
              [ "4 de julho"
+             , "04 de julho"
+             , "04 julho"
              , "quatro de julho"
+             , "quatro julho"
+             , "julho 4"
+             , "julho quatro"
              , "4/7"
              , "4/7/2013"
              ]

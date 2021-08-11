@@ -8,7 +8,6 @@ module Duckling.Time.HU.Tests
   ( tests ) where
 
 import Data.String
-import Prelude
 import Test.Tasty
 
 import Duckling.Dimensions.Types

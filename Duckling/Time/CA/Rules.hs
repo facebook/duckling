@@ -1065,7 +1065,7 @@ ruleMorning = Rule
     ]
   , prod = \_ ->
       let from = hour False 6
-          to = hour False 11
+          to = hour False 12
       in Token Time . mkLatent . partOfDay <$>
            interval TTime.Open from to
   }

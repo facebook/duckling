@@ -322,10 +322,10 @@ allExamples = concat
   , examples (datetimeInterval ((2013, 2, 15, 18, 0, 0), (2013, 2, 18, 0, 0, 0)) Hour)
              [ "aquest cap de setmana"
              ]
-  , examples (datetimeInterval ((2013, 2, 18, 6, 0, 0), (2013, 2, 18, 11, 0, 0)) Hour)
+  , examples (datetimeInterval ((2013, 2, 18, 6, 0, 0), (2013, 2, 18, 12, 0, 0)) Hour)
              [ "dilluns pel matí"
              ]
-  , examples (datetimeInterval ((2013, 2, 15, 6, 0, 0), (2013, 2, 15, 11, 0, 0)) Hour)
+  , examples (datetimeInterval ((2013, 2, 15, 6, 0, 0), (2013, 2, 15, 12, 0, 0)) Hour)
              [ "el 15 de febrer pel matí"
              ]
   , examples (datetimeInterval ((2013, 2, 12, 4, 29, 58), (2013, 2, 12, 4, 30, 0)) Second)

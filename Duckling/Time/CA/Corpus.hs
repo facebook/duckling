@@ -50,9 +50,11 @@ allExamples = concat
   --}
   , examples (datetime (2013, 2, 13, 0, 0, 0) Day)
              [ "demà"
+             , "dema"
              ]
   , examples (datetime (2013, 2, 14, 0, 0, 0) Day)
              [ "demà passat"
+             , "dema passat"
              ]
   , examples (datetime (2013, 2, 18, 0, 0, 0) Day)
              [ "dilluns"
@@ -297,6 +299,7 @@ allExamples = concat
              ]
   , examples (datetimeInterval ((2013, 2, 13, 14, 0, 0), (2013, 2, 13, 19, 0, 0)) Hour)
              [ "demà a la tarda"
+             , "dema a la tarda"
              ]
   , examples (datetimeInterval ((2013, 2, 11, 14, 0, 0), (2013, 2, 11, 19, 0, 0)) Hour)
              [ "ahir per la tarda"
@@ -306,6 +309,7 @@ allExamples = concat
              ]
   , examples (datetimeInterval ((2013, 2, 13, 19, 0, 0), (2013, 2, 13, 22, 0, 0)) Hour)
              [ "demà al vespre"
+             , "dema al vespre"
              ]
   , examples (datetimeInterval ((2013, 2, 11, 19, 0, 0), (2013, 2, 11, 22, 0, 0)) Hour)
              [ "ahir al vespre"
@@ -315,6 +319,7 @@ allExamples = concat
              ]
   , examples (datetimeInterval ((2013, 2, 13, 0, 0, 0), (2013, 2, 13, 1, 0, 0)) Hour)
              [ "demà a la nit"
+             , "dema a la nit"
              ]
   , examples (datetimeInterval ((2013, 2, 11, 0, 0, 0), (2013, 2, 11, 1, 0, 0)) Hour)
              [ "ahir per la nit"

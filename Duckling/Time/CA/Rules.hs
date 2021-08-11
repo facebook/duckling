@@ -33,7 +33,7 @@ ruleTheDayAfterTomorrow :: Rule
 ruleTheDayAfterTomorrow = Rule
   { name = "the day after tomorrow"
   , pattern =
-    [ regex "demà passat|l'endemà|passat demà"
+    [ regex "dem(a|à) passat|l'endem(a|à)|passat dem(a|à)"
     ]
   , prod = \_ -> tt $ cycleNth TG.Day 2
   }
@@ -1353,7 +1353,7 @@ ruleTomorrow :: Rule
 ruleTomorrow = Rule
   { name = "tomorrow"
   , pattern =
-    [ regex "demà"
+    [ regex "dem(a|à)"
     ]
   , prod = \_ -> tt $ cycleNth TG.Day 1
   }

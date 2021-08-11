@@ -123,6 +123,15 @@ allExamples = concat
              [ "el 24 d'octubre"
              , "el 24/10"
              ]
+   , examples (datetime (2013, 09, 24, 0, 0, 0) Day)
+             [ "el 24 de setembre"
+             , "el 24 de set"
+             , "el 24/09"
+             ]
+   , examples (datetime (2013, 09, 0, 0, 0, 0) Month)
+             [ "setembre"
+             , "set"
+             ]
   , examples (datetime (2013, 4, 5, 0, 0, 0) Day)
              [ "el 5 d'abril"
              , "5 d'abril"

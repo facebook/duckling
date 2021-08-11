@@ -85,7 +85,7 @@ ruleMonths = mkRuleMonths
   , ( "Juny"     , "juny?\\.?")
   , ( "Juliol"   , "juliol|jul\\.?")
   , ( "Agost"    , "agost|ago\\.?")
-  , ( "Setembre" , "setembre|set?\\.?")
+  , ( "Setembre" , "setembre|set\\.?")
   , ( "Octubre"  , "octubre|oct\\.?")
   , ( "Novembre" , "novembre|nov\\.?")
   , ( "Desembre" , "desembre|des\\.?")

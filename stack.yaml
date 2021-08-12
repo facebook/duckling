@@ -1,10 +1,15 @@
-resolver: lts-14.20
+resolver: lts-16.31
 
 packages:
 - '.'
 
-extra-deps: []
+extra-deps:
+- regex-posix-clib-2.7
+- dependent-sum-0.7.1.0@sha256:0e419237f5b86da3659772afff9cab355c0f8d5b3fdb15a5b30e673d8dc83941,2147
+- constraints-extras-0.3.1.0@sha256:c70fcf437e1d640cfd50a8eda1db47a64e49c96857e08fd0d8c438327d908ac1,1846
 
-flags: {}
+flags:
+  regex-posix:
+    _regex-posix-clib: true
 
 extra-package-dbs: []

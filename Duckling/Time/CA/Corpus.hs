@@ -50,9 +50,11 @@ allExamples = concat
   --}
   , examples (datetime (2013, 2, 13, 0, 0, 0) Day)
              [ "demà"
+             , "dema"
              ]
   , examples (datetime (2013, 2, 14, 0, 0, 0) Day)
              [ "demà passat"
+             , "dema passat"
              ]
   , examples (datetime (2013, 2, 18, 0, 0, 0) Day)
              [ "dilluns"
@@ -120,6 +122,15 @@ allExamples = concat
    , examples (datetime (2013, 10, 24, 0, 0, 0) Day)
              [ "el 24 d'octubre"
              , "el 24/10"
+             ]
+   , examples (datetime (2013, 09, 24, 0, 0, 0) Day)
+             [ "el 24 de setembre"
+             , "el 24 de set"
+             , "el 24/09"
+             ]
+   , examples (datetime (2013, 09, 0, 0, 0, 0) Month)
+             [ "setembre"
+             , "set"
              ]
   , examples (datetime (2013, 4, 5, 0, 0, 0) Day)
              [ "el 5 d'abril"
@@ -297,6 +308,7 @@ allExamples = concat
              ]
   , examples (datetimeInterval ((2013, 2, 13, 14, 0, 0), (2013, 2, 13, 19, 0, 0)) Hour)
              [ "demà a la tarda"
+             , "dema a la tarda"
              ]
   , examples (datetimeInterval ((2013, 2, 11, 14, 0, 0), (2013, 2, 11, 19, 0, 0)) Hour)
              [ "ahir per la tarda"
@@ -306,6 +318,7 @@ allExamples = concat
              ]
   , examples (datetimeInterval ((2013, 2, 13, 19, 0, 0), (2013, 2, 13, 22, 0, 0)) Hour)
              [ "demà al vespre"
+             , "dema al vespre"
              ]
   , examples (datetimeInterval ((2013, 2, 11, 19, 0, 0), (2013, 2, 11, 22, 0, 0)) Hour)
              [ "ahir al vespre"
@@ -315,6 +328,7 @@ allExamples = concat
              ]
   , examples (datetimeInterval ((2013, 2, 13, 0, 0, 0), (2013, 2, 13, 1, 0, 0)) Hour)
              [ "demà a la nit"
+             , "dema a la nit"
              ]
   , examples (datetimeInterval ((2013, 2, 11, 0, 0, 0), (2013, 2, 11, 1, 0, 0)) Hour)
              [ "ahir per la nit"
@@ -322,10 +336,10 @@ allExamples = concat
   , examples (datetimeInterval ((2013, 2, 15, 18, 0, 0), (2013, 2, 18, 0, 0, 0)) Hour)
              [ "aquest cap de setmana"
              ]
-  , examples (datetimeInterval ((2013, 2, 18, 6, 0, 0), (2013, 2, 18, 11, 0, 0)) Hour)
+  , examples (datetimeInterval ((2013, 2, 18, 6, 0, 0), (2013, 2, 18, 12, 0, 0)) Hour)
              [ "dilluns pel matí"
              ]
-  , examples (datetimeInterval ((2013, 2, 15, 6, 0, 0), (2013, 2, 15, 11, 0, 0)) Hour)
+  , examples (datetimeInterval ((2013, 2, 15, 6, 0, 0), (2013, 2, 15, 12, 0, 0)) Hour)
              [ "el 15 de febrer pel matí"
              ]
   , examples (datetimeInterval ((2013, 2, 12, 4, 29, 58), (2013, 2, 12, 4, 30, 0)) Second)

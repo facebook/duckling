@@ -123,17 +123,30 @@ allExamples = concat
              ]
   , examples (datetime (2013, 5, 5, 0, 0, 0) Day)
              [ "5 de maio"
+             , "5 maio"
+             , "05 maio"
              , "cinco de maio"
+             , "cinco maio"
+             , "maio 5"
+             , "maio cinco"
              ]
   , examples (datetime (2013, 5, 5, 0, 0, 0) Day)
              [ "cinco de maio de 2013"
              , "5 de maio de 2013"
+             , "5 maio de 2013"
+             , "5 de maio 2013"
+             , "5 maio 2013"
              , "5/5"
              , "5/5/2013"
              ]
   , examples (datetime (2013, 7, 4, 0, 0, 0) Day)
              [ "4 de julho"
+             , "04 de julho"
+             , "04 julho"
              , "quatro de julho"
+             , "quatro julho"
+             , "julho 4"
+             , "julho quatro"
              , "4/7"
              , "4/7/2013"
              ]
@@ -169,6 +182,7 @@ allExamples = concat
              , "17/2"
              , "no domingo"
              , "no dia 17"
+             , "dia 17"
              ]
   , examples (datetime (2013, 2, 20, 0, 0, 0) Day)
              [ "esse dia 20"
@@ -245,9 +259,29 @@ allExamples = concat
   , examples (datetime (2013, 2, 12, 20, 0, 0) Hour)
              [ "às oito da noite"
              ]
+  , examples (datetime (2013, 2, 13, 20, 0, 0) Hour)
+             [ "amanhã às oito da noite"
+             ]
+  , examples (datetime (2013, 2, 15, 18, 0, 0) Hour)
+             [ "no dia 15 às 18"
+             , "dia 15 às 18"
+             , "dia 15 às 18 horas"
+             , "dia 15 às dezoito"
+             , "dia quinze às dezoito"
+             ]
+  , examples (datetime (2013, 2, 14, 18, 0, 0) Hour)
+             [ "quinta-feira às 18 horas"
+             , "quinta às 18"
+             ]
+  , examples (datetime (2013, 2, 15, 18, 15, 0) Minute)
+             [ "dia 15 de Fevereiro às 18:15"
+             , "dia 15 às 18:15"
+             ]
   , examples (datetime (2013, 2, 12, 15, 0, 0) Minute)
              [ "15:00"
              , "15.00"
+             , "às 15:00"
+             , "às 15.00"
              ]
   , examples (datetime (2013, 2, 13, 0, 0, 0) Hour)
              [ "meianoite"
@@ -383,9 +417,19 @@ allExamples = concat
              ]
   , examples (datetimeInterval ((2013, 2, 13, 18, 0, 0), (2013, 2, 14, 0, 0, 0)) Hour)
              [ "amanhã a noite"
+             , "amanhã à noite"
              ]
   , examples (datetimeInterval ((2013, 2, 11, 18, 0, 0), (2013, 2, 12, 0, 0, 0)) Hour)
              [ "ontem a noite"
+             , "ontem à noite"
+             ]
+  , examples (datetimeInterval ((2013, 2, 13, 12, 0, 0), (2013, 2, 13, 19, 0, 0)) Hour)
+             [ "amanhã a tarde"
+             , "amanhã à tarde"
+             ]
+  , examples (datetimeInterval ((2013, 2, 11, 12, 0, 0), (2013, 2, 11, 19, 0, 0)) Hour)
+             [ "ontem a tarde"
+             , "ontem à tarde"
              ]
   , examples (datetimeInterval ((2013, 2, 15, 18, 0, 0), (2013, 2, 18, 0, 0, 0)) Hour)
              [ "este final de semana"

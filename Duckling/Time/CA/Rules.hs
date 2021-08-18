@@ -33,7 +33,7 @@ ruleTheDayAfterTomorrow :: Rule
 ruleTheDayAfterTomorrow = Rule
   { name = "the day after tomorrow"
   , pattern =
-    [ regex "demà passat|l'endemà|passat demà"
+    [ regex "dem(a|à) passat|l'endem(a|à)|passat dem(a|à)"
     ]
   , prod = \_ -> tt $ cycleNth TG.Day 2
   }
@@ -85,7 +85,7 @@ ruleMonths = mkRuleMonths
   , ( "Juny"     , "juny?\\.?")
   , ( "Juliol"   , "juliol|jul\\.?")
   , ( "Agost"    , "agost|ago\\.?")
-  , ( "Setembre" , "setembre|set?\\.?")
+  , ( "Setembre" , "setembre|set\\.?")
   , ( "Octubre"  , "octubre|oct\\.?")
   , ( "Novembre" , "novembre|nov\\.?")
   , ( "Desembre" , "desembre|des\\.?")
@@ -1065,7 +1065,7 @@ ruleMorning = Rule
     ]
   , prod = \_ ->
       let from = hour False 6
-          to = hour False 11
+          to = hour False 12
       in Token Time . mkLatent . partOfDay <$>
            interval TTime.Open from to
   }
@@ -1353,7 +1353,7 @@ ruleTomorrow :: Rule
 ruleTomorrow = Rule
   { name = "tomorrow"
   , pattern =
-    [ regex "demà"
+    [ regex "dem(a|à)"
     ]
   , prod = \_ -> tt $ cycleNth TG.Day 1
   }

@@ -1228,7 +1228,7 @@ executable duckling-example-exe
                      , text
                      , text-show
                      , time
-                     , timezone-olson        >= 0.1.7 && < 0.3
+                     , timezone-olson        >= 0.2 && < 0.3
                      , timezone-series
                      , unordered-containers
   default-language:    Haskell2010
@@ -1263,7 +1263,7 @@ executable duckling-request-sample
                      , filepath              >= 1.4.0.0 && < 1.5
                      , text
                      , time
-                     , timezone-olson        >= 0.1.7 && < 0.3
+                     , timezone-olson        >= 0.2 && < 0.3
                      , timezone-series
                      , unordered-containers
   default-language:    Haskell2010
@@ -1282,7 +1282,7 @@ executable duckling-expensive
                      , filepath              >= 1.4.0.0 && < 1.5
                      , text
                      , time
-                     , timezone-olson        >= 0.1.7 && < 0.3
+                     , timezone-olson        >= 0.2 && < 0.3
                      , timezone-series
                      , unordered-containers
   default-language:    Haskell2010

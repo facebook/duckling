@@ -1038,16 +1038,28 @@ ruleTimeofdayAmpm = Rule
       _ -> Nothing
   }
 
-ruleDayofmonthDeNamedmonth :: Rule
-ruleDayofmonthDeNamedmonth = Rule
-  { name = "<day-of-month> de <named-month>"
+ruleDOMOfMonth :: Rule
+ruleDOMOfMonth = Rule
+  { name = "<day-of-month> (ordinal or number) de <named-month>"
   , pattern =
-    [ Predicate isDOMInteger
+    [ Predicate isDOMValue
     , regex "de"
     , Predicate isAMonth
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (token:_:Token Time td:_) -> Token Time <$> intersectDOM td token
+      _ -> Nothing
+  }
+
+ruleDOMMonth :: Rule
+ruleDOMMonth = Rule
+  { name = "<day-of-month> (ordinal or number) <named-month>"
+  , pattern =
+    [ Predicate isDOMValue
+    , Predicate isAMonth
+    ]
+  , prod = \case
+      (token:Token Time td:_) -> Token Time <$> intersectDOM td token
       _ -> Nothing
   }
 
@@ -1078,8 +1090,8 @@ ruleEntreDdEtDdMonthinterval = Rule
       _ -> Nothing
   }
 
-ruleNamedmonthDayofmonth :: Rule
-ruleNamedmonthDayofmonth = Rule
+ruleMonthDOM :: Rule
+ruleMonthDOM = Rule
   { name = "<named-month> <day-of-month>"
   , pattern =
     [ Predicate isAMonth
@@ -1566,7 +1578,6 @@ rules =
   , ruleCeTime
   , ruleDatetimeDatetimeInterval
   , ruleDayOfMonthSt
-  , ruleDayofmonthDeNamedmonth
   , ruleDayofweekDayofmonth
   , ruleDdddMonthinterval
   , ruleDdmm
@@ -1578,6 +1589,8 @@ rules =
   , ruleDimTimeDeLaManana
   , ruleDimTimeDeLaTarde
   , ruleDimTimeDeLaTarde2
+  , ruleDOMOfMonth
+  , ruleDOMMonth
   , ruleElCycleAntesTime
   , ruleElCycleProximoqueViene
   , ruleElCycleProximoqueVieneTime
@@ -1602,11 +1615,11 @@ rules =
   , ruleLaCyclePasado
   , ruleLaPasadoCycle
   , ruleMidnight
+  , ruleMonthDOM
   , ruleMorning
   , ruleNCycleProximoqueViene
   , ruleNPasadosCycle
   , ruleNProximasCycle
-  , ruleNamedmonthDayofmonth
   , ruleNamedmonthnameddayNext
   , ruleNamedmonthnameddayPast
   , ruleNavidad

@@ -125,7 +125,7 @@ ruleEvening = Rule
     [ regex "vespre"
     ]
   , prod = \_ ->
-      let from = hour False 19
+      let from = hour False 18
           to = hour False 22
       in Token Time . mkLatent . partOfDay <$>
            interval TTime.Open from to
@@ -152,8 +152,8 @@ ruleNit = Rule
     [ regex "nit"
     ]
   , prod = \_ ->
-      let from = hour False 22
-          to = hour False 1
+      let from = hour False 20
+          to = hour False 0
       in Token Time . mkLatent . partOfDay <$>
            interval TTime.Open from to
   }
@@ -743,7 +743,7 @@ ruleAfternoon = Rule
     [ regex "tarda"
     ]
   , prod = \_ ->
-      let from = hour False 14
+      let from = hour False 12
           to = hour False 19
       in Token Time . mkLatent . partOfDay <$>
            interval TTime.Open from to
@@ -1064,7 +1064,7 @@ ruleMorning = Rule
     [ regex "mat(i|í)"
     ]
   , prod = \_ ->
-      let from = hour False 6
+      let from = hour False 4
           to = hour False 12
       in Token Time . mkLatent . partOfDay <$>
            interval TTime.Open from to

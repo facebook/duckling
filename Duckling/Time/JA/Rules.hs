@@ -211,6 +211,22 @@ ruleYearMonthDOM = Rule
       _ -> Nothing
   }
 
+ruleImperialYearMonthDOM :: Rule
+ruleImperialYearMonthDOM = Rule
+  { name = "imperial <year> <named-month> <day-of-month>"
+  , pattern =
+    [ Predicate $ isGrainOfTime TG.Year
+    , Predicate isAMonth
+    , Predicate isDOMValue
+    , regex "日"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Time year:Token Time td:token:_) -> do
+        dom <- intersectDOM td token
+        Token Time <$> intersect dom year
+      _ -> Nothing
+  }
+
 ruleYearMonth :: Rule
 ruleYearMonth = Rule
   { name = "<year> <named-month>"
@@ -233,7 +249,7 @@ ruleOnADOW = Rule
     , regex "(\\)|）)?(に|は|で)"
     ]
   , prod = \tokens -> case tokens of
-      (_:token:_) -> Just token
+      (_:Token Time td:_) -> tt $ notLatent td
       _ -> Nothing
   }
 
@@ -245,7 +261,7 @@ ruleAbsorbOnDay = Rule
     , regex "に|は|で"
     ]
   , prod = \tokens -> case tokens of
-      (token:_) -> Just token
+      (Token Time td:_) -> tt $ notLatent td
       _ -> Nothing
   }
 
@@ -409,9 +425,9 @@ ruleIntervalFromToTime = Rule
   { name = "from <time> to <time>"
   , pattern =
     [ dimension Time
-    , regex "(初め)?以(降|来)に?|～|よりも?後?|から"
+    , regex "(初め)?以(降|来)に?|～|よりも?後?|(初め|頭)?から|以降"
     , dimension Time
-    , regex "まで|より前|以前"
+    , regex "末?まで|(より|以)前|の間|にかけて|いっぱい"
     ]
   , prod = \tokens -> case tokens of
       (Token Time td1:_:Token Time td2:_) ->
@@ -424,7 +440,7 @@ ruleIntervalTimes = Rule
   { name = "<time> - <time>"
   , pattern =
     [ dimension Time
-    , regex "-|~|～"
+    , regex "-|~|～|・|、|から"
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
@@ -433,6 +449,23 @@ ruleIntervalTimes = Rule
       _ -> Nothing
   }
 
+ruleIntervalYear :: Rule
+ruleIntervalYear = Rule
+  { name = "<year> - <year>"
+  , pattern =
+    [ Predicate $ isIntegerBetween 1000 10000
+    , regex "-|~|～|・|、|から"
+    , Predicate $ isIntegerBetween 1000 10000
+    , regex "年"
+    ]
+  , prod = \tokens -> case tokens of
+      (t1:_:t2:_) -> do
+        y1 <- getIntValue t1
+        y2 <- getIntValue t2
+        guard (y1 < y2)
+        Token Time <$> interval TTime.Closed (year y1) (year y2)
+      _ -> Nothing
+  }
 
 ruleWeekend :: Rule
 ruleWeekend = Rule
@@ -494,6 +527,36 @@ ruleLastTimeGrain = Rule
       _ -> Nothing
   }
 
+ruleDurationLastNext :: Rule
+ruleDurationLastNext = Rule
+  { name = "last|past|next <duration>"
+  , pattern =
+    [ regex "(過去|直在|次の)"
+    , dimension Duration
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (match:_)):
+       Token Duration DurationData{TDuration.grain, TDuration.value}:
+       _) -> case Text.toLower match of
+         "次の" -> tt $ cycleN True grain value
+         "過去" -> tt $ cycleN True grain (- value)
+         "直在" -> tt $ cycleN True grain (- value)
+         _      -> Nothing
+      _ -> Nothing
+  }
+
+ruleLastTime :: Rule
+ruleLastTime = Rule
+  { name = "last <time>"
+  , pattern =
+    [ regex ""
+    , Predicate isOkWithThisNext
+    ]
+  , prod = \tokens -> case tokens of
+      (_:Token Time td:_) -> tt $ predNth (- 1) False td
+      _ -> Nothing
+  }
+
 ruleInstants :: [Rule]
 ruleInstants = mkRuleInstants
   [ ("today"            , TG.Day    , 0   , "今日(1日)?|きょう|本日|ほんじつ"       )
@@ -510,13 +573,24 @@ ruleInstants = mkRuleInstants
 
 ruleDaysOfWeek :: [Rule]
 ruleDaysOfWeek = mkRuleDaysOfWeek
-  [ ( "Monday"   , "月(曜日?)?|げつようび"    )
-  , ( "Tuesday"  , "火(曜日?)?|かようび"      )
-  , ( "Wednesday", "水(曜日?)?|すいようび"    )
-  , ( "Thursday" , "木(曜日?)?|もくようび"    )
-  , ( "Friday"   , "金(曜日?)?|きんようび"    )
-  , ( "Saturday" , "土(曜日?)?|どようび"      )
-  , ( "Sunday"   , "日(曜日?)|にちようび"     )
+  [ ( "Monday"   , "月曜日?|げつようび"    )
+  , ( "Tuesday"  , "火曜日?|かようび"      )
+  , ( "Wednesday", "水曜日?|すいようび"    )
+  , ( "Thursday" , "木曜日?|もくようび"    )
+  , ( "Friday"   , "金曜日?|きんようび"    )
+  , ( "Saturday" , "土曜日?|どようび"      )
+  , ( "Sunday"   , "日曜日?|にちようび"     )
+  ]
+
+ruleDaysOfWeekLatent :: [Rule]
+ruleDaysOfWeekLatent = mkRuleDaysOfWeekLatent
+  [ ( "Monday"   , "月|げつよう"    )
+  , ( "Tuesday"  , "火|かよう"      )
+  , ( "Wednesday", "水|すいよう"    )
+  , ( "Thursday" , "木|もくよう"    )
+  , ( "Friday"   , "金|きんよう"    )
+  , ( "Saturday" , "土|どよう"      )
+  , ( "Sunday"   , "日|にちよう"     )
   ]
 
 ruleMonths :: [Rule]
@@ -554,6 +628,7 @@ rules =
   , ruleMonthDOM
   , ruleYearMonth
   , ruleYearMonthDOM
+  , ruleImperialYearMonthDOM
   , ruleOnADOW
   , ruleAbsorbOnDay
   , ruleOnDay
@@ -566,13 +641,16 @@ rules =
   , ruleIntervalUntilTime
   , ruleIntervalFromToTime
   , ruleIntervalTimes
+  , ruleIntervalYear
   , ruleWeekend
   , ruleNow
   , ruleThisTimeGrain
   , ruleNextTimeGrain
   , ruleLastTimeGrain
+  , ruleDurationLastNext
   ]
   ++ ruleDaysOfWeek
+  ++ ruleDaysOfWeekLatent
   ++ ruleMonths
   ++ ruleInstants
 

@@ -1449,7 +1449,7 @@ ruleIntervalTODAMPM = Rule
  { name = "hh(:mm) - <time-of-day> am|pm"
  , pattern =
    [ regex "(?:from )?((?:[01]?\\d)|(?:2[0-3]))([:.]([0-5]\\d))?"
-   , regex "\\-|:|to|th?ru|through|(un)?til(l)?"
+   , regex "\\-|to|th?ru|through|(un)?til(l)?"
    , Predicate isATimeOfDay
    , regex "(in the )?([ap])(\\s|\\.)?m?\\.?"
    ]

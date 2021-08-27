@@ -601,6 +601,9 @@ allExamples = concat
   , examples (datetime (2013, 2, 12, 15, 23, 24) Second)
              [ "15:23:24"
              ]
+  , examples (datetime (2013, 2, 12, 9, 1, 10) Second)
+             [ "9:01:10 AM"
+             ]
   , examples (datetime (2013, 2, 12, 11, 45, 0) Minute)
              [ "a quarter to noon"
              , "11:45am"

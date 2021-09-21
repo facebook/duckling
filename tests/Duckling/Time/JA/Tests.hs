@@ -5,20 +5,19 @@
 -- LICENSE file in the root directory of this source tree.
 
 
-module Duckling.Duration.JA.Tests
-  ( tests
-  ) where
+module Duckling.Time.JA.Tests
+  ( tests ) where
 
-import Prelude
 import Data.String
+import Prelude
 import Test.Tasty
 
 import Duckling.Dimensions.Types
-import Duckling.Duration.JA.Corpus
 import Duckling.Testing.Asserts
+import Duckling.Time.JA.Corpus
 
 tests :: TestTree
 tests = testGroup "JA Tests"
-  [ makeCorpusTest [Seal Duration] corpus
+  [ makeCorpusTest [Seal Time] corpus
   , makeNegativeCorpusTest [Seal Duration] negativeCorpus
   ]

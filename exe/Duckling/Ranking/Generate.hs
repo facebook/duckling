@@ -45,6 +45,7 @@ import qualified Duckling.Time.HR.Corpus as HRTime
 import qualified Duckling.Time.HE.Corpus as HETime
 import qualified Duckling.Time.HU.Corpus as HUTime
 import qualified Duckling.Time.IT.Corpus as ITTime
+import qualified Duckling.Time.JA.Corpus as JATime
 import qualified Duckling.Time.KO.Corpus as KOTime
 import qualified Duckling.Time.NB.Corpus as NBTime
 import qualified Duckling.Time.NL.Corpus as NLTime
@@ -198,7 +199,7 @@ getCorpusForLang = \case
   ID -> (testContext, testOptions, [])
   IS -> (testContext, testOptions, [])
   IT -> ITTime.corpus
-  JA -> (testContext, testOptions, [])
+  JA -> JATime.corpus
   KA -> (testContext, testOptions, [])
   KM -> (testContext, testOptions, [])
   KN -> (testContext, testOptions, [])

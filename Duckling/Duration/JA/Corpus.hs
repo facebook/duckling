@@ -9,6 +9,7 @@
 
 module Duckling.Duration.JA.Corpus
   ( corpus
+  , negativeCorpus
   ) where
 
 import Prelude
@@ -23,6 +24,13 @@ import Duckling.TimeGrain.Types (Grain(..))
 corpus :: Corpus
 corpus = (testContext {locale = makeLocale JA Nothing}, testOptions, allExamples)
 
+negativeCorpus :: NegativeCorpus
+negativeCorpus = (testContext {locale = makeLocale JA Nothing}, testOptions, examples)
+  where
+    examples =
+      [ "月面"
+      ]
+
 allExamples :: [Example]
 allExamples = concat
   [ examples (DurationData 1 Second)
@@ -35,5 +43,8 @@ allExamples = concat
   , examples (DurationData 100 Day)
              [ "百 日"
              , "百 日間"
+             ]
+  , examples (DurationData 2 Month)
+             [ "2ヶ月"
              ]
   ]

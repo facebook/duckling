@@ -29,7 +29,9 @@ module Duckling.Time.Helpers
     -- Other
   , getIntValue, timeComputed, toTimeObjectM
   -- Rule constructors
-  , mkRuleInstants, mkRuleDaysOfWeek, mkRuleMonths, mkRuleMonthsWithLatent
+  , mkRuleInstants
+  , mkRuleDaysOfWeek, mkRuleDaysOfWeekLatent
+  , mkRuleMonths, mkRuleMonthsWithLatent
   , mkRuleSeasons, mkRuleHolidays, mkRuleHolidays'
   ) where
 
@@ -723,6 +725,12 @@ mkRuleDaysOfWeek daysOfWeek = zipWith go daysOfWeek [1..7]
   where
     go (name, pattern) i =
       mkSingleRegexRule name pattern $ tt $ mkOkForThisNext $ dayOfWeek i
+
+mkRuleDaysOfWeekLatent :: [(Text, String)] -> [Rule]
+mkRuleDaysOfWeekLatent daysOfWeek = zipWith go daysOfWeek [1..7]
+  where
+    go (name, pattern) i =
+      mkSingleRegexRule name pattern $ tt $ mkLatent $ mkOkForThisNext $ dayOfWeek i
 
 mkRuleMonths :: [(Text, String)] -> [Rule]
 mkRuleMonths = mkRuleMonthsWithLatent . map (uncurry (,, False))

@@ -57,6 +57,9 @@ getIntValue x = if rest == 0 then Just int else Nothing
 isInteger :: Double -> Bool
 isInteger = isJust . getIntValue
 
+isMultiple :: Int -> Double -> Bool
+isMultiple base = isJust . getIntValue . (/ fromIntegral base)
+
 isIntegerBetween :: Double -> Int -> Int -> Bool
 isIntegerBetween x low high = case getIntValue x of
   Just int -> low <= int && int <= high

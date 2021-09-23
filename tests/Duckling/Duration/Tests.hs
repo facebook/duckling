@@ -15,6 +15,7 @@ import Test.Tasty
 
 import qualified Duckling.Duration.AR.Tests as AR
 import qualified Duckling.Duration.BG.Tests as BG
+import qualified Duckling.Duration.CA.Tests as CA
 import qualified Duckling.Duration.EL.Tests as EL
 import qualified Duckling.Duration.EN.Tests as EN
 import qualified Duckling.Duration.ES.Tests as ES
@@ -41,6 +42,7 @@ tests :: TestTree
 tests = testGroup "Duration Tests"
   [ AR.tests
   , BG.tests
+  , CA.tests
   , EL.tests
   , EN.tests
   , ES.tests

@@ -14,6 +14,7 @@ import Prelude
 import Test.Tasty
 
 import qualified Duckling.AmountOfMoney.AR.Tests as AR
+import qualified Duckling.AmountOfMoney.CA.Tests as CA
 import qualified Duckling.AmountOfMoney.EN.Tests as EN
 import qualified Duckling.AmountOfMoney.BG.Tests as BG
 import qualified Duckling.AmountOfMoney.ES.Tests as ES
@@ -32,14 +33,16 @@ import qualified Duckling.AmountOfMoney.PT.Tests as PT
 import qualified Duckling.AmountOfMoney.RO.Tests as RO
 import qualified Duckling.AmountOfMoney.RU.Tests as RU
 import qualified Duckling.AmountOfMoney.SV.Tests as SV
+import qualified Duckling.AmountOfMoney.TR.Tests as TR
 import qualified Duckling.AmountOfMoney.VI.Tests as VI
 import qualified Duckling.AmountOfMoney.ZH.Tests as ZH
 
 tests :: TestTree
 tests = testGroup "AmountOfMoney Tests"
   [ AR.tests
-  , EN.tests
   , BG.tests
+  , CA.tests
+  , EN.tests
   , ES.tests
   , FR.tests
   , GA.tests
@@ -56,6 +59,7 @@ tests = testGroup "AmountOfMoney Tests"
   , RO.tests
   , RU.tests
   , SV.tests
+  , TR.tests
   , VI.tests
   , ZH.tests
   ]

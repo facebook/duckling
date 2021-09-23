@@ -16,12 +16,11 @@ module Duckling.AmountOfMoney.ZH.Rules
 import Data.Maybe
 import Data.String
 import Prelude
-import qualified Data.Text as Text
 
 import Duckling.AmountOfMoney.Helpers
 import Duckling.AmountOfMoney.Types (Currency (..), AmountOfMoneyData (..))
 import Duckling.Dimensions.Types
-import Duckling.Numeral.Helpers (isNatural, isPositive, oneOf)
+import Duckling.Numeral.Helpers (isNatural, isPositive, oneOf, numberBetween, decimalsToDouble)
 import Duckling.Numeral.Types (NumeralData (..))
 import Duckling.Regex.Types
 import Duckling.Types
@@ -34,7 +33,7 @@ ruleCNY = Rule
   , pattern =
     [ regex "人民币|人民幣"
     ]
-  , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly CNY
+  , prod = \_ -> Just $ Token AmountOfMoney $ currencyOnly CNY
   }
 
 ruleCNYPrefix :: Rule
@@ -46,7 +45,29 @@ ruleCNYPrefix = Rule
     ]
   , prod = \case
       (_:Token Numeral NumeralData{TNumeral.value = v}:_) ->
-        Just . Token AmountOfMoney . withValue v $ currencyOnly CNY
+        Just $ Token AmountOfMoney $ withValue v $ currencyOnly CNY
+      _ -> Nothing
+  }
+
+ruleHKD :: Rule
+ruleHKD = Rule
+  { name = "HKD"
+  , pattern =
+    [ regex "港幣"
+    ]
+  , prod = \_ -> Just $ Token AmountOfMoney $ currencyOnly HKD
+  }
+
+ruleHKDPrefix :: Rule
+ruleHKDPrefix = Rule
+  { name = "hkd prefix"
+  , pattern =
+    [ regex "港幣"
+    , Predicate isPositive
+    ]
+  , prod = \case
+      (_:Token Numeral NumeralData{TNumeral.value = v}:_) ->
+        Just $ Token AmountOfMoney $ withValue v $ currencyOnly HKD
       _ -> Nothing
   }
 
@@ -54,9 +75,9 @@ ruleCent :: Rule
 ruleCent = Rule
   { name = "cent"
   , pattern =
-    [ regex "分"
+    [ regex "分|仙"
     ]
-  , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly Cent
+  , prod = \_ -> Just $ Token AmountOfMoney $ currencyOnly Cent
 }
 
 ruleDime :: Rule
@@ -64,11 +85,11 @@ ruleDime = Rule
   { name = "dime"
   , pattern =
     [ Predicate isPositive
-    , regex "角|毛"
+    , regex "角|毛|毫"
     ]
   , prod = \case
       (Token Numeral NumeralData{TNumeral.value = v}:_) ->
-        Just . Token AmountOfMoney $
+        Just $ Token AmountOfMoney $
         withCents (v * 10) $ currencyOnly Cent
       _ -> Nothing
   }
@@ -77,9 +98,9 @@ ruleDollar :: Rule
 ruleDollar = Rule
   { name = "dollar"
   , pattern =
-    [ regex "元|圆|块"
+    [ regex "元|圆|块|蚊|個"
     ]
-  , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly Dollar
+  , prod = \_ -> Just $ Token AmountOfMoney $ currencyOnly Dollar
   }
 
 rulePrecision :: Rule
@@ -117,7 +138,7 @@ ruleIntersectDimesAndCents = Rule
       (Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just d}:
        Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just c}:
        _) ->
-         Just . Token AmountOfMoney $ withCents (c + d) $ currencyOnly Cent
+         Just $ Token AmountOfMoney $ withCents (c + d) $ currencyOnly Cent
       _ -> Nothing
   }
 
@@ -131,7 +152,20 @@ ruleIntersectDollarsAndDimesCents = Rule
   , prod = \case
       (Token AmountOfMoney fd:
        Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just c}:
-       _) -> Just . Token AmountOfMoney $ withCents c fd
+       _) -> Just $ Token AmountOfMoney $ withCents c fd
+      _ -> Nothing
+  }
+
+ruleIntersectDollarsAndAHalf :: Rule
+ruleIntersectDollarsAndAHalf = Rule
+  { name = "<amount-of-money> and a half"
+  , pattern =
+    [ Predicate $ and . sequence [isSimpleAmountOfMoney, isWithoutCents]
+    , regex "半"
+    ]
+  , prod = \case
+      (Token AmountOfMoney fd:_) ->
+        Just $ Token AmountOfMoney $ withCents 50 fd
       _ -> Nothing
   }
 
@@ -146,7 +180,7 @@ ruleIntersect = Rule
   , prod = \case
       (Token AmountOfMoney fd:_:
        Token Numeral NumeralData{TNumeral.value = c}:
-       _) -> Just . Token AmountOfMoney $ withCents c fd
+       _) -> Just $ Token AmountOfMoney $ withCents c fd
       _ -> Nothing
   }
 
@@ -160,7 +194,7 @@ ruleIntersect2 = Rule
   , prod = \case
       (Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just v}:
        Token Numeral NumeralData{TNumeral.value = c}:
-       _) -> Just . Token AmountOfMoney $ withCents (v + c) $ currencyOnly Cent
+       _) -> Just $ Token AmountOfMoney $ withCents (v + c) $ currencyOnly Cent
       _ -> Nothing
   }
 
@@ -174,7 +208,29 @@ ruleIntersect3 = Rule
   , prod = \case
       (Token AmountOfMoney fd:
        Token Numeral NumeralData{TNumeral.value = d}:
-       _) -> Just . Token AmountOfMoney $ withCents (d * 10) fd
+       _) -> Just $ Token AmountOfMoney $ withCents (d * 10) fd
+      _ -> Nothing
+  }
+
+ruleOneDollarAndAHalf :: Rule
+ruleOneDollarAndAHalf = Rule
+  { name = "one dollar and a half (short form)"
+  , pattern =
+    [ regex "個半"
+    ]
+  , prod = \_ -> Just $ Token AmountOfMoney $ withValue 1.5 (currencyOnly Dollar)
+  }
+
+ruleOneDollarAnd :: Rule
+ruleOneDollarAnd = Rule
+  { name = "one dollar and x dimes (short form)"
+  , pattern =
+    [ regex "個"
+    , numberBetween 1 10
+    ]
+  , prod = \case
+      (_:Token Numeral NumeralData{TNumeral.value = v}:_) ->
+        Just $ Token AmountOfMoney $ withValue (1 + decimalsToDouble(v)) (currencyOnly Dollar)
       _ -> Nothing
   }
 
@@ -183,7 +239,7 @@ ruleIntervalNumeralDash = Rule
   { name = "<numeral> - <amount-of-money>"
   , pattern =
     [ Predicate isPositive
-    , regex "-|~|到"
+    , regex "-|~|到|至"
     , Predicate isSimpleAmountOfMoney
     ]
   , prod = \case
@@ -192,7 +248,7 @@ ruleIntervalNumeralDash = Rule
        Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just to,
                   TAmountOfMoney.currency = c}:
        _) | from < to ->
-         Just . Token AmountOfMoney . withInterval (from, to) $ currencyOnly c
+         Just $ Token AmountOfMoney $ withInterval (from, to) $ currencyOnly c
       _ -> Nothing
   }
 
@@ -201,7 +257,7 @@ ruleIntervalDash = Rule
   { name = "<amount-of-money> - <amount-of-money>"
   , pattern =
     [ Predicate isSimpleAmountOfMoney
-    , regex "-|~|到"
+    , regex "-|~|到|至"
     , Predicate isSimpleAmountOfMoney
     ]
   , prod = \case
@@ -211,7 +267,7 @@ ruleIntervalDash = Rule
        Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just to,
                   TAmountOfMoney.currency = c2}:
        _) | from < to && c1 == c2 ->
-        Just . Token AmountOfMoney . withInterval (from, to) $ currencyOnly c1
+        Just $ Token AmountOfMoney $ withInterval (from, to) $ currencyOnly c1
       _ -> Nothing
   }
 
@@ -219,7 +275,7 @@ ruleIntervalBound :: Rule
 ruleIntervalBound = Rule
   { name = "under/less/lower/no more than <amount-of-money> (最多|至少|最少)"
   , pattern =
-    [ regex "(最多|至少|最少)"
+    [ regex "(最多|至少|最少|起碼)"
     , Predicate isSimpleAmountOfMoney
     ]
   , prod = \case
@@ -227,9 +283,10 @@ ruleIntervalBound = Rule
        Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just to,
                   TAmountOfMoney.currency = c}:
        _) -> case match of
-        "最多" -> Just . Token AmountOfMoney . withMax to $ currencyOnly c
-        "最少" -> Just . Token AmountOfMoney . withMin to $ currencyOnly c
-        "至少" -> Just . Token AmountOfMoney . withMin to $ currencyOnly c
+        "最多" -> Just $ Token AmountOfMoney $ withMax to $ currencyOnly c
+        "最少" -> Just $ Token AmountOfMoney $ withMin to $ currencyOnly c
+        "至少" -> Just $ Token AmountOfMoney $ withMin to $ currencyOnly c
+        "起碼" -> Just $ Token AmountOfMoney $ withMin to $ currencyOnly c
         _ -> Nothing
       _ -> Nothing
   }
@@ -246,8 +303,8 @@ ruleIntervalBound2 = Rule
                   TAmountOfMoney.currency = c}:
        Token RegexMatch (GroupMatch (match:_)):
        _) -> case match of
-        "以下" -> Just . Token AmountOfMoney . withMax to $ currencyOnly c
-        "以上" -> Just . Token AmountOfMoney . withMin to $ currencyOnly c
+        "以下" -> Just $ Token AmountOfMoney $ withMax to $ currencyOnly c
+        "以上" -> Just $ Token AmountOfMoney $ withMin to $ currencyOnly c
         _ -> Nothing
       _ -> Nothing
   }
@@ -257,6 +314,8 @@ rules =
   [ ruleCent
   , ruleCNY
   , ruleCNYPrefix
+  , ruleHKD
+  , ruleHKDPrefix
   , ruleDime
   , ruleDollar
   , ruleIntersect
@@ -264,10 +323,13 @@ rules =
   , ruleIntersect3
   , ruleIntersectDimesAndCents
   , ruleIntersectDollarsAndDimesCents
+  , ruleIntersectDollarsAndAHalf
   , ruleIntervalDash
   , ruleIntervalNumeralDash
   , ruleIntervalBound
   , ruleIntervalBound2
   , rulePrecision
   , rulePrecision2
+  , ruleOneDollarAndAHalf
+  , ruleOneDollarAnd
   ]

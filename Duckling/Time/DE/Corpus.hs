@@ -151,17 +151,26 @@ allExamples = concat
   , examples (datetime (2013, 2, 18, 0, 0, 0) Week)
              [ "nächste woche"
              ]
+  , examples (datetime (2013, 2, 25, 0, 0, 0) Week)
+             [ "übernächste woche"
+             ]
   , examples (datetime (2013, 1, 0, 0, 0, 0) Month)
              [ "letzten monat"
              ]
   , examples (datetime (2013, 3, 0, 0, 0, 0) Month)
              [ "nächsten monat"
              ]
+  , examples (datetime (2013, 4, 0, 0, 0, 0) Month)
+             [ "übernächsten monat"
+             ]
   , examples (datetime (2013, 1, 1, 0, 0, 0) Quarter)
              [ "dieses quartal"
              ]
   , examples (datetime (2013, 4, 1, 0, 0, 0) Quarter)
              [ "nächstes quartal"
+             ]
+  , examples (datetime (2013, 7, 1, 0, 0, 0) Quarter)
+             [ "übernächstes quartal"
              ]
   , examples (datetime (2013, 7, 1, 0, 0, 0) Quarter)
              [ "drittes quartal"
@@ -177,6 +186,9 @@ allExamples = concat
              ]
   , examples (datetime (2014, 0, 0, 0, 0, 0) Year)
              [ "nächstes jahr"
+             ]
+  , examples (datetime (2015, 0, 0, 0, 0, 0) Year)
+             [ "übernächstes jahr"
              ]
   , examples (datetime (2013, 2, 10, 0, 0, 0) Day)
              [ "letzten sonntag"
@@ -196,6 +208,14 @@ allExamples = concat
              [ "mittwoch der nächsten woche"
              , "mittwoch nächste woche"
              , "mittwoch nach dem nächsten"
+             ]
+  , examples (datetime (2013, 2, 27, 0, 0, 0) Day)
+             [ "mittwoch in 2 wochen"
+             , "mittwoch in zwei wochen"
+             ]
+  , examples (datetime (2013, 1, 30, 0, 0, 0) Day)
+             [ "mittwoch vor 2 wochen"
+             , "mittwoch vor zwei wochen"
              ]
   , examples (datetime (2013, 2, 22, 0, 0, 0) Day)
              [ "freitag nach dem nächsten"
@@ -270,11 +290,24 @@ allExamples = concat
              ]
   , examples (datetime (2013, 2, 12, 15, 0, 0) Hour)
              [ "zirka 15 uhr"
+             , "circa 15 uhr"
+             , "um circa 15 uhr"
              , "zirka 3 uhr am nachmittag"
              , "um ungefähr 15 uhr"
              , "gegen 15 uhr"
              , "ca. 15h"
+             , "ca. um 15 uhr"
              , "um ca 15h"
+             , "so gegen 15 uhr"
+             , "so um 15 uhr"
+             , "etwa um 15 uhr"
+             , "so ungefähr um 15 uhr"
+             , "etwa gegen 15 uhr"
+             , "gegen 15 uhr"
+             , "ungefähr um 15 uhr"
+             , "ungefähr gegen 15 uhr"
+             , "so circa um 15 uhr"
+             , "15 uhr in etwa"
              ]
   , examples (datetime (2013, 4, 1, 18, 0, 0) Hour)
              [ "01.04. gegen 18Uhr"
@@ -352,7 +385,7 @@ allExamples = concat
              , "in 30 minuten"
              ]
   , examples (datetime (2013, 2, 12, 7, 0, 0) Second)
-             [ "in 2.5 stunden"
+             [ "in 2,5 stunden"
              , "in zwei ein halb stunden"
              ]
   , examples (datetime (2013, 2, 12, 5, 30, 0) Minute)
@@ -593,6 +626,7 @@ allExamples = concat
              ]
   , examples (datetime (2013, 2, 13, 15, 0, 0) Hour)
              [ "morgen um 15 Uhr"
+             , "morgen so um 15 Uhr"
              ]
   , examples (datetimeOpenInterval After (2013, 2, 12, 14, 0, 0) Hour)
              [ "nach 14 Uhr"

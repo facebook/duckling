@@ -8,11 +8,11 @@
 module Duckling.Ordinal.Tests (tests) where
 
 import Data.String
-import Prelude
 import Test.Tasty
 
 import qualified Duckling.Ordinal.AR.Tests as AR
 import qualified Duckling.Ordinal.BG.Tests as BG
+import qualified Duckling.Ordinal.CA.Tests as CA
 import qualified Duckling.Ordinal.DA.Tests as DA
 import qualified Duckling.Ordinal.DE.Tests as DE
 import qualified Duckling.Ordinal.EL.Tests as EL
@@ -50,6 +50,7 @@ tests :: TestTree
 tests = testGroup "Ordinal Tests"
   [ AR.tests
   , BG.tests
+  , CA.tests
   , DA.tests
   , DE.tests
   , EL.tests

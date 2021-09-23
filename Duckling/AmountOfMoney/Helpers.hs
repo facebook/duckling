@@ -45,7 +45,6 @@ import Duckling.Dimensions.Types
 import Duckling.Types hiding (Entity(..))
 
 import qualified Data.HashMap.Strict as HashMap
-import qualified Data.Text as Text
 
 -- -----------------------------------------------------------------
 -- Dollar coin Types

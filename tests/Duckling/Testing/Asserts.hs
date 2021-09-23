@@ -30,7 +30,6 @@ import qualified Data.Text as Text
 
 import Duckling.Api
 import Duckling.Dimensions.Types
-import Duckling.Locale
 import Duckling.Resolve
 import Duckling.Testing.Types
 import Duckling.Types

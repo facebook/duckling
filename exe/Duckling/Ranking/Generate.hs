@@ -4,7 +4,7 @@
 -- This source code is licensed under the BSD-style license found in the
 -- LICENSE file in the root directory of this source tree.
 
-
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE NoRebindableSyntax #-}
 {-# LANGUAGE RecordWildCards #-}
 
@@ -27,8 +27,10 @@ import Duckling.Ranking.Train
 import Duckling.Ranking.Types
 import Duckling.Rules
 import Duckling.Testing.Types
+import qualified Duckling.Region as R
 import qualified Duckling.Time.AR.Corpus as ARTime
 import qualified Duckling.Time.BG.Corpus as BGTime
+import qualified Duckling.Time.CA.Corpus as CATime
 import qualified Duckling.Time.DA.Corpus as DATime
 import qualified Duckling.Time.DE.Corpus as DETime
 import qualified Duckling.Time.EL.Corpus as ELTime
@@ -43,6 +45,7 @@ import qualified Duckling.Time.HR.Corpus as HRTime
 import qualified Duckling.Time.HE.Corpus as HETime
 import qualified Duckling.Time.HU.Corpus as HUTime
 import qualified Duckling.Time.IT.Corpus as ITTime
+import qualified Duckling.Time.JA.Corpus as JATime
 import qualified Duckling.Time.KO.Corpus as KOTime
 import qualified Duckling.Time.NB.Corpus as NBTime
 import qualified Duckling.Time.NL.Corpus as NLTime
@@ -50,6 +53,7 @@ import qualified Duckling.Time.NL.BE.Corpus as NL_BETime
 import qualified Duckling.Time.PL.Corpus as PLTime
 import qualified Duckling.Time.PT.Corpus as PTTime
 import qualified Duckling.Time.RO.Corpus as ROTime
+import qualified Duckling.Time.RU.Corpus as RUTime
 import qualified Duckling.Time.SV.Corpus as SVTime
 import qualified Duckling.Time.UK.Corpus as UKTime
 import qualified Duckling.Time.VI.Corpus as VITime
@@ -165,60 +169,65 @@ getCorpus locale@(Locale lang (Just region)) =
 
 -- | For backward compatibility.
 getDefaultCorpusForLang :: Lang -> Corpus
-getDefaultCorpusForLang EN = ENTime.defaultCorpus
-getDefaultCorpusForLang NL = NLTime.defaultCorpus
-getDefaultCorpusForLang lang = getCorpusForLang lang
+getDefaultCorpusForLang = \case
+  EN -> ENTime.defaultCorpus
+  NL -> NLTime.defaultCorpus
+  lang -> getCorpusForLang lang
 
 getCorpusForLang :: Lang -> Corpus
-getCorpusForLang AF = (testContext, testOptions, [])
-getCorpusForLang AR = ARTime.corpus
-getCorpusForLang BG = BGTime.corpus
-getCorpusForLang BN = (testContext, testOptions, [])
-getCorpusForLang CS = (testContext, testOptions, [])
-getCorpusForLang DA = DATime.corpus
-getCorpusForLang DE = DETime.corpus
-getCorpusForLang EL = ELTime.corpus
-getCorpusForLang EN = ENTime.corpus
-getCorpusForLang ES = ESTime.corpus
-getCorpusForLang ET = (testContext, testOptions, [])
-getCorpusForLang FI = (testContext, testOptions, [])
-getCorpusForLang FR = FRTime.corpus
-getCorpusForLang GA = GATime.corpus
-getCorpusForLang HR = HRTime.corpus
-getCorpusForLang HE = HETime.corpus
-getCorpusForLang HU = HUTime.corpus
-getCorpusForLang HI = (testContext, testOptions, [])
-getCorpusForLang ID = (testContext, testOptions, [])
-getCorpusForLang IS = (testContext, testOptions, [])
-getCorpusForLang IT = ITTime.corpus
-getCorpusForLang JA = (testContext, testOptions, [])
-getCorpusForLang KA = (testContext, testOptions, [])
-getCorpusForLang KM = (testContext, testOptions, [])
-getCorpusForLang KN = (testContext, testOptions, [])
-getCorpusForLang KO = KOTime.corpus
-getCorpusForLang LO = (testContext, testOptions, [])
-getCorpusForLang ML = (testContext, testOptions, [])
-getCorpusForLang MN = (testContext, testOptions, [])
-getCorpusForLang MY = (testContext, testOptions, [])
-getCorpusForLang NB = NBTime.corpus
-getCorpusForLang NE = (testContext, testOptions, [])
-getCorpusForLang NL = NLTime.corpus
-getCorpusForLang PL = PLTime.corpus
-getCorpusForLang PT = PTTime.corpus
-getCorpusForLang RO = ROTime.corpus
-getCorpusForLang RU = (testContext, testOptions, [])
-getCorpusForLang SK = (testContext, testOptions, [])
-getCorpusForLang SV = SVTime.corpus
-getCorpusForLang SW = (testContext, testOptions, [])
-getCorpusForLang TA = (testContext, testOptions, [])
-getCorpusForLang TH = (testContext, testOptions, [])
-getCorpusForLang TR = (testContext, testOptions, [])
-getCorpusForLang UK = UKTime.corpus
-getCorpusForLang VI = VITime.corpus
-getCorpusForLang ZH = ZHTime.corpus
+getCorpusForLang = \case
+  AF -> (testContext, testOptions, [])
+  AR -> ARTime.corpus
+  BG -> BGTime.corpus
+  BN -> (testContext, testOptions, [])
+  CA -> CATime.corpus
+  CS -> (testContext, testOptions, [])
+  DA -> DATime.corpus
+  DE -> DETime.corpus
+  EL -> ELTime.corpus
+  EN -> ENTime.corpus
+  ES -> ESTime.corpus
+  ET -> (testContext, testOptions, [])
+  FI -> (testContext, testOptions, [])
+  FA -> (testContext, testOptions, [])
+  FR -> FRTime.corpus
+  GA -> GATime.corpus
+  HR -> HRTime.corpus
+  HE -> HETime.corpus
+  HU -> HUTime.corpus
+  HI -> (testContext, testOptions, [])
+  ID -> (testContext, testOptions, [])
+  IS -> (testContext, testOptions, [])
+  IT -> ITTime.corpus
+  JA -> JATime.corpus
+  KA -> (testContext, testOptions, [])
+  KM -> (testContext, testOptions, [])
+  KN -> (testContext, testOptions, [])
+  KO -> KOTime.corpus
+  LO -> (testContext, testOptions, [])
+  ML -> (testContext, testOptions, [])
+  MN -> (testContext, testOptions, [])
+  MY -> (testContext, testOptions, [])
+  NB -> NBTime.corpus
+  NE -> (testContext, testOptions, [])
+  NL -> NLTime.corpus
+  PL -> PLTime.corpus
+  PT -> PTTime.corpus
+  RO -> ROTime.corpus
+  RU -> RUTime.corpus
+  SK -> (testContext, testOptions, [])
+  SV -> SVTime.corpus
+  SW -> (testContext, testOptions, [])
+  TA -> (testContext, testOptions, [])
+  TE -> (testContext, testOptions, [])
+  TH -> (testContext, testOptions, [])
+  TR -> (testContext, testOptions, [])
+  UK -> UKTime.corpus
+  VI -> VITime.corpus
+  ZH -> ZHTime.corpus
 
 getExamplesForLocale :: Lang -> Region -> [Example]
-getExamplesForLocale EN CA = EN_CATime.allExamples
+getExamplesForLocale EN R.CA = EN_CATime.allExamples
 getExamplesForLocale EN GB = EN_GBTime.allExamples
 getExamplesForLocale EN US = EN_USTime.allExamples
 getExamplesForLocale NL BE = NL_BETime.allExamples

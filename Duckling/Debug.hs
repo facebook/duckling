@@ -40,46 +40,52 @@ debug :: Locale -> Text -> [Seal Dimension] -> IO [Entity]
 debug locale = debugCustom testContext {locale = locale} testOptions
 
 allParses :: Locale -> Text -> [Seal Dimension] -> IO [Entity]
-allParses l sentence targets = debugTokens sentence $ parses l sentence targets
+allParses l input targets = debugTokens input $ parses l input targets
 
 fullParses :: Locale -> Text -> [Seal Dimension] -> IO [Entity]
-fullParses l sentence targets = debugTokens sentence .
-  filter (\Resolved{range = Range start end} -> start == 0 && end == n) $
-  parses l sentence targets
+fullParses l input targets =
+  debugTokens
+    input
+    $ filter
+      (\Resolved{range = Range start end} -> start == 0 && end == n)
+      $ parses l input targets
   where
-    n = Text.length sentence
+    n = Text.length input
 
 debugCustom :: Context -> Options -> Text -> [Seal Dimension] -> IO [Entity]
-debugCustom context options sentence targets = debugTokens sentence .
-  analyze sentence context options $ HashSet.fromList targets
+debugCustom context options input targets =
+  debugTokens
+    input
+    $ analyze input context options $ HashSet.fromList targets
 
 ptree :: Text -> Entity -> IO ()
-ptree sentence Entity {enode} = pnode sentence 0 enode
+ptree input Entity {enode} = pnode input 0 enode
 
 -- -----------------------------------------------------------------
 -- Internals
 
 parses :: Locale -> Text -> [Seal Dimension] -> [ResolvedToken]
-parses l sentence targets = flip filter tokens $
-  \Resolved{node = Node{token = (Token d _)}} ->
-    case targets of
-      [] -> True
-      _ -> elem (Seal d) targets
+parses l input targets =
+  filter isRelevantDimension tokens
   where
-    tokens = parseAndResolve rules sentence testContext {locale = l} testOptions
+    tokens = parseAndResolve rules input testContext {locale = l} testOptions
     rules = rulesFor l $ HashSet.fromList targets
+    isRelevantDimension Resolved{node = Node{token = (Token d _)}} =
+      case targets of
+        [] -> True
+        _ -> elem (Seal d) targets
 
 debugTokens :: Text -> [ResolvedToken] -> IO [Entity]
-debugTokens sentence tokens = do
-  mapM_ (ptree sentence) entities
+debugTokens input tokens = do
+  mapM_ (ptree input) entities
   return entities
-  where entities = map (formatToken sentence) tokens
+  where entities = map (formatToken input) tokens
 
 pnode :: Text -> Int -> Node -> IO ()
-pnode sentence depth Node {children, rule, nodeRange = Range start end} = do
+pnode input depth Node {children, rule, nodeRange = Range start end} = do
   Text.putStrLn out
-  mapM_ (pnode sentence (depth + 1)) children
+  mapM_ (pnode input (depth + 1)) children
   where
     out = Text.concat [ Text.replicate depth "-- ", name, " (", body, ")" ]
     name = fromMaybe "regex" rule
-    body = Text.drop start $ Text.take end sentence
+    body = Text.drop start $ Text.take end input

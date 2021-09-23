@@ -43,7 +43,7 @@ zeroNineteenMap = HashMap.fromList
   , ("vijftiende", 15)
   , ("zestiende", 16)
   , ("zeventiende", 17)
-  , ("achtiende", 18)
+  , ("achttiende", 18)
   , ("negentiende", 19)
   ]
 
@@ -51,7 +51,7 @@ ruleOrdinalsFirstth :: Rule
 ruleOrdinalsFirstth = Rule
   { name = "ordinals (first..19th)"
   , pattern =
-    [ regex "(eerste|tweede|derde|vierde|vijfde|zeste|zevende|achtste|negende|tiende|elfde|twaalfde|veertiende|vijftiende|zestiende|zeventiende|achtiende|negentiende)"
+    [ regex "(eerste|tweede|derde|vierde|vijfde|zeste|zevende|achtste|negende|tiende|elfde|twaalfde|veertiende|vijftiende|zestiende|zeventiende|achttiende|negentiende)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->

@@ -24,42 +24,6 @@ import qualified Duckling.Numeral.Types as TNumeral
 import Duckling.Regex.Types
 import Duckling.Types
 
-ruleNumeralsPrefixWithNegativeOrMinus :: Rule
-ruleNumeralsPrefixWithNegativeOrMinus = Rule
-  { name = "numbers prefix with -, negative or minus"
-  , pattern = [regex "-|menos", Predicate isPositive]
-  , prod = \tokens -> case tokens of
-      (_ : Token Numeral NumeralData { TNumeral.value = v } : _) ->
-        double $ v * (-1)
-      _ -> Nothing
-  }
-
-byTensMap :: HashMap.HashMap Text.Text Integer
-byTensMap =
-  HashMap.fromList
-    [ ("veinte", 20)
-    , ("treinta", 30)
-    , ("cuarenta", 40)
-    , ("cincuenta", 50)
-    , ("sesenta", 60)
-    , ("setenta", 70)
-    , ("ochenta", 80)
-    , ("noventa", 90)
-    ]
-
-ruleNumeral2 :: Rule
-ruleNumeral2 = Rule
-  { name = "number (20..90)"
-  , pattern =
-      [ regex
-          "(veinte|treinta|cuarenta|cincuenta|sesenta|setenta|ochenta|noventa)"
-      ]
-  , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match : _)) : _) ->
-        HashMap.lookup (Text.toLower match) byTensMap >>= integer
-      _ -> Nothing
-  }
-
 zeroToFifteenMap :: HashMap.HashMap Text.Text Integer
 zeroToFifteenMap =
   HashMap.fromList
@@ -87,16 +51,34 @@ zeroToFifteenMap =
     , ("quince", 15)
     ]
 
-ruleNumeral :: Rule
-ruleNumeral = Rule
+ruleNumeralZeroToFifteen :: Rule
+ruleNumeralZeroToFifteen = Rule
   { name = "number (0..15)"
   , pattern =
       [ regex
           "((c|z)ero|un(o|a)?|dos|tr(é|e)s|cuatro|cinco|s(e|é)is|siete|ocho|nueve|die(z|s)|once|doce|trece|catorce|quince)"
       ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token RegexMatch (GroupMatch (match : _)) : _) ->
         HashMap.lookup (Text.toLower match) zeroToFifteenMap >>= integer
+      _ -> Nothing
+  }
+
+ruleBelowTenWithTwoDigits :: Rule
+ruleBelowTenWithTwoDigits = Rule
+  {
+    name = "integer (0-9) with two digits"
+  , pattern =
+      [
+        regex "((c|z)ero)|0"
+      , numberBetween 1 10
+      ]
+  , prod = \case
+      (
+        _:
+        Token Numeral NumeralData { TNumeral.value = v }:
+        _
+        ) -> double v
       _ -> Nothing
   }
 
@@ -125,45 +107,69 @@ sixteenToTwentyNineMap =
     , ("veintinueve", 29)
     ]
 
-ruleNumeral5 :: Rule
-ruleNumeral5 = Rule
+
+ruleNumeralSixteenToTwentyNine :: Rule
+ruleNumeralSixteenToTwentyNine = Rule
   { name = "number (16..19 21..29)"
   , pattern =
       [ regex
           "(die(c|s)is(é|e)is|diecisiete|dieciocho|diecinueve|veintiun(o|a)|veintid(o|ó)s|veintitr(é|e)s|veinticuatro|veinticinco|veintis(é|e)is|veintisiete|veintiocho|veintinueve|treinta)"
       ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token RegexMatch (GroupMatch (match : _)) : _) ->
         HashMap.lookup (Text.toLower match) sixteenToTwentyNineMap >>= integer
       _ -> Nothing
   }
 
-ruleNumeral3 :: Rule
-ruleNumeral3 = Rule
-  { name = "number (16..19)"
+ruleNumeralSixteenToNineteenWithDiez :: Rule
+ruleNumeralSixteenToNineteenWithDiez = Rule
+  { name = "number (16..19, two words)"
   , pattern = [numberWith TNumeral.value (== 10), regex "y", numberBetween 6 10]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (_ : _ : Token Numeral NumeralData { TNumeral.value = v } : _) ->
         double $ 10 + v
       _ -> Nothing
   }
+byTensMap :: HashMap.HashMap Text.Text Integer
+byTensMap =
+  HashMap.fromList
+    [ ("veinte", 20)
+    , ("treinta", 30)
+    , ("cuarenta", 40)
+    , ("cincuenta", 50)
+    , ("sesenta", 60)
+    , ("setenta", 70)
+    , ("ochenta", 80)
+    , ("noventa", 90)
+    ]
 
-ruleNumeralsSuffixesKMG :: Rule
-ruleNumeralsSuffixesKMG = Rule
-  { name = "numbers suffixes (K, M, G)"
-  , pattern = [dimension Numeral, regex "([kmg])(?=[\\W\\$€]|$)"]
-  , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData { TNumeral.value = v } : Token RegexMatch (GroupMatch (match : _)) : _) ->
-        case Text.toLower match of
-          "k" -> double $ v * 1e3
-          "m" -> double $ v * 1e6
-          "g" -> double $ v * 1e9
-          _ -> Nothing
+
+ruleNumeralTwentyToNinetyTens :: Rule
+ruleNumeralTwentyToNinetyTens = Rule
+  { name = "number (20..90)"
+  , pattern =
+      [ regex
+          "(veinte|treinta|cuarenta|cincuenta|sesenta|setenta|ochenta|noventa)"
+      ]
+  , prod = \case
+      (Token RegexMatch (GroupMatch (match : _)) : _) ->
+        HashMap.lookup (Text.toLower match) byTensMap >>= integer
       _ -> Nothing
   }
 
-oneHundredToThousandMap :: HashMap.HashMap Text.Text Integer
-oneHundredToThousandMap =
+ruleNumeralTwentyOneToNinetyNine :: Rule
+ruleNumeralTwentyOneToNinetyNine = Rule
+  { name = "number (21..29 31..39 41..49 51..59 61..69 71..79 81..89 91..99)"
+  , pattern =
+      [oneOf [20, 30 .. 90], regex "y", numberBetween 1 10]
+  , prod = \case
+      (Token Numeral NumeralData { TNumeral.value = v1 } : _ : Token Numeral NumeralData { TNumeral.value = v2 } : _) ->
+        double $ v1 + v2
+      _ -> Nothing
+  }
+
+bigNumbersMap :: HashMap.HashMap Text.Text Integer
+bigNumbersMap =
   HashMap.fromList
     [ ("cien", 100)
     , ("cientos", 100)
@@ -177,85 +183,167 @@ oneHundredToThousandMap =
     , ("ochocientos", 800)
     , ("novecientos", 900)
     , ("mil", 1000)
+    , ("millon", 1000000)
+    , ("millón", 1000000)
+    , ("un millon", 1000000)
+    , ("un millón", 1000000)
+    , ("millones", 1000000)
+    -- Note: billion and larger is ambiguous becaouse of long vs short scale
     ]
 
-ruleNumeral6 :: Rule
-ruleNumeral6 = Rule
-  { name = "number 100..1000 "
+ruleBigNumeral :: Rule
+ruleBigNumeral = Rule
+  { name = "big number 100 to 1K"
   , pattern =
       [ regex
-          "(cien(to)?s?|doscientos|trescientos|cuatrocientos|quinientos|seiscientos|setecientos|ochocientos|novecientos|mil)"
+          "(cien(to|tos)?|doscientos|trescientos|cuatrocientos|quinientos|seiscientos|setecientos|ochocientos|novecientos|(un )?mill(o|ó)n)"
       ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (Token RegexMatch (GroupMatch (match : _)) : _) ->
-        HashMap.lookup (Text.toLower match) oneHundredToThousandMap >>= integer
+        HashMap.lookup (Text.toLower match) bigNumbersMap >>= integer
       _ -> Nothing
   }
 
-ruleNumeral4 :: Rule
-ruleNumeral4 = Rule
-  { name = "number (21..29 31..39 41..49 51..59 61..69 71..79 81..89 91..99)"
+ruleBigNumeralMultipliable :: Rule
+ruleBigNumeralMultipliable = Rule
+  { name = "1K or 1M in multipliable form"
   , pattern =
-      [oneOf [70, 20, 60, 50, 40, 90, 30, 80], regex "y", numberBetween 1 10]
-  , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData { TNumeral.value = v1 } : _ : Token Numeral NumeralData { TNumeral.value = v2 } : _) ->
-        double $ v1 + v2
+      [ regex
+          "(mil(lones)?)"
+      ]
+  , prod = \case
+      (Token RegexMatch (GroupMatch (match : _)) : _) ->
+        HashMap.lookup (Text.toLower match) bigNumbersMap >>= integer >>= withMultipliable
       _ -> Nothing
   }
 
-ruleNumerals :: Rule
-ruleNumerals = Rule
-  { name = "numbers 200..999"
+ruleTwoPartHundreds :: Rule
+ruleTwoPartHundreds = Rule
+ { name = "2..9 cientos"
+ , pattern =
+     [ numberBetween 2 10
+     , regex "cientos"
+     ]
+  , prod = \case
+      (Token Numeral NumeralData { TNumeral.value = v1 } : _ : _) ->
+        double $ 100 * v1
+      _ -> Nothing
+  }
+
+ruleNumeralHundredsAndSmaller :: Rule
+ruleNumeralHundredsAndSmaller = Rule
+  { name = "<hundreds> 0..99"
   , pattern =
-      [ numberBetween 2 10
-      , numberWith TNumeral.value (== 100)
+      [ numberWith TNumeral.value (TNumeral.isMultiple 100)
       , numberBetween 0 100
       ]
-  , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData { TNumeral.value = v1 } : _ : Token Numeral NumeralData { TNumeral.value = v2 } : _) ->
-        double $ 100 * v1 + v2
+  , prod = \case
+      (Token Numeral NumeralData { TNumeral.value = v1 } : Token Numeral NumeralData { TNumeral.value = v2 } : _)
+        | v1 > 0 && v1 < 1000 -> double $ v1 + v2
+      _ -> Nothing
+  }
+
+ruleNumeralMultiply :: Rule
+ruleNumeralMultiply = Rule
+  { name = "2..999 <multipliable>"
+  , pattern =
+      [ numberBetween 2 1000
+      , Predicate isMultipliable
+      ]
+  , prod = \case
+      (Token Numeral NumeralData { TNumeral.value = v1 } : Token Numeral NumeralData { TNumeral.value = v2 } : _) ->
+        double $ v1 * v2
+      _ -> Nothing
+  }
+
+ruleNumeralThousandsAnd :: Rule
+ruleNumeralThousandsAnd = Rule
+  { name = "<thousands> 0..999"
+  , pattern =
+      [ numberWith TNumeral.value (TNumeral.isMultiple 1000)
+      , numberBetween 0 999
+      ]
+  , prod = \case
+      (Token Numeral NumeralData { TNumeral.value = v1 } : Token Numeral NumeralData { TNumeral.value = v2 } : _)
+       | 0 < v1 && v1 < 1000000 -> double $ v1 + v2
+      _ -> Nothing
+  }
+
+ruleNumeralMillionsAnd :: Rule
+ruleNumeralMillionsAnd = Rule
+  { name = "<millions> 0..999999"
+  , pattern =
+      [ numberWith TNumeral.value (TNumeral.isMultiple 1000000)
+      , numberBetween 0 999999
+      ]
+  , prod = \case
+      (Token Numeral NumeralData { TNumeral.value = v1 } : Token Numeral NumeralData { TNumeral.value = v2 } : _)
+       | 0 < v1 -> double $ v1 + v2
       _ -> Nothing
   }
 
 ruleNumeralDotNumeral :: Rule
 ruleNumeralDotNumeral = Rule
   { name = "number dot number"
-  , pattern = [dimension Numeral, regex "punto", Predicate $ not . hasGrain]
-  , prod = \tokens -> case tokens of
+  , pattern = [dimension Numeral, regex "(co(n|ma)|punto)", Predicate $ not . hasGrain]
+  , prod = \case
       (Token Numeral NumeralData { TNumeral.value = v1 } : _ : Token Numeral NumeralData { TNumeral.value = v2 } : _) ->
         double $ v1 + decimalsToDouble v2
       _ -> Nothing
   }
 
-ruleBelowTenWithTwoDigits :: Rule
-ruleBelowTenWithTwoDigits = Rule
-  {
-    name = "integer (0-9) with two digits"
-  , pattern =
-      [
-        regex "((c|z)ero)|0"
-      , numberBetween 1 10
-      ]
+ruleLeadingDotNumeral :: Rule
+ruleLeadingDotNumeral = Rule
+  { name = "dot number"
+  , pattern = [regex "coma|punto", Predicate $ not . hasGrain]
   , prod = \case
-      (
-        _:
-        Token Numeral NumeralData { TNumeral.value = v }:
-        _
-        ) -> double v
+      (_:Token Numeral NumeralData{TNumeral.value = v}:_) ->
+        double $ decimalsToDouble v
       _ -> Nothing
   }
 
+ruleNumeralsSuffixesKMG :: Rule
+ruleNumeralsSuffixesKMG = Rule
+  { name = "numbers suffixes (K, M, G)"
+  , pattern = [dimension Numeral, regex "([kmg])(?=[\\W\\$€]|$)"]
+  , prod = \case
+      (Token Numeral NumeralData { TNumeral.value = v } : Token RegexMatch (GroupMatch (match : _)) : _) ->
+        case Text.toLower match of
+          "k" -> double $ v * 1e3
+          "m" -> double $ v * 1e6
+          "g" -> double $ v * 1e9
+          _ -> Nothing
+      _ -> Nothing
+  }
+
+ruleNumeralsPrefixWithNegativeOrMinus :: Rule
+ruleNumeralsPrefixWithNegativeOrMinus = Rule
+  { name = "numbers prefix with -, negative or minus"
+  , pattern = [regex "-|menos|negativ(o|a)", Predicate isPositive]
+  , prod = \case
+      (_ : Token Numeral NumeralData { TNumeral.value = v } : _) ->
+        double $ v * (-1)
+      _ -> Nothing
+  }
+
+
 rules :: [Rule]
 rules =
-  [ ruleBelowTenWithTwoDigits
-  , ruleNumeral
-  , ruleNumeral2
-  , ruleNumeral3
-  , ruleNumeral4
-  , ruleNumeral5
-  , ruleNumeral6
+  [ ruleNumeralZeroToFifteen
+  , ruleBelowTenWithTwoDigits
+  , ruleNumeralSixteenToTwentyNine
+  , ruleNumeralSixteenToNineteenWithDiez
+  , ruleNumeralTwentyToNinetyTens
+  , ruleNumeralTwentyOneToNinetyNine
+  , ruleBigNumeral
+  , ruleBigNumeralMultipliable
+  , ruleNumeralMultiply
+  , ruleNumeralThousandsAnd
+  , ruleNumeralMillionsAnd
+  , ruleTwoPartHundreds
+  , ruleNumeralHundredsAndSmaller
   , ruleNumeralDotNumeral
-  , ruleNumerals
-  , ruleNumeralsPrefixWithNegativeOrMinus
+  , ruleLeadingDotNumeral
   , ruleNumeralsSuffixesKMG
+  , ruleNumeralsPrefixWithNegativeOrMinus
   ]

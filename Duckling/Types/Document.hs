@@ -6,12 +6,14 @@
 
 {-# LANGUAGE BangPatterns #-}
 {-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE RecordWildCards #-}
 
 module Duckling.Types.Document
   ( Document -- abstract
   , fromText
   , (!)
+  , (!?)
   , length
   , byteStringFromPos
   , isAdjacent
@@ -32,6 +34,7 @@ import qualified Data.Text.Encoding as Text
 import qualified Data.Text as Text
 import qualified Data.Text.Internal.Unsafe.Char as UText
 
+import Duckling.Locale (Lang(..))
 
 data Document = Document
   { rawInput :: !Text
@@ -112,22 +115,108 @@ fromText rawInput = Document{..}
     where
     w = UText.ord c
 
--- As regexes are matched without whitespace delimitator, we need to check
+data CharClass
+  = Alpha
+  | Digit
+  | Self {-# unpack #-} !Char
+  deriving (Eq, Ord, Show)
+
+-- As regexes are matched without whitespace delimiter, we need to check
 -- the reasonability of the match to actually be a word.
-isRangeValid :: Document -> Int -> Int -> Bool
-isRangeValid doc start end =
-  (start == 0 ||
-      isDifferent (doc ! (start - 1)) (doc ! start)) &&
-  (end == length doc ||
-      isDifferent (doc ! (end - 1)) (doc ! end))
+isRangeValid :: Lang -> Document -> Int -> Int -> Bool
+isRangeValid = \case
+  AR -> arIsRangeValid
+  ZH -> zhIsRangeValid
+  _ -> defaultIsRangeValid
   where
-    charClass :: Char -> Char
-    charClass c
-      | Char.isLower c || Char.isUpper c = 'c'
-      | Char.isDigit c = 'd'
-      | otherwise = c
-    isDifferent :: Char -> Char -> Bool
-    isDifferent a b = charClass a /= charClass b
+    arIsRangeValid :: Document -> Int -> Int -> Bool
+    arIsRangeValid doc start end =
+      ((start == 0 ||
+            isDifferent (doc ! (start - 1)) (doc ! (start))) &&
+        (end == length doc ||
+            isDifferent (doc ! (end - 1)) (doc ! (end)))) ||
+      -- Is Arabic proclitic?
+      (start == end - 1 &&
+        isArabicProclitic (doc ! start) &&
+        (start == 0 || isDifferent (doc ! (start - 1)) (doc ! start))) ||
+      (start == end - 2 &&
+        isArabicProclitic2 (doc ! start) (doc ! (start + 1)) &&
+        (start == 0 || isDifferent (doc ! (start - 1)) (doc ! start))) ||
+      -- Is preceeded by proclitic
+      (start /= 0 && isArabicProclitic (doc ! (start - 1)) &&
+        (end == length doc ||
+          isDifferent (doc ! (end - 1)) (doc ! (end)))) ||
+      -- Is Arabic enclitic?
+      (start == (end - 2) && isArabicEnclitic (doc ! start) (doc ! (end - 1)) &&
+        (end == length doc || isDifferent (doc ! end) (doc ! (end + 1)))) ||
+      -- Is followed by enclitic
+      ((start ==0 || isDifferent (doc ! (start - 1)) (doc ! (start))) &&
+        (end <= (length doc - 2) &&
+          isArabicEnclitic (doc ! (end)) (doc ! (end + 1))))
+      where
+        -- This list isn't exhasutive since Arabic have some diacritics and rarely used characters in Unicode
+        isArabic :: Char -> Bool
+        isArabic c = elem c ['ا', 'ب', 'ت', 'ة', 'ث', 'ج', 'ح', 'خ', 'د', 'ذ', 'ر', 'ز', 'س', 'ش', 'ص', 'ض', 'ط', 'ظ', 'ع', 'غ', 'ف', 'ق', 'ك', 'ل', 'م', 'ن', 'ه', 'ي', 'ء', 'آ', 'أ', 'إ', 'ؤ', 'و', 'ئ', 'ى']
+
+        -- TODO: Add all Arabic proclitics
+        isArabicProclitic :: Char -> Bool
+        isArabicProclitic c = elem c ['و', 'ف', 'ل', 'ب', 'ك']
+
+        isArabicProclitic2 :: Char -> Char -> Bool
+        isArabicProclitic2 c1 c2 = elem c1 ['ا', 'ل'] && elem c2 ['ل']
+
+        -- TODO: Add all Arabic proclitics
+        isArabicEnclitic :: Char -> Char -> Bool
+        isArabicEnclitic c1 c2 = elem c1 ['ا', 'ي'] && elem c2 ['ن']
+
+        charClass :: Char -> CharClass
+        charClass c
+          | Char.isLower c || Char.isUpper c || isArabic c = Alpha
+          | Char.isDigit c = Digit
+          | otherwise = Self c
+
+        isDifferent :: Char -> Char -> Bool
+        isDifferent a b = charClass a /= charClass b
+
+    zhIsRangeValid :: Document -> Int -> Int -> Bool
+    zhIsRangeValid doc start end =
+      (start == 0 ||
+        isDifferent (doc !? (start - 1)) (doc !? start)) &&
+      (end == length doc ||
+        isDifferent (doc !? (end - 1)) (doc !? end))
+
+      --  start == 0 = isDifferent (doc !? (end - 1)) (doc !? end)
+      --  end == length doc = isDifferent (doc !? (start - 1)) (doc !? start)
+      --  otherwise = isDifferent (doc !? (start - 1)) (doc !? start)
+      --               && isDifferent (doc !? (end - 1)) (doc !? end)
+      where
+        charClass :: Char -> Maybe CharClass
+        charClass c
+          | Char.isLower c || Char.isUpper c = Just Alpha
+          | Char.isDigit c = Just Digit
+          | otherwise = Nothing
+        isDifferent :: Maybe Char -> Maybe Char -> Bool
+        isDifferent Nothing Nothing = False
+        isDifferent Nothing _       = True
+        isDifferent _       Nothing = True
+        isDifferent (Just c1) (Just c2) = case (charClass c1, charClass c2) of
+          (Nothing, Nothing) -> True
+          (cc1, cc2)         -> cc1 /= cc2
+
+    defaultIsRangeValid :: Document -> Int -> Int -> Bool
+    defaultIsRangeValid doc start end =
+      (start == 0 ||
+        isDifferent (doc ! (start - 1)) (doc ! start)) &&
+      (end == length doc ||
+        isDifferent (doc ! (end - 1)) (doc ! end))
+      where
+        charClass :: Char -> CharClass
+        charClass c
+          | Char.isLower c || Char.isUpper c = Alpha
+          | Char.isDigit c = Digit
+          | otherwise = Self c
+        isDifferent :: Char -> Char -> Bool
+        isDifferent a b = charClass a /= charClass b
 
 -- True iff a is followed by whitespaces and b.
 isAdjacent :: Document -> Int -> Int -> Bool
@@ -139,6 +228,13 @@ isAdjacentSeparator c = elem c [' ', '\t']
 
 (!) :: Document -> Int -> Char
 (!) Document { indexable = s } ix = s Array.! ix
+
+(!?) :: Document -> Int -> Maybe Char
+(!?) Document { indexable = s } ix = do
+  let (lo, hi) = Array.bounds s
+  case ix >= lo && ix <= hi of
+    True -> Just $ s Array.! ix
+    False -> Nothing
 
 length :: Document -> Int
 length Document { indexable = s } = Array.rangeSize $ Array.bounds s

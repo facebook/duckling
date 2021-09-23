@@ -95,4 +95,8 @@ allExamples = concat
              [ "ziua de craciun"
              , "crăciun"
              ]
+  , examples (datetime (2013, 2, 14, 0, 0, 0) Day)
+             [ "poimaine"
+             , "poimâine"
+             ]
   ]

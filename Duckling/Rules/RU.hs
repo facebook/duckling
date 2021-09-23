@@ -23,6 +23,7 @@ import qualified Duckling.Duration.RU.Rules as Duration
 import qualified Duckling.Numeral.RU.Rules as Numeral
 import qualified Duckling.Ordinal.RU.Rules as Ordinal
 import qualified Duckling.Quantity.RU.Rules as Quantity
+import qualified Duckling.Time.RU.Rules as Time
 import qualified Duckling.TimeGrain.RU.Rules as TimeGrain
 import qualified Duckling.Volume.RU.Rules as Volume
 
@@ -45,7 +46,7 @@ langRules (Seal PhoneNumber) = []
 langRules (Seal Quantity) = Quantity.rules
 langRules (Seal RegexMatch) = []
 langRules (Seal Temperature) = []
-langRules (Seal Time) = []
+langRules (Seal Time) = Time.rules
 langRules (Seal TimeGrain) = TimeGrain.rules
 langRules (Seal Url) = []
 langRules (Seal Volume) = Volume.rules

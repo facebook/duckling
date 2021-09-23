@@ -30,6 +30,7 @@ allExamples = concat
              , "1 sekund"
              , "jeden sekundzie"
              , "pojedynczy sekundach"
+             , "mniej więcej jedną sekundę"
              ]
   , examples (DurationData 30 Minute)
              [ "pol godziny"

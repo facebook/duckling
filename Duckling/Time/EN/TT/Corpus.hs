@@ -15,7 +15,6 @@ import Prelude
 
 import Duckling.Testing.Types hiding (examples)
 import Duckling.Time.Corpus
-import Duckling.Time.Types hiding (Month)
 import Duckling.TimeGrain.Types hiding (add)
 
 allExamples :: [Example]

@@ -22,18 +22,20 @@ import Duckling.Time.Types hiding (Month)
 import Duckling.TimeGrain.Types hiding (add)
 import Duckling.Testing.Types hiding (examples)
 
-context :: Context
-context = testContext {locale = makeLocale AR Nothing}
-
-corpus :: Corpus
-corpus = (context, testOptions, allExamples)
-
 negativeCorpus :: NegativeCorpus
 negativeCorpus = (context, testOptions, examples)
   where
     examples =
       [ "حب"
+      , "اياب"
+      , "ابحث"
       ]
+
+context :: Context
+context = testContext {locale = makeLocale AR Nothing}
+
+corpus :: Corpus
+corpus = (context, testOptions, allExamples)
 
 allExamples :: [Example]
 allExamples = concat
@@ -125,6 +127,10 @@ allExamples = concat
              [ "الاسبوع الماضي"
              , "الاسبوع السابق"
              , "الاسبوع المنصرم"
+             ]
+  , examples (datetime (2013, 2, 5, 0, 0, 0) Day)
+             [ "قبل اسبوع"
+             , "من اسبوع"
              ]
   , examples (datetime (2013, 2, 11, 0, 0, 0) Week)
              [ "هذا الاسبوع"

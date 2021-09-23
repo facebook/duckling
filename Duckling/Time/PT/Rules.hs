@@ -6,6 +6,7 @@
 
 
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE NoRebindableSyntax #-}
 {-# LANGUAGE OverloadedStrings #-}
 
@@ -20,12 +21,10 @@ import qualified Data.Text as Text
 import Duckling.Dimensions.Types
 import Duckling.Duration.Helpers (isGrain)
 import Duckling.Numeral.Helpers (parseInt)
-import Duckling.Ordinal.Types (OrdinalData(..))
 import Duckling.Regex.Types
 import Duckling.Time.Helpers
 import Duckling.Time.Types (TimeData(..))
 import Duckling.Types
-import qualified Duckling.Ordinal.Types as TOrdinal
 import qualified Duckling.Time.Types as TTime
 import qualified Duckling.TimeGrain.Types as TG
 
@@ -383,6 +382,7 @@ ruleHourofdayAndRelativeMinutes = Rule
         tt $ hourMinute is12H hours n
       _ -> Nothing
   }
+
 ruleIntegerParaAsHourofdayAsRelativeMinutes :: Rule
 ruleIntegerParaAsHourofdayAsRelativeMinutes = Rule
   { name = "<integer> para as <hour-of-day> (as relative minutes)"
@@ -414,6 +414,7 @@ ruleHourofdayIntegerAsRelativeMinutes2 = Rule
         tt $ hourMinute is12H hours n
       _ -> Nothing
   }
+
 ruleHourofdayAndRelativeMinutes2 :: Rule
 ruleHourofdayAndRelativeMinutes2 = Rule
   { name = "<hour-of-day> and <relative minutes> minutos"
@@ -432,6 +433,7 @@ ruleHourofdayAndRelativeMinutes2 = Rule
         tt $ hourMinute is12H hours n
       _ -> Nothing
   }
+
 ruleIntegerParaAsHourofdayAsRelativeMinutes2 :: Rule
 ruleIntegerParaAsHourofdayAsRelativeMinutes2 = Rule
   { name = "<integer> minutos para as <hour-of-day> (as relative minutes)"
@@ -460,6 +462,7 @@ ruleHourofdayQuarter = Rule
        _) -> tt $ hourMinute is12H hours 15
       _ -> Nothing
   }
+
 ruleHourofdayAndQuarter :: Rule
 ruleHourofdayAndQuarter = Rule
   { name = "<hour-of-day> and quinze"
@@ -472,6 +475,7 @@ ruleHourofdayAndQuarter = Rule
        _) -> tt $ hourMinute is12H hours 15
       _ -> Nothing
   }
+
 ruleQuarterParaAsHourofdayAsRelativeMinutes :: Rule
 ruleQuarterParaAsHourofdayAsRelativeMinutes = Rule
   { name = "quinze para as <hour-of-day> (as relative minutes)"
@@ -496,6 +500,7 @@ ruleHourofdayHalf = Rule
        _) -> tt $ hourMinute is12H hours 30
       _ -> Nothing
   }
+
 ruleHourofdayAndHalf :: Rule
 ruleHourofdayAndHalf = Rule
   { name = "<hour-of-day> and half"
@@ -508,6 +513,7 @@ ruleHourofdayAndHalf = Rule
        _) -> tt $ hourMinute is12H hours 30
       _ -> Nothing
   }
+
 ruleHalfParaAsHourofdayAsRelativeMinutes :: Rule
 ruleHalfParaAsHourofdayAsRelativeMinutes = Rule
   { name = "half para as <hour-of-day> (as relative minutes)"
@@ -532,6 +538,7 @@ ruleHourofdayThreeQuarter = Rule
        _) -> tt $ hourMinute is12H hours 45
       _ -> Nothing
   }
+
 ruleHourofdayAndThreeQuarter :: Rule
 ruleHourofdayAndThreeQuarter = Rule
   { name = "<hour-of-day> and 3/4"
@@ -544,6 +551,7 @@ ruleHourofdayAndThreeQuarter = Rule
        _) -> tt $ hourMinute is12H hours 45
       _ -> Nothing
   }
+
 ruleThreeQuarterParaAsHourofdayAsRelativeMinutes :: Rule
 ruleThreeQuarterParaAsHourofdayAsRelativeMinutes = Rule
   { name = "3/4 para as <hour-of-day> (as relative minutes)"
@@ -569,7 +577,7 @@ ruleInThePartofday :: Rule
 ruleInThePartofday = Rule
   { name = "in the <part-of-day>"
   , pattern =
-    [ regex "(de|pela)"
+    [ regex "(de|pela|a|à)"
     , Predicate isAPartOfDay
     ]
   , prod = \tokens -> case tokens of
@@ -1024,7 +1032,7 @@ ruleDiaDayofmonthNonOrdinal = Rule
   , prod = \tokens -> case tokens of
       (_:token:_) -> do
         v <- getIntValue token
-        tt . mkLatent $ dayOfMonth v
+        tt $ dayOfMonth v
       _ -> Nothing
   }
 
@@ -1202,16 +1210,40 @@ ruleTimeofdayAmpm = Rule
       _ -> Nothing
   }
 
-ruleDayofmonthDeNamedmonth :: Rule
-ruleDayofmonthDeNamedmonth = Rule
-  { name = "<day-of-month> de <named-month>"
+ruleDOMOfMonth :: Rule
+ruleDOMOfMonth = Rule
+  { name = "<day-of-month> (ordinal or number) de <named-month>"
   , pattern =
-    [ Predicate isDOMInteger
+    [ Predicate isDOMValue
     , regex "de|\\/"
     , Predicate isAMonth
     ]
-  , prod = \tokens -> case tokens of
+  , prod = \case
       (token:_:Token Time td:_) -> Token Time <$> intersectDOM td token
+      _ -> Nothing
+  }
+
+ruleDOMMonth :: Rule
+ruleDOMMonth = Rule
+  { name = "<day-of-month> (ordinal or number) <named-month>"
+  , pattern =
+    [ Predicate isDOMValue
+    , Predicate isAMonth
+    ]
+  , prod = \case
+      (token:Token Time td:_) -> Token Time <$> intersectDOM td token
+      _ -> Nothing
+  }
+
+ruleMonthDOM :: Rule
+ruleMonthDOM = Rule
+  { name = "<named-month> <day-of-month>"
+  , pattern =
+    [ Predicate isAMonth
+    , Predicate isDOMInteger
+    ]
+  , prod = \case
+      (Token Time td:token:_) -> Token Time <$> intersectDOM td token
       _ -> Nothing
   }
 
@@ -1705,7 +1737,6 @@ rules =
   , ruleAntesDasTimeofday
   , ruleDatetimeDatetimeInterval
   , ruleDayOfMonthSt
-  , ruleDayofmonthDeNamedmonth
   , ruleDayofweekSHourmin
   , ruleDdddMonthinterval
   , ruleDdmm
@@ -1720,6 +1751,8 @@ rules =
   , ruleDimTimeDaMadrugada
   , ruleDimTimeDaManha
   , ruleDimTimeDaTarde
+  , ruleDOMOfMonth
+  , ruleDOMMonth
   , ruleEmDuration
   , ruleEntreDatetimeEDatetimeInterval
   , ruleEntreDdEtDdMonthinterval
@@ -1751,6 +1784,7 @@ rules =
   , ruleIntersectByDaOrDe
   , ruleLastTime
   , ruleMidnight
+  , ruleMonthDOM
   , ruleMorning
   , ruleNCycleAtras
   , ruleNCycleProximoqueVem

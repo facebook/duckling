@@ -19,6 +19,7 @@ import Duckling.Locale
 import Duckling.Types
 import qualified Duckling.AmountOfMoney.ZH.Rules as AmountOfMoney
 import qualified Duckling.Distance.ZH.Rules as Distance
+import qualified Duckling.Duration.ZH.Rules as Duration
 import qualified Duckling.Numeral.ZH.Rules as Numeral
 import qualified Duckling.Ordinal.ZH.Rules as Ordinal
 import qualified Duckling.Quantity.ZH.Rules as Quantity
@@ -29,6 +30,7 @@ import qualified Duckling.Time.ZH.HK.Rules as TimeHK
 import qualified Duckling.Time.ZH.MO.Rules as TimeMO
 import qualified Duckling.Time.ZH.TW.Rules as TimeTW
 import qualified Duckling.TimeGrain.ZH.Rules as TimeGrain
+import qualified Duckling.Volume.ZH.Rules as Volume
 
 defaultRules :: Seal Dimension -> [Rule]
 defaultRules = langRules
@@ -45,7 +47,7 @@ langRules :: Seal Dimension -> [Rule]
 langRules (Seal AmountOfMoney) = AmountOfMoney.rules
 langRules (Seal CreditCardNumber) = []
 langRules (Seal Distance) = Distance.rules
-langRules (Seal Duration) = []
+langRules (Seal Duration) = Duration.rules
 langRules (Seal Email) = []
 langRules (Seal Numeral) = Numeral.rules
 langRules (Seal Ordinal) = Ordinal.rules
@@ -56,5 +58,5 @@ langRules (Seal Temperature) = Temperature.rules
 langRules (Seal Time) = Time.rules
 langRules (Seal TimeGrain) = TimeGrain.rules
 langRules (Seal Url) = []
-langRules (Seal Volume) = []
+langRules (Seal Volume) = Volume.rules
 langRules (Seal (CustomDimension dim)) = dimLangRules ZH dim

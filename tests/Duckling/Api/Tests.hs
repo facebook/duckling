@@ -121,12 +121,13 @@ supportedDimensionsTest = testCase "Supported Dimensions Test" $ do
     [ ( AR
       , [ Seal Email, Seal AmountOfMoney, Seal PhoneNumber, Seal Url
         , Seal Duration, Seal Numeral, Seal Ordinal, Seal Time, Seal Volume
-        , Seal Temperature, Seal Quantity
+        , Seal Temperature, Seal Quantity, Seal CreditCardNumber
         ]
       )
     , ( PL
       , [ Seal Email, Seal AmountOfMoney, Seal PhoneNumber, Seal Url
         , Seal Duration, Seal Numeral, Seal Ordinal, Seal Time
+        , Seal CreditCardNumber
         ]
       )
     ]

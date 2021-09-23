@@ -24,7 +24,7 @@ import Data.Text (Text)
 import Data.Time.LocalTime.TimeZone.Olson
 import Data.Time.LocalTime.TimeZone.Series
 import System.Directory
-import System.FilePath
+import System.FilePath.Posix
 
 import Prelude
 

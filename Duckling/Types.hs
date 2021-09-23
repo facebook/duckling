@@ -20,6 +20,7 @@
 {-# LANGUAGE StandaloneDeriving #-}
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE TypeOperators #-}
+{-# LANGUAGE NamedFieldPuns #-}
 
 module Duckling.Types where
 
@@ -32,7 +33,6 @@ import Data.HashMap.Strict (HashMap)
 import Data.HashSet (HashSet)
 import Data.List (intersperse, sortOn)
 import Data.Maybe
-import Data.Semigroup ((<>))
 import Data.Text (Text, toLower, unpack)
 import Data.Typeable ((:~:)(Refl), eqT, Typeable)
 import GHC.Generics
@@ -77,7 +77,7 @@ instance Eq Token where
     Nothing   -> False
 
 instance Hashable Token where
-  hashWithSalt s (Token dim v) = hashWithSalt s (dim, v)
+  hashWithSalt s (Token d v) = hashWithSalt s (d, v)
 
 instance NFData Token where
   rnf (Token _ v) = rnf v
@@ -148,7 +148,7 @@ instance Show (Dimension a) where
   show TimeGrain = "TimeGrain"
   show Url = "Url"
   show Volume = "Volume"
-  show (CustomDimension dim) = show dim
+  show (CustomDimension d) = show d
 instance GShow Dimension where gshowsPrec = showsPrec
 
 -- TextShow
@@ -252,38 +252,6 @@ instance Ord ResolvedToken where
         z -> z
       z  -> z
 
-data Candidate = Candidate ResolvedToken Double Bool
-  deriving (Eq, Show)
-
-instance Ord Candidate where
-  compare (Candidate Resolved{range = Range s1 e1, node = Node{token = Token d1 _}} score1 t1)
-          (Candidate Resolved{range = Range s2 e2, node = Node{token = tok2}} score2 t2)
-    | isDimension d1 tok2 = case starts of
-        EQ -> case ends of
-          EQ -> compare score1 score2
-          z -> z
-        LT -> case ends of
-          LT -> EQ
-          _ -> GT
-        GT -> case ends of
-          GT -> EQ
-          _ -> LT
-    | t1 == t2 = compRange
-    | t1 && compRange == GT = GT
-    | t2 && compRange == LT = LT
-    | otherwise = EQ
-      where
-        starts = compare s1 s2
-        ends = compare e1 e2
-        -- a > b if a recovers b
-        compRange = case starts of
-          EQ -> ends
-          LT -> case ends of
-            LT -> EQ
-            _  -> GT
-          GT -> case ends of
-            GT -> EQ
-            _  -> LT
 
 data Range = Range Int Int
   deriving (Eq, Ord, Generic, Hashable, Show, NFData)
@@ -301,7 +269,7 @@ data Rule = Rule
   }
 
 instance Show Rule where
-  show (Rule name _ _) = show name
+  show Rule{ name } = show name
 
 data Entity = Entity
   { dim    :: Text
@@ -336,14 +304,14 @@ regex = Regex . R.makeRegexOpts compOpts execOpts
     execOpts = PCRE.defaultExecOpt
 
 dimension :: Typeable a => Dimension a -> PatternItem
-dimension value = Predicate $ isDimension value
+dimension d = Predicate $ isDimension d
 
 -- -----------------------------------------------------------------
 -- Rule Construction helpers
 
 singleStringLookupRule :: HashMap Text a -> Text -> (a -> Maybe Token) -> Rule
 singleStringLookupRule hashMap name production = Rule
-  { name = name
+  { name
   , pattern = [ regex $ unpack regexString ]
   , prod = \case
       (Token RegexMatch (GroupMatch (match:_)):_) ->

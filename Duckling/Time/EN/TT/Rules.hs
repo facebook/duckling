@@ -21,7 +21,6 @@ import Duckling.Numeral.Helpers (parseInt)
 import Duckling.Regex.Types
 import Duckling.Time.Computed
 import Duckling.Time.Helpers
-import Duckling.Time.Types (TimeData (..))
 import Duckling.Types
 import qualified Duckling.TimeGrain.Types as TG
 

@@ -96,6 +96,15 @@ ruleBucks = Rule
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly Unnamed
   }
 
+ruleHryvnia :: Rule
+ruleHryvnia = Rule
+  { name = "Hryvnia"
+  , pattern =
+    [ regex "грн"
+    ]
+  , prod = \_ -> Just $ Token AmountOfMoney $ currencyOnly UAH
+  }
+
 ruleIntersectAndXCents :: Rule
 ruleIntersectAndXCents = Rule
   { name = "intersect (and X cents)"
@@ -303,6 +312,7 @@ rules =
   , ruleCent
   , ruleDollar
   , ruleEUR
+  , ruleHryvnia
   , ruleIntersect
   , ruleIntersectAndNumeral
   , ruleIntersectAndXCents

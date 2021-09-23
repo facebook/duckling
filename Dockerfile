@@ -1,4 +1,4 @@
-FROM haskell:8 AS builder
+FROM haskell:8-buster AS builder
 
 RUN apt-get update -qq && \
   apt-get install -qq -y libssl-dev libpcre3 libpcre3-dev build-essential --fix-missing --no-install-recommends && \
@@ -9,7 +9,7 @@ RUN mkdir /log
 
 WORKDIR /duckling
 
-COPY . .
+ADD . .
 
 ENV LANG=C.UTF-8
 

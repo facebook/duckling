@@ -15,7 +15,6 @@ module Duckling.Time.EN.Tests
 import Data.Aeson
 import Data.Aeson.Types ((.:), parseMaybe, withObject)
 import Data.String
-import Data.Text (Text)
 import Prelude
 import Test.Tasty
 import Test.Tasty.HUnit
@@ -29,6 +28,7 @@ import Duckling.Time.Corpus
 import Duckling.Time.EN.Corpus
 import Duckling.TimeGrain.Types (Grain(..))
 import Duckling.Types (Range(..))
+import qualified Duckling.Region as R
 import qualified Duckling.Time.EN.AU.Corpus as AU
 import qualified Duckling.Time.EN.BZ.Corpus as BZ
 import qualified Duckling.Time.EN.CA.Corpus as CA
@@ -109,7 +109,7 @@ localeTests = testGroup "Locale Tests"
   where
     localeAU = makeLocale EN $ Just AU
     localeBZ = makeLocale EN $ Just BZ
-    localeCA = makeLocale EN $ Just CA
+    localeCA = makeLocale EN $ Just R.CA
     localeGB = makeLocale EN $ Just GB
     localeIE = makeLocale EN $ Just IE
     localeIN = makeLocale EN $ Just IN

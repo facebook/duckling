@@ -15,10 +15,10 @@ module Duckling.Locale
       ( AU
       , BE
       , BZ
-      , CA
       , CL
       , CN
       , CO
+      , EG
       , GB
       , HK
       , IE
@@ -51,12 +51,14 @@ import qualified TextShow as TS
 
 import Duckling.Region hiding
   ( AR
+  , CA
   , ES
   , NL
   )
 import qualified Duckling.Region as R
   ( Region
       ( AR
+      , CA
       , ES
       , NL
       )
@@ -69,6 +71,7 @@ data Lang
   | AR
   | BG
   | BN
+  | CA
   | CS
   | DA
   | DE
@@ -76,6 +79,7 @@ data Lang
   | EN
   | ES
   | ET
+  | FA
   | FI
   | FR
   | GA
@@ -106,6 +110,7 @@ data Lang
   | SV
   | SW
   | TA
+  | TE
   | TH
   | TR
   | UK
@@ -137,7 +142,8 @@ makeLocale lang (Just region)
 allLocales :: HashMap Lang (HashSet Region)
 allLocales =
   HashMap.fromList
-    [ (EN, HashSet.fromList [AU, BZ, CA, GB, IN, IE, JM, NZ, PH, ZA, TT, US])
+    [ (AR, HashSet.fromList [EG])
+    , (EN, HashSet.fromList [AU, BZ, R.CA, GB, IN, IE, JM, NZ, PH, ZA, TT, US])
     , (ES, HashSet.fromList [R.AR, CL, CO, R.ES, MX, PE, VE])
     , (NL, HashSet.fromList [BE, R.NL])
     , (ZH, HashSet.fromList [CN, HK, MO, TW])

@@ -21,7 +21,6 @@ module Duckling.TimeGrain.Types
 import Control.DeepSeq
 import Data.Aeson
 import Data.Hashable
-import Data.Text.Lazy.Builder (fromText)
 import GHC.Generics
 import Prelude
 import TextShow
@@ -57,7 +56,7 @@ add utcTime Day n = updateUTCDay utcTime $ Time.addDays n
 add utcTime Week n = updateUTCDay utcTime . Time.addDays $ 7 * n
 add utcTime Month n = updateUTCDay utcTime $ Time.addGregorianMonthsClip n
 add utcTime Quarter n =
-  updateUTCDay utcTime . Time.addGregorianMonthsClip $ 3 * n
+  updateUTCDay utcTime $ Time.addGregorianMonthsClip $ 3 * n
 add utcTime Year n = updateUTCDay utcTime $ Time.addGregorianYearsClip n
 
 inSeconds :: Num a => Grain -> a -> a

@@ -21,7 +21,7 @@ import GHC.Generics
 import Prelude
 import Duckling.Resolve (Resolve(..))
 
-data GroupMatch = GroupMatch [Text]
+newtype GroupMatch = GroupMatch [Text]
   deriving (Eq, Generic, Hashable, Ord, Show, NFData)
 
 instance Resolve GroupMatch where

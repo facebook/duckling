@@ -14,15 +14,13 @@ module Duckling.Duration.EN.Rules
   ( rules
   ) where
 
-import Data.Semigroup ((<>))
-import Data.String
 import Prelude
 import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
 import Duckling.Duration.Helpers
 import Duckling.Duration.Types (DurationData(..))
-import Duckling.Numeral.Helpers (parseInt, parseInteger)
+import Duckling.Numeral.Helpers (parseInteger)
 import Duckling.Numeral.Types (NumeralData(..))
 import Duckling.Regex.Types
 import Duckling.Types
@@ -36,7 +34,7 @@ ruleDurationQuarterOfAnHour = Rule
   , pattern =
     [ regex "(1/4\\s?h(our)?|(a\\s)?quarter of an hour)"
     ]
-  , prod = \_ -> Just . Token Duration $ duration TG.Minute 15
+  , prod = \_ -> Just $ Token Duration $ duration TG.Minute 15
   }
 
 ruleDurationHalfAnHourAbbrev :: Rule
@@ -45,7 +43,7 @@ ruleDurationHalfAnHourAbbrev = Rule
   , pattern =
     [ regex "1/2\\s?h"
     ]
-  , prod = \_ -> Just . Token Duration $ duration TG.Minute 30
+  , prod = \_ -> Just $ Token Duration $ duration TG.Minute 30
   }
 
 ruleDurationThreeQuartersOfAnHour :: Rule
@@ -54,7 +52,7 @@ ruleDurationThreeQuartersOfAnHour = Rule
   , pattern =
     [ regex "(3/4\\s?h(our)?|three(\\s|-)quarters of an hour)"
     ]
-  , prod = \_ -> Just . Token Duration $ duration TG.Minute 45
+  , prod = \_ -> Just $ Token Duration $ duration TG.Minute 45
   }
 
 ruleDurationFortnight :: Rule
@@ -63,7 +61,7 @@ ruleDurationFortnight = Rule
   , pattern =
     [ regex "(a|one)? fortnight"
     ]
-  , prod = \_ -> Just . Token Duration $ duration TG.Day 14
+  , prod = \_ -> Just $ Token Duration $ duration TG.Day 14
   }
 
 ruleNumeralQuotes :: Rule
@@ -77,8 +75,8 @@ ruleNumeralQuotes = Rule
       (Token Numeral NumeralData{TNumeral.value = v}:
        Token RegexMatch (GroupMatch (x:_)):
        _) -> case x of
-         "'"  -> Just . Token Duration . duration TG.Minute $ floor v
-         "\"" -> Just . Token Duration . duration TG.Second $ floor v
+         "'"  -> Just $ Token Duration $ duration TG.Minute $ floor v
+         "\"" -> Just $ Token Duration $ duration TG.Second $ floor v
          _    -> Nothing
       _ -> Nothing
   }
@@ -93,7 +91,7 @@ ruleDurationNumeralMore = Rule
     ]
   , prod = \case
       (Token Numeral nd:_:Token TimeGrain grain:_) ->
-        Just . Token Duration . duration grain . floor $ TNumeral.value nd
+        Just $ Token Duration $ duration grain $ floor $ TNumeral.value nd
       _ -> Nothing
   }
 
@@ -109,7 +107,7 @@ ruleDurationDotNumeralHours = Rule
         hh <- parseInteger h
         mnum <- parseInteger m
         let mden = 10 ^ Text.length m
-        Just . Token Duration $ minutesFromHourMixedFraction hh mnum mden
+        Just $ Token Duration $ minutesFromHourMixedFraction hh mnum mden
       _ -> Nothing
   }
 
@@ -122,7 +120,7 @@ ruleDurationAndHalfHour = Rule
     ]
   , prod = \case
       (Token Numeral NumeralData{TNumeral.value = v}:_) ->
-        Just . Token Duration . duration TG.Minute $ 30 + 60 * floor v
+        Just $ Token Duration $ duration TG.Minute $ 30 + 60 * floor v
       _ -> Nothing
   }
 
@@ -135,7 +133,7 @@ ruleDurationAndHalfMinute = Rule
     ]
   , prod = \case
       (Token Numeral NumeralData{TNumeral.value = v}:_) ->
-        Just . Token Duration . duration TG.Second $ 30 + 60 * floor v
+        Just $ Token Duration $ duration TG.Second $ 30 + 60 * floor v
       _ -> Nothing
   }
 
@@ -147,7 +145,7 @@ ruleDurationA = Rule
     , dimension TimeGrain
     ]
   , prod = \case
-      (_:Token TimeGrain grain:_) -> Just . Token Duration $ duration grain 1
+      (_:Token TimeGrain grain:_) -> Just $ Token Duration $ duration grain 1
       _ -> Nothing
   }
 
@@ -188,8 +186,8 @@ ruleDurationHoursAndMinutes = Rule
       (Token Numeral h:
        _:
        Token Numeral m:
-       _) -> Just . Token Duration . duration TG.Minute $
-         (floor $ TNumeral.value m) + 60 * floor (TNumeral.value h)
+       _) -> Just $ Token Duration $ duration TG.Minute $
+         floor (TNumeral.value m) + 60 * floor (TNumeral.value h)
       _ -> Nothing
   }
 
@@ -220,7 +218,7 @@ ruleCompositeDurationCommasAnd = Rule
        Token TimeGrain g:
        _:
        Token Duration dd@DurationData{TDuration.grain = dg}:
-       _) | g > dg -> Just . Token Duration $ duration g (floor v) <> dd
+       _) | g > dg -> Just $ Token Duration $ duration g (floor v) <> dd
       _ -> Nothing
   }
 
@@ -236,7 +234,7 @@ ruleCompositeDuration = Rule
       (Token Numeral NumeralData{TNumeral.value = v}:
        Token TimeGrain g:
        Token Duration dd@DurationData{TDuration.grain = dg}:
-       _) | g > dg -> Just . Token Duration $ duration g (floor v) <> dd
+       _) | g > dg -> Just $ Token Duration $ duration g (floor v) <> dd
       _ -> Nothing
   }
 
@@ -252,7 +250,7 @@ ruleCompositeDurationAnd = Rule
       (Token Duration DurationData{TDuration.value = v, TDuration.grain = g}:
        _:
        Token Duration dd@DurationData{TDuration.grain = dg}:
-       _) | g > dg -> Just . Token Duration $ duration g (v) <> dd
+       _) | g > dg -> Just $ Token Duration $ duration g v <> dd
       _ -> Nothing
   }
 
@@ -290,7 +288,7 @@ ruleDurationNumeralAndQuarterHour = Rule
                                                       "two"   -> Just 2
                                                       "three" -> Just 3
                                                       _       -> Just 1
-         Just . Token Duration . duration TG.Minute $ 15 * q + 60 * floor h
+         Just $ Token Duration $ duration TG.Minute $ 15 * q + 60 * floor h
       _ -> Nothing
   }
 

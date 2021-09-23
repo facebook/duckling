@@ -31,7 +31,7 @@ ruleInteger :: Rule
 ruleInteger = Rule
   { name = "integer (0..10)"
   , pattern =
-    [ regex "(〇|零|一|二|两|兩|三|四|五|六|七|八|九|十)"
+    [ regex "(〇|零|一|二|两|兩|三|四|五|六|七|八|九|十|壹|貳|參|肆|伍|陸|柒|捌|玖|拾)"
     ]
   , prod = \case
       (Token RegexMatch (GroupMatch (match:_)):_) ->
@@ -44,19 +44,63 @@ integerMap = HashMap.fromList
   [ ( "〇", 0 )
   , ( "零", 0 )
   , ( "一", 1 )
+  , ( "壹", 1 )
   , ( "兩", 2 )
   , ( "两", 2 )
   , ( "二", 2 )
+  , ( "貳", 2 )
   , ( "三", 3 )
+  , ( "參", 3 )
   , ( "四", 4 )
+  , ( "肆", 4 )
   , ( "五", 5 )
+  , ( "伍", 5 )
   , ( "六", 6 )
+  , ( "陸", 6 )
   , ( "七", 7 )
+  , ( "柒", 7 )
   , ( "八", 8 )
+  , ( "捌", 8 )
   , ( "九", 9 )
+  , ( "玖", 9 )
   , ( "十", 10 )
+  , ( "拾", 10 )
   ]
 
+tensMap :: HashMap.HashMap Text Integer
+tensMap = HashMap.fromList
+  [ ( "廿" , 20 )
+  , ( "卅" , 30 )
+  , ( "卌" , 40 )
+  ]
+
+ruleTens :: Rule
+ruleTens = Rule
+  { name = "integer (20,30,40)"
+  , pattern =
+    [ regex "(廿|卅|卌)"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        HashMap.lookup (Text.toLower match) tensMap >>= integer
+      _ -> Nothing
+  }
+
+ruleCompositeTens :: Rule
+ruleCompositeTens = Rule
+  { name = "integer 21..49"
+  , pattern =
+    [ oneOf [20,30,40]
+    , regex "[\\s\\-]+"
+    , numberBetween 1 10
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Numeral NumeralData{TNumeral.value = tens}:
+       _:
+       Token Numeral NumeralData{TNumeral.value = units}:
+       _) -> double $ tens + units
+      _ -> Nothing
+  }
 
 ruleNumeralsPrefixWithNegativeOrMinus :: Rule
 ruleNumeralsPrefixWithNegativeOrMinus = Rule
@@ -93,6 +137,56 @@ ruleDecimalNumeral = Rule
       _ -> Nothing
   }
 
+ruleDotSpelledOut :: Rule
+ruleDotSpelledOut = Rule
+  { name = "one point 2"
+  , pattern =
+    [ dimension Numeral
+    , regex "點"
+    , Predicate $ not . hasGrain
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Numeral nd1:_:Token Numeral nd2:_) ->
+        double $ TNumeral.value nd1 + decimalsToDouble (TNumeral.value nd2)
+      _ -> Nothing
+  }
+
+ruleFraction :: Rule
+ruleFraction = Rule
+  { name = "fraction"
+  , pattern =
+    [ dimension Numeral
+    , regex "分之|分|份"
+    , dimension Numeral
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Numeral NumeralData{TNumeral.value = v1}:
+       _:
+       Token Numeral NumeralData{TNumeral.value = v2}:
+       _) -> double $ v2 / v1
+      _ -> Nothing
+  }
+
+ruleMixedFraction :: Rule
+ruleMixedFraction = Rule
+  { name = " mixed fraction"
+  , pattern =
+    [ dimension Numeral
+    , regex "又"
+    , dimension Numeral
+    , regex "分之|分|份"
+    , dimension Numeral
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Numeral NumeralData{TNumeral.value = v1}:
+       _:
+       Token Numeral NumeralData{TNumeral.value = v2}:
+       _:
+       Token Numeral NumeralData{TNumeral.value = v3}:
+       _) -> double $ v3 / v2 + v1
+      _ -> Nothing
+  }
+
 ruleNumeral :: Rule
 ruleNumeral = Rule
   { name = "<number>个/個"
@@ -105,16 +199,45 @@ ruleNumeral = Rule
       _ -> Nothing
   }
 
+ruleHalf :: Rule
+ruleHalf = Rule
+  { name = "half"
+  , pattern =
+    [ regex "(1|一)?半(半|个|個)?"
+    ]
+  , prod = \case
+      (_:_) -> double 0.5 >>= withMultipliable
+      _ -> Nothing
+  }
+
+ruleDozen :: Rule
+ruleDozen = Rule
+  { name = "a dozen of"
+  , pattern =
+    [ regex "打"
+    ]
+  , prod = \_ -> integer 12 >>= withMultipliable >>= notOkForAnyTime
+  }
+
+rulePair :: Rule
+rulePair = Rule
+  { name = "a pair"
+  , pattern =
+    [ regex "雙|對"
+    ]
+  , prod = \_ -> integer 2 >>= withMultipliable >>= notOkForAnyTime
+  }
+
 numeralSuffixList :: [(Text, Maybe Token)]
 numeralSuffixList =
   [ ("K", double 1e3 >>= withGrain 3 >>= withMultipliable)
   , ("M", double 1e6 >>= withGrain 6 >>= withMultipliable)
   , ("G", double 1e9 >>= withGrain 9 >>= withMultipliable)
-  , ("十", double 1e1 >>= withGrain 1 >>= withMultipliable)
-  , ("百", double 1e2 >>= withGrain 2 >>= withMultipliable)
-  , ("千", double 1e3 >>= withGrain 3 >>= withMultipliable)
-  , ("万", double 1e4 >>= withGrain 4 >>= withMultipliable)
-  , ("亿", double 1e8 >>= withGrain 8 >>= withMultipliable)
+  , ("十|拾", double 1e1 >>= withGrain 1 >>= withMultipliable)
+  , ("百|佰", double 1e2 >>= withGrain 2 >>= withMultipliable)
+  , ("千|仟", double 1e3 >>= withGrain 3 >>= withMultipliable)
+  , ("万|萬", double 1e4 >>= withGrain 4 >>= withMultipliable)
+  , ("亿|億", double 1e8 >>= withGrain 8 >>= withMultipliable)
   ]
 
 ruleNumeralSuffixes :: [Rule]
@@ -196,6 +319,45 @@ ruleNumeralsIntersectConsecutiveUnit = Rule
       | d == 1 = Just $ v1 + v2
       | otherwise = Nothing
 
+ruleHundredPrefix :: Rule
+ruleHundredPrefix = Rule
+  { name = "one hundred and <integer> (short form)"
+  , pattern =
+    [ regex "百|佰"
+    , numberBetween 1 10
+    ]
+  , prod = \case
+    (_:Token Numeral NumeralData{TNumeral.value = v}:_) ->
+      double $ 100 + v*10
+    _ -> Nothing
+  }
+
+ruleThousandPrefix :: Rule
+ruleThousandPrefix = Rule
+  { name = "one thousand and <integer> (short form)"
+  , pattern =
+    [ regex "千|仟"
+    , numberBetween 1 10
+    ]
+  , prod = \case
+    (_:Token Numeral NumeralData{TNumeral.value = v}:_) ->
+      double $ 1000 + v*100
+    _ -> Nothing
+  }
+
+ruleTenThousandPrefix :: Rule
+ruleTenThousandPrefix = Rule
+  { name = "ten thousand and <integer> (short form)"
+  , pattern =
+    [ regex "万|萬"
+    , numberBetween 1 10
+    ]
+  , prod = \case
+    (_:Token Numeral NumeralData{TNumeral.value = v}:_) ->
+      double $ 10000 + v*1000
+    _ -> Nothing
+  }
+
 rules :: [Rule]
 rules =
   [ ruleDecimalNumeral
@@ -207,5 +369,16 @@ rules =
   , ruleNumeralsIntersectNonconsectiveUnit
   , ruleNumeralsPrefixWithNegativeOrMinus
   , ruleMultiply
+  , ruleTens
+  , ruleCompositeTens
+  , ruleHalf
+  , ruleDotSpelledOut
+  , ruleDozen
+  , rulePair
+  , ruleFraction
+  , ruleMixedFraction
+  , ruleHundredPrefix
+  , ruleThousandPrefix
+  , ruleTenThousandPrefix
   ]
   ++ ruleNumeralSuffixes

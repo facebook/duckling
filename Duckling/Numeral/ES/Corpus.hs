@@ -6,6 +6,7 @@
 
 
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE NumericUnderscores #-}
 module Duckling.Numeral.ES.Corpus (corpus) where
 
 import Data.String
@@ -24,6 +25,7 @@ allExamples :: [Example]
 allExamples =
   concat
     [ examples (NumeralValue 1) ["1", "uno", "una"]
+    , examples (NumeralValue (-1)) ["negativo 1", "menos 1", "negativo uno"]
     , examples (NumeralValue 11) ["once"]
     , examples
         (NumeralValue 16)
@@ -35,13 +37,14 @@ allExamples =
     , examples (NumeralValue 78) ["Setenta y ocho"]
     , examples (NumeralValue 80) ["ochenta"]
     , examples (NumeralValue 33) ["33", "treinta y tres", "treinta y 3"]
-    , examples (NumeralValue 100000) ["100000", "100K", "100k"]
+    , examples (NumeralValue 100_000) ["100000", "100K", "100k"]
     , examples (NumeralValue 300) ["trescientos"]
     , examples (NumeralValue 243) ["243"]
-    , examples (NumeralValue 3000000) ["3M", "3000K", "3000000"]
-    , examples (NumeralValue 1200000) ["1200000", "1200K"]
-    , examples (NumeralValue (-1200000)) ["-1200000", "-1200K"]
-    , examples (NumeralValue 1.5) ["1 punto cinco", "una punto cinco"]
+    , examples (NumeralValue 3_000_000) ["3M", "3000K", "3000000"]
+    , examples (NumeralValue 1_200_000) ["1200000", "1200K"]
+    , examples (NumeralValue (-1_200_000)) ["-1200000", "-1200K"]
+    , examples (NumeralValue 1.5) ["1 punto cinco", "una punto cinco", "1 con cinco", "1 con 5", "uno coma 5"]
+    , examples (NumeralValue 0.5) ["punto cinco", "coma 5"]
     , examples (NumeralValue 1) ["cero uno", "zero uno"]
     , examples (NumeralValue 2) ["cero dos", "zero dos"]
     , examples (NumeralValue 3)
@@ -63,4 +66,8 @@ allExamples =
     , examples (NumeralValue 7) ["cero siete", "zero siete"]
     , examples (NumeralValue 8) ["cero ocho", "zero ocho"]
     , examples (NumeralValue 9) ["cero nueve", "zero nueve"]
+    , examples (NumeralValue 203) ["dos cientos tres", "doscientos tres"]
+    , examples (NumeralValue 203_000) ["doscientos tres mil", "203 mil"]
+    , examples (NumeralValue 4_000_000) ["cuatro millones", "4 millones"]
+    , examples (NumeralValue 4_002_003) ["cuatro millones dos mil tres", "4 millones 2 mil 3"]
     ]

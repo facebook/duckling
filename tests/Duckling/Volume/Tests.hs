@@ -14,6 +14,7 @@ import Prelude
 import Test.Tasty
 
 import qualified Duckling.Volume.AR.Tests as AR
+import qualified Duckling.Volume.CA.Tests as CA
 import qualified Duckling.Volume.DE.Tests as DE
 import qualified Duckling.Volume.EN.Tests as EN
 import qualified Duckling.Volume.ES.Tests as ES
@@ -29,10 +30,12 @@ import qualified Duckling.Volume.PT.Tests as PT
 import qualified Duckling.Volume.RO.Tests as RO
 import qualified Duckling.Volume.RU.Tests as RU
 import qualified Duckling.Volume.TR.Tests as TR
+import qualified Duckling.Volume.ZH.Tests as ZH
 
 tests :: TestTree
 tests = testGroup "Volume Tests"
   [ AR.tests
+  , CA.tests
   , DE.tests
   , EN.tests
   , ES.tests
@@ -48,4 +51,5 @@ tests = testGroup "Volume Tests"
   , RO.tests
   , RU.tests
   , TR.tests
+  , ZH.tests
   ]

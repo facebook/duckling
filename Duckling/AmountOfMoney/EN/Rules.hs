@@ -65,6 +65,24 @@ ruleOtherPounds = Rule
       _ -> Nothing
   }
 
+ruleEgpAbrreviation :: Rule
+ruleEgpAbrreviation = Rule
+  { name = "livre égyptienne"
+  , pattern =
+    [ regex "[lL].?[eE].?"
+    ]
+  , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly EGP
+  }
+
+ruleEgpArabizi :: Rule
+ruleEgpArabizi = Rule
+  { name = "geneh"
+  , pattern =
+    [ regex "[Gg][eiy]*n[eiy]*h(at)?( m[aiey]?sr[eiy]+a?)?"
+    ]
+  , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly EGP
+  }
+
 ruleRiyals :: Rule
 ruleRiyals = Rule
   { name = "riyals"
@@ -110,6 +128,15 @@ ruleRinggit = Rule
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly MYR
   }
 
+ruleHryvnia :: Rule
+ruleHryvnia = Rule
+  { name = "hryvnia"
+  , pattern =
+      [ regex "hryvnia" -- TODO: complete
+      ]
+  , prod = \_ -> Just $ Token AmountOfMoney $ currencyOnly UAH
+  }
+
 ruleCent :: Rule
 ruleCent = Rule
   { name = "cent"
@@ -117,6 +144,15 @@ ruleCent = Rule
     [ regex "cents?|penn(y|ies)|pence|sens?"
     ]
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly Cent
+  }
+
+ruleKopiyka :: Rule
+ruleKopiyka = Rule
+  { name = "kopiyka"
+  , pattern =
+    [ regex "kopiy(ok|kas?)"
+    ]
+  , prod = \_ -> Just $ Token AmountOfMoney $ currencyOnly Cent
   }
 
 ruleBucks :: Rule
@@ -374,6 +410,7 @@ rules =
   , ruleNumDollarCoins
   , ruleDinars
   , ruleDirham
+  , ruleHryvnia
   , ruleIntersect
   , ruleIntersectAndNumeral
   , ruleIntersectAndXCents
@@ -384,7 +421,10 @@ rules =
   , ruleIntervalMin
   , ruleIntervalNumeralDash
   , ruleIntervalDash
+  , ruleKopiyka
   , ruleOtherPounds
+  , ruleEgpAbrreviation
+  , ruleEgpArabizi
   , rulePounds
   , rulePrecision
   , ruleRinggit

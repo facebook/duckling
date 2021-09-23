@@ -612,7 +612,7 @@ ruleDdmm :: Rule
 ruleDdmm = Rule
   { name = "dd/mm"
   , pattern =
-    [ regex "(3[01]|[12]\\d|0?[1-9])[\\/-](0?[1-9]|1[0-2])"
+    [ regex "(3[01]|[12]\\d|0?[1-9])[\\/-](0?[1-9]\\b|1[0-2])"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (dd:mm:_)):_) -> do
@@ -1100,7 +1100,7 @@ ruleYyyymmdd :: Rule
 ruleYyyymmdd = Rule
   { name = "yyyy-mm-dd"
   , pattern =
-    [ regex "(\\d{2,4})-(0?[1-9]|1[0-2])-(3[01]|[12]\\d|0?[1-9])"
+    [ regex "(\\d{4})[\\-\\.\\/](0?[1-9]|1[0-2])[\\-\\.\\/](3[01]|[12]\\d|0?[1-9])"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (yy:mm:dd:_)):_) -> do
@@ -1382,6 +1382,57 @@ ruleHhmm = Rule
       _ -> Nothing
   }
 
+rule2400 :: Rule
+rule2400 = Rule
+  { name = "24:00"
+  , pattern =
+    [ regex "24[.:]00"
+    ]
+  , prod = \_ -> tt $ hourMinute False 24 00
+  }
+
+ruleDmm :: Rule
+ruleDmm = Rule
+  { name = "d/mm"
+  , pattern =
+    [ regex "([1-9])[\\/\\.\\-]([1-9]\\b|1[0-2]\\b)"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (dd:mm:_)):_) -> do
+        d <- parseInt dd
+        m <- parseInt mm
+        tt $ monthDay m d
+      _ -> Nothing
+  }
+
+ruleDDm :: Rule
+ruleDDm = Rule
+  { name = "dd/m"
+  , pattern =
+    [ regex "([0-2]\\d|3[01])[\\/\\.\\-]([1-9])"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (dd:mm:_)):_) -> do
+        d <- parseInt dd
+        m <- parseInt mm
+        tt $ monthDay m d
+      _ -> Nothing
+  }
+
+ruleDdDotMm :: Rule
+ruleDdDotMm = Rule
+  { name = "dd.mm"
+  , pattern =
+    [ regex "(2[5-9]|3[01])\\.(0[1-9]|1[0-2])"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (dd:mm:_)):_) -> do
+        d <- parseInt dd
+        m <- parseInt mm
+        tt $ monthDay m d
+      _ -> Nothing
+  }
+
 ruleTonight :: Rule
 ruleTonight = Rule
   { name = "tonight"
@@ -1481,7 +1532,7 @@ ruleDdmmyyyy :: Rule
 ruleDdmmyyyy = Rule
   { name = "dd/mm/yyyy"
   , pattern =
-    [ regex "(3[01]|[12]\\d|0?[1-9])[\\/-](0?[1-9]|1[0-2])[\\/-](\\d{2,4})"
+    [ regex "(3[01]|[12]\\d|0?[1-9])[\\/\\-\\.](0?[1-9]|1[0-2])[\\/\\-\\.](\\d{2,4})"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (dd:mm:yy:_)):_) -> do
@@ -1791,6 +1842,10 @@ rules =
   , ruleYesterday
   , ruleYyyymmdd
   , ruleTimezone
+  , rule2400
+  , ruleDmm
+  , ruleDDm
+  , ruleDdDotMm
   ]
   ++ ruleDaysOfWeek
   ++ ruleMonths

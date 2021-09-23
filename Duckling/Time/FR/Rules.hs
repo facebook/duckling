@@ -14,7 +14,6 @@ module Duckling.Time.FR.Rules
   ( rules
   ) where
 
-import Data.Text (Text)
 import Prelude
 import qualified Data.Text as Text
 
@@ -24,6 +23,7 @@ import Duckling.Regex.Types
 import Duckling.Time.Helpers
 import Duckling.Time.Types (TimeData (..))
 import Duckling.Types
+import qualified Duckling.Ordinal.Types as TOrdinal
 import qualified Duckling.Time.Types as TTime
 import qualified Duckling.TimeGrain.Types as TG
 
@@ -314,6 +314,37 @@ ruleNDerniersCycle = Rule
       (token:_:Token TimeGrain grain:_) -> do
         n <- getIntValue token
         tt . cycleN True grain $ - n
+      _ -> Nothing
+  }
+
+ruleNthTimeOfTime :: Rule
+ruleNthTimeOfTime = Rule
+  { name = "nth <day-of-week> of <month-or-greater>"
+  , pattern =
+    [ dimension Ordinal
+    , Predicate isADayOfWeek
+    , regex "d[eu]"
+    , Predicate $ not . isGrainFinerThan TG.Month
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Ordinal od:Token Time td1:_:Token Time td2:_) -> Token Time .
+        predNth (TOrdinal.value od - 1) False <$> intersect td2 td1
+      _ -> Nothing
+  }
+
+ruleTheNthTimeOfTime :: Rule
+ruleTheNthTimeOfTime = Rule
+  { name = "the nth <day-of-week> of <month-or-greater>"
+  , pattern =
+    [ regex "le"
+    , dimension Ordinal
+    , Predicate isADayOfWeek
+    , regex "d[eu]"
+    , Predicate $ not . isGrainFinerThan TG.Month
+    ]
+  , prod = \tokens -> case tokens of
+      (_:Token Ordinal od:Token Time td1:_:Token Time td2:_) -> Token Time .
+         predNth (TOrdinal.value od - 1) False <$> intersect td2 td1
       _ -> Nothing
   }
 
@@ -1883,6 +1914,24 @@ rulePlusTardPartofday = Rule
       _ -> Nothing
   }
 
+ruleDDMonthYY :: Rule
+ruleDDMonthYY = Rule
+  { name = "DD month YY"
+  , pattern =
+    [ Predicate $ isIntegerBetween 0 31
+    , Predicate isAMonth
+    , Predicate $ isIntegerBetween 32 99
+    ]
+  , prod = \case
+      (dayd:Token Time monthd:yeard:_) -> do
+        d <- getIntValue dayd
+        y <- getIntValue yeard
+        dayMonth <- intersect monthd (dayOfMonth d)
+        ymd <- intersect dayMonth (year y)
+        tt ymd
+      _ -> Nothing
+  }
+
 ruleTimezone :: Rule
 ruleTimezone = Rule
   { name = "<time> timezone"
@@ -1899,17 +1948,17 @@ ruleTimezone = Rule
 
 ruleMonths :: [Rule]
 ruleMonths = mkRuleMonths
-  [ ( "Janvier"   , "janvier|janv\\.?"                    )
+  [ ( "Janvier"   , "janvier|janv\\.?"          )
   , ( "Fevrier"   , "f(é|e)vrier|f(é|e)v\\.?"   )
-  , ( "Mars"      , "mars|mar\\.?"                        )
-  , ( "Avril"     , "avril|avr\\.?"                       )
-  , ( "Mai"       , "mai"                                 )
-  , ( "Juin"      , "juin|jun\\.?"                        )
-  , ( "Juillet"   , "juillet|juil?\\."                    )
-  , ( "Aout"      , "ao(û|u)t|aou\\.?"               )
-  , ( "Septembre" , "septembre|sept?\\.?"                 )
-  , ( "Octobre"   , "octobre|oct\\.?"                     )
-  , ( "Novembre"  , "novembre|nov\\.?"                    )
+  , ( "Mars"      , "mars|mar\\.?"              )
+  , ( "Avril"     , "avril|avr\\.?"             )
+  , ( "Mai"       , "mai"                       )
+  , ( "Juin"      , "juin|jun\\.?"              )
+  , ( "Juillet"   , "juillet|juil?\\.?"         )
+  , ( "Aout"      , "ao(û|u)t|aou\\.?"          )
+  , ( "Septembre" , "septembre|sept?\\.?"       )
+  , ( "Octobre"   , "octobre|oct\\.?"           )
+  , ( "Novembre"  , "novembre|nov\\.?"          )
   , ( "Decembre"  ,  "d(é|e)cembre|d(é|e)c\\.?" )
   ]
 
@@ -2070,6 +2119,9 @@ rules =
   , ruleDbutDAnnee
   , rulePlusTard
   , rulePlusTardPartofday
+  , ruleNthTimeOfTime
+  , ruleTheNthTimeOfTime
+  , ruleDDMonthYY
   ]
   ++ ruleMonths
   ++ ruleDaysOfWeek

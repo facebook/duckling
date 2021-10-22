@@ -78,13 +78,13 @@ ruleDaysOfWeek = mkRuleDaysOfWeek
 ruleMonths :: [Rule]
 ruleMonths = mkRuleMonths
   [ ( "Gener"    , "gener|gen\\.?")
-  , ( "Febrer"   , "febrer|feb\\.?")
+  , ( "Febrer"   , "febrer|febr?\\.?")
   , ( "Març"     , "març|mar\\.?")
   , ( "Abril"    , "abril|abr\\.?")
   , ( "Maig"     , "maig?\\.?")
   , ( "Juny"     , "juny?\\.?")
   , ( "Juliol"   , "juliol|jul\\.?")
-  , ( "Agost"    , "agost|ago\\.?")
+  , ( "Agost"    , "agost|ago?\\.?")
   , ( "Setembre" , "setembre|set\\.?")
   , ( "Octubre"  , "octubre|oct\\.?")
   , ( "Novembre" , "novembre|nov\\.?")

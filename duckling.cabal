@@ -1161,6 +1161,7 @@ test-suite duckling-test
                      , Duckling.Time.RO.Tests
                      , Duckling.Time.RU.Tests
                      , Duckling.Time.SV.Tests
+                     , Duckling.Time.TR.Tests
                      , Duckling.Time.UK.Tests
                      , Duckling.Time.VI.Tests
                      , Duckling.Time.ZH.Tests

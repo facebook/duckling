@@ -98,19 +98,21 @@ rulePartOfDays :: Rule
 rulePartOfDays = Rule
   { name = "part of days"
   , pattern =
-    [ regex "(sabahı?|öğlen?|akşam|gece|öğle\\syemeği)"
+    [ regex "(sabah(ı|a|tan)?|öğlen?|akşam|gece|öğle\\syemeği)"
     ]
   , prod = \case
       (Token RegexMatch (GroupMatch (match:_)):_) -> do
         let (start, end) = case Text.toLower match of
               "sabah"          -> (hour False 0, hour False 12 )
               "sabahı"         -> (hour False 0, hour False 12 )
+              "sabaha"         -> (hour False 0, hour False 12 )
+              "sabahtan"       -> (hour False 0, hour False 12 )
               "akşam"          -> (hour False 18, hour False 0 )
               "gece"           -> (hour False 18, hour False 0 )
               "öğlen"          -> (hour False 12, hour False 14)
               "öğle"           -> (hour False 12, hour False 14)
               "öğle yemeği"    -> (hour False 12, hour False 14)
-              _          -> (hour False 12, hour False 19)
+              _                -> (hour False 12, hour False 19)
         td <- interval TTime.Open start end
         tt $ partOfDay $ mkLatent td
       _ -> Nothing
@@ -233,7 +235,7 @@ ruleDurationFromNow = Rule
   { name = "<duration> from now"
   , pattern =
     [ regex "(bugünden\\s)?sonra(ki)?"
-    ,  dimension Duration
+    , dimension Duration
     ]
   , prod = \case
       (_:Token Duration dd:_) ->
@@ -266,19 +268,6 @@ ruleYearLatent2 = Rule
       (token:_) -> do
         v <- getIntValue token
         tt $ mkLatent $ year v
-      _ -> Nothing
-  }
-
-ruleTimeAfterNext :: Rule
-ruleTimeAfterNext = Rule
-  { name = "<time> after next"
-  , pattern =
-    [ regex "sonraki|önümüzdeki"
-    , dimension Time
-    ]
-  , prod = \case
-      (_:Token Time td:_) ->
-        tt $ predNth 1 True td
       _ -> Nothing
   }
 
@@ -456,8 +445,8 @@ ruleNthTimeAfterTime = Rule
       _ -> Nothing
   }
 
-ruleMmdd :: Rule
-ruleMmdd = Rule
+ruleMMDD :: Rule
+ruleMMDD = Rule
   { name = "mm/dd"
   , pattern =
     [ regex "([012]?[1-9]|10|20|30|31)\\.(10|11|12|0?[1-9])\\.?"
@@ -467,6 +456,21 @@ ruleMmdd = Rule
         d <- parseInt m1
         m <- parseInt m2
         tt $ monthDay m d
+      _ -> Nothing
+  }
+
+ruleMMDDYYYY :: Rule
+ruleMMDDYYYY = Rule
+  { name = "mm/dd/yyyy"
+  , pattern =
+    [ regex "(1[0-2]|0?[1-9])[-/\\s](3[01]|[12]\\d|0?[1-9])[-/\\s](\\d{2,4})"
+    ]
+  , prod = \case
+      (Token RegexMatch (GroupMatch (mm:dd:yy:_)):_) -> do
+        y <- parseInt yy
+        m <- parseInt mm
+        d <- parseInt dd
+        tt $ yearMonthDay y m d
       _ -> Nothing
   }
 
@@ -669,8 +673,8 @@ ruleOrdinalQuarterYear = Rule
       _ -> Nothing
   }
 
-ruleYyyymmdd :: Rule
-ruleYyyymmdd = Rule
+ruleYYYYMMDD :: Rule
+ruleYYYYMMDD = Rule
   { name = "yyyy-mm-dd"
   , pattern =
     [ regex "(\\d{2,4})-(0?[1-9]|10|11|12)-([012]?[1-9]|10|20|30|31)"
@@ -699,19 +703,6 @@ ruleNextNCycle = Rule
       _ -> Nothing
   }
 
-ruleMorning :: Rule
-ruleMorning = Rule
-  { name = "morning"
-  , pattern =
-    [ regex "sabah(ı|a|tan)?"
-    ]
-  , prod = \_ ->
-      let from = hour False 3
-          to = hour False 12
-      in Token Time . mkLatent . partOfDay <$>
-           interval TTime.Open from to
-  }
-
 ruleThisPartofday :: Rule
 ruleThisPartofday = Rule
   { name = "this <part-of-day>"
@@ -736,6 +727,7 @@ ruleThisCycle = Rule
         tt $ cycleNth grain 0
       _ -> Nothing
   }
+
 ruleThisTime :: Rule
 ruleThisTime = Rule
   { name = "this <time>"
@@ -791,7 +783,7 @@ ruleAfterTimeofday = Rule
   { name = "after <time-of-day>"
   , pattern =
     [ regex "sonraki|önümüzdeki"
-    , dimension Time
+    , Predicate isATimeOfDay
     ]
   , prod = \case
       (_:Token Time td:_) -> tt $ withDirection TTime.After td
@@ -1030,21 +1022,6 @@ rulePartofdayOfTime = Rule
       _ -> Nothing
   }
 
-ruleMmddyyyy :: Rule
-ruleMmddyyyy = Rule
-  { name = "mm/dd/yyyy"
-  , pattern =
-    [ regex "([012]?[1-9]|10|20|30|31)\\.(0?[1-9]|10|11|12)\\.(\\d{2,4})"
-    ]
-  , prod = \case
-      (Token RegexMatch (GroupMatch (m1:m2:m3:_)):_) -> do
-        y <- parseInt m3
-        m <- parseInt m2
-        d <- parseInt m1
-        tt $ yearMonthDay y m d
-      _ -> Nothing
-  }
-
 ruleTimezone :: Rule
 ruleTimezone = Rule
   { name = "<time> timezone"
@@ -1061,7 +1038,7 @@ ruleTimezone = Rule
 
 rules :: [Rule]
 rules =
-  [ruleAbsorptionOfAfterNamedDay
+  [ ruleAbsorptionOfAfterNamedDay
   , ruleAfterTimeofday
   , ruleAfternoon
   , ruleAtTimeofday
@@ -1097,9 +1074,9 @@ rules =
   , ruleNextTime
   , ruleLunch
   , ruleMidnighteodendOfDay
-  , ruleMmdd
-  , ruleMmddyyyy
-  , ruleMorning
+  , ruleMMDD
+  , ruleMMDDYYYY
+  , ruleYYYYMMDD
   , ruleNamedmonthDayofmonthNonOrdinal
   , ruleNextCycle
   , ruleNextNCycle
@@ -1118,7 +1095,6 @@ rules =
   , ruleThisPartofday
   , ruleThisTime
   , ruleThisnextDayofweek
-  , ruleTimeAfterNext
   , ruleTimePartofday
   , ruleTimeofdayLatent
   , ruleTimeofdayTimeofdayInterval
@@ -1129,7 +1105,6 @@ rules =
   , ruleYear
   , ruleYearLatent
   , ruleYearLatent2
-  , ruleYyyymmdd
   , ruleTimezone
   ]
   ++ ruleInstants

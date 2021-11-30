@@ -36,7 +36,9 @@ ruleInstants = mkRuleInstants
   , ( "завтра"       , TG.Day    ,  1, "завтра"               )
   , ( "вчера"        , TG.Day    , -1, "вчера"                )
   , ( "послезавтра"  , TG.Day    ,  2, "послезавтра"          )
+  , ( "послепослезавтра", TG.Day ,  3, "послепослезавтра"     )
   , ( "позавчера"    , TG.Day    , -2, "позавчера"            )
+  , ( "позапозавчера", TG.Day    , -3, "позапозавчера"        )
   , ( "Конец месяца" , TG.Month  ,  1, "(конец|конца) месяца" )
   , ( "Конец года"   , TG.Year   ,  1, "(конец|конца) года"   )
   ]
@@ -93,7 +95,7 @@ ruleLastTime :: Rule
 ruleLastTime = Rule
   { name = "last <time>"
   , pattern =
-    [ regex "(в )?прошл(ый|ого|ому|ом|ые|ых|ым|ыми|ая)"
+    [ regex "(на |в )?прошл(ый|ого|ому|ом|ое|ые|ых|ыми|ым|ая|ой|ую)"
     , Predicate isOkWithThisNext
     ]
   , prod = \case
@@ -264,11 +266,20 @@ ruleNoon = Rule
   , prod = \_ -> tt $ hour False 12
   }
 
+ruleMidnight :: Rule
+ruleMidnight = Rule
+  { name = "midnight"
+  , pattern =
+    [ regex "полночь"
+    ]
+  , prod = \_ -> tt $ hour False 0
+  }
+
 ruleThisnextDayofweek :: Rule
 ruleThisnextDayofweek = Rule
   { name = "this|next <day-of-week>"
   , pattern =
-    [ regex "следующ(ий|ая|ее)"
+    [ regex "след(ующ(ий|ая|ее|ую))?"
     , Predicate isADayOfWeek
     ]
   , prod = \case
@@ -296,7 +307,7 @@ ruleNextCycle :: Rule
 ruleNextCycle = Rule
   { name = "next <cycle>"
   , pattern =
-    [ regex "(в |на )?следующ(ий|его|ему|им|ем|ие|их|ими)"
+    [ regex "(на |в |к )?след(ующ(ий|его|ему|ими|ем|ие|их|им|ей|ая|ую))?"
     , dimension TimeGrain
     ]
   , prod = \case
@@ -309,7 +320,7 @@ ruleOnDate :: Rule
 ruleOnDate = Rule
   { name = "on <date>"
   , pattern =
-    [ regex "в"
+    [ regex "во|в|к"
     , dimension Time
     ]
   , prod = \case
@@ -321,7 +332,7 @@ ruleLastCycle :: Rule
 ruleLastCycle = Rule
   { name = "last <cycle>"
   , pattern =
-    [ regex "(в )?прошл(ый|ого|ому|ым|ом|ые|ых|ыми)"
+    [ regex "(на |в )?прошл(ый|ого|ому|ом|ое|ые|ых|ыми|ым|ая|ой|ую)"
     , dimension TimeGrain
     ]
   , prod = \case
@@ -330,11 +341,24 @@ ruleLastCycle = Rule
       _ -> Nothing
   }
 
+ruleBeforeLastCycle :: Rule
+ruleBeforeLastCycle = Rule
+  { name = "one <cycle> before last"
+  , pattern =
+    [ regex "(на |в )?позапрошл(ый|ого|ому|ыми|ом|ое|ые|ых|ым|ая|ой|ую)"
+    , dimension TimeGrain
+    ]
+  , prod = \case
+      (_:Token TimeGrain grain:_) ->
+        tt . cycleNth grain $ - 2
+      _ -> Nothing
+  }
+
 ruleLastCycle2 :: Rule
 ruleLastCycle2 = Rule
   { name = "last <cycle>"
   , pattern =
-    [ regex "(в )?прошедш(ий|его|ему|им|ем|их|ие|ими)"
+    [ regex "(в )?прошедш(ий|его|ему|ими|ем|их|ие|им)"
     , dimension TimeGrain
     ]
   , prod = \case
@@ -360,7 +384,7 @@ ruleAfternoon :: Rule
 ruleAfternoon = Rule
   { name = "afternoon"
   , pattern =
-    [ regex "дня|днем"
+    [ regex "(дня|дн[её]м)|пополудни|после полудня"
     ]
   , prod = \_ ->
       let from = hour False 12
@@ -393,7 +417,6 @@ ruleNamedmonthDayofmonthOrdinal = Rule
       (Token Time td:token:_) -> Token Time <$> intersectDOM td token
       _ -> Nothing
   }
-
 
 ruleHourofdayIntegerAsRelativeMinutes :: Rule
 ruleHourofdayIntegerAsRelativeMinutes = Rule
@@ -487,7 +510,7 @@ ruleDurationAgo = Rule
   { name = "<duration> ago"
   , pattern =
     [ dimension Duration
-    , regex "назад"
+    , regex "(тому )?назад"
     ]
   , prod = \case
       (Token Duration dd:_:_) ->
@@ -640,8 +663,6 @@ ruleWeek = Rule
        let match = Text.strip $ Text.toLower m
        period <- case match of
          "эта" -> interval TTime.Closed (cycleNth TG.Week 0) end
-         "rest of the" -> interval TTime.Open today end
-         -- no prefix, implicit 'the'
          "неделя" -> interval TTime.Open today end
          _ -> Nothing
        let l = case match of { "неделя" -> mkLatent; _ -> id; }
@@ -720,7 +741,7 @@ ruleMorning :: Rule
 ruleMorning = Rule
   { name = "morning"
   , pattern =
-    [ regex "утро|утром|утра"
+    [ regex "утром|утро|утра"
     ]
   , prod = \_ ->
       let from = hour False 3
@@ -733,7 +754,7 @@ ruleThisPartofday :: Rule
 ruleThisPartofday = Rule
   { name = "this <part-of-day>"
   , pattern =
-    [ regex "(в )?(это|эту|этот|этого|этому|эти)"
+    [ regex "(в )?(эту|этот|этого|этому|эти|это)"
     , Predicate isAPartOfDay
     ]
   , prod = \case
@@ -745,7 +766,7 @@ ruleThisCycle :: Rule
 ruleThisCycle = Rule
   { name = "this <cycle>"
   , pattern =
-    [ regex "(в )?(это|эту|этот|этого|этому|эти)"
+    [ regex "(в )?(эту|этот|этого|этому|эти)"
     , dimension TimeGrain
     ]
   , prod = \case
@@ -758,7 +779,7 @@ ruleThisTime :: Rule
 ruleThisTime = Rule
   { name = "this <time>"
   , pattern =
-    [ regex "(в )?(это|эту|этот|этого|этому|эти)"
+    [ regex "(в )?(эту|этот|этого|этому|эти|это)"
     , Predicate isOkWithThisNext
     ]
   , prod = \case
@@ -797,7 +818,7 @@ ruleNight :: Rule
 ruleNight = Rule
   { name = "night"
   , pattern =
-    [ regex "ночь|ночи|ночью"
+    [ regex "ночью|ночи|ночь"
     ]
   , prod = \_ ->
       let from = hour False 0
@@ -838,7 +859,7 @@ ruleHhmm :: Rule
 ruleHhmm = Rule
   { name = "hh:mm"
   , pattern =
-    [ regex "((?:[01]?\\d)|(?:2[0-3]))[:.ч]([0-5]\\d)(?:час(ов|а|у)?|ч)?"
+    [ regex "((?:[01]?\\d)|(?:2[0-3]))[:ч]([0-5]\\d)(?:час(ов|а|у)?|ч)?"
     ]
   , prod = \case
       (Token RegexMatch (GroupMatch (m1:m2:_)):_) -> do
@@ -1082,6 +1103,7 @@ rules =
   , ruleIntersectBy
   , ruleIntersectByOfFromS
   , ruleLastCycle
+  , ruleBeforeLastCycle
   , ruleLastCycle2
   , ruleLastCycleOfTime
   , ruleLastCycleOfTime2
@@ -1100,6 +1122,7 @@ rules =
   , ruleNextNCycle
   , ruleNight
   , ruleNoon
+  , ruleMidnight
   , ruleNthTimeAfterTime
   , ruleNthTimeOfTime
   , ruleNthTimeOfTime2

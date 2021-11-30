@@ -24,10 +24,10 @@ grains = [ ("second (grain) ", "сек(унд(а|у|ы)?)?",   Second)
          , ("minute (grain)" , "мин(ут(а|у|ы)?)?",    Minute)
          , ("hour (grain)"   , "ч(ас(а|ов)?)?",       Hour)
          , ("day (grain)"    , "день|дня|дней",       Day)
-         , ("week (grain)"   , "недел(ь|я|и|ю)?",     Week)
-         , ("month (grain)"  , "месяц(а|ев)?",        Month)
-         , ("quarter (grain)", "квартал(а)?",         Quarter)
-         , ("year (grain)"   , "года?|лет",           Year)
+         , ("week (grain)"   , "недел(ь|я|и|ю|е)?",   Week)
+         , ("month (grain)"  , "месяц(а|ев|е)?",      Month)
+         , ("quarter (grain)", "квартал(а|е)?",       Quarter)
+         , ("year (grain)"   , "год(а|у)?|лет",       Year)
          ]
 
 rules :: [Rule]

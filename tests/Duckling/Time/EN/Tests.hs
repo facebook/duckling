@@ -180,4 +180,5 @@ rangeTests = testCase "Range Test" $
          , ("at 6pm (PDT) GMT", Range 0 12) -- ruleTimezoneBracket
          , ("6pm GMT - 8pm GMT PDT", Range 0 17)
            -- ruleTimezone will not match because TimeData hasTimezone.
+         , ("Monday - 1", Range 0 6) -- ruleYearLatent to not accept negative years.
          ]

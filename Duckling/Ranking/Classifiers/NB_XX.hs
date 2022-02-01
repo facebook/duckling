@@ -78,24 +78,18 @@ classifiers
                                likelihoods = HashMap.fromList [], n = 0}}),
        ("<time> <part-of-day>",
         Classifier{okData =
-                     ClassData{prior = -0.45198512374305727,
-                               unseen = -3.0910424533583156,
+                     ClassData{prior = 0.0, unseen = -2.995732273553991,
                                likelihoods =
                                  HashMap.fromList
-                                   [("dayhour", -0.9650808960435872),
-                                    ("tomorrowevening", -1.9459101490553135),
-                                    ("tomorrowlunch", -1.9459101490553135),
-                                    ("yesterdayevening", -2.3513752571634776),
-                                    ("Mandagmorning", -1.9459101490553135)],
+                                   [("dayhour", -0.8649974374866046),
+                                    ("tomorrowevening", -1.845826690498331),
+                                    ("tomorrowlunch", -1.845826690498331),
+                                    ("yesterdayevening", -2.2512917986064953),
+                                    ("Mandagmorning", -1.845826690498331)],
                                n = 7},
                    koData =
-                     ClassData{prior = -1.0116009116784799, unseen = -2.772588722239781,
-                               likelihoods =
-                                 HashMap.fromList
-                                   [("yearhour", -1.0986122886681098),
-                                    ("year (latent)in|during the <part-of-day>",
-                                     -1.0986122886681098)],
-                               n = 4}}),
+                     ClassData{prior = -infinity, unseen = -1.791759469228055,
+                               likelihoods = HashMap.fromList [], n = 0}}),
        ("dd/mm",
         Classifier{okData =
                      ClassData{prior = -0.5108256237659907, unseen = -2.639057329615259,
@@ -558,9 +552,9 @@ classifiers
                      ClassData{prior = -infinity, unseen = -0.6931471805599453,
                                likelihoods = HashMap.fromList [], n = 0},
                    koData =
-                     ClassData{prior = 0.0, unseen = -1.9459101490553135,
+                     ClassData{prior = 0.0, unseen = -1.0986122886681098,
                                likelihoods = HashMap.fromList [("integer (numeric)", 0.0)],
-                               n = 5}}),
+                               n = 1}}),
        ("Mandag",
         Classifier{okData =
                      ClassData{prior = 0.0, unseen = -2.70805020110221,

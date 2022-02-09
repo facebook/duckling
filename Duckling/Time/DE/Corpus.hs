@@ -1158,4 +1158,37 @@ allExamples = concat
   , examples (datetimeIntervalHoliday ((2018, 2, 14, 0, 0, 0), (2018, 4, 1, 0, 0, 0)) Day "Fastenzeit")
              [ "Fastenzeit 2018"
              ]
+  , examples (datetimeHoliday (2018, 1, 6, 0, 0, 0) Day "Heilige drei Könige")
+             [ "Heilige drei Könige 2018"
+             ]
+  , examples (datetimeHoliday (2018, 3, 8, 0, 0, 0) Day "Internationaler Frauentag")
+             [ "Frauentag 2018"
+             ]
+  , examples (datetimeHoliday (2018, 4, 1, 0, 0, 0) Day "Ostersonntag")
+             [ "Ostersonntag 2018"
+             ]
+  , examples (datetimeHoliday (2018, 5, 1, 0, 0, 0) Day "Tag der Arbeit")
+             [ "Tag der Arbeit 2018"
+             ]
+  , examples (datetimeHoliday (2018, 8, 8, 0, 0, 0) Day "Augsburger Friedensfest")
+             [ "Augsburger Friedensfest 2018"
+             ]
+  , examples (datetimeHoliday (2018, 9, 20, 0, 0, 0) Day "Weltkindertag")
+             [ "Weltkindertag 2018"
+             ]
+  , examples (datetimeHoliday (2018, 10, 31, 0, 0, 0) Day "Reformationstag")
+             [ "Reformationstag 2018"
+             ]
+  , examples (datetimeHoliday (2018, 12, 25, 0, 0, 0) Day "Weihnachten")
+             [ "1. Weihnachtstag 2018"
+             ]
+  , examples (datetimeHoliday (2018, 12, 26, 0, 0, 0) Day "2. Weihnachtsfeiertag")
+             [ "2. Weihnachtstag 2018"
+             ]
+  , examples (datetimeHoliday (2018, 2, 12, 0, 0, 0) Day "Rosenmontag")
+             [ "Rosenmontag 2018"
+             ]
+  , examples (datetimeHoliday (2018, 2, 8, 0, 0, 0) Day "Weiberfastnacht")
+             [ "Weiberfastnacht 2018"
+             ]
   ]

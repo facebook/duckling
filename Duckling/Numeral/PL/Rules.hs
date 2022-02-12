@@ -137,8 +137,8 @@ ruleSpecialCompositionForMissingHundredsLikeInOneTwentyTwo :: Rule
 ruleSpecialCompositionForMissingHundredsLikeInOneTwentyTwo = Rule
   { name = "special composition for missing hundreds like in one twenty two"
   , pattern =
-    [ numberBetween 1 10
-    , numberBetween 10 100
+    [ Predicate $ numberBetween 1 10
+    , Predicate $ numberBetween 10 100
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData{TNumeral.value = v1}:
@@ -516,7 +516,7 @@ ruleInteger2 = Rule
   { name = "integer 21..99"
   , pattern =
     [ oneOf [20, 30 .. 90]
-    , numberBetween 1 10
+    , Predicate $ numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData{TNumeral.value = v1}:

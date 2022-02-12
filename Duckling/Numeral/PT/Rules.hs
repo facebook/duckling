@@ -173,7 +173,7 @@ ruleCompositeTens = Rule
   { name = "integer 21..99"
   , pattern =
     [ oneOf [20,30..90]
-    , numberBetween 1 10
+    , Predicate $ numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData{TNumeral.value = tens}:
@@ -188,7 +188,7 @@ ruleDecsAnd = Rule
   , pattern =
     [ oneOf [20, 30..90]
     , regex "e"
-    , numberBetween 1 10
+    , Predicate $ numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData{TNumeral.value = v1}:
@@ -203,7 +203,7 @@ ruleCompositeCents = Rule
   { name = "integer 101..999"
   , pattern =
     [ oneOf [100, 200..900]
-    , numberBetween 1 100
+    , Predicate $ numberBetween 1 100
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData{TNumeral.value = hundreds}:
@@ -218,7 +218,7 @@ ruleCentsAnd = Rule
   , pattern =
     [ oneOf [100, 200..900]
     , regex "e"
-    , numberBetween 1 100
+    , Predicate $ numberBetween 1 100
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData{TNumeral.value = v1}:
@@ -232,8 +232,8 @@ ruleSkipHundreds :: Rule
 ruleSkipHundreds = Rule
   { name = "one twenty two"
   , pattern =
-    [ numberBetween 1 10
-    , numberBetween 10 100
+    [ Predicate $ numberBetween 1 10
+    , Predicate $ numberBetween 10 100
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData{TNumeral.value = hundreds}:

@@ -226,7 +226,7 @@ ruleOneDollarAnd = Rule
   { name = "one dollar and x dimes (short form)"
   , pattern =
     [ regex "個"
-    , numberBetween 1 10
+    , Predicate $ numberBetween 1 10
     ]
   , prod = \case
       (_:Token Numeral NumeralData{TNumeral.value = v}:_) ->

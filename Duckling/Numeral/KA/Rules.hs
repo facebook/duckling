@@ -209,7 +209,7 @@ ruleCompositeTens = Rule
   { name = "integer 21..99"
   , pattern =
     [ oneOf [20,40..90]
-    , numberBetween 1 20
+    , Predicate $ numberBetween 1 20
     ]
   , prod = \case
       (Token Numeral NumeralData{TNumeral.value = tens}:
@@ -224,7 +224,7 @@ ruleCompositeHundreds = Rule
   , pattern =
     [ oneOf [100,200..900]
     , oneOf [20,40..90]
-    , numberBetween 1 20
+    , Predicate $ numberBetween 1 20
     ]
   , prod = \case
       (Token Numeral NumeralData{TNumeral.value = hundreds}:
@@ -239,7 +239,7 @@ ruleCompositeHundredsAndUnits = Rule
   { name = "integer 100..999"
   , pattern =
     [ oneOf [100,200..900]
-    , numberBetween 1 20
+    , Predicate $ numberBetween 1 20
     ]
   , prod = \case
       (Token Numeral NumeralData{TNumeral.value = hundreds}:

@@ -57,7 +57,7 @@ ruleNumerals2 = Rule
   , pattern =
     [ oneOf [20, 50, 40, 30]
     , regex "[\\s\\-]+"
-    , numberBetween 2 10
+    , Predicate $ numberBetween 2 10
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData{TNumeral.value = v1}:
@@ -119,7 +119,7 @@ ruleNumerals5 = Rule
   , pattern =
     [ oneOf [60, 80]
     , regex "[\\s\\-]+"
-    , numberBetween 2 20
+    , Predicate $ numberBetween 2 20
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData{TNumeral.value = v1}:
@@ -170,7 +170,7 @@ ruleNumeral3 = Rule
   , pattern =
     [ numberWith TNumeral.value (== 10)
     , regex "[\\s\\-]+"
-    , numberBetween 7 10
+    , Predicate $ numberBetween 7 10
     ]
   , prod = \tokens -> case tokens of
       (_:

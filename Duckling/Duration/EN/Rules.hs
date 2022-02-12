@@ -20,7 +20,7 @@ import qualified Data.Text as Text
 import Duckling.Dimensions.Types
 import Duckling.Duration.Helpers
 import Duckling.Duration.Types (DurationData(..))
-import Duckling.Numeral.Helpers (parseInteger)
+import Duckling.Numeral.Helpers (numberBetween, parseInteger)
 import Duckling.Numeral.Types (NumeralData(..))
 import Duckling.Regex.Types
 import Duckling.Types
@@ -180,7 +180,7 @@ ruleDurationHoursAndMinutes = Rule
   , pattern =
     [ Predicate isNatural
     , regex "hours?( and)?"
-    , Predicate isNatural
+    , Predicate $ and . sequence [isNatural, numberBetween 1 60]
     ]
   , prod = \case
       (Token Numeral h:

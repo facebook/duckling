@@ -68,7 +68,7 @@ ruleCompositeTens = Rule
   { name = "integer 21..99"
   , pattern =
     [ oneOf [ 20, 30..90 ]
-    , numberBetween 1 10
+    , Predicate $ numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData{TNumeral.value = tens}:
@@ -83,7 +83,7 @@ ruleCompositeTensWithAnd = Rule
   , pattern =
     [ oneOf [ 20, 30..90 ]
     , regex "ו"
-    , numberBetween 1 10
+    , Predicate $ numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData{TNumeral.value = tens}:
@@ -230,7 +230,7 @@ ruleInteger14 :: Rule
 ruleInteger14 = Rule
   { name = "integer 11..19"
   , pattern =
-    [ numberBetween 1 10
+    [ Predicate $ numberBetween 1 10
     , numberWith TNumeral.value (== 10)
     ]
   , prod = \tokens -> case tokens of
@@ -263,7 +263,7 @@ ruleInteger16 = Rule
   { name = "integer 101..999"
   , pattern =
     [ oneOf [300, 600, 500, 100, 800, 200, 900, 700, 400]
-    , numberBetween 1 100
+    , Predicate $ numberBetween 1 100
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData{TNumeral.value = v1}:

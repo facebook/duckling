@@ -146,7 +146,7 @@ ruleNumeralsEn :: Rule
 ruleNumeralsEn = Rule
   { name = "numbers en"
   , pattern =
-    [ numberBetween 1 10
+    [ Predicate $ numberBetween 1 10
     , regex "-?en-?"
     , oneOf [20, 30 .. 90]
     ]

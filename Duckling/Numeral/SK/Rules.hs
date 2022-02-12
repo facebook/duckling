@@ -98,7 +98,7 @@ ruleIntegerCompositeTens = Rule
   { name = "integer 21..99"
   , pattern =
     [ oneOf [20, 30..90]
-    , numberBetween 1 10
+    , Predicate $ numberBetween 1 10
     ]
   , prod = \case
       (Token Numeral NumeralData{TNumeral.value = tens}:

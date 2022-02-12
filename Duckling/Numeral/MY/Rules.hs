@@ -29,9 +29,9 @@ ruleInteger5 :: Rule
 ruleInteger5 = Rule
   { name = "integer (11..99) "
   , pattern =
-    [ numberBetween 1 10
+    [ Predicate $ numberBetween 1 10
     , regex "ဆယ့်"
-    , numberBetween 1 10
+    , Predicate $ numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData{TNumeral.value = v1}:
@@ -72,7 +72,7 @@ ruleInteger3 = Rule
   { name = "integer (11..19) "
   , pattern =
     [ regex "ဆယ့်"
-    , numberBetween 1 10
+    , Predicate $ numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
       (_:Token Numeral NumeralData{TNumeral.value = v}:_) -> double $ v + 10
@@ -102,7 +102,7 @@ ruleInteger6 :: Rule
 ruleInteger6 = Rule
   { name = "integer (100..900)"
   , pattern =
-    [ numberBetween 1 10
+    [ Predicate $ numberBetween 1 10
     , regex "ရာ"
     ]
   , prod = \tokens -> case tokens of
@@ -114,7 +114,7 @@ ruleInteger7 :: Rule
 ruleInteger7 = Rule
   { name = "integer (1000..9000)"
   , pattern =
-    [ numberBetween 1 10
+    [ Predicate $ numberBetween 1 10
     , regex "ထောင်"
     ]
   , prod = \tokens -> case tokens of
@@ -126,7 +126,7 @@ ruleInteger8 :: Rule
 ruleInteger8 = Rule
   { name = "integer (10000..90000)"
   , pattern =
-    [ numberBetween 1 10
+    [ Predicate $ numberBetween 1 10
     , regex "သောင်း"
     ]
   , prod = \tokens -> case tokens of
@@ -147,7 +147,7 @@ ruleInteger4 :: Rule
 ruleInteger4 = Rule
   { name = "integer (10..90)"
   , pattern =
-    [ numberBetween 1 10
+    [ Predicate $ numberBetween 1 10
     , regex "ဆယ်"
     ]
   , prod = \tokens -> case tokens of

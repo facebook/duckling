@@ -246,7 +246,7 @@ ruleCompositeTens = Rule
   , pattern =
     [ oneOf [20,30..90]
     , regex "[\\s\\-]+"
-    , numberBetween 1 10
+    , Predicate $ numberBetween 1 10
     ]
   , prod = \case
       (Token Numeral NumeralData{TNumeral.value = tens}:

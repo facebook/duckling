@@ -140,7 +140,10 @@ ruleHigherTensWithOnes :: Rule
 ruleHigherTensWithOnes = Rule
   { name = "number (31..39 41..49 51..59 61..69 71..79 81..89 91..99)"
   , pattern =
-      [oneOf [30, 40, 50, 60, 70, 80, 90], regex "-", numberBetween 1 9]
+      [ oneOf [30, 40, 50, 60, 70, 80, 90]
+      , regex "-"
+      , Predicate $ numberBetween 1 9
+      ]
   , prod = \case
       (Token Numeral NumeralData{TNumeral.value = v1}:
        _:
@@ -185,7 +188,10 @@ ruleTwenties :: Rule
 ruleTwenties = Rule
   { name = "number (21..29)"
   , pattern =
-      [oneOf [20], regex "(-i-| i )", numberBetween 1 10]
+      [ oneOf [20]
+      , regex "(-i-| i )"
+      , Predicate $ numberBetween 1 10
+      ]
   , prod = \case
       (Token Numeral NumeralData{TNumeral.value = v1}:
        _:
@@ -212,10 +218,10 @@ ruleNumerals :: Rule
 ruleNumerals = Rule
   { name = "numbers 200..999"
   , pattern =
-      [ numberBetween 2 10
+      [ Predicate $ numberBetween 2 10
       , regex "-"
       , numberWith TNumeral.value (== 100)
-      , numberBetween 0 100
+      , Predicate $ numberBetween 0 100
       ]
   , prod = \case
       (Token Numeral NumeralData{TNumeral.value = v1}:
@@ -242,7 +248,7 @@ ruleBelowTenWithTwoDigits = Rule
   { name = "integer (0-9) with two digits"
   , pattern =
       [ regex "zero|0"
-      , numberBetween 1 10
+      , Predicate $ numberBetween 1 10
       ]
   , prod = \case
       (_:Token Numeral NumeralData{TNumeral.value = v}:_) -> double v

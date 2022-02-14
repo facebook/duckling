@@ -87,7 +87,7 @@ ruleCompositeTens = Rule
   { name = "integer 11..19 21..29 .. 91..99"
   , pattern = [oneOf [20,30..90]
   , regex "-?na-?"
-  , numberBetween 1 10]
+  , Predicate $ numberBetween 1 10]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData{TNumeral.value = v1}:
        Token Numeral NumeralData{TNumeral.value = v2}:

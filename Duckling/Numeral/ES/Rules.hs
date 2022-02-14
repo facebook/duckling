@@ -69,9 +69,8 @@ ruleBelowTenWithTwoDigits = Rule
   {
     name = "integer (0-9) with two digits"
   , pattern =
-      [
-        regex "((c|z)ero)|0"
-      , numberBetween 1 10
+      [ regex "((c|z)ero)|0"
+      , Predicate $ numberBetween 1 10
       ]
   , prod = \case
       (
@@ -124,12 +123,17 @@ ruleNumeralSixteenToTwentyNine = Rule
 ruleNumeralSixteenToNineteenWithDiez :: Rule
 ruleNumeralSixteenToNineteenWithDiez = Rule
   { name = "number (16..19, two words)"
-  , pattern = [numberWith TNumeral.value (== 10), regex "y", numberBetween 6 10]
+  , pattern =
+      [ numberWith TNumeral.value (== 10)
+      , regex "y"
+      , Predicate $ numberBetween 6 10
+      ]
   , prod = \case
       (_ : _ : Token Numeral NumeralData { TNumeral.value = v } : _) ->
         double $ 10 + v
       _ -> Nothing
   }
+
 byTensMap :: HashMap.HashMap Text.Text Integer
 byTensMap =
   HashMap.fromList
@@ -161,7 +165,10 @@ ruleNumeralTwentyOneToNinetyNine :: Rule
 ruleNumeralTwentyOneToNinetyNine = Rule
   { name = "number (21..29 31..39 41..49 51..59 61..69 71..79 81..89 91..99)"
   , pattern =
-      [oneOf [20, 30 .. 90], regex "y", numberBetween 1 10]
+      [ oneOf [20, 30 .. 90]
+      , regex "y"
+      , Predicate $ numberBetween 1 10
+      ]
   , prod = \case
       (Token Numeral NumeralData { TNumeral.value = v1 } : _ : Token Numeral NumeralData { TNumeral.value = v2 } : _) ->
         double $ v1 + v2
@@ -221,7 +228,7 @@ ruleTwoPartHundreds :: Rule
 ruleTwoPartHundreds = Rule
  { name = "2..9 cientos"
  , pattern =
-     [ numberBetween 2 10
+     [ Predicate $ numberBetween 2 10
      , regex "cientos"
      ]
   , prod = \case
@@ -235,7 +242,7 @@ ruleNumeralHundredsAndSmaller = Rule
   { name = "<hundreds> 0..99"
   , pattern =
       [ numberWith TNumeral.value (TNumeral.isMultiple 100)
-      , numberBetween 0 100
+      , Predicate $ numberBetween 0 100
       ]
   , prod = \case
       (Token Numeral NumeralData { TNumeral.value = v1 } : Token Numeral NumeralData { TNumeral.value = v2 } : _)
@@ -247,7 +254,7 @@ ruleNumeralMultiply :: Rule
 ruleNumeralMultiply = Rule
   { name = "2..999 <multipliable>"
   , pattern =
-      [ numberBetween 2 1000
+      [ Predicate $ numberBetween 2 1000
       , Predicate isMultipliable
       ]
   , prod = \case
@@ -261,7 +268,7 @@ ruleNumeralThousandsAnd = Rule
   { name = "<thousands> 0..999"
   , pattern =
       [ numberWith TNumeral.value (TNumeral.isMultiple 1000)
-      , numberBetween 0 999
+      , Predicate $ numberBetween 0 999
       ]
   , prod = \case
       (Token Numeral NumeralData { TNumeral.value = v1 } : Token Numeral NumeralData { TNumeral.value = v2 } : _)
@@ -274,7 +281,7 @@ ruleNumeralMillionsAnd = Rule
   { name = "<millions> 0..999999"
   , pattern =
       [ numberWith TNumeral.value (TNumeral.isMultiple 1000000)
-      , numberBetween 0 999999
+      , Predicate $ numberBetween 0 999999
       ]
   , prod = \case
       (Token Numeral NumeralData { TNumeral.value = v1 } : Token Numeral NumeralData { TNumeral.value = v2 } : _)

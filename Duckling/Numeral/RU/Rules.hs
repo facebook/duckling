@@ -179,7 +179,7 @@ ruleInteger7 = Rule
   { name = "integer 21..99"
   , pattern =
     [ oneOf [70, 20, 60, 50, 40, 90, 30, 80]
-    , numberBetween 1 10
+    , Predicate $ numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData{TNumeral.value = v1}:
@@ -193,7 +193,7 @@ ruleInteger8 = Rule
   { name = "integer 101..999"
   , pattern =
     [ oneOf [300, 600, 500, 100, 800, 200, 900, 700, 400]
-    , numberBetween 1 100
+    , Predicate $ numberBetween 1 100
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData{TNumeral.value = v1}:

@@ -294,7 +294,9 @@ allExamples = concat
              ]
   , examples (datetime (2013, 1, 29, 4, 0, 0) Hour)
              [ "14 gün önce"
-             , "iki hafta önce"
+             ]
+  , examples (datetime (2013, 1, 29, 0, 0, 0) Day)
+             [ "iki hafta önce"
              ]
   , examples (datetime (2013, 2, 5, 0, 0, 0) Day)
              [ "bir hafta önce"
@@ -314,7 +316,9 @@ allExamples = concat
              ]
   , examples (datetime (2013, 2, 26, 4, 0, 0) Hour)
              [ "14 gün sonra"
-             , "iki hafta sonra"
+             ]
+  , examples (datetime (2013, 2, 26, 0, 0, 0) Day)
+             [ "iki hafta sonra"
              ]
   , examples (datetime (2013, 2, 19, 0, 0, 0) Day)
              [ "bir hafta sonra"
@@ -437,9 +441,11 @@ allExamples = concat
              [ "perşembe 9:30 - 11:00"
              ]
   , examples (datetimeInterval ((2013, 2, 12, 15, 0, 0), (2013, 2, 12, 17, 0, 0)) Hour)
-             [ "saat 15-16"]
+             [ "saat 15-16"
+             ]
   , examples (datetimeInterval ((2013, 2, 12, 15, 30, 0), (2013, 2, 12, 18, 1, 0)) Minute)
-             [ "saat 15:30 - 18"]
+             [ "saat 15:30 - 18"
+             ]
   , examples (datetimeInterval ((2013, 2, 14, 9, 0, 0), (2013, 2, 14, 12, 0, 0)) Hour)
              [ "perşembe saat 9-11"
              ]

@@ -222,7 +222,7 @@ ruleCompositeHundreds = Rule
   , pattern =
     [ oneOf [100,200..5000]
     , regex "[\\s\\-]+"
-    , numberBetween 1 99
+    , Predicate $ numberBetween 1 99
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData{TNumeral.value = hundreds}:
@@ -239,7 +239,7 @@ ruleCompositeThousands = Rule
   , pattern =
     [ oneOf [1000,2000..50000]
     , regex "[\\s\\-]+"
-    , numberBetween 1 999
+    , Predicate $ numberBetween 1 999
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData{TNumeral.value = thousands}:

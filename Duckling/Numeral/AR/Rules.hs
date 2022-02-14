@@ -42,7 +42,7 @@ ruleInteger23 = Rule
   , pattern =
     [ oneOf [100, 200 .. 900]
     , regex "و"
-    , numberBetween 1 100
+    , Predicate $ numberBetween 1 100
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData{TNumeral.value = v1}:
@@ -86,7 +86,7 @@ ruleInteger22 :: Rule
 ruleInteger22 = Rule
   { name = "integer 21..99"
   , pattern =
-    [ numberBetween 1 10
+    [ Predicate $ numberBetween 1 10
     , regex "و"
     , oneOf [20, 30 .. 90]
     ]
@@ -102,7 +102,7 @@ ruleInteger21 :: Rule
 ruleInteger21 = Rule
   { name = "integer (13..19)"
   , pattern =
-    [ numberBetween 3 10
+    [ Predicate $ numberBetween 3 10
     , numberWith TNumeral.value (== 10)
     ]
   , prod = \tokens -> case tokens of

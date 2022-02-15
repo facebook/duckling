@@ -19,7 +19,7 @@ import Duckling.Regex.Types
 import Control.Monad (join)
 import qualified Data.Text as Text
 import Prelude
-import Duckling.Numeral.Helpers (parseInteger)
+import Duckling.Numeral.Helpers (numberBetween, parseInteger)
 import Duckling.Duration.Types (DurationData(..))
 import qualified Duckling.Duration.Types as TDuration
 import Data.String
@@ -216,7 +216,7 @@ ruleHoursAndMinutes = Rule
   , pattern =
     [ Predicate isNatural
     , regex "(ein(en?) )?stunden?( und)?"
-    , Predicate isNatural
+    , Predicate $ and . sequence [isNatural, numberBetween 1 60]
     , Predicate $ isGrain TG.Minute
     ]
   , prod = \case

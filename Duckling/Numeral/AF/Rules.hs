@@ -124,7 +124,7 @@ ruleCompositeTens :: Rule
 ruleCompositeTens = Rule
   { name = "integer ([3-9][1-9])"
   , pattern =
-    [ numberBetween 1 10
+    [ Predicate $ numberBetween 1 10
     , regex "en"
     , oneOf [20, 30..90]
     ]

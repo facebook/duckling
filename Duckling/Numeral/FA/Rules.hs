@@ -135,7 +135,7 @@ ruleCompositeTens = Rule
   , pattern =
     [ oneOf [20,30..90]
     , regex "و"
-    , numberBetween 1 10
+    , Predicate $ numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData{TNumeral.value = tens}:
@@ -151,7 +151,7 @@ ruleCompositeHundred = Rule
   , pattern =
     [ oneOf [100,200..900]
     , regex "و"
-    , numberBetween 1 100
+    , Predicate $ numberBetween 1 100
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData{TNumeral.value = tens}:

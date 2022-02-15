@@ -386,8 +386,7 @@ ruleYearLatent :: Rule
 ruleYearLatent = Rule
   { name = "year (latent)"
   , pattern =
-      [ Predicate $
-        or . sequence [isIntegerBetween (- 10000) 0, isIntegerBetween 25 10000]
+      [ Predicate $ isIntegerBetween 25 10000
       ]
   , prod = \case
       (token:_) -> do
@@ -400,7 +399,7 @@ ruleYearADBC :: Rule
 ruleYearADBC = Rule
   { name = "<year> (bc|ad)"
   , pattern =
-    [ Predicate $ isIntegerBetween (-10000) 10000
+    [ Predicate $ isIntegerBetween 1 10000
     , regex "(a\\.?d\\.?|b\\.?c\\.?)"
     ]
   , prod = \case

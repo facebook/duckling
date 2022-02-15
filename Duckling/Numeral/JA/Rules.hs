@@ -52,7 +52,7 @@ ruleInteger10 = Rule
   { name = "integer (1000..1999)"
   , pattern =
     [ regex "千"
-    , numberBetween 1 1000
+    , Predicate $ numberBetween 1 1000
     ]
   , prod = \tokens -> case tokens of
       (_:Token Numeral NumeralData{TNumeral.value = v}:_) ->
@@ -76,7 +76,7 @@ ruleInteger15 :: Rule
 ruleInteger15 = Rule
   { name = "integer (20000..90000)"
   , pattern =
-    [ numberBetween 2 10
+    [ Predicate $ numberBetween 2 10
     , regex "万"
     ]
   , prod = \tokens -> case tokens of
@@ -111,7 +111,7 @@ ruleInteger3 :: Rule
 ruleInteger3 = Rule
   { name = "integer (20..90)"
   , pattern =
-    [ numberBetween 2 10
+    [ Predicate $ numberBetween 2 10
     , regex "十"
     ]
   , prod = \tokens -> case tokens of
@@ -133,7 +133,7 @@ ruleInteger6 = Rule
   { name = "integer (100..199)"
   , pattern =
     [ regex "百"
-    , numberBetween 1 100
+    , Predicate $ numberBetween 1 100
     ]
   , prod = \tokens -> case tokens of
       (_:Token Numeral NumeralData{TNumeral.value = v}:_) -> double $ v + 100
@@ -145,7 +145,7 @@ ruleInteger12 = Rule
   { name = "integer 2001..9999"
   , pattern =
     [ oneOf [3000, 9000, 7000, 8000, 2000, 4000, 6000, 5000]
-    , numberBetween 1 1000
+    , Predicate $ numberBetween 1 1000
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData{TNumeral.value = v1}:
@@ -178,7 +178,7 @@ ruleInteger7 :: Rule
 ruleInteger7 = Rule
   { name = "integer (200..900)"
   , pattern =
-    [ numberBetween 2 10
+    [ Predicate $ numberBetween 2 10
     , regex "百"
     ]
   , prod = \tokens -> case tokens of
@@ -191,7 +191,7 @@ ruleInteger14 = Rule
   { name = "integer (10000..19999)"
   , pattern =
     [ regex "万"
-    , numberBetween 1 10000
+    , Predicate $ numberBetween 1 10000
     ]
   , prod = \tokens -> case tokens of
       (_:Token Numeral NumeralData{TNumeral.value = v}:_) ->
@@ -204,7 +204,7 @@ ruleInteger8 = Rule
   { name = "integer 201..999"
   , pattern =
     [ oneOf [300, 600, 500, 800, 200, 900, 700, 400]
-    , numberBetween 1 100
+    , Predicate $ numberBetween 1 100
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData{TNumeral.value = v1}:
@@ -218,7 +218,7 @@ ruleInteger16 = Rule
   { name = "integer 20001..99999"
   , pattern =
     [ oneOf [20000, 40000, 80000, 60000, 30000, 70000, 90000, 50000]
-    , numberBetween 1 10000
+    , Predicate $ numberBetween 1 10000
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData{TNumeral.value = v1}:
@@ -269,7 +269,7 @@ ruleInteger4 = Rule
   { name = "integer 21..99"
   , pattern =
     [ oneOf [70, 20, 60, 50, 40, 90, 30, 80]
-    , numberBetween 1 10
+    , Predicate $ numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData{TNumeral.value = v1}:
@@ -283,7 +283,7 @@ ruleInteger2 = Rule
   { name = "integer (11..19)"
   , pattern =
     [ regex "十"
-    , numberBetween 1 10
+    , Predicate $ numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
       (_:Token Numeral NumeralData{TNumeral.value = v}:_) -> double $ v + 10
@@ -294,7 +294,7 @@ ruleInteger11 :: Rule
 ruleInteger11 = Rule
   { name = "integer (2000..9000)"
   , pattern =
-    [ numberBetween 2 10
+    [ Predicate $ numberBetween 2 10
     , regex "千"
     ]
   , prod = \tokens -> case tokens of

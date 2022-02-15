@@ -55,6 +55,7 @@ import qualified Duckling.Time.PT.Corpus as PTTime
 import qualified Duckling.Time.RO.Corpus as ROTime
 import qualified Duckling.Time.RU.Corpus as RUTime
 import qualified Duckling.Time.SV.Corpus as SVTime
+import qualified Duckling.Time.TR.Corpus as TRTime
 import qualified Duckling.Time.UK.Corpus as UKTime
 import qualified Duckling.Time.VI.Corpus as VITime
 import qualified Duckling.Time.ZH.Corpus as ZHTime
@@ -221,7 +222,7 @@ getCorpusForLang = \case
   TA -> (testContext, testOptions, [])
   TE -> (testContext, testOptions, [])
   TH -> (testContext, testOptions, [])
-  TR -> (testContext, testOptions, [])
+  TR -> TRTime.corpus
   UK -> UKTime.corpus
   VI -> VITime.corpus
   ZH -> ZHTime.corpus

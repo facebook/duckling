@@ -1060,8 +1060,8 @@ ruleSeason4 = Rule
       in Token Time <$> interval TTime.Open from to
   }
 
-ruleYearLatent2 :: Rule
-ruleYearLatent2 = Rule
+ruleYearLatent :: Rule
+ruleYearLatent = Rule
   { name = "year (latent)"
   , pattern =
     [ Predicate $ isIntegerBetween 2101 10000
@@ -2062,19 +2062,6 @@ ruleTimeofdayCirca = Rule
       _ -> Nothing
   }
 
-ruleYearLatent :: Rule
-ruleYearLatent = Rule
-  { name = "year (latent)"
-  , pattern =
-    [ Predicate $ isIntegerBetween (- 10000) (-1)
-    ]
-  , prod = \tokens -> case tokens of
-      (token:_) -> do
-        n <- getIntValue token
-        tt . mkLatent $ year n
-      _ -> Nothing
-  }
-
 ruleYesterday :: Rule
 ruleYesterday = Rule
   { name = "yesterday"
@@ -2533,7 +2520,6 @@ rules =
   , ruleValentinesDay
   , ruleWeekend
   , ruleYearLatent
-  , ruleYearLatent2
   , ruleYearNotLatent
   , ruleYesterday
   , ruleYyyymmdd

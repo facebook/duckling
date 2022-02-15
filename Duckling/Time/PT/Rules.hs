@@ -1143,7 +1143,7 @@ ruleYearLatent :: Rule
 ruleYearLatent = Rule
   { name = "year (latent)"
   , pattern =
-    [ Predicate $ isIntegerBetween (- 10000) 999
+    [ Predicate $ isIntegerBetween 1 999
     ]
   , prod = \tokens -> case tokens of
       (token:_) -> do

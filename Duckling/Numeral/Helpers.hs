@@ -101,12 +101,10 @@ numberWith f pred = Predicate $ \x ->
     (Token Numeral x@NumeralData{}) -> pred (f x)
     _ -> False
 
-numberBetween :: Double -> Double -> PatternItem
-numberBetween low up = Predicate $ \x ->
-  case x of
-    (Token Numeral NumeralData {value = v, multipliable = False}) ->
-      low <= v && v < up
-    _ -> False
+numberBetween :: Double -> Double -> Predicate
+numberBetween low up (Token Numeral NumeralData {value = v, multipliable = False}) =
+  low <= v && v < up
+numberBetween _ _ _ = False
 
 isNatural :: Predicate
 isNatural (Token Numeral NumeralData {value = v}) =

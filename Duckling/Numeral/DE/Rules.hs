@@ -123,7 +123,7 @@ ruleNumeralsUnd :: Rule
 ruleNumeralsUnd = Rule
   { name = "numbers und"
   , pattern =
-    [ numberBetween 1 10
+    [ Predicate $ numberBetween 1 10
     , regex "und"
     , oneOf [20, 30 .. 90]
     ]

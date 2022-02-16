@@ -140,6 +140,7 @@ allExamples = concat
              [ "1.416,15"
              ]
   , examples (NumeralValue 1000000.0)
-             [ "1.000.000,00"
+             [ "1.000.000,00",
+               "eine million"
              ]
   ]

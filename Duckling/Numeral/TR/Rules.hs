@@ -607,7 +607,7 @@ ruleInteger4 = Rule
   { name = "integer 11..99"
   , pattern =
     [ oneOf [70, 20, 60, 50, 40, 90, 30, 10, 80]
-    , numberBetween 1 10
+    , Predicate $ numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData{TNumeral.value = v1}:

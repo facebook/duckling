@@ -159,7 +159,7 @@ ruleNumeral3 = Rule
   , pattern =
     [ oneOf [70, 20, 60, 50, 40, 90, 30, 80]
     , regex "e"
-    , numberBetween 1 10
+    , Predicate $ numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData{TNumeral.value = v1}:
@@ -287,9 +287,9 @@ ruleNumerals :: Rule
 ruleNumerals = Rule
   { name = "numbers 200..999"
   , pattern =
-    [ numberBetween 2 10
+    [ Predicate $ numberBetween 2 10
     , numberWith TNumeral.value (== 100)
-    , numberBetween 0 100
+    , Predicate $ numberBetween 0 100
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData{TNumeral.value = v1}:

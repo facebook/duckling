@@ -107,7 +107,7 @@ ruleInteger3 = Rule
   { name = "integer 21..99"
   , pattern =
     [ oneOf [70, 20, 60, 50, 40, 90, 30, 80]
-    , numberBetween 1 10
+    , Predicate $ numberBetween 1 10
     ]
   , prod = \case
       (Token Numeral NumeralData{TNumeral.value = v1}:

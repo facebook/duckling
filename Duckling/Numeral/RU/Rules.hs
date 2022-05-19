@@ -179,7 +179,7 @@ ruleInteger7 = Rule
   { name = "integer 21..99"
   , pattern =
     [ oneOf [70, 20, 60, 50, 40, 90, 30, 80]
-    , numberBetween 1 10
+    , Predicate $ numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData{TNumeral.value = v1}:
@@ -193,7 +193,7 @@ ruleInteger8 = Rule
   { name = "integer 101..999"
   , pattern =
     [ oneOf [300, 600, 500, 100, 800, 200, 900, 700, 400]
-    , numberBetween 1 100
+    , Predicate $ numberBetween 1 100
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData{TNumeral.value = v1}:
@@ -232,6 +232,27 @@ threeToNineteenMap = HashMap.fromList
   , ( "девятнадцать", 19)
   ]
 
+threeToNineteenMapGenitive :: HashMap Text Integer
+threeToNineteenMapGenitive = HashMap.fromList
+  [ ( "трех", 3)
+  , ( "четырех", 4)
+  , ( "пяти", 5)
+  , ( "шести", 6)
+  , ( "семи", 7)
+  , ( "восьми", 8)
+  , ( "девяти", 9)
+  , ( "десяти", 10)
+  , ( "одиннадцати", 11)
+  , ( "двенадцати", 12)
+  , ( "тринадцати", 13)
+  , ( "четырнадцати", 14)
+  , ( "пятнадцати", 15)
+  , ( "шестнадцати", 16)
+  , ( "семнадцати", 17)
+  , ( "восемнадцати", 18)
+  , ( "девятнадцати", 19)
+  ]
+
 ruleInteger4 :: Rule
 ruleInteger4 = Rule
   { name = "integer (3..19)"
@@ -241,6 +262,18 @@ ruleInteger4 = Rule
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
         HashMap.lookup (Text.toLower match) threeToNineteenMap >>= integer
+      _ -> Nothing
+  }
+
+ruleInteger4Genitive :: Rule
+ruleInteger4Genitive = Rule
+  { name = "integer (3..19)"
+  , pattern =
+    [ regex "(трех|четырнадцати|четырех|пятнадцати|пяти|шестнадцати|шести|семнадцати|семи|восемнадцати|восьми|девятнадцати|девяти|десяти|одиннадцати|двенадцати|тринадцати)"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        HashMap.lookup (Text.toLower match) threeToNineteenMapGenitive >>= integer
       _ -> Nothing
   }
 
@@ -287,6 +320,7 @@ rules =
   , ruleInteger2
   , ruleInteger3
   , ruleInteger4
+  , ruleInteger4Genitive
   , ruleInteger5
   , ruleInteger6
   , ruleInteger7

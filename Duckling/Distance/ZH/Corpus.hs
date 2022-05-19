@@ -57,7 +57,6 @@ allExamples = concat
   , examples (simple Inch 4)
              [ "4 inch"
              , "4 inches"
-             , "4''"
              , "4英寸"
              , "4英吋"
              , "四吋"
@@ -72,6 +71,7 @@ allExamples = concat
              [ "1.9 m"
              , "1.9米"
              , "米九"
+             , "米九左右"
              ]
   , examples (simple Metre 3.9)
              [ "3.9 m"

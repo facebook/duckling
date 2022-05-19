@@ -5,7 +5,6 @@
 -- LICENSE file in the root directory of this source tree.
 
 
-{-# LANGUAGE NamedFieldPuns #-}
 {-# LANGUAGE NoRebindableSyntax #-}
 {-# LANGUAGE RecordWildCards #-}
 
@@ -35,9 +34,16 @@ import Duckling.Rules
 import Duckling.Types
 
 -- | Parses `input` and returns a curated list of entities found.
-parse :: Text -> Context -> Options -> [Seal Dimension] -> [Entity]
-parse input ctx options = map (formatToken input) . analyze input ctx options .
-  HashSet.fromList
+parse
+  :: Text
+  -> Context
+  -> Options
+  -> [Seal Dimension]
+  -> [Entity]
+parse input ctx options =
+  map (formatToken input)
+  . analyze input ctx options
+  . HashSet.fromList
 
 supportedDimensions :: HashMap Lang [Seal Dimension]
 supportedDimensions =
@@ -45,19 +51,24 @@ supportedDimensions =
 
 -- | Returns a curated list of resolved tokens found
 -- When `targets` is non-empty, returns only tokens of such dimensions.
-analyze :: Text -> Context -> Options -> HashSet (Seal Dimension)
+analyze
+  :: Text
+  -> Context
+  -> Options
+  -> HashSet (Seal Dimension)
   -> [ResolvedToken]
 analyze input context@Context{..} options targets =
   rank (classifiers locale) targets
-  . filter (\Resolved{node = Node{token = (Token d _)}} ->
-      HashSet.null targets || HashSet.member (Seal d) targets
-    )
+  $ filter isRelevantDimension
   $ parseAndResolve (rulesFor locale targets) input context options
+  where
+    isRelevantDimension Resolved{node = Node{token = (Token d _)}} =
+      HashSet.null targets || HashSet.member (Seal d) targets
 
 -- | Converts the resolved token to the API format
 formatToken :: Text -> ResolvedToken -> Entity
 formatToken sentence
-  (Resolved (Range start end) node@Node{token = Token dimension _} value latent)
-  = Entity (toName dimension) body value start end latent node
+  (Resolved (Range start end) node@Node{token = Token dim _} value latent)
+  = Entity (toName dim) body value start end latent node
   where
     body = Text.drop start $ Text.take end sentence

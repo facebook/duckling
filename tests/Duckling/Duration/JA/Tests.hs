@@ -20,4 +20,5 @@ import Duckling.Testing.Asserts
 tests :: TestTree
 tests = testGroup "JA Tests"
   [ makeCorpusTest [Seal Duration] corpus
+  , makeNegativeCorpusTest [Seal Duration] negativeCorpus
   ]

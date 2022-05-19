@@ -123,7 +123,7 @@ ruleNumeralsUnd :: Rule
 ruleNumeralsUnd = Rule
   { name = "numbers und"
   , pattern =
-    [ numberBetween 1 10
+    [ Predicate $ numberBetween 1 10
     , regex "und"
     , oneOf [20, 30 .. 90]
     ]
@@ -201,17 +201,23 @@ rulePowersOfTen :: Rule
 rulePowersOfTen = Rule
   { name = "powers of tens"
   , pattern =
-    [ regex "(hunderte?|tausende?|million(en)?)"
+    [ regex "(hunderte?|tausende?|million(en)?|milliarde(n)?|billion(en)?|billiarde(n)?)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
-        "hundert"   -> double 1e2 >>= withGrain 2 >>= withMultipliable
-        "hunderte"  -> double 1e2 >>= withGrain 2 >>= withMultipliable
-        "tausend"   -> double 1e3 >>= withGrain 3 >>= withMultipliable
-        "tausende"  -> double 1e3 >>= withGrain 3 >>= withMultipliable
-        "million"   -> double 1e6 >>= withGrain 6 >>= withMultipliable
-        "millionen" -> double 1e6 >>= withGrain 6 >>= withMultipliable
-        _           -> Nothing
+        "hundert"    -> double 1e2  >>= withGrain 2  >>= withMultipliable
+        "hunderte"   -> double 1e2  >>= withGrain 2  >>= withMultipliable
+        "tausend"    -> double 1e3  >>= withGrain 3  >>= withMultipliable
+        "tausende"   -> double 1e3  >>= withGrain 3  >>= withMultipliable
+        "million"    -> double 1e6  >>= withGrain 6  >>= withMultipliable
+        "millionen"  -> double 1e6  >>= withGrain 6  >>= withMultipliable
+        "milliarde"  -> double 1e9  >>= withGrain 9  >>= withMultipliable
+        "milliarden" -> double 1e9  >>= withGrain 9  >>= withMultipliable
+        "billion"    -> double 1e12 >>= withGrain 12 >>= withMultipliable
+        "billionen"  -> double 1e12 >>= withGrain 12 >>= withMultipliable
+        "billiarde"  -> double 1e15 >>= withGrain 15 >>= withMultipliable
+        "billiarden" -> double 1e15 >>= withGrain 15 >>= withMultipliable
+        _            -> Nothing
       _ -> Nothing
   }
 
@@ -255,7 +261,7 @@ ruleZeroToNineteen :: Rule
 ruleZeroToNineteen = Rule
   { name = "integer (0..19)"
   , pattern =
-    [ regex "(keine[rn]|keine?s?|null|nichts|eins?(er)?|zwei|dreizehn|drei|vierzehn|vier|fünfzehn|fünf|sechzehn|sechs|siebzehn|sieben|achtzehn|acht|neunzehn|neun|elf|zwölf)"
+    [ regex "(keine[rn]|keine?s?|null|nichts|eins?(er?)?|zwei|dreizehn|drei|vierzehn|vier|fünfzehn|fünf|sechzehn|sechs|siebzehn|sieben|achtzehn|acht|neunzehn|neun|elf|zwölf)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->

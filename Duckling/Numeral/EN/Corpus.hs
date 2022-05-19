@@ -184,4 +184,8 @@ allExamples = concat
              , "three hundred krores"
              , "three hundred Kr"
              ]
+  , examples (NumeralValue 45)
+             [ "forty-five (45)"
+             , "45 (forty five)"
+             ]
   ]

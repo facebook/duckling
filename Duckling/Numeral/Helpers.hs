@@ -74,8 +74,8 @@ parseDouble s
 decimalsToDouble :: Double -> Double
 decimalsToDouble x =
   let xs = filter (\y -> x - y < 0)
-         . take 10
-         . iterate (*10) $ 1 in
+         $ take 10
+         $ iterate (*10) 1 in
     case xs of
       [] -> 0
       (multiplier : _) -> x / multiplier
@@ -101,12 +101,10 @@ numberWith f pred = Predicate $ \x ->
     (Token Numeral x@NumeralData{}) -> pred (f x)
     _ -> False
 
-numberBetween :: Double -> Double -> PatternItem
-numberBetween low up = Predicate $ \x ->
-  case x of
-    (Token Numeral NumeralData {value = v, multipliable = False}) ->
-      low <= v && v < up
-    _ -> False
+numberBetween :: Double -> Double -> Predicate
+numberBetween low up (Token Numeral NumeralData {value = v, multipliable = False}) =
+  low <= v && v < up
+numberBetween _ _ _ = False
 
 isNatural :: Predicate
 isNatural (Token Numeral NumeralData {value = v}) =
@@ -136,21 +134,21 @@ oneOf vs = Predicate $ \x ->
 
 withMultipliable :: Token -> Maybe Token
 withMultipliable (Token Numeral x@NumeralData{}) =
-  Just . Token Numeral $ x {multipliable = True}
+  Just $ Token Numeral $ x {multipliable = True}
 withMultipliable _ = Nothing
 
 withGrain :: Int -> Token -> Maybe Token
 withGrain g (Token Numeral x@NumeralData{}) =
-  Just . Token Numeral $ x {grain = Just g}
+  Just $ Token Numeral $ x {grain = Just g}
 withGrain _ _ = Nothing
 
 notOkForAnyTime :: Token -> Maybe Token
 notOkForAnyTime (Token Numeral x) =
-  Just . Token Numeral $ x {okForAnyTime = False}
+  Just $ Token Numeral $ x {okForAnyTime = False}
 notOkForAnyTime _ = Nothing
 
 double :: Double -> Maybe Token
-double x = Just . Token Numeral $ NumeralData
+double x = Just $ Token Numeral $ NumeralData
   { value = x
   , grain = Nothing
   , multipliable = False

@@ -62,9 +62,7 @@ makeReftime series tz utcTime = DucklingTime $ ZoneSeriesTime ducklingTime tzs
 -- | Builds a `DucklingTime` for timezone `tz` at current time.
 -- If no `series` found for `tz`, uses UTC.
 currentReftime :: HashMap Text TimeZoneSeries -> Text -> IO DucklingTime
-currentReftime series tz = do
-  utcNow <- getCurrentTime
-  return $ makeReftime series tz utcNow
+currentReftime series tz = makeReftime series tz <$> getCurrentTime
 
 -- | Builds a `DucklingTime` from a `ZonedTime`.
 fromZonedTime :: ZonedTime -> DucklingTime

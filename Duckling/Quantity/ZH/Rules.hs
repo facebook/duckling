@@ -72,7 +72,7 @@ ruleCattyTael = Rule
   , pattern =
     [ Predicate isPositive
     , regex "斤"
-    , numberBetween 1 10
+    , Predicate $ numberBetween 1 10
     , regex "两|兩"
     ]
   , prod = \case

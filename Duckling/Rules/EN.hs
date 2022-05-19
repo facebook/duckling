@@ -38,6 +38,7 @@ import qualified Duckling.Email.EN.Rules as Email
 import qualified Duckling.Numeral.EN.Rules as Numeral
 import qualified Duckling.Ordinal.EN.Rules as Ordinal
 import qualified Duckling.Quantity.EN.Rules as Quantity
+import qualified Duckling.Region as R
 import qualified Duckling.Temperature.EN.Rules as Temperature
 import qualified Duckling.Time.EN.Rules as Time
 import qualified Duckling.Time.EN.AU.Rules as TimeAU
@@ -62,7 +63,7 @@ defaultRules dim             = langRules dim
 localeRules :: Region -> Seal Dimension -> [Rule]
 localeRules AU (Seal AmountOfMoney) = AmountOfMoneyAU.rules
 localeRules BZ (Seal AmountOfMoney) = AmountOfMoneyBZ.rules
-localeRules CA (Seal AmountOfMoney) = AmountOfMoneyCA.rules
+localeRules R.CA (Seal AmountOfMoney) = AmountOfMoneyCA.rules
 localeRules GB (Seal AmountOfMoney) = AmountOfMoneyGB.rules
 localeRules IE (Seal AmountOfMoney) = AmountOfMoneyIE.rules
 localeRules IN (Seal AmountOfMoney) = AmountOfMoneyIN.rules
@@ -74,7 +75,7 @@ localeRules US (Seal AmountOfMoney) = AmountOfMoneyUS.rules
 localeRules ZA (Seal AmountOfMoney) = AmountOfMoneyZA.rules
 localeRules AU (Seal Time) = TimeAU.rules
 localeRules BZ (Seal Time) = TimeBZ.rules
-localeRules CA (Seal Time) = TimeCA.rules
+localeRules R.CA (Seal Time) = TimeCA.rules
 localeRules GB (Seal Time) = TimeGB.rules
 localeRules IE (Seal Time) = TimeIE.rules
 localeRules IN (Seal Time) = TimeIN.rules

@@ -22,18 +22,20 @@ import Duckling.Time.Types hiding (Month)
 import Duckling.TimeGrain.Types hiding (add)
 import Duckling.Testing.Types hiding (examples)
 
-context :: Context
-context = testContext {locale = makeLocale AR Nothing}
-
-corpus :: Corpus
-corpus = (context, testOptions, allExamples)
-
 negativeCorpus :: NegativeCorpus
 negativeCorpus = (context, testOptions, examples)
   where
     examples =
       [ "حب"
+      , "اياب"
+      , "ابحث"
       ]
+
+context :: Context
+context = testContext {locale = makeLocale AR Nothing}
+
+corpus :: Corpus
+corpus = (context, testOptions, allExamples)
 
 allExamples :: [Example]
 allExamples = concat

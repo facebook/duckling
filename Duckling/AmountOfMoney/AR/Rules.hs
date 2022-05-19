@@ -51,6 +51,15 @@ rulePounds = Rule
   , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly Pound
   }
 
+ruleEgpAbrreviation :: Rule
+ruleEgpAbrreviation = Rule
+  { name = "EGP abbreviation"
+  , pattern =
+    [ regex "ج[.]م[.]?"
+    ]
+  , prod = \_ -> Just . Token AmountOfMoney $ currencyOnly EGP
+  }
+
 ruleDinars :: Rule
 ruleDinars = Rule
   { name = "dinars"
@@ -390,6 +399,7 @@ rules =
   [ ruleUnitAmount
   , ruleCent
   , rulePounds
+  , ruleEgpAbrreviation
   , ruleDinars
   , ruleDirhams
   , ruleRiyals

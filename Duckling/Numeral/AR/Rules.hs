@@ -42,7 +42,7 @@ ruleInteger23 = Rule
   , pattern =
     [ oneOf [100, 200 .. 900]
     , regex "و"
-    , numberBetween 1 100
+    , Predicate $ numberBetween 1 100
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData{TNumeral.value = v1}:
@@ -86,7 +86,7 @@ ruleInteger22 :: Rule
 ruleInteger22 = Rule
   { name = "integer 21..99"
   , pattern =
-    [ numberBetween 1 10
+    [ Predicate $ numberBetween 1 10
     , regex "و"
     , oneOf [20, 30 .. 90]
     ]
@@ -102,12 +102,75 @@ ruleInteger21 :: Rule
 ruleInteger21 = Rule
   { name = "integer (13..19)"
   , pattern =
-    [ numberBetween 3 10
+    [ Predicate $ numberBetween 3 10
     , numberWith TNumeral.value (== 10)
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData{TNumeral.value = v}:_) -> double $ v + 10
       _ -> Nothing
+  }
+
+ruleInteger300 :: Rule
+ruleInteger300 = Rule
+  { name = "integer 300"
+  , pattern =
+    [ regex "(ثلاث)ما?[ئي][ةه]"
+    ]
+  , prod = \_ -> integer 300
+  }
+
+ruleInteger400 :: Rule
+ruleInteger400 = Rule
+  { name = "integer 400"
+  , pattern =
+    [ regex "([أا]ربع)ما?[ئي][ةه]"
+    ]
+  , prod = \_ -> integer 400
+  }
+
+ruleInteger500 :: Rule
+ruleInteger500 = Rule
+  { name = "integer 500"
+  , pattern =
+    [ regex "(خمس)ما?[ئي][ةه]"
+    ]
+  , prod = \_ -> integer 500
+  }
+
+ruleInteger600 :: Rule
+ruleInteger600 = Rule
+  { name = "integer 600"
+  , pattern =
+    [ regex "(ست)ما?[ئي][ةه]"
+    ]
+  , prod = \_ -> integer 600
+  }
+
+ruleInteger700 :: Rule
+ruleInteger700 = Rule
+  { name = "integer 700"
+  , pattern =
+    [ regex "(سبع)ما?[ئي][ةه]"
+    ]
+  , prod = \_ -> integer 700
+  }
+
+ruleInteger800 :: Rule
+ruleInteger800 = Rule
+  { name = "integer 800"
+  , pattern =
+    [ regex "(ثمان[ي]?)ما?[ئي][ةه]"
+    ]
+  , prod = \_ -> integer 800
+  }
+
+ruleInteger900 :: Rule
+ruleInteger900 = Rule
+  { name = "integer 900"
+  , pattern =
+    [ regex "(تسع)ما?[ئي][ةه]"
+    ]
+  , prod = \_ -> integer 900
   }
 
 ruleDecimalWithThousandsSeparator :: Rule
@@ -402,6 +465,13 @@ rules =
   , ruleInteger5
   , ruleInteger7
   , ruleInteger9
+  , ruleInteger300
+  , ruleInteger400
+  , ruleInteger500
+  , ruleInteger600
+  , ruleInteger700
+  , ruleInteger800
+  , ruleInteger900
   , ruleIntegerWithThousandsSeparator
   , ruleMultiply
   , ruleNumeralDotNumeral

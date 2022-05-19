@@ -15,7 +15,6 @@ module Duckling.Locale
       ( AU
       , BE
       , BZ
-      , CA
       , CL
       , CN
       , CO
@@ -52,12 +51,14 @@ import qualified TextShow as TS
 
 import Duckling.Region hiding
   ( AR
+  , CA
   , ES
   , NL
   )
 import qualified Duckling.Region as R
   ( Region
       ( AR
+      , CA
       , ES
       , NL
       )
@@ -70,6 +71,7 @@ data Lang
   | AR
   | BG
   | BN
+  | CA
   | CS
   | DA
   | DE
@@ -141,7 +143,7 @@ allLocales :: HashMap Lang (HashSet Region)
 allLocales =
   HashMap.fromList
     [ (AR, HashSet.fromList [EG])
-    , (EN, HashSet.fromList [AU, BZ, CA, GB, IN, IE, JM, NZ, PH, ZA, TT, US])
+    , (EN, HashSet.fromList [AU, BZ, R.CA, GB, IN, IE, JM, NZ, PH, ZA, TT, US])
     , (ES, HashSet.fromList [R.AR, CL, CO, R.ES, MX, PE, VE])
     , (NL, HashSet.fromList [BE, R.NL])
     , (ZH, HashSet.fromList [CN, HK, MO, TW])

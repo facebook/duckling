@@ -6,8 +6,9 @@
 
 
 {-# LANGUAGE GADTs #-}
-{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE NoRebindableSyntax #-}
+{-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Numeral.EN.Rules
   ( rules
@@ -23,7 +24,7 @@ import qualified Data.Text as Text
 
 import Duckling.Dimensions.Types
 import Duckling.Numeral.Helpers
-import Duckling.Numeral.Types (NumeralData (..))
+import Duckling.Numeral.Types (NumeralData (..), isInteger)
 import Duckling.Regex.Types
 import Duckling.Types
 import qualified Duckling.Numeral.Types as TNumeral
@@ -160,7 +161,7 @@ ruleCompositeTens = Rule
   , pattern =
     [ oneOf [20,30..90]
     , regex "[\\s\\-]+"
-    , numberBetween 1 10
+    , Predicate $ numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData{TNumeral.value = tens}:
@@ -333,6 +334,24 @@ ruleMultiply = Rule
       _ -> Nothing
   }
 
+ruleLegalParentheses :: Rule
+ruleLegalParentheses = Rule
+  { name = "<integer> '('<integer>')'"
+  , pattern =
+    [ numberWith TNumeral.value $ and . sequence [isInteger, (>0)]
+    , regex "\\("
+    , numberWith TNumeral.value $ and . sequence [isInteger, (>0)]
+    , regex "\\)"
+    ]
+  , prod = \case
+    (Token Numeral NumeralData{TNumeral.value = n1}:
+     _:
+     Token Numeral NumeralData{TNumeral.value = n2}:
+     _:
+     _) | n1 == n2 -> double n1
+    _ -> Nothing
+  }
+
 rules :: [Rule]
 rules =
   [ ruleToNineteen
@@ -351,4 +370,5 @@ rules =
   , ruleSumAnd
   , ruleMultiply
   , ruleDozen
+  , ruleLegalParentheses
   ]

@@ -146,7 +146,7 @@ ruleNumeralsEn :: Rule
 ruleNumeralsEn = Rule
   { name = "numbers en"
   , pattern =
-    [ numberBetween 1 10
+    [ Predicate $ numberBetween 1 10
     , regex "-?en-?"
     , oneOf [20, 30 .. 90]
     ]
@@ -223,7 +223,7 @@ zeroNineteenMap = HashMap.fromList
   , ("vijftien", 15)
   , ("zestien", 16)
   , ("zeventien", 17)
-  , ("achtien", 18)
+  , ("achttien", 18)
   , ("negentien", 19)
   ]
 
@@ -231,7 +231,7 @@ ruleInteger :: Rule
 ruleInteger = Rule
   { name = "integer (0..19)"
   , pattern =
-    [ regex "(geen|nul|niks|een|één|twee|drie|vier|vijftien|vijf|zestien|zes|zeventien|zeven|achtien|acht|negentien|negen|tien|elf|twaalf|dertien|veertien)"
+    [ regex "(geen|nul|niks|een|één|twee|drie|vier|vijftien|vijf|zestien|zes|zeventien|zeven|achttien|acht|negentien|negen|tien|elf|twaalf|dertien|veertien)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->

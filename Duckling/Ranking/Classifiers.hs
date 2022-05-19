@@ -17,6 +17,7 @@ import qualified Duckling.Ranking.Classifiers.AF_XX as AF_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.AR_XX as AR_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.BG_XX as BG_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.BN_XX as BN_XXClassifiers
+import qualified Duckling.Ranking.Classifiers.CA_XX as CA_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.CS_XX as CS_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.DA_XX as DA_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.DE_XX as DE_XXClassifiers
@@ -69,6 +70,7 @@ classifiers (Locale AF _) = AF_XXClassifiers.classifiers
 classifiers (Locale AR _) = AR_XXClassifiers.classifiers
 classifiers (Locale BG _) = BG_XXClassifiers.classifiers
 classifiers (Locale BN _) = BN_XXClassifiers.classifiers
+classifiers (Locale CA _) = CA_XXClassifiers.classifiers
 classifiers (Locale CS _) = CS_XXClassifiers.classifiers
 classifiers (Locale DA _) = DA_XXClassifiers.classifiers
 classifiers (Locale DE _) = DE_XXClassifiers.classifiers

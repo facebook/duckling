@@ -4,8 +4,8 @@
 -- This source code is licensed under the BSD-style license found in the
 -- LICENSE file in the root directory of this source tree.
 
-
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Duration.TR.Rules
@@ -43,7 +43,7 @@ ruleDurationHalfAnHour = Rule
 ruleDurationThreeQuartersOfAnHour :: Rule
 ruleDurationThreeQuartersOfAnHour = Rule
   { name = "three-quarters of an hour"
-  , pattern = [regex "(3/4\\s?sa(at)?|üçe \231eyrek sa(at)?)"]
+  , pattern = [regex "(3/4\\s?sa(at)?|üç \231eyrek sa(at)?)"]
   , prod = \_ -> Just . Token Duration $ duration TG.Minute 45
   }
 
@@ -89,7 +89,7 @@ ruleDurationAndHalfHour = Rule
   { name = "<integer> and an half hour"
   , pattern =
     [ Predicate isNatural
-    , regex "buçeuk sa(at)?"
+    , regex "buçuk sa(at)?"
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData{TNumeral.value = v}:_) ->
@@ -102,12 +102,24 @@ ruleDurationPrecision :: Rule
 ruleDurationPrecision = Rule
   { name = "<duration> about|exactly"
   , pattern =
-    [ regex "(gibi|civar\305nda|yaklaş\305k|tam( olarak)?)"
+    [ regex "(yaklaşık|tam(\\solarak)?)"
     , dimension Duration
     ]
     , prod = \tokens -> case tokens of
         (_:token:_) -> Just token
         _           -> Nothing
+  }
+
+ruleDurationPrecision2 :: Rule
+ruleDurationPrecision2 = Rule
+  { name = "<duration> about|exactly"
+  , pattern =
+    [ dimension Duration
+    , regex "gibi|civarında"
+    ]
+  , prod = \case
+      (token:_:_) -> Just token
+      _           -> Nothing
   }
 
 rules :: [Rule]
@@ -119,5 +131,6 @@ rules =
   , ruleDurationDotNumeralHours
   , ruleDurationAndHalfHour
   , ruleDurationPrecision
+  , ruleDurationPrecision2
   , ruleNumeralQuotes
   ]

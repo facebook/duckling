@@ -47,7 +47,7 @@ ruleDaysOfWeek = mkRuleDaysOfWeek
   , ( "Thursday" , "th(ứ) (5|n(ă)m)"                )
   , ( "Friday"   , "th(ứ) 6|th(ứ) s(á)u"            )
   , ( "Saturday" , "th(ứ) (7|b((ả)|(ẩ))y)"          )
-  , ( "Sunday"   , "ch(ủ) nh(ậ)t"                   )
+  , ( "Sunday"   , "ch((ủ)|(ú)a) nh(ậ)t"            )
   ]
 
 ruleMonths :: [Rule]

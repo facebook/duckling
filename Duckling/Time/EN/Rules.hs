@@ -46,7 +46,7 @@ ruleIntersect = Rule
     ]
   , prod = \tokens -> case tokens of
       (Token Time td1:Token Time td2:_)
-        | (not $ TTime.latent td1) || (not $ TTime.latent td2) ->
+        | not (TTime.latent td1) || not (TTime.latent td2) ->
         Token Time . notLatent <$> intersect td1 td2
       _ -> Nothing
   }
@@ -150,7 +150,7 @@ ruleASAP = Rule
   , pattern =
     [ regex "asap|as\\ssoon\\sas\\spossible"
     ]
-  , prod = \_ -> tt . withDirection TTime.After $ now
+  , prod = \_ -> tt $ withDirection TTime.After now
   }
 
 ruleNextDOW :: Rule
@@ -306,12 +306,12 @@ ruleLastNight = Rule
 
 ruleNthTimeOfTime :: Rule
 ruleNthTimeOfTime = Rule
-  { name = "nth <time> of <time>"
+  { name = "nth <day-of-week> of <month-or-greater>"
   , pattern =
     [ dimension Ordinal
-    , dimension Time
+    , Predicate isADayOfWeek
     , regex "of|in"
-    , dimension Time
+    , Predicate $ not . isGrainFinerThan TG.Month
     ]
   , prod = \tokens -> case tokens of
       (Token Ordinal od:Token Time td1:_:Token Time td2:_) -> Token Time .
@@ -321,13 +321,13 @@ ruleNthTimeOfTime = Rule
 
 ruleTheNthTimeOfTime :: Rule
 ruleTheNthTimeOfTime = Rule
-  { name = "the nth <time> of <time>"
+  { name = "the nth <day-of-week> of <month-or-greater>"
   , pattern =
     [ regex "the"
     , dimension Ordinal
-    , dimension Time
+    , Predicate isADayOfWeek
     , regex "of|in"
-    , dimension Time
+    , Predicate $ not . isGrainFinerThan TG.Month
     ]
   , prod = \tokens -> case tokens of
       (_:Token Ordinal od:Token Time td1:_:Token Time td2:_) -> Token Time .
@@ -386,8 +386,7 @@ ruleYearLatent :: Rule
 ruleYearLatent = Rule
   { name = "year (latent)"
   , pattern =
-      [ Predicate $
-        or . sequence [isIntegerBetween (- 10000) 0, isIntegerBetween 25 10000]
+      [ Predicate $ isIntegerBetween 25 10000
       ]
   , prod = \case
       (token:_) -> do
@@ -400,13 +399,13 @@ ruleYearADBC :: Rule
 ruleYearADBC = Rule
   { name = "<year> (bc|ad)"
   , pattern =
-    [ Predicate $ isIntegerBetween (-10000) 10000
+    [ Predicate $ isIntegerBetween 1 10000
     , regex "(a\\.?d\\.?|b\\.?c\\.?)"
     ]
   , prod = \case
     (token:Token RegexMatch (GroupMatch (ab:_)):_) -> do
       y <- getIntValue token
-      tt . yearADBC $ if Text.head (Text.toLower ab) == 'b' then -y else y
+      tt $ yearADBC $ if Text.head (Text.toLower ab) == 'b' then -y else y
     _ -> Nothing
   }
 
@@ -417,7 +416,7 @@ ruleDOMLatent = Rule
   , prod = \tokens -> case tokens of
       (token:_) -> do
         n <- getIntValue token
-        tt . mkLatent $ dayOfMonth n
+        tt $ mkLatent $ dayOfMonth n
       _ -> Nothing
   }
 
@@ -431,7 +430,7 @@ ruleTheDOMNumeral = Rule
   , prod = \tokens -> case tokens of
       (_:token:_) -> do
         n <- getIntValue token
-        tt . mkLatent $ dayOfMonth n
+        tt $ mkLatent $ dayOfMonth n
       _ -> Nothing
   }
 
@@ -520,7 +519,7 @@ ruleDOMMonthYear = Rule
     , regex "[-/\\s]"
     , Predicate isAMonth
     , regex "[-/\\s]"
-    , regex "(\\d{4})"
+    , regex "(\\d{2,4})"
     ]
   , prod = \tokens -> case tokens of
       (token:
@@ -574,7 +573,7 @@ ruleTODLatent = Rule
   , prod = \tokens -> case tokens of
       (token:_) -> do
         n <- getIntValue token
-        tt . mkLatent $ hour (n < 13) n
+        tt $ mkLatent $ hour (n < 13) n
       _ -> Nothing
   }
 
@@ -621,8 +620,22 @@ rulePODatTOD = Rule
         Token Time tod@TimeData{TTime.form = Just (TTime.TimeOfDay (Just hours) True)}:_) ->
         tt $ timeOfDayAMPM (start < 12 || hours == 12) tod
       _ -> Nothing
-
   }
+
+rulePODintersectTODlatent :: Rule
+rulePODintersectTODlatent = Rule
+  { name = "<part-of-day> <latent-time-of-day> (latent)"
+  , pattern =
+    [ Predicate isAPartOfDay
+    , Predicate isATimeOfDay
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Time td1:Token Time td2:_)
+        | not (TTime.latent td1) || TTime.latent td2 ->
+        Token Time . mkLatent <$> intersect td1 td2
+      _ -> Nothing
+  }
+
 
 ruleHHMM :: Rule
 ruleHHMM = Rule
@@ -660,7 +673,7 @@ ruleHHMMLatent = Rule
       (Token RegexMatch (GroupMatch (hh:mm:_)):_) -> do
         h <- parseInt hh
         m <- parseInt mm
-        tt . mkLatent $ hourMinute (h < 12) h m
+        tt $ mkLatent $ hourMinute (h < 12) h m
       _ -> Nothing
   }
 
@@ -690,41 +703,7 @@ ruleMilitaryAMPM = Rule
        _) -> do
         h <- parseInt hh
         m <- parseInt mm
-        tt . timeOfDayAMPM (Text.toLower ap == "a") $ hourMinute True h m
-      _ -> Nothing
-  }
-
-ruleMilitarySpelledOutAMPM :: Rule
-ruleMilitarySpelledOutAMPM = Rule
-  { name = "military spelled out numbers am|pm"
-  , pattern =
-    [ Predicate $ isIntegerBetween 10 12
-    , Predicate $ isIntegerBetween 1 59
-    , regex "(in the )?([ap])(\\s|\\.)?m?\\.?"
-    ]
-    , prod = \tokens -> case tokens of
-        (h:m:Token RegexMatch (GroupMatch (_:ap:_)):_) -> do
-          hh <- getIntValue h
-          mm <- getIntValue m
-          tt . timeOfDayAMPM (Text.toLower ap == "a") $ hourMinute True hh mm
-        _ -> Nothing
-  }
-
-ruleMilitarySpelledOutAMPM2 :: Rule
-ruleMilitarySpelledOutAMPM2 = Rule
-  { name = "six thirty six a.m."
-  , pattern =
-    [ Predicate $ isIntegerBetween 110 999
-    , regex "(in the )?([ap])(\\s|\\.)?m?\\.?"
-    ]
-  , prod = \tokens -> case tokens of
-      (token:Token RegexMatch (GroupMatch (_:ap:_)):_) -> do
-        n <- getIntValue token
-        m <- case mod n 100 of
-          v | v < 60 -> Just v
-          _          -> Nothing
-        let h = quot n 100
-        tt . timeOfDayAMPM (Text.toLower ap == "a") $ hourMinute True h m
+        tt $ timeOfDayAMPM (Text.toLower ap == "a") $ hourMinute True h m
       _ -> Nothing
   }
 
@@ -739,7 +718,7 @@ ruleTODAMPM = Rule
       (Token Time td@TimeData{TTime.latent = True}:
        Token RegexMatch (GroupMatch (_:ap:_:"":_)):
        _) ->
-        tt . mkLatent $ timeOfDayAMPM (Text.toLower ap == "a") td
+        tt $ mkLatent $ timeOfDayAMPM (Text.toLower ap == "a") td
       (Token Time td@TimeData{TTime.form = Just (TTime.TimeOfDay (Just hours) _)}:
        Token RegexMatch (GroupMatch (_:ap:_)):
        _) | hours < 13 ->
@@ -752,7 +731,7 @@ ruleHONumeral = Rule
   { name = "<hour-of-day> <integer>"
   , pattern =
     [ Predicate isAnHourOfDay
-    , Predicate $ isIntegerBetween 1 59
+    , Predicate $ isIntegerBetween 10 59
     ]
   , prod = \tokens -> case tokens of
       (Token Time TimeData{TTime.form = Just (TTime.TimeOfDay (Just hours) is12H)
@@ -761,8 +740,28 @@ ruleHONumeral = Rule
        _) -> do
         n <- getIntValue token
         if isLatent
-          then tt . mkLatent $ hourMinute is12H hours n
+          then tt $ mkLatent $ hourMinute is12H hours n
           else tt $ hourMinute is12H hours n
+      _ -> Nothing
+  }
+
+ruleHONumeralDash :: Rule
+ruleHONumeralDash = Rule
+  { name = "<hour-of-day> - <integer-as-word>"
+  , pattern =
+    [ Predicate isAnHourOfDay
+    , regex "-(?!\\d)"
+    , Predicate $ isIntegerBetween 10 59
+    ]
+  , prod = \tokens -> case tokens of
+      (Token Time TimeData{TTime.form = Just (TTime.TimeOfDay (Just hours) is12H)
+                          ,TTime.latent = isLatent}:
+       _:
+       token:
+       _) -> do
+        n <- getIntValue token
+        let lt = if isLatent then mkLatent else id
+        tt $ lt $ hourMinute is12H hours n
       _ -> Nothing
   }
 
@@ -786,6 +785,30 @@ ruleHONumeralAlt = Rule
           if isLatent
             then tt $ mkLatent $ hourMinute is12H hours n
             else tt $ hourMinute is12H hours n
+      _ -> Nothing
+  }
+
+ruleHONumeralAltDash :: Rule
+ruleHONumeralAltDash = Rule
+  { name = "<hour-of-day> - zero - <integer>"
+  , pattern =
+    [ Predicate isAnHourOfDay
+    , regex "-"
+    , regex "(zero|o(h|u)?)"
+    , regex "-(?!\\d)"
+    , Predicate $ isIntegerBetween 1 9
+    ]
+  , prod = \case
+      (
+        Token Time TimeData{TTime.form = Just (TTime.TimeOfDay
+                                              (Just hours) is12H)
+                          , TTime.latent = isLatent}:
+        _:_:_:
+        token:
+        _) -> do
+          n <- getIntValue token
+          let lt = if isLatent then mkLatent else id
+          tt $ lt $ hourMinute is12H hours n
       _ -> Nothing
   }
 
@@ -958,7 +981,7 @@ ruleYYYYQQ = Rule
       (Token RegexMatch (GroupMatch (yy:qq:_)):_) -> do
         y <- parseInt yy
         q <- parseInt qq
-        tt . cycleNthAfter True TG.Quarter (q - 1) $ year y
+        tt $ cycleNthAfter True TG.Quarter (q - 1) $ year y
       _ -> Nothing
   }
 
@@ -969,7 +992,7 @@ ruleNoonMidnightEOD = Rule
     [ regex "(noon|midni(ght|te)|(the )?(EOD|end of (the )?day))"
     ]
   , prod = \case
-      (Token RegexMatch (GroupMatch (match:_)):_) -> tt . hour False $
+      (Token RegexMatch (GroupMatch (match:_)):_) -> tt $ hour False $
         if Text.toLower match == "noon" then 12 else 0
       _ -> Nothing
   }
@@ -990,7 +1013,7 @@ rulePartOfDays = Rule
               "at lunch" -> (hour False 12, hour False 14)
               _          -> (hour False 12, hour False 19)
         td <- interval TTime.Open start end
-        tt . partOfDay $ mkLatent td
+        tt $ partOfDay $ mkLatent td
       _ -> Nothing
   }
 
@@ -1425,7 +1448,7 @@ ruleIntervalTODAMPM = Rule
  { name = "hh(:mm) - <time-of-day> am|pm"
  , pattern =
    [ regex "(?:from )?((?:[01]?\\d)|(?:2[0-3]))([:.]([0-5]\\d))?"
-   , regex "\\-|:|to|th?ru|through|(un)?til(l)?"
+   , regex "\\-|to|th?ru|through|(un)?til(l)?"
    , Predicate isATimeOfDay
    , regex "(in the )?([ap])(\\s|\\.)?m?\\.?"
    ]
@@ -1492,7 +1515,7 @@ ruleIntervalUntilTime = Rule
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td:_) -> tt . withDirection TTime.Before $ notLatent td
+      (_:Token Time td:_) -> tt $ withDirection TTime.Before $ notLatent td
       _ -> Nothing
   }
 
@@ -1504,7 +1527,7 @@ ruleIntervalAfterFromSinceTime = Rule
     , dimension Time
     ]
   , prod = \tokens -> case tokens of
-      (_:Token Time td:_) -> tt . withDirection TTime.After $ notLatent td
+      (_:Token Time td:_) -> tt $ withDirection TTime.After $ notLatent td
       _ -> Nothing
   }
 
@@ -2219,7 +2242,7 @@ ruleCycleLastOrdinalOfTime = Rule
   , prod = \tokens -> case tokens of
       (token:_:Token TimeGrain grain:_:Token Time td:_) -> do
         n <- getIntValue token
-        tt . cycleNthAfter True grain (-n) . cycleNthAfter True (timeGrain td) 1 $ td
+        tt $ cycleNthAfter True grain (-n) $ cycleNthAfter True (timeGrain td) 1 td
       _ -> Nothing
   }
 
@@ -2254,7 +2277,7 @@ ruleCycleTheLastOrdinalOfTime = Rule
   , prod = \tokens -> case tokens of
       (_:token:_:Token TimeGrain grain:_:Token Time td:_) -> do
         n <- getIntValue token
-        tt . cycleNthAfter True grain (-n) . cycleNthAfter True (timeGrain td) 1 $ td
+        tt $ cycleNthAfter True grain (-n) $ cycleNthAfter True (timeGrain td) 1 td
       _ -> Nothing
   }
 
@@ -2331,7 +2354,7 @@ ruleCycleOrdinalQuarter = Rule
   , prod = \tokens -> case tokens of
       (token:_) -> do
         n <- getIntValue token
-        tt . cycleNthAfter True TG.Quarter (n - 1) $
+        tt $ cycleNthAfter True TG.Quarter (n - 1) $
           cycleNth TG.Year 0
       _ -> Nothing
   }
@@ -2347,7 +2370,7 @@ ruleCycleTheOrdinalQuarter = Rule
   , prod = \tokens -> case tokens of
       (_:token:_) -> do
         n <- getIntValue token
-        tt . cycleNthAfter True TG.Quarter (n - 1) $
+        tt $ cycleNthAfter True TG.Quarter (n - 1) $
           cycleNth TG.Year 0
       _ -> Nothing
   }
@@ -2379,7 +2402,7 @@ ruleDurationInWithinAfter = Rule
        Token Duration dd:
        _) -> case Text.toLower match of
          "within" -> Token Time <$> interval TTime.Open now (inDuration dd)
-         "after"  -> tt . withDirection TTime.After $ inDuration dd
+         "after"  -> tt $ withDirection TTime.After $ inDuration dd
          "in"     -> tt $ inDuration dd
          _        -> Nothing
       _ -> Nothing
@@ -2489,7 +2512,7 @@ ruleInNumeral = Rule
     ]
   , prod = \tokens -> case tokens of
       (_:Token Numeral NumeralData{TNumeral.value = v}:_) ->
-        tt . inDuration . duration TG.Minute $ floor v
+        tt $ inDuration $ duration TG.Minute $ floor v
       _ -> Nothing
   }
 
@@ -2705,16 +2728,17 @@ rules =
   , ruleAtTOD
   , ruleTODOClock
   , rulePODatTOD
+  , rulePODintersectTODlatent
   , ruleHHMM
   , ruleHHhMM
   , ruleHHMMLatent
   , ruleHHMMSS
   , ruleMilitaryAMPM
-  , ruleMilitarySpelledOutAMPM
-  , ruleMilitarySpelledOutAMPM2
   , ruleTODAMPM
   , ruleHONumeral
+  , ruleHONumeralDash
   , ruleHONumeralAlt
+  , ruleHONumeralAltDash
   , ruleHODHalf
   , ruleHODQuarter
   , ruleNumeralToHOD

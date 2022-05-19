@@ -32,6 +32,7 @@ negativeCorpus = (testContext {locale = makeLocale FR Nothing}, testOptions, exa
       [ "Ana a un court de tennis"
       , "deux trois"
       , "deux trois minutes"
+      , "74"
       ]
 
 allExamples :: [Example]
@@ -109,6 +110,14 @@ allExamples = concat
              [ "le 2 mars"
              , "2 mars"
              , "le 2/3"
+             ]
+  , examples (datetime (2013, 7, 5, 0, 0, 0) Day)
+             [ "le 5 juillet"
+             , "5 juillet"
+             , "5 juil"
+             , "5 jui"
+             , "5 juil."
+             , "5 jui."
              ]
   , examples (datetime (2013, 3, 2, 5, 0, 0) Hour)
              [ "le 2 mars à 5h"
@@ -215,6 +224,7 @@ allExamples = concat
   , examples (datetime (1974, 10, 31, 0, 0, 0) Day)
              [ "31/10/1974"
              , "31/10/74"
+             , "31 octobre 74"
              ]
   , examples (datetime (2013, 2, 18, 0, 0, 0) Day)
              [ "lundi prochain"
@@ -865,5 +875,9 @@ allExamples = concat
   , examples (datetimeInterval ((2013, 2, 12, 18, 0, 0), (2013, 2, 13, 00, 0, 0)) Hour)
              [ "plus tard dans la soirée"
              , "un peu plus tard dans la soirée"
+             ]
+  , examples (datetime (2013, 3, 6, 0, 0, 0) Day)
+             [ "le premier mercredi de mois prochain"
+             , "premier mercredi du mois prochain"
              ]
   ]

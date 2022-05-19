@@ -42,6 +42,7 @@ allExamples = concat
   , examples (simple Litre 0.5)
              [ "半公升"
              , "0.5L"
+             , "0.5L左右"
              ]
   , examples (simple Litre 0.25)
              [ "四分一升"
@@ -87,9 +88,13 @@ allExamples = concat
              [ "至少四ml"
              , "最少四毫升"
              , "四毫升或以上"
+             , "起碼四毫升"
              ]
   , examples (simple Millilitre 5)
              [ "一茶匙"
              , "三分一湯匙"
+             ]
+  , examples (between Litre (60, 70))
+             [ "六十到七十L"
              ]
   ]

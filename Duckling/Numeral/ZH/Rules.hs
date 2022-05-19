@@ -92,7 +92,7 @@ ruleCompositeTens = Rule
   , pattern =
     [ oneOf [20,30,40]
     , regex "[\\s\\-]+"
-    , numberBetween 1 10
+    , Predicate $ numberBetween 1 10
     ]
   , prod = \tokens -> case tokens of
       (Token Numeral NumeralData{TNumeral.value = tens}:
@@ -324,7 +324,7 @@ ruleHundredPrefix = Rule
   { name = "one hundred and <integer> (short form)"
   , pattern =
     [ regex "百|佰"
-    , numberBetween 1 10
+    , Predicate $ numberBetween 1 10
     ]
   , prod = \case
     (_:Token Numeral NumeralData{TNumeral.value = v}:_) ->
@@ -337,7 +337,7 @@ ruleThousandPrefix = Rule
   { name = "one thousand and <integer> (short form)"
   , pattern =
     [ regex "千|仟"
-    , numberBetween 1 10
+    , Predicate $ numberBetween 1 10
     ]
   , prod = \case
     (_:Token Numeral NumeralData{TNumeral.value = v}:_) ->
@@ -350,7 +350,7 @@ ruleTenThousandPrefix = Rule
   { name = "ten thousand and <integer> (short form)"
   , pattern =
     [ regex "万|萬"
-    , numberBetween 1 10
+    , Predicate $ numberBetween 1 10
     ]
   , prod = \case
     (_:Token Numeral NumeralData{TNumeral.value = v}:_) ->

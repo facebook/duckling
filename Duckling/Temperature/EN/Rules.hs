@@ -62,6 +62,19 @@ ruleTemperatureFahrenheit = Rule
       _ -> Nothing
   }
 
+ruleTemperatureKelvin :: Rule
+ruleTemperatureKelvin = Rule
+  { name = "<temp> Kelvin"
+  , pattern =
+    [ Predicate $ isValueOnly True
+    , regex "k(el?vi?n?s?)?\\.?"
+    ]
+  , prod = \case
+      (Token Temperature td:_) -> Just . Token Temperature $
+        withUnit TTemperature.Kelvin td
+      _ -> Nothing
+  }
+
 ruleTemperatureBelowZero :: Rule
 ruleTemperatureBelowZero = Rule
   { name = "<temp> below zero"
@@ -153,6 +166,7 @@ rules =
   [ ruleTemperatureDegrees
   , ruleTemperatureCelsius
   , ruleTemperatureFahrenheit
+  , ruleTemperatureKelvin
   , ruleTemperatureBelowZero
   , ruleIntervalBetween
   , ruleIntervalDash

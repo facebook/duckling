@@ -67,7 +67,7 @@ ruleTemperatureKelvin = Rule
   { name = "<temp> Kelvin"
   , pattern =
     [ Predicate $ isValueOnly True
-    , regex "k(el?vi?n?s?)?\\.?"
+    , regex "k(elvin)?s?\\.?"
     ]
   , prod = \case
       (Token Temperature td:_) -> Just . Token Temperature $

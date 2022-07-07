@@ -33,6 +33,8 @@ allExamples = concat
   , examples (NumeralValue 1)
              [ "1"
              , "eins"
+             , "Eine"
+             , "einen"
              ]
   , examples (NumeralValue 3)
              [ "3"
@@ -46,11 +48,12 @@ allExamples = concat
              ]
   , examples (NumeralValue 30)
              [ "30"
+             , "dreißig"
              , "dreissig"
              ]
   , examples (NumeralValue 33)
              [ "33"
-             , "drei Und dreissig"
+             , "dreiunddreißig"
              , "dreiunddreissig"
              , "0033"
              ]
@@ -76,11 +79,11 @@ allExamples = concat
              ]
   , examples (NumeralValue 200)
              [ "200"
-             , "zwei hundert"
+             , "zweihundert"
              ]
   , examples (NumeralValue 102)
              [ "102"
-             , "Hundert zwei"
+             , "Hundertzwei"
              ]
   , examples (NumeralValue 1.1)
              [ "1,1"
@@ -97,12 +100,15 @@ allExamples = concat
              , "100000"
              , "100K"
              , "100k"
+             , "einhunderttausend"
+             , "hunderttausend"
              ]
   , examples (NumeralValue 3000000)
              [ "3M"
              , "3000K"
              , "3000000"
              , "3.000.000"
+             , "drei Millionen"
              ]
   , examples (NumeralValue 1200000)
              [ "1.200.000"
@@ -120,30 +126,34 @@ allExamples = concat
              , "-1200K"
              , "-,0012G"
              ]
+  , examples (NumeralValue 1852)
+             [ "eintausendachthundertzweiundfünfzig"
+             , "tausendachthundertzweiundfünfzig"
+             , "achtzehnhundertzweiundfünfzig"]
   , examples (NumeralValue 5000)
              [ "5 tausend"
-             , "fünf tausend"
+             , "fünftausend"
              ]
   , examples (NumeralValue 200000)
-             [ "zwei hundert tausend"
+             [ "zweihunderttausend"
              ]
   , examples (NumeralValue 721012)
-             [ "sieben hundert einundzwanzig tausend zwölf"
+             [ "siebenhunderteinundzwanzigtausendzwölf"
+             , "siebenhunderteinundzwanzigtausendundzwölf"
              ]
   , examples (NumeralValue 31256721)
-             [ "ein und dreissig millionen zwei hundert sechs und fünfzig tausend sieben hundert ein und zwanzig"
+             [ "einunddreissig millionen zweihundertsechsundfünfzigtausendsiebenhunderteinundzwanzig"
+             , "einunddreißig Millionen zweihundertsechsundfünfzigtausendundsiebenhunderteinundzwanzig"
              ]
   , examples (NumeralValue 1416.15)
              [ "1416,15"
-             ]
-  , examples (NumeralValue 1416.15)
-             [ "1.416,15"
+             ,  "tausendvierhundertsechzehn Komma fünfzehn"
              ]
   , examples (NumeralValue 1000000.0)
              [ "1.000.000,00",
                "eine million"
              ]
   , examples (NumeralValue 2771090092000000.0)
-             [ "zwei billiarden sieben hundert ein und siebzig billionen neunzig milliarden zwei und neunzig millionen"
+             [ "zwei billiarden siebenhunderteinundsiebzig billionen neunzig milliarden zweiundneunzig millionen"
              ]
   ]

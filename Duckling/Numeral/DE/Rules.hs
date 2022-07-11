@@ -221,10 +221,8 @@ ruleAllNumeralWords = Rule
   , pattern = [regex "(ein|zwei|drei|vier|fünf|sech|sieb|acht|neun|zehn|elf|zwölf|hundert|tausend)?([^\\s]+)?(eine[m|n|r|s]?|eins?|zwei|drei|vier|fünf|sechs|sieben|acht|neun|zehn|elf|zwölf|[s|ß|z]ig|hundert|tausend)"]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch matches):_) ->
-        case parseNumeral $ concat $ Text.unpack . Text.toLower <$> matches of
-          Just n  -> integer n
-          Nothing -> Nothing
-      _ -> Nothing
+        (parseNumeral $ concat $ Text.unpack . Text.toLower <$> matches)
+        >>= integer
   }
 
 rules :: [Rule]

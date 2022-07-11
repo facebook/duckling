@@ -1,10 +1,16 @@
+{-# LANGUAGE DeriveFunctor #-}
+
 module Duckling.Numeral.DE.NumParser (parseNumeral) where
 
-import           Control.Applicative
-import           Data.Char
-import           Data.List
+import Prelude
+import Control.Applicative
+import Data.Char
+import Data.List
+import Data.Foldable
 
-newtype Parser a = Parser { runParser :: String -> Maybe (a, String) }
+newtype Parser a
+  = Parser { runParser :: String -> Maybe (a, String) }
+  deriving Functor
 
 char :: Char -> Parser Char
 char c = Parser p
@@ -13,14 +19,6 @@ char c = Parser p
     p (x:xs)
       | x == c    = Just (x, xs)
       | otherwise = Nothing
-
-inParser f = Parser . f . runParser
-
-first :: (a -> b) -> (a,c) -> (b,c)
-first f (x,y) = (f x, y)
-
-instance Functor Parser where
-  fmap = inParser . fmap . fmap . first
 
 instance Applicative Parser where
   pure a = Parser (\s -> Just (a, s))
@@ -36,13 +34,18 @@ instance Alternative Parser where
 type NumParser = Parser Integer
 
 (.+.) :: NumParser -> NumParser -> NumParser
-(.+.) = (<*>) . ((+) <$>)
+p .+. p' = (+) <$> p <*> p'
 
 (.*.) :: NumParser -> NumParser -> NumParser
-(.*.) = (<*>) . ((*) <$>)
+p .*. p' = (*) <$> p <*> p'
 
-(?) :: NumParser -> NumParser
-(?) = (<|> Parser p) where p s = Just (0, s)
+infixl 6 .+.
+infixl 7 .*.
+
+opt :: NumParser -> NumParser
+opt p = p <|> Parser p'
+  where
+    p' s = Just (0, s)
 
 data NumItem = NumItem { base    :: NumParser
                        , plus10  :: NumParser
@@ -52,13 +55,13 @@ data NumItem = NumItem { base    :: NumParser
 defaultNumItem :: Integer -> String -> NumItem
 defaultNumItem value form = NumItem { base    = p
                                     , plus10  = p .+. ten
-                                    , times10 = p .*. ty:[]
+                                    , times10 = [p .*. ty]
                                     } where p = assign value form
 
 type Assignment = Integer -> String -> NumParser
 
 assign :: Assignment
-assign = foldr ((<*>) . ((*) <$>) . (const 1 <$>) . char) . pure
+assign value = foldr (\c p -> (const 1 <$> char c) .*. p) (pure value)
 
 ten :: NumParser
 ten = assign 10 "zehn"
@@ -73,7 +76,7 @@ thousand :: NumParser
 thousand = assign 1000 "tausend"
 
 und :: NumParser
-und = (assign 0 "und")
+und = assign 0 "und"
 
 one :: NumItem
 one = (defaultNumItem 1 "ein") { plus10  = assign 11 "elf"
@@ -113,42 +116,44 @@ from1to9 :: NumParser
 from1to9 = foldr ((<|>) . base) empty digitLexicon
 
 tensFrom20 :: NumParser
-tensFrom20 = foldr (<|>) empty (foldr ((++) . times10) [] (tail digitLexicon))
+tensFrom20 = asum (concatMap times10 (tail digitLexicon))
 
 from1to99 :: NumParser
-from1to99 = (?) (from1to9 .+. und) .+. tensFrom20
+from1to99 = opt (from1to9 .+. und) .+. tensFrom20
             <|> foldr ((<|>) . plus10) empty digitLexicon
             <|> ten
             <|> from1to9
 
 from1to999 :: NumParser
-from1to999 = (?) (from1to9 .*. hundred .+. (?) und) .+. (?) from1to99
+from1to999 = opt (from1to9 .*. hundred .+. opt und) .+. opt from1to99
 
 from1to999999 :: NumParser
-from1to999999 = (?) (from1to999 .*. thousand .+. (?) und) .+. (?) from1to999
+from1to999999 = opt (from1to999 .*. thousand .+. opt und) .+. opt from1to999
 
 from1to999999' :: NumParser
 from1to999999' = Parser p
-  where p s
-          | isPrefixOf "hundert" s || isPrefixOf "tausend" s
-            = runParser from1to999999 ("ein" ++ s)
-          | otherwise
-            = runParser from1to999999 s
+  where
+    p s
+      | isPrefixOf "hundert" s || isPrefixOf "tausend" s
+        = runParser from1to999999 ("ein" ++ s)
+      | otherwise
+        = runParser from1to999999 s
 
 fromYear1100to1999 :: NumParser
-fromYear1100to1999 = foldr ((<|>) . (.*. hundred) . plus10) empty digitLexicon
-                     .+. (?) ((?) und .+. from1to99)
+fromYear1100to1999 = asum ((\n -> plus10 n .*. hundred) <$> digitLexicon)
+                     .+. opt (opt und .+. from1to99)
 
 allNumerals :: NumParser
 allNumerals = fromYear1100to1999
                <|> from1to999999'
 
-removeInflection :: Maybe (Integer, String) -> Maybe Integer
-removeInflection (Just (n, suffix))
+removeInflection :: (Integer, String) -> Maybe Integer
+removeInflection (n, suffix)
   | n `mod` 10 == 1 && suffix `elem` inflection = Just n
-  where inflection = ["s", "e", "em", "en", "er", "es"]
-removeInflection (Just (n, "")) = Just n
-removeInflection _ = Nothing
+  where
+    inflection = ["s", "e", "em", "en", "er", "es"]
+removeInflection (n, "") = Just n
+removeInflection _       = Nothing
 
 parseNumeral :: String -> Maybe Integer
-parseNumeral = removeInflection . (runParser allNumerals)
+parseNumeral s = removeInflection =<< runParser allNumerals s

@@ -7,6 +7,7 @@ import Control.Applicative
 import Data.Char
 import Data.List
 import Data.Foldable
+import Data.String
 
 newtype Parser a
   = Parser { runParser :: String -> Maybe (a, String) }

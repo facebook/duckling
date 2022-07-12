@@ -219,9 +219,11 @@ ruleAllNumeralWords :: Rule
 ruleAllNumeralWords = Rule
   { name = "simple and complex numerals written as one word"
   , pattern = [regex "(ein|zwei|drei|vier|fünf|sech|sieb|acht|neun|zehn|elf|zwölf|hundert|tausend)?([^\\s]+)?(eine[m|n|r|s]?|eins?|zwei|drei|vier|fünf|sechs|sieben|acht|neun|zehn|elf|zwölf|[s|ß|z]ig|hundert|tausend)"]
-  , prod = \ (Token RegexMatch (GroupMatch matches) : _)
-    -> (parseNumeral $ concat $ Text.unpack . Text.toLower <$> matches)
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch matches) : _) ->
+        (parseNumeral $ concat $ Text.unpack . Text.toLower <$> matches)
         >>= integer
+      _ -> Nothing
   }
 
 rules :: [Rule]

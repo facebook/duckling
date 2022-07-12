@@ -62,7 +62,7 @@ defaultNumItem value form = NumItem { base    = p
 type Assignment = Integer -> String -> NumParser
 
 assign :: Assignment
-assign value = foldr (\c p -> (const 1 <$> char c) .*. p) (pure value)
+assign value = foldr (\c p -> (1 <$ char c) .*. p) (pure value)
 
 ten :: NumParser
 ten = assign 10 "zehn"

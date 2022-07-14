@@ -27,6 +27,7 @@ import Duckling.Numeral.Types (NumeralData (..))
 import Duckling.Regex.Types
 import Duckling.Types
 import qualified Duckling.Numeral.Types as TNumeral
+import Duckling.Numeral.DE.NumParser
 
 ruleNumeralsPrefixWithNegativeOrMinus :: Rule
 ruleNumeralsPrefixWithNegativeOrMinus = Rule
@@ -48,15 +49,6 @@ ruleFew = Rule
     [ regex "mehrere"
     ]
   , prod = \_ -> integer 3
-  }
-
-ruleTen :: Rule
-ruleTen = Rule
-  { name = "ten"
-  , pattern =
-    [ regex "zehn"
-    ]
-  , prod = \_ -> integer 10 >>= withGrain 1
   }
 
 ruleDecimalWithThousandsSeparator :: Rule
@@ -81,41 +73,6 @@ ruleDecimalNumeral = Rule
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
         parseDecimal False match
-      _ -> Nothing
-  }
-
--- TODO: Single-word composition (#110)
-ruleInteger3 :: Rule
-ruleInteger3 = Rule
-  { name = "integer ([2-9][1-9])"
-  , pattern =
-    [ regex "(ein|zwei|drei|vier|fünf|sechs|sieben|acht|neun)und(zwanzig|dreissig|dreißig|vierzig|fünfzig|sechzig|siebzig|achtzig|neunzig)"
-    ]
-  , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (m1:m2:_)):_) -> do
-        v1 <- case Text.toLower m1 of
-          "ein" -> Just 1
-          "zwei" -> Just 2
-          "drei" -> Just 3
-          "vier" -> Just 4
-          "fünf" -> Just 5
-          "sechs" -> Just 6
-          "sieben" -> Just 7
-          "acht" -> Just 8
-          "neun" -> Just 9
-          _ -> Nothing
-        v2 <- case Text.toLower m2 of
-          "zwanzig" -> Just 20
-          "dreissig" -> Just 30
-          "dreißig" -> Just 30
-          "vierzig" -> Just 40
-          "fünfzig" -> Just 50
-          "sechzig" -> Just 60
-          "siebzig" -> Just 70
-          "achtzig" -> Just 80
-          "neunzig" -> Just 90
-          _ -> Nothing
-        integer $ v1 + v2
       _ -> Nothing
   }
 
@@ -221,78 +178,13 @@ rulePowersOfTen = Rule
       _ -> Nothing
   }
 
-zeroNineteenMap :: HashMap Text Integer
-zeroNineteenMap = HashMap.fromList
-  [ ("keine", 0)
-  , ("null", 0)
-  , ("nichts", 0)
-  , ("keiner", 0)
-  , ("kein", 0)
-  , ("keins", 0)
-  , ("keinen", 0)
-  , ("keines", 0)
-  , ("einer", 1)
-  , ("eins", 1)
-  , ("ein", 1)
-  , ("eine", 1)
-  , ("einser", 1)
-  , ("zwei", 2)
-  , ("drei", 3)
-  , ("vier", 4)
-  , ("fünf", 5)
-  , ("sechs", 6)
-  , ("sieben", 7)
-  , ("acht", 8)
-  , ("neun", 9)
-  , ("zehn", 10)
-  , ("elf", 11)
-  , ("zwölf", 12)
-  , ("dreizehn", 13)
-  , ("vierzehn", 14)
-  , ("fünfzehn", 15)
-  , ("sechzehn", 16)
-  , ("siebzehn", 17)
-  , ("achtzehn", 18)
-  , ("neunzehn", 19)
-  ]
-
--- TODO: Single-word composition (#110)
-ruleZeroToNineteen :: Rule
-ruleZeroToNineteen = Rule
-  { name = "integer (0..19)"
+ruleZero :: Rule
+ruleZero = Rule
+  { name = "integer 0"
   , pattern =
-    [ regex "(keine[rn]|keine?s?|null|nichts|eins?(er?)?|zwei|dreizehn|drei|vierzehn|vier|fünfzehn|fünf|sechzehn|sechs|siebzehn|sieben|achtzehn|acht|neunzehn|neun|elf|zwölf)"
+    [ regex "(keine(m|n|r|s)?|keins?|null|nichts)"
     ]
-  , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) ->
-        HashMap.lookup (Text.toLower match) zeroNineteenMap >>= integer
-      _ -> Nothing
-  }
-
-tensMap :: HashMap Text Integer
-tensMap = HashMap.fromList
-  [ ( "zwanzig" , 20 )
-  , ( "dreissig", 30 )
-  , ( "dreißig" , 30 )
-  , ( "vierzig" , 40 )
-  , ( "fünfzig" , 50 )
-  , ( "sechzig" , 60 )
-  , ( "siebzig" , 70 )
-  , ( "achtzig" , 80 )
-  , ( "neunzig" , 90 )
-  ]
-
--- TODO: Single-word composition (#110)
-ruleInteger2 :: Rule
-ruleInteger2 = Rule
-  { name = "integer (20..90)"
-  , pattern =
-    [ regex "(zwanzig|dreissig|dreißig|vierzig|fünfzig|sechzig|siebzig|achtzig|neunzig)"
-    ]
-  , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (match:_)):_) ->
-        HashMap.lookup (Text.toLower match) tensMap >>= integer
-      _ -> Nothing
+  , prod = \_ -> integer 0
   }
 
 ruleNumeralDotNumeral :: Rule
@@ -323,6 +215,17 @@ ruleIntegerWithThousandsSeparator = Rule
       _ -> Nothing
   }
 
+ruleAllNumeralWords :: Rule
+ruleAllNumeralWords = Rule
+  { name = "simple and complex numerals written as one word"
+  , pattern = [regex "(ein|zwei|drei|vier|fünf|sech|sieb|acht|neun|zehn|elf|zwölf|hundert|tausend)?([^\\s]+)?(eine[m|n|r|s]?|eins?|zwei|drei|vier|fünf|sechs|sieben|acht|neun|zehn|elf|zwölf|[s|ß|z]ig|hundert|tausend)"]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch matches) : _) ->
+        (parseNumeral $ concat $ Text.unpack . Text.toLower <$> matches)
+        >>= integer
+      _ -> Nothing
+  }
+
 rules :: [Rule]
 rules =
   [ ruleCouple
@@ -330,8 +233,6 @@ rules =
   , ruleDecimalWithThousandsSeparator
   , ruleDozen
   , ruleFew
-  , ruleInteger2
-  , ruleInteger3
   , ruleIntegerWithThousandsSeparator
   , ruleIntersect
   , ruleMultiply
@@ -340,6 +241,6 @@ rules =
   , ruleNumeralsSuffixesKMG
   , ruleNumeralsUnd
   , rulePowersOfTen
-  , ruleTen
-  , ruleZeroToNineteen
+  , ruleZero
+  , ruleAllNumeralWords
   ]

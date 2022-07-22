@@ -1,0 +1,6 @@
+{
+    "name": "wit$local_search_query",
+    "roles": [
+        "local_search_query"
+    ]
+}

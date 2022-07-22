@@ -1,0 +1,8 @@
+{
+    "name": "horaEMcidade",
+    "entities": [
+        "wit$datetime:datetime",
+        "wit$local_search_query:local_search_query",
+        "wit$location:location"
+    ]
+}

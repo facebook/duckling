@@ -1,0 +1,437 @@
+{
+    "utterances": [
+        {
+            "text": "Qual a Dist\u00e2ncia entre Canoas e Sapiranga?",
+            "entities": [
+                {
+                    "entity": "wit$distance:distance",
+                    "start": 7,
+                    "end": 16,
+                    "body": "Dist\u00e2ncia",
+                    "entities": []
+                },
+                {
+                    "entity": "wit$local_search_query:local_search_query",
+                    "start": 23,
+                    "end": 29,
+                    "body": "Canoas",
+                    "entities": []
+                },
+                {
+                    "entity": "wit$local_search_query:local_search_query",
+                    "start": 32,
+                    "end": 41,
+                    "body": "Sapiranga",
+                    "entities": []
+                }
+            ],
+            "traits": [],
+            "intent": "dist_ncia"
+        },
+        {
+            "text": "Qual a dist\u00e2ncia entre S\u00e3o Paulo  e Sapiranga?",
+            "entities": [
+                {
+                    "entity": "wit$location:location",
+                    "start": 27,
+                    "end": 32,
+                    "body": "Paulo",
+                    "entities": []
+                }
+            ],
+            "traits": [],
+            "intent": "dist_ncia"
+        },
+        {
+            "text": "Qual a dist\u00e2ncia entre S\u00e3o Paulo e Sapiranga?",
+            "entities": [
+                {
+                    "entity": "wit$distance:distance",
+                    "start": 7,
+                    "end": 16,
+                    "body": "dist\u00e2ncia",
+                    "entities": []
+                },
+                {
+                    "entity": "wit$location:location",
+                    "start": 27,
+                    "end": 32,
+                    "body": "Paulo",
+                    "entities": []
+                },
+                {
+                    "entity": "wit$location:location",
+                    "start": 35,
+                    "end": 44,
+                    "body": "Sapiranga",
+                    "entities": []
+                }
+            ],
+            "traits": [],
+            "intent": "dist_ncia"
+        },
+        {
+            "text": "Que hora s\u00e3o em Canoas?",
+            "entities": [
+                {
+                    "entity": "wit$location:location",
+                    "start": 16,
+                    "end": 22,
+                    "body": "Canoas",
+                    "entities": []
+                },
+                {
+                    "entity": "wit$datetime:datetime",
+                    "start": 4,
+                    "end": 8,
+                    "body": "hora",
+                    "entities": []
+                }
+            ],
+            "traits": [],
+            "intent": "horaEMcidade"
+        },
+        {
+            "text": "Que horas s\u00e3o Campo Bom?",
+            "entities": [
+                {
+                    "entity": "wit$location:location",
+                    "start": 14,
+                    "end": 19,
+                    "body": "Campo",
+                    "entities": []
+                }
+            ],
+            "traits": [],
+            "intent": "horaEMcidade"
+        },
+        {
+            "text": "Que horas s\u00e3o em Porto Alegre?",
+            "entities": [
+                {
+                    "entity": "wit$location:location",
+                    "start": 17,
+                    "end": 29,
+                    "body": "Porto Alegre",
+                    "entities": []
+                },
+                {
+                    "entity": "wit$datetime:datetime",
+                    "start": 4,
+                    "end": 9,
+                    "body": "horas",
+                    "entities": []
+                }
+            ],
+            "traits": [],
+            "intent": "horaEMcidade"
+        },
+        {
+            "text": "how far from Menlo Park to Seattle?",
+            "entities": [
+                {
+                    "entity": "wit$location:location",
+                    "start": 13,
+                    "end": 18,
+                    "body": "Menlo",
+                    "entities": []
+                },
+                {
+                    "entity": "wit$location:location",
+                    "start": 27,
+                    "end": 35,
+                    "body": "Seattle?",
+                    "entities": []
+                },
+                {
+                    "entity": "wit$distance:distance",
+                    "start": 24,
+                    "end": 26,
+                    "body": "to",
+                    "entities": []
+                }
+            ],
+            "traits": [],
+            "intent": "dist_ncia"
+        },
+        {
+            "text": "ow far from Menlo Park to Seattle?",
+            "entities": [
+                {
+                    "entity": "wit$location:location",
+                    "start": 12,
+                    "end": 17,
+                    "body": "Menlo",
+                    "entities": []
+                },
+                {
+                    "entity": "wit$location:location",
+                    "start": 26,
+                    "end": 34,
+                    "body": "Seattle?",
+                    "entities": []
+                }
+            ],
+            "traits": [],
+            "intent": "dist_ncia"
+        },
+        {
+            "text": "qual a distancia entre sapiranga e canoas?",
+            "entities": [
+                {
+                    "entity": "wit$location:location",
+                    "start": 23,
+                    "end": 32,
+                    "body": "sapiranga",
+                    "entities": []
+                },
+                {
+                    "entity": "wit$local_search_query:local_search_query",
+                    "start": 35,
+                    "end": 41,
+                    "body": "canoas",
+                    "entities": []
+                },
+                {
+                    "entity": "wit$distance:distance",
+                    "start": 7,
+                    "end": 16,
+                    "body": "distancia",
+                    "entities": []
+                }
+            ],
+            "traits": [],
+            "intent": "dist_ncia"
+        },
+        {
+            "text": "qual a dist\u00e2ncia entre Canoas e Sapiranga?",
+            "entities": [
+                {
+                    "entity": "wit$local_search_query:local_search_query",
+                    "start": 24,
+                    "end": 30,
+                    "body": "anoas ",
+                    "entities": []
+                },
+                {
+                    "entity": "wit$local_search_query:local_search_query",
+                    "start": 33,
+                    "end": 42,
+                    "body": "apiranga?",
+                    "entities": []
+                }
+            ],
+            "traits": [],
+            "intent": "dist_ncia"
+        },
+        {
+            "text": "que  horas s\u00e3o em Porto Alegre?",
+            "entities": [
+                {
+                    "entity": "wit$location:location",
+                    "start": 19,
+                    "end": 31,
+                    "body": "orto Alegre?",
+                    "entities": []
+                },
+                {
+                    "entity": "wit$datetime:datetime",
+                    "start": 5,
+                    "end": 10,
+                    "body": "horas",
+                    "entities": []
+                }
+            ],
+            "traits": [],
+            "intent": "horaEMcidade"
+        },
+        {
+            "text": "que horas S\u00e3o em Canoas?",
+            "entities": [
+                {
+                    "entity": "wit$location:location",
+                    "start": 18,
+                    "end": 24,
+                    "body": "anoas?",
+                    "entities": []
+                },
+                {
+                    "entity": "wit$datetime:datetime",
+                    "start": 4,
+                    "end": 9,
+                    "body": "horas",
+                    "entities": []
+                }
+            ],
+            "traits": [],
+            "intent": "horaEMcidade"
+        },
+        {
+            "text": "que horas sao",
+            "entities": [],
+            "traits": [],
+            "intent": "horaEMcidade"
+        },
+        {
+            "text": "que horas sao em canoas",
+            "entities": [
+                {
+                    "entity": "wit$datetime:datetime",
+                    "start": 4,
+                    "end": 9,
+                    "body": "horas",
+                    "entities": []
+                },
+                {
+                    "entity": "wit$location:location",
+                    "start": 17,
+                    "end": 23,
+                    "body": "canoas",
+                    "entities": []
+                }
+            ],
+            "traits": [],
+            "intent": "horaEMcidade"
+        },
+        {
+            "text": "que horas sao em canoas?",
+            "entities": [
+                {
+                    "entity": "wit$datetime:datetime",
+                    "start": 4,
+                    "end": 9,
+                    "body": "horas",
+                    "entities": []
+                },
+                {
+                    "entity": "wit$location:location",
+                    "start": 17,
+                    "end": 23,
+                    "body": "canoas",
+                    "entities": []
+                }
+            ],
+            "traits": [],
+            "intent": "horaEMcidade"
+        },
+        {
+            "text": "que horas sao em sao paulo?",
+            "entities": [
+                {
+                    "entity": "wit$location:location",
+                    "start": 17,
+                    "end": 26,
+                    "body": "sao paulo",
+                    "entities": []
+                },
+                {
+                    "entity": "wit$datetime:datetime",
+                    "start": 4,
+                    "end": 9,
+                    "body": "horas",
+                    "entities": []
+                }
+            ],
+            "traits": [],
+            "intent": "horaEMcidade"
+        },
+        {
+            "text": "que horas s\u00e3o em Sapiranga?",
+            "entities": [
+                {
+                    "entity": "wit$local_search_query:local_search_query",
+                    "start": 18,
+                    "end": 27,
+                    "body": "apiranga?",
+                    "entities": []
+                }
+            ],
+            "traits": [],
+            "intent": "horaEMcidade"
+        },
+        {
+            "text": "que horas s\u00e3o em S\u00e3o Paulo?",
+            "entities": [
+                {
+                    "entity": "wit$location:location",
+                    "start": 17,
+                    "end": 26,
+                    "body": "S\u00e3o Paulo",
+                    "entities": []
+                },
+                {
+                    "entity": "wit$datetime:datetime",
+                    "start": 4,
+                    "end": 9,
+                    "body": "horas",
+                    "entities": []
+                }
+            ],
+            "traits": [],
+            "intent": "horaEMcidade"
+        },
+        {
+            "text": "que horas s\u00e3o em canoas?",
+            "entities": [
+                {
+                    "entity": "wit$datetime:datetime",
+                    "start": 4,
+                    "end": 9,
+                    "body": "horas",
+                    "entities": []
+                },
+                {
+                    "entity": "wit$location:location",
+                    "start": 18,
+                    "end": 24,
+                    "body": "anoas?",
+                    "entities": []
+                }
+            ],
+            "traits": [],
+            "intent": "horaEMcidade"
+        },
+        {
+            "text": "what is it time in Menlo Park?",
+            "entities": [
+                {
+                    "entity": "wit$datetime:datetime",
+                    "start": 11,
+                    "end": 15,
+                    "body": "time",
+                    "entities": []
+                },
+                {
+                    "entity": "wit$location:location",
+                    "start": 19,
+                    "end": 29,
+                    "body": "Menlo Park",
+                    "entities": []
+                }
+            ],
+            "traits": [],
+            "intent": "horaEMcidade"
+        },
+        {
+            "text": "what time is it Menlo Park?",
+            "entities": [
+                {
+                    "entity": "wit$datetime:datetime",
+                    "start": 5,
+                    "end": 9,
+                    "body": "time",
+                    "entities": []
+                },
+                {
+                    "entity": "wit$location:location",
+                    "start": 16,
+                    "end": 21,
+                    "body": "Menlo",
+                    "entities": []
+                }
+            ],
+            "traits": [],
+            "intent": "horaEMcidade"
+        }
+    ]
+}

@@ -19,7 +19,7 @@ On Linux, use your package manager to install them.
 On MacOS, the easiest way to install them is with [Homebrew](https://brew.sh/):
 
 ```bash
-brew install pcre
+brew install pcre,
 ```
 
 If that doesn't help, try running `brew doctor` and fix

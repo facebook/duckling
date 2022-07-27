@@ -1,0 +1,8 @@
+{
+    "name": "dist_ncia",
+    "entities": [
+        "wit$distance:distance",
+        "wit$local_search_query:local_search_query",
+        "wit$location:location"
+    ]
+}

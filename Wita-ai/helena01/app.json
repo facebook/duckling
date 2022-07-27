@@ -1,0 +1,7 @@
+{
+    "version": 20200513,
+    "zip-command": "zip helena01.zip helena01\/app.json helena01\/entities\/*.json helena01\/intents\/*.json helena01\/traits\/*.json helena01\/utterances\/*.json",
+    "name": "helena01",
+    "lang": "pt",
+    "timezone": "America\/Sao_Paulo"
+}

@@ -65,6 +65,10 @@ docker run -p 8008:8008 --rm duckling_amd64
 # Run request in another console window
 # Note that the port is different, because the default 8000 port is already used by portainer
 curl -XPOST http://0.0.0.0:8008/parse --data 'locale=en_GB&text=tomorrow at eight'
+
+# It's also possible to cross-build the image for a different architecture, but this might take some hours.
+sudo docker run --security-opt label=disable --rm --privileged multiarch/qemu-user-static --reset -p yes
+docker buildx build --platform=linux/arm64 -t duckling_arm64 -f Dockerfile_arm64 .
 ```
 
 ## Supported dimensions

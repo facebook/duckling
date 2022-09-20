@@ -50,32 +50,22 @@ RUN apt-get update -qq \
 
 COPY --from=builder /root/.local/bin/duckling-example-exe /usr/local/bin/
 
-# ==================================================================================================
-# === Run a fast server test =======================================================================
-
-FROM base
-
-# Additional dependencies are required
+# Additional dependencies are required for the following test
 RUN apt-get update -qq \
-  && apt-get install -qq -y --no-install-recommends \
+  && apt-get install -y --no-install-recommends \
      curl \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# Change default shell to enable below string comparison
-SHELL ["/bin/bash", "-c"]
-
 # Run simple test to check if requests are answered
-RUN duckling-example-exe -p 8008 --no-access-log --no-error-log & \
-  sleep 2 && \
+RUN /bin/bash -c "duckling-example-exe -p 8008 --no-access-log --no-error-log & \
+  sleep 5 && \
   response=$(curl -XPOST http://0.0.0.0:8008/parse --data 'locale=en_GB&text=42€') && \
-  label='{"value":42,"type":"value","unit":"EUR"}' && \
-  if [[ "$response" == *"$label"* ]] ; then echo "ok" ; exit 0 ; else echo "error" ; exit -1 ; fi;
+  label='{\"value\":42,\"type\":\"value\",\"unit\":\"EUR\"}' && \
+  if [[ '$response' == *'$label'* ]] ; then echo 'ok' ; exit 0 ; else echo 'error' ; exit -1 ; fi;"
 
-# ==================================================================================================
-# === Now finish the image =========================================================================
-
-FROM base
+# Uninstall curl and it's dependencies again
+RUN apt-get remove -y curl && apt-get autoremove -y
 
 # Use port 8008 instead of default port, because port 8000 is already in use by portainer
 EXPOSE 8008

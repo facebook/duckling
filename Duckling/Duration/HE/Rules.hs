@@ -107,14 +107,72 @@ ruleExactlyDuration = Rule
       (_:token:_) -> Just token
       _ -> Nothing
   }
+  
+  
+ruleHalfAYear :: Rule
+ruleHalfAYear = Rule
+  { name = "half a year"
+  , pattern =
+    [ regex "(1/2 שנה|חצי שנה)"
+    ]
+  , prod = \_ -> Just . Token Duration $ duration TG.Month 6
+  } 
+  
+-- this rule handles TG.Week and TG.Month
+ruleDualUnitofduration :: Rule
+ruleDualUnitofduration = Rule
+  { name = "dual <unit-of-duration>"
+  , pattern =
+    [ dimension TimeGrain
+    , regex "(יים)"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token TimeGrain grain:_) -> Just . Token Duration $ duration grain 2
+      _ -> Nothing
+  }
+  
+ruleTwoDays :: Rule
+ruleTwoDays = Rule
+  { name = "dual days"
+  , pattern =
+    [ regex "יומיים"
+    ]
+  , prod = \_ -> Just . Token Duration $ duration TG.Day 2
+  }
+
+ruleTwoYears :: Rule
+ruleTwoYears = Rule
+  { name = "dual years"
+  , pattern =
+    [ regex "שנתיים"
+    ]
+  , prod = \_ -> Just . Token Duration $ duration TG.Year 2
+  }
+  
+--There's no word in Hebrew for "a" (and no need), so just the TimeGrain represents a duration
+ruleSingleUnitofduration :: Rule
+ruleSingleUnitofduration = Rule
+  { name = "single <unit-of-duration>"
+  , pattern =
+    [ dimension TimeGrain
+    ]
+  , prod = \tokens -> case tokens of
+      (Token TimeGrain grain:_) -> Just . Token Duration $ duration grain 1
+      _ -> Nothing
+  }
 
 rules :: [Rule]
 rules =
-  [ ruleAboutDuration
+  [ ruleDualUnitofduration
+  , ruleTwoDays
+  , ruleTwoYears
+  , ruleHalfAYear
+  , ruleAboutDuration
   , ruleExactlyDuration
   , ruleHalfAnHour
   , ruleIntegerAndAnHalfHours
   , ruleNumbernumberHours
   , ruleQuarterOfAnHour
   , ruleThreequartersOfAnHour
+  , ruleSingleUnitofduration
   ]

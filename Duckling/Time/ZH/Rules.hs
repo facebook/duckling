@@ -344,7 +344,7 @@ ruleThisDayofweek :: Rule
 ruleThisDayofweek = Rule
   { name = "this <day-of-week>"
   , pattern =
-    [ regex "这|這|今(个|個)?"
+    [ regex "这|這|今(个|個)?|本"
     , Predicate isADayOfWeek
     ]
   , prod = \tokens -> case tokens of
@@ -443,7 +443,7 @@ ruleToday :: Rule
 ruleToday = Rule
   { name = "today"
   , pattern =
-    [ regex "今天|今日"
+    [ regex "今天|今日|本日"
     ]
   , prod = \_ -> tt today
   }
@@ -833,7 +833,7 @@ ruleThisCycle :: Rule
 ruleThisCycle = Rule
   { name = "this <cycle>"
   , pattern =
-    [ regex "(这|這)(一)?|今個"
+    [ regex "(这|這)(一)?(个|個)?|今(个|個)?|本"
     , dimension TimeGrain
     ]
   , prod = \tokens -> case tokens of
@@ -846,7 +846,7 @@ ruleThisTime :: Rule
 ruleThisTime = Rule
   { name = "this <time>"
   , pattern =
-    [ regex "今(个|個)?|这(个)?|這(個)?"
+    [ regex "今(个|個)?|这(个|個)?|這(个|個)?|本"
     , Predicate isOkWithThisNext
     ]
   , prod = \tokens -> case tokens of
@@ -933,7 +933,7 @@ ruleTonight :: Rule
 ruleTonight = Rule
   { name = "tonight"
   , pattern =
-    [ regex "今晚|今天晚上"
+    [ regex "今晚|今天晚上|本晚"
     ]
   , prod = \_ -> do
       td2 <- interval TTime.Open (hour False 18) (hour False 0)
@@ -956,7 +956,7 @@ ruleThisYear :: Rule
 ruleThisYear = Rule
   { name = "this year"
   , pattern =
-    [ regex "今年"
+    [ regex "今年|本年(度)?"
     ]
   , prod = \_ -> tt $ cycleNth TG.Year 0
   }

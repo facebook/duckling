@@ -491,7 +491,7 @@ ruleDOMOfMonth = Rule
   { name = "<day-of-month> (ordinal or number) of <named-month>"
   , pattern =
     [ Predicate isDOMValue
-    , regex "of|in"
+    , regex "of|in|-|/"
     , Predicate isAMonth
     ]
   , prod = \tokens -> case tokens of

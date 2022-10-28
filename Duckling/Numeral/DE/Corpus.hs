@@ -157,7 +157,6 @@ allExamples = concat
              [ "zwei billiarden siebenhunderteinundsiebzig billionen neunzig milliarden zweiundneunzig millionen"
              ]
   , examples (NumeralValue 100000.0)
-             [ "100'000",
-               "100'000.00"
+             [ "100'000"
              ]
   ]

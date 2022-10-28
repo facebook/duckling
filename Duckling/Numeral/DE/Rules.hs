@@ -51,6 +51,19 @@ ruleFew = Rule
   , prod = \_ -> integer 3
   }
 
+ruleDecimalWithSwissThousandsSeparator :: Rule
+ruleDecimalWithSwissThousandsSeparator = Rule
+  { name = "decimal with thousands separator"
+  , pattern =
+    [ regex "(\\d+(\\'\\d\\d\\d)+\\,\\d+)"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (match:_)):
+       _) -> let fmt = Text.replace "," "." $ Text.replace "." Text.empty match
+        in parseDouble fmt >>= double
+      _ -> Nothing
+  }
+
 ruleDecimalWithThousandsSeparator :: Rule
 ruleDecimalWithThousandsSeparator = Rule
   { name = "decimal with thousands separator"
@@ -203,6 +216,18 @@ ruleNumeralDotNumeral = Rule
       _ -> Nothing
   }
 
+ruleIntegerWithSwissThousandsSeparator :: Rule
+ruleIntegerWithSwissThousandsSeparator = Rule
+  { name = "integer with thousands separator ."
+  , pattern =
+    [ regex "(\\d{1,3}(\\'\\d\\d\\d){1,5})"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (match:_)):_) ->
+        parseDouble (Text.replace "'" Text.empty match) >>= double
+      _ -> Nothing
+  }
+
 ruleIntegerWithThousandsSeparator :: Rule
 ruleIntegerWithThousandsSeparator = Rule
   { name = "integer with thousands separator ."
@@ -231,9 +256,11 @@ rules =
   [ ruleCouple
   , ruleDecimalNumeral
   , ruleDecimalWithThousandsSeparator
+  , ruleDecimalWithSwissThousandsSeparator
   , ruleDozen
   , ruleFew
   , ruleIntegerWithThousandsSeparator
+  , ruleIntegerWithSwissThousandsSeparator
   , ruleIntersect
   , ruleMultiply
   , ruleNumeralDotNumeral

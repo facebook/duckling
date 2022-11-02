@@ -2687,6 +2687,20 @@ ruleMinutesToHOD = Rule
       _ -> Nothing
   }
 
+ruleDOWAndDOM :: Rule
+ruleDOWAndDOM = Rule
+  { name = "<day-of-week> <day-of-month> (ordinal or number)"
+  , pattern =
+    [ Predicate isADayOfWeek
+    , Predicate isDOMValue
+    ]
+  , prod = \case
+      (Token Time dow:dom:_) -> do
+        d <- getIntValue dom
+        Token Time <$> intersect dow (dayOfMonth d)
+      _ -> Nothing
+  }
+
 rules :: [Rule]
 rules =
   [ ruleIntersect
@@ -2831,6 +2845,7 @@ rules =
   , ruleUpcomingGrain
   , ruleUpcomingGrainAlt
   , ruleMinutesToHOD
+  , ruleDOWAndDOM
   ]
   ++ ruleInstants
   ++ ruleDaysOfWeek

@@ -1945,4 +1945,15 @@ allExamples = concat
              [ "next saturday" ]
   , examples (datetime (2013, 2, 18, 0, 0, 0) Day)
              [ "next monday" ]
+  , examples (datetime (2013, 2, 18, 0, 0, 0) Day)
+             [ "monday 18"
+             , "monday 18th" ]
+  , examples (datetime (2013, 2, 18, 13, 30, 0) Minute)
+             [ "#1 Monday, February 18 at 01:30 pm"
+             , "1 Mon, Feb 18 at 13:30"
+             , "1 Mon  Feb 18 13:30" ]
+  , examples (datetime (2013, 2, 19, 1, 30, 0) Minute)
+             [ "#1 Tue, February 19 at 01:30 am"
+             , "1 Tues Feb at 19 1:30"
+             , "1. Tuesday Feb 19 1:30am" ]
   ]

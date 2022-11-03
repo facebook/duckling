@@ -2687,8 +2687,9 @@ ruleMinutesToHOD = Rule
       _ -> Nothing
   }
 
-ruleDOWAndDOM :: Rule
-ruleDOWAndDOM = Rule
+-- Monday 26
+ruleDOWDOM :: Rule
+ruleDOWDOM = Rule
   { name = "<day-of-week> <day-of-month> (ordinal or number)"
   , pattern =
     [ Predicate isADayOfWeek
@@ -2698,6 +2699,41 @@ ruleDOWAndDOM = Rule
       (Token Time dow:dom:_) -> do
         d <- getIntValue dom
         Token Time <$> intersect dow (dayOfMonth d)
+      _ -> Nothing
+  }
+
+-- #1 Thursday, September 15 at 10:00am
+ruleOrderDOWMonthDOMTime :: Rule
+ruleOrderDOWMonthDOMTime = Rule
+  { name = "#1 <day-of-week>, <named-month> <day-of-month> (ordinal or number) at hh:mm am|pm"
+  , pattern =
+    [ regex "#?\\d+.?"
+    , Predicate isADayOfWeek
+    , regex ",| +"
+    , Predicate isAMonth
+    , Predicate isDOMValue
+    , regex "(?:at +)?((?:[01]?\\d)|(?:2[0-3]))[:.]([0-5]\\d) ?(?:([ap])\\.?m?\\.?)?"
+    ]
+  , prod = \case
+      (
+        _:
+        Token Time dow:
+        _:
+        Token Time td:
+        dom:
+        Token RegexMatch (GroupMatch (hh:mm:ap:_)):
+        _) -> do
+        d <- getIntValue dom
+        h <- parseInt hh
+        m <- parseInt mm
+
+        hm <- case Text.toLower ap of
+          "a" -> Just $ timeOfDayAMPM True (hourMinute True h m)
+          "p" -> Just $ timeOfDayAMPM False (hourMinute True h m)
+          _ -> Just $ hourMinute False h m
+        dowHm <- intersect dow hm
+        domDowHm <- intersect (dayOfMonth d) dowHm
+        Token Time <$> intersect td domDowHm
       _ -> Nothing
   }
 
@@ -2845,7 +2881,8 @@ rules =
   , ruleUpcomingGrain
   , ruleUpcomingGrainAlt
   , ruleMinutesToHOD
-  , ruleDOWAndDOM
+  , ruleDOWDOM
+  , ruleOrderDOWMonthDOMTime
   ]
   ++ ruleInstants
   ++ ruleDaysOfWeek

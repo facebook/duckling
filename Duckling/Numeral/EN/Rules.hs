@@ -352,6 +352,18 @@ ruleLegalParentheses = Rule
     _ -> Nothing
   }
 
+-- number1., Number1
+ruleNumberTextInteger :: Rule
+ruleNumberTextInteger = Rule
+  { name = "Number<integer>"
+  , pattern =
+    [ regex "(?:N|n)umber(\\d+)[.,!]*"
+    ]
+  , prod = \tokens -> case tokens of
+      (Token RegexMatch (GroupMatch (match:_)):_) -> parseDecimal True match
+      _ -> Nothing
+  }
+
 rules :: [Rule]
 rules =
   [ ruleToNineteen
@@ -371,4 +383,5 @@ rules =
   , ruleMultiply
   , ruleDozen
   , ruleLegalParentheses
+  , ruleNumberTextInteger
   ]

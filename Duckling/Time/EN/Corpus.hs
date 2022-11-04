@@ -1954,6 +1954,6 @@ allExamples = concat
              , "1 Mon  Feb 18 13:30" ]
   , examples (datetime (2013, 2, 19, 1, 30, 0) Minute)
              [ "#1 Tue, February 19 at 01:30 am"
-             , "1 Tues Feb at 19 1:30"
+             , "1 Tues Feb 19 at 1:30"
              , "1. Tuesday Feb 19 1:30am" ]
   ]

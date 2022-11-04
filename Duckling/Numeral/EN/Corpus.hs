@@ -188,4 +188,9 @@ allExamples = concat
              [ "forty-five (45)"
              , "45 (forty five)"
              ]
+  , examples (NumeralValue 2)
+             [ "Number2"
+             , "Number2."
+             , "number2!"
+             ]
   ]

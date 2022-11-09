@@ -1,0 +1,111 @@
+version: 2.1
+orbs:
+  aws-cli: circleci/aws-cli@3.1.3
+  aqua: sail/aqua@0
+executors:
+  default:
+    docker:
+    - image: cimg/python:3.9.7
+      environment:
+        DOCKER_BUILDKIT: 1
+        IMAGE: duckling
+commands:
+  setup:
+    steps:
+    - checkout
+    - setup_remote_docker:
+        docker_layer_caching: true
+  ecr_login:
+    steps:
+    - aws-cli/setup:
+        profile-name: default
+    - aws-cli/role-arn-setup:
+        profile-name: sail-shared
+        source-profile: default
+        role-arn: $SHARED_CIRCLECI_ROLE
+    - aws-ecr/ecr-login:
+        profile-name: sail-shared
+  check_existing_image:
+    parameters:
+      image:
+        type: string
+        default: $IMAGE
+    steps:
+    - run:
+        name: Check existing image
+        command: >
+          version=$(cat .circleci/version)
+          ecr_version=$(aws ecr list-images \
+            --repository-name=<<parameters.image>> \
+            --query="imageIds[].imageTag" \
+            | jq  -r ".[] | select(. == \"$version\")")
+          if test -n "$ecr_version" ; then
+            circleci-agent step halt
+          fi
+  build_image:
+    parameters:
+      image:
+        type: string
+        default: $IMAGE
+    steps:
+    - run:
+        name: Building image
+        command: docker build -t "$AWS_ECR_ACCOUNT_URL/<<parameters.image>>:$(cat .version)" .
+  push_image:
+    parameters:
+      image:
+        type: string
+        default: $IMAGE
+    steps:
+    - run:
+        name: Pushing image
+        command: docker push "$AWS_ECR_ACCOUNT_URL/<<parameters.image>>:$(cat .version)"
+jobs:
+  build:
+    executor: default
+    steps:
+    - setup
+    - ecr-login
+    - check_existing_image
+    - build_image
+  scan_image:
+    executor: default
+    steps:
+    - setup
+    - ecr-login
+    - check_existing_image
+    - build_image
+    - aqua/scan:
+        image-name: $AWS_ECR_ACCOUNT_URL/<<parameters.image>>:$(cat .version)"
+  push_image:
+    executor: default
+    steps:
+    - setup
+    - ecr-login
+    - check_existing_image
+    - build_image
+    - push_image
+workflows:
+  build_and_deploy:
+    jobs:
+    - build:
+        filters:
+          tags:
+            only: /.*/
+    - scan_image:
+        requires:
+        - build
+        context:
+        - sail-aqua
+        filters:
+          tags:
+            only: /.*/
+    - push_image:
+        requires:
+        - build
+        - scan_image
+        context:
+        - sail-shared
+        filters:
+          branches:
+            only: main

@@ -65,14 +65,14 @@ jobs:
     executor: default
     steps:
     - setup
-    - ecr-login
+    - ecr_login
     - check_existing_image
     - build_image
   scan_image:
     executor: default
     steps:
     - setup
-    - ecr-login
+    - ecr_login
     - check_existing_image
     - build_image
     - aqua/scan:
@@ -81,7 +81,7 @@ jobs:
     executor: default
     steps:
     - setup
-    - ecr-login
+    - ecr_login
     - check_existing_image
     - build_image
     - push_image

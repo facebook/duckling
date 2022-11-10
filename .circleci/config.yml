@@ -82,7 +82,7 @@ jobs:
     - check_existing_image
     - build_image
     - aqua/scan:
-        image-name: "$AWS_ECR_ACCOUNT_URL/$IMAGE:latest"
+        image-name: "$AWS_ECR_ACCOUNT_URL/$IMAGE"
   push_image:
     executor: default
     steps:

@@ -36,7 +36,7 @@ commands:
         name: Check existing image
         command: >
           version=$(cat .circleci/version)
-          ecr_version=$(aws ecr list-images \
+          ecr_version=$(aws --profile=sail-shared ecr list-images \
             --repository-name=<<parameters.image>> \
             --query="imageIds[].imageTag" \
             | jq  -r ".[] | select(. == \"$version\")")

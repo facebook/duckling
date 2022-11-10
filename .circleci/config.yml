@@ -51,7 +51,7 @@ commands:
     steps:
     - run:
         name: Building image
-        command: docker build -t "$AWS_ECR_ACCOUNT_URL/<<parameters.image>>:$(cat .version)" .
+        command: docker build -t "$AWS_ECR_ACCOUNT_URL/<<parameters.image>>:$(cat .circleci/version)" .
   push_image:
     parameters:
       image:
@@ -60,7 +60,7 @@ commands:
     steps:
     - run:
         name: Pushing image
-        command: docker push "$AWS_ECR_ACCOUNT_URL/<<parameters.image>>:$(cat .version)"
+        command: docker push "$AWS_ECR_ACCOUNT_URL/<<parameters.image>>:$(cat .circleci/version)"
 jobs:
   build:
     executor: default
@@ -77,7 +77,7 @@ jobs:
     - check_existing_image
     - build_image
     - aqua/scan:
-        image-name: $AWS_ECR_ACCOUNT_URL/$IMAGE:$(cat .version)"
+        image-name: $AWS_ECR_ACCOUNT_URL/$IMAGE:$(cat .circleci/version)"
   push_image:
     executor: default
     steps:

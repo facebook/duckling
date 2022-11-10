@@ -77,7 +77,7 @@ jobs:
     - check_existing_image
     - build_image
     - aqua/scan:
-        image-name: $AWS_ECR_ACCOUNT_URL/<<parameters.image>>:$(cat .version)"
+        image-name: $AWS_ECR_ACCOUNT_URL/$IMAGE:$(cat .version)"
   push_image:
     executor: default
     steps:

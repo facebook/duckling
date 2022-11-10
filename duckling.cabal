@@ -434,6 +434,7 @@ library
                      , Duckling.Numeral.DA.Rules
                      , Duckling.Numeral.DE.Corpus
                      , Duckling.Numeral.DE.Rules
+                     , Duckling.Numeral.DE.NumParser
                      , Duckling.Numeral.EL.Corpus
                      , Duckling.Numeral.EL.Rules
                      , Duckling.Numeral.EN.Corpus

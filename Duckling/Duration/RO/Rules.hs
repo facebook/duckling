@@ -32,23 +32,32 @@ ruleQuarterOfAnHour = Rule
   , prod = \_ -> Just . Token Duration $ duration TG.Minute 15
   }
 
-ruleJumatateDeOra :: Rule
-ruleJumatateDeOra = Rule
-  { name = "jumatate de ora"
+ruleHalfOfAnHour :: Rule
+ruleHalfOfAnHour = Rule
+  { name = "half of an hour"
   , pattern =
     [ regex "(1/2\\s?(h|or(a|ă))|jum(a|ă)tate (de )?or(a|ă))"
     ]
   , prod = \_ -> Just . Token Duration $ duration TG.Minute 30
   }
 
-ruleTreiSferturiDeOra :: Rule
-ruleTreiSferturiDeOra = Rule
-  { name = "trei sferturi de ora"
+ruleThreeQuartersOfAnHour :: Rule
+ruleThreeQuartersOfAnHour = Rule
+  { name = "three quarters of an hour"
   , pattern =
     [ regex "(3/4\\s?(h|or(a|ă))|trei sferturi de or(a|ă))"
     ]
   , prod = \_ -> Just . Token Duration $ duration TG.Minute 45
   }
+  
+ruleOneNight :: Rule
+ruleOneNight = Rule
+{ name = "one night"
+, pattern =
+[ regex "(1\s?noapte)|(o noapte)"
+]
+, prod = _ -> Just . Token Duration $ duration TG.Day 1
+}
 
 ruleOUnitofduration :: Rule
 ruleOUnitofduration = Rule
@@ -93,9 +102,10 @@ ruleIntegerDeUnitofduration = Rule
 rules :: [Rule]
 rules =
   [ ruleExactInJurDeDuration
-  , ruleJumatateDeOra
+  , ruleHalfOfAnHour
   , ruleOUnitofduration
   , ruleQuarterOfAnHour
-  , ruleTreiSferturiDeOra
+  , ruleThreeQuartersOfAnHour
   , ruleIntegerDeUnitofduration
+  , ruleOneNight
   ]

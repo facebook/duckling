@@ -2737,6 +2737,38 @@ ruleOrderDOWMonthDOMTime = Rule
       _ -> Nothing
   }
 
+-- 3. Friday, February 3 at 3:30 whatever behind
+ruleOrderDOWMonthDOMTimeOnly :: Rule
+ruleOrderDOWMonthDOMTimeOnly = Rule
+  { name = "1. <day-of-week>, <named-month> <day-of-month> (ordinal or number) at hh:mm"
+  , pattern =
+    [ regex "\\d+.?\\."
+    , Predicate isADayOfWeek
+    , regex ", "
+    , Predicate isAMonth
+    , Predicate isDOMValue
+    , regex "(?:at +)?((?:2[0-3]|[01]?\\d))[:.]([0-5]\\d).?"
+    ]
+  , prod = \case
+      (
+        _:
+        Token Time dow:
+        _:
+        Token Time td:
+        dom:
+        Token RegexMatch (GroupMatch (hh:mm:_)):
+        _) -> do
+        d <- getIntValue dom
+        h <- parseInt hh
+        m <- parseInt mm
+
+        hm <- Just $ hourMinute True h m
+        dowHm <- intersect dow hm
+        domDowHm <- intersect (dayOfMonth d) dowHm
+        Token Time <$> intersect td domDowHm
+      _ -> Nothing
+  }
+
 rules :: [Rule]
 rules =
   [ ruleIntersect
@@ -2883,6 +2915,7 @@ rules =
   , ruleMinutesToHOD
   , ruleDOWDOM
   , ruleOrderDOWMonthDOMTime
+  , ruleOrderDOWMonthDOMTimeOnly
   ]
   ++ ruleInstants
   ++ ruleDaysOfWeek

@@ -153,6 +153,10 @@ allExamples = concat
   , examples (datetime (2015, 4, 14, 0, 0, 0) Day)
              [ "14 april 2015"
              , "April 14, 2015"
+             , "14 april 15"
+             ]
+  , examples (datetime (1980, 4, 14, 0, 0, 0) Day)
+             [ "14 april '80"
              ]
   , examples (datetime (2013, 2, 19, 0, 0, 0) Day)
              [ "volgende week dinsdag"

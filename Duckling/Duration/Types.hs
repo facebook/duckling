@@ -11,6 +11,7 @@
 {-# LANGUAGE NoRebindableSyntax #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE CPP #-}
 
 module Duckling.Duration.Types where
 
@@ -26,6 +27,13 @@ import Prelude
 
 import Duckling.Resolve (Resolve(..))
 import Duckling.TimeGrain.Types (Grain(..), inSeconds)
+
+# if MIN_VERSION_aeson(2, 0, 0)
+import Data.Aeson.Key (fromText)
+# else
+fromText :: Text -> Text
+fromText = id
+# endif
 
 data DurationData = DurationData
   { value :: Int
@@ -48,7 +56,7 @@ instance ToJSON DurationData where
     [ "type"       .= ("value" :: Text)
     , "value"      .= value
     , "unit"       .= grain
-    , showt grain  .= value
+    , fromText (showt grain)  .= value
     , "normalized" .= object
       [ "unit"  .= ("second" :: Text)
       , "value" .= inSeconds grain value

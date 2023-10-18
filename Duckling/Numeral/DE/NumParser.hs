@@ -103,6 +103,10 @@ two =
     , times10 = [assign 20 "zwanzig"]
     }
 
+two_alternative :: NumItem
+two_alternative = defaultNumItem 2 "zwo"
+
+
 three :: NumItem
 three =
   (defaultNumItem 3 "drei")
@@ -139,7 +143,7 @@ nine :: NumItem
 nine = defaultNumItem 9 "neun"
 
 digitLexicon :: [NumItem]
-digitLexicon = [one, two, three, four, five, six, seven, eight, nine]
+digitLexicon = [one, two_alternative, two, three, four, five, six, seven, eight, nine]
 
 from1to9 :: NumParser
 from1to9 = foldr ((<|>) . base) empty digitLexicon

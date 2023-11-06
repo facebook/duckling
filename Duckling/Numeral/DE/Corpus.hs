@@ -36,6 +36,11 @@ allExamples = concat
              , "Eine"
              , "einen"
              ]
+  , examples (NumeralValue 2)
+             [ "2"
+             , "Zwei"
+             , "Zwo"
+             ]
   , examples (NumeralValue 3)
              [ "3"
              , "Drei"

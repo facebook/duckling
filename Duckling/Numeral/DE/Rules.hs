@@ -248,6 +248,7 @@ rules =
   , ruleNumeralDotNumeral
   , ruleNumeralsPrefixWithNegativeOrMinus
   , ruleNumeralsSuffixesKMG
+  , ruleTwo
   , ruleNumeralsUnd
   , rulePowersOfTen
   , ruleZero

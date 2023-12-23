@@ -10,11 +10,12 @@
 {-# LANGUAGE NoRebindableSyntax #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TypeFamilies #-}
+
+
 module Duckling.Quantity.Types where
 
 import Control.DeepSeq
 import Data.Aeson
-import qualified Data.HashMap.Strict as H
 import Data.Hashable
 import Data.Text (Text)
 import qualified Data.Text as Text
@@ -24,6 +25,8 @@ import Duckling.Resolve
   )
 import GHC.Generics
 import Prelude
+
+import qualified Duckling.Compat as Compat 
 
 data Unit
   = Bowl
@@ -118,8 +121,8 @@ data QuantityValue
 
 instance ToJSON QuantityValue where
   toJSON (SimpleValue value) = case toJSON value of
-    Object o -> Object $ H.insert "type" (toJSON ("value" :: Text)) o
-    _ -> Object H.empty
+    Object o -> Object $ Compat.insert "type" (toJSON ("value" :: Text)) o
+    _ -> Object mempty
   toJSON (IntervalValue (from, to)) = object
     [ "type" .= ("interval" :: Text)
     , "from" .= toJSON from

@@ -7,7 +7,7 @@
 
 {-# LANGUAGE NamedFieldPuns #-}
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE CPP #-}
+
 
 module Duckling.Time.Corpus
   ( datetime
@@ -24,11 +24,7 @@ import qualified Data.Time.LocalTime.TimeZone.Series as Series
 import Prelude
 import Data.String
 
-# if MIN_VERSION_aeson(2, 0, 0)
-import qualified Data.Aeson.KeyMap as KM
-# else
-import qualified Data.HashMap.Strict as KM
-# endif
+import qualified Duckling.Compat as Compat 
 
 import Duckling.Resolve
 import Duckling.Testing.Types hiding (examples)
@@ -77,8 +73,8 @@ check f context Resolved{rval = RVal _ v} = case toJSON v of
   _ -> False
   where
     deleteValues :: Value -> Value
-    deleteValues (Object o) = Object $ KM.delete "values" o
-    deleteValues _ = Object KM.empty
+    deleteValues (Object o) = Object $ Compat.delete "values" o
+    deleteValues _ = Object mempty
 
 examples :: ToJSON a => (Context -> a) -> [Text] -> [Example]
 examples f = examplesCustom (check f)

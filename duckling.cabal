@@ -896,6 +896,7 @@ library
     build-depends: , regex-pcre-builtin      >= 0.94.4 && < 0.96
   else
     build-depends: , regex-pcre              >= 0.94.4 && < 0.96
+  other-modules:       Duckling.Compat
 
   default-language:    Haskell2010
   default-extensions:  OverloadedStrings

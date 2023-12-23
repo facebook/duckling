@@ -11,7 +11,6 @@
 {-# LANGUAGE NoRebindableSyntax #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TypeFamilies #-}
-{-# LANGUAGE CPP #-}
 
 module Duckling.AmountOfMoney.Types where
 
@@ -22,11 +21,7 @@ import Data.Text (Text)
 import GHC.Generics
 import Prelude
 
-# if MIN_VERSION_aeson(2, 0, 0)
-import qualified Data.Aeson.KeyMap as KM
-# else
-import qualified Data.HashMap.Strict as KM
-# endif
+import qualified Duckling.Compat as Compat 
 
 import Duckling.Resolve (Resolve(..), Options(..))
 
@@ -210,8 +205,8 @@ data AmountOfMoneyValue
 
 instance ToJSON AmountOfMoneyValue where
   toJSON (SimpleValue value) = case toJSON value of
-    Object o -> Object $ KM.insert "type" (toJSON ("value" :: Text)) o
-    _ -> Object KM.empty
+    Object o -> Object $ Compat.insert "type" (toJSON ("value" :: Text)) o
+    _ -> Object mempty
   toJSON (IntervalValue (from, to)) = object
     [ "type" .= ("interval" :: Text)
     , "from" .= toJSON from

@@ -105,6 +105,14 @@ allExamples = concat
              , "februari 15"
              , "15-02"
              , "15/02"
+             , "15/2"
+             , "den 15-02"
+             , "den 15/02"
+             , "den 15/2"
+             ]
+  , examples (datetime (2013, 2, 4, 0, 0, 0) Day)
+             [ "4/2"
+             , "den 4/2"
              ]
   , examples (datetime (2013, 8, 8, 0, 0, 0) Day)
              [ "8 Aug"

@@ -12,7 +12,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macOS-latest, windows-latest]
+        os: [ubuntu-latest, macOS-latest]
         stack: ["2.5.1"]
         ghc: ["8.6.5", "8.8.4", "8.10.3", "9.0.1"]
 

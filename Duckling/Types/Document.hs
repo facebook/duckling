@@ -142,7 +142,7 @@ isRangeValid = \case
       (start == end - 2 &&
         isArabicProclitic2 (doc ! start) (doc ! (start + 1)) &&
         (start == 0 || isDifferent (doc ! (start - 1)) (doc ! start))) ||
-      -- Is preceeded by proclitic
+      -- Is preceded by proclitic
       (start /= 0 && isArabicProclitic (doc ! (start - 1)) &&
         (end == length doc ||
           isDifferent (doc ! (end - 1)) (doc ! (end)))) ||

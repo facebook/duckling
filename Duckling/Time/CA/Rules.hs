@@ -1460,7 +1460,7 @@ rulePeriodicHolidays = mkRuleHolidays
   , ( "Dia Internacional de l'Record del Tràfic d'Esclaus i la seva Abolició", "dia internacional de l'record del tr(à|a)fic d'esclaus i de la seva abolici(ó|o)", monthDay 8 23 )
   , ( "Dia Internacional del Derecho a la Verdad en relación con Violaciones Graves de los Derechos Humanos y de la Dignidad de las Víctimas de las Naciones Unidas", "dia internacional del derecho a la verdad en relaci(ó|o)n con violaciones graves de los derechos humanos y de la dignidad de las v(í|i)ctimas de las naciones unidas", monthDay 3 24 )
   , ( "Dia Internacional per a l'Eliminació Total de les Armes Nuclears", "dia internacional per a l'eliminaci(ó|o) total de les armes nuclears", monthDay 9 26 )
-  , ( "Dia Internacional de les Nacions Unides a Suport de les Víctimes de la Tortura", "dia internacional de les Nacions Unides en suport de les v(í|i)ctimes de la tortura", monthDay 6 26 )
+  , ( "Dia Internacional de les Nacions Unides a Support de les Víctimes de la Tortura", "dia internacional de les Nacions Unides en support de les v(í|i)ctimes de la tortura", monthDay 6 26 )
   , ( "Dia Internacional de la Beneficència", "dia internacional de la benefic(è|e)ncia", monthDay 9 5 )
   , ( "Dia Internacional de Commemoració anual en memòria de les Víctimes de l'Holocaust", "dia internacional de commemoraci(ó|o) anual en mem(ò|o)ria de les v(í|i)ctimes de l'holocaust", monthDay 1 27 )
   , ( "Dia Internacional de la Democràcia", "dia (internacional)?de la democr(à|a)cia", monthDay 9 15 )

@@ -5,6 +5,8 @@
 -- LICENSE file in the root directory of this source tree.
 
 
+module RegenMain where
+
 import Prelude
 import Duckling.Ranking.Generate
 

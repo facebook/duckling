@@ -8,7 +8,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Duckling.Temperature.MN.Corpus
-  ( corpus 
+  ( corpus
   ) where
 
 import Prelude

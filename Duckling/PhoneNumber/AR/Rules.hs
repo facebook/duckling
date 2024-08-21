@@ -27,7 +27,7 @@ rulePhoneNumber :: Rule
 rulePhoneNumber = Rule
   { name = "phone number"
   , pattern =
-    -- Arabic is a right to left langauge except for numbers, which are read
+    -- Arabic is a right to left language except for numbers, which are read
     -- left to right. This regex uses the unicode range for Arabic numbers
     -- [\1632-\1641] to make the code easier to read and maintain. The unicode
     -- sequence \1601\1585\1593\1610, corresponding to فرعي, is a popular

@@ -14,7 +14,7 @@
 {-# LANGUAGE TypeApplications #-}
 {-# LANGUAGE TypeFamilies #-}
 
-module Main (main) where
+module CustomDimensionExample (main) where
 
 import Control.DeepSeq
 import Control.Monad

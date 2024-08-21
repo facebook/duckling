@@ -9,6 +9,8 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeApplications #-}
 
+module ExampleMain where
+
 import Control.Applicative hiding (empty)
 import Control.Arrow ((***))
 import Control.Exception (SomeException, catch)

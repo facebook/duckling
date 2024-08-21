@@ -8,7 +8,7 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# OPTIONS -fno-full-laziness #-}
 
-module Main (main) where
+module DucklingExpensive (main) where
 
 import Control.Monad
 import System.Environment

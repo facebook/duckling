@@ -50,7 +50,7 @@ allExamples = concat
              [ "31-р"
              ]
   , examples (OrdinalData 48)
-             [ 
+             [
                "48-р"
              ]
   , examples (OrdinalData 99)

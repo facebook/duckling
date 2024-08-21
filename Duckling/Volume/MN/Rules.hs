@@ -45,7 +45,6 @@ rulesVolumes = map go volumes
       }
 
 rules :: [Rule]
-rules = [ 
+rules = [
         ]
         ++ rulesVolumes
-

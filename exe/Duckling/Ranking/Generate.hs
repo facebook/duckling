@@ -17,6 +17,7 @@ module Duckling.Ranking.Generate
 import Data.HashSet (HashSet)
 import Language.Haskell.Exts as F
 import Prelude
+import System.Environment (getArgs)
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.HashSet as HashSet
 import qualified Data.Text as Text
@@ -87,9 +88,19 @@ regenLangClassifiers lang = do
   mapM_ (regenClassifiers . makeLocale lang . Just)
     $ HashMap.lookupDefault HashSet.empty lang allLocales
 
+getPath :: String -> IO (String)
+getPath moduleName = do
+  args <- getArgs
+  let
+    prefix = case args of
+     [] -> ""
+     (x:_) -> (x :: String)
+  return $ prefix ++ "Duckling/Ranking/Classifiers/" ++ moduleName ++ ".hs"
+
 -- | Run this function to overwrite the file with Classifiers data
 regenClassifiers :: Locale -> IO ()
 regenClassifiers locale = do
+  filepath <- getPath moduleName
   putStrLn $ "Regenerating " ++ filepath ++ "..."
   writeFile filepath $
     (headerComment ++) $
@@ -97,8 +108,6 @@ regenClassifiers locale = do
   putStrLn "Done!"
   where
     moduleName = show locale
-
-    filepath = "Duckling/Ranking/Classifiers/" ++ moduleName ++ ".hs"
 
     rules = rulesFor locale . HashSet.singleton $ Seal Time
 

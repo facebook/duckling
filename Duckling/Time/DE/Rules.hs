@@ -52,7 +52,7 @@ ruleDaysOfWeek = mkRuleDaysOfWeek
   [ ( "Montag"    , "montags?|mo\\.?"              )
   , ( "Dienstag"  , "die?nstags?|di\\.?"           )
   , ( "Mittwoch"  , "mittwochs?|mi\\.?"            )
-  , ( "Donnerstag", "donn?erstag|do\\.?"           )
+  , ( "Donnerstag", "donn?erstags?|do\\.?"         )
   , ( "Freitag"   , "freitags?|fr\\.?"             )
   , ( "Samstag"   , "samstags?|sonnabends?|sa\\.?" )
   , ( "Sonntag"   , "sonntags?|so\\."             )

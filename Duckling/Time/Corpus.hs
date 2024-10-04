@@ -8,6 +8,7 @@
 {-# LANGUAGE NamedFieldPuns #-}
 {-# LANGUAGE OverloadedStrings #-}
 
+
 module Duckling.Time.Corpus
   ( datetime
   , datetimeHoliday
@@ -18,11 +19,12 @@ module Duckling.Time.Corpus
   ) where
 
 import Data.Aeson
-import qualified Data.HashMap.Strict as H
 import Data.Text (Text)
 import qualified Data.Time.LocalTime.TimeZone.Series as Series
 import Prelude
 import Data.String
+
+import qualified Duckling.Compat as Compat 
 
 import Duckling.Resolve
 import Duckling.Testing.Types hiding (examples)
@@ -71,8 +73,8 @@ check f context Resolved{rval = RVal _ v} = case toJSON v of
   _ -> False
   where
     deleteValues :: Value -> Value
-    deleteValues (Object o) = Object $ H.delete "values" o
-    deleteValues _ = Object H.empty
+    deleteValues (Object o) = Object $ Compat.delete "values" o
+    deleteValues _ = Object mempty
 
 examples :: ToJSON a => (Context -> a) -> [Text] -> [Example]
 examples f = examplesCustom (check f)

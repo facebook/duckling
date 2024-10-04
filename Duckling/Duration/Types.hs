@@ -12,6 +12,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TypeFamilies #-}
 
+
 module Duckling.Duration.Types where
 
 import Control.DeepSeq
@@ -26,6 +27,8 @@ import Prelude
 
 import Duckling.Resolve (Resolve(..))
 import Duckling.TimeGrain.Types (Grain(..), inSeconds)
+
+import qualified Duckling.Compat as Compat
 
 data DurationData = DurationData
   { value :: Int
@@ -48,7 +51,7 @@ instance ToJSON DurationData where
     [ "type"       .= ("value" :: Text)
     , "value"      .= value
     , "unit"       .= grain
-    , showt grain  .= value
+    , Compat.fromText (showt grain)  .= value
     , "normalized" .= object
       [ "unit"  .= ("second" :: Text)
       , "value" .= inSeconds grain value

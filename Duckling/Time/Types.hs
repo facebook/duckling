@@ -14,6 +14,7 @@
 {-# LANGUAGE RecordWildCards #-}
 {-# LANGUAGE TypeFamilies #-}
 
+
 module Duckling.Time.Types where
 
 import Control.DeepSeq
@@ -27,12 +28,13 @@ import Data.Tuple.Extra (both)
 import GHC.Generics hiding (from, to)
 import Prelude
 import TextShow (showt)
-import qualified Data.HashMap.Strict as H
 import qualified Data.List as List
 import qualified Data.Text as Text
 import qualified Data.Time as Time
 import qualified Data.Time.Calendar.WeekDate as Time
 import qualified Data.Time.LocalTime.TimeZone.Series as Series
+
+import qualified Duckling.Compat as Compat 
 
 import Duckling.Resolve
 import Duckling.TimeGrain.Types (Grain)
@@ -180,8 +182,8 @@ instance ToJSON InstantValue where
 
 instance ToJSON SingleTimeValue where
   toJSON (SimpleValue value) = case toJSON value of
-    Object o -> Object $ H.insert "type" (toJSON ("value" :: Text)) o
-    _ -> Object H.empty
+    Object o -> Object $ Compat.insert "type" (toJSON ("value" :: Text)) o
+    _ -> Object mempty
   toJSON (IntervalValue (from, to)) = object
     [ "type" .= ("interval" :: Text)
     , "from" .= toJSON from
@@ -199,12 +201,12 @@ instance ToJSON SingleTimeValue where
 instance ToJSON TimeValue where
   toJSON (TimeValue value values holiday) = case toJSON value of
     Object o ->
-      Object $ insertHoliday holiday $ H.insert "values" (toJSON values) o
-    _ -> Object H.empty
+      Object $ insertHoliday holiday $ Compat.insert "values" (toJSON values) o
+    _ -> Object mempty
     where
       insertHoliday :: Maybe Text -> Object -> Object
       insertHoliday Nothing obj = obj
-      insertHoliday (Just h) obj = H.insert "holidayBeta" (toJSON h) obj
+      insertHoliday (Just h) obj = Compat.insert "holidayBeta" (toJSON h) obj
 
 -- | Return a tuple of (past, future) elements
 type SeriesPredicate = TimeObject -> TimeContext -> ([TimeObject], [TimeObject])

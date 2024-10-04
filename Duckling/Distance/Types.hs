@@ -20,8 +20,9 @@ import Data.Hashable
 import Data.Text (Text)
 import GHC.Generics
 import Prelude
-import qualified Data.HashMap.Strict as H
 import qualified Data.Text as Text
+
+import qualified Duckling.Compat as Compat 
 
 import Duckling.Resolve (Resolve(..))
 
@@ -86,8 +87,8 @@ data DistanceValue
 
 instance ToJSON DistanceValue where
   toJSON (SimpleValue value) = case toJSON value of
-    Object o -> Object $ H.insert "type" (toJSON ("value" :: Text)) o
-    _ -> Object H.empty
+    Object o -> Object $ Compat.insert "type" (toJSON ("value" :: Text)) o
+    _ -> Object mempty
   toJSON (IntervalValue (from, to)) = object
     [ "type" .= ("interval" :: Text)
     , "from" .= toJSON from

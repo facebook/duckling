@@ -86,11 +86,21 @@ ruleHolidays :: [Rule]
 ruleHolidays = mkRuleHolidays
   [ ( "Neujahr"                           , "neujahr(s?tag)?"
     , monthDay  1  1 )
+  , ( "Heilige drei Könige"               , "heilige drei könige"
+    , monthDay 1 6 )
   , ( "Valentinstag"                      , "valentin'?stag"
     , monthDay  2 14 )
+  , ( "Internationaler Frauentag"         , "(internationaler )?frauentag"
+    , monthDay 3  8 )
+  , ( "Tag der Arbeit"                    , "tag der arbeit|maifeiertag"
+    , monthDay  5 1 )
   , ( "Schweizer Bundesfeiertag"
     , "schweiz(er)? (bundes)?feiertag|bundes feiertag"
     , monthDay  8  1 )
+  , ( "Augsburger Friedensfest"           , "augsburger( ?hohes)? friedensfest"
+    , monthDay  8 8 )
+  , ( "Weltkindertag"                     , "weltkindertag"
+    , monthDay  9 20 )
   , ( "Tag der Deutschen Einheit"         , "tag (der)? deutsc?hen? einheit"
     , monthDay 10  3 )
   , ( "Oesterreichischer Nationalfeiertag"
@@ -98,14 +108,18 @@ ruleHolidays = mkRuleHolidays
     , monthDay 10 26 )
   , ( "Halloween"                         , "hall?owe?en?"
     , monthDay 10 31 )
+  , ( "Reformationstag"                   , "reformationstag"
+    , monthDay 10 31 )
   , ( "Allerheiligen"                     , "allerheiligen?|aller heiligen?"
     , monthDay 11  1 )
   , ( "Nikolaus"                          , "nikolaus(tag)?|nikolaus tag|nikolo"
     , monthDay 12  6 )
   , ( "Heiligabend"                       , "heilig(er)? abend"
     , monthDay 12 24 )
-  , ( "Weihnachten"                       , "weih?nacht(en|stag)?"
+  , ( "Weihnachten"                       , "weih?nacht(en|stag)?|(1\\.|erster) weihnachts(feier)?tag"
     , monthDay 12 25 )
+  , ( "2. Weihnachtsfeiertag"             , "(2\\.|zweiter) weihnachts(feier)?tag"
+    , monthDay 12 26 )
   , ( "Silvester"                         , "silvester"
     , monthDay 12 31 )
   , ( "Muttertag"                      , "mutt?ertag|mutt?er (tag)?"
@@ -120,6 +134,10 @@ ruleComputedHolidays = mkRuleHolidays
     , cycleNthAfter False TG.Day 39 easterSunday )
   , ( "Aschermittwoch", "ascher?(tag|mittwoch)"
     , cycleNthAfter False TG.Day (-46) easterSunday )
+  , ( "Rosenmontag", "rosenmontag"
+    , cycleNthAfter False TG.Day (-48) easterSunday )
+  , ( "Weiberfastnacht", "weiberfastnacht"
+    , cycleNthAfter False TG.Day (-52) easterSunday )
   , ( "Aschura", "asc?hura(\\-?tag)?"
     , cycleNthAfter False TG.Day 9 muharram )
   , ( "Bhai Dooj", "bhai(ya)?\\s+d(u|oo)j|bhau\\-beej|bhai\\s+(tika|phonta)"
@@ -239,6 +257,8 @@ ruleComputedHolidays = mkRuleHolidays
     , "[yj]om hashoah|[yj]om hazikaron lashoah ve-lag'vurah|holocaust\\-?gedenktag"
     , cycleNthAfter False TG.Day 12 passover )
   , ( "Jom Kippur", "[yj]om\\s+kippur", cycleNthAfter False TG.Day 9 roshHashana )
+  , ( "Pfingstsonntag", "pfingstsonntag"
+    , cycleNthAfter False TG.Day 49 easterSunday )
   , ( "Pfingstmontag", "pfingstmontag|(pentecost|whit)\\s+montag"
     , cycleNthAfter False TG.Day 50 easterSunday )
   , ( "Rabindra Jayanti", "rabindra(nath)?\\s+jayanti", rabindraJayanti )

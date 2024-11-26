@@ -29,6 +29,7 @@ allExamples = concat
              , "עשרה שקלים"
              , "עשר ש״ח"
              , "עשר שח"
+             ,"10 ש\"ח"
              , "10₪"
              ]
   , examples (simple ILS 10000)

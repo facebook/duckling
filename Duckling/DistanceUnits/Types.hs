@@ -17,7 +17,6 @@ module Duckling.DistanceUnits.Types
 import Data.Semigroup
 import Data.Tuple.Extra (both)
 import Prelude
-
 import qualified Duckling.Distance.Types as TDist
 
 

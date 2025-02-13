@@ -158,6 +158,11 @@ instance TextShow (Seal Dimension) where
   showb (Seal d) = showb d
 
 -- Hashable
+instance Eq (Dimension a) where
+  d1 == d2
+    | Just Refl <- geq d1 d2 = True
+    | otherwise = False
+
 instance Hashable (Seal Dimension) where
   hashWithSalt s (Seal a) = hashWithSalt s a
 instance Hashable (Dimension a) where

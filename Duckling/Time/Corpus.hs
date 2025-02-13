@@ -18,11 +18,11 @@ module Duckling.Time.Corpus
   ) where
 
 import Data.Aeson
-import qualified Data.HashMap.Strict as H
 import Data.Text (Text)
-import qualified Data.Time.LocalTime.TimeZone.Series as Series
 import Prelude
 import Data.String
+import qualified Data.Aeson.KeyMap as K
+import qualified Data.Time.LocalTime.TimeZone.Series as Series
 
 import Duckling.Resolve
 import Duckling.Testing.Types hiding (examples)
@@ -71,8 +71,8 @@ check f context Resolved{rval = RVal _ v} = case toJSON v of
   _ -> False
   where
     deleteValues :: Value -> Value
-    deleteValues (Object o) = Object $ H.delete "values" o
-    deleteValues _ = Object H.empty
+    deleteValues (Object o) = Object $ K.delete "values" o
+    deleteValues _ = Object K.empty
 
 examples :: ToJSON a => (Context -> a) -> [Text] -> [Example]
 examples f = examplesCustom (check f)

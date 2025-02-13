@@ -21,8 +21,8 @@ import Data.Semigroup
 import Data.Text (Text)
 import Data.Tuple.Extra (both)
 import GHC.Generics
-import TextShow (showt)
 import Prelude
+import Data.Aeson.Key (fromString)
 
 import Duckling.Resolve (Resolve(..))
 import Duckling.TimeGrain.Types (Grain(..), inSeconds)
@@ -48,7 +48,7 @@ instance ToJSON DurationData where
     [ "type"       .= ("value" :: Text)
     , "value"      .= value
     , "unit"       .= grain
-    , showt grain  .= value
+    , fromString (show grain)  .= value
     , "normalized" .= object
       [ "unit"  .= ("second" :: Text)
       , "value" .= inSeconds grain value

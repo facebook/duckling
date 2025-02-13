@@ -27,7 +27,7 @@ import Data.Tuple.Extra (both)
 import GHC.Generics hiding (from, to)
 import Prelude
 import TextShow (showt)
-import qualified Data.HashMap.Strict as H
+import qualified Data.Aeson.KeyMap as K
 import qualified Data.List as List
 import qualified Data.Text as Text
 import qualified Data.Time as Time
@@ -180,8 +180,8 @@ instance ToJSON InstantValue where
 
 instance ToJSON SingleTimeValue where
   toJSON (SimpleValue value) = case toJSON value of
-    Object o -> Object $ H.insert "type" (toJSON ("value" :: Text)) o
-    _ -> Object H.empty
+    Object o -> Object $ K.insert "type" (toJSON ("value" :: Text)) o
+    _ -> Object K.empty
   toJSON (IntervalValue (from, to)) = object
     [ "type" .= ("interval" :: Text)
     , "from" .= toJSON from
@@ -199,12 +199,12 @@ instance ToJSON SingleTimeValue where
 instance ToJSON TimeValue where
   toJSON (TimeValue value values holiday) = case toJSON value of
     Object o ->
-      Object $ insertHoliday holiday $ H.insert "values" (toJSON values) o
-    _ -> Object H.empty
+      Object $ insertHoliday holiday $ K.insert "values" (toJSON values) o
+    _ -> Object K.empty
     where
       insertHoliday :: Maybe Text -> Object -> Object
       insertHoliday Nothing obj = obj
-      insertHoliday (Just h) obj = H.insert "holidayBeta" (toJSON h) obj
+      insertHoliday (Just h) obj = K.insert "holidayBeta" (toJSON h) obj
 
 -- | Return a tuple of (past, future) elements
 type SeriesPredicate = TimeObject -> TimeContext -> ([TimeObject], [TimeObject])

@@ -19,11 +19,10 @@ import Data.Aeson
 import Data.Hashable
 import Data.Monoid
 import Data.Text (Text)
-import qualified Data.Text as Text
 import GHC.Generics
-import qualified TextShow as TS
-
 import Prelude
+import qualified Data.Text as Text
+import qualified TextShow as TS
 
 import Duckling.Resolve (Resolve(..))
 

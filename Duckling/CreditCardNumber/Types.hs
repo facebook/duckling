@@ -18,10 +18,9 @@ import Control.DeepSeq
 import Data.Aeson
 import Data.Hashable
 import Data.Text (Text)
-import qualified Data.Text as Text
 import GHC.Generics
-
 import Prelude
+import qualified Data.Text as Text
 
 import Duckling.Resolve (Resolve(..))
 

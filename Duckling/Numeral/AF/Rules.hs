@@ -57,9 +57,7 @@ ruleNumeral :: Rule
 ruleNumeral = Rule
   { name = "number (0..10)"
   , pattern =
-    [ regex . Text.unpack $
-        Text.concat [ "(", Text.intercalate "|"
-          ((HashMap.keys zeroAndTenMap) ++ (HashMap.keys oneToNineMap)), ")" ]
+    [ regex "(nul|geen|niks|zero|tien|een|twee|drie|vier|vyf|ses|sewe|agt?|nege)"
     ]
   , prod = \case
       (Token RegexMatch (GroupMatch (match:_)):_) ->

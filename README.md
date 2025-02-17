@@ -55,6 +55,22 @@ See `exe/ExampleMain.hs` for an example on how to integrate Duckling in your
 project.
 If your backend doesn't run Haskell or if you don't want to spin your own Duckling server, you can directly use [wit.ai](https://wit.ai)'s built-in entities.
 
+### Docker
+
+Alternatively build _duckling_ as a docker service:
+```bash
+docker build -t duckling_amd64 -f Dockerfile_amd64 .
+docker run -p 8008:8008 --rm duckling_amd64
+
+# Run request in another console window
+# Note that the port is different, because the default 8000 port is already used by portainer
+curl -XPOST http://0.0.0.0:8008/parse --data 'locale=en_GB&text=tomorrow at eight'
+
+# It's also possible to cross-build the image for a different architecture, but this might take some hours.
+sudo docker run --security-opt label=disable --rm --privileged multiarch/qemu-user-static --reset -p yes
+docker buildx build --platform=linux/arm64 -t duckling_arm64 -f Dockerfile_arm64 .
+```
+
 ## Supported dimensions
 
 Duckling supports many languages, but most don't support all dimensions yet

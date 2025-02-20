@@ -121,6 +121,7 @@ allExamples = concat
   , examples (datetimeInterval ((2013, 2, 15, 18, 0, 0), (2013, 2, 18, 0, 0, 0)) Hour)
              [ "这周末"
              , "這週末"
+             , "本周末"
              ]
   , examples (datetimeInterval ((2013, 2, 18, 4, 0, 0), (2013, 2, 18, 12, 0, 0)) Hour)
              [ "周一早上"
@@ -224,6 +225,7 @@ allExamples = concat
              , "今個星期三"
              , "今個礼拜三"
              , "今個禮拜三"
+             , "本周三"
              ]
   , examples (datetime (2013, 2, 13, 0, 0, 0) Day)
              [ "下周三"
@@ -240,6 +242,7 @@ allExamples = concat
              , "今個星期一"
              , "今個礼拜一"
              , "今個禮拜一"
+             , "本周一"
              ]
   , examples (datetime (2013, 2, 12, 0, 0, 0) Day)
              [ "这周二"
@@ -252,6 +255,7 @@ allExamples = concat
              , "今星期二"
              , "今礼拜二"
              , "今禮拜二"
+             , "本周二"
              ]
   , examples (datetime (2013, 2, 11, 0, 0, 0) Week)
              [ "这周"
@@ -265,6 +269,7 @@ allExamples = concat
              , "今個星期"
              , "今個礼拜"
              , "今個禮拜"
+             , "本周"
              ]
   , examples (datetime (2013, 2, 4, 0, 0, 0) Week)
              [ "上周"
@@ -297,6 +302,10 @@ allExamples = concat
              [ "今個月二十號"
              , "今個月20号"
              , "今個月廿號"
+             , "这个月二十号"
+             , "这个月20号"
+             , "本月二十号"
+             , "本月20号"
              ]
   , examples (datetime (2013, 3, 20, 0, 0, 0) Day)
              [ "下個月二十號"
@@ -311,6 +320,8 @@ allExamples = concat
              [ "今年"
              , "这一年"
              , "這一年"
+             , "本年"
+             , "本年度"
              ]
   , examples (datetime (2014, 1, 1, 0, 0, 0) Year)
              [ "明年"
@@ -521,6 +532,8 @@ allExamples = concat
              , "今晚八点"
              , "今晚8點"
              , "今晚八點"
+             , "本晚8点"
+             , "本晚八点"
              ]
   , examples (datetimeHoliday (2014, 1, 1, 0, 0, 0) Day "元旦")
              [ "元旦"

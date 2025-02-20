@@ -25,16 +25,17 @@ allExamples = concat
   [ examples (simple Celsius 37)
              [ "37°C"
              , "37 ° celsius"
+             , "37 degrees C"
              , "37 degrees Celsius"
              , "thirty seven celsius"
-             , "37 degrees Celsius"
-             , "thirty seven celsius"
+             , "thirty seven Celsius"
              ]
   , examples (simple Fahrenheit 70)
              [ "70°F"
              , "70 ° Fahrenheit"
              , "70 degrees F"
              , "seventy Fahrenheit"
+             , "seventy fahrenheit"
              ]
   , examples (simple Fahrenheit 98.6)
              [ "98.6°F"
@@ -51,6 +52,13 @@ allExamples = concat
              , "- 2 degrees"
              , "2 degrees below zero"
              , "2 below zero"
+             ]
+  , examples (simple Kelvin 44)
+             [ "44°K"
+             , "44 kelvin"
+             , "44 kelvins"
+             , "fourty four kelvins"
+             , "44 kelvins"
              ]
   , examples (between Degree (30, 40))
              [ "between 30 and 40 degrees"

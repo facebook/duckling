@@ -26,7 +26,7 @@ import qualified Data.Text as Text
 import Duckling.Resolve (Resolve(..))
 
 data TemperatureUnit =
-  Degree | Celsius | Fahrenheit
+  Degree | Celsius | Fahrenheit | Kelvin
   deriving (Eq, Generic, Hashable, Show, Ord, NFData)
 
 instance ToJSON TemperatureUnit where

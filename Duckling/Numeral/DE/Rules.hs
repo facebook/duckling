@@ -76,6 +76,15 @@ ruleDecimalNumeral = Rule
       _ -> Nothing
   }
 
+ruleTwo :: Rule
+ruleTwo = Rule
+  { name = "integer 2"
+  , pattern =
+    [ regex "(zwei|zwo)"
+    ]
+  , prod = \_ -> integer 2
+  }
+  
 ruleNumeralsUnd :: Rule
 ruleNumeralsUnd = Rule
   { name = "numbers und"
@@ -218,7 +227,7 @@ ruleIntegerWithThousandsSeparator = Rule
 ruleAllNumeralWords :: Rule
 ruleAllNumeralWords = Rule
   { name = "simple and complex numerals written as one word"
-  , pattern = [regex "(ein|zwei|drei|vier|fünf|sech|sieb|acht|neun|zehn|elf|zwölf|hundert|tausend)?([^\\s]+)?(eine[m|n|r|s]?|eins?|zwei|drei|vier|fünf|sechs|sieben|acht|neun|zehn|elf|zwölf|[s|ß|z]ig|hundert|tausend)"]
+  , pattern = [regex "(ein|zwei|zwo|drei|vier|fünf|sech|sieb|acht|neun|zehn|elf|zwölf|hundert|tausend)?([^\\s]+)?(eine[m|n|r|s]?|eins?|zwei|drei|vier|fünf|sechs|sieben|acht|neun|zehn|elf|zwölf|[s|ß|z]ig|hundert|tausend)"]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch matches) : _) ->
         (parseNumeral $ concat $ Text.unpack . Text.toLower <$> matches)
@@ -239,6 +248,7 @@ rules =
   , ruleNumeralDotNumeral
   , ruleNumeralsPrefixWithNegativeOrMinus
   , ruleNumeralsSuffixesKMG
+  , ruleTwo
   , ruleNumeralsUnd
   , rulePowersOfTen
   , ruleZero

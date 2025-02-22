@@ -97,7 +97,7 @@ ruleNumeralsPrefixWithNegativeOrMinus :: Rule
 ruleNumeralsPrefixWithNegativeOrMinus = Rule
   { name = "numbers prefix with -, negative or minus"
   , pattern =
-    [ regex "-|מינוס"
+    [ regex "מינוס"
     , Predicate isPositive
     ]
   , prod = \tokens -> case tokens of
@@ -118,7 +118,7 @@ ruleInteger15 :: Rule
 ruleInteger15 = Rule
   { name = "integer (20..90)"
   , pattern =
-    [ regex "(עשרים|שלושים|ארבעים|חמישים|שישים|שבעים|שמונים|תשעים)"
+    [ regex "(עשרים|שלושים|ארבעים|חמישים|שישים|שבעים|שמונים|תשעים|מאתיים)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> case match of
@@ -130,6 +130,7 @@ ruleInteger15 = Rule
         "שבעים" -> integer 70
         "שמונים" -> integer 80
         "תשעים" -> integer 90
+        "מאתיים" -> integer 200
         _ -> Nothing
       _ -> Nothing
   }
@@ -203,6 +204,8 @@ rulePowersOfTen = Rule
       (Token RegexMatch (GroupMatch (match:_)):_) -> case Text.toLower match of
         "מאה"                               ->
           double 1e2 >>= withGrain 2 >>= withMultipliable
+        "מאתיים"                               ->
+          double 2e2 >>= withGrain 2 >>= withMultipliable
         "מאות"                         ->
           double 1e2 >>= withGrain 2 >>= withMultipliable
         "אלף"                               ->

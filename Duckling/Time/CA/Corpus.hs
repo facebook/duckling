@@ -113,6 +113,8 @@ allExamples = concat
    , examples (datetime (2013, 8, 4, 0, 0, 0) Day)
              [ "el 4 d'agost"
              , "el 4/8"
+             , "el 4 ago"
+             , "el 4 ag"
              ]
   , examples (datetime (2013, 3, 3, 0, 0, 0) Day)
              [ "el 3 de març"
@@ -152,6 +154,9 @@ allExamples = concat
   , examples (datetime (2013, 2, 16, 0, 0, 0) Day)
              [ "el 16"
              , "16 de febrer"
+             , "16 de febr."
+             , "16 de febr"
+             , "16 de feb"
              ]
   , examples (datetime (2013, 2, 17, 0, 0, 0) Day)
              [ "el 17"

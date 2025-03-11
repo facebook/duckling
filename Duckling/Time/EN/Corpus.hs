@@ -37,6 +37,10 @@ defaultCorpus = (testContext, testOptions, allExamples ++ custom)
                  , "2 / 15"
                  , "2-15"
                  , "2 - 15"
+                 , "15-Feb"
+                 , "15/Feb"
+                 , "15 Feb"
+                 , "15 February"
                  ]
       , examples (datetime (1974, 10, 31, 0, 0, 0) Day)
                  [ "10/31/1974"

@@ -14,7 +14,7 @@ module Duckling.Regex.Types
   ( GroupMatch(..)
   ) where
 
-import Control.DeepSeq
+import Control.DeepSeq (NFData)
 import Data.Hashable
 import Data.Text (Text)
 import GHC.Generics

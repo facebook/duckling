@@ -16,7 +16,7 @@
 
 module CustomDimensionExample (main) where
 
-import Control.DeepSeq
+import Control.DeepSeq (NFData)
 import Control.Monad
 import Data.Aeson
 import Data.Hashable

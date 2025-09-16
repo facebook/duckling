@@ -14,7 +14,7 @@
 
 module Duckling.PhoneNumber.Types where
 
-import Control.DeepSeq
+import Control.DeepSeq (NFData)
 import Data.Aeson
 import Data.Hashable
 import Data.Monoid

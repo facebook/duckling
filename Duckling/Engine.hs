@@ -14,7 +14,7 @@ module Duckling.Engine
   , runDuckling
   ) where
 
-import Control.DeepSeq
+import Control.DeepSeq (NFData, force)
 import Control.Monad.Extra
 import Data.ByteString (ByteString)
 import Data.Functor.Identity

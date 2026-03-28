@@ -24,7 +24,7 @@
 
 module Duckling.Types where
 
-import Control.DeepSeq
+import Control.DeepSeq (NFData, rnf)
 import Data.Aeson
 import Data.GADT.Compare
 import Data.GADT.Show

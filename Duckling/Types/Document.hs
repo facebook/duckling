@@ -56,9 +56,6 @@ data Document = Document
     -- for "żółty" :: Document
     --   tDropToBSDrop = [0,2,4,6,7,8]
     --   bsDropToTDrop = [0,1,1,2,2,3,3,4,5]
-    --   tDropToUtf16Drop = [0,1,2,3,4,5]
-  , tDropToUtf16Drop :: UArray Int Int
-    -- translate Text.drop to Data.Text.Unsafe.dropWord16
   } deriving (Show)
 
 {-
@@ -97,8 +94,6 @@ fromText rawInput = Document{..}
     | otherwise = (ix, ix:acc)
   tDropToBSDropList = scanl' (\acc a -> acc + utf8CharWidth a) 0 unpacked
   tDropToBSDrop = Array.listArray (0, rawInputLength) tDropToBSDropList
-  tDropToUtf16Drop = Array.listArray (0, rawInputLength) $
-    scanl' (\acc a -> acc + utf16CharWidth a) 0 unpacked
   bsDropToTDrop = Array.listArray (0, BS.length utf8Encoded) $
     reverse $ snd $ foldl' fun (-1, []) $ zip [0..] tDropToBSDropList
   fun (lastPos, !acc) (ix, elem) = (elem, replicate (elem - lastPos) ix ++ acc)
@@ -262,7 +257,6 @@ byteStringFromPos
            , utf8Encoded = utf8Encoded
            , tDropToBSDrop = tDropToBSDrop
            , bsDropToTDrop = bsDropToTDrop
-           , tDropToUtf16Drop = tDropToUtf16Drop
            }
   position = (substring, rangeToText, translateRange)
   where
@@ -276,11 +270,11 @@ byteStringFromPos
   rangeToText :: (Int, Int) -> Text
   rangeToText (-1, _) = ""
   -- this is what regexec from Text.Regex.PCRE.ByteString does
-  rangeToText r = UText.takeWord16 (end16Pos - start16Pos) $
-    UText.dropWord16 start16Pos rawInput
+  rangeToText r = UText.takeWord8 (end8Pos - start8Pos) $
+    UText.dropWord8 start8Pos rawInput
     where
-    start16Pos = tDropToUtf16Drop Array.! startPos
-    end16Pos = tDropToUtf16Drop Array.! endPos
+    start8Pos = tDropToBSDrop Array.! startPos
+    end8Pos = tDropToBSDrop Array.! endPos
     (startPos, endPos) = uncurry translateRange r
   -- from utf8 offset and length to Text character start and end position
   translateRange :: Int -> Int -> (Int, Int)

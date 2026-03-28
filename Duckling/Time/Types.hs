@@ -16,7 +16,7 @@
 
 module Duckling.Time.Types where
 
-import Control.DeepSeq
+import Control.DeepSeq (NFData, rnf)
 import Data.Aeson
 import Data.Foldable (find)
 import Data.Hashable

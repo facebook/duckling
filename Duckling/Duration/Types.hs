@@ -14,7 +14,7 @@
 
 module Duckling.Duration.Types where
 
-import Control.DeepSeq
+import Control.DeepSeq (NFData)
 import Data.Aeson
 import Data.Hashable
 import Data.Semigroup

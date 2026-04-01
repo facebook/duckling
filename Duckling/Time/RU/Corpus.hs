@@ -115,12 +115,15 @@ allExamples = concat
              ]
   , examples (datetime (2013, 3, 0, 0, 0, 0) Month)
              [ "март"
+             , "в марте"
              ]
   , examples (datetime (2014, 10, 0, 0, 0, 0) Month)
-             [ "Октябрь 2014"
+             [ "Октябрь 2014",
+             "В октябре 2014"
              ]
   , examples (datetime (2014, 11, 0, 0, 0, 0) Month)
-             [ "Ноябрь 2014"
+             [ "Ноябрь 2014",
+             "В ноябре 2014"
              ]
   , examples (datetime (1974, 10, 31, 0, 0, 0) Day)
              [ "31.10.1974"
@@ -506,6 +509,10 @@ allExamples = concat
   , examples (datetime (2013, 10, 10, 0, 0, 0) Day)
              [ "10.10.2013"
              ]
+  examples (datetime (2013, 10, 1, 0, 0, 0) Day)
+             [ "10.2013"
+             , "10/2013"
+             ],
   , examples (datetime (2013, 2, 12, 10, 10, 0) Minute)
              [ "в 10:10"
              ]

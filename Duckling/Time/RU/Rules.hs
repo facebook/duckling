@@ -56,17 +56,17 @@ ruleDaysOfWeek = mkRuleDaysOfWeek
 
 ruleMonths :: [Rule]
 ruleMonths = mkRuleMonths
-  [ ( "Январь"   , "январ(ь|я)|янв\\.?"   )
-  , ( "Февраль"  , "феврал(ь|я)|фев\\.?"  )
-  , ( "Март"     , "март(а)?|мар\\.?"     )
-  , ( "Апрель"   , "апрел(ь|я)|апр\\.?"   )
-  , ( "Май"      , "ма(й|я)"              )
-  , ( "Июнь"     , "июн(ь|я)|июн\\.?"     )
-  , ( "Июль"     , "июл(ь|я)|июл\\.?"     )
-  , ( "Август"   , "август(а)?|авг\\.?"   )
-  , ( "Сентябрь" , "сентябр(ь|я)|сен\\.?" )
-  , ( "Октябрь"  , "октябр(ь|я)|окт\\.?"  )
-  , ( "Ноябрь"   , "ноябр(ь|я)?|ноя\\.?"  )
+  [ ( "Январь"   , "январ(ь|я|е)|янв\\.?"   )
+  , ( "Февраль"  , "феврал(ь|я|e)|фев\\.?"  )
+  , ( "Март"     , "март(а|е)?|мар\\.?"     )
+  , ( "Апрель"   , "апрел(ь|я|е)|апр\\.?"   )
+  , ( "Май"      , "ма(й|я|е)"              )
+  , ( "Июнь"     , "июн(ь|я|е)|июн\\.?"     )
+  , ( "Июль"     , "июл(ь|я|е)|июл\\.?"     )
+  , ( "Август"   , "август(а|е)?|авг\\.?"   )
+  , ( "Сентябрь" , "сентябр(ь|я|е)|сен\\.?" )
+  , ( "Октябрь"  , "октябр(ь|я|е)|окт\\.?"  )
+  , ( "Ноябрь"   , "ноябр(ь|я|е)?|ноя\\.?"  )
   , ( "Декабрь"  , "декабр(ь|я)|дек\\.?"  )
   ]
 
@@ -708,6 +708,20 @@ ruleYyyymmdd = Rule
       _ -> Nothing
   }
 
+ruleMMYYYY :: Rule
+ruleMMYYYY = Rule
+  { name = "mm/yyyy"
+  , pattern =
+    [ regex "(0?[1-9]|1[0-2])[/-](\\d{4})"
+    ]
+  , prod = \case
+      (Token RegexMatch (GroupMatch (mm:yy:_)):_) -> do
+        y <- parseInt yy
+        m <- parseInt mm
+        tt $ yearMonth y m
+      _ -> Nothing
+  }
+
 ruleIntersectByOfFromS :: Rule
 ruleIntersectByOfFromS = Rule
   { name = "intersect by 'of', 'from', 's"
@@ -1031,6 +1045,20 @@ ruleMmddyyyy = Rule
       _ -> Nothing
   }
 
+ruleMmyyyy :: Rule
+ruleMmyyyy = Rule
+  { name = "mm/yyyy"
+  , pattern =
+    [ regex "([012]?[1-9]|10|20|30|31)\\.(\\d{2,4})"
+    ]
+  , prod = \case
+      (Token RegexMatch (GroupMatch (m1:m2:m3:_)):_) -> do
+        y <- parseInt m3
+        m <- parseInt m2
+        tt $ yearMonth y m
+      _ -> Nothing
+  }
+
 ruleTimeofdayOclock :: Rule
 ruleTimeofdayOclock = Rule
   { name = "<time-of-day>  o'clock"
@@ -1148,6 +1176,7 @@ rules =
   , ruleYearLatent
   , ruleYearLatent2
   , ruleYyyymmdd
+  , ruleMMYYYY
   , ruleTimezone
   ]
   ++ ruleInstants

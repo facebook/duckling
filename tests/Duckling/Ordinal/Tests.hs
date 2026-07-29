@@ -21,6 +21,7 @@ import qualified Duckling.Ordinal.ES.Tests as ES
 import qualified Duckling.Ordinal.ET.Tests as ET
 import qualified Duckling.Ordinal.FR.Tests as FR
 import qualified Duckling.Ordinal.GA.Tests as GA
+import qualified Duckling.Ordinal.GU.Tests as GU
 import qualified Duckling.Ordinal.HE.Tests as HE
 import qualified Duckling.Ordinal.HI.Tests as HI
 import qualified Duckling.Ordinal.HR.Tests as HR
@@ -32,6 +33,7 @@ import qualified Duckling.Ordinal.KA.Tests as KA
 import qualified Duckling.Ordinal.KM.Tests as KM
 import qualified Duckling.Ordinal.KO.Tests as KO
 import qualified Duckling.Ordinal.MN.Tests as MN
+import qualified Duckling.Ordinal.MR.Tests as MR
 import qualified Duckling.Ordinal.ML.Tests as ML
 import qualified Duckling.Ordinal.NB.Tests as NB
 import qualified Duckling.Ordinal.NL.Tests as NL
@@ -59,6 +61,7 @@ tests = testGroup "Ordinal Tests"
   , ET.tests
   , FR.tests
   , GA.tests
+  , GU.tests
   , HE.tests
   , HI.tests
   , HR.tests
@@ -70,6 +73,7 @@ tests = testGroup "Ordinal Tests"
   , KM.tests
   , KO.tests
   , MN.tests
+  , MR.tests
   , ML.tests
   , NB.tests
   , NL.tests

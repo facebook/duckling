@@ -21,12 +21,14 @@ import qualified Duckling.Duration.EN.Tests as EN
 import qualified Duckling.Duration.ES.Tests as ES
 import qualified Duckling.Duration.FR.Tests as FR
 import qualified Duckling.Duration.GA.Tests as GA
+import qualified Duckling.Duration.GU.Tests as GU
 import qualified Duckling.Duration.HI.Tests as HI
 import qualified Duckling.Duration.HU.Tests as HU
 import qualified Duckling.Duration.JA.Tests as JA
 import qualified Duckling.Duration.KA.Tests as KA
 import qualified Duckling.Duration.KO.Tests as KO
 import qualified Duckling.Duration.MN.Tests as MN
+import qualified Duckling.Duration.MR.Tests as MR
 import qualified Duckling.Duration.NB.Tests as NB
 import qualified Duckling.Duration.NL.Tests as NL
 import qualified Duckling.Duration.PL.Tests as PL
@@ -48,12 +50,14 @@ tests = testGroup "Duration Tests"
   , ES.tests
   , FR.tests
   , GA.tests
+  , GU.tests
   , HI.tests
   , HU.tests
   , JA.tests
   , KA.tests
   , KO.tests
   , MN.tests
+  , MR.tests
   , NB.tests
   , NL.tests
   , PL.tests

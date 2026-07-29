@@ -32,27 +32,34 @@ import qualified Duckling.TimeGrain.Types as TG
 
 avadhiMap :: HashMap Text TG.Grain
 avadhiMap = HashMap.fromList
-  [ ("मिनट" , TG.Minute)
-  , ("क्षण", TG.Minute)
-  , ("घंटा" , TG.Hour)
-  , ("दिवस" , TG.Day)
-  , ("दिन"  , TG.Day)
-  , ("महीना", TG.Month)
-  , ("माह", TG.Month)
-  , ("मास", TG.Month)
-  , ("वर्ष" , TG.Year)
-  , ("साल"  , TG.Year)
-  , ("बरस", TG.Year)
+  [ ("मिनट"   , TG.Minute)
+  , ("मिनटों"  , TG.Minute)
+  , ("क्षण"   , TG.Minute)
+  , ("घंटा"   , TG.Hour)
+  , ("घंटे"   , TG.Hour)
+  , ("घंटों"  , TG.Hour)
+  , ("घंटे का" , TG.Hour)
+  , ("घंटे की" , TG.Hour)
+  , ("घंटे के" , TG.Hour)
+  , ("दिवस"   , TG.Day)
+  , ("दिन"    , TG.Day)
+  , ("महीना"  , TG.Month)
+  , ("महीने"  , TG.Month)
+  , ("माह"    , TG.Month)
+  , ("मास"    , TG.Month)
+  , ("वर्ष"   , TG.Year)
+  , ("साल"    , TG.Year)
+  , ("बरस"    , TG.Year)
   ]
 
 ruleAadha :: Rule
 ruleAadha = Rule
   { name = "half of a duration"
   , pattern =
-    [ regex "आधा ((साल|वर्ष|बरस)|(महीना|मास|माह)|(दिन|दिवस)|(घंटा)|(मिनट|क्षण))"
+    [ regex "(आधा|आधे|आधी)\\s+((साल|वर्ष|बरस)|(महीना|महीने|मास|माह)|(दिन|दिवस)|(घंटा|घंटे का|घंटे की|घंटे के|घंटे|घंटों)|(मिनट|मिनटों|क्षण))"
     ]
   , prod = \tokens -> case tokens of
-      (Token RegexMatch (GroupMatch (x:_)):_) -> do
+      (Token RegexMatch (GroupMatch (_:x:_)):_) -> do
         grain <- HashMap.lookup (Text.toLower x) avadhiMap
         Token Duration <$> nPlusOneHalf grain 0
       _ -> Nothing
@@ -207,6 +214,20 @@ ruleNAndHalfDuration = Rule
       _ -> Nothing
   }
 
+ruleCompositeDurationDirect :: Rule
+ruleCompositeDurationDirect = Rule
+  { name = "<duration> <duration>"
+  , pattern =
+    [ dimension Duration
+    , dimension Duration
+    ]
+  , prod = \case
+      (Token Duration d1@DurationData{TDuration.grain = g1}:
+       Token Duration d2@DurationData{TDuration.grain = g2}:
+       _) | g1 > g2 -> Just $ Token Duration $ d1 <> d2
+      _ -> Nothing
+  }
+
 rules :: [Rule]
 rules =
   [  ruleDurationPandrahMinat
@@ -219,6 +240,7 @@ rules =
   ,  ruleSavaDuration
   ,  ruleSaadeDuration
   ,  ruleCompositeDuration
+  ,  ruleCompositeDurationDirect
   ,  ruleCompositeDurationCommasAnd
   ,  ruleNAndHalfDuration
   ]

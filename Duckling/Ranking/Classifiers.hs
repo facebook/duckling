@@ -31,6 +31,7 @@ import qualified Duckling.Ranking.Classifiers.FI_XX as FI_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.FA_XX as FA_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.FR_XX as FR_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.GA_XX as GA_XXClassifiers
+import qualified Duckling.Ranking.Classifiers.GU_XX as GU_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.HE_XX as HE_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.HI_XX as HI_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.HR_XX as HR_XXClassifiers
@@ -46,6 +47,7 @@ import qualified Duckling.Ranking.Classifiers.KO_XX as KO_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.LO_XX as LO_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.ML_XX as ML_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.MN_XX as MN_XXClassifiers
+import qualified Duckling.Ranking.Classifiers.MR_XX as MR_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.MY_XX as MY_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.NB_XX as NB_XXClassifiers
 import qualified Duckling.Ranking.Classifiers.NE_XX as NE_XXClassifiers
@@ -84,6 +86,7 @@ classifiers (Locale FI _) = FI_XXClassifiers.classifiers
 classifiers (Locale FA _) = FA_XXClassifiers.classifiers
 classifiers (Locale FR _) = FR_XXClassifiers.classifiers
 classifiers (Locale GA _) = GA_XXClassifiers.classifiers
+classifiers (Locale GU _) = GU_XXClassifiers.classifiers
 classifiers (Locale HE _) = HE_XXClassifiers.classifiers
 classifiers (Locale HI _) = HI_XXClassifiers.classifiers
 classifiers (Locale HR _) = HR_XXClassifiers.classifiers
@@ -99,6 +102,7 @@ classifiers (Locale KO _) = KO_XXClassifiers.classifiers
 classifiers (Locale LO _) = LO_XXClassifiers.classifiers
 classifiers (Locale ML _) = ML_XXClassifiers.classifiers
 classifiers (Locale MN _) = MN_XXClassifiers.classifiers
+classifiers (Locale MR _) = MR_XXClassifiers.classifiers
 classifiers (Locale MY _) = MY_XXClassifiers.classifiers
 classifiers (Locale NB _) = NB_XXClassifiers.classifiers
 classifiers (Locale NE _) = NE_XXClassifiers.classifiers

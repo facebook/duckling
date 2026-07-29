@@ -37,6 +37,7 @@ import qualified Duckling.Dimensions.FA as FADimensions
 import qualified Duckling.Dimensions.FI as FIDimensions
 import qualified Duckling.Dimensions.FR as FRDimensions
 import qualified Duckling.Dimensions.GA as GADimensions
+import qualified Duckling.Dimensions.GU as GUDimensions
 import qualified Duckling.Dimensions.HE as HEDimensions
 import qualified Duckling.Dimensions.HI as HIDimensions
 import qualified Duckling.Dimensions.HR as HRDimensions
@@ -52,6 +53,7 @@ import qualified Duckling.Dimensions.KO as KODimensions
 import qualified Duckling.Dimensions.LO as LODimensions
 import qualified Duckling.Dimensions.ML as MLDimensions
 import qualified Duckling.Dimensions.MN as MNDimensions
+import qualified Duckling.Dimensions.MR as MRDimensions
 import qualified Duckling.Dimensions.MY as MYDimensions
 import qualified Duckling.Dimensions.NB as NBDimensions
 import qualified Duckling.Dimensions.NE as NEDimensions
@@ -118,6 +120,7 @@ langDimensions FA = FADimensions.allDimensions
 langDimensions FI = FIDimensions.allDimensions
 langDimensions FR = FRDimensions.allDimensions
 langDimensions GA = GADimensions.allDimensions
+langDimensions GU = GUDimensions.allDimensions
 langDimensions HE = HEDimensions.allDimensions
 langDimensions HI = HIDimensions.allDimensions
 langDimensions HR = HRDimensions.allDimensions
@@ -133,6 +136,7 @@ langDimensions KO = KODimensions.allDimensions
 langDimensions LO = LODimensions.allDimensions
 langDimensions ML = MLDimensions.allDimensions
 langDimensions MN = MNDimensions.allDimensions
+langDimensions MR = MRDimensions.allDimensions
 langDimensions MY = MYDimensions.allDimensions
 langDimensions NB = NBDimensions.allDimensions
 langDimensions NE = NEDimensions.allDimensions

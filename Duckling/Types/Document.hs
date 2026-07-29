@@ -212,8 +212,8 @@ isRangeValid = \case
       where
         charClass :: Char -> CharClass
         charClass c
-          | Char.isLower c || Char.isUpper c = Alpha
-          | Char.isDigit c = Digit
+          | Char.isAlpha c || Char.isMark c = Alpha
+          | Char.isNumber c = Digit
           | otherwise = Self c
         isDifferent :: Char -> Char -> Bool
         isDifferent a b = charClass a /= charClass b

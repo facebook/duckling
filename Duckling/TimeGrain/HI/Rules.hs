@@ -21,14 +21,14 @@ import Duckling.Types
 import qualified Duckling.TimeGrain.Types as TG
 
 grains :: [(Text, String, TG.Grain)]
-grains = [ ("second (grain)", "सेकंड", TG.Second)
-         , ("minute (grain)", "मिनट", TG.Minute)
-         , ("hour (grain)", "घंटा", TG.Hour)
-         , ("day (grain)", "(दिन|दिवस)", TG.Day)
-         , ("week (grain)", "(सप्ताह|हफ़्ता)", TG.Week)
-         , ("month (grain)", "महीना", TG.Month)
-         , ("quarter (grain)", "चौथाई", TG.Quarter)
-         , ("year (grain)", "(साल|वर्ष)", TG.Year)
+grains = [ ("second (grain)", "(सेकंडों|सेकंड|सेकण्डों|सेकण्ड)", TG.Second)
+         , ("minute (grain)", "(मिनटों|मिनट)", TG.Minute)
+         , ("hour (grain)", "(घंटों|घंटे|घंटा)", TG.Hour)
+         , ("day (grain)", "(दिनों|दिन|दिवस)", TG.Day)
+         , ("week (grain)", "(सप्ताहों|सप्ताह|हफ़्तों|हफ़्ते|हफ़्ता|हफ्तों|हफ्ते|हफ्ता)", TG.Week)
+         , ("month (grain)", "(महीनों|महीने|महीना|माह|मास)", TG.Month)
+         , ("quarter (grain)", "(चौथाइयों|चौथाई)", TG.Quarter)
+         , ("year (grain)", "(सालों|साल|वर्षों|वर्ष|बरस)", TG.Year)
          ]
 
 rules :: [Rule]

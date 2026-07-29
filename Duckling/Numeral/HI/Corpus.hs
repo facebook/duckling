@@ -100,4 +100,12 @@ allExamples = concat
   , examples (NumeralValue 1520)
              [ "एक हज़ार पाँच सौ बीस"
              ]
-  ]
+   , examples (NumeralValue 1.5)
+              [ "एक पॉइंट पाँच"
+              , "1.5"
+              , "१.५"
+              ]
+   , examples (NumeralValue 125000)
+              [ "एक लाख पच्चीस हजार"
+              ]
+   ]

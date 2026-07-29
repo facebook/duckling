@@ -11,6 +11,7 @@
 
 module Duckling.Duration.Rules
   ( rules
+  , ruleIntegerUnitofduration
   ) where
 
 import Data.String

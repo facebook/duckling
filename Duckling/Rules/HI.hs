@@ -19,8 +19,10 @@ import Duckling.Types
 import qualified Duckling.Numeral.HI.Rules as Numeral
 import qualified Duckling.Ordinal.HI.Rules as Ordinal
 import qualified Duckling.Duration.HI.Rules as Duration
+import qualified Duckling.Time.HI.Rules as Time
 import qualified Duckling.TimeGrain.HI.Rules as TimeGrain
 import qualified Duckling.Temperature.HI.Rules as Temperature
+import qualified Duckling.Volume.HI.Rules as Volume
 
 defaultRules :: Seal Dimension -> [Rule]
 defaultRules = langRules
@@ -41,8 +43,9 @@ langRules (Seal PhoneNumber) = []
 langRules (Seal Quantity) = []
 langRules (Seal RegexMatch) = []
 langRules (Seal Temperature) = Temperature.rules
-langRules (Seal Time) = []
+langRules (Seal Time) = Time.rules
 langRules (Seal TimeGrain) = TimeGrain.rules
 langRules (Seal Url) = []
-langRules (Seal Volume) = []
+langRules (Seal Volume) = Volume.rules
 langRules (Seal (CustomDimension dim)) = dimLangRules HI dim
+

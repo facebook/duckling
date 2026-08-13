@@ -10,9 +10,17 @@
 {-# LANGUAGE NamedFieldPuns #-}
 {-# LANGUAGE NoRebindableSyntax #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE PatternSynonyms #-}
 {-# LANGUAGE TypeFamilies #-}
 
-module Duckling.Numeral.Types where
+module Duckling.Numeral.Types
+  ( NumeralData(..)
+  , NumeralValue(.., NumeralValue, vValue)
+  , getIntValue
+  , isInteger
+  , isMultiple
+  , isIntegerBetween
+  ) where
 
 import Control.DeepSeq
 import Data.Aeson
@@ -33,20 +41,35 @@ data NumeralData = NumeralData
   -- This allows to explicitly flag Numerals that don't work well with Time.
   -- See `ruleTODLatent`. Prevents things like "at single", "dozens o'clock".
   , okForAnyTime :: Bool
+  , rangeValue   :: Maybe (Double, Double)
   }
   deriving (Eq, Generic, Hashable, Ord, Show, NFData)
 
 instance Resolve NumeralData where
   type ResolvedValue NumeralData = NumeralValue
-  resolve _ _ NumeralData {value} = Just (NumeralValue {vValue = value}, False)
+  resolve _ _ NumeralData {value, rangeValue} = Just (val, False)
+    where
+      val = case rangeValue of
+        Nothing -> NumeralSingleValue value
+        Just (fromVal, toVal) -> NumeralIntervalValue (fromVal, toVal)
 
-newtype NumeralValue = NumeralValue { vValue :: Double }
+data NumeralValue
+  = NumeralSingleValue { vValue :: Double }
+  | NumeralIntervalValue (Double, Double)
   deriving (Eq, Show)
 
+pattern NumeralValue :: Double -> NumeralValue
+pattern NumeralValue v = NumeralSingleValue v
+
 instance ToJSON NumeralValue where
-  toJSON (NumeralValue value) = object
+  toJSON (NumeralSingleValue value) = object
     [ "type" .= ("value" :: Text)
     , "value" .= value
+    ]
+  toJSON (NumeralIntervalValue (fromVal, toVal)) = object
+    [ "type" .= ("interval" :: Text)
+    , "from" .= object [ "value" .= fromVal ]
+    , "to"   .= object [ "value" .= toVal ]
     ]
 
 getIntValue :: Double -> Maybe Int

@@ -6,6 +6,7 @@
 
 
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE NoRebindableSyntax #-}
 
@@ -113,28 +114,40 @@ ruleZeroToNinetyNine :: Rule
 ruleZeroToNinetyNine = Rule
   { name = "number (0..99)"
   , pattern =
-    [ regex "(शून्य|एक|दोन|तीन|चार|पाच|सहा|सात|आठ|नऊ|दहा|अकरा|बारा|तेरा|चौदा|पंधरा|सोळा|सतरा|अठरा|एकोणीस|वीस|एकवीस|बावीस|तेवीस|चोवीस|पंचवीस|सव्वीस|सत्तावीस|अठ्ठावीस|एकोणतीस|तीस|चाळीस|पन्नास|साठ|सत्तर|ऐंशी|नव्वद)"
+    [ regex "((?:शून्य|एक|दोन|तीन|चार|पाच|सहा|सात|आठ|नऊ|दहा|अकरा|बारा|तेरा|चौदा|पंधरा|सोळा|सतरा|अठरा|एकोणीस|वीस|एकवीस|बावीस|तेवीस|चोवीस|पंचवीस|सव्वीस|सत्तावीस|अठ्ठावीस|एकोणतीस|तीस|चाळीस|पन्नास|साठ|सत्तर|ऐंशी|नव्वद)(?:ांवरून|वरून|ांवर|वर|ांपर्यंत|ंपर्यंत|पर्यंत|ापासून|पासून|ंपासून|ांस|ांचा|ांची|ांचे|ांना|ात|ची|चा|चे|ना)?)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
-        HashMap.lookup match ruleZeroToNinetyNineMap >>= integer
+        let hasSuffix = Text.length match > 4 && (Text.isSuffixOf "वरून" match || Text.isSuffixOf "वर" match || Text.isSuffixOf "पर्यंत" match || Text.isSuffixOf "ंपर्यंत" match || Text.isSuffixOf "पासून" match || Text.isSuffixOf "ंपासून" match || Text.isSuffixOf "ापासून" match || Text.isSuffixOf "ांपासून" match || Text.isSuffixOf "चा" match || Text.isSuffixOf "ची" match || Text.isSuffixOf "चे" match)
+            findValue [] = Nothing
+            findValue (numText:xs) =
+              if Text.isPrefixOf numText match
+                then HashMap.lookup numText ruleZeroToNinetyNineMap >>= integer
+                else findValue xs
+            baseRes = findValue (HashMap.keys ruleZeroToNinetyNineMap)
+        in if hasSuffix
+             then baseRes >>= notOkForAnyTime
+             else baseRes
       _ -> Nothing
   }
 
 rulePowersOfTen :: Rule
 rulePowersOfTen = Rule
   { name = "powers of tens"
-  , pattern = [regex "(शंभर|शे|हजार|लाख|कोटी|करोड)"]
+  , pattern = [regex "((?:शंभर|शे|हजार|हजारा|लाख|लाखा|कोटी|कोटीं|करोड)(?:ापासून|पासून|ंपासून|ांपासून|ांपर्यंत|ंपर्यंत|पर्यंत|ांवरून|वरून|ांवर|वर|ांस|ांचा|ांची|ांचे|ांना|ात|ची|चा|चे|ना)?)"]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match : _)) : _) ->
-        case Text.toLower match of
-          "शंभर" -> double 1e2 >>= withGrain 2 >>= withMultipliable
-          "शे"  -> double 1e2 >>= withGrain 2 >>= withMultipliable
-          "हजार" -> double 1e3 >>= withGrain 3 >>= withMultipliable
-          "लाख" -> double 1e5 >>= withGrain 5 >>= withMultipliable
-          "कोटी" -> double 1e7 >>= withGrain 7 >>= withMultipliable
-          "करोड" -> double 1e7 >>= withGrain 7 >>= withMultipliable
-          _ -> Nothing
+        let hasSuffix = Text.length match > 4 && (Text.isSuffixOf "वरून" match || Text.isSuffixOf "वर" match || Text.isSuffixOf "पर्यंत" match || Text.isSuffixOf "ंपर्यंत" match || Text.isSuffixOf "पासून" match || Text.isSuffixOf "ंपासून" match || Text.isSuffixOf "ापासून" match || Text.isSuffixOf "ांपासून" match || Text.isSuffixOf "चा" match || Text.isSuffixOf "ची" match || Text.isSuffixOf "चे" match)
+            baseRes = if Text.isPrefixOf "शंभर" match then double 1e2 >>= withGrain 2 >>= withMultipliable
+                      else if Text.isPrefixOf "शे" match then double 1e2 >>= withGrain 2 >>= withMultipliable
+                      else if Text.isPrefixOf "हजार" match then double 1e3 >>= withGrain 3 >>= withMultipliable
+                      else if Text.isPrefixOf "लाख" match then double 1e5 >>= withGrain 5 >>= withMultipliable
+                      else if Text.isPrefixOf "कोटी" match then double 1e7 >>= withGrain 7 >>= withMultipliable
+                      else if Text.isPrefixOf "करोड" match then double 1e7 >>= withGrain 7 >>= withMultipliable
+                      else Nothing
+        in if hasSuffix
+             then baseRes >>= notOkForAnyTime
+             else baseRes
       _ -> Nothing
   }
 
@@ -142,7 +155,7 @@ ruleMultiply :: Rule
 ruleMultiply = Rule
   { name = "compose by multiplication"
   , pattern =
-    [ Predicate isPositive
+    [ Predicate $ and . sequence [isPositive, isOkForAnyTime]
     , Predicate isMultipliable
     ]
   , prod = \tokens -> case tokens of
@@ -300,6 +313,45 @@ ruleFractionChed = Rule
       _ -> Nothing
   }
 
+ruleBetweenNumerals :: Rule
+ruleBetweenNumerals = Rule
+  { name = "<number> ते/आणि <number>"
+  , pattern =
+    [ dimension Numeral
+    , regex "તે|ते|(पासून )?તે|(पासून )?ते|आणि|-"
+    , dimension Numeral
+    ]
+  , prod = \case
+      (t1:_:t2:_) -> betweenNumerals t1 t2
+      _ -> Nothing
+  }
+
+ruleBetweenNumeralsSuffix :: Rule
+ruleBetweenNumeralsSuffix = Rule
+  { name = "<number> ते <number> पर्यंत"
+  , pattern =
+    [ dimension Numeral
+    , regex "તે|ते|(पासून )?તે|(पासून )?ते|पर्यंत|आणि|-"
+    , dimension Numeral
+    , regex "पर्यंत"
+    ]
+  , prod = \case
+      (t1:_:t2:_:_) -> betweenNumerals t1 t2
+      _ -> Nothing
+  }
+
+ruleBetweenNumeralsSuffixDirect :: Rule
+ruleBetweenNumeralsSuffixDirect = Rule
+  { name = "<number-from> <number-to>"
+  , pattern =
+    [ Predicate $ not . isOkForAnyTime
+    , dimension Numeral
+    ]
+  , prod = \case
+      (t1:t2:_) -> betweenNumerals t1 t2
+      _ -> Nothing
+  }
+
 rules :: [Rule]
 rules =
   [ ruleMarathiDigits
@@ -309,6 +361,9 @@ rules =
   , ruleDozen
   , ruleMultiply
   , ruleCommas
+  , ruleBetweenNumerals
+  , ruleBetweenNumeralsSuffix
+  , ruleBetweenNumeralsSuffixDirect
   , ruleDecimals
   , ruleMarathiDecimals
   , ruleDotSpelledOut

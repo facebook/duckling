@@ -306,7 +306,7 @@ ruleIntervalBetweenNumeral = Rule
        _:
        Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just to,
                   TAmountOfMoney.currency = c}:
-       _) | from < to ->
+       _) | from < to && c /= Unnamed ->
         Just . Token AmountOfMoney . withInterval (from, to) $ currencyOnly c
       _ -> Nothing
   }
@@ -327,7 +327,7 @@ ruleIntervalBetween = Rule
        _:
        Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.value = Just to,
                   TAmountOfMoney.currency = c2}:
-       _) | from < to && c1 == c2 ->
+       _) | from < to && c1 == c2 && c1 /= Unnamed ->
         Just . Token AmountOfMoney . withInterval (from, to) $ currencyOnly c1
       _ -> Nothing
   }

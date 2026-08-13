@@ -6,6 +6,7 @@
 
 
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE NoRebindableSyntax #-}
 
@@ -188,13 +189,20 @@ ruleZeroToNinetyNine = Rule
 rulePowersOfTen :: Rule
 rulePowersOfTen = Rule
   { name = "powers of tens"
-  , pattern = [regex "(સો|હજાર)"]
+  , pattern = [regex "((?:સો|હજાર|લાખ|કરોડ)(?:થી|માં|ની|નો|ના|નું|એ)?)"]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match : _)) : _) ->
-        case Text.toLower match of
-          "સો" -> double 1e2 >>= withGrain 2 >>= withMultipliable
-          "હજાર" -> double 1e3 >>= withGrain 3 >>= withMultipliable
-          _ -> Nothing
+        let hasSuffix = Text.length match > 2 && (Text.isSuffixOf "થી" match || Text.isSuffixOf "માં" match || Text.isSuffixOf "ની" match || Text.isSuffixOf "નો" match || Text.isSuffixOf "ના" match || Text.isSuffixOf "નું" match || Text.isSuffixOf "એ" match)
+            core = Text.takeWhile (\c -> c /= 'થ' && c /= 'મ' && c /= 'ન' && c /= 'એ') match
+            res = case Text.toLower core of
+              "સો" -> double 1e2 >>= withGrain 2 >>= withMultipliable
+              "હજાર" -> double 1e3 >>= withGrain 3 >>= withMultipliable
+              "લાખ" -> double 1e5 >>= withGrain 5 >>= withMultipliable
+              "કરોડ" -> double 1e7 >>= withGrain 7 >>= withMultipliable
+              _ -> Nothing
+        in if hasSuffix
+             then res >>= notOkForAnyTime
+             else res
       _ -> Nothing
   }
 
@@ -202,7 +210,7 @@ ruleMultiply :: Rule
 ruleMultiply = Rule
   { name = "compose by multiplication"
   , pattern =
-    [ Predicate isPositive
+    [ Predicate $ and . sequence [isPositive, isOkForAnyTime]
     , Predicate isMultipliable
     ]
   , prod = \tokens -> case tokens of
@@ -298,13 +306,13 @@ ruleSum :: Rule
 ruleSum = Rule
   { name = "intersect 2 numbers"
   , pattern =
-    [ Predicate $ and . sequence [hasGrain, isPositive]
+    [ Predicate $ and . sequence [hasGrain, isPositive, isOkForAnyTime]
     , Predicate $ and . sequence [not . isMultipliable, isPositive]
     ]
   , prod = \tokens -> case tokens of
-      (Token Numeral NumeralData{TNumeral.value = val1, TNumeral.grain = Just g}:
+      (Token Numeral NumeralData{TNumeral.value = val1, TNumeral.grain = Just g, TNumeral.okForAnyTime = ok1}:
        Token Numeral NumeralData{TNumeral.value = val2}:
-       _) | (10 ** fromIntegral g) > val2 -> double $ val1 + val2
+       _) | ok1 && (10 ** fromIntegral g) > val2 -> double $ val1 + val2
       _ -> Nothing
   }
 
@@ -320,6 +328,46 @@ ruleCommas = Rule
       _ -> Nothing
   }
 
+ruleBetweenNumerals :: Rule
+ruleBetweenNumerals = Rule
+  { name = "<number> થી/સુધી <number>"
+  , pattern =
+    [ dimension Numeral
+    , regex "(?:^|\\s)(થી( લઈને)?|સુધી|અને|-)(?=$|\\s)"
+    , dimension Numeral
+    ]
+  , prod = \case
+      (t1:_:t2:_) -> betweenNumerals t1 t2
+      _ -> Nothing
+  }
+
+ruleBetweenNumeralsSuffix :: Rule
+ruleBetweenNumeralsSuffix = Rule
+  { name = "<number> થી <number> સુધી"
+  , pattern =
+    [ dimension Numeral
+    , regex "(?:^|\\s)(થી( લઈને)?|અને|-)(?=$|\\s)"
+    , dimension Numeral
+    , regex "(?:^|\\s)સુધી(?=$|\\s)"
+    ]
+  , prod = \case
+      (t1:_:t2:_:_) -> betweenNumerals t1 t2
+      _ -> Nothing
+  }
+
+ruleBetweenNumeralsSuffixDirect :: Rule
+ruleBetweenNumeralsSuffixDirect = Rule
+  { name = "<number> <number> સુધી"
+  , pattern =
+    [ dimension Numeral
+    , dimension Numeral
+    , regex "(?:^|\\s)સુધી(?=$|\\s)"
+    ]
+  , prod = \case
+      (t1:t2:_) -> betweenNumerals t1 t2
+      _ -> Nothing
+  }
+
 rules :: [Rule]
 rules =
   [ ruleGujaratiDigits
@@ -330,6 +378,9 @@ rules =
   , ruleMultiply
   , ruleSum
   , ruleCommas
+  , ruleBetweenNumerals
+  , ruleBetweenNumeralsSuffix
+  , ruleBetweenNumeralsSuffixDirect
   , ruleDecimals
   , ruleGujaratiDecimals
   , ruleDotSpelledOut

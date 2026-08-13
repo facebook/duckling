@@ -6,6 +6,7 @@
 
 
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE NoRebindableSyntax #-}
 
@@ -395,6 +396,33 @@ ruleCommas = Rule
       _ -> Nothing
   }
 
+ruleBetweenNumerals :: Rule
+ruleBetweenNumerals = Rule
+  { name = "<number> से/तक <number>"
+  , pattern =
+    [ dimension Numeral
+    , regex "से( लेकर)?|तक|और|तथा|-"
+    , dimension Numeral
+    ]
+  , prod = \case
+      (t1:_:t2:_) -> betweenNumerals t1 t2
+      _ -> Nothing
+  }
+
+ruleBetweenNumeralsSuffix :: Rule
+ruleBetweenNumeralsSuffix = Rule
+  { name = "<number> से <number> तक"
+  , pattern =
+    [ dimension Numeral
+    , regex "से( लेकर)?|और|तथा|-"
+    , dimension Numeral
+    , regex "तक"
+    ]
+  , prod = \case
+      (t1:_:t2:_:_) -> betweenNumerals t1 t2
+      _ -> Nothing
+  }
+
 rules :: [Rule]
 rules =
   [ ruleDevanagari
@@ -406,6 +434,8 @@ rules =
   , ruleMultiply
   , ruleSum
   , ruleCommas
+  , ruleBetweenNumerals
+  , ruleBetweenNumeralsSuffix
   , ruleDecimals
   , ruleDevanagariDecimals
   , ruleDotSpelledOut

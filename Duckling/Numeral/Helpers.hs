@@ -13,11 +13,14 @@ module Duckling.Numeral.Helpers
   , diffIntegerDigits
   , double
   , integer
+  , between
+  , betweenNumerals
   , multiply
   , isMultipliable
   , isNatural
   , isPositive
   , hasGrain
+  , isOkForAnyTime
   , divide
   , notOkForAnyTime
   , numberBetween
@@ -123,6 +126,10 @@ hasGrain :: Predicate
 hasGrain (Token Numeral NumeralData {grain = Just g}) = g > 1
 hasGrain _ = False
 
+isOkForAnyTime :: Predicate
+isOkForAnyTime (Token Numeral NumeralData {okForAnyTime = ok}) = ok
+isOkForAnyTime _ = False
+
 oneOf :: [Double] -> PatternItem
 oneOf vs = Predicate $ \x ->
   case x of
@@ -153,19 +160,76 @@ double x = Just $ Token Numeral $ NumeralData
   , grain = Nothing
   , multipliable = False
   , okForAnyTime = True
+  , rangeValue = Nothing
   }
 
 integer :: Integer -> Maybe Token
 integer = double . fromIntegral
 
+between :: Double -> Double -> Maybe Token
+between low high = Just $ Token Numeral $ NumeralData
+  { value = low
+  , grain = Nothing
+  , multipliable = False
+  , okForAnyTime = True
+  , rangeValue = Just (low, high)
+  }
+
+getScale :: Double -> Double
+getScale v
+  | v >= 100000000 = 10000000
+  | v >= 10000000  = 1000000
+  | v >= 1000000   = 100000
+  | v >= 100000    = 100000
+  | v >= 10000     = 1000
+  | v >= 1000      = 1000
+  | v >= 100       = 100
+  | otherwise      = 1
+
+betweenNumerals :: Token -> Token -> Maybe Token
+betweenNumerals
+  (Token Numeral nd1)
+  (Token Numeral nd2) = case (nd1, nd2) of
+    ( NumeralData {value = v1, rangeValue = Nothing},
+      NumeralData {value = v2, rangeValue = Nothing} ) ->
+        let scale = getScale v2
+            scaled_v1 = v1 * scale
+            v1' = if v1 < 100 && scale >= 100 && scaled_v1 < v2
+                    then scaled_v1
+                    else v1
+        in between v1' v2
+    _ -> Nothing
+betweenNumerals _ _ = Nothing
+
 multiply :: Token -> Token -> Maybe Token
 multiply
-  (Token Numeral NumeralData{value = v1})
-  (Token Numeral NumeralData{value = v2, grain = g}) = case g of
-  Nothing -> double $ v1 * v2
-  Just grain | v2 > v1 -> double (v1 * v2) >>= withGrain grain
-             | otherwise -> Nothing
-multiply _ _ = Nothing
+  (Token Numeral nd1)
+  (Token Numeral nd2)
+    | not (okForAnyTime nd1) = Nothing
+    | otherwise = case (nd1, nd2) of
+  ( NumeralData {rangeValue = Just (f, t)}, NumeralData {value = v2, grain = g} ) ->
+    case g of
+      Nothing -> between (f * v2) (t * v2) >>= propFlags
+      Just grain | v2 > t -> between (f * v2) (t * v2) >>= withGrain grain >>= propFlags
+                 | otherwise -> Nothing
+  ( NumeralData {value = v1}, NumeralData {rangeValue = Just (f, t), grain = g} ) ->
+    case g of
+      Nothing -> between (v1 * f) (v1 * t) >>= propFlags
+      Just grain | f > v1 -> between (v1 * f) (v1 * t) >>= withGrain grain >>= propFlags
+                 | otherwise -> Nothing
+  ( NumeralData {value = v1}, NumeralData {value = v2, grain = g} ) ->
+    case g of
+      Nothing -> double (v1 * v2) >>= propFlags
+      Just grain | v2 > v1 -> double (v1 * v2) >>= withGrain grain >>= propFlags
+                 | otherwise -> Nothing
+  _ -> Nothing
+  where
+    ok = okForAnyTime nd1 && okForAnyTime nd2
+    propFlags (Token Numeral nd) = Just $ Token Numeral $ nd
+      { okForAnyTime = ok
+      , multipliable = if ok then multipliable nd else False
+      }
+    propFlags _ = Nothing
 
 divide :: Token -> Token -> Maybe Token
 divide

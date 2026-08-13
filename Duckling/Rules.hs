@@ -38,6 +38,7 @@ import qualified Duckling.Rules.FI as FIRules
 import qualified Duckling.Rules.FA as FARules
 import qualified Duckling.Rules.FR as FRRules
 import qualified Duckling.Rules.GA as GARules
+import qualified Duckling.Rules.GU as GURules
 import qualified Duckling.Rules.HE as HERules
 import qualified Duckling.Rules.HI as HIRules
 import qualified Duckling.Rules.HR as HRRules
@@ -53,6 +54,7 @@ import qualified Duckling.Rules.KO as KORules
 import qualified Duckling.Rules.LO as LORules
 import qualified Duckling.Rules.ML as MLRules
 import qualified Duckling.Rules.MN as MNRules
+import qualified Duckling.Rules.MR as MRRules
 import qualified Duckling.Rules.MY as MYRules
 import qualified Duckling.Rules.NB as NBRules
 import qualified Duckling.Rules.NE as NERules
@@ -109,6 +111,7 @@ defaultRules FI = FIRules.defaultRules
 defaultRules FA = FARules.defaultRules
 defaultRules FR = FRRules.defaultRules
 defaultRules GA = GARules.defaultRules
+defaultRules GU = GURules.defaultRules
 defaultRules HE = HERules.defaultRules
 defaultRules HI = HIRules.defaultRules
 defaultRules HR = HRRules.defaultRules
@@ -124,6 +127,7 @@ defaultRules KO = KORules.defaultRules
 defaultRules LO = LORules.defaultRules
 defaultRules ML = MLRules.defaultRules
 defaultRules MN = MNRules.defaultRules
+defaultRules MR = MRRules.defaultRules
 defaultRules MY = MYRules.defaultRules
 defaultRules NB = NBRules.defaultRules
 defaultRules NE = NERules.defaultRules
@@ -160,6 +164,7 @@ localeRules FI = FIRules.localeRules
 localeRules FA = FARules.localeRules
 localeRules FR = FRRules.localeRules
 localeRules GA = GARules.localeRules
+localeRules GU = GURules.localeRules
 localeRules HE = HERules.localeRules
 localeRules HI = HIRules.localeRules
 localeRules HR = HRRules.localeRules
@@ -175,6 +180,7 @@ localeRules KO = KORules.localeRules
 localeRules LO = LORules.localeRules
 localeRules ML = MLRules.localeRules
 localeRules MN = MNRules.localeRules
+localeRules MR = MRRules.localeRules
 localeRules MY = MYRules.localeRules
 localeRules NB = NBRules.localeRules
 localeRules NE = NERules.localeRules
@@ -211,6 +217,7 @@ langRules FI = FIRules.langRules
 langRules FA = FARules.langRules
 langRules FR = FRRules.langRules
 langRules GA = GARules.langRules
+langRules GU = GURules.langRules
 langRules HE = HERules.langRules
 langRules HI = HIRules.langRules
 langRules KN = KNRules.langRules
@@ -226,6 +233,7 @@ langRules KO = KORules.langRules
 langRules LO = LORules.langRules
 langRules ML = MLRules.langRules
 langRules MN = MNRules.langRules
+langRules MR = MRRules.langRules
 langRules MY = MYRules.langRules
 langRules NB = NBRules.langRules
 langRules NE = NERules.langRules

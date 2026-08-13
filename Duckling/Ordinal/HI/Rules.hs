@@ -47,6 +47,10 @@ ordinalsMap = HashMap.fromList
   , ( "छठा" , 6 )
   , ( "छठी" , 6 )
   , ( "छठे" , 6 )
+  , ( "आखिरी" , -1 )
+  , ( "आखरी" , -1 )
+  , ( "अंतिम" , -1 )
+  , ( "अन्तिम" , -1 )
   ]
 
 cardinalsMap :: HashMap Text Int
@@ -86,8 +90,8 @@ cardinalsMap = HashMap.fromList
 
 ruleOrdinals :: Rule
 ruleOrdinals = Rule
-  { name = "ordinals (first..fourth, sixth)"
-  , pattern = [regex "(शून्य|प्रथम|पहला|पहली|पहले|द्वितीय|दूसरा|दूसरी|दूसरे|तृतीय|तीसरा|तीसरी|तीसरे|चौथा|चौथी|चौथे|छठा|छठी|छठे)"]
+  { name = "ordinals (first..fourth, sixth, last)"
+  , pattern = [regex "(शून्य|प्रथम|पहला|पहली|पहले|द्वितीय|दूसरा|दूसरी|दूसरे|तृतीय|तीसरा|तीसरी|तीसरे|चौथा|चौथी|चौथे|छठा|छठी|छठे|आखिरी|आखरी|अंतिम|अन्तिम)"]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
         ordinal <$> HashMap.lookup (Text.toLower match) ordinalsMap
@@ -97,7 +101,7 @@ ruleOrdinals = Rule
 ruleOtherOrdinals :: Rule
 ruleOtherOrdinals = Rule
   { name = "ordinals (fifth, seventh ...)"
-  , pattern = [regex "(पाँच|सात|आठ|नौ|दस|ग्यारह|बारह|तेरह|चौदह|पन्द्रह|सोलह|सत्रह|अठारह|उन्नीस|बीस|इक्कीस|बाईस|तेईस|चौबीस|पच्चीस|छब्बीस|सत्ताईस|अट्ठाईस|उनतीस|तीस|चालीस|पचास|साठ|सत्तर|अस्सी|नब्बे)(वा|वी|वे)"]
+  , pattern = [regex "(पाँच|सात|आठ|नौ|दस|ग्यारह|बारह|तेरह|चौदह|पन्द्रह|सोलह|सत्रह|अठारह|उन्नीस|बीस|इक्कीस|बाईस|तेईस|चौबीस|पच्चीस|छब्बीस|सत्ताईस|अट्ठाईस|उनतीस|तीस|चालीस|पचास|साठ|सत्तर|अस्सी|नब्बे)(वाँ|वीं|वें|वां|वीं|वें|वा|वी|वे)"]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) ->
         ordinal <$> HashMap.lookup (Text.toLower match) cardinalsMap
@@ -108,7 +112,7 @@ ruleOtherOrdinals = Rule
 ruleOrdinalDigits :: Rule
 ruleOrdinalDigits = Rule
   { name = "ordinal (digits)"
-  , pattern = [regex "0*(\\d+) ?(वा|वी|वे)"]
+  , pattern = [regex "0*(\\d+) ?(वाँ|वीं|वें|वां|वीं|वें|वा|वी|वे)"]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> ordinal <$> parseInt match
       _ -> Nothing

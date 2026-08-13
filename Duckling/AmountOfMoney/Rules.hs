@@ -75,6 +75,15 @@ currencies = HashMap.fromList
   , ("rs.", INR)
   , ("rupee", INR)
   , ("rupees", INR)
+  , ("रुपये", INR)
+  , ("रुपया", INR)
+  , ("रूपये", INR)
+  , ("रूपया", INR)
+  , ("रू", INR)
+  , ("₹", INR)
+  , ("રૂપિયા", INR)
+  , ("રૂપિયાઓ", INR)
+  , ("રૂ", INR)
   , ("jmd", JMD)
   , ("jod", JOD)
   , ("¥", JPY)
@@ -131,7 +140,7 @@ ruleCurrencies :: Rule
 ruleCurrencies = Rule
   { name = "currencies"
   , pattern =
-    [ regex "(aed|aud|bgn|brl|byn|¢|cad|chf|cny|c|\\$|dinars?|dkk|dollars?|egp|(e|€)uro?s?|€|gbp|gel|\x20BE|hkd|hrk|idr|ils|₪|inr|iqd|jmd|jod|¥|jpy|lari|krw|kwd|lbp|mad|₮|mnt|tugriks?|myr|rm|nis|nok|nzd|£|pkr|pln|pta?s?|qar|₽|rs\\.?|riy?als?|ron|rub|rupees?|sar|sek|sgb|shekels?|thb|ttd|₴|uah|us(d|\\$)|vnd|yen|yuan|zar|tl|lira|₺)"
+    [ regex "(aed|aud|bgn|brl|byn|¢|cad|chf|cny|c|\\$|dinars?|dkk|dollars?|egp|(e|€)uro?s?|€|gbp|gel|\x20BE|hkd|hrk|idr|ils|₪|inr|iqd|jmd|jod|¥|jpy|lari|krw|kwd|lbp|mad|₮|mnt|tugriks?|myr|rm|nis|nok|nzd|£|pkr|pln|pta?s?|qar|₽|rs\\.?|riy?als?|ron|rub|rupees?|रुपये|रुपया|रूपये|रूपया|रू|₹|રૂપિયા|રૂપિયાઓ|રૂ|sar|sek|sgb|shekels?|thb|ttd|₴|uah|us(d|\\$)|vnd|yen|yuan|zar|tl|lira|₺)"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (match:_)):_) -> do
@@ -166,9 +175,24 @@ ruleAmountLatent = Rule
       _ -> Nothing
   }
 
+ruleUnitAmount :: Rule
+ruleUnitAmount = Rule
+  { name = "<unit> <amount>"
+  , pattern =
+    [ Predicate isCurrencyOnly
+    , Predicate isPositive
+    ]
+  , prod = \tokens -> case tokens of
+      (Token AmountOfMoney AmountOfMoneyData{TAmountOfMoney.currency = c}:
+       Token Numeral NumeralData{TNumeral.value = v}:
+       _) -> Just . Token AmountOfMoney . withValue v $ currencyOnly c
+      _ -> Nothing
+  }
+
 rules :: [Rule]
 rules =
   [ ruleAmountUnit
+  , ruleUnitAmount
   , ruleAmountLatent
   , ruleCurrencies
   ]

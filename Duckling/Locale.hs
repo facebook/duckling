@@ -83,6 +83,7 @@ data Lang
   | FI
   | FR
   | GA
+  | GU
   | HE
   | HI
   | HR
@@ -98,6 +99,7 @@ data Lang
   | LO
   | ML
   | MN
+  | MR
   | MY
   | NB
   | NE

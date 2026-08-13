@@ -33,13 +33,16 @@ import qualified Duckling.Time.EL.Tests as EL
 import qualified Duckling.Time.ES.Tests as ES
 import qualified Duckling.Time.FR.Tests as FR
 import qualified Duckling.Time.GA.Tests as GA
+import qualified Duckling.Time.GU.Tests as GU
 import qualified Duckling.Time.HR.Tests as HR
 import qualified Duckling.Time.HE.Tests as HE
+import qualified Duckling.Time.HI.Tests as HI
 import qualified Duckling.Time.HU.Tests as HU
 import qualified Duckling.Time.IT.Tests as IT
 import qualified Duckling.Time.JA.Tests as JA
 import qualified Duckling.Time.KA.Tests as KA
 import qualified Duckling.Time.KO.Tests as KO
+import qualified Duckling.Time.MR.Tests as MR
 import qualified Duckling.Time.NB.Tests as NB
 import qualified Duckling.Time.NL.Tests as NL
 import qualified Duckling.Time.PL.Tests as PL
@@ -64,13 +67,16 @@ tests = testGroup "Time Tests"
   , ES.tests
   , FR.tests
   , GA.tests
+  , GU.tests
   , HR.tests
   , HE.tests
+  , HI.tests
   , HU.tests
   , IT.tests
   , JA.tests
   , KA.tests
   , KO.tests
+  , MR.tests
   , NB.tests
   , NL.tests
   , PL.tests

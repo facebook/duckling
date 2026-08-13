@@ -27,6 +27,7 @@ import qualified Duckling.Numeral.FI.Tests as FI
 import qualified Duckling.Numeral.FA.Tests as FA
 import qualified Duckling.Numeral.FR.Tests as FR
 import qualified Duckling.Numeral.GA.Tests as GA
+import qualified Duckling.Numeral.GU.Tests as GU
 import qualified Duckling.Numeral.HE.Tests as HE
 import qualified Duckling.Numeral.HI.Tests as HI
 import qualified Duckling.Numeral.HR.Tests as HR
@@ -42,6 +43,7 @@ import qualified Duckling.Numeral.KO.Tests as KO
 import qualified Duckling.Numeral.LO.Tests as LO
 import qualified Duckling.Numeral.ML.Tests as ML
 import qualified Duckling.Numeral.MN.Tests as MN
+import qualified Duckling.Numeral.MR.Tests as MR
 import qualified Duckling.Numeral.MY.Tests as MY
 import qualified Duckling.Numeral.NB.Tests as NB
 import qualified Duckling.Numeral.NE.Tests as NE
@@ -79,6 +81,7 @@ tests = testGroup "Numeral Tests"
   , FR.tests
   , FI.tests
   , GA.tests
+  , GU.tests
   , HE.tests
   , HI.tests
   , HR.tests
@@ -94,6 +97,7 @@ tests = testGroup "Numeral Tests"
   , LO.tests
   , ML.tests
   , MN.tests
+  , MR.tests
   , MY.tests
   , NB.tests
   , NE.tests
